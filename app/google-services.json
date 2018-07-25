@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "248752534282",
+    "firebase_url": "https://paperflyv0.firebaseio.com",
+    "project_id": "paperflyv0",
+    "storage_bucket": "paperflyv0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248752534282:android:64fb83e80aed0de2",
+        "android_client_info": {
+          "package_name": "com.example.user.paperflyv0"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248752534282-rhm4fm3cbbbuhl7e04bo92e6ajvvhgbq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.paperflyv0",
+            "certificate_hash": "c304b02f653c4a73905a6e0e4b25fb4ffb178534"
+          }
+        },
+        {
+          "client_id": "248752534282-0h3jpqa58vcpjeq6oi6392kls83r54b5.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "248752534282-0h3jpqa58vcpjeq6oi6392kls83r54b5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWBeeszJYtVM2IEox0tDWOXrbXvaW0Aws"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248752534282-0h3jpqa58vcpjeq6oi6392kls83r54b5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
