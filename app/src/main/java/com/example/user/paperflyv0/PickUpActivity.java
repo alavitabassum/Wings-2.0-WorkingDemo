@@ -12,14 +12,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PickUpActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+ListView lst;
+String[] merchantName={"StoreName1","StoreName2","StoreName3","StoreName4","StoreName5","StoreName3","StoreName4","StoreName5"};
+    String[] merchantAddress={"Address1","Address2","Address3","Address4","Address5","Address3","Address4","Address5"};
+    Integer[] imgid={R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop};
+    String[] scheduleTime={"11:00","02:00","05:00","11:00","02:00","05:00","06:13","08:12"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_up);
+
+        lst= (ListView)findViewById(R.id.listview) ;
+        CustomListview customListview=new CustomListview(this,merchantName,merchantAddress,imgid,scheduleTime);
+        lst.setAdapter(customListview);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
