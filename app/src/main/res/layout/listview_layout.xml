@@ -9,11 +9,9 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="52dp"
-        android:layout_height="50dp"
-        android:layout_above="@+id/button"
+        android:layout_height="100dp"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="-66dp"
-        android:layout_marginStart="13dp"
+        android:layout_alignParentTop="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -26,10 +24,11 @@
         android:id="@+id/name"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/button"
+        android:layout_above="@+id/add"
+        android:layout_toEndOf="@+id/imageView"
+        android:paddingLeft="10dp"
         android:text="TextView"
-        android:textSize="14sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.283"
@@ -40,11 +39,12 @@
     <TextView
         android:id="@+id/add"
         android:layout_width="200dp"
-        android:layout_height="15dp"
-        android:layout_alignStart="@+id/name"
-        android:layout_below="@+id/name"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/schedule_txt"
+        android:layout_toEndOf="@+id/imageView"
+        android:paddingLeft="10dp"
         android:text="TextView"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.283"
@@ -54,11 +54,12 @@
 
     <Button
         android:id="@+id/button"
-        android:layout_width="75dp"
-        android:layout_height="25dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="31dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="66dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginTop="40dp"
         android:background="@color/pfColor"
         android:text="Status"
         android:textColor="@android:color/white" />
@@ -67,17 +68,19 @@
         android:id="@+id/schedule_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_alignStart="@+id/name"
+        android:layout_alignBottom="@+id/checkBox"
+        android:layout_toEndOf="@+id/imageView"
+        android:paddingLeft="10dp"
         android:text="Scheduled Time:"
         android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
     <TextView
         android:id="@+id/ptime"
-        android:layout_width="80dp"
+        android:layout_width="78dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_toEndOf="@+id/schedule_txt"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/schedule_txt"
+        android:layout_marginEnd="142dp"
         android:text="TextView"
         android:textColor="@color/pfColor"
         android:textStyle="bold" />
@@ -86,16 +89,8 @@
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="26dp" />
+        android:layout_alignBottom="@+id/button"
+        android:layout_marginStart="-44dp"
+        android:layout_toEndOf="@+id/button" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_toStartOf="@+id/checkBox"
-        android:background="@color/colorAccent"
-        app:srcCompat="@mipmap/phone" />
 </RelativeLayout>

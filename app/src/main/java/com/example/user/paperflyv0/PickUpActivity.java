@@ -23,7 +23,7 @@ public class PickUpActivity extends AppCompatActivity
 ListView lst;
 String[] merchantName={"StoreName1","StoreName2","StoreName3","StoreName4","StoreName5","StoreName3","StoreName4","StoreName5"};
     String[] merchantAddress={"Address1","Address2","Address3","Address4","Address5","Address3","Address4","Address5"};
-    Integer[] imgid={R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop,R.drawable.shop};
+    Integer[] imgid={R.drawable.call,R.drawable.call,R.drawable.call,R.drawable.call,R.drawable.call,R.drawable.call,R.drawable.call,R.drawable.call};
     String[] scheduleTime={"11:00","02:00","05:00","11:00","02:00","05:00","06:13","08:12"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
