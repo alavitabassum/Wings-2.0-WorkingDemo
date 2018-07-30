@@ -66,7 +66,7 @@ viewHolder.imgvw.setImageResource(imgid[position]);
         {
             txt1=(TextView) v.findViewById(R.id.name);
             txt2=(TextView) v.findViewById(R.id.add);
-            imgvw=v.findViewById(R.id.imageView);
+            imgvw=v.findViewById(R.id.imgCall);
             txt3=(TextView) v.findViewById(R.id.ptime);
 
 
