@@ -49,6 +49,7 @@ public class PickUpActivity extends AppCompatActivity
     ProgressBar progressBar;
     ListView lst;
     ListView listView;
+    ImageView imgvw;
 
 
     List<Pickup> pickupList;
@@ -65,7 +66,7 @@ public class PickUpActivity extends AppCompatActivity
         listView = (ListView) findViewById(R.id.listview);
 
         readHeroes();
-
+       // pickUpOptions();
         //listView od pickups
 
 
@@ -115,7 +116,7 @@ public class PickUpActivity extends AppCompatActivity
             TextView name = listViewItem.findViewById(R.id.name);
             TextView address = listViewItem.findViewById(R.id.add);
             TextView time = listViewItem.findViewById(R.id.ptime);
-
+            imgvw=listViewItem.findViewById(R.id.imgCall);
 
 
             final Pickup hero = pickupList.get(position);
@@ -123,10 +124,9 @@ public class PickUpActivity extends AppCompatActivity
             name.setText(hero.getMerchantName());
             address.setText(hero.getMerchantAddress());
             time.setText(hero.getScheduleTime());
+            imgvw.setImageResource(R.drawable.phone);
 
-
-
-
+           // pickUpOptions(listViewItem);
             return listViewItem;
         }
     }
