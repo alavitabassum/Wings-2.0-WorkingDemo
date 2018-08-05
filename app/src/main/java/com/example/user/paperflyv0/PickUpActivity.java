@@ -32,8 +32,8 @@ public class PickUpActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
 
     ListView lst;
-    String[] merchantName = {"StoreName1", "StoreName2", "StoreName3", "StoreName4", "StoreName5", "StoreName3", "StoreName4", "StoreName5"};
-    String[] merchantAddress = {"Address1", "Address2", "Address3", "Address4", "Address5", "Address3", "Address4", "Address5"};
+    String[] merchantName = {"StoreName1", "StoreName2", "StoreName3", "StoreName4", "StoreName5", "StoreName6", "StoreName7", "StoreName8"};
+    String[] merchantAddress = {"Address1", "Address2", "Address3", "Address4", "Address5", "Address6", "Address7", "Address8"};
     Integer[] imgid = {R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call};
     String[] scheduleTime = {"11:00", "02:00", "05:00", "11:00", "02:00", "05:00", "06:13", "08:12"};
 
@@ -42,6 +42,7 @@ public class PickUpActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_up);
+
 
         // popup menu for pick up status options
 
