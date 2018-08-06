@@ -1,6 +1,50 @@
 package com.example.user.paperflyv0;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static android.view.View.GONE;
+
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -31,12 +75,13 @@ import java.util.List;
 public class PickUpActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
 
+    private static final int CODE_GET_REQUEST = 1024;
+    private static final int CODE_POST_REQUEST = 1025;
+    ProgressBar progressBar;
     ListView lst;
-    String[] merchantName = {"StoreName1", "StoreName2", "StoreName3", "StoreName4", "StoreName5", "StoreName6", "StoreName7", "StoreName8"};
-    String[] merchantAddress = {"Address1", "Address2", "Address3", "Address4", "Address5", "Address6", "Address7", "Address8"};
-    Integer[] imgid = {R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call, R.drawable.call};
-    String[] scheduleTime = {"11:00", "02:00", "05:00", "11:00", "02:00", "05:00", "06:13", "08:12"};
 
+
+    List<Pickup> pickupList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +93,11 @@ public class PickUpActivity extends AppCompatActivity
 
 
         //listView od pickups
-        lst = (ListView) findViewById(R.id.listview);
-        CustomListview customListview = new CustomListview(this, merchantName, merchantAddress, imgid, scheduleTime);
-        lst.setAdapter(customListview);
+        pickupList = new ArrayList<>();
 
+        listView = (ListView) findViewById(R.id.listview);
+
+        readHeroes();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,6 +121,193 @@ public class PickUpActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private void readHeroes() {
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_HEROES, null, CODE_GET_REQUEST);
+        request.execute();
+    }
+
+    class PickupAdapter extends ArrayAdapter<Pickup> {
+        List<Pickup> pickupList;
+
+        public PickupAdapter(List<Pickup> pickupList) {
+            super(PickUpActivity.this, R.layout.listview_layout, pickupList);
+            this.pickupList = pickupList;
+        }
+
+
+        @Override
+        public View getView(int position, final View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            View listViewItem = inflater.inflate(R.layout.listview_layout, null, true);
+
+            TextView name = listViewItem.findViewById(R.id.name);
+            TextView address = listViewItem.findViewById(R.id.add);
+            TextView time = listViewItem.findViewById(R.id.ptime);
+            imgvw=listViewItem.findViewById(R.id.imgCall);
+            final Button btn_status = (Button)findViewById(R.id.button_status);
+            //   final int phone = listViewItem.findViewById(R.id.phone_button);
+            final Pickup hero = pickupList.get(position);
+
+            name.setText(hero.getMerchantName());
+            address.setText(hero.getMerchantAddress());
+            time.setText(hero.getScheduleTime());
+            imgvw.setImageResource(R.drawable.call);
+
+            String phoneNumber = hero.getPhone();
+            Log.d("phone",phoneNumber);
+            final String uri = "tel:" + phoneNumber;
+
+            //btnstatus.setOnCreateContextMenuListener(PickUpActivity.this);
+            // pickUpOptions(listViewItem);
+            // btn_status.setOnClickListener();
+
+            //     @Override
+            /*
+            btn_status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Creating the instance of PopupMenu
+                    PopupMenu popup = new PopupMenu(PickUpActivity.this, btn_status);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater()
+                            .inflate(R.menu.pickup_status_options, popup.getMenu());
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick (MenuItem item){
+                            Button btn_status = findViewById(R.id.button_status);
+                            switch (item.getItemId()) {
+                                case R.id.confirm:
+                                   // Toast.makeText(this, "Pick Up Confirmed", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.green));
+                                    btn_status.setText("Confirmed");
+                                    return true;
+                                case R.id.callAgain:
+                                 //   Toast.makeText(this, "Call Merchant later", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+                                    btn_status.setText("CallBack");
+                                    return true;
+                                case R.id.rescheduled:
+                                  //  Toast.makeText(this, "Pick Up Rescheduled", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
+                                    btn_status.setText("R.S.");
+                                    return true;
+                                case R.id.pendingReview:
+                                 //   Toast.makeText(this, "Pick Up is pending review", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+                                    btn_status.setText("Pending");
+                                    return true;
+                                case R.id.cancel:
+                                  //  Toast.makeText(this, "Pick Up Cancelled", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
+                                    btn_status.setText("Cancelled");
+                                    return true;
+                                default:
+                                    return false;
+
+                            }
+
+                        }
+                    });
+
+                    popup.show(); //showing popup menu
+                }
+            }); */
+/*         int phoneNumber = hero.getPhone();
+
+           final String phone = Integer.toString(phoneNumber);
+            Log.d("MYINT", "value: " +phoneNumber);
+           // Log.d("phone",phone);
+            final String uri = "tel:" + phone;*/
+            // Log.d("Check",uri);/*
+            imgvw.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    // callIntent.setData(Uri.parse("tel:" +phone));
+                    callIntent.setData(Uri.parse(uri));
+                    // Log.d("Check",uri);
+                    //Log.v("Check",uri);
+
+                    // intent.setData(Uri.parse("tel:" + phone));
+
+                    if (ActivityCompat.checkSelfPermission(PickUpActivity.this,
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    startActivity(callIntent);
+                }
+            });
+            return listViewItem;
+        }
+    }
+
+    private void refreshHeroList(JSONArray heroes) throws JSONException {
+        pickupList.clear();
+
+        for (int i = 0; i < heroes.length(); i++) {
+            JSONObject obj = heroes.getJSONObject(i);
+
+
+            pickupList.add(new Pickup(
+                    obj.getInt("id"),
+                    obj.getString("merchantName"),
+                    obj.getString("merchantAddress"),
+                    obj.getString("scheduleTime"),
+                    obj.getString("phone")
+
+            ));
+        }
+
+        PickupAdapter adapter = new PickupAdapter(pickupList);
+        listView.setAdapter(adapter);
+    }
+
+    private class PerformNetworkRequest extends AsyncTask<Void, Void, String> {
+        String url;
+        HashMap<String, String> params;
+        int requestCode;
+
+        PerformNetworkRequest(String url, HashMap<String, String> params, int requestCode) {
+            this.url = url;
+            this.params = params;
+            this.requestCode = requestCode;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //     progressBar.setVisibility(GONE);
+            try {
+                JSONObject object = new JSONObject(s);
+                if (!object.getBoolean("error")) {
+                    Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
+                    refreshHeroList(object.getJSONArray("heroes"));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            RequestHandler requestHandler = new RequestHandler();
+
+            if (requestCode == CODE_POST_REQUEST)
+                return requestHandler.sendPostRequest(url, params);
+
+
+            if (requestCode == CODE_GET_REQUEST)
+                return requestHandler.sendGetRequest(url);
+
+            return null;
+        }
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
