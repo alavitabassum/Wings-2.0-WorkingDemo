@@ -4,14 +4,23 @@ import java.io.Serializable;
 
 public class Pickup {
     private int id;
+    String phone;
     private String merchantName, merchantAddress, scheduleTime;
+
+    public Pickup(int id, String merchantName, String merchantAddress, String scheduleTime,String phone) {
+        this.id = id;
+        this.merchantName = merchantName;
+        this.merchantAddress = merchantAddress;
+        this.scheduleTime = scheduleTime;
+        this.phone = phone;
+    }
 
     public Pickup(int id, String merchantName, String merchantAddress, String scheduleTime) {
         this.id = id;
         this.merchantName = merchantName;
         this.merchantAddress = merchantAddress;
         this.scheduleTime = scheduleTime;
-
+        //this.phone = phone;
     }
 
     public int getId() {
@@ -30,5 +39,8 @@ public class Pickup {
 
     public String getScheduleTime() {
         return scheduleTime;
+    }
+    public String getPhone() {
+        return phone;
     }
 }

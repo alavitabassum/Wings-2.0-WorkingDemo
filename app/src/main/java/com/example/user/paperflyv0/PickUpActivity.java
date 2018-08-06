@@ -1,6 +1,7 @@
 package com.example.user.paperflyv0;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,7 +112,7 @@ public class PickUpActivity extends AppCompatActivity
 
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, final View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
             View listViewItem = inflater.inflate(R.layout.listview_layout, null, true);
 
@@ -117,16 +120,99 @@ public class PickUpActivity extends AppCompatActivity
             TextView address = listViewItem.findViewById(R.id.add);
             TextView time = listViewItem.findViewById(R.id.ptime);
             imgvw=listViewItem.findViewById(R.id.imgCall);
-
-
+            final Button btn_status = (Button)findViewById(R.id.button_status);
+         //   final int phone = listViewItem.findViewById(R.id.phone_button);
             final Pickup hero = pickupList.get(position);
 
             name.setText(hero.getMerchantName());
             address.setText(hero.getMerchantAddress());
             time.setText(hero.getScheduleTime());
-            imgvw.setImageResource(R.drawable.phone);
+            imgvw.setImageResource(R.drawable.call);
 
+            String phoneNumber = hero.getPhone();
+             Log.d("phone",phoneNumber);
+            final String uri = "tel:" + phoneNumber;
+
+           //btnstatus.setOnCreateContextMenuListener(PickUpActivity.this);
            // pickUpOptions(listViewItem);
+           // btn_status.setOnClickListener();
+
+           //     @Override
+            /*
+            btn_status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Creating the instance of PopupMenu
+                    PopupMenu popup = new PopupMenu(PickUpActivity.this, btn_status);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater()
+                            .inflate(R.menu.pickup_status_options, popup.getMenu());
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick (MenuItem item){
+                            Button btn_status = findViewById(R.id.button_status);
+                            switch (item.getItemId()) {
+                                case R.id.confirm:
+                                   // Toast.makeText(this, "Pick Up Confirmed", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.green));
+                                    btn_status.setText("Confirmed");
+                                    return true;
+                                case R.id.callAgain:
+                                 //   Toast.makeText(this, "Call Merchant later", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+                                    btn_status.setText("CallBack");
+                                    return true;
+                                case R.id.rescheduled:
+                                  //  Toast.makeText(this, "Pick Up Rescheduled", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
+                                    btn_status.setText("R.S.");
+                                    return true;
+                                case R.id.pendingReview:
+                                 //   Toast.makeText(this, "Pick Up is pending review", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+                                    btn_status.setText("Pending");
+                                    return true;
+                                case R.id.cancel:
+                                  //  Toast.makeText(this, "Pick Up Cancelled", Toast.LENGTH_SHORT).show();
+                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
+                                    btn_status.setText("Cancelled");
+                                    return true;
+                                default:
+                                    return false;
+
+                            }
+
+                        }
+                    });
+
+                    popup.show(); //showing popup menu
+                }
+            }); */
+/*         int phoneNumber = hero.getPhone();
+
+           final String phone = Integer.toString(phoneNumber);
+            Log.d("MYINT", "value: " +phoneNumber);
+           // Log.d("phone",phone);
+            final String uri = "tel:" + phone;*/
+           // Log.d("Check",uri);/*
+            imgvw.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                   // callIntent.setData(Uri.parse("tel:" +phone));
+                    callIntent.setData(Uri.parse(uri));
+                   // Log.d("Check",uri);
+                    //Log.v("Check",uri);
+
+                    // intent.setData(Uri.parse("tel:" + phone));
+
+                    if (ActivityCompat.checkSelfPermission(PickUpActivity.this,
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    startActivity(callIntent);
+                }
+            });
             return listViewItem;
         }
     }
@@ -142,7 +228,9 @@ public class PickUpActivity extends AppCompatActivity
                     obj.getInt("id"),
                     obj.getString("merchantName"),
                     obj.getString("merchantAddress"),
-                    obj.getString("scheduleTime")
+                    obj.getString("scheduleTime"),
+                    obj.getString("phone")
+
             ));
         }
 
