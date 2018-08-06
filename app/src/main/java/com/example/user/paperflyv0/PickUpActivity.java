@@ -79,7 +79,8 @@ public class PickUpActivity extends AppCompatActivity
     private static final int CODE_POST_REQUEST = 1025;
     ProgressBar progressBar;
     ListView lst;
-
+    ListView listView;
+    ImageView imgvw;
 
     List<Pickup> pickupList;
 
