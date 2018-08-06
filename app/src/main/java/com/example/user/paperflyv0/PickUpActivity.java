@@ -44,6 +44,34 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.view.ContextMenu;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class PickUpActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
 
@@ -62,18 +90,16 @@ public class PickUpActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_up);
 
+
         // popup menu for pick up status options
 
+
+        //listView od pickups
         pickupList = new ArrayList<>();
 
         listView = (ListView) findViewById(R.id.listview);
 
         readHeroes();
-       // pickUpOptions();
-        //listView od pickups
-
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -121,7 +147,7 @@ public class PickUpActivity extends AppCompatActivity
             TextView time = listViewItem.findViewById(R.id.ptime);
             imgvw=listViewItem.findViewById(R.id.imgCall);
             final Button btn_status = (Button)findViewById(R.id.button_status);
-         //   final int phone = listViewItem.findViewById(R.id.phone_button);
+            //   final int phone = listViewItem.findViewById(R.id.phone_button);
             final Pickup hero = pickupList.get(position);
 
             name.setText(hero.getMerchantName());
@@ -130,14 +156,14 @@ public class PickUpActivity extends AppCompatActivity
             imgvw.setImageResource(R.drawable.call);
 
             String phoneNumber = hero.getPhone();
-             Log.d("phone",phoneNumber);
+            Log.d("phone",phoneNumber);
             final String uri = "tel:" + phoneNumber;
 
-           //btnstatus.setOnCreateContextMenuListener(PickUpActivity.this);
-           // pickUpOptions(listViewItem);
-           // btn_status.setOnClickListener();
+            //btnstatus.setOnCreateContextMenuListener(PickUpActivity.this);
+            // pickUpOptions(listViewItem);
+            // btn_status.setOnClickListener();
 
-           //     @Override
+            //     @Override
             /*
             btn_status.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -195,13 +221,13 @@ public class PickUpActivity extends AppCompatActivity
             Log.d("MYINT", "value: " +phoneNumber);
            // Log.d("phone",phone);
             final String uri = "tel:" + phone;*/
-           // Log.d("Check",uri);/*
+            // Log.d("Check",uri);/*
             imgvw.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
-                   // callIntent.setData(Uri.parse("tel:" +phone));
+                    // callIntent.setData(Uri.parse("tel:" +phone));
                     callIntent.setData(Uri.parse(uri));
-                   // Log.d("Check",uri);
+                    // Log.d("Check",uri);
                     //Log.v("Check",uri);
 
                     // intent.setData(Uri.parse("tel:" + phone));
@@ -237,6 +263,7 @@ public class PickUpActivity extends AppCompatActivity
         PickupAdapter adapter = new PickupAdapter(pickupList);
         listView.setAdapter(adapter);
     }
+
     private class PerformNetworkRequest extends AsyncTask<Void, Void, String> {
         String url;
         HashMap<String, String> params;
@@ -257,7 +284,7 @@ public class PickUpActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-       //     progressBar.setVisibility(GONE);
+            //     progressBar.setVisibility(GONE);
             try {
                 JSONObject object = new JSONObject(s);
                 if (!object.getBoolean("error")) {
@@ -321,17 +348,19 @@ public class PickUpActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_pickDue) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_pickCompleted) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_exception) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_profile) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_settings) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_contact) {
+
+        } else if (id == R.id.nav_logout) {
 
         }
 
