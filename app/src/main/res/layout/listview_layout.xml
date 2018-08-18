@@ -65,7 +65,7 @@
         android:layout_marginEnd="45dp"
         android:layout_marginTop="40dp"
         android:background="@color/pfColor"
-
+        android:onClick="gotochangestatus"
         android:text="Scheduled"
         android:textColor="@android:color/white" />
 
@@ -97,15 +97,5 @@
         android:layout_marginStart="-44dp"
         android:layout_toEndOf="@+id/button_status" />
 
-    <TextView
-        android:id="@+id/chng_status"
-        android:layout_width="wrap_content"
-        android:layout_height="31dp"
-        android:layout_below="@+id/button_status"
-        android:layout_toEndOf="@+id/name"
-        android:onClick="gotochangestatus"
-        android:text="Update Status"
-        android:textColor="@color/colorAccent"
-        android:textSize="12sp" />
 
 </RelativeLayout>

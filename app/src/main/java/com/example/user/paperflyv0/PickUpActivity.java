@@ -55,6 +55,9 @@ public class PickUpActivity extends AppCompatActivity
     TextView changeStatus;
     TextView new_ptime;
     int check=0;
+
+    android.widget.RelativeLayout vwParentRow;
+
 String [] statusChange={"confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed"};
 
     List<Pickup> pickupList;
@@ -67,6 +70,9 @@ String [] statusChange={"confirmed","confirmed","confirmed","confirmed","confirm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_up);
 
+
+
+      // Button btn_status = findViewById(R.id.button_status);
 
        // Bundle bundle = getIntent().getExtras();
         //pass data to String variables
@@ -169,10 +175,10 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             LayoutInflater inflater = getLayoutInflater();
             final View listViewItem = inflater.inflate(R.layout.listview_layout, null, true);
 
-            TextView name = listViewItem.findViewById(R.id.name);
+            final TextView name = listViewItem.findViewById(R.id.name);
             TextView address = listViewItem.findViewById(R.id.add);
             TextView time = listViewItem.findViewById(R.id.ptime);
-            final TextView changeStatus = listViewItem.findViewById(R.id.chng_status);
+            //final TextView changeStatus = listViewItem.findViewById(R.id.chng_status);
             imgvw=listViewItem.findViewById(R.id.iconpf);
             final Button btn_status = (Button)findViewById(R.id.button_status);
             //   final int phone = listViewItem.findViewById(R.id.phone_button);
@@ -201,69 +207,6 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 }
             });
 
-            changeStatus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    gotochangestatus(view);
-                 changeStatus.setFocusableInTouchMode(true);
-
-                    if(check==1){
-
-                        AlertDialog.Builder a_builder =new AlertDialog.Builder(PickUpActivity.this);
-                        a_builder.setMessage("Do you want to confirm the Pick Up?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                Toast.makeText(PickUpActivity.this,"Pick Up Confirmed", Toast.LENGTH_SHORT).show();
-                                changeStatus.setText("Confirmed");
-                                //changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.green));
-                                //       finish();
-
-                            }
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        AlertDialog alert = a_builder.create();
-                        alert.setTitle("Alert!");
-                        alert.show();
-                    }
-
-                    else if(check==2){
-
-                    }
-                    else if(check==3){
-                        changeStatus.setText("R.s");
-                    }
-                    else if(check==4){
-                        changeStatus.setText("Pending");
-                    }
-                    else if(check==5){
-                        AlertDialog.Builder b_builder =new AlertDialog.Builder(PickUpActivity.this);
-                        b_builder.setMessage("Are you sure the pickUp is cancelled?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                Toast.makeText(PickUpActivity.this,"Pick Up Cancelled", Toast.LENGTH_SHORT).show();
-                                changeStatus.setText("Cancelled");
-                                //       finish();
-
-                            }
-                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                        AlertDialog alert2 = b_builder.create();
-                        alert2.setTitle("Alert!");
-                        alert2.show();
-                    }
-                   // check=0;
-                }
-            });
 
             return listViewItem;
 
@@ -415,12 +358,6 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 // TODO: Consider calling
 
                 ActivityCompat.requestPermissions(PickUpActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
 
             }else {
 
@@ -434,6 +371,8 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
     // pop up menu for status options
 
     public void gotochangestatus(View view){
+
+        vwParentRow = (android.widget.RelativeLayout) view.getParent();
         PopupMenu popup = new PopupMenu(this,view);
         popup.setOnMenuItemClickListener(this);
         popup.inflate(R.menu.pickup_status_options);
@@ -445,18 +384,32 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        // int check =0;
+
         int id = item.getItemId();
-        //boolean position = item.equals(listView);
-
-//final TextView changeStatus =findViewById(R.id.chng_status);
-
+       final Button btn_status = (Button)vwParentRow.getChildAt(3);
 
         if (id== R.id.confirm ){
-
-            MenuItem one = findViewById(R.id.confirm);
-
             check = 1;
+
+                        AlertDialog.Builder a_builder =new AlertDialog.Builder(PickUpActivity.this);
+                        a_builder.setMessage("Do you want to confirm the Pick Up?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Toast.makeText(PickUpActivity.this,"Pick Up Confirmed", Toast.LENGTH_SHORT).show();
+                                btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.green));
+                                btn_status.setText("Confirmed");
+
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = a_builder.create();
+                        alert.setTitle("Alert!");
+                        alert.show();
 
         }
 
@@ -464,11 +417,18 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             check = 2;
             Intent ca_intent = new Intent(PickUpActivity.this, CallAgain.class);
             startActivity(ca_intent);
+            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+            btn_status.setText("Call Again");
+           ;
         }
         else if (id== R.id.rescheduled)
         {
             Intent intent = new Intent(PickUpActivity.this, ReschedulePickUp.class);
-            startActivity(intent);
+                 startActivity(intent);
+
+            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
+            btn_status.setText("R.S.");
+
             check = 3;
         }
         else if (id == R.id.pendingReview)
@@ -477,65 +437,38 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             Intent pr_intent = new Intent(PickUpActivity.this, PendingReview.class);
             startActivity(pr_intent);
+
+            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+            btn_status.setText("P. Review");
         }
         else if (id == R.id.cancel)
         {
+
+
             check = 5;
+
+            AlertDialog.Builder a_builder =new AlertDialog.Builder(PickUpActivity.this);
+            a_builder.setMessage("Do you want to cancel the Pick Up?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    Toast.makeText(PickUpActivity.this,"Pick Up Cancelled", Toast.LENGTH_SHORT).show();
+                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
+                    btn_status.setText("Cancelled");
+                }
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = a_builder.create();
+            alert.setTitle("Alert!");
+            alert.show();
         }
+        vwParentRow.refreshDrawableState();
         return true;
     }
-
-/*
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-     //   TextView changeStatus= findViewById(R.id.chng_status);
-        switch (item.getItemId()){
-            case R.id.confirm:
-
-
-               // changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.green));
-                //changeStatus.setText("Confirmed");
-                chk= 1;
-
-                return true;
-            case R.id.callAgain:
-
-               // Toast.makeText(this,"Call Merchant later", Toast.LENGTH_SHORT).show();
-              //  changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-              //  changeStatus.setText("CallBack");
-                chk= 2;
-                return true;
-            case R.id.rescheduled:
-
-                Intent intent = new Intent(PickUpActivity.this, ReschedulePickUp.class);
-                startActivity(intent);
-               // Toast.makeText(this,"Pick Up Rescheduled", Toast.LENGTH_SHORT).show();
-             //   changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
-            //    changeStatus.setText("R.S.");
-                chk = 3;
-                return true;
-            case R.id.pendingReview:
-
-              //  Toast.makeText(this,"Pick Up is pending review", Toast.LENGTH_SHORT).show();
-             //   changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-               // changeStatus.setText("Pending");
-                chk = 4;
-                return true;
-            case R.id.cancel:
-
-                //Toast.makeText(this,"Pick Up Cancelled", Toast.LENGTH_SHORT).show();
-                //changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.red));
-              //  changeStatus.setText("Cancelled");
-                chk = 5;
-            default:
-
-                return false;
-
-        }
-    }
-
-*/
-
 
     public void gotoOrderDetails(View view){
 

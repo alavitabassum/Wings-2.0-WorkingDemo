@@ -90,19 +90,19 @@ public class CallAgain extends AppCompatActivity implements DatePickerDialog.OnD
 
     public void passData(View view){
 
-        String time_new = "testing";
-        String status_new = "texting 2";
+      String time_new = "testing";
+
         Intent passData_intent = new Intent (CallAgain.this,PickUpActivity.class);
 
-        Bundle bundle = new Bundle();
+//        Bundle bundle = new Bundle();
+//
+//        bundle.putString("newdatatime",time_new);
 
-        bundle.putString("newdatatime",time_new);
-        bundle.putString("newdatastatus", status_new);
+//
+//        passData_intent.putExtras(bundle);
 
-        passData_intent.putExtras(bundle);
+passData_intent.putExtra("newdatatime",time_new);
 
-//passData_intent.putExtra("newdatatime",time_new);
-//passData_intent.putExtra("newdatastatus", status_new);
 
         startActivity(passData_intent);
         finish();

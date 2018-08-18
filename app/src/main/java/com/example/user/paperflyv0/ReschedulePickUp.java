@@ -90,20 +90,23 @@ public class ReschedulePickUp extends AppCompatActivity implements DatePickerDia
 
 
     public void passData(View view){
+//
+//Button btn_status =findViewById(R.id.button_status);
 
-String time_new = "testing";
-String status_new = "texting 2";
+    // btn_status.setBackgroundColor(getResources().getColor(R.color.yellow));
+//String time_new = "testing";
+//String status_new = "texting 2";
 Intent passData_intent = new Intent (ReschedulePickUp.this,PickUpActivity.class);
-
-Bundle bundle = new Bundle();
-
-bundle.putString("newdatatime",time_new);
-bundle.putString("newdatastatus", status_new);
-
-passData_intent.putExtras(bundle);
+//
+//Bundle bundle = new Bundle();
+//
+//bundle.putString("newdatatime",time_new);
+//bundle.putString("newdatastatus", status_new);
+//
+//passData_intent.putExtras(bundle);
 
 //passData_intent.putExtra("newdatatime",time_new);
-//passData_intent.putExtra("newdatastatus", status_new);
+
 
 startActivity(passData_intent);
 finish();
