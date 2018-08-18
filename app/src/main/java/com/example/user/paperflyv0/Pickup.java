@@ -13,6 +13,7 @@ public class Pickup {
         this.merchantAddress = merchantAddress;
         this.scheduleTime = scheduleTime;
         this.phone = phone;
+       // this.statusChange= statusChange;
     }
 
     public Pickup(int id, String merchantName, String merchantAddress, String scheduleTime) {
@@ -20,6 +21,7 @@ public class Pickup {
         this.merchantName = merchantName;
         this.merchantAddress = merchantAddress;
         this.scheduleTime = scheduleTime;
+      //  this.statusChange=statusChange;
         //this.phone = phone;
     }
 
@@ -30,17 +32,14 @@ public class Pickup {
     public String getMerchantName() {
         return merchantName;
     }
-
     public String getMerchantAddress() {
         return merchantAddress;
     }
-
-
-
     public String getScheduleTime() {
         return scheduleTime;
     }
     public String getPhone() {
         return phone;
     }
+   // public String getStatusChange() { return statusChange;}
 }

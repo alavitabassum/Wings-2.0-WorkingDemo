@@ -1,6 +1,7 @@
 package com.example.user.paperflyv0;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,9 +12,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -42,36 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static android.view.View.GONE;
-
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.view.ContextMenu;
-import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class PickUpActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
 
@@ -81,8 +52,15 @@ public class PickUpActivity extends AppCompatActivity
     ListView lst;
     ListView listView;
     ImageView imgvw;
+    TextView changeStatus;
+    TextView new_ptime;
+    int check=0;
+String [] statusChange={"confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed"};
 
     List<Pickup> pickupList;
+
+    private SwipeRefreshLayout refreshLayout;
+    private int refresh_count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +68,31 @@ public class PickUpActivity extends AppCompatActivity
         setContentView(R.layout.activity_pick_up);
 
 
-        // popup menu for pick up status options
+       // Bundle bundle = getIntent().getExtras();
+        //pass data to String variables
+        //String time_new = bundle.getString("newdatatime");
+       // String status_new = bundle.getString("newdatastatus");
 
+        //assign xml objects for Textviews into variable
 
-        //listView od pickups
+      //  changeStatus =findViewById(R.id.chng_status);
+        //new_ptime =findViewById(R.id.ptime);
+
+        //changeStatus.setText(time_new);
+      //  new_ptime.setText(status_new);
+
+     //   lst=findViewById(R.id.listview) ;
+  //   CustomListview customListview=new CustomListview(this,statusChange);
+      // lst.setAdapter(customListview);
+
+        // Textview to update pickup status
+    // changeStatus= findViewById(R.id.chng_status);
+//        registerForContextMenu(changeStatus);
+
+        //refresh layout
+         refreshLayout=findViewById(R.id.swipe_refresh);
+
+        //listView of pickups
         pickupList = new ArrayList<>();
 
         listView = (ListView) findViewById(R.id.listview);
@@ -120,6 +119,29 @@ public class PickUpActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    @Override
+    public void onRefresh() {
+ refreshItem();
+    }
+});
+
+
+
+    }
+
+
+
+    public void refreshItem()
+    {
+        switch (refresh_count)
+        {
+
+        }
+
+        refresh_count++;
     }
 
     private void readHeroes() {
@@ -133,104 +155,44 @@ public class PickUpActivity extends AppCompatActivity
         public PickupAdapter(List<Pickup> pickupList) {
             super(PickUpActivity.this, R.layout.listview_layout, pickupList);
             this.pickupList = pickupList;
+
+            if (refresh_count>3)
+            {
+                refresh_count = 0;
+            }
+            refreshLayout.setRefreshing(false);
         }
 
 
         @Override
-        public View getView(int position, final View convertView, ViewGroup parent) {
+            public View getView(final int position, final View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
-            View listViewItem = inflater.inflate(R.layout.listview_layout, null, true);
+            final View listViewItem = inflater.inflate(R.layout.listview_layout, null, true);
 
             TextView name = listViewItem.findViewById(R.id.name);
             TextView address = listViewItem.findViewById(R.id.add);
             TextView time = listViewItem.findViewById(R.id.ptime);
-            imgvw=listViewItem.findViewById(R.id.imgCall);
+            final TextView changeStatus = listViewItem.findViewById(R.id.chng_status);
+            imgvw=listViewItem.findViewById(R.id.iconpf);
             final Button btn_status = (Button)findViewById(R.id.button_status);
             //   final int phone = listViewItem.findViewById(R.id.phone_button);
-            final Pickup hero = pickupList.get(position);
+            Pickup hero = pickupList.get(position);
 
             name.setText(hero.getMerchantName());
             address.setText(hero.getMerchantAddress());
             time.setText(hero.getScheduleTime());
+     //      status.setText(hero.getStatusChange());
             imgvw.setImageResource(R.drawable.call);
 
             String phoneNumber = hero.getPhone();
             Log.d("phone",phoneNumber);
             final String uri = "tel:" + phoneNumber;
 
-            //btnstatus.setOnCreateContextMenuListener(PickUpActivity.this);
-            // pickUpOptions(listViewItem);
-            // btn_status.setOnClickListener();
-
-            //     @Override
-            /*
-            btn_status.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Creating the instance of PopupMenu
-                    PopupMenu popup = new PopupMenu(PickUpActivity.this, btn_status);
-                    //Inflating the Popup using xml file
-                    popup.getMenuInflater()
-                            .inflate(R.menu.pickup_status_options, popup.getMenu());
-
-                    //registering popup with OnMenuItemClickListener
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick (MenuItem item){
-                            Button btn_status = findViewById(R.id.button_status);
-                            switch (item.getItemId()) {
-                                case R.id.confirm:
-                                   // Toast.makeText(this, "Pick Up Confirmed", Toast.LENGTH_SHORT).show();
-                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.green));
-                                    btn_status.setText("Confirmed");
-                                    return true;
-                                case R.id.callAgain:
-                                 //   Toast.makeText(this, "Call Merchant later", Toast.LENGTH_SHORT).show();
-                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-                                    btn_status.setText("CallBack");
-                                    return true;
-                                case R.id.rescheduled:
-                                  //  Toast.makeText(this, "Pick Up Rescheduled", Toast.LENGTH_SHORT).show();
-                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
-                                    btn_status.setText("R.S.");
-                                    return true;
-                                case R.id.pendingReview:
-                                 //   Toast.makeText(this, "Pick Up is pending review", Toast.LENGTH_SHORT).show();
-                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-                                    btn_status.setText("Pending");
-                                    return true;
-                                case R.id.cancel:
-                                  //  Toast.makeText(this, "Pick Up Cancelled", Toast.LENGTH_SHORT).show();
-                                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
-                                    btn_status.setText("Cancelled");
-                                    return true;
-                                default:
-                                    return false;
-
-                            }
-
-                        }
-                    });
-
-                    popup.show(); //showing popup menu
-                }
-            }); */
-/*         int phoneNumber = hero.getPhone();
-
-           final String phone = Integer.toString(phoneNumber);
-            Log.d("MYINT", "value: " +phoneNumber);
-           // Log.d("phone",phone);
-            final String uri = "tel:" + phone;*/
-            // Log.d("Check",uri);/*
             imgvw.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     // callIntent.setData(Uri.parse("tel:" +phone));
                     callIntent.setData(Uri.parse(uri));
-                    // Log.d("Check",uri);
-                    //Log.v("Check",uri);
-
-                    // intent.setData(Uri.parse("tel:" + phone));
-
                     if (ActivityCompat.checkSelfPermission(PickUpActivity.this,
                             Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         return;
@@ -238,7 +200,74 @@ public class PickUpActivity extends AppCompatActivity
                     startActivity(callIntent);
                 }
             });
+
+            changeStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gotochangestatus(view);
+                 changeStatus.setFocusableInTouchMode(true);
+
+                    if(check==1){
+
+                        AlertDialog.Builder a_builder =new AlertDialog.Builder(PickUpActivity.this);
+                        a_builder.setMessage("Do you want to confirm the Pick Up?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Toast.makeText(PickUpActivity.this,"Pick Up Confirmed", Toast.LENGTH_SHORT).show();
+                                changeStatus.setText("Confirmed");
+                                //changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.green));
+                                //       finish();
+
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert = a_builder.create();
+                        alert.setTitle("Alert!");
+                        alert.show();
+                    }
+
+                    else if(check==2){
+
+                    }
+                    else if(check==3){
+                        changeStatus.setText("R.s");
+                    }
+                    else if(check==4){
+                        changeStatus.setText("Pending");
+                    }
+                    else if(check==5){
+                        AlertDialog.Builder b_builder =new AlertDialog.Builder(PickUpActivity.this);
+                        b_builder.setMessage("Are you sure the pickUp is cancelled?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                Toast.makeText(PickUpActivity.this,"Pick Up Cancelled", Toast.LENGTH_SHORT).show();
+                                changeStatus.setText("Cancelled");
+                                //       finish();
+
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog alert2 = b_builder.create();
+                        alert2.setTitle("Alert!");
+                        alert2.show();
+                    }
+                   // check=0;
+                }
+            });
+
             return listViewItem;
+
+
         }
     }
 
@@ -255,7 +284,6 @@ public class PickUpActivity extends AppCompatActivity
                     obj.getString("merchantAddress"),
                     obj.getString("scheduleTime"),
                     obj.getString("phone")
-
             ));
         }
 
@@ -348,6 +376,10 @@ public class PickUpActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_pickDue) {
+            // Start class to view orders details
+            Intent pickupIntent = new Intent(PickUpActivity.this,
+                    PickUpActivity.class);
+            startActivity(pickupIntent);
             // Handle the camera action
         } else if (id == R.id.nav_pickCompleted) {
 
@@ -401,44 +433,121 @@ public class PickUpActivity extends AppCompatActivity
 
     // pop up menu for status options
 
-    public void pickUpOptions(View view){
+    public void gotochangestatus(View view){
         PopupMenu popup = new PopupMenu(this,view);
         popup.setOnMenuItemClickListener(this);
         popup.inflate(R.menu.pickup_status_options);
         popup.show();
+
     }
+
+
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        Button btn_status = findViewById(R.id.button_status);
+        // int check =0;
+        int id = item.getItemId();
+        //boolean position = item.equals(listView);
+
+//final TextView changeStatus =findViewById(R.id.chng_status);
+
+
+        if (id== R.id.confirm ){
+
+            MenuItem one = findViewById(R.id.confirm);
+
+            check = 1;
+
+        }
+
+        else if (id == R.id.callAgain){
+            check = 2;
+            Intent ca_intent = new Intent(PickUpActivity.this, CallAgain.class);
+            startActivity(ca_intent);
+        }
+        else if (id== R.id.rescheduled)
+        {
+            Intent intent = new Intent(PickUpActivity.this, ReschedulePickUp.class);
+            startActivity(intent);
+            check = 3;
+        }
+        else if (id == R.id.pendingReview)
+        {
+            check = 4;
+
+            Intent pr_intent = new Intent(PickUpActivity.this, PendingReview.class);
+            startActivity(pr_intent);
+        }
+        else if (id == R.id.cancel)
+        {
+            check = 5;
+        }
+        return true;
+    }
+
+/*
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+     //   TextView changeStatus= findViewById(R.id.chng_status);
         switch (item.getItemId()){
             case R.id.confirm:
-                Toast.makeText(this,"Pick Up Confirmed", Toast.LENGTH_SHORT).show();
-                btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.green));
-                btn_status.setText("Confirmed");
+
+
+               // changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.green));
+                //changeStatus.setText("Confirmed");
+                chk= 1;
+
                 return true;
             case R.id.callAgain:
-                Toast.makeText(this,"Call Merchant later", Toast.LENGTH_SHORT).show();
-                btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-                btn_status.setText("CallBack");
+
+               // Toast.makeText(this,"Call Merchant later", Toast.LENGTH_SHORT).show();
+              //  changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+              //  changeStatus.setText("CallBack");
+                chk= 2;
                 return true;
             case R.id.rescheduled:
-                Toast.makeText(this,"Pick Up Rescheduled", Toast.LENGTH_SHORT).show();
-                btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
-                btn_status.setText("R.S.");
+
+                Intent intent = new Intent(PickUpActivity.this, ReschedulePickUp.class);
+                startActivity(intent);
+               // Toast.makeText(this,"Pick Up Rescheduled", Toast.LENGTH_SHORT).show();
+             //   changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
+            //    changeStatus.setText("R.S.");
+                chk = 3;
                 return true;
             case R.id.pendingReview:
-                Toast.makeText(this,"Pick Up is pending review", Toast.LENGTH_SHORT).show();
-                btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-                btn_status.setText("Pending");
+
+              //  Toast.makeText(this,"Pick Up is pending review", Toast.LENGTH_SHORT).show();
+             //   changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+               // changeStatus.setText("Pending");
+                chk = 4;
                 return true;
             case R.id.cancel:
-                Toast.makeText(this,"Pick Up Cancelled", Toast.LENGTH_SHORT).show();
-                btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
-                btn_status.setText("Cancelled");
-                return true;
-            default:  return false;
+
+                //Toast.makeText(this,"Pick Up Cancelled", Toast.LENGTH_SHORT).show();
+                //changeStatus.setBackgroundDrawable(getResources().getDrawable(R.color.red));
+              //  changeStatus.setText("Cancelled");
+                chk = 5;
+            default:
+
+                return false;
 
         }
     }
+
+*/
+
+
+    public void gotoOrderDetails(View view){
+
+        // Start class to view orders details
+        Intent myIntent = new Intent(PickUpActivity.this,
+                OrderDetails.class);
+        startActivity(myIntent);
+
+
+    }
+
+
+
 }
+

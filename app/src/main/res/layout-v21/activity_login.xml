@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imgCall"
+        android:id="@+id/iconpf"
         android:layout_width="160dp"
         android:layout_height="86dp"
         android:layout_marginBottom="8dp"
@@ -72,7 +72,7 @@
         android:layout_marginTop="8dp"
         android:background="@color/pfColor"
         android:color="#000"
-        android:onClick="gotoList"
+
         android:text="Login"
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
