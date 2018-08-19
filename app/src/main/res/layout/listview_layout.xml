@@ -9,17 +9,17 @@
     <ImageView
         android:id="@+id/iconpf"
         android:layout_width="52dp"
-        android:layout_height="100dp"
+        android:layout_height="113dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:onClick="makeACall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@color/browser_actions_bg_grey"
-        android:onClick="makeACall"/>
+        app:srcCompat="@color/browser_actions_bg_grey" />
 
     <TextView
         android:id="@+id/name"
@@ -96,6 +96,14 @@
         android:layout_alignBottom="@+id/button_status"
         android:layout_marginStart="-44dp"
         android:layout_toEndOf="@+id/button_status" />
+
+    <TextView
+        android:id="@+id/call_again_time"
+        android:layout_width="274dp"
+        android:layout_height="43dp"
+        android:layout_alignEnd="@+id/schedule_txt"
+        android:layout_below="@+id/button_status"
+        android:layout_marginEnd="-214dp" />
 
 
 </RelativeLayout>

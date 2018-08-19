@@ -426,7 +426,7 @@ android:id="@+id/pd_details"
 
 
           <ImageView
-              android:id="@+id/print_qr"
+              android:id="@+id/qr"
               android:gravity="center"
               android:paddingBottom="5dp"
               android:paddingLeft="5dp"
@@ -434,10 +434,11 @@ android:id="@+id/pd_details"
               android:paddingTop="5dp"
               android:layout_width="50dp"
               android:layout_height="50dp"
-              app:srcCompat="@drawable/barcode"   />
+              app:srcCompat="@drawable/barcode"
+              tools:ignore="DuplicateIds" />
 
           <ImageView
-              android:id="@+id/view_pd"
+              android:id="@+id/pd"
               android:gravity="center"
               android:paddingBottom="5dp"
               android:paddingLeft="5dp"
@@ -448,7 +449,7 @@ android:id="@+id/pd_details"
               app:srcCompat="@drawable/view"   />
 
 
-      </TableRow>
+          </TableRow>
           <TableRow
           android:background="@color/browser_actions_bg_grey"
           android:textColor="#000">

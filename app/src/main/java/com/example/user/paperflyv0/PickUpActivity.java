@@ -1,10 +1,14 @@
 package com.example.user.paperflyv0;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,6 +18,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +33,15 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -40,11 +49,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 public class PickUpActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener,DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
@@ -55,10 +65,14 @@ public class PickUpActivity extends AppCompatActivity
     TextView changeStatus;
     TextView new_ptime;
     int check=0;
+    EditText pr_input;
 
     android.widget.RelativeLayout vwParentRow;
 
-String [] statusChange={"confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed","confirmed"};
+    //variables for Calender and Clock
+    int day,month,year,hour, minute;
+    int dayUpdated, monthUpdated, yearUpdated, hourUpdated, minuteUpdated;
+    private String Datetime;
 
     List<Pickup> pickupList;
 
@@ -178,21 +192,19 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             final TextView name = listViewItem.findViewById(R.id.name);
             TextView address = listViewItem.findViewById(R.id.add);
             TextView time = listViewItem.findViewById(R.id.ptime);
-            //final TextView changeStatus = listViewItem.findViewById(R.id.chng_status);
             imgvw=listViewItem.findViewById(R.id.iconpf);
-            final Button btn_status = (Button)findViewById(R.id.button_status);
-            //   final int phone = listViewItem.findViewById(R.id.phone_button);
             Pickup hero = pickupList.get(position);
 
             name.setText(hero.getMerchantName());
             address.setText(hero.getMerchantAddress());
             time.setText(hero.getScheduleTime());
-     //      status.setText(hero.getStatusChange());
             imgvw.setImageResource(R.drawable.call);
 
+            //make phone call to merchant
             String phoneNumber = hero.getPhone();
             Log.d("phone",phoneNumber);
             final String uri = "tel:" + phoneNumber;
+
 
             imgvw.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
@@ -312,6 +324,8 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
         return super.onOptionsItemSelected(item);
     }
 
+
+    //app side menu
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -343,33 +357,7 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
         return true;
     }
 
-    //Make call
-    public void makeACall(View view) {
-        final int REQUEST_PHONE_CALL = 1;
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:01680067688"));
-
-        //checks for permission before placing the call
-
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-
-
-            if (ActivityCompat.checkSelfPermission(PickUpActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-
-                ActivityCompat.requestPermissions(PickUpActivity.this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PHONE_CALL);
-
-            }else {
-
-                startActivity(callIntent);
-
-            }
-        }
-
-    }
-
     // pop up menu for status options
-
     public void gotochangestatus(View view){
 
         vwParentRow = (android.widget.RelativeLayout) view.getParent();
@@ -381,7 +369,7 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
     }
 
 
-
+//on menuitem click
     @Override
     public boolean onMenuItemClick(MenuItem item) {
 
@@ -415,32 +403,63 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
         else if (id == R.id.callAgain){
             check = 2;
-            Intent ca_intent = new Intent(PickUpActivity.this, CallAgain.class);
-            startActivity(ca_intent);
-            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-            btn_status.setText("Call Again");
-           ;
+
+            Calendar c =Calendar.getInstance();
+            year = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH);
+            day = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(PickUpActivity.this,
+                    PickUpActivity.this,year,month,day);
+            datePickerDialog.show();
         }
+
         else if (id== R.id.rescheduled)
         {
-            Intent intent = new Intent(PickUpActivity.this, ReschedulePickUp.class);
-                 startActivity(intent);
-
-            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
-            btn_status.setText("R.S.");
-
             check = 3;
+
+            Calendar c =Calendar.getInstance();
+            year = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH);
+            day = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(PickUpActivity.this,
+                    PickUpActivity.this,year,month,day);
+            datePickerDialog.show();
         }
+
         else if (id == R.id.pendingReview)
         {
             check = 4;
+            AlertDialog.Builder a_builder =new AlertDialog.Builder(PickUpActivity.this);
+            a_builder.setTitle("Enter reason for review");
+            pr_input = new EditText(this);
+            a_builder.setView(pr_input);
 
-            Intent pr_intent = new Intent(PickUpActivity.this, PendingReview.class);
-            startActivity(pr_intent);
+            a_builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   String txt = pr_input.getText().toString();
+                        if (txt.isEmpty()){
+                              Toast.makeText(PickUpActivity.this,"Review reason not specified", Toast.LENGTH_SHORT).show();
+                         }else {
+                               Toast.makeText(PickUpActivity.this,"Submitted fro review", Toast.LENGTH_SHORT).show();
+                               btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+                               btn_status.setText("P. Review");
+                           }
+                }
+            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = a_builder.create();
+            alert.show();
 
-            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-            btn_status.setText("P. Review");
+
         }
+
         else if (id == R.id.cancel)
         {
 
@@ -470,14 +489,59 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
         return true;
     }
 
-    public void gotoOrderDetails(View view){
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
 
+        yearUpdated =i;
+        monthUpdated = i1+2;
+        dayUpdated = i2;
+
+        Calendar c = Calendar.getInstance();
+        hour =c.get(Calendar.HOUR_OF_DAY);
+        minute = c.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(PickUpActivity.this,
+                PickUpActivity.this,hour,minute, DateFormat.is24HourFormat(this));
+        timePickerDialog.show();
+
+    }
+
+
+
+    @Override
+    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+        final Button btn_status = (Button)vwParentRow.getChildAt(3);
+        final TextView new_ptime = (TextView)vwParentRow.getChildAt(5);
+        final TextView new_calltime = (TextView)vwParentRow.getChildAt(7);
+        hourUpdated  = i;
+        minuteUpdated = i1;
+
+        // if call again is selected
+        if(check==2){
+
+            new_calltime.setText("Call Again Time: " + hourUpdated + ":" + minuteUpdated + "\n" +"Call Again Date: "+dayUpdated+":"+monthUpdated+":"+yearUpdated);
+            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+            btn_status.setText("Call Again");
+            new_calltime.setTextColor(Color.parseColor("#25ade3"));
+
+        }
+        //if reschedule is selected
+        else if(check==3){
+
+            new_ptime.setText(hourUpdated + ":" + minuteUpdated );
+            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.pfColor));
+            btn_status.setText("R.S.");
+            new_ptime.setTextColor(Color.parseColor("#e5000b"));
+           // new_ptime.setBackgroundColor(Color.parseColor("#ffff2d"));
+        }
+    }
+
+// view the table layout for order details against respective merchant
+    public void gotoOrderDetails(View view){
         // Start class to view orders details
         Intent myIntent = new Intent(PickUpActivity.this,
                 OrderDetails.class);
         startActivity(myIntent);
-
-
     }
 
 

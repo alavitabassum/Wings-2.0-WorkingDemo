@@ -31,9 +31,6 @@
             android:name=".PickUpActivity"
             android:label="@string/title_activity_pick_up"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ReschedulePickUp" />
-        <activity android:name=".PendingReview" />
-        <activity android:name=".CallAgain" />
         <activity
             android:name=".OrderDetails"
             android:label="@string/title_activity_order_details"
