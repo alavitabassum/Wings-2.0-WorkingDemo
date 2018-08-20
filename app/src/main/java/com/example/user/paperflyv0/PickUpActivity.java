@@ -75,9 +75,9 @@ public class PickUpActivity extends AppCompatActivity
     private String Datetime;
 
     List<Pickup> pickupList;
-
-    private SwipeRefreshLayout refreshLayout;
-    private int refresh_count = 0;
+//
+//    private SwipeRefreshLayout refreshLayout;
+//    private int refresh_count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,7 @@ public class PickUpActivity extends AppCompatActivity
 //        registerForContextMenu(changeStatus);
 
         //refresh layout
-         refreshLayout=findViewById(R.id.swipe_refresh);
+//         refreshLayout=findViewById(R.id.swipe_refresh);
 
         //listView of pickups
         pickupList = new ArrayList<>();
@@ -122,14 +122,14 @@ public class PickUpActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    //    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -139,30 +139,30 @@ public class PickUpActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+//
+//
+//refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//    @Override
+//    public void onRefresh() {
+//
+//    }
+//});
+//
 
 
-refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-    @Override
-    public void onRefresh() {
- refreshItem();
     }
-});
 
 
 
-    }
-
-
-
-    public void refreshItem()
-    {
-        switch (refresh_count)
-        {
-
-        }
-
-        refresh_count++;
-    }
+//    public void refreshItem()
+//    {
+//        switch (refresh_count)
+//        {
+//
+//        }
+//
+//        refresh_count++;
+//    }
 
     private void readHeroes() {
         PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_READ_HEROES, null, CODE_GET_REQUEST);
@@ -175,12 +175,12 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
         public PickupAdapter(List<Pickup> pickupList) {
             super(PickUpActivity.this, R.layout.listview_layout, pickupList);
             this.pickupList = pickupList;
-
-            if (refresh_count>3)
-            {
-                refresh_count = 0;
-            }
-            refreshLayout.setRefreshing(false);
+//
+//            if (refresh_count>3)
+//            {
+//                refresh_count = 0;
+//            }
+//            refreshLayout.setRefreshing(false);
         }
 
 
@@ -431,32 +431,49 @@ refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
         else if (id == R.id.pendingReview)
         {
             check = 4;
+//            AlertDialog.Builder a_builder =new AlertDialog.Builder(PickUpActivity.this);
+////            a_builder.setTitle("Enter reason for review");
+////            pr_input = new EditText(this);
+////            a_builder.setView(pr_input);
+////
+////            a_builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+////                @Override
+////                public void onClick(DialogInterface dialog, int which) {
+////                   String txt = pr_input.getText().toString();
+////                        if (txt.isEmpty()){
+////                              Toast.makeText(PickUpActivity.this,"Review reason not specified", Toast.LENGTH_SHORT).show();
+////                         }else {
+////                               Toast.makeText(PickUpActivity.this,"Submitted fro review", Toast.LENGTH_SHORT).show();
+////                               btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+////                               btn_status.setText("P. Review");
+////                           }
+////                }
+////            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+////                @Override
+////                public void onClick(DialogInterface dialog, int which) {
+////                    dialog.cancel();
+////                }
+////            });
+////            AlertDialog alert = a_builder.create();
+////            alert.show();
             AlertDialog.Builder a_builder =new AlertDialog.Builder(PickUpActivity.this);
-            a_builder.setTitle("Enter reason for review");
-            pr_input = new EditText(this);
-            a_builder.setView(pr_input);
-
-            a_builder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+            a_builder.setMessage("Do you want submit the Pick Up order for review?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                   String txt = pr_input.getText().toString();
-                        if (txt.isEmpty()){
-                              Toast.makeText(PickUpActivity.this,"Review reason not specified", Toast.LENGTH_SHORT).show();
-                         }else {
-                               Toast.makeText(PickUpActivity.this,"Submitted fro review", Toast.LENGTH_SHORT).show();
-                               btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
-                               btn_status.setText("P. Review");
-                           }
+
+                    Toast.makeText(PickUpActivity.this,"Order Submitted fro Review", Toast.LENGTH_SHORT).show();
+                    btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.yellow));
+                    btn_status.setText("R.Review");
                 }
-            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
             });
             AlertDialog alert = a_builder.create();
+            alert.setTitle("Alert!");
             alert.show();
-
 
         }
 
