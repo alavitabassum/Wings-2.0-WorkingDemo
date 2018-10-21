@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
         orderlist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
 
-                // Start NewActivity.class
+                // Start LoginActivity.class
                 Intent myIntent = new Intent(LoginActivity.this,
                         Welcome.class);
                 startActivity(myIntent);
