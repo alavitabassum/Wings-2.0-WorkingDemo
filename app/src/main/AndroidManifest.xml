@@ -33,16 +33,7 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".PickUpActivity"
-            android:label="@string/title_activity_pick_up"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".OrderDetails"
-            android:label="@string/title_activity_order_details"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".GenerateQRCodeActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Welcome"></activity>
     </application>
 
 </manifest>
