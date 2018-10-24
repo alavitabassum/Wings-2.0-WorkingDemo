@@ -33,7 +33,20 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Welcome"></activity>
+        <activity android:name=".Welcome" />
+        <activity android:name=".CardDemoActivity" />
+        <activity
+            android:name=".PickupsToday_Manager"
+            android:label="@string/title_activity_pickups_today__manager"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AssignPickup_Manager"
+            android:label="@string/title_activity_assign_pickup__manager"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PickupHistory_Manager"
+            android:label="@string/title_activity_pickup_history__manager"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

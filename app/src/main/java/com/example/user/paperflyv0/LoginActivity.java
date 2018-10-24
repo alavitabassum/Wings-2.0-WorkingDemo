@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Start LoginActivity.class
                 Intent myIntent = new Intent(LoginActivity.this,
-                        Welcome.class);
+                        CardDemoActivity.class);
                 startActivity(myIntent);
             }
         });
