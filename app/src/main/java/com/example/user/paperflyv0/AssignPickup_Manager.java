@@ -1,9 +1,11 @@
 package com.example.user.paperflyv0;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,24 +20,31 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class AssignPickup_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
+
+    TextView e_assign;
+    TextView e_selected;
+    String[] executiveItems;
+    boolean[] checkedItems;
+    ArrayList<Integer> eUsersItems = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign_pickup__manager);
-/*
 
-        Spinner executiveSpinner =findViewById(R.id.spinner_exe);
-        ArrayAdapter<String> exeAdapter = new ArrayAdapter<String>(AssignPickup_Manager.this,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.exe_names));
-        exeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        executiveSpinner.setAdapter(exeAdapter);
-*/
+        e_assign = findViewById(R.id.txt_btn_assign);
+        e_selected = findViewById(R.id.tv_exe_selected);
+        executiveItems = getResources().getStringArray(R.array.exe_names);
+        checkedItems = new boolean[executiveItems.length];
 
         //recycler with cardview
 

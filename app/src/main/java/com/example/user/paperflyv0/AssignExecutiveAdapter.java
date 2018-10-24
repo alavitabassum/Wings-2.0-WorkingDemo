@@ -1,5 +1,7 @@
 package com.example.user.paperflyv0;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> {
 
@@ -28,6 +32,11 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
     private String[] due_pu_count = {"3","5","1","4","2","1"};
 
+    private   String[] executiveItems ={"Ashfaque", "Rokon","Yusuf","Rubel", "Tonoy","Shojol","Monirul","Jony", "Sohag","Saiful"};
+
+    boolean[] checkedItems;
+    ArrayList<Integer> eUsersItems = new ArrayList<>();
+
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView itemMerchantName;
@@ -37,6 +46,9 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public TextView itemDue;
         public TextView itemCompletedCount;
         public TextView itemDueCount;
+        public TextView itemAssignTxtView;
+        public TextView itemSelectedTxtView;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -47,6 +59,69 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             itemDue=itemView.findViewById(R.id.due_text);
             itemCompletedCount=itemView.findViewById(R.id.completed_pickups_count);
             itemDueCount=itemView.findViewById(R.id.due_pickups_count);
+            itemAssignTxtView =itemView.findViewById(R.id.txt_btn_assign);
+            itemSelectedTxtView = itemView.findViewById(R.id.tv_exe_selected);
+         //   executiveItems = getResources().getStringArray(R.array.exe_names);
+            checkedItems = new boolean[executiveItems.length];
+
+            itemAssignTxtView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder eBuilder = new AlertDialog.Builder(v.getRootView().getContext());
+                    eBuilder.setTitle("Assign Executives to Pickup");
+                    eBuilder.setMultiChoiceItems(executiveItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+                            if (isChecked){
+                                if (!eUsersItems.contains(position)){
+                                    eUsersItems.add(position);
+                                }
+                            }
+                            else if (eUsersItems.contains(position)){
+                                eUsersItems.remove(position);
+                            }
+
+                        }
+                    });
+
+                    eBuilder.setCancelable(false);
+                    eBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+
+                            String item = "";
+                            for (int i = 0; i < eUsersItems.size(); i++){
+                                item = item + executiveItems[eUsersItems.get(i)];
+                                if (i != eUsersItems.size()-1){
+                                    item = item + ", ";
+                                }
+                            }
+                            itemSelectedTxtView.setText(item);
+                        }
+                    });
+
+                    eBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    eBuilder.setNeutralButton("Clear all", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int which) {
+                            for (int i = 0; i < checkedItems.length; i++){
+                                checkedItems[i] = false;
+                                eUsersItems.clear();
+                                itemSelectedTxtView.setText("");
+                            }
+                        }
+                    });
+                    AlertDialog eDialog = eBuilder.create();
+                    eDialog.show();
+                }
+            });
+
+
         }
     }
 
@@ -67,6 +142,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         viewHolder.itemDue.setText(due_text[i]);
         viewHolder.itemCompletedCount.setText(completed_pu_count[i]);
         viewHolder.itemDueCount.setText(due_pu_count[i]);
+
     }
 
     @Override
