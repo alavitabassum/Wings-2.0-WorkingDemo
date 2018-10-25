@@ -18,8 +18,8 @@
     <string name="title_activity_pick_up">Pick Ups Today</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Anwar Hossain</string>
-    <string name="nav_header_subtitle">Pick Up Executive</string>
+    <string name="nav_header_title">Abu Haris</string>
+    <string name="nav_header_subtitle">Pickup Manager</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="create_bulk">Create Bulk</string>
@@ -35,4 +35,23 @@
     <string name="large_text">
 
     </string>
+    <string name="title_activity_pickups_today__manager">Pickups Todays</string>
+    <string name="title_activity_assign_pickup__manager">Assign Pickups</string>
+    <string name="title_activity_pickup_history__manager">Pickup History</string>
+    <string name="uploaded_product_count">Uploaded Qty :</string>
+    <string name="assigned_product_count">Assigned Qty :</string>
+    <string name="total_products_picked">Picked Qty :</string>
+
+    <string-array name="exe_names">
+        <item>Ashfaque</item>
+        <item>Rokon</item>
+        <item>Yusuf</item>
+        <item>Rubel</item>
+        <item>Tonoy</item>
+        <item>Shojol</item>
+        <item>Monirul</item>
+        <item>Jony</item>
+        <item>Sohag</item>
+        <item>Saiful</item>
+    </string-array>
 </resources>
