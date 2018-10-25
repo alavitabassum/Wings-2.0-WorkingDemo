@@ -65,15 +65,17 @@
 
         <TextView
             android:id="@+id/txt_btn_assign"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/m_add"
             android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:text="Assign Executives"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold"
-           />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/assigned_pickups_text"
@@ -132,11 +134,29 @@
 
         <TextView
             android:id="@+id/tv_exe_selected"
-            android:layout_width="match_parent"
+            android:layout_width="217dp"
             android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/assigned_pickups"
+            android:layout_marginTop="236dp"
+            android:layout_marginEnd="-1dp"
+            android:gravity="left"
+            android:lines="1"
+            android:maxLines="2"
+            android:paddingStart="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_exe_selected"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="235dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="18dp"
+
+            android:text="Assigned:"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp" />
 
     </RelativeLayout>

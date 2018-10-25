@@ -1,6 +1,8 @@
 package com.example.user.paperflyv0;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,6 +52,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public TextView itemSelectedTxtView;
 
 
+        @SuppressLint("ResourceAsColor")
         public ViewHolder(View itemView) {
             super(itemView);
             itemMerchantName=itemView.findViewById(R.id.merchant_name);
@@ -64,6 +67,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
          //   executiveItems = getResources().getStringArray(R.array.exe_names);
             checkedItems = new boolean[executiveItems.length];
 
+            itemAssignTxtView.setBackgroundColor(Color.BLACK);
             itemAssignTxtView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
