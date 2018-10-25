@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.user.paperflyv0">
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
@@ -33,20 +34,8 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Welcome" />
-        <activity android:name=".CardDemoActivity" />
-        <activity
-            android:name=".PickupsToday_Manager"
-            android:label="@string/title_activity_pickups_today__manager"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".AssignPickup_Manager"
-            android:label="@string/title_activity_assign_pickup__manager"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".PickupHistory_Manager"
-            android:label="@string/title_activity_pickup_history__manager"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".Welcome"></activity>
+        <activity android:name=".Welcome2"></activity>
     </application>
 
 </manifest>
