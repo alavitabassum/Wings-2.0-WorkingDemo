@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                     String userRole = jObj.getString("userRole");
                     if (userRole.contains("0")) {
 
-                        startActivity(new Intent(getApplicationContext(),Welcome2.class));
+                        startActivity(new Intent(getApplicationContext(),CardDemoActivity.class));
                     } else {
 
                         startActivity(new Intent(getApplicationContext(),Welcome.class));
