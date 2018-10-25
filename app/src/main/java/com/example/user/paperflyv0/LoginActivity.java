@@ -82,8 +82,22 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 else
                 {
-                try {
-                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
+                    try {
+
+                        JSONArray arr = new JSONArray(response);
+                        JSONObject jObj = arr.getJSONObject(0);
+                        String userRole = jObj.getString("userRole");
+                        if (userRole.contains("0")) {
+
+                            startActivity(new Intent(getApplicationContext(),CardDemoActivity.class));
+                        } else {
+
+                            startActivity(new Intent(getApplicationContext(),Welcome.class));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Toast.makeText(getApplicationContext(),"Welcome!",Toast.LENGTH_SHORT).show();
                     //Creating a shared preference
                     SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -97,19 +111,6 @@ public class LoginActivity extends AppCompatActivity {
                     //Saving values to editor
                     editor.commit();
 
-                    JSONArray arr = new JSONArray(response);
-                    JSONObject jObj = arr.getJSONObject(0);
-                    String userRole = jObj.getString("userRole");
-                    if (userRole.contains("0")) {
-
-                        startActivity(new Intent(getApplicationContext(),CardDemoActivity.class));
-                    } else {
-
-                        startActivity(new Intent(getApplicationContext(),Welcome.class));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
                 }
             }
