@@ -1,5 +1,7 @@
 package com.example.user.paperflyv0;
 
+import android.app.LauncherActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -9,17 +11,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder> {
 
-    private String[] m_names = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
+    private List<TodaySummary> listItems;
+    private  Context context;
 
-    private String[] asgn_pu = {"150","50","20","32","85","450"};
+    public MerchantListAdapter(List<TodaySummary> listItems, Context context) {
+        this.listItems = listItems;
+        this.context = context;
 
-    private String[] upload_pu = {"150","50","20","32","85","450"};
+    }
 
-    private String[] received_pu = {"0","50","0","32","85","452"};
-
-    class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView itemMerchantName;
         public TextView itemAssignedQty;
@@ -45,15 +50,17 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.itemMerchantName.setText(m_names[i]);
-        viewHolder.itemAssignedQty.setText(asgn_pu[i]);
-        viewHolder.itemUploadedQty.setText(upload_pu[i]);
-        viewHolder.itemReceivedQty.setText(received_pu[i]);
+        TodaySummary todaySummary = listItems.get(i);
+        viewHolder.itemMerchantName.setText(todaySummary.getM_names());
+        viewHolder.itemAssignedQty.setText(todaySummary.getAsgn_pu());
+        viewHolder.itemUploadedQty.setText(todaySummary.getUpload_pu());
+        viewHolder.itemReceivedQty.setText(todaySummary.getReceived_pu());
+
     }
 
     @Override
     public int getItemCount() {
-        return m_names.length;
+        return listItems.size();
     }
 
 }
