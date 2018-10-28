@@ -81,8 +81,11 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
                                     eUsersItems.add(position);
                                 }
                             }
-                            else if (eUsersItems.contains(position)){
-                                eUsersItems.remove(position);
+                            else if (isChecked){
+                                if (eUsersItems.contains(position)){
+                                    eUsersItems.remove(position);
+                                }
+
                             }
 
                         }

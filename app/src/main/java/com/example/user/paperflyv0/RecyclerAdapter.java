@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import junit.framework.Test;
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
     private String[] titles = {"Pickups For Today", "Assign Pickups","Pickup History"};
@@ -18,13 +20,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     private int[] images = { R.drawable.android_image_1, R.drawable.android_image_2, R.drawable.android_image_3 };
 
-    private String[] m_names = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
-
-    private String[] asgn_pu = {"150","50","20","32","85","450"};
-
-    private String[] upload_pu = {"150","50","20","32","85","450"};
-
-    private String[] received_pu = {"150","50","20","32","85","452"};
 
     class ViewHolder extends RecyclerView.ViewHolder{
 

@@ -54,4 +54,11 @@
         <item>Sohag</item>
         <item>Saiful</item>
     </string-array>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_baal">Baal</string>
+    <string name="title_activity_lol">lol</string>
+    <string name="title_activity_lel">lel</string>
+    <string name="tab_text_1">Pickups Completed</string>
+    <string name="tab_text_2">Pickups Due</string>
+
 </resources>
