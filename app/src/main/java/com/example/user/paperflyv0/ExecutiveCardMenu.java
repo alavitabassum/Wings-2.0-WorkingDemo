@@ -1,11 +1,9 @@
 package com.example.user.paperflyv0;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -17,50 +15,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 
-public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class ExecutiveCardMenu extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
 
-    TextView e_assign;
-    TextView e_selected;
-    String[] executiveItems;
-    boolean[] checkedItems;
-    ArrayList<Integer> eUsersItems = new ArrayList<>();
+    RecyclerView recyclerView_exe;
+    RecyclerView.LayoutManager layoutManager_exe;
+    RecyclerView.Adapter adapter_exe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assign_pickup__manager);
-
-        e_assign = findViewById(R.id.txt_btn_assign);
-        e_selected = findViewById(R.id.tv_exe_selected);
-        executiveItems = getResources().getStringArray(R.array.exe_names);
-        checkedItems = new boolean[executiveItems.length];
-
-        //recycler with cardview
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
-
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new AssignExecutiveAdapter();
-        recyclerView.setAdapter(adapter);
-
+        setContentView(R.layout.activity_executive_card_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        recyclerView_exe =
+                (RecyclerView) findViewById(R.id.recycler_view_executive);
+
+        layoutManager_exe = new LinearLayoutManager(this);
+        recyclerView_exe.setLayoutManager(layoutManager_exe);
+
+        adapter_exe = new RecyclerAdapterExecutive();
+        recyclerView_exe.setAdapter(adapter_exe);
+
+    /*    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,23 +49,22 @@ public class AssignPickup_Manager extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+*/
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_exe);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_exe);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_exe);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-
         } else {
             super.onBackPressed();
         }
@@ -93,7 +73,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.pickups_today__manager, menu);
+        getMenuInflater().inflate(R.menu.executive_card_menu, menu);
         return true;
     }
 
@@ -118,28 +98,27 @@ public class AssignPickup_Manager extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_pickDue) {
-            Intent pickupIntent = new Intent(AssignPickup_Manager.this,
-                    PickupsToday_Manager.class);
+        if (id == R.id.nav_pickup_sum) {
+            Intent pickupIntent = new Intent(ExecutiveCardMenu.this,
+                    PickupsToday_Executive.class);
             startActivity(pickupIntent);
-        } else if (id == R.id.nav_assign) {
-            Intent assignIntent = new Intent(AssignPickup_Manager.this,
+        } else if (id == R.id.nav_exe_pickup) {
+            Intent assignIntent = new Intent(ExecutiveCardMenu.this,
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_pickCompleted) {
-            Intent historyIntent = new Intent(AssignPickup_Manager.this,
+        } else if (id == R.id.nav_pickStatus) {
+            Intent historyIntent = new Intent(ExecutiveCardMenu.this,
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
-            Intent loginIntent = new Intent(AssignPickup_Manager.this,
+            Intent loginIntent = new Intent(ExecutiveCardMenu.this,
                     LoginActivity.class);
             startActivity(loginIntent);
-
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_exe);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }

@@ -165,7 +165,9 @@ public class PickupHistory_Manager extends AppCompatActivity
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
-
+            Intent loginIntent = new Intent(PickupHistory_Manager.this,
+                    LoginActivity.class);
+            startActivity(loginIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
