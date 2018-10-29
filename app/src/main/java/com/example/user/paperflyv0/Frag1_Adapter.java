@@ -22,6 +22,8 @@ public class Frag1_Adapter extends Fragment {
 
     String[] r_qty_list = {"3","5","1","4","2","1"};
 
+    String[] e_names_list = {"Rahim", "Tonoy", "Yusuf","Rahim", "Tonoy", "Yusuf"};
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -39,6 +41,8 @@ public class Frag1_Adapter extends Fragment {
         private TextView TextViewAssigned;
         private TextView TextViewUploaded;
         private TextView TextViewReceived;
+        private TextView TextViewExeName;
+
 
 
         public RecyclerViewHolder(View itemView){
@@ -52,6 +56,8 @@ public class Frag1_Adapter extends Fragment {
                 TextViewAssigned = itemView.findViewById(R.id.a_qty);
                 TextViewUploaded = itemView.findViewById(R.id.u_qty);
                 TextViewReceived = itemView.findViewById(R.id.r_qty);
+                TextViewExeName = itemView.findViewById(R.id.exe_name);
+
 
 
 
@@ -63,12 +69,15 @@ public class Frag1_Adapter extends Fragment {
         private  String[] aQty;
         private  String[] uQty;
         private  String[] rQty;
+        private  String[] eNames;
+
 
         public RecyclerViewAdapter() {
             this.mNames = m_names_list;
             this.aQty = a_qty_list;
             this.uQty = u_qty_list;
             this.rQty = r_qty_list;
+            this.eNames = e_names_list;
         }
 
 
@@ -86,6 +95,8 @@ public class Frag1_Adapter extends Fragment {
             holder.TextViewAssigned.setText(aQty[position]);
             holder.TextViewUploaded.setText(uQty[position]);
             holder.TextViewReceived.setText(rQty[position]);
+            holder.TextViewExeName.setText(eNames[position]);
+
 
         }
 
