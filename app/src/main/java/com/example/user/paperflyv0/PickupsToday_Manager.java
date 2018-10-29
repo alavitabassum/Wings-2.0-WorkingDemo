@@ -183,8 +183,12 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
+
+            Intent loginIntent = new Intent(PickupsToday_Manager.this,
+                    LoginActivity.class);
+            startActivity(loginIntent);
             //Creating an alert dialog to confirm logout
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        /*    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
             alertDialogBuilder.setPositiveButton("Yes",
                     new DialogInterface.OnClickListener() {
@@ -223,7 +227,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
 
-
+*/
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

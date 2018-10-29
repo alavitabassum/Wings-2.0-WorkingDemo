@@ -1,8 +1,6 @@
 package com.example.user.paperflyv0;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,36 +8,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import junit.framework.Test;
+public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapterExecutive.ViewHolder> {
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+    private String[] titles_exe_list = {"Pickups For Today", "Assigned Pickups","Pickup Status"};
 
-    private String[] titles = {"Pickups For Today", "Assign Pickups","Pickup History"};
+    private String[] details_exe_list = {"View ->","View ->","View ->"};
 
-    private String[] details = {"View ->","View ->","View ->"};
-
-    private int[] images = { R.drawable.android_image_1, R.drawable.android_image_2, R.drawable.android_image_3 };
+    private int[] images_exe_list = { R.drawable.android_image_1, R.drawable.android_image_2, R.drawable.android_image_3 };
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public int currentItem;
-        public ImageView itemImage;
-        public TextView itemTitle;
-        public TextView itemDetail;
+        public ImageView itemImage_exe;
+        public TextView itemTitle_exe;
+        public TextView itemDetail_exe;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            itemImage = (ImageView)itemView.findViewById(R.id.item_image);
-            itemTitle = (TextView)itemView.findViewById(R.id.item_title);
-            itemDetail = (TextView)itemView.findViewById(R.id.item_detail);
+            itemImage_exe = (ImageView)itemView.findViewById(R.id.item_image_exe);
+            itemTitle_exe = (TextView)itemView.findViewById(R.id.item_title_exe);
+            itemDetail_exe = (TextView)itemView.findViewById(R.id.item_detail_exe);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     int position = getAdapterPosition();
 if (position == 0){
-    Intent intent = new Intent (v.getContext(), PickupsToday_Manager.class);
+    Intent intent = new Intent (v.getContext(), PickupsToday_Executive.class);
     v.getContext().startActivity(intent);
 }else if (position == 1){
     Intent intent_assign = new Intent (v.getContext(), AssignPickup_Manager.class);
@@ -60,21 +56,21 @@ if (position == 0){
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.card_layout, viewGroup, false);
+                .inflate(R.layout.exe_card_layout, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.itemTitle.setText(titles[i]);
-        viewHolder.itemDetail.setText(details[i]);
-        viewHolder.itemImage.setImageResource(images[i]);
+        viewHolder.itemTitle_exe.setText(titles_exe_list[i]);
+        viewHolder.itemDetail_exe.setText(details_exe_list[i]);
+        viewHolder.itemImage_exe.setImageResource(images_exe_list[i]);
     }
 
     @Override
     public int getItemCount() {
-        return titles.length;
+        return titles_exe_list.length;
     }
 
 }

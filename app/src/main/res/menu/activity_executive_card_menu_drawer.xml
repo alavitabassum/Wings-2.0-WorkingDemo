@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    -<group android:checkableBehavior="single">
+
+    <item android:title="Pickups Today" android:icon="@drawable/box" android:id="@+id/nav_pickup_sum"/>
+
+    <item android:title="My Pickups" android:icon="@drawable/attention" android:id="@+id/nav_exe_pickup"/>
+
+    <item android:title="Pickup Status" android:icon="@drawable/pickcomplete" android:id="@+id/nav_pickStatus"/>
+
+</group>
+
+
+    -<item android:title="Extras">
+
+
+    -<menu>
+
+
+    <item android:title="Logout" android:icon="@drawable/logout" android:id="@+id/nav_logout"/>
+
+</menu>
+
+</item>
+
+
+</menu>

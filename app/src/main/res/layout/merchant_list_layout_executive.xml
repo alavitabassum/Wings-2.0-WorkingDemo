@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_merchant="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view_merchant"
+    android:id="@+id/card_view_executive"
     android:layout_width="match_parent"
     android:layout_height="155dp"
     android:layout_margin="5dp"
@@ -20,7 +20,7 @@
 
 
         <TextView
-            android:id="@+id/merchant_name"
+            android:id="@+id/merchant_name_e"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
@@ -33,7 +33,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/a_qty"
+            android:id="@+id/a_qty_e"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="170dp"
@@ -43,7 +43,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/u_qty"
+            android:id="@+id/u_qty_e"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView4"
@@ -53,10 +53,10 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/r_qty"
+            android:id="@+id/r_qty_e"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/u_qty"
+            android:layout_below="@+id/u_qty_e"
             android:layout_marginStart="170dp"
             android:textAlignment="center"
             android:textColor="#000"
@@ -66,7 +66,7 @@
             android:id="@+id/textView4"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/a_qty"
+            android:layout_alignTop="@+id/a_qty_e"
             android:layout_alignParentStart="true"
             android:layout_marginStart="50dp"
             android:layout_marginTop="1dp"
@@ -77,7 +77,7 @@
             android:id="@+id/textView5"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/u_qty"
+            android:layout_alignBottom="@+id/u_qty_e"
             android:layout_alignParentStart="true"
             android:layout_marginStart="50dp"
             android:layout_marginBottom="-1dp"
@@ -89,7 +89,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView5"
-            android:layout_alignTop="@+id/r_qty"
+            android:layout_alignTop="@+id/r_qty_e"
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:text="@string/total_products_picked"

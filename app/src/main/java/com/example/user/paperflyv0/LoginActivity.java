@@ -1,6 +1,5 @@
 package com.example.user.paperflyv0;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     Button signin;
     EditText username,pass;
     private boolean loggedIn = false;
+    Button tempButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +39,28 @@ public class LoginActivity extends AppCompatActivity {
         signin = (Button) findViewById(R.id.sign_in);
         username = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.pass);
+        tempButton = findViewById(R.id.temp_btn);
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                //login();
+
+                Intent m_menu_intent = new Intent(LoginActivity.this,
+                        ManagerCardMenu.class);
+                startActivity(m_menu_intent);
             }
         });
 
+
     }
 
+    public void login_exe(View v){
+        Intent e_menu_intent = new Intent(LoginActivity.this,
+                ExecutiveCardMenu.class);
+        startActivity(e_menu_intent);
+    }
+/*
     @Override
     protected void onResume() {
         super.onResume();
@@ -65,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
 
     public void login()
     {
@@ -89,10 +102,10 @@ public class LoginActivity extends AppCompatActivity {
                         String userRole = jObj.getString("userRole");
                         if (userRole.contains("0")) {
 
-                            startActivity(new Intent(getApplicationContext(),CardDemoActivity.class));
+                            startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
                         } else {
 
-                            startActivity(new Intent(getApplicationContext(),Welcome.class));
+                            startActivity(new Intent(getApplicationContext(),ExecutiveCardMenu.class));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -131,5 +144,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
+*/
 
 }

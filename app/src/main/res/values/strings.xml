@@ -66,5 +66,10 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">TextView</string>
     <string name="select_date">Select Date</string>
+    <string name="title_activity_executive_card_menu">ExecutiveCardMenu</string>
+    <string name="pickup_executive">Pickup Executive</string>
+    <string name="exe_name">Tonoy Shaha</string>
+    <string name="title_activity_manager_card_menu">ManagerCardMenu</string>
+    <string name="title_activity_pickups_today__executive">PickupsToday_Executive</string>
 
 </resources>
