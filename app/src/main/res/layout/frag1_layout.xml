@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorAccent"
+    android:background="@color/white"
     tools:context=".PickupHistory_Manager"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -21,6 +21,7 @@
         android:fitsSystemWindows="true"
         tools:context=".PickupHistory_Manager" />
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_history"
         android:layout_width="match_parent"
@@ -31,4 +32,6 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+
 </android.support.constraint.ConstraintLayout>

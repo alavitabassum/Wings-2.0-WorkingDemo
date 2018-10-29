@@ -1,5 +1,6 @@
 package com.example.user.paperflyv0;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import android.support.v4.app.Fragment;
@@ -24,8 +26,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 
+import java.util.Calendar;
+
 public class PickupHistory_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    TextView pickDate;
+    Calendar mCurrentDate;
+    int day,month, year;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -46,6 +55,30 @@ public class PickupHistory_Manager extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickup_history__manager);
+
+        pickDate = findViewById(R.id.pickDateTxt);
+        mCurrentDate = Calendar.getInstance();
+        day = mCurrentDate.get(Calendar.DAY_OF_MONTH);
+        month = mCurrentDate.get(Calendar.MONTH);
+        year = mCurrentDate.get(Calendar.YEAR);
+
+        month = month + 1;
+        pickDate.setText("Select Date : "+day+"/"+month+"/"+year);
+
+        pickDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(PickupHistory_Manager.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        monthOfYear = monthOfYear+1;
+                        pickDate.setText("Select Date : "+dayOfMonth+"/"+monthOfYear+"/"+year);
+
+                    }
+                },year,month,day);
+                datePickerDialog.show();
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
