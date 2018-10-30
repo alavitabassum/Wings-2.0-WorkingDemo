@@ -50,17 +50,22 @@
         <activity
             android:name=".ExecutiveCardMenu"
             android:label="@string/title_activity_executive_card_menu"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ManagerCardMenu"
             android:label="@string/title_activity_manager_card_menu"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".PickupsToday_Executive"
             android:label="@string/title_activity_pickups_today__executive"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".PickupStatus_Executive"
+            android:label="@string/title_activity_pickup_status__executive"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MyPickupList_Executive"
+            android:label="@string/title_activity_my_pickups__executive"
             android:theme="@style/AppTheme"></activity>
     </application>
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PickupsToday_Manager"
+    tools:context=".PickupStatus_Executive"
     android:background="@color/white">
 
     <android.support.design.widget.AppBarLayout
@@ -23,25 +23,25 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabBackground="@drawable/tab_color_selector">
+            app:tabBackground="@drawable/tab_color_selector"
+           >
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem"
+                android:id="@+id/tabItemComp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_1"
-           />
+             />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem2"
+                android:id="@+id/tabItemPend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tab_text_2"
-         />
+             />
 
 
         </android.support.design.widget.TabLayout>
-
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
@@ -52,10 +52,12 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </android.support.v4.view.ViewPager>
-
     <include
-        android:id="@+id/include"
+        android:id="@+id/include2"
         layout="@layout/content_pickup_history__manager" />
+
+    <include layout="@layout/content_pickup_status__executive" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -66,7 +68,7 @@
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
     <TextView
-        android:id="@+id/pickDateTxt"
+        android:id="@+id/pickDateTxt_exe"
         android:layout_width="180dp"
         android:layout_height="5mm"
         android:layout_marginTop="125dp"
@@ -78,8 +80,7 @@
         android:elevation="2dp"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_anchor="@+id/include"
+        app:layout_anchor="@+id/include2"
         app:layout_anchorGravity="center_horizontal" />
-
 
 </android.support.design.widget.CoordinatorLayout>

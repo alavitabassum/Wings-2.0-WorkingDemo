@@ -95,17 +95,22 @@ public class PickupsToday_Executive extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_pickup_sum) {
+        if (id == R.id.nav_home) {
+            Intent homeIntent = new Intent(PickupsToday_Executive.this,
+                    ExecutiveCardMenu.class);
+            startActivity(homeIntent);
+        }
+        else if (id == R.id.nav_pickup_sum) {
             Intent pickupIntent = new Intent(PickupsToday_Executive.this,
                     PickupsToday_Executive.class);
             startActivity(pickupIntent);
         } else if (id == R.id.nav_exe_pickup) {
             Intent assignIntent = new Intent(PickupsToday_Executive.this,
-                    AssignPickup_Manager.class);
+                    MyPickupList_Executive.class);
             startActivity(assignIntent);
         } else if (id == R.id.nav_pickStatus) {
             Intent historyIntent = new Intent(PickupsToday_Executive.this,
-                    PickupHistory_Manager.class);
+                    PickupStatus_Executive.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
             Intent loginIntent = new Intent(PickupsToday_Executive.this,

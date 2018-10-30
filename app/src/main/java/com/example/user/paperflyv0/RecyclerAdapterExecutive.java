@@ -38,10 +38,10 @@ if (position == 0){
     Intent intent = new Intent (v.getContext(), PickupsToday_Executive.class);
     v.getContext().startActivity(intent);
 }else if (position == 1){
-    Intent intent_assign = new Intent (v.getContext(), AssignPickup_Manager.class);
+    Intent intent_assign = new Intent (v.getContext(), MyPickupList_Executive.class);
     v.getContext().startActivity(intent_assign);
 }else {
-    Intent intent_history = new Intent (v.getContext(), PickupHistory_Manager.class);
+    Intent intent_history = new Intent (v.getContext(), PickupStatus_Executive.class);
     v.getContext().startActivity(intent_history);
 }
                    /* Snackbar.make(v, "Click detected on item " + position,

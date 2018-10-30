@@ -33,8 +33,9 @@
             android:maxLines="2"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="25sp"
-            android:textStyle="bold" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
 
 
         <TextView
