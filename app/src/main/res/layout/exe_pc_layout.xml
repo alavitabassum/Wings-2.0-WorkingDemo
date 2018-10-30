@@ -2,14 +2,14 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_merchant="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view_merchant"
+    android:id="@+id/card_view_pc"
     android:layout_width="match_parent"
-    android:layout_height="155dp"
+    android:layout_height="180dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
     android:paddingBottom="50dp"
-    card_view_merchant:cardBackgroundColor="#e1e1e1"
+    card_view_merchant:cardBackgroundColor="#fff"
     card_view_merchant:cardElevation="3dp"
     card_view_merchant:contentPadding="4dp">
 
@@ -20,13 +20,13 @@
 
 
         <TextView
-            android:id="@+id/merchant_name"
+            android:id="@+id/m_name_pc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="2dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="0dp"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="18sp"
@@ -35,31 +35,33 @@
             android:maxLines="2" />
 
         <TextView
-            android:id="@+id/a_qty"
+            android:id="@+id/a_qty_pc"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="170dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/u_qty"
+            android:id="@+id/u_qty_pc"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView4"
             android:layout_marginStart="170dp"
+            android:layout_marginTop="6dp"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/r_qty"
+            android:id="@+id/r_qty_pc"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/u_qty"
+            android:layout_below="@+id/u_qty_pc"
             android:layout_marginStart="170dp"
+            android:layout_marginTop="7dp"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -68,10 +70,10 @@
             android:id="@+id/textView4"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/a_qty"
+            android:layout_alignTop="@+id/a_qty_pc"
             android:layout_alignParentStart="true"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="0dp"
             android:text="@string/assigned_product_count"
             android:textSize="15sp" />
 
@@ -79,11 +81,12 @@
             android:id="@+id/textView5"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/u_qty"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginBottom="-1dp"
-            android:text="@string/uploaded_product_count"
+            android:layout_below="@+id/textView4"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="-170dp"
+            android:layout_marginBottom="-2dp"
+            android:layout_toStartOf="@+id/a_qty_pc"
+            android:text="@string/picked_qty"
             android:textSize="15sp" />
 
         <TextView
@@ -91,21 +94,52 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView5"
-            android:layout_alignTop="@+id/r_qty"
+            android:layout_alignTop="@+id/r_qty_pc"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="1dp"
-            android:text="@string/total_products_picked"
+            android:layout_marginTop="0dp"
+            android:text="@string/received_qty"
             android:textSize="15sp" />
 
+
         <View
-            android:id="@+id/divider3"
+            android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginTop="55dp"
             android:background="?android:attr/listDivider" />
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/divider2"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="60dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="0dp"
+            android:maxLines="1"
+            android:text="Executive :"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/exe_name_pc"
+            android:layout_width="159dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textView2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="15dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
     </RelativeLayout>
+
 </android.support.v7.widget.CardView>

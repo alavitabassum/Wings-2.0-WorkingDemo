@@ -170,7 +170,12 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_pickDue) {
+        if (id == R.id.nav_home) {
+            Intent homeIntent = new Intent(PickupsToday_Manager.this,
+                    ManagerCardMenu.class);
+            startActivity(homeIntent);
+        }
+        else if (id == R.id.nav_pickDue) {
             Intent pickupIntent = new Intent(PickupsToday_Manager.this,
                     PickupsToday_Manager.class);
             startActivity(pickupIntent);
