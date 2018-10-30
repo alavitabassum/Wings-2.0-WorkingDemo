@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,12 +19,23 @@ import android.view.MenuItem;
 public class MyPickupList_Executive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    RecyclerView recyclerView_pul;
+    RecyclerView.LayoutManager layoutManager_pul;
+    RecyclerView.Adapter adapter_pul;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_pickups__executive);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_mylist);
+
+        layoutManager_pul = new LinearLayoutManager(this);
+        recyclerView_pul.setLayoutManager(layoutManager_pul);
+
+        adapter_pul = new pickuplistForExecutiveAdapter();
+        recyclerView_pul.setAdapter(adapter_pul);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
