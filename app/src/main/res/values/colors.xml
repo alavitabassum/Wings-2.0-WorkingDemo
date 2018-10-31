@@ -13,5 +13,8 @@
     <color name="tab_yellow">#ffcc01</color>
     <color name="white">#ffffff</color>
     <color name="grey">#C8C8C8</color>
+    <color name="blue_link">#1433e4</color>
+    <color name="btn_yellow">#FFCC00</color>
+
 
 </resources>

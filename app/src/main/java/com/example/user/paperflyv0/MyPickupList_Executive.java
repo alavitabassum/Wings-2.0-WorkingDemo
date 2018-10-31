@@ -1,9 +1,12 @@
 package com.example.user.paperflyv0;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,6 +18,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MyPickupList_Executive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -22,12 +29,14 @@ public class MyPickupList_Executive extends AppCompatActivity
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     RecyclerView.Adapter adapter_pul;
+    android.widget.RelativeLayout vwParentRow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_pickups__executive);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_mylist);
 
@@ -54,6 +63,60 @@ public class MyPickupList_Executive extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void changeStatus(View view){
+      //  Button btn = findViewById(R.id.btn_status);
+        final CharSequence[] status_options = {"Cancel","Pending"};
+        final String[] selection = new String[1];
+        vwParentRow = (android.widget.RelativeLayout) view.getParent();
+        final Button btn_status  = (Button)vwParentRow.getChildAt(14);
+
+
+       // btn_status.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,35));
+
+        AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+        eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                switch (i){
+
+                    case 0:
+                        selection[0] = (String) status_options[0];
+
+                        btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
+                        btn_status.setTextColor(Color.WHITE);
+                        btn_status.setText("cancel");
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
+                        params.setMargins(250, 200, 0, -140);
+                        btn_status.setLayoutParams(params);
+
+                        break;
+
+                    case 1:
+                        selection[0] = (String) status_options[1];
+                        btn_status.setTextColor(Color.BLACK);
+                        btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.btn_yellow));
+                        btn_status.setText("Pending");
+                        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
+                        params2.setMargins(250, 200, 0, -140);
+                        btn_status.setLayoutParams(params2);
+                        break;
+                }
+
+            }
+        }).setCancelable(false).setPositiveButton("Change", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+
+                dialog.dismiss();
+
+            }
+        });
+        vwParentRow.refreshDrawableState();
+        AlertDialog eDialog = eBuilder.create();
+        eDialog.show();
+
     }
 
     @Override
