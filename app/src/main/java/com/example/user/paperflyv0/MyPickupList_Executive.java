@@ -66,7 +66,9 @@ public class MyPickupList_Executive extends AppCompatActivity
     }
 
     public void changeStatus(View view){
-      //  Button btn = findViewById(R.id.btn_status);
+
+
+
         final CharSequence[] status_options = {"Cancel","Pending"};
         final String[] selection = new String[1];
         vwParentRow = (android.widget.RelativeLayout) view.getParent();
@@ -84,12 +86,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                     case 0:
                         selection[0] = (String) status_options[0];
 
-                        btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
-                        btn_status.setTextColor(Color.WHITE);
-                        btn_status.setText("cancel");
-                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
-                        params.setMargins(250, 200, 0, -140);
-                        btn_status.setLayoutParams(params);
 
                         break;
 
@@ -109,7 +105,52 @@ public class MyPickupList_Executive extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int i) {
 
-                dialog.dismiss();
+                final CharSequence[] cancel_options = {"Merchant unavailable","Fautly order","Others"};
+                final String[] cancelSelection = new String[1];
+                AlertDialog.Builder cancelreasonBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+
+                if (selection[0] == status_options[0]){
+
+                    cancelreasonBuilder.setTitle("Cancellation Reason").setSingleChoiceItems(cancel_options, -1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int position) {
+                            switch (position){
+                                case 0:
+                                    cancelSelection[0] = (String) cancel_options[0];
+                                    break;
+                                case 1:
+                                    cancelSelection[0] = (String) cancel_options[1];
+                                    break;
+                                case 2:
+                                    cancelSelection[0] = (String) cancel_options[2];
+                                    break;
+
+                            }
+
+                            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
+                            btn_status.setTextColor(Color.WHITE);
+                            btn_status.setText("cancel");
+                          //  btn_status.setText(cancelSelection[0]);
+                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
+                            params.setMargins(250, 200, 0, -140);
+                            btn_status.setLayoutParams(params);
+
+
+                        }
+                    }).setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                }else {
+                    //TODO pending select korle ki hobe
+                    //TODO kichu select na kore change press korle ki hobe
+                }
+                AlertDialog rDialog = cancelreasonBuilder.create();
+                rDialog.show();
+               // dialog.dismiss();
 
             }
         });
