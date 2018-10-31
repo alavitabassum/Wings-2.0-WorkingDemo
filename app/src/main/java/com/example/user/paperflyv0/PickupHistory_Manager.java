@@ -31,6 +31,7 @@ import java.util.Calendar;
 public class PickupHistory_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String URL_DATA = "http://192.168.0.142/new/order.php";
     TextView pickDate;
     Calendar mCurrentDate;
     int day,month, year;
@@ -55,7 +56,6 @@ public class PickupHistory_Manager extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickup_history__manager);
-
         pickDate = findViewById(R.id.pickDateTxt);
         mCurrentDate = Calendar.getInstance();
         day = mCurrentDate.get(Calendar.DAY_OF_MONTH);
@@ -230,10 +230,10 @@ public class PickupHistory_Manager extends AppCompatActivity
             switch (position){
 
                 case 0:
-                    fragment = new Frag1_Adapter();
+                    fragment = new Complete_Pickup__Fragment_Manager();
                     break;
                 case 1:
-                    fragment = new Frag2_Adapter();
+                    fragment = new Pending_Pickup_Fragment_Manager();
                     break;
             }
             return fragment;

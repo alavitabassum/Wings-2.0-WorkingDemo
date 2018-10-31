@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class Frag2_Adapter extends Fragment {
+public class Pending_Pickup_Fragment_Manager extends Fragment {
 
 
-    String[] m_names_list_d = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
+    String[] m_names_list_d = {"Daraz2 Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
 
     String[] a_qty_list_d = {"2","2","1","1","5","1"};
 
@@ -30,7 +30,7 @@ public class Frag2_Adapter extends Fragment {
         View view = inflater.inflate(R.layout.frag2_layout,container, false);
         RecyclerView recyclerView_d = view.findViewById(R.id.recycler_view_history_d);
         recyclerView_d.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView_d.setAdapter(new Frag2_Adapter.RecyclerViewAdapter());
+        recyclerView_d.setAdapter(new Pending_Pickup_Fragment_Manager.RecyclerViewAdapter());
         return  view;
     }
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
@@ -61,7 +61,7 @@ public class Frag2_Adapter extends Fragment {
         }
     }
 
-    private class RecyclerViewAdapter extends RecyclerView.Adapter<Frag2_Adapter.RecyclerViewHolder>{
+    private class RecyclerViewAdapter extends RecyclerView.Adapter<Pending_Pickup_Fragment_Manager.RecyclerViewHolder>{
         private  String[] mNames_d;
         private  String[] aQty_d;
         private  String[] uQty_d;
@@ -79,14 +79,14 @@ public class Frag2_Adapter extends Fragment {
 
         @NonNull
         @Override
-        public Frag2_Adapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public Pending_Pickup_Fragment_Manager.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
 
-            return  new Frag2_Adapter.RecyclerViewHolder(inflater,parent);
+            return  new Pending_Pickup_Fragment_Manager.RecyclerViewHolder(inflater,parent);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull Frag2_Adapter.RecyclerViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull Pending_Pickup_Fragment_Manager.RecyclerViewHolder holder, int position) {
             holder.TextViewName_d.setText(mNames_d[position]);
             holder.TextViewAssigned_d.setText(aQty_d[position]);
             holder.TextViewUploaded_d.setText(uQty_d[position]);
