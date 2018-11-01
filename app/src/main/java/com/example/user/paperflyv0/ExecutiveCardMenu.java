@@ -2,11 +2,8 @@ package com.example.user.paperflyv0;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -98,17 +95,22 @@ public class ExecutiveCardMenu extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_pickup_sum) {
+        if (id == R.id.nav_home) {
+            Intent homeIntent = new Intent(ExecutiveCardMenu.this,
+                    ExecutiveCardMenu.class);
+            startActivity(homeIntent);
+        }
+        else if (id == R.id.nav_pickup_sum) {
             Intent pickupIntent = new Intent(ExecutiveCardMenu.this,
                     PickupsToday_Executive.class);
             startActivity(pickupIntent);
         } else if (id == R.id.nav_exe_pickup) {
             Intent assignIntent = new Intent(ExecutiveCardMenu.this,
-                    AssignPickup_Manager.class);
+                    MyPickupList_Executive.class);
             startActivity(assignIntent);
         } else if (id == R.id.nav_pickStatus) {
             Intent historyIntent = new Intent(ExecutiveCardMenu.this,
-                    PickupHistory_Manager.class);
+                    PickupStatus_Executive.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
             Intent loginIntent = new Intent(ExecutiveCardMenu.this,

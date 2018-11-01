@@ -12,23 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class Frag1_Adapter extends Fragment {
+public class Exe_pc_Adapter extends Fragment {
 
-    String[] m_names_list = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
+    String[] m_names_list = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation"};
 
-    String[] a_qty_list = {"2","2","1","1","5","1"};
+    String[] a_qty_list = {"2","2","1"};
 
-    String[] u_qty_list = {"3","5","1","4","2","1"};
+    String[] u_qty_list = {"3","5","1"};
 
-    String[] r_qty_list = {"3","5","1","4","2","1"};
+    String[] r_qty_list = {"3","5","1"};
 
-    String[] e_names_list = {"Rahim", "Tonoy", "Yusuf","Rahim", "Tonoy", "Yusuf"};
+    String[] e_names_list = {"Tonoy", "Tonoy", "Tonoy"};
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag1_layout,container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_history);
+        View view = inflater.inflate(R.layout.exe_frag_pc,container, false);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_pc);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(new RecyclerViewAdapter());
         return  view;
@@ -49,14 +49,14 @@ public class Frag1_Adapter extends Fragment {
             super(itemView);
         }
             public  RecyclerViewHolder(LayoutInflater inflater, ViewGroup container){
-            super(inflater.inflate(R.layout.history_layout_complete,container,false));
+            super(inflater.inflate(R.layout.exe_pc_layout,container,false));
 
-                mCardView = itemView.findViewById(R.id.card_view_history);
-                TextViewName = itemView.findViewById(R.id.m_name);
-                TextViewAssigned = itemView.findViewById(R.id.a_qty);
-                TextViewUploaded = itemView.findViewById(R.id.u_qty);
-                TextViewReceived = itemView.findViewById(R.id.r_qty);
-                TextViewExeName = itemView.findViewById(R.id.exe_name);
+                mCardView = itemView.findViewById(R.id.card_view_pc);
+                TextViewName = itemView.findViewById(R.id.m_name_pc);
+                TextViewAssigned = itemView.findViewById(R.id.a_qty_pc);
+                TextViewUploaded = itemView.findViewById(R.id.u_qty_pc);
+                TextViewReceived = itemView.findViewById(R.id.r_qty_pc);
+                TextViewExeName = itemView.findViewById(R.id.exe_name_pc);
 
 
 

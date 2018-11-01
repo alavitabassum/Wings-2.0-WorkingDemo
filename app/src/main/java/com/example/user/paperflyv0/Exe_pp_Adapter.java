@@ -12,25 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class Frag2_Adapter extends Fragment {
+public class Exe_pp_Adapter extends Fragment {
 
 
-    String[] m_names_list_d = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
+    String[] m_names_list_d = {"Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
 
-    String[] a_qty_list_d = {"2","2","1","1","5","1"};
+    String[] a_qty_list_d = {"12","120","50"};
 
-    String[] u_qty_list_d = {"3","5","1","4","2","1"};
+    String[] u_qty_list_d = {"13","120","0"};
 
-    String[] r_qty_list_d = {"3","5","1","4","2","1"};
+    String[] r_qty_list_d = {"0","0","0"};
 
-    String[] e_names_list_d = {"Rahim", "Tonoy", "Yusuf","Rahim", "Tonoy", "Yusuf"};
+    String[] e_names_list_d = {"Tonoy", "Tonoy", "Tonoy"};
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.frag2_layout,container, false);
-        RecyclerView recyclerView_d = view.findViewById(R.id.recycler_view_history_d);
+        View view = inflater.inflate(R.layout.exe_frag_pp,container, false);
+        RecyclerView recyclerView_d = view.findViewById(R.id.recycler_view_pp);
         recyclerView_d.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView_d.setAdapter(new Frag2_Adapter.RecyclerViewAdapter());
+        recyclerView_d.setAdapter(new Exe_pp_Adapter.RecyclerViewAdapter());
         return  view;
     }
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
@@ -47,21 +47,21 @@ public class Frag2_Adapter extends Fragment {
             super(itemView);
         }
         public  RecyclerViewHolder(LayoutInflater inflater, ViewGroup container){
-            super(inflater.inflate(R.layout.history_layout_due,container,false));
+            super(inflater.inflate(R.layout.exe_pp_layout,container,false));
 
-            mCardView_d = itemView.findViewById(R.id.card_view_history_d);
-            TextViewName_d = itemView.findViewById(R.id.m_name_d);
-            TextViewAssigned_d = itemView.findViewById(R.id.a_qty_d);
-            TextViewUploaded_d = itemView.findViewById(R.id.u_qty_d);
-            TextViewReceived_d = itemView.findViewById(R.id.r_qty_d);
-            TextViewExeName_d = itemView.findViewById(R.id.exe_name_d);
+            mCardView_d = itemView.findViewById(R.id.card_view_pp);
+            TextViewName_d = itemView.findViewById(R.id.m_name_pp);
+            TextViewAssigned_d = itemView.findViewById(R.id.a_qty_pp);
+            TextViewUploaded_d = itemView.findViewById(R.id.u_qty_pp);
+            TextViewReceived_d = itemView.findViewById(R.id.r_qty_pp);
+            TextViewExeName_d = itemView.findViewById(R.id.exe_name_pp);
 
 
 
         }
     }
 
-    private class RecyclerViewAdapter extends RecyclerView.Adapter<Frag2_Adapter.RecyclerViewHolder>{
+    private class RecyclerViewAdapter extends RecyclerView.Adapter<Exe_pp_Adapter.RecyclerViewHolder>{
         private  String[] mNames_d;
         private  String[] aQty_d;
         private  String[] uQty_d;
@@ -79,14 +79,14 @@ public class Frag2_Adapter extends Fragment {
 
         @NonNull
         @Override
-        public Frag2_Adapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public Exe_pp_Adapter.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(getActivity());
 
-            return  new Frag2_Adapter.RecyclerViewHolder(inflater,parent);
+            return  new Exe_pp_Adapter.RecyclerViewHolder(inflater,parent);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull Frag2_Adapter.RecyclerViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull Exe_pp_Adapter.RecyclerViewHolder holder, int position) {
             holder.TextViewName_d.setText(mNames_d[position]);
             holder.TextViewAssigned_d.setText(aQty_d[position]);
             holder.TextViewUploaded_d.setText(uQty_d[position]);

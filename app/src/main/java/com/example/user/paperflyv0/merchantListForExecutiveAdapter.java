@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder> {
+class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder> {
 
      private List<PickupTodaySummary_ex> summaries;
      private Context context;

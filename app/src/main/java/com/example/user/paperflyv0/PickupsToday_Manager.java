@@ -2,7 +2,6 @@ package com.example.user.paperflyv0;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -213,7 +212,12 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_pickDue) {
+        if (id == R.id.nav_home) {
+            Intent homeIntent = new Intent(PickupsToday_Manager.this,
+                    ManagerCardMenu.class);
+            startActivity(homeIntent);
+        }
+        else if (id == R.id.nav_pickDue) {
             Intent pickupIntent = new Intent(PickupsToday_Manager.this,
                     PickupsToday_Manager.class);
             startActivity(pickupIntent);

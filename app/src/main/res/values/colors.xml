@@ -9,5 +9,12 @@
     <color name="red">#cd1800</color>
     <color name="foreground_material_light">#1f379f</color>
     <color name="black">#000000</color>
+    <color name="tab_green">#5eba7d</color>
+    <color name="tab_yellow">#ffcc01</color>
     <color name="white">#ffffff</color>
+    <color name="grey">#C8C8C8</color>
+    <color name="blue_link">#1433e4</color>
+    <color name="btn_yellow">#FFCC00</color>
+
+
 </resources>
