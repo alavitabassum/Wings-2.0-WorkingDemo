@@ -84,5 +84,4 @@ public class Complete_Pickup__Fragment_Manager extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
     }
-
 }
