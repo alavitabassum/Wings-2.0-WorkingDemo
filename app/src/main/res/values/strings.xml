@@ -55,11 +55,12 @@
         <item>Saiful</item>
     </string-array>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="section_format2">Hello World from section: %1$d</string>
     <string name="title_activity_baal">Baal</string>
     <string name="title_activity_lol">lol</string>
     <string name="title_activity_lel">lel</string>
     <string name="tab_text_1">Pickups Completed</string>
-    <string name="tab_text_2">Pickups Due</string>
+    <string name="tab_text_2">Pickups Pending</string>
     <string name="title_activity_ppl">ppl</string>
     <string name="picked_qty">Picked Qty :</string>
     <string name="received_qty">Received Qty :</string>
@@ -71,5 +72,8 @@
     <string name="exe_name">Tonoy Shaha</string>
     <string name="title_activity_manager_card_menu">ManagerCardMenu</string>
     <string name="title_activity_pickups_today__executive">PickupsToday_Executive</string>
+    <string name="title_activity_pickup_status__executive">PickupStatus_Executive</string>
+    <string name="title_activity_my_pickups__executive">MyPickups_Executive</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>
