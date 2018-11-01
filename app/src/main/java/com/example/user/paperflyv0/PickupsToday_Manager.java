@@ -124,12 +124,13 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                         JSONObject o = array.getJSONObject(i);
                         database.insertData(o.getString("name"),o.getString("assigned"),o.getString("uploaded"),o.getString("received"));
                     }
+                    getData();
                     swipeRefreshLayout.setRefreshing(false);
                     //swipeRefreshLayout.setRefreshing(false);
 
                 } catch (JSONException e) {
-                    swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
 
             }
@@ -138,6 +139,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                     }
@@ -148,6 +150,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     private void getData()
     {
         try{
+
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
             Cursor c = database.getAllData(sqLiteDatabase);
             while (c.moveToNext())
