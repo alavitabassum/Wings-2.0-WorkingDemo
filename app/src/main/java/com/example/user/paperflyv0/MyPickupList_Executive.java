@@ -64,19 +64,12 @@ public class MyPickupList_Executive extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-
+    // Change status code section (start)
     public void changeStatus(View view){
-
-
-
         final CharSequence[] status_options = {"Cancel","Pending"};
         final String[] selection = new String[1];
         vwParentRow = (android.widget.RelativeLayout) view.getParent();
-        final Button btn_status  = (Button)vwParentRow.getChildAt(14);
-
-
-       // btn_status.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,35));
-
+        final Button btn_status  = (Button)vwParentRow.getChildAt(13);
         AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
         eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
             @Override
@@ -129,7 +122,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                                             btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
                                             btn_status.setTextColor(Color.WHITE);
                                             btn_status.setText("cancel");
-                                          //  btn_status.setText(cancelSelection[0]);
+                                          //  btn_status.setText(cancelSelection[0]); // catch the cancel reason from this line.
                                             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
                                             params.setMargins(250, 200, 0, -140);
                                             btn_status.setLayoutParams(params);
@@ -157,7 +150,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 
                                ((AlertDialog)dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 
-                              // Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
+                               Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
 
                            }
 
@@ -172,6 +165,18 @@ public class MyPickupList_Executive extends AppCompatActivity
         eDialog.show();
 
     }
+
+    //change status code section (end)
+
+
+    //Scan button onclick function (start)
+    public void goto_ScanScreen(View view){
+        Intent scanIntent = new Intent(MyPickupList_Executive.this,
+                ScanningScreen.class);
+        startActivity(scanIntent);
+    }
+
+    //Scan button onclick function (end)
 
     @Override
     public void onBackPressed() {

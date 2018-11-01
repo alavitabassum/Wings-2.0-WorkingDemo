@@ -67,6 +67,7 @@
             android:name=".MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
             android:theme="@style/AppTheme" />
+        <activity android:name=".ScanningScreen"></activity>
     </application>
 
 </manifest>
