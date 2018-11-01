@@ -1,11 +1,15 @@
 package com.example.user.paperflyv0;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -178,6 +182,19 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     //Scan button onclick function (end)
 
+
+    //CallMerchant (start)
+ /*   public void callMerchant(View view){
+    Intent callIntent =new Intent(Intent.ACTION_CALL);
+    callIntent.setData(Uri.parse("tel:01781278896"));
+    if (ActivityCompat.checkSelfPermission(MyPickupList_Executive.this,
+            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+        return;
+    }
+    startActivity(callIntent);
+}*/
+    //CallMerchant (end)
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -194,7 +211,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         getMenuInflater().inflate(R.menu.my_pickups__executive, menu);
         return true;
     }
-
+//testing
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

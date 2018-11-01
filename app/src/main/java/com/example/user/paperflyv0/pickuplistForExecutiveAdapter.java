@@ -1,10 +1,15 @@
 package com.example.user.paperflyv0;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -59,6 +64,19 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
             //underline phoneNumber
             item_phnNum.setPaintFlags(item_phnNum.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+            item_phnNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent =new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:01781278896"));
+                    if (ActivityCompat.checkSelfPermission(v.getContext(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    v.getContext().startActivity(callIntent);
+                }
+            });
 
 
 
