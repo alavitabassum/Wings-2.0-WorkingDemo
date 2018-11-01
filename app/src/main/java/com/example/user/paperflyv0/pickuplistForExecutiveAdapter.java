@@ -42,7 +42,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView item_p_pul;
         public TextView item_scanCount;
 
-        public TextView item_scanTxtButton;
+      //  public TextView item_scanTxtButton;
         public TextView item_phnNum;
 
 
@@ -55,7 +55,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             item_p_pul=itemView.findViewById(R.id.p_qty_pul);
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
-            item_scanTxtButton=itemView.findViewById(R.id.txt_btn_scan);
+           // item_scanTxtButton=itemView.findViewById(R.id.txt_btn_scan);
 
             //underline phoneNumber
             item_phnNum.setPaintFlags(item_phnNum.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
