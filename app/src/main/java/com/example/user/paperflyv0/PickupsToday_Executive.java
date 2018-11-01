@@ -75,8 +75,6 @@ public class PickupsToday_Executive extends AppCompatActivity
 
 
 
-        adapter_exec = new merchantListForExecutiveAdapter();
-        recyclerView_exec.setAdapter(adapter_exec);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
