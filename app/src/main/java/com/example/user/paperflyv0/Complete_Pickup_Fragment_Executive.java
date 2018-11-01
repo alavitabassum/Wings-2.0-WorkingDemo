@@ -1,6 +1,5 @@
 package com.example.user.paperflyv0;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,12 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,21 +18,29 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-public class Complete_Pickup__Fragment_Manager extends Fragment {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-    private static final String URL_DATA = "http://192.168.0.104/new/pick_complete.php";
+import java.util.ArrayList;
+import java.util.List;
+
+public class Complete_Pickup_Fragment_Executive extends Fragment {
+
+    private static final String URL_DATA = "http://192.168.0.104/new/exec_pick_complete.php";
     View v;
     private RecyclerView myrecyclerview;
 
-    private List<Complete_Pickup_Model_Manager> listitems;
-    public Complete_Pickup__Fragment_Manager() {
+    private List<Complete_Pickup_Model_Executive> listitems;
+
+    public Complete_Pickup_Fragment_Executive() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.frag1_layout, container, false);
-        myrecyclerview = v.findViewById(R.id.recycler_view_history);
+        v = inflater.inflate(R.layout.exe_frag_pc, container, false);
+        myrecyclerview = v.findViewById(R.id.recycler_view_pc);
         myrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         loadRecyclerView();
         return v;
@@ -51,15 +52,15 @@ public class Complete_Pickup__Fragment_Manager extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-         //                progress.dismiss();
+//                progress.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray array = jsonObject.getJSONArray("summary");
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
-                        Complete_Pickup_Model_Manager summary = new Complete_Pickup_Model_Manager(
-                                  o.getString("merchant_name"),
+                        Complete_Pickup_Model_Executive summary = new Complete_Pickup_Model_Executive(
+                                o.getString("merchant_name"),
                                 o.getString("executive_name"),
                                 o.getString("assigned"),
                                 o.getString("uploaded"),
@@ -67,7 +68,7 @@ public class Complete_Pickup__Fragment_Manager extends Fragment {
                         );
                         listitems.add(summary);
                     }
-                    myrecyclerview.setAdapter(new Complete_Pickup_Adapter_Manager(getContext(),listitems));
+                    myrecyclerview.setAdapter(new Complete_Pickup_Adapter_Executive(getContext(),listitems));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
