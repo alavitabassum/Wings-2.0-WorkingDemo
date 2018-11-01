@@ -1,13 +1,18 @@
 package com.example.user.paperflyv0;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.speech.tts.TextToSpeech;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickuplistForExecutiveAdapter.ViewHolder> {
 
@@ -23,6 +28,10 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
     private String[] scan_count = {"3","5","1","4","2","1"};
 
+    private String[] merchant_phnNum = {"01781278896","01781278896","01781278896","01781278896","01781278896","01781278896"};
+
+ /*   final CharSequence[] status_options = {"Cancel","Pending"};
+    int selection = 1;*/
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -32,26 +41,25 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView itme_a_pul;
         public TextView item_p_pul;
         public TextView item_scanCount;
-        public TextView item_p_status;
+
         public TextView item_scanTxtButton;
-
-
+        public TextView item_phnNum;
 
 
         @SuppressLint("ResourceAsColor")
-        public ViewHolder(View itemView) {
+        public ViewHolder(final View itemView) {
             super(itemView);
             item_m_pul=itemView.findViewById(R.id.m_name_pul);
             item_add_pul=itemView.findViewById(R.id.m_add_pul);
             itme_a_pul=itemView.findViewById(R.id.a_qty_pul);
             item_p_pul=itemView.findViewById(R.id.p_qty_pul);
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
-            item_p_status=itemView.findViewById(R.id.txt_status_pul);
+            item_phnNum = itemView.findViewById(R.id.m_phn_num);
             item_scanTxtButton=itemView.findViewById(R.id.txt_btn_scan);
 
+            //underline phoneNumber
+            item_phnNum.setPaintFlags(item_phnNum.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-            item_p_status.setBackgroundColor(Color.YELLOW);
-          //  item_scanTxtButton.setBackgroundColor(Color.GREEN);
 
 
 
@@ -73,6 +81,8 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.itme_a_pul.setText(a_pul[i]);
         viewHolder.item_p_pul.setText(p_pul[i]);
         viewHolder.item_scanCount.setText(scan_count[i]);
+        viewHolder.item_phnNum.setText(merchant_phnNum[i]);
+
 
 
     }
