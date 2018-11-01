@@ -168,7 +168,8 @@
             android:layout_marginEnd="18dp"
             android:textAlignment="textStart"
             android:textColor="@color/blue_link"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
+            <!--android:onClick="callMerchant"-->
 
         <Button
             android:id="@+id/btn_status"
