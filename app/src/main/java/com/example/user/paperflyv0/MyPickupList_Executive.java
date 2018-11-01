@@ -80,13 +80,11 @@ public class MyPickupList_Executive extends AppCompatActivity
         AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
         eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
                 switch (i){
 
                     case 0:
                         selection[0] = (String) status_options[0];
-
-
                         break;
 
                     case 1:
@@ -97,60 +95,75 @@ public class MyPickupList_Executive extends AppCompatActivity
                         RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
                         params2.setMargins(250, 200, 0, -140);
                         btn_status.setLayoutParams(params2);
+                        dialogInterface.dismiss();
                         break;
                 }
 
             }
         }).setCancelable(false).setPositiveButton("Change", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int i) {
+            public void onClick(DialogInterface dialogInterface, int i) {
 
-                final CharSequence[] cancel_options = {"Merchant unavailable","Fautly order","Others"};
-                final String[] cancelSelection = new String[1];
-                AlertDialog.Builder cancelreasonBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+                             final CharSequence[] cancel_options = {"Merchant unavailable","Fautly order","Others"};
+                             final String[] cancelSelection = new String[1];
 
-                if (selection[0] == status_options[0]){
+                             AlertDialog.Builder cancelreasonBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+                           if (selection[0] == status_options[0]){
 
-                    cancelreasonBuilder.setTitle("Cancellation Reason").setSingleChoiceItems(cancel_options, -1, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int position) {
-                            switch (position){
-                                case 0:
-                                    cancelSelection[0] = (String) cancel_options[0];
-                                    break;
-                                case 1:
-                                    cancelSelection[0] = (String) cancel_options[1];
-                                    break;
-                                case 2:
-                                    cancelSelection[0] = (String) cancel_options[2];
-                                    break;
+                                    cancelreasonBuilder.setTitle("Cancellation Reason").setSingleChoiceItems(cancel_options, -1, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface1, int position) {
+                                            switch (position){
+                                                case 0:
+                                                    cancelSelection[0] = (String) cancel_options[0];
+                                                    break;
+                                                case 1:
+                                                    cancelSelection[0] = (String) cancel_options[1];
+                                                    break;
+                                                case 2:
+                                                    cancelSelection[0] = (String) cancel_options[2];
+                                                    break;
 
-                            }
+                                            }
 
-                            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
-                            btn_status.setTextColor(Color.WHITE);
-                            btn_status.setText("cancel");
-                          //  btn_status.setText(cancelSelection[0]);
-                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
-                            params.setMargins(250, 200, 0, -140);
-                            btn_status.setLayoutParams(params);
+                                            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
+                                            btn_status.setTextColor(Color.WHITE);
+                                            btn_status.setText("cancel");
+                                          //  btn_status.setText(cancelSelection[0]);
+                                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
+                                            params.setMargins(250, 200, 0, -140);
+                                            btn_status.setLayoutParams(params);
+
+                                        }
+                                    }).setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface1, int which) {
+                                            if ( cancelSelection[0] == cancel_options[0] || cancelSelection[0] == cancel_options[1] ||cancelSelection[0] == cancel_options[2]){
+                                                Toast.makeText(MyPickupList_Executive.this, "Pickup Cancelled", Toast.LENGTH_SHORT).show();
+                                                dialogInterface1.dismiss();
+                                            }else{
+                                                ((AlertDialog)dialogInterface1).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                                            }
+                                        }
+                                    });
+
+                           }else if (selection[0] == status_options[1]){
+
+                                    //    dialogInterface.dismiss();
+                               Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
 
 
-                        }
-                    }).setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
+                           }else if(selection[0] != status_options[1] && selection[0] != status_options[0]){
 
-                }else {
-                    //TODO pending select korle ki hobe
-                    //TODO kichu select na kore change press korle ki hobe
-                }
+                               ((AlertDialog)dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+                              // Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
+
+                           }
+
                 AlertDialog rDialog = cancelreasonBuilder.create();
                 rDialog.show();
-               // dialog.dismiss();
+
 
             }
         });
