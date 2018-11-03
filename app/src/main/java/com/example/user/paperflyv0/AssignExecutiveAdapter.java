@@ -48,7 +48,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public TextView itemDue;
         public TextView itemCompletedCount;
         public TextView itemDueCount;
-        public TextView itemAssignTxtView;
+       // public TextView itemAssignTxtView;
         public TextView itemSelectedTxtView;
 
 
@@ -62,13 +62,13 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             itemDue=itemView.findViewById(R.id.due_text);
             itemCompletedCount=itemView.findViewById(R.id.completed_pickups_count);
             itemDueCount=itemView.findViewById(R.id.due_pickups_count);
-            itemAssignTxtView =itemView.findViewById(R.id.txt_btn_assign);
+           // itemAssignTxtView =itemView.findViewById(R.id.txt_btn_assign);
             itemSelectedTxtView = itemView.findViewById(R.id.tv_exe_selected);
          //   executiveItems = getResources().getStringArray(R.array.exe_names);
             checkedItems = new boolean[executiveItems.length];
 
-            itemAssignTxtView.setBackgroundColor(Color.BLACK);
-            itemAssignTxtView.setOnClickListener(new View.OnClickListener() {
+        //    itemAssignTxtView.setBackgroundColor(Color.BLACK);
+       /*     itemAssignTxtView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AlertDialog.Builder eBuilder = new AlertDialog.Builder(v.getRootView().getContext());
@@ -126,7 +126,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
                     AlertDialog eDialog = eBuilder.create();
                     eDialog.show();
                 }
-            });
+            });*/
 
 
         }
