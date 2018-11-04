@@ -1,6 +1,5 @@
 package com.example.user.paperflyv0;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,18 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Complete_Pickup__Fragment_Manager extends Fragment {
 
@@ -77,7 +77,7 @@ public class Complete_Pickup__Fragment_Manager extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
-                        Toast.makeText(getContext(), "some error" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Serve not connected" ,Toast.LENGTH_SHORT).show();
 
                     }
                 });

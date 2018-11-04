@@ -82,7 +82,7 @@ public class Pending_Pickup_Fragment_Manager extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
-                        Toast.makeText(getContext(), "some error" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Serve not connected" ,Toast.LENGTH_SHORT).show();
 
                     }
                 });

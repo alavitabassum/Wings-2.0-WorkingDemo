@@ -78,7 +78,7 @@ public class Complete_Pickup_Fragment_Executive extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
-                        Toast.makeText(getContext(), "some error" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Serve not connected" ,Toast.LENGTH_SHORT).show();
 
                     }
                 });

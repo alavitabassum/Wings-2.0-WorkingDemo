@@ -1,54 +1,74 @@
 package com.example.user.paperflyv0;
 
-import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.Manifest.permission.CAMERA;
+
 public class MyPickupList_Executive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String URL_DATA = "http://192.168.0.118/new/merchantListForExecutive.php";
+    private static final int REQUEST_CAMERA = 1;
+    private ProgressDialog progress;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
+    private List<PickupList_Model_For_Executive> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_pickups__executive);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        list = new ArrayList<>();
 
         recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_mylist);
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        adapter_pul = new pickuplistForExecutiveAdapter();
-        recyclerView_pul.setAdapter(adapter_pul);
+
+        loadRecyclerView();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +87,118 @@ public class MyPickupList_Executive extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        int currentApiVersion = Build.VERSION.SDK_INT;
+
+        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
+        {
+            if(checkPermission())
+            {
+                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                requestPermission();
+            }
+        }
     }
+
+    private void loadRecyclerView()
+    {
+        list = new ArrayList<>();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //                progress.dismiss();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray array = jsonObject.getJSONArray("summary");
+                    for(int i =0;i<array.length();i++)
+                    {
+                        JSONObject o = array.getJSONObject(i);
+                        PickupList_Model_For_Executive summary = new PickupList_Model_For_Executive(
+                                o.getString("merchant_name"),
+                                o.getString("address"),
+                                o.getString("assined_qty"),
+                                o.getString("picked_qty"),
+                                o.getString("scan_count"),
+                                o.getString("phone_no")
+                        );
+                        list.add(summary);
+                    }
+                    adapter_pul = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+                    recyclerView_pul.setAdapter(adapter_pul);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        progress.dismiss();
+                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+    }
+
+    // Function for camera permission
+    private boolean checkPermission()
+    {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    // Request for camera permission
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
+    }
+
+    // Actions on camera permission grant result
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if (grantResults.length > 0) {
+
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted){
+                        Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access camera", Toast.LENGTH_LONG).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera", Toast.LENGTH_LONG).show();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(CAMERA)) {
+                                showMessageOKCancel("You need to allow access to both the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{CAMERA},
+                                                            REQUEST_CAMERA);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    // Camera permission ok or cancel
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new android.support.v7.app.AlertDialog.Builder(MyPickupList_Executive.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
     // Change status code section (start)
     public void changeStatus(View view){
         final CharSequence[] status_options = {"Cancel","Pending"};
@@ -175,8 +306,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     //Scan button onclick function (start)
     public void goto_ScanScreen(View view){
-        Intent scanIntent = new Intent(MyPickupList_Executive.this,
-                ScanningScreen.class);
+        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
         startActivity(scanIntent);
     }
 
