@@ -21,14 +21,24 @@
         android:fitsSystemWindows="true"
         tools:context=".PickupHistory_Manager" />
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior = "@string/appbar_scrolling_view_behavior">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_history_d"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 </android.support.constraint.ConstraintLayout>

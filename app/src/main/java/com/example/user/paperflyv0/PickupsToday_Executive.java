@@ -44,7 +44,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     private static final String URL_DATA = "http://192.168.0.142/new/executive.php";
 
 
-    Databaseforexecutive database2;
+    Database database;
     RecyclerView recyclerView_exec;
     RecyclerView.LayoutManager layoutManager_exec;
     RecyclerView.Adapter adapter_exec;
@@ -56,8 +56,8 @@ public class PickupsToday_Executive extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        database2=new Databaseforexecutive(this);
-        database2.getWritableDatabase();
+        database=new Database(this);
+        database.getWritableDatabase();
 
 
         recyclerView_exec = (RecyclerView) findViewById(R.id.recycler_view_e);
@@ -70,6 +70,8 @@ public class PickupsToday_Executive extends AppCompatActivity
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setRefreshing(true);
+        getDatas();
         swipeRefreshLayout.setRefreshing(true);
         loadRecyclerView();
 
@@ -114,23 +116,10 @@ public class PickupsToday_Executive extends AppCompatActivity
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
-                        database2.insertData(o.getString("name"),o.getString("assigned"),o.getString("uploaded"),o.getString("picked"));
+                        database.insert_pickups_today_executive(o.getString("name"),o.getString("assigned"),o.getString("uploaded"),o.getString("picked"));
                     }
 
-                    SQLiteDatabase sqLiteDatabase = database2.getReadableDatabase();
-                    Cursor c = database2.getAllData(sqLiteDatabase);
-                    while (c.moveToNext())
-                    {
-                        String name = c.getString(0);
-                        String assigned = c.getString(1);
-                        String uploaded = c.getString(2);
-                        String picked = c.getString(3);
-                        PickupTodaySummary_ex todaySummary = new PickupTodaySummary_ex(name,assigned,uploaded,picked);
-                        summaries.add(todaySummary);
-                    }
-                    adapter_exec = new mListForExecutiveAdapter(summaries,getApplicationContext());
-                    recyclerView_exec.setAdapter(adapter_exec);
-                    swipeRefreshLayout.setRefreshing(false);
+                   getDatas();
 
                 } catch (JSONException e) {
                     swipeRefreshLayout.setRefreshing(false);
@@ -149,6 +138,30 @@ public class PickupsToday_Executive extends AppCompatActivity
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+    private void getDatas()
+    {
+        try{
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_pickups_today_executive(sqLiteDatabase);
+            while (c.moveToNext())
+            {
+                String name = c.getString(0);
+                String assigned = c.getString(1);
+                String uploaded = c.getString(2);
+                String picked = c.getString(3);
+                PickupTodaySummary_ex todaySummary = new PickupTodaySummary_ex(name,assigned,uploaded,picked);
+                summaries.add(todaySummary);
+            }
+            adapter_exec = new mListForExecutiveAdapter(summaries,getApplicationContext());
+            recyclerView_exec.setAdapter(adapter_exec);
+            swipeRefreshLayout.setRefreshing(false);
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

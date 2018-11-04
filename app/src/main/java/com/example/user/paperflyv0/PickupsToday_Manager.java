@@ -121,7 +121,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
-                        database.insertData(o.getString("name"),o.getString("assigned"),o.getString("uploaded"),o.getString("received"));
+                        database.insert_pickups_today_manager(o.getString("name"),o.getString("assigned"),o.getString("uploaded"),o.getString("received"));
                     }
                     getData();
                     swipeRefreshLayout.setRefreshing(false);
@@ -151,7 +151,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         try{
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.getAllData(sqLiteDatabase);
+            Cursor c = database.get_pickups_today_manager(sqLiteDatabase);
             while (c.moveToNext())
             {
                 String name = c.getString(0);
@@ -159,7 +159,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                 String uploaded = c.getString(2);
                 String received = c.getString(3);
                 TodaySummary todaySummary = new TodaySummary(name,assigned,uploaded,received);
-
                 listItems.add(todaySummary);
             }
             adapter = new MerchantListAdapter(listItems,getApplicationContext());
