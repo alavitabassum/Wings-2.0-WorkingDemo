@@ -28,8 +28,8 @@ public class LoginActivity extends AppCompatActivity {
 
     Button signin;
     EditText username,pass;
-    private boolean loggedIn = false;
-    Button tempButton;
+   // private boolean loggedIn = false;
+   // Button tempButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,27 +39,39 @@ public class LoginActivity extends AppCompatActivity {
         signin = (Button) findViewById(R.id.sign_in);
         username = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.pass);
-        tempButton = findViewById(R.id.temp_btn);
+       // tempButton = findViewById(R.id.temp_btn);
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //login();
 
-                Intent m_menu_intent = new Intent(LoginActivity.this,
-                        ManagerCardMenu.class);
-                startActivity(m_menu_intent);
+                validate(username.getText().toString(),pass.getText().toString());
+
             }
         });
 
 
     }
+    public void validate(String userName, String userPass){
+        if((userName.equals("haris"))&& (userPass.equals("1234"))) {
+            Intent m_menu_intent = new Intent(LoginActivity.this,
+                    ManagerCardMenu.class);
+            startActivity(m_menu_intent);
+        }
+        else if ((userName.equals("tonoy"))&& (userPass.equals("1234"))){
+            Intent e_menu_intent = new Intent(LoginActivity.this,
+                    ExecutiveCardMenu.class);
+            startActivity(e_menu_intent);
+        }
 
-    public void login_exe(View v){
+    }
+
+  /*  public void login_exe(View v){
         Intent e_menu_intent = new Intent(LoginActivity.this,
                 ExecutiveCardMenu.class);
         startActivity(e_menu_intent);
-    }
+    }*/
 /*
     @Override
     protected void onResume() {

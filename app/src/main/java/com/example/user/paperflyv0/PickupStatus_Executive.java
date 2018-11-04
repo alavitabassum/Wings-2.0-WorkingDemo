@@ -219,10 +219,10 @@ public class PickupStatus_Executive extends AppCompatActivity
           switch (position){
 
                 case 0:
-                    fragment = new Exe_pc_Adapter();
+                    fragment = new Complete_Pickup_Fragment_Executive();
                     break;
                 case 1:
-                    fragment = new Exe_pp_Adapter();
+                    fragment = new Pending_Pickup_Fragment_Executive();
                     break;
             }
             return fragment;

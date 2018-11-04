@@ -12,8 +12,8 @@ import java.util.List;
 
 class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder> {
 
-     private List<PickupTodaySummary_ex> summaries;
-     private Context context;
+    private List<PickupTodaySummary_ex> summaries;
+    private Context context;
 
     public mListForExecutiveAdapter(List<PickupTodaySummary_ex> summaries, Context context) {
         this.summaries = summaries;
