@@ -44,11 +44,13 @@ import java.util.List;
 import static android.Manifest.permission.CAMERA;
 
 public class MyPickupList_Executive extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, pickuplistForExecutiveAdapter.OnItemClickListener {
 
+    public static final String MERCHANT_NAME = "Merchant Name";
     private static final String URL_DATA = "http://192.168.0.118/new/merchantListForExecutive.php";
     private static final int REQUEST_CAMERA = 1;
     private ProgressDialog progress;
+    private pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     RecyclerView.Adapter adapter_pul;
@@ -126,8 +128,9 @@ public class MyPickupList_Executive extends AppCompatActivity
                         );
                         list.add(summary);
                     }
-                    adapter_pul = new pickuplistForExecutiveAdapter(list,getApplicationContext());
-                    recyclerView_pul.setAdapter(adapter_pul);
+                    pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,MyPickupList_Executive.this);
+                    recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+                    pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -305,10 +308,10 @@ public class MyPickupList_Executive extends AppCompatActivity
 
 
     //Scan button onclick function (start)
-    public void goto_ScanScreen(View view){
-        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
-        startActivity(scanIntent);
-    }
+//    public void goto_ScanScreen(View view){
+//        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
+//        startActivity(scanIntent);
+//    }
 
     //Scan button onclick function (end)
 
@@ -389,5 +392,17 @@ public class MyPickupList_Executive extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
+
+        PickupList_Model_For_Executive clickedItem = list.get(position);
+
+        scanIntent.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
+        startActivity(scanIntent);
+
+
     }
 }

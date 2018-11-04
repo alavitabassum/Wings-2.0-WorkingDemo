@@ -12,23 +12,33 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
 public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickuplistForExecutiveAdapter.ViewHolder> {
 
-
     private List<PickupList_Model_For_Executive> list;
     private Context context;
+    private OnItemClickListener mListner;
 
  /*   final CharSequence[] status_options = {"Cancel","Pending"};
     int selection = 1;*/
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listner) {
+        this.mListner = listner;
+    }
 
     public pickuplistForExecutiveAdapter(List<PickupList_Model_For_Executive> list, Context context) {
         this.list = list;
         this.context = context;
     }
+
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -37,6 +47,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView itme_a_pul;
         public TextView item_p_pul;
         public TextView item_scanCount;
+        public Button scan_button;
 
       //  public TextView item_scanTxtButton;
         public TextView item_phnNum;
@@ -51,6 +62,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             item_p_pul=itemView.findViewById(R.id.p_qty_pul);
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
+            scan_button = itemView.findViewById(R.id.btn_scan);
            // item_scanTxtButton=itemView.findViewById(R.id.txt_btn_scan);
 
             //underline phoneNumber
@@ -66,6 +78,19 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                         return;
                     }
                     v.getContext().startActivity(callIntent);
+                }
+            });
+
+            scan_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListner != null) {
+                        // Position of the item will be saved in this variable
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListner.onItemClick(position);
+                        }
+                    }
                 }
             });
 
