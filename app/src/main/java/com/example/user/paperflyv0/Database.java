@@ -70,38 +70,12 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.insert("merchantsfor_executives",null,values);
     }
 
-    public Cursor insert_complete_pickups_manager_history(SQLiteDatabase db)
+    public Cursor  get_pickups_today_executive(SQLiteDatabase db)
     {
         String[] columns = {"name","assigned","uploaded","picked"};
         return db.query("merchantsfor_executives",columns,null,null,null,null,null);
     }
 
-    public void insertData(String merchant_name,String executive_name, String assigned,String picked,String received)
-
-    {
-
-        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
-
-        ContentValues values=new ContentValues();
-
-        values.put("merchant_name",merchant_name);
-
-        values.put("executive_name",executive_name);
-
-        values.put("assigned",assigned);
-
-        values.put("picked",picked);
-
-        values.put("received",received);
-
-        sqLiteDatabase.insert("com_manager",null,values);
-
-    }
-    public Cursor get_complete_pickups_manager_history(SQLiteDatabase db)
-    {
-        String[] columns = {"merchant_name","executive_name","assigned","picked","received"};
-        return db.query("com_manager",columns,null,null,null,null,null);
-    }
 
 
 
