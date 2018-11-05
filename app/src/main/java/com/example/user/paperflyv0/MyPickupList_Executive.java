@@ -89,9 +89,9 @@ public class MyPickupList_Executive extends AppCompatActivity
                         btn_status.setTextColor(Color.BLACK);
                         btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.btn_yellow));
                         btn_status.setText("Pending");
-                        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
-                        params2.setMargins(250, 200, 0, -140);
-                        btn_status.setLayoutParams(params2);
+                       // RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
+                       // params2.setMargins(250, 200, 0, -140);
+                        //btn_status.setLayoutParams(params2);
                         dialogInterface.dismiss();
                         break;
                 }
@@ -127,9 +127,9 @@ public class MyPickupList_Executive extends AppCompatActivity
                                             btn_status.setTextColor(Color.WHITE);
                                             btn_status.setText("cancel");
                                           //  btn_status.setText(cancelSelection[0]); // catch the cancel reason from this line.
-                                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
-                                            params.setMargins(250, 200, 0, -140);
-                                            btn_status.setLayoutParams(params);
+                                            //RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
+                                            //params.setMargins(250, 200, 0, -140);
+                                           // btn_status.setLayoutParams(params);
 
                                         }
                                     }).setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
