@@ -58,8 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="145dp"
-        android:layout_marginBottom="124dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="92dp"
         android:text="Done" />
 
     <TextView
@@ -74,5 +74,17 @@
         android:textStyle="bold"
         android:textColor="@color/blue_link"
         android:text="TextView" />
+
+    <TextView
+        android:id="@+id/scan_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/merchant_name"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="137dp"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:textColor="@color/red"
+        android:text="Scan count: 0" />
 
 </RelativeLayout>

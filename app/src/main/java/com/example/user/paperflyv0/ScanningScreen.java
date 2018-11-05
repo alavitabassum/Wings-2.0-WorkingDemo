@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
@@ -34,6 +33,7 @@ public class ScanningScreen extends AppCompatActivity {
     private String lastText;
     private Button done;
     private TextView merchant_name1;
+    private TextView scan_count1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,13 @@ public class ScanningScreen extends AppCompatActivity {
         Intent intent = getIntent();
 
         String merchant_name = intent.getStringExtra(MERCHANT_NAME);
+        scan_count1 = (TextView) findViewById(R.id.scan_count);
 
         done = (Button) findViewById(R.id.done);
         merchant_name1 = (TextView) findViewById(R.id.merchant_name);
 
         merchant_name1.setText("Scan started for: " +merchant_name);
-//        merchant_name1.setText("Scan started for: " +merchant_id);
+//      merchant_name1.setText("Scan started for: " +merchant_id);
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
@@ -81,9 +82,11 @@ public class ScanningScreen extends AppCompatActivity {
             int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
 
             String strI = String.valueOf(barcode_per_merchant_counts);
-            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
 
-//        builder.setTitle(strI);
+            scan_count1.setText("Scan count: " +strI);
+//          Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
+
+//          builder.setTitle(strI);
             db.close();
 
             beepManager.playBeepSoundAndVibrate();

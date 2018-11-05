@@ -309,24 +309,24 @@ public class MyPickupList_Executive extends AppCompatActivity
 
 
     //Scan button onclick function (start)
-//    public void goto_ScanScreen(View view){
-//        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
-//        startActivity(scanIntent);
-//    }
+    //    public void goto_ScanScreen(View view){
+    //        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
+    //        startActivity(scanIntent);
+    //    }
 
     //Scan button onclick function (end)
 
 
     //CallMerchant (start)
- /*   public void callMerchant(View view){
-    Intent callIntent =new Intent(Intent.ACTION_CALL);
-    callIntent.setData(Uri.parse("tel:01781278896"));
-    if (ActivityCompat.checkSelfPermission(MyPickupList_Executive.this,
-            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-        return;
-    }
-    startActivity(callIntent);
-}*/
+     /*   public void callMerchant(View view){
+        Intent callIntent =new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:01781278896"));
+        if (ActivityCompat.checkSelfPermission(MyPickupList_Executive.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(callIntent);
+    }*/
     //CallMerchant (end)
 
     @Override
@@ -403,7 +403,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 
         scanIntent.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
         scanIntent.putExtra(MERCHANT_ID, String.valueOf(clickedItem.getId()));
-//        Toast.makeText(MyPickupList_Executive.this, clickedItem.getId(), Toast.LENGTH_LONG).show();
+       // Toast.makeText(MyPickupList_Executive.this, clickedItem.getId(), Toast.LENGTH_LONG).show();
         startActivity(scanIntent);
 
 
