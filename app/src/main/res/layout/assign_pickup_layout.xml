@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_assign"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="330dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -34,8 +33,7 @@
             android:textAlignment="textStart"
             android:textColor="#000"
             android:textSize="18sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
 
         <TextView
@@ -43,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="2dp"
             android:lines="2"
@@ -60,11 +58,11 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="160dp"
+            android:layout_marginBottom="210dp"
             android:background="?android:attr/listDivider" />
 
 
-        <TextView
+        <!-- <TextView
             android:id="@+id/txt_btn_assign"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -76,7 +74,7 @@
             android:text="Assign Executives"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" />-->
 
         <TextView
             android:id="@+id/assigned_pickups_text"
@@ -84,8 +82,10 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/divider"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="80dp"
-            android:text="Assigned Pickups" />
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="140dp"
+            android:text="Assigned Pickups:"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/completed_text"
@@ -93,9 +93,12 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/divider"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="60dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginBottom="121dp"
             android:lines="1"
-            android:maxLines="2" />
+            android:maxLines="2"
+            android:text="Completed Pickups:"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/due_text"
@@ -103,9 +106,12 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/divider"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="41dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginBottom="101dp"
             android:lines="1"
-            android:maxLines="2" />
+            android:maxLines="2"
+            android:text="Due Pickups:"
+            android:textColor="@color/black" />
 
 
         <TextView
@@ -116,49 +122,108 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="-19dp"
             android:layout_marginBottom="2dp"
-            android:layout_toEndOf="@+id/completed_text" />
+            android:layout_toEndOf="@+id/completed_text"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/completed_pickups_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/completed_text"
-            android:layout_toEndOf="@+id/completed_text" />
+            android:layout_toEndOf="@+id/completed_text"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/due_pickups_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/completed_text"
-            android:layout_marginTop="-60dp"
-            android:layout_toEndOf="@+id/completed_text" />
+            android:layout_below="@+id/completed_pickups_count"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="40dp"
+            android:layout_toEndOf="@+id/completed_text"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_exe_selected"
-            android:layout_width="217dp"
+            android:id="@+id/selection1"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/assigned_pickups"
-            android:layout_marginTop="236dp"
-            android:layout_marginEnd="-1dp"
+            android:layout_marginTop="220dp"
             android:gravity="left"
             android:lines="1"
             android:maxLines="2"
-            android:paddingStart="10dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:text="First Executive"
+            android:textColor="@color/grey"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/selection2"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selection1"
+            android:layout_alignStart="@+id/selection1"
+            android:text="Second Executive"
+            android:textColor="@color/grey"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/selection3"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/selection2"
+            android:layout_alignStart="@+id/selection1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:text="Third Executive"
+            android:textColor="@color/grey"
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/txt1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/tv_exe_selected"
+            android:layout_alignTop="@+id/selection1"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="1dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="-25dp"
             android:layout_marginEnd="18dp"
-
-            android:text="Assigned:"
+            android:text="Assigned Executives:"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_assign"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_alignStart="@+id/m_add"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="90dp"
+            android:background="@drawable/buttonstyle_assign"
+            android:onClick="assignExe"
+            android:text="Assign Executives"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/confirm_assign"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/buttonstyle_confirm"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
