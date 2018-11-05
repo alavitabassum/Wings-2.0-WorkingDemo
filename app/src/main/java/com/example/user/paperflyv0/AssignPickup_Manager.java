@@ -2,6 +2,7 @@ package com.example.user.paperflyv0;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -76,8 +77,13 @@ public class AssignPickup_Manager extends AppCompatActivity
     // Change status code section (start)
     public void assignExe(View view){
         vwParentRow2 = (android.widget.RelativeLayout) view.getParent();
-        final Button btn_status  = (Button)vwParentRow2.getChildAt(11);
-        final TextView selected = (TextView)vwParentRow2.getChildAt(9);
+
+        final TextView assignedNum = (TextView)vwParentRow2.getChildAt(6);
+        final TextView CompleteNum = (TextView)vwParentRow2.getChildAt(7);
+        final TextView DueNum = (TextView)vwParentRow2.getChildAt(8);
+        final TextView selection1 = (TextView)vwParentRow2.getChildAt(9);
+        final TextView selection2 = (TextView)vwParentRow2.getChildAt(10);
+        final TextView selection3 = (TextView)vwParentRow2.getChildAt(11);
         executive_num_list = new String[]{"1","2","3"};
         final String[] selectionNum = new String[1];
         AlertDialog.Builder builder_assign = new AlertDialog.Builder(AssignPickup_Manager.this);
@@ -141,19 +147,84 @@ public class AssignPickup_Manager extends AppCompatActivity
                                     Toast.makeText(AssignPickup_Manager.this, mSpinner1.getSelectedItem().toString()
                                           +"("+et1.getText().toString() +")",
                                             Toast.LENGTH_SHORT).show();
+                                    selection1.setText(mSpinner1.getSelectedItem().toString());
+                                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
+                                    assignedNum.setText(et1.getText().toString());
+                                    selection2.setVisibility(View.GONE);
+                                    selection3.setVisibility(View.GONE);
                                     dialog.dismiss();
+
                                 }
                             }else if(selectionNum[0] == executive_num_list[1]){
                                 if (!mSpinner1.getSelectedItem().toString().equalsIgnoreCase("Choose executive…") && !mSpinner2.getSelectedItem().toString().equalsIgnoreCase("Choose executive…")){
                                     Toast.makeText(AssignPickup_Manager.this,mSpinner1.getSelectedItem().toString() +"("+et1.getText().toString() +")"+"\n"+ mSpinner2.getSelectedItem().toString() +"("+et2.getText().toString() +")",
                                             Toast.LENGTH_SHORT).show();
+                                    selection1.setText(mSpinner1.getSelectedItem().toString());
+                                    selection2.setText(mSpinner2.getSelectedItem().toString());
+                                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
+                                    selection2.setTextColor(getResources().getColor(R.color.pfColor));
+                                    assignedNum.setText(et1.getText().toString());
+                                    selection3.setVisibility(View.GONE);
                                     dialog.dismiss();
+                                    selection1.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            selection1.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                                            selection2.setBackgroundColor(Color.WHITE);
+                                            assignedNum.setText(et1.getText().toString());
+                                        }
+                                    });
+
+                                    selection2.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            selection2.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                                            selection1.setBackgroundColor(Color.WHITE);
+                                            assignedNum.setText(et2.getText().toString());
+                                        }
+                                    });
                                 }
                             }else if (selectionNum[0] == executive_num_list[2]){
                                 if (!mSpinner1.getSelectedItem().toString().equalsIgnoreCase("Choose executive…") && !mSpinner2.getSelectedItem().toString().equalsIgnoreCase("Choose executive…") && !mSpinner3.getSelectedItem().toString().equalsIgnoreCase("Choose executive…")){
                                     Toast.makeText(AssignPickup_Manager.this,mSpinner1.getSelectedItem().toString()+"("+et1.getText().toString() +")"+"\n"+ mSpinner2.getSelectedItem().toString()+"("+et2.getText().toString() +")"+"\n"+  mSpinner3.getSelectedItem().toString()+"("+et3.getText().toString() +")",
                                             Toast.LENGTH_SHORT).show();
+                                    selection1.setText(mSpinner1.getSelectedItem().toString());
+                                    selection2.setText(mSpinner2.getSelectedItem().toString());
+                                    selection3.setText(mSpinner3.getSelectedItem().toString());
+                                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
+                                    selection2.setTextColor(getResources().getColor(R.color.pfColor));
+                                    selection3.setTextColor(getResources().getColor(R.color.pfColor));
+                                    assignedNum.setText(et1.getText().toString());
                                     dialog.dismiss();
+                                    selection1.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            selection1.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                                            selection2.setBackgroundColor(Color.WHITE);
+                                            selection3.setBackgroundColor(Color.WHITE);
+                                            assignedNum.setText(et1.getText().toString());
+                                        }
+                                    });
+
+                                    selection2.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            selection2.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                                            selection1.setBackgroundColor(Color.WHITE);
+                                            selection3.setBackgroundColor(Color.WHITE);
+                                            assignedNum.setText(et2.getText().toString());
+                                        }
+                                    });
+                                    selection3.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            selection3.setBackgroundColor(getResources().getColor(R.color.light_grey));
+                                            selection1.setBackgroundColor(Color.WHITE);
+                                            selection2.setBackgroundColor(Color.WHITE);
+                                            assignedNum.setText(et3.getText().toString());
+                                        }
+                                    });
+
                                 }
                             }
 
