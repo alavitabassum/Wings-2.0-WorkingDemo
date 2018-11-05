@@ -41,7 +41,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
 
     private ProgressDialog progress;
-    private static final String URL_DATA = "http://192.168.0.142/new/executive.php";
+    private static final String URL_DATA = "http://192.168.0.128/new/executive.php";
 
 
     Database database;
@@ -132,7 +132,7 @@ public class PickupsToday_Executive extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
-                        Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                     }
                 });

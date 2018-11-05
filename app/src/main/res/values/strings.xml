@@ -43,6 +43,7 @@
     <string name="total_products_picked">Picked Qty :</string>
 
     <string-array name="exe_names">
+        <item>Choose executive…</item>
         <item>Ashfaque</item>
         <item>Rokon</item>
         <item>Yusuf</item>
