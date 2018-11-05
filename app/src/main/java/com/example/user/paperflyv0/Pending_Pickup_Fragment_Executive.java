@@ -64,6 +64,8 @@ public class Pending_Pickup_Fragment_Executive extends Fragment {
             @Override
             public void onResponse(String response) {
 //                progress.dismiss();
+
+                listitems1.clear();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray array = jsonObject.getJSONArray("summaryforpending");

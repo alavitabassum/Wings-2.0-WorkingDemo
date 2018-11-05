@@ -127,6 +127,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                     ArrayAdapter<String>  adapter = new ArrayAdapter<String>(AssignPickup_Manager.this,
                             android.R.layout.simple_spinner_item,
                             getResources().getStringArray(R.array.exe_names));
+
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mSpinner1.setAdapter(adapter);
                     mSpinner2.setAdapter(adapter);
