@@ -20,7 +20,7 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String tableEmp="create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1="create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
-        String tableEmp2="create table com_manager(merchant_name text,executive_name text,assigned text,picked text,received text,unique(merchant_name,executive_name,assigned,picked,received))";
+        String tableEmp2="create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
@@ -75,6 +75,58 @@ public class Database extends SQLiteOpenHelper {
         String[] columns = {"name","assigned","uploaded","picked"};
         return db.query("merchantsfor_executives",columns,null,null,null,null,null);
     }
+
+
+    public void insert_complete_pickups_history_ex(String merchant_name,String executive_name,String assigned, String picked, String received)
+    {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+
+        values.put("merchant_name",merchant_name);
+
+        values.put("executive_name",executive_name);
+
+        values.put("assigned",assigned);
+
+        values.put("picked",picked);
+
+        values.put("received",received);
+
+        sqLiteDatabase.insert("com_ex",null,values);
+    }
+
+    public Cursor  get_complete_pickups_history_ex(SQLiteDatabase db)
+    {
+        String[] columns = {"merchant_name","executive_name","assigned","picked","received"};
+        return db.query("com_ex",columns,null,null,null,null,null);
+    }
+
+    public void insert_pending_pickups_history_ex(String merchant_name,String executive_name,String assigned, String picked, String received)
+    {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+
+        values.put("merchant_name",merchant_name);
+
+        values.put("executive_name",executive_name);
+
+        values.put("assigned",assigned);
+
+        values.put("picked",picked);
+
+        values.put("received",received);
+
+        sqLiteDatabase.insert("com_ex",null,values);
+    }
+
+    public Cursor  get_pending_pickups_history_ex(SQLiteDatabase db)
+    {
+        String[] columns = {"merchant_name","executive_name","assigned","picked","received"};
+        return db.query("com_ex",columns,null,null,null,null,null);
+    }
+
 
 
 

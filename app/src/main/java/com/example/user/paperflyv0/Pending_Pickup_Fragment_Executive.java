@@ -1,6 +1,9 @@
 package com.example.user.paperflyv0;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -30,11 +33,11 @@ import java.util.List;
 public class Pending_Pickup_Fragment_Executive extends Fragment {
 
 
-    private static final String URL_DATA = "http://192.168.0.104/new/exec_pick_due.php";
+    private static final String URL_DATA = "http://192.168.0.128/new/pending.php";
     View v;
     private RecyclerView myrecyclerview;
-
-    private List<Pending_Pickup_Model_Executive> listitems;
+    Database database1;
+    private List<Pending_Pickup_Model_Executive> listitems1;
 
     public Pending_Pickup_Fragment_Executive() {
     }
@@ -42,36 +45,34 @@ public class Pending_Pickup_Fragment_Executive extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        database1 = new Database(getContext());
+        database1.getWritableDatabase();
+        listitems1 = new ArrayList<>();
         v = inflater.inflate(R.layout.exe_frag_pp, container, false);
         myrecyclerview = v.findViewById(R.id.recycler_view_pp);
         myrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        getinfo();
         loadRecyclerView();
         return v;
     }
 
     private void loadRecyclerView()
     {
-        listitems = new ArrayList<>();
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 //                progress.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("summary");
+                    JSONArray array = jsonObject.getJSONArray("summaryforpending");
                     for(int i =0;i<array.length();i++)
-                    {
-                        JSONObject o = array.getJSONObject(i);
-                        Pending_Pickup_Model_Executive summary = new Pending_Pickup_Model_Executive(
-                                o.getString("merchant_name"),
-                                o.getString("executive_name"),
-                                o.getString("assigned"),
-                                o.getString("uploaded"),
-                                o.getString("received")
-                        );
-                        listitems.add(summary);
+                    {     JSONObject o = array.getJSONObject(i);
+                        database1.insert_pending_pickups_history_ex(o.getString("merchant_name"), o.getString("executive_name"), o.getString("assigned"), o.getString("picked"), o.getString("received"));
                     }
-                    myrecyclerview.setAdapter(new Pending_Pickup_Adapter_Executive(getContext(),listitems));
+                    getinfo();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -81,7 +82,7 @@ public class Pending_Pickup_Fragment_Executive extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
-                        Toast.makeText(getContext(), "Serve not connected" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -89,90 +90,29 @@ public class Pending_Pickup_Fragment_Executive extends Fragment {
         requestQueue.add(stringRequest);
     }
 
-    //    String[] m_names_list_d = {"Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
-//
-//    String[] a_qty_list_d = {"12","120","50"};
-//
-//    String[] u_qty_list_d = {"13","120","0"};
-//
-//    String[] r_qty_list_d = {"0","0","0"};
-//
-//    String[] e_names_list_d = {"Tonoy", "Tonoy", "Tonoy"};
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.exe_frag_pp,container, false);
-//        RecyclerView recyclerView_d = view.findViewById(R.id.recycler_view_pp);
-//        recyclerView_d.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        recyclerView_d.setAdapter(new Pending_Pickup_Fragment_Executive.RecyclerViewAdapter());
-//        return  view;
-//    }
-//    public static class RecyclerViewHolder extends RecyclerView.ViewHolder{
-//
-//        private CardView mCardView_d;
-//        private TextView TextViewName_d;
-//        private TextView TextViewAssigned_d;
-//        private TextView TextViewUploaded_d;
-//        private TextView TextViewReceived_d;
-//        private TextView TextViewExeName_d;
-//
-//
-//        public RecyclerViewHolder(View itemView){
-//            super(itemView);
-//        }
-//        public  RecyclerViewHolder(LayoutInflater inflater, ViewGroup container){
-//            super(inflater.inflate(R.layout.exe_pp_layout,container,false));
-//
-//            mCardView_d = itemView.findViewById(R.id.card_view_pp);
-//            TextViewName_d = itemView.findViewById(R.id.m_name_pp);
-//            TextViewAssigned_d = itemView.findViewById(R.id.a_qty_pp);
-//            TextViewUploaded_d = itemView.findViewById(R.id.u_qty_pp);
-//            TextViewReceived_d = itemView.findViewById(R.id.r_qty_pp);
-//            TextViewExeName_d = itemView.findViewById(R.id.exe_name_pp);
-//
-//
-//
-//        }
-//    }
-//
-//    private class RecyclerViewAdapter extends RecyclerView.Adapter<Pending_Pickup_Fragment_Executive.RecyclerViewHolder>{
-//        private  String[] mNames_d;
-//        private  String[] aQty_d;
-//        private  String[] uQty_d;
-//        private  String[] rQty_d;
-//        private  String[] eNames_d;
-//
-//        public RecyclerViewAdapter() {
-//            this.mNames_d = m_names_list_d;
-//            this.aQty_d = a_qty_list_d;
-//            this.uQty_d = u_qty_list_d;
-//            this.rQty_d = r_qty_list_d;
-//            this.eNames_d = e_names_list_d;
-//        }
-//
-//
-//        @NonNull
-//        @Override
-//        public Pending_Pickup_Fragment_Executive.RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//            LayoutInflater inflater = LayoutInflater.from(getActivity());
-//
-//            return  new Pending_Pickup_Fragment_Executive.RecyclerViewHolder(inflater,parent);
-//        }
-//
-//        @Override
-//        public void onBindViewHolder(@NonNull Pending_Pickup_Fragment_Executive.RecyclerViewHolder holder, int position) {
-//            holder.TextViewName_d.setText(mNames_d[position]);
-//            holder.TextViewAssigned_d.setText(aQty_d[position]);
-//            holder.TextViewUploaded_d.setText(uQty_d[position]);
-//            holder.TextViewReceived_d.setText(rQty_d[position]);
-//            holder.TextViewExeName_d.setText(eNames_d[position]);
-//
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return mNames_d.length;
-//        }
-//    }
+    private void getinfo()
+    {
+        try {
+
+
+            SQLiteDatabase sqLiteDatabase = database1.getReadableDatabase();
+            Cursor c = database1.get_pending_pickups_history_ex(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String merchant_name = c.getString(0);
+                String executive_name = c.getString(1);
+                String assigned = c.getString(2);
+                String picked = c.getString(3);
+                String received = c.getString(4);
+                Pending_Pickup_Model_Executive todaysum = new Pending_Pickup_Model_Executive(merchant_name, executive_name, assigned, picked, received);
+                listitems1.add(todaysum);
+            }
+
+            myrecyclerview.setAdapter(new Pending_Pickup_Adapter_Executive(getContext(),listitems1));
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 }
