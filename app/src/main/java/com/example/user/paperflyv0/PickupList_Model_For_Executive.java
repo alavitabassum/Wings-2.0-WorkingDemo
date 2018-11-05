@@ -1,6 +1,7 @@
 package com.example.user.paperflyv0;
 
 public class PickupList_Model_For_Executive {
+    private int id;
     private String merchant_name;
     private String address;
     private String assined_qty;
@@ -8,13 +9,18 @@ public class PickupList_Model_For_Executive {
     private String scan_count;
     private String phone_no;
 
-    public PickupList_Model_For_Executive(String merchant_name, String address, String assined_qty, String picked_qty, String scan_count, String phone_no) {
+    public PickupList_Model_For_Executive(int id,String merchant_name, String address, String assined_qty, String picked_qty, String scan_count, String phone_no) {
+        this.id = id;
         this.merchant_name = merchant_name;
         this.address = address;
         this.assined_qty = assined_qty;
         this.picked_qty = picked_qty;
         this.scan_count = scan_count;
         this.phone_no = phone_no;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getMerchant_name() {

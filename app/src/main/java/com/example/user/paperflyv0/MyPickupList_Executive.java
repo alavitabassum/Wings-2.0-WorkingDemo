@@ -47,6 +47,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, pickuplistForExecutiveAdapter.OnItemClickListener {
 
     public static final String MERCHANT_NAME = "Merchant Name";
+    public static final String MERCHANT_ID = "MerchantID";
     private static final String URL_DATA = "http://192.168.0.118/new/merchantListForExecutive.php";
     private static final int REQUEST_CAMERA = 1;
     private ProgressDialog progress;
@@ -119,6 +120,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                     {
                         JSONObject o = array.getJSONObject(i);
                         PickupList_Model_For_Executive summary = new PickupList_Model_For_Executive(
+                                o.getInt("id"),
                                 o.getString("merchant_name"),
                                 o.getString("address"),
                                 o.getString("assined_qty"),
@@ -283,7 +285,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                                     //    dialogInterface.dismiss();
                                Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
 
-
                            }else if(selection[0] != status_options[1] && selection[0] != status_options[0]){
 
                                ((AlertDialog)dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
@@ -401,6 +402,8 @@ public class MyPickupList_Executive extends AppCompatActivity
         PickupList_Model_For_Executive clickedItem = list.get(position);
 
         scanIntent.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
+        scanIntent.putExtra(MERCHANT_ID, String.valueOf(clickedItem.getId()));
+//        Toast.makeText(MyPickupList_Executive.this, clickedItem.getId(), Toast.LENGTH_LONG).show();
         startActivity(scanIntent);
 
 

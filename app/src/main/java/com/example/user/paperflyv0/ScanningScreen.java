@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
@@ -22,10 +23,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
 
 public class ScanningScreen extends AppCompatActivity {
-
+    BarcodeDbHelper db;
     private static final String TAG = ScanningScreen.class.getSimpleName();
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
@@ -41,10 +43,12 @@ public class ScanningScreen extends AppCompatActivity {
         Intent intent = getIntent();
 
         String merchant_name = intent.getStringExtra(MERCHANT_NAME);
+
         done = (Button) findViewById(R.id.done);
         merchant_name1 = (TextView) findViewById(R.id.merchant_name);
 
         merchant_name1.setText("Scan started for: " +merchant_name);
+//        merchant_name1.setText("Scan started for: " +merchant_id);
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
@@ -59,13 +63,28 @@ public class ScanningScreen extends AppCompatActivity {
     private BarcodeCallback callback = new BarcodeCallback() {
         @Override
         public void barcodeResult(BarcodeResult result) {
+
+            db = new BarcodeDbHelper(ScanningScreen.this);
             if(result.getText() == null || result.getText().equals(lastText)) {
                 // Prevent duplicate scans
                 return;
             }
 
             lastText = result.getText();
+            Intent intentID = getIntent();;
+            String merchant_id = intentID.getStringExtra(MERCHANT_ID);
+
+            db.add(merchant_id, lastText);
+
             barcodeView.setStatusText("Barcode"+result.getText());
+//            barcodeView.setStatusText("Barcode" +merchant_id);
+            int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
+
+            String strI = String.valueOf(barcode_per_merchant_counts);
+            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
+
+//        builder.setTitle(strI);
+            db.close();
 
             beepManager.playBeepSoundAndVibrate();
 
