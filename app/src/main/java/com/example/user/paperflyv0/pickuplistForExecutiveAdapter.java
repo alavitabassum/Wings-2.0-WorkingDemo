@@ -2,41 +2,42 @@ package com.example.user.paperflyv0;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.List;
 
 public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickuplistForExecutiveAdapter.ViewHolder> {
 
-
-    private String[] m_pul = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
-
-    private String[] add_pul = {"66/4, West Razabazar, Farmgate","J 42 Extension, Pallabi","Fortune Shopping Mall, Shop 49, Level 5, Malibagh",
-            "123 Tejgaon I/A, Dhaka-1208","House 36, Road 2, Block B, Rampura Banasree","5th floor, Plot-6, Block-C,Kamal Ataturk Avenue , Banani"};
-
-    private String[] a_pul = {"5","7","3","5","7","2"};
-
-    private String[] p_pul = {"2","2","1","1","5","1"};
-
-    private String[] scan_count = {"3","5","1","4","2","1"};
-
-    private String[] merchant_phnNum = {"01781278896","01781278896","01781278896","01781278896","01781278896","01781278896"};
+    private List<PickupList_Model_For_Executive> list;
+    private Context context;
+    private OnItemClickListener mListner;
 
  /*   final CharSequence[] status_options = {"Cancel","Pending"};
     int selection = 1;*/
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listner) {
+        this.mListner = listner;
+    }
+
+    public pickuplistForExecutiveAdapter(List<PickupList_Model_For_Executive> list, Context context) {
+        this.list = list;
+        this.context = context;
+    }
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -46,6 +47,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView itme_a_pul;
         public TextView item_p_pul;
         public TextView item_scanCount;
+        public Button scan_button;
 
       //  public TextView item_scanTxtButton;
         public TextView item_phnNum;
@@ -60,6 +62,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             item_p_pul=itemView.findViewById(R.id.p_qty_pul);
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
+            scan_button = itemView.findViewById(R.id.btn_scan);
            // item_scanTxtButton=itemView.findViewById(R.id.txt_btn_scan);
 
             //underline phoneNumber
@@ -78,8 +81,18 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                 }
             });
 
-
-
+            scan_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListner != null) {
+                        // Position of the item will be saved in this variable
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListner.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
         }
     }
@@ -94,12 +107,13 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.item_m_pul.setText(m_pul[i]);
-        viewHolder.item_add_pul.setText(add_pul[i]);
-        viewHolder.itme_a_pul.setText(a_pul[i]);
-        viewHolder.item_p_pul.setText(p_pul[i]);
-        viewHolder.item_scanCount.setText(scan_count[i]);
-        viewHolder.item_phnNum.setText(merchant_phnNum[i]);
+
+        viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
+        viewHolder.item_add_pul.setText(list.get(i).getAddress());
+        viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
+        viewHolder.item_p_pul.setText(list.get(i).getPicked_qty());
+        viewHolder.item_scanCount.setText(list.get(i).getScan_count());
+        viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
 
 
 
@@ -107,7 +121,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
     @Override
     public int getItemCount() {
-        return m_pul.length;
+        return list.size();
     }
 
 }

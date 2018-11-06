@@ -1,22 +1,24 @@
 package com.example.user.paperflyv0;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class merchantListForExecutiveAdapter extends RecyclerView.Adapter<merchantListForExecutiveAdapter.ViewHolder> {
+import java.util.List;
 
+class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder> {
 
-    private String[] m_names_e = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
+    private List<PickupTodaySummary_ex> summaries;
+    private Context context;
 
-    private String[] asgn_qtyList = {"5","7","3","5","7","2"};
-
-    private String[] upld_qtyList = {"2","2","1","1","5","1"};
-
-    private String[] rcv_qtyList = {"3","5","1","4","2","1"};
+    public mListForExecutiveAdapter(List<PickupTodaySummary_ex> summaries, Context context) {
+        this.summaries = summaries;
+        this.context = context;
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -48,15 +50,16 @@ public class merchantListForExecutiveAdapter extends RecyclerView.Adapter<mercha
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.item_mName.setText(m_names_e[i]);
-        viewHolder.item_aQty.setText(asgn_qtyList[i]);
-        viewHolder.item_uQty.setText(upld_qtyList[i]);
-        viewHolder.item_rQty.setText(rcv_qtyList[i]);
+        PickupTodaySummary_ex summary_ex = summaries.get(i);
+        viewHolder.item_mName.setText(summary_ex.getM_names_e());
+        viewHolder.item_aQty.setText(summary_ex.getAsgn_qtyList());
+        viewHolder.item_uQty.setText(summary_ex.getUpld_qtyList());
+        viewHolder.item_rQty.setText(summary_ex.getRcv_qtyList());
     }
 
     @Override
     public int getItemCount() {
-        return m_names_e.length;
+        return summaries.size();
     }
 
 }
