@@ -31,11 +31,11 @@
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme">
-           <!-- <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
@@ -48,11 +48,11 @@
             android:name=".AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
             android:theme="@style/AppTheme">
-            <intent-filter>
+       <!--     <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".PickupHistory_Manager"
