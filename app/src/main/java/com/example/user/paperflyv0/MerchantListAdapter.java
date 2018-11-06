@@ -11,24 +11,18 @@ import java.util.List;
 
 public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder> {
 
-/*    private List<TodaySummary> listItems;
-    private  Context context;*/
+   private List<TodaySummary> listItems;
+    private  Context context;
 
-    private String[] m_names = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
 
-    private String[] asgn_qtyList = {"5","7","3","5","7","2"};
 
-    private String[] upld_qtyList = {"2","2","1","1","5","1"};
-
-    private String[] rcv_qtyList = {"3","5","1","4","2","1"};
-/*
 
     public MerchantListAdapter(List<TodaySummary> listItems, Context context) {
         this.listItems = listItems;
         this.context = context;
 
     }
-*/
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -56,17 +50,17 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-       /* TodaySummary todaySummary = listItems.get(i);*/
-        viewHolder.itemMerchantName.setText(m_names[i]);
-        viewHolder.itemAssignedQty.setText(asgn_qtyList[i]);
-        viewHolder.itemUploadedQty.setText(upld_qtyList[i]);
-        viewHolder.itemReceivedQty.setText(rcv_qtyList[i]);
+       TodaySummary todaySummary = listItems.get(i);
+        viewHolder.itemMerchantName.setText(todaySummary.getM_names());
+        viewHolder.itemAssignedQty.setText(todaySummary.getAsgn_pu());
+        viewHolder.itemUploadedQty.setText(todaySummary.getUpload_pu());
+        viewHolder.itemReceivedQty.setText(todaySummary.getReceived_pu());
 
     }
 
     @Override
     public int getItemCount() {
-        return m_names.length;
+        return listItems.size();
     }
 
 }
