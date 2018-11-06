@@ -31,7 +31,7 @@ import java.util.List;
 
 public class Complete_Pickup_Fragment_Executive extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
-    private static final String URL_DATA = "http://192.168.0.128/new/complete.php";
+    private static final String URL_DATA = "http://192.168.0.130/new/complete.php";
     View v;
     private RecyclerView myrecyclerview;
     public SwipeRefreshLayout swipeRefreshLayout;
