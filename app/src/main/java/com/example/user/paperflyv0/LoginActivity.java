@@ -28,8 +28,6 @@ public class LoginActivity extends AppCompatActivity {
 
     Button signin;
     EditText username,pass;
-   // private boolean loggedIn = false;
-   // Button tempButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         signin = (Button) findViewById(R.id.sign_in);
         username = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.pass);
-       // tempButton = findViewById(R.id.temp_btn);
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //login();
 
                 validate(username.getText().toString(),pass.getText().toString());
 
@@ -67,95 +63,5 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-  /*  public void login_exe(View v){
-        Intent e_menu_intent = new Intent(LoginActivity.this,
-                ExecutiveCardMenu.class);
-        startActivity(e_menu_intent);
-    }*/
-/*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //In onresume fetching value from sharedpreference
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
-
-        //Fetching the boolean value form sharedpreferences
-        loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
-
-        //If we will get true
-        if(loggedIn){
-            //We will start the Welcome Activity
-            Intent intent = new Intent(LoginActivity.this, Welcome.class);
-            startActivity(intent);
-        }
-    }
-
-
-    public void login()
-    {
-        //Getting values from edit texts
-        final String user = username.getText().toString().trim();
-        final String pas = pass.getText().toString().trim();
-
-        StringRequest request = new StringRequest(Request.Method.POST, "http://paperflybd.com/la.php", new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                if(response.contains("failure")){
-                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
-
-                }
-                else
-                {
-                    try {
-
-                        JSONArray arr = new JSONArray(response);
-                        JSONObject jObj = arr.getJSONObject(0);
-                        String userRole = jObj.getString("userRole");
-                        if (userRole.contains("0")) {
-
-                            startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
-                        } else {
-
-                            startActivity(new Intent(getApplicationContext(),ExecutiveCardMenu.class));
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Toast.makeText(getApplicationContext(),"Welcome!",Toast.LENGTH_SHORT).show();
-                    //Creating a shared preference
-                    SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-                    //Creating editor to store values to shared preferences
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    //Adding values to editor
-                    editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
-                    editor.putString(Config.EMAIL_SHARED_PREF, user);
-
-                    //Saving values to editor
-                    editor.commit();
-
-
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("username",user);
-                params.put("pass",pas);
-                return params;
-            }
-        };
-
-        Volley.newRequestQueue(this).add(request);
-    }
-*/
 
 }

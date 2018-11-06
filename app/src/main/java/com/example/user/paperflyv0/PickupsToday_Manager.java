@@ -40,31 +40,31 @@ import java.util.List;
 
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-/*    private static final String URL_DATA = "http://192.168.0.142/new/order.php";
-    private ProgressDialog progress;*/
+    private static final String URL_DATA = "http://192.168.0.142/new/order.php";
+    private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
-  /*  List<TodaySummary> listItems;*/
+    List<TodaySummary> listItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickups_today__manager);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
         //Fetching email from shared preferences
-      /*  SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-        listItems = new ArrayList<>();*/
+        listItems = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
-        //recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new MerchantListAdapter();
-        recyclerView.setAdapter(adapter);
+        loadRecyclerView();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +84,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
- /*   private void loadRecyclerView()
+    private void loadRecyclerView()
     {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -130,7 +130,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
-*/
+
 
     @Override
     public void onBackPressed() {
@@ -170,12 +170,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(PickupsToday_Manager.this,
-                    ManagerCardMenu.class);
-            startActivity(homeIntent);
-        }
-        else if (id == R.id.nav_pickDue) {
+        if (id == R.id.nav_pickDue) {
             Intent pickupIntent = new Intent(PickupsToday_Manager.this,
                     PickupsToday_Manager.class);
             startActivity(pickupIntent);

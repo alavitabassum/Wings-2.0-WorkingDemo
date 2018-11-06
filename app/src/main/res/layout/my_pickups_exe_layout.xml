@@ -195,7 +195,7 @@
             android:background="@drawable/buttonstyle_scan"
             android:text="SCAN"
             android:textColor="@color/white"
-            android:onClick="goto_ScanScreen"/>
+            />
 
 
     </RelativeLayout>

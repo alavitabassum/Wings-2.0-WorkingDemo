@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".PickupHistory_Manager$PlaceholderFragment">
 
+
     <TextView
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
@@ -19,5 +20,6 @@
         app:layout_constraintTop_toTopOf="@+id/constraintLayout"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintTop_creator="1" />
+
 
 </android.support.constraint.ConstraintLayout>
