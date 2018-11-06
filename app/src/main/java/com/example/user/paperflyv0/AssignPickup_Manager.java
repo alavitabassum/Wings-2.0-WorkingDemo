@@ -85,185 +85,60 @@ public class AssignPickup_Manager extends AppCompatActivity
         final TextView selection2 = (TextView)vwParentRow2.getChildAt(10);
         final TextView selection3 = (TextView)vwParentRow2.getChildAt(11);
         executive_num_list = new String[]{"1","2","3"};
-        final String[] selectionNum = new String[1];
-        AlertDialog.Builder builder_assign = new AlertDialog.Builder(AssignPickup_Manager.this);
-        builder_assign.setTitle("How many executives do you want to assign?");
-        builder_assign.setSingleChoiceItems(executive_num_list, -1, new DialogInterface.OnClickListener() {
+
+
+        AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
+        View mView = getLayoutInflater().inflate(R.layout.dialog_spinner,null);
+        spinnerBuilder.setTitle("Select executive and assign number.");
+        final Spinner mSpinner1 = mView.findViewById(R.id.spinner1);
+        final EditText et1 = mView.findViewById(R.id.spinner1num);
+
+        ArrayAdapter<String>  adapter = new ArrayAdapter<String>(AssignPickup_Manager.this,
+                android.R.layout.simple_spinner_item,
+                getResources().getStringArray(R.array.exe_names));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner1.setAdapter(adapter);
+
+        spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int i) {
+            public void onClick(DialogInterface dialog, int i1) {
 
-                //selected.setText(executive_num_list[i]);
-                switch(i){
+                    if (!mSpinner1.getSelectedItem().toString().equalsIgnoreCase("Choose executive…")){
+                        Toast.makeText(AssignPickup_Manager.this, mSpinner1.getSelectedItem().toString()
+                                        +"("+et1.getText().toString() +")",
+                                Toast.LENGTH_SHORT).show();
+                        selection1.setText(mSpinner1.getSelectedItem().toString());
+                        selection1.setTextColor(getResources().getColor(R.color.pfColor));
+                        assignedNum.setText(et1.getText().toString());
+                        /*selection2.setVisibility(View.GONE);
+                        selection3.setVisibility(View.GONE);*/
+                        dialog.dismiss();
 
-                    case 0:
-                        selectionNum[0] = executive_num_list[0];
-                        ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                        break;
-                    case 1:
-                        selectionNum[0] = executive_num_list[1];
-                        ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                        break;
-                    case 2:
-                        selectionNum[0] = executive_num_list[2];
-                        ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                        break;
-                }
-            }
-        }).setCancelable(false).setPositiveButton("Next", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-
-                    AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
-                    View mView = getLayoutInflater().inflate(R.layout.dialog_spinner,null);
-                    spinnerBuilder.setTitle("Select executive and assign number.");
-                    final Spinner mSpinner1 = mView.findViewById(R.id.spinner1);
-                    final EditText et1 = mView.findViewById(R.id.spinner1num);
-                    final Spinner mSpinner2 = mView.findViewById(R.id.spinner2);
-                    final EditText et2 = mView.findViewById(R.id.spinner2num);
-                    final Spinner mSpinner3 = mView.findViewById(R.id.spinner3);
-                    final EditText et3 = mView.findViewById(R.id.spinner3num);
-                    final RelativeLayout r2 =mView.findViewById(R.id.spinner_sec_2);
-                    final RelativeLayout r3 =mView.findViewById(R.id.spinner_sec_3);
-                    ArrayAdapter<String>  adapter = new ArrayAdapter<String>(AssignPickup_Manager.this,
-                            android.R.layout.simple_spinner_item,
-                            getResources().getStringArray(R.array.exe_names));
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mSpinner1.setAdapter(adapter);
-                    mSpinner2.setAdapter(adapter);
-                    mSpinner3.setAdapter(adapter);
-
-                if (selectionNum[0] == executive_num_list[0]){
-                    r2.setVisibility(View.GONE);
-                    r3.setVisibility(View.GONE);
-                }else if(selectionNum[0] == executive_num_list[1]){
-                    r3.setVisibility(View.GONE);
-                }
-
-                    spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i1) {
-                            if (selectionNum[0] == executive_num_list[0]){
-                                if (!mSpinner1.getSelectedItem().toString().equalsIgnoreCase("Choose executive…")){
-                                    Toast.makeText(AssignPickup_Manager.this, mSpinner1.getSelectedItem().toString()
-                                          +"("+et1.getText().toString() +")",
-                                            Toast.LENGTH_SHORT).show();
-                                    selection1.setText(mSpinner1.getSelectedItem().toString());
-                                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
-                                    assignedNum.setText(et1.getText().toString());
-                                    selection2.setVisibility(View.GONE);
-                                    selection3.setVisibility(View.GONE);
-                                    dialog.dismiss();
-
-                                }
-                            }else if(selectionNum[0] == executive_num_list[1]){
-                                if (!mSpinner1.getSelectedItem().toString().equalsIgnoreCase("Choose executive…") && !mSpinner2.getSelectedItem().toString().equalsIgnoreCase("Choose executive…")){
-                                    Toast.makeText(AssignPickup_Manager.this,mSpinner1.getSelectedItem().toString() +"("+et1.getText().toString() +")"+"\n"+ mSpinner2.getSelectedItem().toString() +"("+et2.getText().toString() +")",
-                                            Toast.LENGTH_SHORT).show();
-                                    selection1.setText(mSpinner1.getSelectedItem().toString());
-                                    selection2.setText(mSpinner2.getSelectedItem().toString());
-                                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
-                                    selection2.setTextColor(getResources().getColor(R.color.pfColor));
-                                    assignedNum.setText(et1.getText().toString());
-                                    selection3.setVisibility(View.GONE);
-                                    dialog.dismiss();
-                                    selection1.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            selection1.setBackgroundColor(getResources().getColor(R.color.light_grey));
-                                            selection2.setBackgroundColor(Color.WHITE);
-                                            assignedNum.setText(et1.getText().toString());
-                                        }
-                                    });
-
-                                    selection2.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            selection2.setBackgroundColor(getResources().getColor(R.color.light_grey));
-                                            selection1.setBackgroundColor(Color.WHITE);
-                                            assignedNum.setText(et2.getText().toString());
-                                        }
-                                    });
-                                }
-                            }else if (selectionNum[0] == executive_num_list[2]){
-                                if (!mSpinner1.getSelectedItem().toString().equalsIgnoreCase("Choose executive…") && !mSpinner2.getSelectedItem().toString().equalsIgnoreCase("Choose executive…") && !mSpinner3.getSelectedItem().toString().equalsIgnoreCase("Choose executive…")){
-                                    Toast.makeText(AssignPickup_Manager.this,mSpinner1.getSelectedItem().toString()+"("+et1.getText().toString() +")"+"\n"+ mSpinner2.getSelectedItem().toString()+"("+et2.getText().toString() +")"+"\n"+  mSpinner3.getSelectedItem().toString()+"("+et3.getText().toString() +")",
-                                            Toast.LENGTH_SHORT).show();
-                                    selection1.setText(mSpinner1.getSelectedItem().toString());
-                                    selection2.setText(mSpinner2.getSelectedItem().toString());
-                                    selection3.setText(mSpinner3.getSelectedItem().toString());
-                                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
-                                    selection2.setTextColor(getResources().getColor(R.color.pfColor));
-                                    selection3.setTextColor(getResources().getColor(R.color.pfColor));
-                                    assignedNum.setText(et1.getText().toString());
-                                    dialog.dismiss();
-                                    selection1.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            selection1.setBackgroundColor(getResources().getColor(R.color.light_grey));
-                                            selection2.setBackgroundColor(Color.WHITE);
-                                            selection3.setBackgroundColor(Color.WHITE);
-                                            assignedNum.setText(et1.getText().toString());
-                                        }
-                                    });
-
-                                    selection2.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            selection2.setBackgroundColor(getResources().getColor(R.color.light_grey));
-                                            selection1.setBackgroundColor(Color.WHITE);
-                                            selection3.setBackgroundColor(Color.WHITE);
-                                            assignedNum.setText(et2.getText().toString());
-                                        }
-                                    });
-                                    selection3.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            selection3.setBackgroundColor(getResources().getColor(R.color.light_grey));
-                                            selection1.setBackgroundColor(Color.WHITE);
-                                            selection2.setBackgroundColor(Color.WHITE);
-                                            assignedNum.setText(et3.getText().toString());
-                                        }
-                                    });
-
-                                }
-                            }
-
-
-                        }
-                    });
-                    spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int i1) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    spinnerBuilder.setView(mView);
-                    AlertDialog dialog2 = spinnerBuilder.create();
-                    dialog2.show();
-
+                    }
 
             }
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        });
+        spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int i1) {
                 dialog.dismiss();
             }
         });
         vwParentRow2.refreshDrawableState();
-        AlertDialog Dialog_assign = builder_assign.create();
-        Dialog_assign.setOnShowListener(new DialogInterface.OnShowListener() {
+        spinnerBuilder.setView(mView);
+        AlertDialog dialog2 = spinnerBuilder.create();
+    /*    dialog2.setOnShowListener(new DialogInterface.OnShowListener() {
 
             @Override
             public void onShow(DialogInterface dialog) {
-                if(selectionNum[0] != executive_num_list[0]|| selectionNum[0] != executive_num_list[1] || selectionNum[0] != executive_num_list[2])
+                if(mSpinner1.getSelectedItem().toString().equals("Choose executive…"))
                 {
                     ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 }
             }
-        });
+        });*/
 
-        Dialog_assign.show();
+        dialog2.show();
 
 
     }
