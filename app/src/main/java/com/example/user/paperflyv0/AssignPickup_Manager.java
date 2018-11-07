@@ -1,7 +1,11 @@
 package com.example.user.paperflyv0;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,9 +23,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,10 +53,15 @@ public class AssignPickup_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
     String[] executive_num_list;
-    private String URL_DATA = "http://192.168.0.130/new/executivelist.php";
-    private String INSERT_URL = "http://192.168.0.130/new/insertassign.php";
+    private String URL_DATA = "http://192.168.0.102/new/executivelist.php";
+    private String INSERT_URL = "http://192.168.0.102/new/insertassign.php";
+    private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
     List<AssignManager_ExecutiveList> executiveLists;
-
+    List<AssignManager_Model> assignManager_modelList;
+    Database database;
+    Boolean isScrolling = false;
+    int currentitems,totalitems,scrolleroutitems;
+    ProgressBar progressbar;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -60,17 +71,49 @@ public class AssignPickup_Manager extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign_pickup__manager);
+        database = new Database(getApplicationContext());
+        database.getWritableDatabase();
         executiveLists = new ArrayList<>();
+        assignManager_modelList = new ArrayList<>();
+        progressbar = (ProgressBar) findViewById(R.id.progress);
+
+        //Fetching email from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String user = username.toString();
 
         //recycler with cardview
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
-
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
+                {
+                    isScrolling = true;
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                currentitems = layoutManager.getChildCount();
+                totalitems = layoutManager.getItemCount();
+                scrolleroutitems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+                if(isScrolling && (currentitems + scrolleroutitems == totalitems))
+                {
+                    isScrolling = false;
+                    getallmerchant();
+                }
+            }
+        });
         loadRecyclerView();
-        adapter = new AssignExecutiveAdapter();
-        recyclerView.setAdapter(adapter);
+        //getallmerchant();
+        loadmerchantlist(user);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,44 +135,6 @@ public class AssignPickup_Manager extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    private void loadRecyclerView()
-    {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("executives");
-                    for(int i =0;i<array.length();i++)
-                    {
-                        JSONObject o = array.getJSONObject(i);
-                        AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(
-                                o.getString("executive_name")
-                        );
-                        executiveLists.add(assignManager_executiveList);
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-
-                }
-
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
     }
 
     // Change status code section (start)
@@ -210,6 +215,115 @@ public class AssignPickup_Manager extends AppCompatActivity
 
 
     }
+    private void loadRecyclerView()
+    {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray array = jsonObject.getJSONArray("executives");
+                    for(int i =0;i<array.length();i++)
+                    {
+                        JSONObject o = array.getJSONObject(i);
+                        AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(
+                                o.getString("executive_name")
+                        );
+                        executiveLists.add(assignManager_executiveList);
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+    private void loadmerchantlist(final String user)
+    {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, "http://paperflybd.com/merchantAPI.php",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("merchantlist");
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                database.insert_merchantlist(o.getString("merchantName"),o.getString("contactName"));
+                            }
+                            getallmerchant();
+                            progressbar.setVisibility(View.GONE);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        //   Log.d("Error",error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String>  params1 = new HashMap<String,String>();
+                params1.put("username",user);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }
+
+
+    private void getallmerchant()
+    {     progressbar.setVisibility(View.VISIBLE);
+        try{
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_merchantlist(sqLiteDatabase);
+            while (c.moveToNext())
+            {
+                String merchantName = c.getString(0);
+                String contactName = c.getString(1);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName,contactName);
+                assignManager_modelList.add(todaySummary);
+            }
+            adapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());
+            recyclerView.setAdapter(adapter);
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     private void assignexecutive(final String ex_name, final String order_count) {
 
 
@@ -227,7 +341,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
-                    //   Log.d("Error",error);
+                        //   Log.d("Error",error);
                     }
                 }
         ) {
@@ -303,9 +417,45 @@ public class AssignPickup_Manager extends AppCompatActivity
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
-            Intent loginIntent = new Intent(AssignPickup_Manager.this,
-                    LoginActivity.class);
-            startActivity(loginIntent);
+            //Creating an alert dialog to confirm logout
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Are you sure you want to logout?");
+            alertDialogBuilder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            //Getting out sharedpreferences
+                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                            //Getting editor
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            //Puting the value false for loggedin
+                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                            //Putting blank value to email
+                            editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                            //Saving the sharedpreferences
+                            editor.commit();
+
+                            //Starting login activity
+                            Intent intent = new Intent(AssignPickup_Manager.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+            alertDialogBuilder.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+
+            //Showing the alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
 
         }
 

@@ -41,7 +41,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
 
     private ProgressDialog progress;
-    private static final String URL_DATA = "http://192.168.0.130/new/executive.php";
+    private static final String URL_DATA = "http:// 192.168.0.102/new/executive.php";
 
 
     Database database;

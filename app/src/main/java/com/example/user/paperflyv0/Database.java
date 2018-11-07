@@ -21,9 +21,11 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp="create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1="create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2="create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
+        String tableEmp3="create table merchantList(merchantName text,contactName text,unique (merchantName,contactName))";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
+        sqLiteDatabase.execSQL(tableEmp3);
     }
 
     @Override
@@ -125,6 +127,25 @@ public class Database extends SQLiteOpenHelper {
     {
         String[] columns = {"merchant_name","executive_name","assigned","picked","received"};
         return db.query("com_ex",columns,null,null,null,null,null);
+    }
+
+    public void insert_merchantlist(String merchantName,String contactName)
+    {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+
+        values.put("merchantName",merchantName);
+
+        values.put("contactName",contactName);
+
+        sqLiteDatabase.insert("merchantList",null,values);
+    }
+
+    public Cursor get_merchantlist(SQLiteDatabase db)
+    {
+        String[] columns = {"merchantName","contactName"};
+        return db.query("merchantList",columns,null,null,null,null,null);
     }
 
 
