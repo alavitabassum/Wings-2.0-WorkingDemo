@@ -41,6 +41,9 @@ dependencies {
     implementation 'com.google.zxing:core:3.2.1'
     implementation 'com.google.android.gms:play-services:12.0.1'
 
+    //search library
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+
 
 
 
