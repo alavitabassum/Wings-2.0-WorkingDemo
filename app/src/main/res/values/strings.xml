@@ -76,5 +76,6 @@
     <string name="title_activity_pickup_status__executive">PickupStatus_Executive</string>
     <string name="title_activity_my_pickups__executive">MyPickups_Executive</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="search">Search...</string>
 
 </resources>
