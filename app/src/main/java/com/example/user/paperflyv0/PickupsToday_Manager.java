@@ -40,7 +40,7 @@ import java.util.List;
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private static final String URL_DATA = "http://192.168.0.102/new/order.php";
+    private static final String URL_DATA = "http://192.168.0.121/new/order.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;

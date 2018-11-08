@@ -23,11 +23,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -50,18 +48,18 @@ import java.util.List;
 import java.util.Map;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener{
 
     String[] executive_num_list;
-    private String URL_DATA = "http://192.168.0.102/new/executivelist.php";
-    private String INSERT_URL = "http://192.168.0.102/new/insertassign.php";
+    public static final String MERCHANT_NAME = "Merchant Name";
+    private String URL_DATA = "http://192.168.0.121/new/executivelist.php";
+    private String INSERT_URL = "http://192.168.0.121/new/insertassign.php";
     private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
+    private AssignExecutiveAdapter assignExecutiveAdapter;
     Database database;
-    Boolean isScrolling = false;
-    int currentitems,totalitems,scrolleroutitems;
-    ProgressBar progressbar;
+
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -75,43 +73,18 @@ public class AssignPickup_Manager extends AppCompatActivity
         database.getWritableDatabase();
         executiveLists = new ArrayList<>();
         assignManager_modelList = new ArrayList<>();
-        progressbar = (ProgressBar) findViewById(R.id.progress);
 
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        final String user = username.toString();
+        String user = username.toString();
 
         //recycler with cardview
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-                {
-                    isScrolling = true;
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                currentitems = layoutManager.getChildCount();
-                totalitems = layoutManager.getItemCount();
-                scrolleroutitems = ((LinearLayoutManager)recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-
-                if(isScrolling && (currentitems + scrolleroutitems == totalitems))
-                {
-                    isScrolling = false;
-                    getallmerchant();
-                }
-            }
-        });
         loadRecyclerView();
-        //getallmerchant();
+        getallmerchant();
         loadmerchantlist(user);
 
 
@@ -217,7 +190,6 @@ public class AssignPickup_Manager extends AppCompatActivity
     }
     private void loadRecyclerView()
     {
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -256,7 +228,6 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     private void loadmerchantlist(final String user)
     {
-
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, "http://paperflybd.com/merchantAPI.php",
                 new Response.Listener<String>()
                 {
@@ -271,12 +242,10 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 database.insert_merchantlist(o.getString("merchantName"),o.getString("contactName"));
                             }
                             getallmerchant();
-                            progressbar.setVisibility(View.GONE);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
-
 
                         }
                     }
@@ -304,7 +273,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
 
     private void getallmerchant()
-    {     progressbar.setVisibility(View.VISIBLE);
+    {
         try{
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
@@ -318,6 +287,7 @@ public class AssignPickup_Manager extends AppCompatActivity
             }
             adapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());
             recyclerView.setAdapter(adapter);
+            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
 
         }catch (Exception e)
         {
@@ -464,4 +434,9 @@ public class AssignPickup_Manager extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        AssignManager_Model clickeditem = assignManager_modelList.get(position);
+        Toast.makeText(AssignPickup_Manager.this,"this is the item position"+position,Toast.LENGTH_SHORT).show();
+    }
 }

@@ -103,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                     Toast.makeText(getApplicationContext(),"Welcome!",Toast.LENGTH_SHORT).show();
                     //Creating a shared preference
                     SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -110,9 +111,11 @@ public class LoginActivity extends AppCompatActivity {
                     //Creating editor to store values to shared preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
+
                     //Adding values to editor
                     editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
                     editor.putString(Config.EMAIL_SHARED_PREF, user);
+
 
                     //Saving values to editor
                     editor.commit();
