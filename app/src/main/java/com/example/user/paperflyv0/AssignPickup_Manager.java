@@ -48,14 +48,16 @@ import java.util.List;
 import java.util.Map;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener{
 
     String[] executive_num_list;
-    private String URL_DATA = "http://192.168.0.102/new/executivelist.php";
-    private String INSERT_URL = "http://192.168.0.102/new/insertassign.php";
+    public static final String MERCHANT_NAME = "Merchant Name";
+    private String URL_DATA = "http://192.168.0.121/new/executivelist.php";
+    private String INSERT_URL = "http://192.168.0.121/new/insertassign.php";
     private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
+    private AssignExecutiveAdapter assignExecutiveAdapter;
     Database database;
 
 
@@ -82,7 +84,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         loadRecyclerView();
-        //getallmerchant();
+        getallmerchant();
         loadmerchantlist(user);
 
 
@@ -285,6 +287,7 @@ public class AssignPickup_Manager extends AppCompatActivity
             }
             adapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());
             recyclerView.setAdapter(adapter);
+            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
 
         }catch (Exception e)
         {
@@ -431,4 +434,9 @@ public class AssignPickup_Manager extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+        AssignManager_Model clickeditem = assignManager_modelList.get(position);
+        Toast.makeText(AssignPickup_Manager.this,"this is the item position"+position,Toast.LENGTH_SHORT).show();
+    }
 }

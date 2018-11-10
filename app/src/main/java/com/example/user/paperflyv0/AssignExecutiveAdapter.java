@@ -14,6 +14,15 @@ import java.util.List;
 public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> {
     private List<AssignManager_Model> assignManager_modelList;
     private Context context;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listner) {
+        this.mListener = listner;
+    }
 
     public AssignExecutiveAdapter(List<AssignManager_Model> assignManager_modelList, Context context) {
         this.assignManager_modelList = assignManager_modelList;
@@ -39,6 +48,19 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             itemMerchantAddress=itemView.findViewById(R.id.m_add);
             itemCompletedCount=itemView.findViewById(R.id.completed_pickups_count);
             itemDueCount=itemView.findViewById(R.id.due_pickups_count);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null){
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            mListener.onItemClick(view, position);
+
+                        }
+                    }
+                }
+            });
         }
     }
 
