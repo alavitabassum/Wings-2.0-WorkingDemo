@@ -20,6 +20,10 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context=".AssignPickup_Manager" />
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_assign"
@@ -28,8 +32,6 @@
         android:paddingTop="10dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
 
 </RelativeLayout>

@@ -1,7 +1,11 @@
 package com.example.user.paperflyv0;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,35 +47,49 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import android.widget.SearchView.OnQueryTextListener;
+import android.app.SearchManager;
+import android.support.v7.widget.SearchView;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener{
 
     String[] executive_num_list;
-    private String URL_DATA = "http://192.168.0.130/new/executivelist.php";
-    private String INSERT_URL = "http://192.168.0.130/new/insertassign.php";
+    public static final String MERCHANT_NAME = "Merchant Name";
+    private String URL_DATA = "http://192.168.0.102/new/executivelist.php";
+    private String INSERT_URL = "http://192.168.0.102/new/insertassign.php";
+    private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
+    private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
+    List<AssignManager_Model> assignManager_modelList;
+    Database database;
 
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
-    android.widget.RelativeLayout vwParentRow2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign_pickup__manager);
+        database = new Database(getApplicationContext());
+        database.getWritableDatabase();
         executiveLists = new ArrayList<>();
+        assignManager_modelList = new ArrayList<>();
+
+        //Fetching email from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        String user = username.toString();
 
         //recycler with cardview
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
-
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         loadRecyclerView();
-        adapter = new AssignExecutiveAdapter();
-        recyclerView.setAdapter(adapter);
+        getallmerchant();
+        loadmerchantlist(user);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -93,6 +112,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     private void loadRecyclerView()
     {
@@ -132,83 +152,76 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-    // Change status code section (start)
-    public void assignExe(View view){
-        vwParentRow2 = (android.widget.RelativeLayout) view.getParent();
-
-        final TextView assignedNum = (TextView)vwParentRow2.getChildAt(6);
-        final TextView CompleteNum = (TextView)vwParentRow2.getChildAt(7);
-        final TextView DueNum = (TextView)vwParentRow2.getChildAt(8);
-        final TextView selection1 = (TextView)vwParentRow2.getChildAt(9);
-        final TextView selection2 = (TextView)vwParentRow2.getChildAt(10);
-        final TextView selection3 = (TextView)vwParentRow2.getChildAt(11);
-        executive_num_list = new String[]{"1","2","3"};
-
-
-        AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialog_spinner,null);
-        spinnerBuilder.setTitle("Select executive and assign number.");
-        final Spinner mSpinner1 = mView.findViewById(R.id.spinner1);
-        final EditText et1 = mView.findViewById(R.id.spinner1num);
-
-
-
-
-        List<String> lables = new ArrayList<String>();
-
-        for (int z = 0; z < executiveLists.size(); z++) {
-            lables.add(executiveLists.get(z).getExecutive_name());
-        }
-
-        ArrayAdapter<String>  adapter = new ArrayAdapter<String>(AssignPickup_Manager.this,
-                android.R.layout.simple_spinner_item,
-                lables);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner1.setAdapter(adapter);
-
-        spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i1) {
-                assignexecutive(mSpinner1.getSelectedItem().toString(),et1.getText().toString());
-
-                if (!mSpinner1.getSelectedItem().toString().equalsIgnoreCase("Choose executive…")){
-                    Toast.makeText(AssignPickup_Manager.this, mSpinner1.getSelectedItem().toString()
-                                    +"("+et1.getText().toString() +")",
-                            Toast.LENGTH_SHORT).show();
-                    selection1.setText(mSpinner1.getSelectedItem().toString());
-                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
-                    assignedNum.setText(et1.getText().toString());
-                        /*selection2.setVisibility(View.GONE);
-                        selection3.setVisibility(View.GONE);*/
-                    dialog.dismiss();
-
-                }
-
-            }
-        });
-        spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i1) {
-                dialog.dismiss();
-            }
-        });
-        vwParentRow2.refreshDrawableState();
-        spinnerBuilder.setView(mView);
-        AlertDialog dialog2 = spinnerBuilder.create();
-    /*    dialog2.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface dialog) {
-                if(mSpinner1.getSelectedItem().toString().equals("Choose executive…"))
+    private void loadmerchantlist(final String user)
+    {
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, "http://paperflybd.com/merchantAPI.php",
+                new Response.Listener<String>()
                 {
-                    ((AlertDialog)dialog).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("merchantlist");
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                database.insert_merchantlist(o.getString("merchantName"),o.getString("contactName"));
+                            }
+                            getallmerchant();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        //   Log.d("Error",error);
+                    }
                 }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String>  params1 = new HashMap<String,String>();
+                params1.put("username",user);
+                return params1;
             }
-        });*/
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }
 
-        dialog2.show();
+
+    private void getallmerchant()
+    {
+        try{
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_merchantlist(sqLiteDatabase);
+            while (c.moveToNext())
+            {
+                String merchantName = c.getString(0);
+                String contactName = c.getString(1);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName,contactName);
+                assignManager_modelList.add(todaySummary);
+            }
+            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());
+            recyclerView.setAdapter(assignExecutiveAdapter);
+            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
 
 
+
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     private void assignexecutive(final String ex_name, final String order_count) {
 
@@ -227,7 +240,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
-                    //   Log.d("Error",error);
+                        //   Log.d("Error",error);
                     }
                 }
         ) {
@@ -260,7 +273,24 @@ public class AssignPickup_Manager extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.pickups_today__manager, menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                assignExecutiveAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -303,15 +333,117 @@ public class AssignPickup_Manager extends AppCompatActivity
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
-            Intent loginIntent = new Intent(AssignPickup_Manager.this,
-                    LoginActivity.class);
-            startActivity(loginIntent);
+            //Creating an alert dialog to confirm logout
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Are you sure you want to logout?");
+            alertDialogBuilder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            //Getting out sharedpreferences
+                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                            //Getting editor
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            //Puting the value false for loggedin
+                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                            //Putting blank value to email
+                            editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                            //Saving the sharedpreferences
+                            editor.commit();
+
+                            //Starting login activity
+                            Intent intent = new Intent(AssignPickup_Manager.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+            alertDialogBuilder.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+
+            //Showing the alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @Override
+    public void onItemClick(View view,int position) {
+
+        AssignManager_Model clickeditem = assignManager_modelList.get(position);
+        final TextView assignedNum =findViewById(R.id.assigned_pickups);
+        final TextView selection1 =findViewById(R.id.selection1);
+
+
+        AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
+        View mView = getLayoutInflater().inflate(R.layout.dialog_spinner,null);
+        spinnerBuilder.setTitle("Select executive and assign number.");
+        final TextView dialog_mName =  mView.findViewById(R.id.dialog_m_name);
+        final Spinner mSpinner1 = mView.findViewById(R.id.spinner1);
+        final EditText et1 = mView.findViewById(R.id.spinner1num);
+        dialog_mName.setText(clickeditem.getM_names());
+
+
+
+        List<String> lables = new ArrayList<String>();
+
+        for (int z = 0; z < executiveLists.size(); z++) {
+            lables.add(executiveLists.get(z).getExecutive_name());
+        }
+
+        ArrayAdapter<String>  adapter = new ArrayAdapter<String>(AssignPickup_Manager.this,
+                android.R.layout.simple_spinner_item,
+                lables);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner1.setAdapter(adapter);
+
+        spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i1) {
+                assignexecutive(mSpinner1.getSelectedItem().toString(),et1.getText().toString());
+
+                if (!mSpinner1.getSelectedItem().toString().equalsIgnoreCase("Choose executive…")){
+                    Toast.makeText(AssignPickup_Manager.this, mSpinner1.getSelectedItem().toString()
+                                    +"("+et1.getText().toString() +")",
+                            Toast.LENGTH_SHORT).show();
+                    selection1.setText(mSpinner1.getSelectedItem().toString());
+                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
+                    assignedNum.setText(et1.getText().toString());
+                    dialog.dismiss();
+
+                }
+
+            }
+        });
+        spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i1) {
+                dialog.dismiss();
+            }
+        });
+        // vwParentRow2.refreshDrawableState();
+        spinnerBuilder.setView(mView);
+        AlertDialog dialog2 = spinnerBuilder.create();
+        dialog2.show();
+
+
+
+        //Toast.makeText(AssignPickup_Manager.this,"this is the item position"+position,Toast.LENGTH_SHORT).show();
+
     }
 
 }

@@ -2,25 +2,25 @@ package com.example.user.paperflyv0;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v7.widget.LinearLayoutManager;
-import android.widget.ProgressBar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,7 +29,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.firebase.ui.auth.ui.ProgressDialogHolder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,18 +37,26 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String URL_DATA = "http://192.168.0.130/new/order.php";
+    public SwipeRefreshLayout swipeRefreshLayout;
+    private static final String URL_DATA = "http://192.168.0.121/new/order.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
     List<TodaySummary> listItems;
+    Database database;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickups_today__manager);
+
+        database=new Database(this);
+        database.getWritableDatabase();
+
 
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -62,7 +69,13 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setRefreshing(true);
+        getData();
+        swipeRefreshLayout.setRefreshing(true);
         loadRecyclerView();
+        // getData();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -97,24 +110,22 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             @Override
             public void onResponse(String response) {
                 progress.dismiss();
+
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray array = jsonObject.getJSONArray("summary");
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
-                        TodaySummary summary = new TodaySummary(
-                                o.getString("name"),
-                                o.getString("assigned"),
-                                o.getString("uploaded"),
-                                o.getString("received")
-                        );
-                        listItems.add(summary);
+                        database.insert_pickups_today_manager(o.getString("name"),o.getString("assigned"),o.getString("uploaded"),o.getString("received"));
                     }
-                    adapter = new MerchantListAdapter(listItems,getApplicationContext());
-                    recyclerView.setAdapter(adapter);
+                    getData();
+                    swipeRefreshLayout.setRefreshing(false);
+                    //swipeRefreshLayout.setRefreshing(false);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
 
             }
@@ -123,12 +134,39 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
-                        Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                     }
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    private void getData()
+    {
+        try{
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_pickups_today_manager(sqLiteDatabase);
+            while (c.moveToNext())
+            {
+                String name = c.getString(0);
+                String assigned = c.getString(1);
+                String uploaded = c.getString(2);
+                String received = c.getString(3);
+                TodaySummary todaySummary = new TodaySummary(name,assigned,uploaded,received);
+                listItems.add(todaySummary);
+            }
+            adapter = new MerchantListAdapter(listItems,getApplicationContext());
+            recyclerView.setAdapter(adapter);
+            swipeRefreshLayout.setRefreshing(false);
+
+
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -170,7 +208,12 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_pickDue) {
+        if (id == R.id.nav_home) {
+            Intent homeIntent = new Intent(PickupsToday_Manager.this,
+                    ManagerCardMenu.class);
+            startActivity(homeIntent);
+        }
+        else if (id == R.id.nav_pickDue) {
             Intent pickupIntent = new Intent(PickupsToday_Manager.this,
                     PickupsToday_Manager.class);
             startActivity(pickupIntent);
@@ -233,5 +276,11 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        listItems.clear();
+        loadRecyclerView();
     }
 }
