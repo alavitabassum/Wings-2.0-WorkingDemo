@@ -385,8 +385,8 @@ public class AssignPickup_Manager extends AppCompatActivity
     public void onItemClick(View view,int position) {
 
         AssignManager_Model clickeditem = assignManager_modelList.get(position);
-        final TextView assignedNum =view.findViewById(R.id.assigned_pickups);
-        final TextView selection1 =view.findViewById(R.id.selection1);
+        final TextView assignedNum =findViewById(R.id.assigned_pickups);
+        final TextView selection1 =findViewById(R.id.selection1);
 
 
         AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
