@@ -442,7 +442,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
 
 
-        Toast.makeText(AssignPickup_Manager.this,"this is the item position"+position,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(AssignPickup_Manager.this,"this is the item position"+position,Toast.LENGTH_SHORT).show();
 
     }
 
