@@ -50,11 +50,7 @@
             android:name=".AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
             android:theme="@style/AppTheme">
-       <!--     <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
         <activity
             android:name=".PickupHistory_Manager"
@@ -67,11 +63,13 @@
         <activity
             android:name=".ManagerCardMenu"
             android:label="@string/title_activity_manager_card_menu"
-            android:theme="@style/AppTheme">      <intent-filter>
+            android:theme="@style/AppTheme">
+            <intent-filter>
         <action android:name="android.intent.action.MAIN" />
 
         <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+        </intent-filter>
+        </activity>
         <activity
             android:name=".PickupsToday_Executive"
             android:label="@string/title_activity_pickups_today__executive"
