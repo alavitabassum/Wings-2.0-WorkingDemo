@@ -1,25 +1,46 @@
 package com.example.user.paperflyv0;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> {
+public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable {
+    private List<AssignManager_Model> assignManager_modelList;
+    private List<AssignManager_Model> assignManager_modelListFull;
+    private Context context;
+    private OnItemClickListener mListener;
+
+    //search/filter list
+    @Override
+    public Filter getFilter() {
+        return null;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listner) {
+        this.mListener = listner;
+    }
+
+    public AssignExecutiveAdapter(List<AssignManager_Model> assignManager_modelList, Context context) {
+        this.assignManager_modelList = assignManager_modelList;
+        this.context = context;
+        assignManager_modelListFull = new ArrayList<>(assignManager_modelList);
+    }
 
 
-    private String[] m_names = {"Daraz Bangladesh Ltd","Fashion Island bd","Tanzim Corporation","Bangladesh Enterprise Limited","Gear & Core","Bikroy.com ltd"};
-
-    private String[] m_address = {"66/4, West Razabazar, Farmgate","J 42 Extension, Pallabi","Fortune Shopping Mall, Shop 49, Level 5, Malibagh",
-            "123 Tejgaon I/A, Dhaka-1208","House 36, Road 2, Block B, Rampura Banasree","5th floor, Plot-6, Block-C,Kamal Ataturk Avenue , Banani"};
-
-    private String[] completed_pu_count = {"0","0","0","0","0","0"};
-
-    private String[] due_pu_count = {"0","0","0","0","0","0"};
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -27,6 +48,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public TextView itemMerchantAddress;
         public TextView itemCompletedCount;
         public TextView itemDueCount;
+        public Button itembtnAssign;
 
 
         @SuppressLint("ResourceAsColor")
@@ -36,6 +58,20 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             itemMerchantAddress=itemView.findViewById(R.id.m_add);
             itemCompletedCount=itemView.findViewById(R.id.completed_pickups_count);
             itemDueCount=itemView.findViewById(R.id.due_pickups_count);
+            itembtnAssign = itemView.findViewById(R.id.btn_assign);
+
+            itembtnAssign.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mListener!=null){
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            mListener.onItemClick(view, position);
+
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -49,16 +85,16 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        viewHolder.itemMerchantName.setText(m_names[i]);
-        viewHolder.itemMerchantAddress.setText(m_address[i]);
-        viewHolder.itemCompletedCount.setText(completed_pu_count[i]);
-        viewHolder.itemDueCount.setText(due_pu_count[i]);
+        AssignManager_Model assignManager_model = assignManager_modelList.get(i);
+        viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
+        viewHolder.itemMerchantAddress.setText(assignManager_model.getM_address());
+
 
     }
 
     @Override
     public int getItemCount() {
-        return m_names.length;
+        return assignManager_modelList.size();
     }
 
 }

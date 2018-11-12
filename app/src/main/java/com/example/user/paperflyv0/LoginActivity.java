@@ -28,8 +28,8 @@ public class LoginActivity extends AppCompatActivity {
 
     Button signin;
     EditText username,pass;
-   // private boolean loggedIn = false;
-   // Button tempButton;
+    private boolean loggedIn = false;
+    Button tempButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,35 +44,16 @@ public class LoginActivity extends AppCompatActivity {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //login();
+                login();
 
-                validate(username.getText().toString(),pass.getText().toString());
+                //validate(username.getText().toString(),pass.getText().toString());
 
             }
         });
 
 
     }
-    public void validate(String userName, String userPass){
-        if((userName.equals("haris"))&& (userPass.equals("1234"))) {
-            Intent m_menu_intent = new Intent(LoginActivity.this,
-                    ManagerCardMenu.class);
-            startActivity(m_menu_intent);
-        }
-        else if ((userName.equals("tonoy"))&& (userPass.equals("1234"))){
-            Intent e_menu_intent = new Intent(LoginActivity.this,
-                    ExecutiveCardMenu.class);
-            startActivity(e_menu_intent);
-        }
 
-    }
-
-  /*  public void login_exe(View v){
-        Intent e_menu_intent = new Intent(LoginActivity.this,
-                ExecutiveCardMenu.class);
-        startActivity(e_menu_intent);
-    }*/
-/*
     @Override
     protected void onResume() {
         super.onResume();
@@ -85,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         //If we will get true
         if(loggedIn){
             //We will start the Welcome Activity
-            Intent intent = new Intent(LoginActivity.this, Welcome.class);
+            Intent intent = new Intent(LoginActivity.this, ManagerCardMenu.class);
             startActivity(intent);
         }
     }
@@ -112,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                         JSONArray arr = new JSONArray(response);
                         JSONObject jObj = arr.getJSONObject(0);
                         String userRole = jObj.getString("userRole");
-                        if (userRole.contains("0")) {
+                        if (userRole.contains("1")) {
 
                             startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
                         } else {
@@ -122,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                     Toast.makeText(getApplicationContext(),"Welcome!",Toast.LENGTH_SHORT).show();
                     //Creating a shared preference
                     SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -129,9 +111,11 @@ public class LoginActivity extends AppCompatActivity {
                     //Creating editor to store values to shared preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
+
                     //Adding values to editor
                     editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
                     editor.putString(Config.EMAIL_SHARED_PREF, user);
+
 
                     //Saving values to editor
                     editor.commit();
@@ -156,6 +140,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
-*/
+
 
 }

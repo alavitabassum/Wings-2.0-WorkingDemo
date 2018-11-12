@@ -11,14 +11,18 @@ import java.util.List;
 
 public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder> {
 
-    private List<TodaySummary> listItems;
+   private List<TodaySummary> listItems;
     private  Context context;
+
+
+
 
     public MerchantListAdapter(List<TodaySummary> listItems, Context context) {
         this.listItems = listItems;
         this.context = context;
 
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -46,7 +50,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        TodaySummary todaySummary = listItems.get(i);
+       TodaySummary todaySummary = listItems.get(i);
         viewHolder.itemMerchantName.setText(todaySummary.getM_names());
         viewHolder.itemAssignedQty.setText(todaySummary.getAsgn_pu());
         viewHolder.itemUploadedQty.setText(todaySummary.getUpload_pu());

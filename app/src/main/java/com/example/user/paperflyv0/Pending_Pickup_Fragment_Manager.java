@@ -34,7 +34,7 @@ import java.util.List;
 
 public class Pending_Pickup_Fragment_Manager extends Fragment {
 
-    private static final String URL_DATA = "http://192.168.0.142/new/pending.php";
+    private static final String URL_DATA = "http://192.168.0.130/new/pending.php";
     public SwipeRefreshLayout swipeRefreshLayout2;
     private List<Pending_Pickup_Model_Manager> listitems;
     private Context context;
