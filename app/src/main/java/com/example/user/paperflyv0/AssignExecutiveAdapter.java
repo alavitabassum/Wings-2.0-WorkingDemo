@@ -12,6 +12,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable {
@@ -96,5 +97,42 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     public int getItemCount() {
         return assignManager_modelList.size();
     }
+
+    //search/filter list
+    @Override
+    public Filter getFilter() {
+        return NamesFilter;
+    }
+
+    private Filter NamesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+           List<AssignManager_Model> filteredList = new ArrayList<>();
+
+           if (constraint == null || constraint.length() == 0){
+               filteredList.addAll(assignManager_modelListFull);
+           }else{
+               String filterPattern = constraint.toString().toLowerCase().trim();
+               for (AssignManager_Model item : assignManager_modelListFull){
+                   if (item.getM_names().toLowerCase().contains(filterPattern)){
+                       filteredList.add(item);
+                   }
+               }
+           }
+            FilterResults results = new FilterResults();
+           results.values = filteredList;
+           return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            assignManager_modelList.clear();
+            assignManager_modelList.addAll((List) results.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
 
 }

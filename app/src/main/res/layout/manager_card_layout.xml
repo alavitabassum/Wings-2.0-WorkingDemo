@@ -3,9 +3,10 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:layout_margin="5dp"
+    android:layout_height="180dp"
+    android:layout_margin="4dp"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
     android:paddingBottom="50dp"
@@ -20,28 +21,36 @@
 
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="350dp"
+            android:layout_height="115dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp" />
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="0dp"
+            android:background="@color/white"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/item_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/item_image"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/item_image"
+            android:layout_marginTop="120dp"
+            android:textAlignment="viewStart"
             android:textColor="@color/pfColor"
-            android:textSize="28sp" />
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textAllCaps="true" />
 
-        <TextView
+        <!-- <TextView
             android:id="@+id/item_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_title"
             android:layout_toRightOf="@+id/item_image"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorAccent" />-->
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

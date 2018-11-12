@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,15 +49,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import android.widget.SearchView.OnQueryTextListener;
+import android.app.SearchManager;
+import android.support.v7.widget.SearchView;
 
 public class AssignPickup_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener{
 
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
-    private String URL_DATA = "http://192.168.0.118/new/executivelist.php";
-    private String INSERT_URL = "http://192.168.0.118/new/insertassign.php";
-   // private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
+    private String URL_DATA = "http://192.168.0.102/new/executivelist.php";
+    private String INSERT_URL = "http://192.168.0.102/new/insertassign.php";
+    private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
@@ -65,7 +69,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-//    RecyclerView.Adapter adapter;
+    RecyclerView.Adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +115,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     // Executive List generaton
     private void loadRecyclerView()
@@ -284,7 +289,24 @@ public class AssignPickup_Manager extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.pickups_today__manager, menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                assignExecutiveAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 
