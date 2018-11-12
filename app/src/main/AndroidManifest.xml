@@ -51,7 +51,11 @@
             android:name=".AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
             android:theme="@style/AppTheme">
+       <!--     <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
         <activity
             android:name=".PickupHistory_Manager"

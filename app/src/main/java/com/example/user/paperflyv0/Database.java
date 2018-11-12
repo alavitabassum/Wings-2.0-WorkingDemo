@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class Database extends SQLiteOpenHelper {
+    private static String Database_name = "MerchantDatabase.db";
 
 
     public Database(Context context)
@@ -21,11 +22,15 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp="create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1="create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2="create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
-        String tableEmp3="create table merchantList(merchantName text,contactName text,unique (merchantName,contactName))";
+        String tableEmp3="create table merchantList(merchantName text,merchantCode text)";
+        String tableEmp4="create table assignexecutive(ex_name text,order_count text,merchant_code text,user text,currentDateTimeString text)";
+        String tableEmp5="create table executivelist(executive_name text)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
         sqLiteDatabase.execSQL(tableEmp3);
+        sqLiteDatabase.execSQL(tableEmp4);
+        sqLiteDatabase.execSQL(tableEmp5);
     }
 
     @Override
@@ -47,6 +52,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("received",received);
 
         sqLiteDatabase.insert("merchants",null,values);
+        sqLiteDatabase.close();
     }
 
     public Cursor get_pickups_today_manager(SQLiteDatabase db)
@@ -70,6 +76,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("picked",picked);
 
         sqLiteDatabase.insert("merchantsfor_executives",null,values);
+        sqLiteDatabase.close();
     }
 
     public Cursor  get_pickups_today_executive(SQLiteDatabase db)
@@ -96,6 +103,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("received",received);
 
         sqLiteDatabase.insert("com_ex",null,values);
+        sqLiteDatabase.close();
     }
 
     public Cursor  get_complete_pickups_history_ex(SQLiteDatabase db)
@@ -121,6 +129,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("received",received);
 
         sqLiteDatabase.insert("com_ex",null,values);
+        sqLiteDatabase.close();
     }
 
     public Cursor  get_pending_pickups_history_ex(SQLiteDatabase db)
@@ -129,7 +138,7 @@ public class Database extends SQLiteOpenHelper {
         return db.query("com_ex",columns,null,null,null,null,null);
     }
 
-    public void insert_merchantlist(String merchantName,String contactName)
+    public void addmerchantlist(String merchantName,String merchantCode)
     {
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
 
@@ -137,17 +146,62 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("merchantName",merchantName);
 
-        values.put("contactName",contactName);
+        values.put("merchantCode",merchantCode);
+
+
 
         sqLiteDatabase.insert("merchantList",null,values);
+        sqLiteDatabase.close();
     }
 
     public Cursor get_merchantlist(SQLiteDatabase db)
     {
-        String[] columns = {"merchantName","contactName"};
+        String[] columns = {"merchantName","merchantCode"};
         return db.query("merchantList",columns,null,null,null,null,null);
     }
 
+    public void insert_assignexecutive(String executive_name,String ordercount,String merchantCode,String user,String created_date)
+    {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+
+        values.put("ex_name",executive_name);
+
+        values.put("order_count",ordercount);
+
+        values.put("merchant_code",merchantCode);
+
+        values.put("user",user);
+
+        values.put("currentDateTimeString",created_date);
+
+
+        sqLiteDatabase.insert("assignexecutive",null,values);
+
+        sqLiteDatabase.close();
+    }
+
+    /*public void addexecutivelist(String executive_name)
+    {
+        SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
+
+        ContentValues values=new ContentValues();
+
+        values.put("executive_name",executive_name);
+
+        sqLiteDatabase.insert("executivelist",null,values);
+
+        sqLiteDatabase.close();
+    }
+
+    public Cursor get_executives(SQLiteDatabase db)
+    {
+        String[] columns = {"executive_name"};
+        return db.query("executivelist",columns,null,null,null,null,null);
+    }
+
+*/
 
 
 
