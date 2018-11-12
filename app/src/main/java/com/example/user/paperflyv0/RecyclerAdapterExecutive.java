@@ -12,9 +12,9 @@ public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapt
 
     private String[] titles_exe_list = {"Pickups For Today", "Assigned Pickups","Pickup Status"};
 
-    private String[] details_exe_list = {"View ->","View ->","View ->"};
+  /*  private String[] details_exe_list = {"View ->","View ->","View ->"};*/
 
-    private int[] images_exe_list = { R.drawable.android_image_1, R.drawable.android_image_2, R.drawable.android_image_3 };
+    private int[] images_exe_list = { R.drawable.pickupstoday, R.drawable.assigned, R.drawable.puhistory };
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -22,13 +22,13 @@ public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapt
         public int currentItem;
         public ImageView itemImage_exe;
         public TextView itemTitle_exe;
-        public TextView itemDetail_exe;
+       // public TextView itemDetail_exe;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage_exe = (ImageView)itemView.findViewById(R.id.item_image_exe);
             itemTitle_exe = (TextView)itemView.findViewById(R.id.item_title_exe);
-            itemDetail_exe = (TextView)itemView.findViewById(R.id.item_detail_exe);
+        //    itemDetail_exe = (TextView)itemView.findViewById(R.id.item_detail_exe);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +64,7 @@ if (position == 0){
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.itemTitle_exe.setText(titles_exe_list[i]);
-        viewHolder.itemDetail_exe.setText(details_exe_list[i]);
+       // viewHolder.itemDetail_exe.setText(details_exe_list[i]);
         viewHolder.itemImage_exe.setImageResource(images_exe_list[i]);
     }
 
