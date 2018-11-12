@@ -72,8 +72,7 @@
         android:layout_marginTop="-104dp"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:textColor="@color/blue_link"
-        android:text="TextView" />
+        android:textColor="@color/blue_link" />
 
     <TextView
         android:id="@+id/scan_count"
@@ -84,7 +83,6 @@
         android:layout_marginBottom="137dp"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:textColor="@color/red"
-        android:text="Scan count: 0" />
+        android:textColor="@color/red" />
 
 </RelativeLayout>

@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -44,11 +47,13 @@ import java.util.List;
 import static android.Manifest.permission.CAMERA;
 
 public class MyPickupList_Executive extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, pickuplistForExecutiveAdapter.OnItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, pickuplistForExecutiveAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
 
+    BarcodeDbHelper db;
+    public SwipeRefreshLayout swipeRefreshLayout;
     public static final String MERCHANT_NAME = "Merchant Name";
     public static final String MERCHANT_ID = "MerchantID";
-    private static final String URL_DATA = "http://192.168.0.118/new/merchantListForExecutive.php";
+    private static final String URL_DATA = "http://192.168.0.112/new/merchantListForExecutive.php";
     private static final int REQUEST_CAMERA = 1;
     private ProgressDialog progress;
     private pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
@@ -60,6 +65,10 @@ public class MyPickupList_Executive extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        db=new BarcodeDbHelper(getApplicationContext());
+        db.getWritableDatabase();
+
         setContentView(R.layout.activity_my_pickups__executive);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,7 +79,11 @@ public class MyPickupList_Executive extends AppCompatActivity
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setRefreshing(true);
+        getData();
+        swipeRefreshLayout.setRefreshing(true);
         loadRecyclerView();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -108,7 +121,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     private void loadRecyclerView()
     {
-        list = new ArrayList<>();
+//        list.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -119,22 +132,33 @@ public class MyPickupList_Executive extends AppCompatActivity
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
-                        PickupList_Model_For_Executive summary = new PickupList_Model_For_Executive(
-                                o.getInt("id"),
+//                        PickupList_Model_For_Executive summary = new PickupList_Model_For_Executive(
+//                                o.getInt("id"),
+//                                o.getString("merchant_name"),
+//                                o.getString("address"),
+//                                o.getString("assined_qty"),
+//                                o.getString("picked_qty"),
+//                                o.getString("scan_count"),
+//                                o.getString("phone_no")
+//                        );
+//                        list.add(summary);
+                        db.insert_my_assigned_pickups(
+                                o.getString("merchant_id"),
                                 o.getString("merchant_name"),
                                 o.getString("address"),
                                 o.getString("assined_qty"),
                                 o.getString("picked_qty"),
                                 o.getString("scan_count"),
-                                o.getString("phone_no")
-                        );
-                        list.add(summary);
+                                o.getString("phone_no"));
+
                     }
-                    pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,MyPickupList_Executive.this);
-                    recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
-                    pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
+
+                    getData();
+                    swipeRefreshLayout.setRefreshing(false);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         },
@@ -142,6 +166,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_SHORT).show();
 
                     }
@@ -149,6 +174,40 @@ public class MyPickupList_Executive extends AppCompatActivity
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(stringRequest);
     }
+
+
+    private void getData()
+    {
+        try{
+
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_mypickups_today(sqLiteDatabase);
+            while (c.moveToNext())
+            {
+                String merchant_id = c.getString(0);
+                String merchant_name = c.getString(1);
+                String address = c.getString(2);
+                String assined_qty = c.getString(3);
+                String picked_qty = c.getString(4);
+                String scan_count = c.getString(5);
+                String phone_no = c.getString(6);
+                PickupList_Model_For_Executive details = new PickupList_Model_For_Executive(merchant_id,merchant_name,
+                        address,assined_qty,picked_qty,scan_count,phone_no);
+                list.add(details);
+            }
+            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
+            swipeRefreshLayout.setRefreshing(false);
+
+
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 
     // Function for camera permission
     private boolean checkPermission()
@@ -402,10 +461,15 @@ public class MyPickupList_Executive extends AppCompatActivity
         PickupList_Model_For_Executive clickedItem = list.get(position);
 
         scanIntent.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
-        scanIntent.putExtra(MERCHANT_ID, String.valueOf(clickedItem.getId()));
-       // Toast.makeText(MyPickupList_Executive.this, clickedItem.getId(), Toast.LENGTH_LONG).show();
+        scanIntent.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
+//        scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
+
         startActivity(scanIntent);
+    }
 
-
+    @Override
+    public void onRefresh() {
+        list.clear();
+        loadRecyclerView();
     }
 }
