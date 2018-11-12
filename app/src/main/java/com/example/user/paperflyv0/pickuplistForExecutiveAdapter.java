@@ -22,6 +22,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     private List<PickupList_Model_For_Executive> list;
     private Context context;
     private OnItemClickListener mListner;
+    BarcodeDbHelper db;
 
  /*   final CharSequence[] status_options = {"Cancel","Pending"};
     int selection = 1;*/
