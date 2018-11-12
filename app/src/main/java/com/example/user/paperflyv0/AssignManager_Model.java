@@ -5,11 +5,14 @@ public class AssignManager_Model  {
     private String m_address;
 
 
+
     public AssignManager_Model(String m_names, String m_address) {
         this.m_names = m_names;
         this.m_address = m_address;
 
+
         }
+
 
     public String getM_names() {
         return m_names;
