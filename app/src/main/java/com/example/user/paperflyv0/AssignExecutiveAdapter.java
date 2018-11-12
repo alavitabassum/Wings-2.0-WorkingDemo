@@ -35,9 +35,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         this.context = context;
         assignManager_modelListFull = new ArrayList<>(assignManager_modelList);
     }
-    private String[] completed_pu_count = {"0","0","0","0","0","0"};
 
-    private String[] due_pu_count = {"0","0","0","0","0","0"};
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -86,8 +84,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         AssignManager_Model assignManager_model = assignManager_modelList.get(i);
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
         viewHolder.itemMerchantAddress.setText(assignManager_model.getM_address());
-        viewHolder.itemCompletedCount.setText(completed_pu_count[i]);
-        viewHolder.itemDueCount.setText(due_pu_count[i]);
+
 
     }
 
