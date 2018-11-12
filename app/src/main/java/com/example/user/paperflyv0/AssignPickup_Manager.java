@@ -58,9 +58,9 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
-    private String URL_DATA = "http://192.168.0.118/new/executivelist.php";
-    private String INSERT_URL = "http://192.168.0.118/new/insertassign.php";
-   // private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
+    private String URL_DATA = "http://192.168.0.102/new/executivelist.php";
+    private String INSERT_URL = "http://192.168.0.102/new/insertassign.php";
+    private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
