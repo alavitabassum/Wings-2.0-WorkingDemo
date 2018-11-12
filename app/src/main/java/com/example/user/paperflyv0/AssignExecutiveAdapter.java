@@ -21,11 +21,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     private Context context;
     private OnItemClickListener mListener;
 
-    //search/filter list
-    @Override
-    public Filter getFilter() {
-        return null;
-    }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
