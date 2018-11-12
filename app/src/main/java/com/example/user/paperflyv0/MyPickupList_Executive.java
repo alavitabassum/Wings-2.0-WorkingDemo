@@ -53,7 +53,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
     public static final String MERCHANT_NAME = "Merchant Name";
     public static final String MERCHANT_ID = "MerchantID";
-    private static final String URL_DATA = "http://192.168.0.112/new/merchantListForExecutive.php";
+    private static final String URL_DATA = "http://192.168.0.132/new/merchantListForExecutive.php";
     private static final int REQUEST_CAMERA = 1;
     private ProgressDialog progress;
     private pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
@@ -121,7 +121,6 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     private void loadRecyclerView()
     {
-//        list.clear();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
