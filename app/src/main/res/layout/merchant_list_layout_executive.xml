@@ -48,7 +48,7 @@
             android:id="@+id/u_qty_e"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView4"
+            android:layout_below="@+id/txt1"
             android:layout_marginStart="170dp"
             android:textAlignment="center"
             android:textColor="#000"
@@ -65,7 +65,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/txt1"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/a_qty_e"
@@ -76,7 +76,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/txt2"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/u_qty_e"
@@ -90,7 +90,7 @@
             android:id="@+id/textView6"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView5"
+            android:layout_alignStart="@+id/txt2"
             android:layout_alignTop="@+id/r_qty_e"
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"

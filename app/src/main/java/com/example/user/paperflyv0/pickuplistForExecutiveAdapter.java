@@ -2,6 +2,7 @@ package com.example.user.paperflyv0;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     private Context context;
     private OnItemClickListener mListner;
     BarcodeDbHelper db;
+    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
  /*   final CharSequence[] status_options = {"Cancel","Pending"};
     int selection = 1;*/
@@ -76,6 +78,9 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                     callIntent.setData(Uri.parse("tel:01781278896"));
                     if (ActivityCompat.checkSelfPermission(v.getContext(),
                             Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) v.getContext(),
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                MY_PERMISSIONS_REQUEST_CALL_PHONE);
                         return;
                     }
                     v.getContext().startActivity(callIntent);

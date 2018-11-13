@@ -44,8 +44,8 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="2dp"
-            android:lines="2"
-            android:maxLines="2"
+            android:lines="1"
+            android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="#000"
             android:textSize="15sp"
@@ -118,6 +118,7 @@
             android:id="@+id/assigned_pickups"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/assigned_pickups_text"
             android:layout_alignTop="@+id/completed_text"
             android:layout_marginStart="0dp"
             android:layout_marginTop="-19dp"
@@ -130,6 +131,7 @@
             android:id="@+id/completed_pickups_count"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/completed_text"
             android:layout_alignTop="@+id/completed_text"
             android:layout_toEndOf="@+id/completed_text"
             android:textColor="@color/black"
@@ -140,6 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/completed_pickups_count"
+            android:layout_alignBaseline="@+id/due_text"
             android:layout_marginStart="1dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="40dp"
@@ -224,6 +227,35 @@
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/calltxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/m_add"
+            android:layout_alignStart="@+id/m_add"
+            android:layout_marginTop="1dp"
+            android:text="Call:"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/call_merchant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/calltxt"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_toEndOf="@+id/calltxt"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="01781278896"
+            android:textAlignment="textStart"
+            android:textColor="@color/blue_link"
+            android:textSize="15sp"
+            android:textStyle="normal" />
 
     </RelativeLayout>
 

@@ -1,7 +1,14 @@
 package com.example.user.paperflyv0;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +27,8 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     private List<AssignManager_Model> assignManager_modelListFull;
     private Context context;
     private OnItemClickListener mListener;
+    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
+
 
 
     public interface OnItemClickListener {
@@ -45,6 +54,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public TextView itemCompletedCount;
         public TextView itemDueCount;
         public Button itembtnAssign;
+        public TextView item_call;
 
 
         @SuppressLint("ResourceAsColor")
@@ -55,7 +65,27 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             itemCompletedCount=itemView.findViewById(R.id.completed_pickups_count);
             itemDueCount=itemView.findViewById(R.id.due_pickups_count);
             itembtnAssign = itemView.findViewById(R.id.btn_assign);
+            item_call = itemView.findViewById(R.id.call_merchant);
 
+            //underline phoneNumber
+            item_call.setPaintFlags(item_call.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+            item_call.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent =new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:01781278896"));
+                    if (ActivityCompat.checkSelfPermission(v.getContext(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) v.getContext(),
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                        return;
+                    }
+                    v.getContext().startActivity(callIntent);
+                }
+            });
             itembtnAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
