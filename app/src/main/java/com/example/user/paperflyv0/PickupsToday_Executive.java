@@ -41,7 +41,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
 
     private ProgressDialog progress;
-    private static final String URL_DATA = "http://192.168.0.121/new/executive.php";
+    private static final String URL_DATA = "http://192.168.0.118/new/executive.php";
 
 
     Database database;
@@ -98,7 +98,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     }
 
     private void loadRecyclerView()
-    {
+    {    summaries.clear();
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);

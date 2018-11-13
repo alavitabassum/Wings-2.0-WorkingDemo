@@ -23,8 +23,8 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp1="create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2="create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
         String tableEmp3="create table merchantList(merchantName text,merchantCode text)";
-        String tableEmp4="create table assignexecutive(ex_name text,order_count text,merchant_code text,user text,currentDateTimeString text)";
-        String tableEmp5="create table executivelist(executive_name text)";
+        String tableEmp4="create table assignexecutive(ex_name text,order_count text,merchantCode text,user text,currentDateTimeString text)";
+        String tableEmp5="create table executivelist(empName text,empCode text)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
@@ -170,7 +170,7 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("order_count",ordercount);
 
-        values.put("merchant_code",merchantCode);
+        values.put("merchantCode",merchantCode);
 
         values.put("user",user);
 
@@ -182,25 +182,34 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    /*public void addexecutivelist(String executive_name)
+    public void addexecutivelist(String empName,String empCode)
     {
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
 
         ContentValues values=new ContentValues();
 
-        values.put("executive_name",executive_name);
+        values.put("empName",empName);
+
+        values.put("empCode",empCode);
 
         sqLiteDatabase.insert("executivelist",null,values);
 
         sqLiteDatabase.close();
     }
 
-    public Cursor get_executives(SQLiteDatabase db)
+    public Cursor get_executivelist(SQLiteDatabase db)
     {
-        String[] columns = {"executive_name"};
+        String[] columns = {"empName","empCode"};
         return db.query("executivelist",columns,null,null,null,null,null);
     }
 
+   /* public Cursor get_total assignedtoeachmerchant(SQLiteDatabase db)
+    {
+        String joinquery = "Select order_count from assignexecutive inner join merchantList on merchantlist.merchantCode = assignexecutive.merchantCode";
+        Cursor c= db.rawQuery(joinquery, null);
+
+
+    }
 */
 
 
