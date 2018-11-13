@@ -17,7 +17,7 @@
          card_view_merchant:cardBackgroundColor="@android:color/transparent"-->
 
         <RelativeLayout
-            android:layout_width="320dp"
+            android:layout_width="340dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
@@ -25,7 +25,7 @@
             android:elevation="4dp"
             android:foregroundGravity="center|fill"
             android:gravity="center"
-            android:padding="16dp" tools:targetApi="lollipop">
+            android:padding="16dp">
 
 
             <TextView
@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:background="@color/colorAccent"
-            android:elevation="4dp" tools:targetApi="lollipop">
+            android:elevation="4dp">
 
             <TextView
                 android:id="@+id/merchant_name"
