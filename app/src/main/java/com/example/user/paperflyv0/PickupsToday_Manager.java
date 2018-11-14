@@ -228,9 +228,9 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
 
-            Intent loginIntent = new Intent(PickupsToday_Manager.this,
+           /* Intent loginIntent = new Intent(PickupsToday_Manager.this,
                     LoginActivity.class);
-            startActivity(loginIntent);
+            startActivity(loginIntent);*/
             //Creating an alert dialog to confirm logout
         /*    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

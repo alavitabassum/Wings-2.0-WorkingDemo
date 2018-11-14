@@ -51,13 +51,14 @@ import java.util.List;
 import java.util.Map;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener{
+        implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener{
 
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     private String INSERT_URL = "http://192.168.0.107/new/insertassign.php";
     private String MERCHANT_URL= "http://paperflybd.com/merchantAPI.php";
+
     // private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -69,6 +70,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     //    RecyclerView.Adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final TextView assignedNum =findViewById(R.id.assigned_pickups);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign_pickup__manager);
         database = new Database(getApplicationContext());
@@ -111,6 +113,47 @@ public class AssignPickup_Manager extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void loadallassigned(final String merchant_code){
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, "http://192.168.0.107/new/showassign.php",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+
+                            JSONArray arr = new JSONArray(response);
+                            JSONObject jObj = arr.getJSONObject(0);
+                            AssignManager_Model assigned = new AssignManager_Model(jObj.getString("total"));
+                            assignManager_modelList.add(assigned);
+                            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());
+                            recyclerView.setAdapter(assignExecutiveAdapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String>  params1 = new HashMap<String,String>();
+                params1.put("merchant_code",merchant_code);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+
     }
 
    //Load executive from api
@@ -405,7 +448,8 @@ public class AssignPickup_Manager extends AppCompatActivity
     public void onItemClick(View view,int position) {
 
         final AssignManager_Model clickeditem = assignManager_modelList.get(position);
-        final TextView assignedNum =findViewById(R.id.assigned_pickups);
+
+
         final TextView selection1 =findViewById(R.id.selection1);
 
 
@@ -417,7 +461,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         final EditText et1 = mView.findViewById(R.id.spinner1num);
         dialog_mName.setText(clickeditem.getM_names());
         final String merchant_code = clickeditem.getM_address();
-
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -448,7 +491,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                             Toast.LENGTH_SHORT).show();
                     selection1.setText(mSpinner1.getSelectedItem().toString());
                     selection1.setTextColor(getResources().getColor(R.color.pfColor));
-                    assignedNum.setText(et1.getText().toString());
+
                     dialog.dismiss();
 
                 }
@@ -461,19 +504,12 @@ public class AssignPickup_Manager extends AppCompatActivity
                 dialog.dismiss();
             }
         });
-        // vwParentRow2.refreshDrawableState();
+
         spinnerBuilder.setView(mView);
         AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
     }
 
-    @Override
-    public void onRefresh() {
-        assignManager_modelList.clear();
-        //Fetching email from shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String user = username.toString();
-        loadmerchantlist(user);
-    }
+
+
 }

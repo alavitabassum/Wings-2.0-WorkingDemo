@@ -17,6 +17,7 @@ import java.util.List;
 public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable {
     private List<AssignManager_Model> assignManager_modelList;
     private List<AssignManager_Model> assignManager_modelListFull;
+
     private Context context;
     private OnItemClickListener mListener;
 
@@ -39,6 +40,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         this.context = context;
         assignManager_modelListFull = new ArrayList<>(assignManager_modelList);
     }
+
 
 
 
