@@ -12,9 +12,9 @@ public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapter
 
     private String[] titles = {"Pickups For Today", "Assign Pickups","Pickup History"};
 
-    private String[] details = {"View ->","View ->","View ->"};
+   // private String[] details = {"View ->","View ->","View ->"};
 
-    private int[] images = { R.drawable.android_image_1, R.drawable.android_image_2, R.drawable.android_image_3 };
+    private int[] images = { R.drawable.pickupstoday, R.drawable.assignpickup, R.drawable.puhistory };
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -22,13 +22,13 @@ public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapter
         public int currentItem;
         public ImageView itemImage;
         public TextView itemTitle;
-        public TextView itemDetail;
+      //  public TextView itemDetail;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemImage = (ImageView)itemView.findViewById(R.id.item_image);
             itemTitle = (TextView)itemView.findViewById(R.id.item_title);
-            itemDetail = (TextView)itemView.findViewById(R.id.item_detail);
+          //  itemDetail = (TextView)itemView.findViewById(R.id.item_detail);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +64,7 @@ public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapter
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.itemTitle.setText(titles[i]);
-        viewHolder.itemDetail.setText(details[i]);
+        //viewHolder.itemDetail.setText(details[i]);
         viewHolder.itemImage.setImageResource(images[i]);
     }
 

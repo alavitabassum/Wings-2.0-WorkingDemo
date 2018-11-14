@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,6 +50,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import android.widget.SearchView.OnQueryTextListener;
+import android.app.SearchManager;
+import android.support.v7.widget.SearchView;
 
 public class AssignPickup_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener{
@@ -67,7 +71,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    //    RecyclerView.Adapter adapter;
+    RecyclerView.Adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final TextView assignedNum =findViewById(R.id.assigned_pickups);
@@ -353,7 +357,24 @@ public class AssignPickup_Manager extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.pickups_today__manager, menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                assignExecutiveAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -448,8 +469,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     public void onItemClick(View view,int position) {
 
         final AssignManager_Model clickeditem = assignManager_modelList.get(position);
-
-
+        final TextView assignedNum =findViewById(R.id.assigned_pickups);
         final TextView selection1 =findViewById(R.id.selection1);
 
 
@@ -491,7 +511,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                             Toast.LENGTH_SHORT).show();
                     selection1.setText(mSpinner1.getSelectedItem().toString());
                     selection1.setTextColor(getResources().getColor(R.color.pfColor));
-
+                    assignedNum.setText(et1.getText().toString());
                     dialog.dismiss();
 
                 }

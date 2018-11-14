@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wings 0.2</string>
+    <string name="app_name">Wings</string>
     <string name="todo">TODO</string>
     <string name="title_activity_login">Sign in</string>
 
@@ -29,13 +29,13 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_pick_ups">pickUps</string>
+    <string name="title_activity_pick_ups">pickups</string>
     <string name="title_activity_testing">Testing</string>
-    <string name="title_activity_order_details">OrderDetails</string>
+    <string name="title_activity_order_details">Order Details</string>
     <string name="large_text">
 
     </string>
-    <string name="title_activity_pickups_today__manager">Pickups Todays</string>
+    <string name="title_activity_pickups_today__manager">Pickup Summary</string>
     <string name="title_activity_assign_pickup__manager">Assign Pickups</string>
     <string name="title_activity_pickup_history__manager">Pickup History</string>
     <string name="uploaded_product_count">Uploaded Qty :</string>
@@ -68,13 +68,14 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">TextView</string>
     <string name="select_date">Select Date</string>
-    <string name="title_activity_executive_card_menu">ExecutiveCardMenu</string>
+    <string name="title_activity_executive_card_menu">Home</string>
     <string name="pickup_executive">Pickup Executive</string>
     <string name="exe_name">Tonoy Shaha</string>
-    <string name="title_activity_manager_card_menu">ManagerCardMenu</string>
-    <string name="title_activity_pickups_today__executive">PickupsToday_Executive</string>
-    <string name="title_activity_pickup_status__executive">PickupStatus_Executive</string>
-    <string name="title_activity_my_pickups__executive">MyPickups_Executive</string>
+    <string name="title_activity_manager_card_menu">Home</string>
+    <string name="title_activity_pickups_today__executive">Pickup Summary</string>
+    <string name="title_activity_pickup_status__executive">Pickup Status</string>
+    <string name="title_activity_my_pickups__executive">My Pickup List</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="search">Search…</string>
 
 </resources>

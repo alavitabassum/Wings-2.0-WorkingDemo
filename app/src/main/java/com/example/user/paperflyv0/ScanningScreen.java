@@ -27,28 +27,27 @@ import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
 
 public class ScanningScreen extends AppCompatActivity {
+
     BarcodeDbHelper db;
-    private static final String TAG = ScanningScreen.class.getSimpleName();
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
     private String lastText;
     private Button done;
-    private TextView merchant_name1;
+    private TextView merchant_name_textview;
+    private TextView scan_count1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.continuous_scan);
 
+        // Pass value through intent
         Intent intent = getIntent();
-
         String merchant_name = intent.getStringExtra(MERCHANT_NAME);
+        scan_count1 = (TextView) findViewById(R.id.scan_count);
 
-        done = (Button) findViewById(R.id.done);
-        merchant_name1 = (TextView) findViewById(R.id.merchant_name);
-
-        merchant_name1.setText("Scan started for: " +merchant_name);
-//        merchant_name1.setText("Scan started for: " +merchant_id);
+        merchant_name_textview = (TextView) findViewById(R.id.merchant_name);
+        merchant_name_textview.setText("Scan started for: " +merchant_name);
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
@@ -57,33 +56,38 @@ public class ScanningScreen extends AppCompatActivity {
         barcodeView.decodeContinuous(callback);
 
         beepManager = new BeepManager(this);
-
-    }
+        }
 
     private BarcodeCallback callback = new BarcodeCallback() {
+
+
         @Override
         public void barcodeResult(BarcodeResult result) {
 
             db = new BarcodeDbHelper(ScanningScreen.this);
             if(result.getText() == null || result.getText().equals(lastText)) {
-                // Prevent duplicate scans
+                Toast.makeText(ScanningScreen.this, "Entry is null or already entered", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             lastText = result.getText();
-            Intent intentID = getIntent();;
-            String merchant_id = intentID.getStringExtra(MERCHANT_ID);
 
-            db.add(merchant_id, lastText);
+            // get merchant id
+            Intent intentID = getIntent();
+            final String merchant_id = intentID.getStringExtra(MERCHANT_ID);
 
             barcodeView.setStatusText("Barcode"+result.getText());
-//            barcodeView.setStatusText("Barcode" +merchant_id);
-            int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
 
-            String strI = String.valueOf(barcode_per_merchant_counts);
+            // TODO: add added-by, current-date , vaiia says to add flag in this table
+            db.add(merchant_id, lastText);
+
+            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
+
+            final String strI = String.valueOf(barcode_per_merchant_counts);
             Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
+            scan_count1.setText("Scan count: " +strI);
 
-//        builder.setTitle(strI);
+//          builder.setTitle(strI);
             db.close();
 
             beepManager.playBeepSoundAndVibrate();
@@ -91,6 +95,21 @@ public class ScanningScreen extends AppCompatActivity {
             //Added preview of scanned barcode
             ImageView imageView = (ImageView) findViewById(R.id.barcodePreview);
             imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
+
+            done = (Button) findViewById(R.id.done);
+
+            done.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                //On click function
+                public void onClick(View view) {
+                    // TODO: Merchant id, scan count, created-by, creation-date, flag
+                    db.update_row(strI, merchant_id);
+                    Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
+                    startActivity(intent);
+
+                }
+            });
         }
 
         @Override
