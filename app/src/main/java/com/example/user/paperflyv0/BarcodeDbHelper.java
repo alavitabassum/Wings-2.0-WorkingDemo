@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -15,11 +15,16 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String MERCHANT_ID = "merchantId";
     private static final String KEY_NAME = "barcodeNumber";
     private static final String MERCHANT_NAME = "merchant_name";
-    private static final String ADDRESS = "address";
+    private static final String EXECUTIVE_NAME = "executive_name";
     private static final String ASSIGNED_QTY = "assined_qty";
     private static final String PICKED_QTY = "picked_qty";
     private static final String SCAN_COUNT = "scan_count";
     private static final String PHONE_NO = "phone_no";
+    private static final String ASSIGNED_BY = "assigned_by";
+    private static final String CREATED_AT = "created_at";
+    private static final String UPDATED_BY = "updated_by";
+    private static final String UPDATED_AT = "updated_at";
+    private static final String STATE = "state";
 
     private static final String[] COLUMNS = { KEY_ID, MERCHANT_ID, KEY_NAME };
     private SQLiteDatabase db;
@@ -31,17 +36,26 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATION_TABLE = "CREATE TABLE Barcode ( "
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, " + "merchantId TEXT, " + "barcodeNumber TEXT UNIQUE )";
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "merchantId TEXT, "
+                + "barcodeNumber TEXT UNIQUE, "
+                + "state BOOLEAN, "
+                + "updated_by TEXT, "
+                + "updated_at TEXT)";
 
         String CREATION_TABLE1 = "CREATE TABLE My_pickups ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "merchantId TEXT, "
                 + "merchant_name TEXT, "
-                + "address TEXT, "
+                + "executive_name TEXT, "
                 + "assined_qty TEXT, "
                 + "picked_qty TEXT, "
                 + "scan_count TEXT, "
-                + "phone_no TEXT )";
+                + "phone_no TEXT, "
+                + "assigned_by TEXT, "
+                + "created_at TEXT, "
+                + "updated_by TEXT, "
+                + "updated_at TEXT)";
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -54,77 +68,66 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    public void insert_my_assigned_pickups(String merchant_id,String merchant_name, String address, String assined_qty, String picked_qty, String scan_count, String phone_no)
+//    boolean check;
+//
+//    check = checkDuplicate(...,...,...,id_post); // check whether data exists
+//    if(check == true)  // if exists
+//    {
+//        Toast.makeText(MainActivity.this, " Data Already Exists", Toast.LENGTH_LONG).show();
+//    }else{
+//        db.addFavorit(favorit);
+//    }
+
+//    public boolean checkDuplicate(String TableName, String dbfield, String fieldValue, int id_post) {
+//        SQLiteDatabase db= this.getReadableDatabase();
+//        String Query = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE "+ Constant.id_postFav +"="+ id_post; // your query
+//        Cursor cursor = db.rawQuery(Query, null);
+//        if(cursor.getCount() <= 0){
+//            cursor.close();
+//            return false;
+//        }
+//        cursor.close();
+//        return true;
+//    }
+
+    public void insert_my_assigned_pickups(String merchant_id,String merchant_name, String executive_name,String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
         values.put(MERCHANT_ID, merchant_id);
-
         values.put(MERCHANT_NAME, merchant_name);
-
-        values.put(ADDRESS, address);
-
+        values.put(EXECUTIVE_NAME, executive_name);
         values.put(ASSIGNED_QTY, assined_qty);
         values.put(PICKED_QTY, picked_qty);
         values.put(SCAN_COUNT, scan_count);
         values.put(PHONE_NO, phone_no);
+        values.put(ASSIGNED_BY, assigned_by);
+        values.put(CREATED_AT, created_at);
+        values.put(UPDATED_BY, updated_by);
+        values.put(UPDATED_AT, updated_at);
 
         db.insert(TABLE_NAME_1,null,values);
+//        db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         db.close();
     }
 
-    public Cursor get_mypickups_today(SQLiteDatabase db)
+    public Cursor get_mypickups_today(SQLiteDatabase db, String user)
     {
-        String[] columns = {MERCHANT_ID,MERCHANT_NAME, ADDRESS, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO};
-        return db.query(TABLE_NAME_1,columns,null,null,null,null,null);
+        String[] columns = {MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT};
+        return db.query(TABLE_NAME_1,columns,"executive_name='" + user + "'",null,null,null,null);
     }
 
-//    public String get_merchant_name() {
-//
-//        String rec=null;
-//        String countQuery = "SELECT  merchant_name FROM " + TABLE_NAME_1 ;
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor mCursor = db.rawQuery(countQuery, null);
-////        int count = cursor.getCount();
-//        mCursor.close();
-////        if (mCursor != null)
-////        {
-////            mCursor.moveToFirst();
-////            rec=mCursor.getString(2);
-////        }
-//        rec=mCursor.getString(2);
-//        return rec;
-//    }
-    public Cursor get_merchant_name(SQLiteDatabase db)
-    {
-        String[] columns = {MERCHANT_NAME};
-        Cursor mCursor = db.rawQuery(
-                "SELECT merchantId  FROM  My_pickups", null);
-        return mCursor;
-    }
-    public String get_merchant_id()
-    {
-        System.out.println("ddbpos="+MERCHANT_NAME);
-        long recc=0;
-        String rec=null;
-        Cursor mCursor = db.rawQuery(
-                "SELECT merchantId  FROM  My_pickups", null);
-        if (mCursor != null)
-        {
-            mCursor.moveToFirst();
-            recc=mCursor.getLong(1);
-            rec=String.valueOf(recc);
-        }
-        return rec;
-    }
 
-    public void add(String merchantId, String barcodeNumber) {
+    public void add(String merchantId, String barcodeNumber, boolean state, String updated_by, String updated_at) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(MERCHANT_ID, merchantId);
         values.put(KEY_NAME, barcodeNumber);
+        values.put(String.valueOf(STATE), state);
+        values.put(UPDATED_BY, updated_by);
+        values.put(UPDATED_AT, updated_at);
         // insert
         db.insert(TABLE_NAME,null, values);
         db.close();

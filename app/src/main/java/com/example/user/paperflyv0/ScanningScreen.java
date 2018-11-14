@@ -1,6 +1,8 @@
 package com.example.user.paperflyv0;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +21,10 @@ import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 
+import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
@@ -63,6 +67,13 @@ public class ScanningScreen extends AppCompatActivity {
 
         @Override
         public void barcodeResult(BarcodeResult result) {
+            //Fetching email from shared preferences
+            SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+            String user = username.toString();
+
+            // current date and time
+            final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
             db = new BarcodeDbHelper(ScanningScreen.this);
             if(result.getText() == null || result.getText().equals(lastText)) {
@@ -79,7 +90,10 @@ public class ScanningScreen extends AppCompatActivity {
             barcodeView.setStatusText("Barcode"+result.getText());
 
             // TODO: add added-by, current-date , vaiia says to add flag in this table
-            db.add(merchant_id, lastText);
+            boolean state = true;
+            String updated_by = user;
+            String updated_at = currentDateTimeString;
+            db.add(merchant_id, lastText, state, updated_by, updated_at);
 
             final int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
 

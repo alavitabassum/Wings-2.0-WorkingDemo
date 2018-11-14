@@ -35,19 +35,19 @@
             android:textStyle="bold" />
 
 
-        <TextView
-            android:id="@+id/m_add_pul"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <!--<TextView-->
+            <!--android:id="@+id/m_add_pul"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
 
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="40dp"
-            android:lines="2"
-            android:maxLines="2"
-            android:textAlignment="center"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:textStyle="normal" />
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_marginTop="40dp"-->
+            <!--android:lines="2"-->
+            <!--android:maxLines="2"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textColor="#000"-->
+            <!--android:textSize="15sp"-->
+            <!--android:textStyle="normal" />-->
 
 
         <TextView
@@ -151,7 +151,7 @@
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/m_add_pul"
+            android:layout_below="@+id/m_name_pul"
             android:layout_alignStart="@+id/textView3"
             android:layout_marginStart="11dp"
             android:layout_marginTop="0dp"
@@ -162,7 +162,7 @@
             android:id="@+id/m_phn_num"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/m_add_pul"
+            android:layout_below="@+id/m_name_pul"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="0dp"
             android:layout_marginEnd="18dp"

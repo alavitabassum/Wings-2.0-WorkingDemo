@@ -44,7 +44,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView item_m_pul;
-        public TextView item_add_pul;
+//        public TextView item_add_pul;
         public TextView itme_a_pul;
         public TextView item_p_pul;
         public TextView item_scanCount;
@@ -58,7 +58,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public ViewHolder(final View itemView) {
             super(itemView);
             item_m_pul=itemView.findViewById(R.id.m_name_pul);
-            item_add_pul=itemView.findViewById(R.id.m_add_pul);
+//            item_add_pul=itemView.findViewById(R.id.m_add_pul);
             itme_a_pul=itemView.findViewById(R.id.a_qty_pul);
             item_p_pul=itemView.findViewById(R.id.p_qty_pul);
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
@@ -110,7 +110,6 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
         viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
-        viewHolder.item_add_pul.setText(list.get(i).getAddress());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
         viewHolder.item_p_pul.setText(list.get(i).getPicked_qty());
         viewHolder.item_scanCount.setText(list.get(i).getScan_count());

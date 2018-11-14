@@ -12,7 +12,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable {
@@ -21,11 +20,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     private Context context;
     private OnItemClickListener mListener;
 
-    //search/filter list
-    @Override
-    public Filter getFilter() {
-        return null;
-    }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
