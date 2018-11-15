@@ -24,7 +24,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,31 +49,27 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import android.widget.SearchView.OnQueryTextListener;
-import android.app.SearchManager;
-import android.support.v7.widget.SearchView;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener,AssignExecutiveAdapter.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener{
 
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    private String INSERT_URL = "http://192.168.0.107/new/insertassign.php";
-    private String MERCHANT_URL= "http://paperflybd.com/merchantAPI.php";
-
+    private String INSERT_URL = "http://192.168.43.37/new/insertassign.php";
+    private String MERCHANT_URL= "http://192.168.43.37/new/merchantlistt.php";
     // private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
     Database database;
+    int count =0;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+    //    RecyclerView.Adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final TextView assignedNum =findViewById(R.id.assigned_pickups);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign_pickup__manager);
         database = new Database(getApplicationContext());
@@ -97,6 +92,9 @@ public class AssignPickup_Manager extends AppCompatActivity
         getallexecutives();
         loadmerchantlist(user);
         loadexecutivelist(user);
+
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -119,48 +117,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadallassigned(final String merchant_code){
-        StringRequest postRequest1 = new StringRequest(Request.Method.POST, "http://192.168.0.107/new/showassign.php",
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-
-                            JSONArray arr = new JSONArray(response);
-                            JSONObject jObj = arr.getJSONObject(0);
-                            AssignManager_Model assigned = new AssignManager_Model(jObj.getString("total"));
-                            assignManager_modelList.add(assigned);
-                            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());
-                            recyclerView.setAdapter(assignExecutiveAdapter);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String,String>  params1 = new HashMap<String,String>();
-                params1.put("merchant_code",merchant_code);
-                return params1;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(postRequest1);
-
-    }
-
-   //Load executive from api
+    //Load executive from api
     private void loadexecutivelist(final String user)
     {
 
@@ -225,8 +182,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         }
     }
 
-
-
     //Merchant List API hit
     private void loadmerchantlist(final String user)
     {
@@ -285,10 +240,13 @@ public class AssignPickup_Manager extends AppCompatActivity
             {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName,merchantCode);
+                String assigned = c.getString(2);
+
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName,merchantCode,assigned);
                 assignManager_modelList.add(todaySummary);
             }
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());
+
             recyclerView.setAdapter(assignExecutiveAdapter);
             assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
 
@@ -333,7 +291,9 @@ public class AssignPickup_Manager extends AppCompatActivity
                 params.put("assigned_by",user);
                 params.put("created_at",currentDateTimeString);
                 database.insert_assignexecutive(ex_name,order_count,merchant_code,user,currentDateTimeString);
-
+                final int total_assign = database.getTotalOfAmount(merchant_code);
+                final String strI = String.valueOf(total_assign);
+                database.update_row(strI,merchant_code);
                 return params;
             }
 
@@ -357,24 +317,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_item, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView)searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                assignExecutiveAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
+        getMenuInflater().inflate(R.menu.pickups_today__manager, menu);
         return true;
     }
 
@@ -469,8 +412,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     public void onItemClick(View view,int position) {
 
         final AssignManager_Model clickeditem = assignManager_modelList.get(position);
-        final TextView assignedNum =findViewById(R.id.assigned_pickups);
-        final TextView selection1 =findViewById(R.id.selection1);
+      //  final TextView selection1 =findViewById(R.id.selection1);
 
 
         AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
@@ -488,6 +430,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
+
         List<String> lables = new ArrayList<String>();
 
         for (int z = 0; z < executiveLists.size(); z++) {
@@ -504,14 +447,16 @@ public class AssignPickup_Manager extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int i1) {
                 assignexecutive(mSpinner1.getSelectedItem().toString(),et1.getText().toString(),merchant_code,user,currentDateTimeString);
-
+                finish();
+                startActivity(getIntent());
                 if (!mSpinner1.getSelectedItem().toString().equals(null)){
                     Toast.makeText(AssignPickup_Manager.this, mSpinner1.getSelectedItem().toString()
                                     +"("+et1.getText().toString() +")",
                             Toast.LENGTH_SHORT).show();
-                    selection1.setText(mSpinner1.getSelectedItem().toString());
-                    selection1.setTextColor(getResources().getColor(R.color.pfColor));
-                    assignedNum.setText(et1.getText().toString());
+
+
+                   // selection1.setText(mSpinner1.getSelectedItem().toString());
+                    // selection1.setTextColor(getResources().getColor(R.color.pfColor));
                     dialog.dismiss();
 
                 }
@@ -524,12 +469,19 @@ public class AssignPickup_Manager extends AppCompatActivity
                 dialog.dismiss();
             }
         });
-
+        // vwParentRow2.refreshDrawableState();
         spinnerBuilder.setView(mView);
         AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
     }
 
-
-
+    @Override
+    public void onRefresh() {
+        assignManager_modelList.clear();
+        //Fetching email from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        String user = username.toString();
+        loadmerchantlist(user);
+    }
 }
