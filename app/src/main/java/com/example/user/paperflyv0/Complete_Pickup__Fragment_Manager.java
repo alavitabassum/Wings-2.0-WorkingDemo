@@ -30,7 +30,7 @@ import com.android.volley.toolbox.Volley;
 
 public class Complete_Pickup__Fragment_Manager extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String URL_DATA = "http://192.168.0.130/new/complete.php";
+    private static final String URL_DATA = "http://192.168.0.116/new/complete.php";
     View v;
 
     public SwipeRefreshLayout swipeRefreshLayout;
