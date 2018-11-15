@@ -77,7 +77,7 @@ public class ScanningScreen extends AppCompatActivity {
 
             db = new BarcodeDbHelper(ScanningScreen.this);
             if(result.getText() == null || result.getText().equals(lastText)) {
-                Toast.makeText(ScanningScreen.this, "Entry is null or already entered", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ScanningScreen.this, "Entry is null or already entered", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -90,9 +90,9 @@ public class ScanningScreen extends AppCompatActivity {
             barcodeView.setStatusText("Barcode"+result.getText());
 
             // TODO: add added-by, current-date , vaiia says to add flag in this table
-            boolean state = true;
-            String updated_by = user;
-            String updated_at = currentDateTimeString;
+            final boolean state = true;
+            final String updated_by = user;
+            final String updated_at = currentDateTimeString;
             db.add(merchant_id, lastText, state, updated_by, updated_at);
 
             final int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
@@ -117,8 +117,18 @@ public class ScanningScreen extends AppCompatActivity {
                 @Override
                 //On click function
                 public void onClick(View view) {
+                    SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                    String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+                    String user1 = username.toString();
+                    // current date and time
+                    final String currentDateTimeString1 = DateFormat.getDateTimeInstance().format(new Date());
+                    final String updated_by1 = user1;
+                    final String updated_at1 = currentDateTimeString1;
+
+                    boolean state1 = false;
+                    db.update_state(state1, merchant_id);
                     // TODO: Merchant id, scan count, created-by, creation-date, flag
-                    db.update_row(strI, merchant_id);
+                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
                     startActivity(intent);
 
