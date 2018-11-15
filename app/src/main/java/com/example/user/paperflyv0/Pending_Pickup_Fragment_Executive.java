@@ -33,7 +33,7 @@ import java.util.List;
 public class Pending_Pickup_Fragment_Executive extends Fragment {
 
 
-    private static final String URL_DATA = "http://192.168.0.130/new/pending.php";
+    private static final String URL_DATA = "http://192.168.0.116/new/pending.php";
     View v;
     private RecyclerView myrecyclerview;
     Database database1;
