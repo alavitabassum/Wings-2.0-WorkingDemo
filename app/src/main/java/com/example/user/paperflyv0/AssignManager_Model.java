@@ -9,12 +9,11 @@ public class AssignManager_Model  {
     private String executive3;
 
 
-    public AssignManager_Model(String m_names, String m_address,String assigned) {
+    public AssignManager_Model(String m_names, String m_address,String assigned,String executive1) {
         this.m_names = m_names;
         this.m_address = m_address;
         this.assigned = assigned;
-
-
+        this.executive1=executive1;
         }
 
     public String getExecutive1() {
