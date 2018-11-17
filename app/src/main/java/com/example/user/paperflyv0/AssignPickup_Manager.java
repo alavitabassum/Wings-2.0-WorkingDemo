@@ -242,7 +242,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 String merchantCode = c.getString(1);
                 String assigned = c.getString(2);
                 String executive1 = c.getString(3);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName,merchantCode,assigned,executive1);
+                String executive2 = c.getString(4);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName,merchantCode,assigned,executive1,executive2);
                 assignManager_modelList.add(todaySummary);
             }
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());

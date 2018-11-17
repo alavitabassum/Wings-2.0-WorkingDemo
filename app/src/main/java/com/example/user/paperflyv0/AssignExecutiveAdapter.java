@@ -103,7 +103,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         viewHolder.itemMerchantAddress.setText(assignManager_model.getM_address());
         viewHolder.itemassign.setText(assignManager_model.getAssigned());
         viewHolder.executive1.setText(assignManager_model.getExecutive1());
-//        viewHolder.executive2.setText(assignManager_model.getExecutive2());
+        viewHolder.executive2.setText(assignManager_model.getExecutive2());
 //        viewHolder.executive3.setText(assignManager_model.getExecutive3());
 
         }
