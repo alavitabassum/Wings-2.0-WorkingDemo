@@ -66,7 +66,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     List<AssignManager_Model> assignManager_modelList;
     Database database;
 
-//testing
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
