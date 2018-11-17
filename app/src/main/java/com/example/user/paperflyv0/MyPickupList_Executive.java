@@ -130,7 +130,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     private void loadRecyclerView(final String user)
     {
 //        boolean check;
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.132/new/merchantListForExecutive.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/merchantListForExecutive.php",
            new Response.Listener<String>()
            {
             @Override
@@ -171,7 +171,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected" +error ,Toast.LENGTH_SHORT).show();
 
                     }
                 })
