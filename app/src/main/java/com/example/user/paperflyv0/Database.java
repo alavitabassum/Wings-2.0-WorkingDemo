@@ -21,7 +21,8 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String tableEmp="create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1="create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
-        String tableEmp2="create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
+        String tableEmp2="create table com_ex(merchant_name text,assigned text,uploaded text, received text ,executive_name text)";
+        String tableEmp6="create table pen_ex(merchant_name text,assigned text,uploaded text, received text ,executive_name text)";
         String tableEmp3="create table merchantList(merchantName text,merchantCode text)";
         String tableEmp4="create table assignexecutive(ex_name text,order_count text,merchant_code text,user text,currentDateTimeString text)";
         String tableEmp5="create table executivelist(executive_name text)";
@@ -31,6 +32,7 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(tableEmp3);
         sqLiteDatabase.execSQL(tableEmp4);
         sqLiteDatabase.execSQL(tableEmp5);
+        sqLiteDatabase.execSQL(tableEmp6);
     }
 
     @Override
@@ -86,7 +88,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    public void insert_complete_pickups_history_ex(String merchant_name,String executive_name,String assigned, String picked, String received)
+    public void insert_complete_pickups_history_ex(String merchant_name,String assigned, String uploaded, String received,String executive_name)
     {
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
 
@@ -94,25 +96,25 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("merchant_name",merchant_name);
 
-        values.put("executive_name",executive_name);
-
         values.put("assigned",assigned);
 
-        values.put("picked",picked);
+        values.put("uploaded",uploaded);
 
         values.put("received",received);
+
+        values.put("executive_name",executive_name);
 
         sqLiteDatabase.insert("com_ex",null,values);
         sqLiteDatabase.close();
     }
 
-    public Cursor  get_complete_pickups_history_ex(SQLiteDatabase db)
+    public Cursor  get_complete_pickups_history_ex(SQLiteDatabase db, String user)
     {
-        String[] columns = {"merchant_name","executive_name","assigned","picked","received"};
-        return db.query("com_ex",columns,null,null,null,null,null);
+        String[] columns = {"merchant_name","assigned","uploaded","received"};
+        return db.query("com_ex",columns,"executive_name='" + user + "'",null,null,null,null);
     }
 
-    public void insert_pending_pickups_history_ex(String merchant_name,String executive_name,String assigned, String picked, String received)
+    public void insert_pending_pickups_history_ex(String merchant_name,String assigned, String uploaded, String received,String executive_name)
     {
         SQLiteDatabase sqLiteDatabase=this.getWritableDatabase();
 
@@ -120,22 +122,22 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("merchant_name",merchant_name);
 
-        values.put("executive_name",executive_name);
-
         values.put("assigned",assigned);
 
-        values.put("picked",picked);
+        values.put("uploaded",uploaded);
 
         values.put("received",received);
 
-        sqLiteDatabase.insert("com_ex",null,values);
+        values.put("executive_name",executive_name);
+
+        sqLiteDatabase.insert("pen_ex",null,values);
         sqLiteDatabase.close();
     }
 
-    public Cursor  get_pending_pickups_history_ex(SQLiteDatabase db)
+    public Cursor  get_pending_pickups_history_ex(SQLiteDatabase db, String user)
     {
-        String[] columns = {"merchant_name","executive_name","assigned","picked","received"};
-        return db.query("com_ex",columns,null,null,null,null,null);
+        String[] columns = {"merchant_name","assigned","uploaded","received"};
+        return db.query("pen_ex",columns,"executive_name='" + user + "'",null,null,null,null);
     }
 
     public void addmerchantlist(String merchantName,String merchantCode)

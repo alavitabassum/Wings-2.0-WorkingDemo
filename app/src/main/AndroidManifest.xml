@@ -34,15 +34,21 @@
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".LoginActivity"
-            android:theme="@style/AppTheme" />
         <activity
             android:name=".PickupsToday_Manager"
             android:label="@string/title_activity_pickups_today__manager"
@@ -72,7 +78,7 @@
         <activity
             android:name=".PickupStatus_Executive"
             android:label="@string/title_activity_pickup_status__executive"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"

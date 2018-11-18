@@ -7,9 +7,9 @@ public class Pending_Pickup_Model_Executive {
     private String picked_qty;
     private String received_qty;
 
-    public Pending_Pickup_Model_Executive(String name, String exec_name, String assined_qty, String picked_qty, String received_qty) {
+    public Pending_Pickup_Model_Executive(String name, String assined_qty, String picked_qty, String received_qty,String exec_name) {
         this.name = name;
-        this.exec_name = exec_name;
+       this.exec_name = exec_name;
         this.assined_qty = assined_qty;
         this.picked_qty = picked_qty;
         this.received_qty = received_qty;

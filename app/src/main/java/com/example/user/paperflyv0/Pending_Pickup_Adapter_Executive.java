@@ -35,7 +35,7 @@ public class Pending_Pickup_Adapter_Executive extends RecyclerView.Adapter<Pendi
     @Override
     public void onBindViewHolder(@NonNull Pending_Pickup_Adapter_Executive.MyViewHolder holder, int position) {
         holder.tv_name.setText(listitems.get(position).getName());
-        holder.tv_exec_name.setText(listitems.get(position).getExec_name());
+       holder.tv_exec_name.setText(listitems.get(position).getExec_name());
         holder.a_qty.setText(listitems.get(position).getAssined_qty());
         holder.u_qty.setText(listitems.get(position).getPicked_qty());
         holder.r_qty.setText(listitems.get(position).getReceived_qty());

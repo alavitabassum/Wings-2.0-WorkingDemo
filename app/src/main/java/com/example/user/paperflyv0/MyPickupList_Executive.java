@@ -90,6 +90,8 @@ public class MyPickupList_Executive extends AppCompatActivity
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
+
+
         getData(user);
         swipeRefreshLayout.setRefreshing(true);
         loadRecyclerView(user);
@@ -130,7 +132,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     private void loadRecyclerView(final String user)
     {
 //        boolean check;
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.132/new/merchantListForExecutive.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.142/new/merchantListForExecutive.php",
            new Response.Listener<String>()
            {
             @Override
@@ -485,7 +487,6 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        list.clear();
         loadRecyclerView("executive_name");
     }
 }

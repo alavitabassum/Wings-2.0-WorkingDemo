@@ -45,7 +45,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE1 = "CREATE TABLE My_pickups ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "merchantId TEXT, "
+                + "merchantId TEXT UNIQUE, "
                 + "merchant_name TEXT, "
                 + "executive_name TEXT, "
                 + "assined_qty TEXT, "
@@ -108,8 +108,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
 
-        db.insert(TABLE_NAME_1,null,values);
-//        db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+//        db.insert(TABLE_NAME_1,null,values);
+        db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         db.close();
     }
 

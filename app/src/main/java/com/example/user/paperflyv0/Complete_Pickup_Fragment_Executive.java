@@ -1,5 +1,6 @@
 package com.example.user.paperflyv0;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,11 +28,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+@SuppressLint("ValidFragment")
 public class Complete_Pickup_Fragment_Executive extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
-    private static final String URL_DATA = "http://192.168.0.130/new/complete.php";
+    private static final String URL_DATA = "http://192.168.0.142/new/exec_pick_complete.php";
+    private final String user;
     View v;
     private RecyclerView myrecyclerview;
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -39,7 +44,9 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
     private List<Complete_Pickup_Model_Executive> listitems;
     Database database;
 
-    public Complete_Pickup_Fragment_Executive() {
+    @SuppressLint("ValidFragment")
+    public Complete_Pickup_Fragment_Executive(final String user) {
+        this.user = user;
     }
 
     @Nullable
@@ -56,13 +63,13 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
 
-        getdata();
+        getdata(user);
         swipeRefreshLayout.setRefreshing(true);
-        loadRecyclerView();
+        loadRecyclerView(user);
         return v;
     }
 
-    private void loadRecyclerView()
+    private void loadRecyclerView(final String user)
     {
         progress=new ProgressDialog(getContext());
         progress.setMessage("Loading Data");
@@ -71,21 +78,26 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
         progress.setProgress(0);
         progress.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST," http://192.168.0.142/new/exec_pick_complete.php",
+         new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                progress.dismiss();
-                listitems.clear();
+//                listitems.clear();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("summaryforcomplete");
+                    JSONArray array = jsonObject.getJSONArray("summary");
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
-                        database.insert_complete_pickups_history_ex(o.getString("merchant_name"),o.getString("executive_name"),o.getString("assigned"),o.getString("picked"),o.getString("received"));
+                        database.insert_complete_pickups_history_ex(o.getString("merchant_name"),
+                                o.getString("assigned"),
+                                o.getString("uploaded"),
+                                o.getString("received"),
+                                o.getString("executive_name"));
 
                     }
-                    getdata();
+                    getdata(user);
                     myrecyclerview.setAdapter(new Complete_Pickup_Adapter_Executive(getContext(),listitems));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -98,29 +110,37 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Check Your Internet Connection1" +error ,Toast.LENGTH_SHORT).show();
 
                     }
-                });
+                })
+                {
+        @Override
+        protected Map<String, String> getParams()
+        {
+            Map<String,String> params1 = new HashMap<String,String>();
+            params1.put("executive_name",user);
+            return params1;
+        }
+    };
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         requestQueue.add(stringRequest);
     }
-    private void getdata()
+    private void getdata(final String user)
     {
-        listitems.clear();
+
         try {
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_complete_pickups_history_ex(sqLiteDatabase);
+            Cursor c = database.get_complete_pickups_history_ex(sqLiteDatabase, user);
             while (c.moveToNext()) {
                 String merchant_name = c.getString(0);
-                String executive_name = c.getString(1);
-                String assigned = c.getString(2);
-                String picked = c.getString(3);
-                String received = c.getString(4);
-                Complete_Pickup_Model_Executive todaySummary = new Complete_Pickup_Model_Executive(merchant_name, executive_name, assigned, picked, received);
+                String assigned = c.getString(1);
+                String uploaded = c.getString(2);
+                String received = c.getString(3);
+              String executive_name = c.getString(4);
+                Complete_Pickup_Model_Executive todaySummary = new Complete_Pickup_Model_Executive(merchant_name, assigned, uploaded, received,executive_name);
                 listitems.add(todaySummary);
             }
-
             myrecyclerview.setAdapter(new Complete_Pickup_Adapter_Executive(getContext(), listitems));
             swipeRefreshLayout.setRefreshing(false);
         }catch (Exception e)
@@ -132,6 +152,6 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
     @Override
     public void onRefresh() {
         listitems.clear();
-        loadRecyclerView();
+        loadRecyclerView("executive_name");
     }
 }

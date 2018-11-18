@@ -1,6 +1,5 @@
 package com.example.user.paperflyv0;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,11 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.List;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,9 +22,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Complete_Pickup__Fragment_Manager extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String URL_DATA = "http://192.168.0.130/new/complete.php";
+    private static final String URL_DATA = "http://192.168.0.132/new/pick_complete.php";
     View v;
 
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -73,18 +74,22 @@ public class Complete_Pickup__Fragment_Manager extends Fragment implements Swipe
         progress.setProgress(0);
         progress.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,"http://192.168.0.132/new/pick_complete.php", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();
                 listitems.clear();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("summaryforcomplete");
+                    JSONArray array = jsonObject.getJSONArray("summary");
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
-                        database2.insertData(o.getString("merchant_name"),o.getString("executive_name"),o.getString("assigned"),o.getString("picked"),o.getString("received"));
+                        database2.insertData(o.getString("merchant_name"),
+                                o.getString("assigned"),
+                                o.getString("uploaded"),
+                                o.getString("received"),
+                                o.getString("executive_name"));
 
                     }
                     getdata();
@@ -111,16 +116,15 @@ public class Complete_Pickup__Fragment_Manager extends Fragment implements Swipe
         listitems.clear();
         try {
             //database2 = new Complete_pickup_database_mng(getActivity());
-
             SQLiteDatabase sqLiteDatabase = database2.getReadableDatabase();
             Cursor c = database2.getAllData(sqLiteDatabase);
             while (c.moveToNext()) {
                 String merchant_name = c.getString(0);
-                String executive_name = c.getString(1);
-                String assigned = c.getString(2);
-                String picked = c.getString(3);
-                String received = c.getString(4);
-                Complete_Pickup_Model_Manager todaySummary = new Complete_Pickup_Model_Manager(merchant_name, executive_name, assigned, picked, received);
+                String assigned = c.getString(1);
+                String uploaded = c.getString(2);
+                String received = c.getString(3);
+                String executive_name = c.getString(4);
+                Complete_Pickup_Model_Manager todaySummary = new Complete_Pickup_Model_Manager(merchant_name, assigned, uploaded, received , executive_name);
                 listitems.add(todaySummary);
             }
 
