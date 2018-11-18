@@ -522,14 +522,7 @@ public class AssignPickup_Manager extends AppCompatActivity
             lables.add(executiveLists.get(z).getExecutive_name());
         }
 
-        viewBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i1) {
-                dialog.dismiss();
-            }
-        });
-
-        viewBuilder.setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+        viewBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i1) {
 

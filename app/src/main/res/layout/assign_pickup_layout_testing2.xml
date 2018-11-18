@@ -350,7 +350,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="186dp"
-            android:background="@drawable/buttonstyle_confirm"
+            android:background="@drawable/buttonstyle_viewassigns"
             android:gravity="center_horizontal|center"
             android:text="Confirm"
             android:textColor="@color/white"
