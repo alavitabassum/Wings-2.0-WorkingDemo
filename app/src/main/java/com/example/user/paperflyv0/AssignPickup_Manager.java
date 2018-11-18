@@ -24,10 +24,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.support.v7.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,8 +59,8 @@ public class AssignPickup_Manager extends AppCompatActivity
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
-    private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
-    // private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
+    //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
+    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
@@ -317,7 +319,24 @@ public class AssignPickup_Manager extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.pickups_today__manager, menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView)searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                assignExecutiveAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -412,6 +431,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     public void onItemClick(View view,int position) {
 
         final AssignManager_Model clickeditem = assignManager_modelList.get(position);
+
       //  final TextView selection1 =findViewById(R.id.selection1);
 
 
@@ -474,6 +494,58 @@ public class AssignPickup_Manager extends AppCompatActivity
         AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
     }
+
+    @Override
+    public void onItemClick_view(View view2,int position2) {
+
+        final AssignManager_Model clickeditem2 = assignManager_modelList.get(position2);
+        //  final TextView selection1 =findViewById(R.id.selection1);
+
+
+        AlertDialog.Builder viewBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
+        View mView = getLayoutInflater().inflate(R.layout.dialog_view_assigns,null);
+        viewBuilder.setTitle("Assigned Executive List");
+        final TextView dialog_mNameView =  mView.findViewById(R.id.dialog_m_name_view);
+
+        dialog_mNameView.setText(clickeditem2.getM_names());
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String user = username.toString();
+
+        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+
+        List<String> lables = new ArrayList<String>();
+
+        for (int z = 0; z < executiveLists.size(); z++) {
+            lables.add(executiveLists.get(z).getExecutive_name());
+        }
+
+        viewBuilder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i1) {
+                dialog.dismiss();
+            }
+        });
+
+        viewBuilder.setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i1) {
+
+                    dialog.dismiss();
+
+                }
+
+
+        });
+
+        // vwParentRow2.refreshDrawableState();
+        viewBuilder.setView(mView);
+        AlertDialog dialog2 = viewBuilder.create();
+        dialog2.show();
+    }
+
 
     @Override
     public void onRefresh() {
