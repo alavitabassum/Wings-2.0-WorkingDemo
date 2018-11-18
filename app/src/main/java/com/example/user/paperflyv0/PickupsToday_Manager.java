@@ -2,6 +2,7 @@ package com.example.user.paperflyv0;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -14,6 +15,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,7 +42,7 @@ import java.util.List;
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private static final String URL_DATA = "http://192.168.0.107/new/order.php";
+    private static final String URL_DATA = "http://192.168.0.117/new/order.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
@@ -69,7 +71,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout = findViewById(R.id.refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
         getData();
@@ -99,6 +101,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     }
     private void loadRecyclerView()
     {
+        listItems.clear();
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -226,12 +229,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
-
-            Intent loginIntent = new Intent(PickupsToday_Manager.this,
-                    LoginActivity.class);
-            startActivity(loginIntent);
             //Creating an alert dialog to confirm logout
-        /*    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
             alertDialogBuilder.setPositiveButton("Yes",
                     new DialogInterface.OnClickListener() {
@@ -270,7 +269,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
 
-*/
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

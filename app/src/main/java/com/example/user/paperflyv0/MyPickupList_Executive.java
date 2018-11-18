@@ -77,7 +77,8 @@ public class MyPickupList_Executive extends AppCompatActivity
         setSupportActionBar(toolbar);
         list = new ArrayList<>();
 
-        //Fetching email from shared preferences
+        //Fet
+        //        db.getWritableDatabase();ching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         String user = username.toString();
@@ -173,7 +174,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected" +error ,Toast.LENGTH_SHORT).show();
 
                     }
                 })
