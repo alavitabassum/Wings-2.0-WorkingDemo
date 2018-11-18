@@ -11,8 +11,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +47,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public TextView itemCompletedCount;
         public TextView itemDueCount;
         public Button itembtnAssign;
-        public TextView executive1;
-        public TextView executive2;
-        public TextView executive3;
 
 
 
@@ -65,10 +60,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             itemDueCount=itemView.findViewById(R.id.due_pickups_count);
             itembtnAssign = itemView.findViewById(R.id.btn_assign);
             itemassign = itemView.findViewById(R.id.assigned_pickups);
-            executive1 = itemView.findViewById(R.id.selection1);
-            executive2 = itemView.findViewById(R.id.selection2);
-            executive3 = itemView.findViewById(R.id.selection3);
-
 
             itembtnAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,10 +92,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
         viewHolder.itemMerchantAddress.setText(assignManager_model.getM_address());
         viewHolder.itemassign.setText(assignManager_model.getAssigned());
-        viewHolder.executive1.setText(assignManager_model.getExecutive1());
-        viewHolder.executive2.setText(assignManager_model.getExecutive2());
-//        viewHolder.executive3.setText(assignManager_model.getExecutive3());
-
         }
 
     @Override

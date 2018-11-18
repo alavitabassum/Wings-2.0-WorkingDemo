@@ -6,28 +6,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +53,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
-    private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
+    private String MERCHANT_URL= "http://paperflybd.com/merchantAPI.php";
     // private String MERCHANT_URL = "http://192.168.0.102/new/merchantlist.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -241,9 +237,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
                 String assigned = c.getString(2);
-                String executive1 = c.getString(3);
-                String executive2 = c.getString(4);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName,merchantCode,assigned,executive1,executive2);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName,merchantCode,assigned);
                 assignManager_modelList.add(todaySummary);
             }
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList,getApplicationContext());
@@ -293,7 +287,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 database.insert_assignexecutive(ex_name,order_count,merchant_code,user,currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
                 final String strI = String.valueOf(total_assign);
-                database.update_row(strI,merchant_code,ex_name);
+                database.update_row(strI,merchant_code);
                 return params;
             }
 
