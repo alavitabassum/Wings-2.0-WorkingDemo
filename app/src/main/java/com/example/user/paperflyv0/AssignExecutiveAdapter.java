@@ -36,6 +36,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
         void onItemClick_view (View view2, int position2);
+        void onItemClick_update (View view3, int position3);
 
     }
 
@@ -65,6 +66,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public TextView executive3;
         public Button itemViewAssign;
         public TextView item_call;
+        public Button itemUpdateAssign;
 
 
         @SuppressLint("ResourceAsColor")
@@ -85,6 +87,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             executive3 = itemView.findViewById(R.id.selection3);*/
 
             itemViewAssign = itemView.findViewById(R.id.view_assign);
+            itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
 
 
             item_call.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +131,22 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
                         int position2 = getAdapterPosition();
                         if(position2!=RecyclerView.NO_POSITION){
                             mListener.onItemClick_view(view2, position2);
+
+                        }
+                    }
+                }
+
+
+            });
+
+
+            itemUpdateAssign.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view3) {
+                    if(mListener!=null){
+                        int position3 = getAdapterPosition();
+                        if(position3!=RecyclerView.NO_POSITION){
+                            mListener.onItemClick_update(view3, position3);
 
                         }
                     }

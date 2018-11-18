@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -432,14 +433,12 @@ public class AssignPickup_Manager extends AppCompatActivity
 
         final AssignManager_Model clickeditem = assignManager_modelList.get(position);
 
-      //  final TextView selection1 =findViewById(R.id.selection1);
-
-
         AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_spinner,null);
         spinnerBuilder.setTitle("Select executive and assign number.");
+
         final TextView dialog_mName =  mView.findViewById(R.id.dialog_m_name);
-        final Spinner mSpinner1 = mView.findViewById(R.id.spinner1);
+        final AutoCompleteTextView mAutoComplete = mView.findViewById(R.id.auto_exe);
         final EditText et1 = mView.findViewById(R.id.spinner1num);
         dialog_mName.setText(clickeditem.getM_names());
         final String merchant_code = clickeditem.getM_address();
@@ -458,25 +457,20 @@ public class AssignPickup_Manager extends AppCompatActivity
         }
 
         ArrayAdapter<String>  adapter = new ArrayAdapter<String>(AssignPickup_Manager.this,
-                android.R.layout.simple_spinner_item,
-                lables);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpinner1.setAdapter(adapter);
+                android.R.layout.simple_list_item_1, lables);
+ /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
+        mAutoComplete.setAdapter(adapter);
 
         spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i1) {
-                assignexecutive(mSpinner1.getSelectedItem().toString(),et1.getText().toString(),merchant_code,user,currentDateTimeString);
+                assignexecutive(mAutoComplete.getText().toString(),et1.getText().toString(),merchant_code,user,currentDateTimeString);
                 finish();
                 startActivity(getIntent());
-                if (!mSpinner1.getSelectedItem().toString().equals(null)){
-                    Toast.makeText(AssignPickup_Manager.this, mSpinner1.getSelectedItem().toString()
+                if (!mAutoComplete.getText().toString().equals(null)){
+                    Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                     +"("+et1.getText().toString() +")",
                             Toast.LENGTH_SHORT).show();
-
-
-                   // selection1.setText(mSpinner1.getSelectedItem().toString());
-                    // selection1.setTextColor(getResources().getColor(R.color.pfColor));
                     dialog.dismiss();
 
                 }
@@ -537,6 +531,23 @@ public class AssignPickup_Manager extends AppCompatActivity
         viewBuilder.setView(mView);
         AlertDialog dialog2 = viewBuilder.create();
         dialog2.show();
+    }
+
+
+    @Override
+    public void onItemClick_update(View view3,int position3) {
+
+        final AssignManager_Model clickeditem3 = assignManager_modelList.get(position3);
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String user = username.toString();
+        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        String merchantname = clickeditem3.getM_names();
+        Intent intent = new Intent(AssignPickup_Manager.this, UpdateAssigns.class);
+        intent.putExtra("MERCHANTNAME", merchantname);
+        startActivity(intent);
+
+
     }
 
 

@@ -31,8 +31,8 @@
             tools:layout_editor_absoluteX="163dp"
             tools:layout_editor_absoluteY="6dp" />
 
-        <Spinner
-            android:id="@+id/spinner1"
+        <AutoCompleteTextView
+            android:id="@+id/auto_exe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -40,7 +40,10 @@
             android:layout_marginTop="50dp"
             android:layout_marginEnd="40dp"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="40dp" />
+            tools:layout_editor_absoluteY="40dp"
+            android:hint="Select Executive"
+            android:completionHint="Select Executive"
+            android:completionThreshold="1"/>
 
         <EditText
             android:id="@+id/spinner1num"
