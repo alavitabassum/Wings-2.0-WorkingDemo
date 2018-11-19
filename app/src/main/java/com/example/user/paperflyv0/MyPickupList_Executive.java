@@ -95,6 +95,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 
         getData(user);
         swipeRefreshLayout.setRefreshing(true);
+        list.clear();
         loadRecyclerView(user);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -488,6 +489,6 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        loadRecyclerView("executive_name");
+        loadRecyclerView("user");
     }
 }

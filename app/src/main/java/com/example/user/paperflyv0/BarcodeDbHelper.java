@@ -75,20 +75,20 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 //    {
 //        Toast.makeText(MainActivity.this, " Data Already Exists", Toast.LENGTH_LONG).show();
 //    }else{
-//        db.addFavorit(favorit);
+//        db.insert_my_assigned_pickups(favorit);
 //    }
 
-//    public boolean checkDuplicate(String TableName, String dbfield, String fieldValue, int id_post) {
-//        SQLiteDatabase db= this.getReadableDatabase();
-//        String Query = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE "+ Constant.id_postFav +"="+ id_post; // your query
-//        Cursor cursor = db.rawQuery(Query, null);
-//        if(cursor.getCount() <= 0){
-//            cursor.close();
-//            return false;
-//        }
-//        cursor.close();
-//        return true;
-//    }
+    public boolean checkDuplicate(String TableName, String dbfield, String fieldValue, int merchant_id) {
+        SQLiteDatabase db= this.getReadableDatabase();
+        String Query = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE "+ MERCHANT_ID +"="+ merchant_id; // your query
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
 
     public void insert_my_assigned_pickups(String merchant_id,String merchant_name, String executive_name,String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at)
     {
@@ -109,8 +109,41 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(UPDATED_AT, updated_at);
 
 //        db.insert(TABLE_NAME_1,null,values);
-        db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_REPLACE);
-        db.close();
+        db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+//        db.update(TABLE_NAME_1, updateValues, "merchant_id = ' " + merchant_id + " ' ", null);
+
+//        INSERT OR REPLACE INTO TABLE_NAME_1 (MERCHANT_ID, MERCHANT_NAME,EXECUTIVE_NAME,ASSIGNED_QTY,PICKED_QTY,SCAN_COUNT,PHONE_NO,ASSIGNED_BY,CREATED_AT,UPDATED_BY,UPDATED_AT)
+//        VALUES (  merchant_id,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by,created_at,updated_by,updated_at
+//
+//                COALESCE((SELECT ASSIGNED_QTY FROM TABLE_NAME_1 WHERE MERCHANT_ID = merchant_id), assined_qty)
+//          );
+
+//        String countQuery = "INSERT INTO" +TABLE_NAME_1 "VALUES (values)
+//        ON CONFLICT(MERCHANT_ID)
+//            DO UPDATE SET ASSIGNED_QTY= excluded.ASSIGNED_QTY";
+
+//        WITH new (name, title, author) AS ( VALUES('about', 'About this site', 42) )
+//        INSERT OR REPLACE INTO page (id, name, title, content, author)
+//        SELECT old.id, new.name, new.title, old.content, new.author
+//        FROM new LEFT JOIN page AS old ON new.name = old.name;
+//        ContentValues values = new ContentValues();
+//        values.put("_id", 1); // the execution is different if _id is 2
+//        values.put("columnA", "valueNEW");
+
+//           final String s = "INSERT INTO " + TABLE_NAME_1 + " VALUES " + values + " ON CONFLICT " + merchant_id + " DO UPDATE SET " + ASSIGNED_QTY + " = " + assined_qty;
+
+//           db.execSQL(s);
+
+//           this.insert_my_assigned_pickups(merchant_id,merchant_name, executive_name,assined_qty, picked_qty,scan_count,phone_no,assigned_by,created_at,updated_by,updated_at));
+
+//        int id = (int) db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+//        if (id == -1) {
+//            db.update(TABLE_NAME_1, updateValues, "merchant_id= ' " + merchant_id + " ' ", null);  // number 1 is the _id here, update to variable for your code
+//        }
+
+//            db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+//            db.update(TABLE_NAME_1,updateValues,"merchant_id='" + merchant_id + "'",null);
+            db.close();
     }
 
     public Cursor get_mypickups_today(SQLiteDatabase db, String user)
