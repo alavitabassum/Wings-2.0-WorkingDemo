@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     Button signin;
     EditText username,pass;
     private boolean loggedIn = false;
+    private String userRole;
     Button tempButton;
 
     @Override
@@ -39,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         signin = (Button) findViewById(R.id.sign_in);
         username = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.pass);
-       // tempButton = findViewById(R.id.temp_btn);
+        // tempButton = findViewById(R.id.temp_btn);
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,12 +63,19 @@ public class LoginActivity extends AppCompatActivity {
 
         //Fetching the boolean value form sharedpreferences
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+        userRole = sharedPreferences.getString(Config.USER_ROLE_SHARED_PREF,"");
 
         //If we will get true
-        if(loggedIn){
+        if(loggedIn ){
             //We will start the Welcome Activity
-            Intent intent = new Intent(LoginActivity.this, ManagerCardMenu.class);
-            startActivity(intent);
+            if(userRole.contains("1")) {
+                Intent intent = new Intent(LoginActivity.this, ManagerCardMenu.class);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(LoginActivity.this, ExecutiveCardMenu.class);
+                startActivity(intent);
+            }
         }
     }
 
@@ -93,6 +101,15 @@ public class LoginActivity extends AppCompatActivity {
                         JSONArray arr = new JSONArray(response);
                         JSONObject jObj = arr.getJSONObject(0);
                         String userRole = jObj.getString("userRole");
+
+                        //Creating a shared preference
+                        SharedPreferences sharedPreferences1 = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        //Creating editor to store values to shared preferences
+                        SharedPreferences.Editor editor = sharedPreferences1.edit();
+                        editor.putString(Config.USER_ROLE_SHARED_PREF, userRole);
+                        //Saving values to editor
+                        editor.commit();
+
                         if (userRole.contains("1")) {
 
                             startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));

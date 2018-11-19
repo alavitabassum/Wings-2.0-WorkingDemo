@@ -18,13 +18,15 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable {
     private List<AssignManager_Model> assignManager_modelList;
     private List<AssignManager_Model> assignManager_modelListFull;
+
     private Context context;
     private OnItemClickListener mListener;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
@@ -33,6 +35,9 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
+        void onItemClick_view (View view2, int position2);
+        void onItemClick_update (View view3, int position3);
+
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {
@@ -47,14 +52,21 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
 
 
+
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView itemMerchantName;
         public TextView itemMerchantAddress;
+        public TextView itemassign;
         public TextView itemCompletedCount;
         public TextView itemDueCount;
         public Button itembtnAssign;
+        public TextView executive1;
+        public TextView executive2;
+        public TextView executive3;
+        public Button itemViewAssign;
         public TextView item_call;
+        public Button itemUpdateAssign;
 
 
         @SuppressLint("ResourceAsColor")
@@ -62,13 +74,21 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             super(itemView);
             itemMerchantName=itemView.findViewById(R.id.merchant_name);
             itemMerchantAddress=itemView.findViewById(R.id.m_add);
-            itemCompletedCount=itemView.findViewById(R.id.completed_pickups_count);
-            itemDueCount=itemView.findViewById(R.id.due_pickups_count);
+           /* itemCompletedCount=itemView.findViewById(R.id.completed_pickups_count);
+            itemDueCount=itemView.findViewById(R.id.due_pickups_count);*/
             itembtnAssign = itemView.findViewById(R.id.btn_assign);
             item_call = itemView.findViewById(R.id.call_merchant);
 
             //underline phoneNumber
             item_call.setPaintFlags(item_call.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            /*itemassign = itemView.findViewById(R.id.assigned_pickups);
+            executive1 = itemView.findViewById(R.id.selection1);
+            executive2 = itemView.findViewById(R.id.selection2);
+            executive3 = itemView.findViewById(R.id.selection3);*/
+
+            itemViewAssign = itemView.findViewById(R.id.view_assign);
+            itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
+
 
             item_call.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -86,6 +106,8 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
                     v.getContext().startActivity(callIntent);
                 }
             });
+
+
             itembtnAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -97,7 +119,43 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
                         }
                     }
                 }
+
+
             });
+
+
+            itemViewAssign.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view2) {
+                    if(mListener!=null){
+                        int position2 = getAdapterPosition();
+                        if(position2!=RecyclerView.NO_POSITION){
+                            mListener.onItemClick_view(view2, position2);
+
+                        }
+                    }
+                }
+
+
+            });
+
+
+            itemUpdateAssign.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view3) {
+                    if(mListener!=null){
+                        int position3 = getAdapterPosition();
+                        if(position3!=RecyclerView.NO_POSITION){
+                            mListener.onItemClick_update(view3, position3);
+
+                        }
+                    }
+                }
+
+
+            });
+
+
         }
     }
 
@@ -114,9 +172,12 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         AssignManager_Model assignManager_model = assignManager_modelList.get(i);
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
         viewHolder.itemMerchantAddress.setText(assignManager_model.getM_address());
+      //  viewHolder.itemassign.setText(assignManager_model.getAssigned());
+       // viewHolder.executive1.setText(assignManager_model.getExecutive1());
+      //  viewHolder.executive2.setText(assignManager_model.getExecutive2());
+//        viewHolder.executive3.setText(assignManager_model.getExecutive3());
 
-
-    }
+        }
 
     @Override
     public int getItemCount() {
