@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+<!--    <item
+        android:id="@+id/action_notification"
+        android:icon="@drawable/ic_pickupvan"
+        android:title="Notifications"
+        android:actionLayout="@layout/custom_notification_layout"
+        app:showAsAction="always" />-->
+
 </menu>

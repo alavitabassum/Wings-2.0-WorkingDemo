@@ -44,7 +44,13 @@ dependencies {
     //search library
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 
-    // Hello
+    // bubble notification library
+    implementation 'com.txusballesteros:bubbles:1.2.1'
+    implementation 'com.nex3z:notification-badge:0.2.0'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+
+    // floating_action_bar library
+    implementation 'com.github.clans:fab:1.6.4'
 }
 repositories {
     maven {
