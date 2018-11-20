@@ -250,9 +250,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
                 String assigned = c.getString(2);
-                String executive1 = c.getString(3);
-                String executive2 = c.getString(4);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, assigned, executive1, executive2);
+
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, assigned);
                 assignManager_modelList.add(todaySummary);
             }
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
@@ -300,7 +299,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 database.insert_assignexecutive(ex_name, order_count, merchant_code, user, currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
                 final String strI = String.valueOf(total_assign);
-                database.update_row(strI, merchant_code, ex_name);
+                database.update_row(strI, merchant_code);
                 return params;
             }
 
@@ -468,8 +467,8 @@ public class AssignPickup_Manager extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int i1) {
                 assignexecutive(mAutoComplete.getText().toString(), et1.getText().toString(), merchant_code, user, currentDateTimeString);
-                finish();
-                startActivity(getIntent());
+               /* finish();
+                startActivity(getIntent());*/
                 if (!mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                     + "(" + et1.getText().toString() + ")",

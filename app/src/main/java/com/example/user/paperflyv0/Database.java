@@ -21,7 +21,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp = "create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1 = "create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
-        String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,assigned text,executive1 text,executive2 text)";
+        String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,assigned text)";
         String tableEmp4 = "create table assignexecutive(ex_name text,order_count text,merchantCode text,user text,currentDateTimeString text)";
         String tableEmp5 = "create table executivelist(empName text,empCode text)";
         sqLiteDatabase.execSQL(tableEmp);
@@ -144,7 +144,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public Cursor get_merchantlist(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "merchantCode", "assigned","executive1","executive2"};
+        String[] columns = {"merchantName", "merchantCode", "assigned"};
         return db.query("merchantList", columns, null, null, null, null, null);
     }
 
@@ -197,29 +197,36 @@ public class Database extends SQLiteOpenHelper {
         }
         return total;
     }
-    int count=1;
-    public void update_row( String total_assigned,String merchantCode,String ex_name) {
 
-        if (count == 1) {
+    public void update_row( String total_assigned,String merchantCode) {
+
+
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put("executive1", ex_name);
             values.put("assigned", total_assigned);
             db.update("merchantList", values, "merchantCode='" + merchantCode + "'", null);
-            count++;
+
             db.close();
-        }
-        if(count==2)
-        {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("executive2", ex_name);
-            values.put("assigned", total_assigned);
-            db.update("merchantList", values, "merchantCode='" + merchantCode + "'", null);
-            count++;
-            db.close();
-        }
+
+
 
     }
 
+    public void insertneworder(String m_name, String ex_name, String c) {
+
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("merchantCode", m_name);
+
+        values.put("ex_name", ex_name);
+
+        values.put("order_count", c);
+
+        sqLiteDatabase.insert("assignexecutive", null, values);
+
+        sqLiteDatabase.close();
+
+    }
 }
