@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -64,9 +65,9 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public TextView executive1;
         public TextView executive2;
         public TextView executive3;
-        public Button itemViewAssign;
+        public ImageButton itemViewAssign;
         public TextView item_call;
-        public Button itemUpdateAssign;
+        public ImageButton itemUpdateAssign;
 
 
         @SuppressLint("ResourceAsColor")
