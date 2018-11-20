@@ -125,8 +125,9 @@ public class AssignPickup_Manager extends AppCompatActivity
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intentorderupdate = new Intent(AssignPickup_Manager.this,
+                        NewOrder.class);
+                startActivity(intentorderupdate);
             }
         });
 
