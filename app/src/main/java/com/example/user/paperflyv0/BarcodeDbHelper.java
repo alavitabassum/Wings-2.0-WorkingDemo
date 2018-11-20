@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
+    public static final int SYNC_STATUS_OK = 0;
+    public static final int SYNC_STATUS_FAILED = 1;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -25,6 +27,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String UPDATED_BY = "updated_by";
     private static final String UPDATED_AT = "updated_at";
     private static final String STATE = "state";
+    private static final String SYNC_STATUS = "syncstatus";
+    public static final String UI_UPDATE_BROADCAST = "com.example.synctest,uiupdatebroadcast";
+
 
     private static final String[] COLUMNS = { KEY_ID, MERCHANT_ID, KEY_NAME };
     private SQLiteDatabase db;
@@ -55,7 +60,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "assigned_by TEXT, "
                 + "created_at TEXT, "
                 + "updated_by TEXT, "
-                + "updated_at TEXT)";
+                + "updated_at TEXT,"
+                + "syncstatus INTEGER)";
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -107,6 +113,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CREATED_AT, created_at);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
+        values.put(SYNC_STATUS, SYNC_STATUS_FAILED);
 
 //        db.insert(TABLE_NAME_1,null,values);
         db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
@@ -148,7 +155,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     public Cursor get_mypickups_today(SQLiteDatabase db, String user)
     {
-        String[] columns = {MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT};
+        String[] columns = {MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, SYNC_STATUS};
         return db.query(TABLE_NAME_1,columns,"executive_name='" + user + "'",null,null,null,null);
     }
 

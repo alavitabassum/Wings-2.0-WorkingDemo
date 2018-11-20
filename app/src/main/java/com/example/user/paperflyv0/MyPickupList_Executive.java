@@ -1,14 +1,18 @@
 package com.example.user.paperflyv0;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +35,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -65,6 +70,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
     private List<PickupList_Model_For_Executive> list;
+    BroadcastReceiver broadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +103,12 @@ public class MyPickupList_Executive extends AppCompatActivity
         swipeRefreshLayout.setRefreshing(true);
         list.clear();
         loadRecyclerView(user);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                getData("tonoy");
+            }
+        };
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -128,6 +140,59 @@ public class MyPickupList_Executive extends AppCompatActivity
             {
                 requestPermission();
             }
+        }
+    }
+
+    public void saveToAppServer(final String merchant_id, final String scan_count, final String updated_by, final String updated_at){
+        if(checkNetworkConnection()){
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, " http://192.168.0.142/new/updateTable.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                String Response = jsonObject.getString("OK");
+                                db.update_row(scan_count, updated_by, updated_at, merchant_id);
+//                                if(Response.equals("OK"))
+//                                {
+//                                    db.update_row(scan_count, updated_by, updated_at, merchant_id);
+////                                    saveToLocalStorage(name, DbContract.SYNC_STATUS_OK);
+//                                } else {
+//
+//                                    db.update_row(scan_count, updated_by, updated_at, merchant_id);
+////                                    saveToLocalStorage(name, DbContract.SYNC_STATUS_FAILED);
+//                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+//                    saveToLocalStorage(name, DbContract.SYNC_STATUS_FAILED);
+                    db.update_row(scan_count, updated_by, updated_at, merchant_id);
+                }
+            })
+            {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("merchant_id", merchant_id);
+                    params.put("scan_count", scan_count);
+                    params.put("updated_by", updated_by);
+                    params.put("updated_at", updated_at);
+                    return params;
+                }
+            };
+            MySingleton.getInstance(MyPickupList_Executive.this).addToRequestQue(stringRequest);
+        } else {
+//            saveToLocalStorage(name,DbContract.SYNC_STATUS_FAILED);
+            SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+            String user = username.toString();
+            getData(user);
+//            db.update_row(scan_count, updated_by, updated_at, merchant_id);
         }
     }
 
@@ -193,11 +258,18 @@ public class MyPickupList_Executive extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    // check network connection
+    public boolean checkNetworkConnection() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo!= null && networkInfo.isConnected());
+    }
+
 
     private void getData(final String user)
     {
         try{
-
+            list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_mypickups_today(sqLiteDatabase, user);
             while (c.moveToNext())
@@ -213,8 +285,11 @@ public class MyPickupList_Executive extends AppCompatActivity
                 String created_at = c.getString(8);
                 String updated_by = c.getString(9);
                 String updated_at = c.getString(10);
-                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at);
+                int sync_status = c.getInt(11);
+                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at, sync_status);
                 list.add(detail);
+
+                saveToAppServer(merchant_id,scan_count,updated_by,updated_at );
             }
             pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
             recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
@@ -489,6 +564,20 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        loadRecyclerView("user");
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        loadRecyclerView(username);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        registerReceiver(broadcastReceiver,new IntentFilter(db.UI_UPDATE_BROADCAST));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 }

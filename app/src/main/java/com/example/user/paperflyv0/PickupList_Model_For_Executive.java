@@ -12,8 +12,9 @@ public class PickupList_Model_For_Executive {
     private String created_at;
     private String updated_by;
     private String updated_at;
+    private int Sync_status;
 
-    public PickupList_Model_For_Executive(String merchant_id, String merchant_name, String executive_name, String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at) {
+    public PickupList_Model_For_Executive(String merchant_id, String merchant_name, String executive_name, String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at, int Sync_status) {
         this.merchant_id = merchant_id;
         this.merchant_name = merchant_name;
         this.executive_name = executive_name;
@@ -25,9 +26,19 @@ public class PickupList_Model_For_Executive {
         this.created_at = created_at;
         this.updated_by = updated_by;
         this.updated_at = updated_at;
+        this.Sync_status = Sync_status;
+    }
+
+    public int getSync_status() {
+        return Sync_status;
+    }
+
+    public void setSync_status(int sync_status) {
+        Sync_status = sync_status;
     }
 
     public String getMerchant_id() {
+
         return merchant_id;
     }
 
