@@ -82,7 +82,7 @@
         <activity
             android:name=".ManagerCardMenu"
             android:label="@string/title_activity_manager_card_menu"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".PickupsToday_Executive"
             android:label="@string/title_activity_pickups_today__executive"
@@ -96,7 +96,8 @@
             android:label="@string/title_activity_my_pickups__executive"
             android:theme="@style/AppTheme" />
         <activity android:name=".ScanningScreen" />
-        <activity android:name=".UpdateAssigns"></activity>
+        <activity android:name=".UpdateAssigns" />
+        <activity android:name=".NewOrder"></activity>
     </application>
 
 </manifest>

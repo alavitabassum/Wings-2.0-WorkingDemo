@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 public class AssignPickup_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -71,6 +72,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
+    private FloatingActionMenu fabmenu;
     private FloatingActionButton fab1;
     private FloatingActionButton fab2;
 
@@ -104,14 +106,19 @@ public class AssignPickup_Manager extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
          fab1 = (FloatingActionButton) findViewById(R.id.menu_item1);
          fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+             /*   Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+
+                Intent intentorder = new Intent(AssignPickup_Manager.this,
+                        NewOrder.class);
+                startActivity(intentorder);
             }
         });
 
@@ -261,6 +268,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     {
               database.insert_assignexecutive(ex_name,order_count,merchant_code);
     }*/
+
     //For assigning executive API into mysql
     private void assignexecutive(final String ex_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString) {
 

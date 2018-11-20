@@ -35,7 +35,7 @@
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu"
         fab:menu_animationDelayPerItem="50"
-        fab:menu_backgroundColor="@android:color/transparent"
+        app:menu_backgroundColor="#CCFFFFFF"
         fab:menu_buttonSpacing="0dp"
         fab:menu_colorNormal="@color/red"
         fab:menu_colorPressed="@color/dark_red"
@@ -69,14 +69,16 @@
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="3dp"
         fab:menu_showShadow="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="bottom|end">
+        android:paddingBottom="8dp"
+        android:paddingEnd="8dp"
+
+
+        android:layout_gravity="bottom|end"
+        >
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_item1"
@@ -92,7 +94,8 @@
             style="@style/MenuButtonsSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/update" />
+            android:src="@drawable/update"
+            android:cropToPadding="true"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 
