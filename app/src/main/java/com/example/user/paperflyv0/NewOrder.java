@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -60,7 +61,7 @@ public class NewOrder extends AppCompatActivity {
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        String user = username.toString();
+        final String user = username.toString();
         getallmerchant();
         getallexecutives();
 
@@ -68,6 +69,8 @@ public class NewOrder extends AppCompatActivity {
         final AutoCompleteTextView actv_exe_name = findViewById(R.id.auto_exe_name);
         final EditText count = findViewById(R.id.editText);
         button = findViewById(R.id.btn_assign);
+
+        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
         List<String> merchantnames = new ArrayList<String>();
         List<String> executivenames = new ArrayList<String>();
@@ -79,6 +82,32 @@ public class NewOrder extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, merchantnames);
         /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
         actv_m_name.setAdapter(adapter);
+        actv_m_name.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> adapterView, View view, final int i, long l) {
+                final String merchantname = adapterView.getItemAtPosition(i).toString();
+
+                final String merchantcode = database.getSelectedMerchantCode(adapterView.getItemAtPosition(i).toString());
+
+                Toast.makeText(getApplicationContext(),
+                        "Clicked item from auto completion list "
+                                + merchantcode
+                        , Toast.LENGTH_SHORT).show();
+
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        database.insert_assignexecutive(actv_exe_name.getText().toString(),count.getText().toString(),merchantcode,user,currentDateTimeString);
+                        Toast.makeText(getApplicationContext(),
+                                "You have inserted new order for "
+                                        + merchantname
+                                , Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+
 
 
         for (int k = 0; k < executiveLists.size(); k++) {
@@ -88,17 +117,21 @@ public class NewOrder extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, executivenames);
         /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
         actv_exe_name.setAdapter(adapter1);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                database.insertneworder(actv_m_name.getText().toString(),actv_exe_name.getText().toString(),count.getText().toString());
-            }
-        });
-
-
 
         }
+   /* private AdapterView.OnItemClickListener onItemClickListener =
+            new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    String merchantcode = database.getSelectedMerchantCode(adapterView.getItemAtPosition(i).toString());
 
+                    Toast.makeText(getApplicationContext(),
+                            "Clicked item from auto completion list "
+                                    + adapterView.getItemAtPosition(i)
+                            , Toast.LENGTH_SHORT).show();
+                }
+            };
+*/
 
 
     private void getallmerchant() {
