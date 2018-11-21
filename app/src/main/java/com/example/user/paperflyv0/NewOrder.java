@@ -97,7 +97,7 @@ public class NewOrder extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        database.insert_assignexecutive(actv_exe_name.getText().toString(),count.getText().toString(),merchantcode,user,currentDateTimeString);
+                        //database.assignexecutive(actv_exe_name.getText().toString(),count.getText().toString(),merchantcode,user,currentDateTimeString);
                         Toast.makeText(getApplicationContext(),
                                 "You have inserted new order for "
                                         + merchantname

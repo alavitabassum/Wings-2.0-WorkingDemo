@@ -58,13 +58,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
         public TextView itemMerchantName;
         public TextView itemMerchantAddress;
-        public TextView itemassign;
-        public TextView itemCompletedCount;
-        public TextView itemDueCount;
         public Button itembtnAssign;
-        public TextView executive1;
-        public TextView executive2;
-        public TextView executive3;
         public ImageButton itemViewAssign;
         public TextView item_call;
         public ImageButton itemUpdateAssign;
@@ -75,17 +69,12 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             super(itemView);
             itemMerchantName=itemView.findViewById(R.id.merchant_name);
             itemMerchantAddress=itemView.findViewById(R.id.m_add);
-           /* itemCompletedCount=itemView.findViewById(R.id.completed_pickups_count);
-            itemDueCount=itemView.findViewById(R.id.due_pickups_count);*/
             itembtnAssign = itemView.findViewById(R.id.btn_assign);
             item_call = itemView.findViewById(R.id.call_merchant);
 
             //underline phoneNumber
             item_call.setPaintFlags(item_call.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            /*itemassign = itemView.findViewById(R.id.assigned_pickups);
-            executive1 = itemView.findViewById(R.id.selection1);
-            executive2 = itemView.findViewById(R.id.selection2);
-            executive3 = itemView.findViewById(R.id.selection3);*/
+
 
             itemViewAssign = itemView.findViewById(R.id.view_assign);
             itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
