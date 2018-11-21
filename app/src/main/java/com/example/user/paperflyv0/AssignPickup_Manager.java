@@ -460,19 +460,23 @@ public class AssignPickup_Manager extends AppCompatActivity
                 android.R.layout.simple_list_item_1, lables);
         /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
         mAutoComplete.setAdapter(adapter);
-        mAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       /* mAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final String empcode = database.getSelectedEmployeeCode(adapterView.getItemAtPosition(i).toString());
 
             }
-        });
+        });*/
+
+
 
         spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int i1) {
-
+                 String empname = mAutoComplete.getText().toString();
+                 final String empcode = database.getSelectedEmployeeCode(empname);
+                 Toast.makeText(getApplicationContext(), "empcode"+empcode, Toast.LENGTH_SHORT).show();
                 assignexecutive(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString);
 
                 if (!mAutoComplete.getText().toString().equals(null)) {
