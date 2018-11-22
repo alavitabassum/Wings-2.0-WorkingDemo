@@ -176,7 +176,7 @@ public class Database extends SQLiteOpenHelper {
 
     public Cursor getassignedexecutive(SQLiteDatabase db,String merchant_code)
     {
-        String[] columns = {"ex_name","order_count"};
+        String[] columns = {"rowid","ex_name","empCode","order_count"};
         return db.query("assignexecutive",columns,"merchantCode='" + merchant_code + "'",null,null,null,null);
     }
 
@@ -244,12 +244,12 @@ public class Database extends SQLiteOpenHelper {
         }
         return null;
     }
-    public void updateassign(String merchantcode,String counts)
+    public void updateassign(String merchantcode,String counts,String e_code)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("order_count",counts);
-        db.update("assignexecutive", values, "merchantCode='" + merchantcode + "'", null);
+        db.update("assignexecutive", values, "merchantCode" + " = ? AND " + "empcode" + " = ?", new String[]{merchantcode, e_code});
         db.close();
     }
 

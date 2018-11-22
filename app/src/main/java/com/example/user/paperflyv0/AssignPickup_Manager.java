@@ -62,7 +62,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
+    private String INSERT_URL = "http:// 192.168.0.108/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
     private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
@@ -265,10 +265,16 @@ public class AssignPickup_Manager extends AppCompatActivity
         }
     }
 
-
-
-    //For assigning executive API into mysql
     private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString) {
+
+            database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
+            final int total_assign = database.getTotalOfAmount(merchant_code);
+            final String strI = String.valueOf(total_assign);
+            database.update_row(strI, merchant_code);
+
+    }
+        //For assigning executive API into mysql
+    /*private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString) {
 
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
@@ -291,14 +297,15 @@ public class AssignPickup_Manager extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("executive_name", ex_name);
+                params.put("executive_code", empcode);
                 params.put("order_count", order_count);
                 params.put("merchant_code", merchant_code);
                 params.put("assigned_by", user);
                 params.put("created_at", currentDateTimeString);
-                database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
+                *//*database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
                 final String strI = String.valueOf(total_assign);
-                database.update_row(strI, merchant_code);
+                database.update_row(strI, merchant_code);*//*
                 return params;
             }
 
@@ -307,7 +314,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest);
 
     }
-
+*/
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -462,15 +469,6 @@ public class AssignPickup_Manager extends AppCompatActivity
                 android.R.layout.simple_list_item_1, lables);
         /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
         mAutoComplete.setAdapter(adapter);
-       /* mAutoComplete.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final String empcode = database.getSelectedEmployeeCode(adapterView.getItemAtPosition(i).toString());
-
-            }
-        });*/
-
-
 
         spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
 

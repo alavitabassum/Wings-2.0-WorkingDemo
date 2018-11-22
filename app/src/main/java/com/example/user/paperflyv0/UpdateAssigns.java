@@ -55,9 +55,12 @@ public class UpdateAssigns extends AppCompatActivity  {
             Cursor c = database.getassignedexecutive(sqLiteDatabase,merchantcode);
             while (c.moveToNext())
             {
-                String name = c.getString(0);
-                String count = c.getString(1);
-                UpdateAssign_Model updateAssign_model = new UpdateAssign_Model(name,count);
+                String rowid = c.getString(0);
+                String name = c.getString(1);
+                String empcode = c.getString(2);
+                String count = c.getString(3);
+
+                UpdateAssign_Model updateAssign_model = new UpdateAssign_Model(rowid,name,count,empcode);
                 updateAssignModelList.add(updateAssign_model);
             }
             updateAssignsAdapter = new UpdateAssignsAdapter(updateAssignModelList, getApplicationContext(),merchantcode, new UpdateAssignsAdapter.OnEditTextChanged() {
