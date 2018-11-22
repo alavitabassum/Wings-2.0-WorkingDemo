@@ -109,7 +109,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
         fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
          fab1 = (FloatingActionButton) findViewById(R.id.menu_item1);
-         fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);
+    /*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*/
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,13 +123,14 @@ public class AssignPickup_Manager extends AppCompatActivity
             }
         });
 
-        fab2.setOnClickListener(new View.OnClickListener() {
+       /* fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intentorderupdate = new Intent(AssignPickup_Manager.this,
+                        NewOrder.class);
+                startActivity(intentorderupdate);
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -443,6 +444,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
         spinnerBuilder.setTitle("Select executive and assign number.");
 
+
         final TextView dialog_mName = mView.findViewById(R.id.dialog_m_name);
         final AutoCompleteTextView mAutoComplete = mView.findViewById(R.id.auto_exe);
         final EditText et1 = mView.findViewById(R.id.spinner1num);
@@ -508,7 +510,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         final AssignManager_Model clickeditem2 = assignManager_modelList.get(position2);
         //  final TextView selection1 =findViewById(R.id.selection1);
 
-
+/*
         AlertDialog.Builder viewBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_view_assigns, null);
         viewBuilder.setTitle("Assigned Executive List");
@@ -531,7 +533,18 @@ public class AssignPickup_Manager extends AppCompatActivity
         // vwParentRow2.refreshDrawableState();
         viewBuilder.setView(mView);
         AlertDialog dialog2 = viewBuilder.create();
-        dialog2.show();
+        dialog2.show();*/
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String user = username.toString();
+        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        String merchantname = clickeditem2.getM_names();
+        String merchantcode = clickeditem2.getM_address();
+        Intent intent = new Intent(AssignPickup_Manager.this, ViewAssigns.class);
+        intent.putExtra("MERCHANTNAME", merchantname);
+        intent.putExtra("MERCHANTCODE",merchantcode);
+        startActivity(intent);
+
     }
 
 
