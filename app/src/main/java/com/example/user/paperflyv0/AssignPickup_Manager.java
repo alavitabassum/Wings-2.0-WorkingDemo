@@ -474,7 +474,7 @@ public class AssignPickup_Manager extends AppCompatActivity
             public void onClick(DialogInterface dialog, int i1) {
                  String empname = mAutoComplete.getText().toString();
                  final String empcode = database.getSelectedEmployeeCode(empname);
-                 Toast.makeText(getApplicationContext(), "empcode"+empcode, Toast.LENGTH_SHORT).show();
+
                 assignexecutive(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString);
 
                 if (!mAutoComplete.getText().toString().equals(null)) {

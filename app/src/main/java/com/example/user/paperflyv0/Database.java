@@ -244,12 +244,14 @@ public class Database extends SQLiteOpenHelper {
         }
         return null;
     }
-    public void updateassign(String merchantcode,String counts,String e_code)
+    public void updateassign(String rowid,String empname,String empcode,String count)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("order_count",counts);
-        db.update("assignexecutive", values, "merchantCode" + " = ? AND " + "empcode" + " = ?", new String[]{merchantcode, e_code});
+        values.put("ex_name",empname);
+        values.put("empcode",empcode);
+        values.put("order_count",count);
+        db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
         db.close();
     }
 
