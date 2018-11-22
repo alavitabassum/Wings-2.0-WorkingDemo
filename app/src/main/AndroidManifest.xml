@@ -97,7 +97,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".ScanningScreen" />
         <activity android:name=".UpdateAssigns" />
-        <activity android:name=".NewOrder"></activity>
+        <activity android:name=".NewOrder" />
+        <activity android:name=".ViewAssigns"></activity>
     </application>
 
 </manifest>
