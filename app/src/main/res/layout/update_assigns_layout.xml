@@ -30,9 +30,14 @@
                 android:layout_gravity="left"
                 android:layout_marginTop="10dp"
                 android:completionHint="Executive Name"
+                android:dropDownSelector="@color/colorAccent"
                 android:padding="5dp"
+                android:textColor="@color/black"
                 android:textSize="15sp"
-                tools:text="Enter Executive Name" />
+                tools:text="Enter Executive Name"
+                android:lines="1"
+                android:maxLines="2"
+                android:textStyle="bold"/>
 
             <EditText
                 android:id="@+id/order_count"
