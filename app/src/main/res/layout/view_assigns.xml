@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,60 +12,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="0dp"
+
         android:gravity="center"
         android:padding="5dp"
-        android:text="Merchant Name"
-        android:textSize="15sp"
+        android:text="@string/merchant_name"
+        android:textColor="@color/pfColor"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_va"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/merchant_name_view"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="41dp"
         android:layout_marginEnd="8dp"
         android:paddingTop="5dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eName_header" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <TextView
         android:id="@+id/eName_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/merchant_name_view"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="19dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Assigned Executives"
+        android:text="@string/assigned_executives"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.005" />
+    />
 
     <TextView
         android:id="@+id/assignedCount_header"
-        android:layout_width="wrap_content"
+        android:layout_width="159dp"
+        android:textAlignment="center"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        android:layout_alignBaseline="@id/eName_header"
+        android:layout_marginStart="29dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="508dp"
-        android:text="Assigned Counts"
+        android:layout_toEndOf="@+id/eName_header"
+        android:text="@string/assigned_counts"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/eName_header"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/eName_header"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        android:textStyle="bold" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

@@ -81,5 +81,8 @@
     <string name="call">Call:</string>
     <string name="view_assigns">View Assigns</string>
     <string name="_01781278896">01781278896</string>
+    <string name="assigned_executives">Assigned Executives</string>
+    <string name="assigned_counts">Assigned Counts</string>
+    <string name="merchant_name">Merchant Name</string>
 
 </resources>

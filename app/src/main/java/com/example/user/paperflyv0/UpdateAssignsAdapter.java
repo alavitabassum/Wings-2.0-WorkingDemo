@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -58,6 +59,9 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
             itemExe = (AutoCompleteTextView)itemView.findViewById(R.id.auto_complete);
             itemCount = (TextView)itemView.findViewById(R.id.order_count);
             button = (Button) itemView.findViewById(R.id.update_assigns);
+
+            itemExe.setDropDownBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.black)));
+            itemExe.setTextColor(itemView.getResources().getColor(R.color.black));
             }
     }
 
