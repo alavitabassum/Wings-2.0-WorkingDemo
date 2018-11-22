@@ -89,7 +89,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                     android.R.layout.simple_list_item_1, lables);
             /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
         viewHolder.itemExe.setAdapter(adapter);
-        String empname = viewHolder.itemExe.getText().toString();
+        final String empname = viewHolder.itemExe.getText().toString();
         final String empcode = database.getSelectedEmployeeCode(empname);
 
 
@@ -112,9 +112,8 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(context, "row id is" + updateAssign_model.getRowid() ,Toast.LENGTH_SHORT).show();
-                        String e_code = updateAssign_model.getEx_code();
-                        database.updateassign(merchantcode,cou,e_code);
+                        String rowid = updateAssign_model.getRowid();
+                        database.updateassign(rowid,empname,empcode,cou);
                         Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
                     }
                 });
