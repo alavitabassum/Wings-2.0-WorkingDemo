@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Database extends SQLiteOpenHelper {
 
     public Database(Context context)
@@ -21,8 +24,8 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp = "create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1 = "create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
-        String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,assigned text,executive1 text,executive2 text)";
-        String tableEmp4 = "create table assignexecutive(ex_name text,order_count text,merchantCode text,user text,currentDateTimeString text)";
+        String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,assigned text)";
+        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text)";
         String tableEmp5 = "create table executivelist(empName text,empCode text)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
@@ -144,16 +147,18 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public Cursor get_merchantlist(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "merchantCode", "assigned","executive1","executive2"};
+        String[] columns = {"merchantName", "merchantCode", "assigned"};
         return db.query("merchantList", columns, null, null, null, null, null);
     }
 
-    public void insert_assignexecutive(String executive_name, String ordercount, String merchantCode, String user, String created_date) {
+    public void assignexecutive(String executive_name, String empcode, String ordercount, String merchantCode, String user, String created_date) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
         values.put("ex_name", executive_name);
+
+        values.put("empcode", empcode);
 
         values.put("order_count", ordercount);
 
@@ -167,6 +172,12 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.insert("assignexecutive", null, values);
 
         sqLiteDatabase.close();
+    }
+
+    public Cursor getassignedexecutive(SQLiteDatabase db,String merchant_code)
+    {
+        String[] columns = {"ex_name","order_count"};
+        return db.query("assignexecutive",columns,"merchantCode='" + merchant_code + "'",null,null,null,null);
     }
 
     public void addexecutivelist(String empName, String empCode) {
@@ -197,29 +208,53 @@ public class Database extends SQLiteOpenHelper {
         }
         return total;
     }
-    int count=1;
-    public void update_row( String total_assigned,String merchantCode,String ex_name) {
 
-        if (count == 1) {
+    public void update_row( String total_assigned,String merchantCode) {
+
+
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put("executive1", ex_name);
             values.put("assigned", total_assigned);
             db.update("merchantList", values, "merchantCode='" + merchantCode + "'", null);
-            count++;
+
             db.close();
-        }
-        if(count==2)
-        {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put("executive2", ex_name);
-            values.put("assigned", total_assigned);
-            db.update("merchantList", values, "merchantCode='" + merchantCode + "'", null);
-            count++;
-            db.close();
-        }
+
+
 
     }
+
+    public String getSelectedMerchantCode(String merchantname){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT merchantCode FROM " + "merchantList"+ " WHERE " + "merchantName" + " = '" + merchantname + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("merchantCode"));
+            return selection;
+        }
+        return null;
+    }
+
+    public String getSelectedEmployeeCode(String employeename){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT empCode FROM " + "executivelist"+ " WHERE " + "empName" + " = '" + employeename + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("empCode"));
+            return selection;
+        }
+        return null;
+    }
+    public void updateassign(String merchantcode,String counts)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("order_count",counts);
+        db.update("assignexecutive", values, "merchantCode='" + merchantcode + "'", null);
+        db.close();
+    }
+
+
+
+
 
 }

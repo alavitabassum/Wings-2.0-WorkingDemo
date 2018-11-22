@@ -12,6 +12,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/auto_m_name"
+        android:hint="Type Merchant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -27,6 +28,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/auto_exe_name"
+        android:hint="Type Executive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/auto_m_name"
