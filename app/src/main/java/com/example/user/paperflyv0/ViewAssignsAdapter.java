@@ -16,17 +16,13 @@ import java.util.List;
 
 public class ViewAssignsAdapter extends RecyclerView.Adapter<ViewAssignsAdapter.ViewHolder> {
 
-    private List<ViewAssign_Model> viewAssignModelList;
+    private List<ViewAssign_Model> viewAssign_modelList;
     private Context context;
-    Database database;
     String merchantcode;
 
-
-
-    public ViewAssignsAdapter(List<ViewAssign_Model> viewAssignModelList, Context context, String merchantcode) {
-        this.viewAssignModelList = viewAssignModelList;
+    public ViewAssignsAdapter(List<ViewAssign_Model> viewAssign_modelList, Context context) {
+        this.viewAssign_modelList = viewAssign_modelList;
         this.context = context;
-        this.merchantcode = merchantcode;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -38,7 +34,6 @@ public class ViewAssignsAdapter extends RecyclerView.Adapter<ViewAssignsAdapter.
 
         public ViewHolder(View itemView) {
             super(itemView);
-            database = new Database(context);
             itemExe = (TextView)itemView.findViewById(R.id.exeName_view);
             itemCount = (TextView)itemView.findViewById(R.id.order_count_view);
 
@@ -55,14 +50,13 @@ public class ViewAssignsAdapter extends RecyclerView.Adapter<ViewAssignsAdapter.
 
     @Override
     public void onBindViewHolder(final ViewAssignsAdapter.ViewHolder viewHolder, final int j) {
-        final ViewAssign_Model viewAssign_model = viewAssignModelList.get(j);
+        ViewAssign_Model viewAssign_model = viewAssign_modelList.get(j);
         viewHolder.itemExe.setText(viewAssign_model.getEx_name());
         viewHolder.itemCount.setText(viewAssign_model.getCount());
-
-    }
+        }
 
     @Override
     public int getItemCount() {
-        return viewAssignModelList.size();
+        return viewAssign_modelList.size();
     }
 }

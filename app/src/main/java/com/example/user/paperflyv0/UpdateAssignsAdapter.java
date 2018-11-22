@@ -58,9 +58,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
             itemExe = (AutoCompleteTextView)itemView.findViewById(R.id.auto_complete);
             itemCount = (TextView)itemView.findViewById(R.id.order_count);
             button = (Button) itemView.findViewById(R.id.update_assigns);
-
-
-        }
+            }
     }
 
     @Override
@@ -89,11 +87,38 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                     android.R.layout.simple_list_item_1, lables);
             /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
         viewHolder.itemExe.setAdapter(adapter);
-        final String empname = viewHolder.itemExe.getText().toString();
-        final String empcode = database.getSelectedEmployeeCode(empname);
+        viewHolder.itemExe.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                try{onEditTextChanged.onTextChanged(j, charSequence.toString());}catch (Exception e){}
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                final String cou = viewHolder.itemCount.getText().toString();
+                final String empname = editable.toString();
+                final String empcode = database.getSelectedEmployeeCode(empname);
+                viewHolder.button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String rowid = updateAssign_model.getRowid();
+                        database.updateassign(rowid,empname,empcode,cou);
+                        Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
 
         viewHolder.itemCount.addTextChangedListener(new TextWatcher() {
+            final String empname = viewHolder.itemExe.getText().toString();
+            final String empcode = database.getSelectedEmployeeCode(empname);
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -120,8 +145,9 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
             }
         });
 
+        }
 
-    }
+
 
     @Override
     public int getItemCount() {

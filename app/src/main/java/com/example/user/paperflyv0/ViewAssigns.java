@@ -20,7 +20,7 @@ public class ViewAssigns extends AppCompatActivity {
     List<ViewAssign_Model> viewAssignModelList;
     Database database;
     private ViewAssignsAdapter viewAssignsAdapter;
-    int[] enteredNumber = new int[1000];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,31 @@ public class ViewAssigns extends AppCompatActivity {
         recyclerView_va.setHasFixedSize(true);
         layoutManager_va = new LinearLayoutManager(this);
         recyclerView_va.setLayoutManager(layoutManager_va);
-      //  getData(merchantcode);
+         getData(merchantcode);
+    }
+
+    private void getData(final String merchantcode)
+    {
+        try{
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.getassignedexecutive(sqLiteDatabase,merchantcode);
+            while (c.moveToNext())
+            {
+                String name = c.getString(1);
+                String count = c.getString(3);
+                ViewAssign_Model viewAssign_model = new ViewAssign_Model(name,count);
+                viewAssignModelList.add(viewAssign_model);
+            }
+            viewAssignsAdapter = new ViewAssignsAdapter(viewAssignModelList, getApplicationContext());
+
+            recyclerView_va.setAdapter(viewAssignsAdapter);
+
+
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
+        }
     }
 
 
