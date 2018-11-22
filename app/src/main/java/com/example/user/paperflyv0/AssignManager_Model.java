@@ -13,9 +13,6 @@ public class AssignManager_Model  {
         this.m_names = m_names;
         this.m_address = m_address;
         this.assigned = assigned;
-        this.executive1=executive1;
-        this.executive2 = executive2;
-       // this.executive3 = executive3;
         }
 
     public String getExecutive1() {

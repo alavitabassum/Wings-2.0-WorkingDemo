@@ -2,6 +2,8 @@ package com.example.user.paperflyv0;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -9,12 +11,14 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdapter.ViewHolder> {
@@ -24,6 +28,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     private OnEditTextChanged onEditTextChanged;
     Database database;
     String merchantcode;
+    List<AssignManager_ExecutiveList> executiveLists;
 
     public interface OnEditTextChanged {
         void onTextChanged(int position, String charSeq);
@@ -48,9 +53,12 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
         public ViewHolder(View itemView) {
             super(itemView);
             database = new Database(context);
+            executiveLists = new ArrayList<>();
+            getallexecutives();
             itemExe = (AutoCompleteTextView)itemView.findViewById(R.id.auto_complete);
             itemCount = (TextView)itemView.findViewById(R.id.order_count);
             button = (Button) itemView.findViewById(R.id.update_assigns);
+
 
         }
     }
@@ -68,6 +76,22 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
         final UpdateAssign_Model updateAssign_model = updateAssignModelList.get(j);
         viewHolder.itemExe.setText(updateAssign_model.getEx_name());
         viewHolder.itemCount.setText(updateAssign_model.getCount());
+
+        /*autocomplete*/
+
+        List<String> lables = new ArrayList<String>();
+
+            for (int z = 0; z < executiveLists.size(); z++) {
+                lables.add(executiveLists.get(z).getExecutive_name());
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+                    android.R.layout.simple_list_item_1, lables);
+            /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
+        viewHolder.itemExe.setAdapter(adapter);
+        String empname = viewHolder.itemExe.getText().toString();
+        final String empcode = database.getSelectedEmployeeCode(empname);
+
 
         viewHolder.itemCount.addTextChangedListener(new TextWatcher() {
             @Override
@@ -88,8 +112,9 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(context, "exu name is" + updateAssign_model.getEx_name() ,Toast.LENGTH_SHORT).show();
-                        database.updateassign(merchantcode,cou);
+                        Toast.makeText(context, "row id is" + updateAssign_model.getRowid() ,Toast.LENGTH_SHORT).show();
+                        String e_code = updateAssign_model.getEx_code();
+                        database.updateassign(merchantcode,cou,e_code);
                         Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -102,5 +127,22 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     @Override
     public int getItemCount() {
         return updateAssignModelList.size();
+    }
+
+    private void getallexecutives() {
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_executivelist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String empName = c.getString(0);
+                String empCode = c.getString(1);
+                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(empName, empCode);
+                executiveLists.add(assignManager_executiveList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
