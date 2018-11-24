@@ -27,6 +27,8 @@ public class UpdateAssigns extends AppCompatActivity  {
     Database database;
     private UpdateAssignsAdapter updateAssignsAdapter;
     int[] enteredNumber = new int[1000];
+    AutoCompleteTextView autoComp_exename;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

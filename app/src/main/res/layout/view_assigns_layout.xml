@@ -4,7 +4,8 @@
     xmlns:card_view_va="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:padding="2dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view_va"
@@ -23,14 +24,20 @@
 
             <TextView
                 android:id="@+id/exeName_view"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/merchant_name"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="left"
                 android:layout_marginTop="10dp"
+                android:background="#D5FFFD"
                 android:completionHint="Executive Name"
+                android:lines="1"
+                android:maxLines="2"
                 android:padding="5dp"
+                android:textColor="@color/black"
                 android:textSize="15sp"
+                android:textStyle="bold"
                 tools:text="Executive Name" />
 
             <TextView
@@ -39,14 +46,22 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/exeName_view"
                 android:layout_alignBottom="@+id/exeName_view"
-                android:layout_alignParentEnd="true"
-                android:layout_gravity="right"
-                android:layout_marginEnd="20dp"
                 android:ems="10"
                 android:padding="5dp"
                 android:textAlignment="center"
                 android:textSize="15sp"
-                tools:text="Count" />
+                tools:text="Count"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="right"
+                android:layout_marginStart="33dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="67dp"
+                android:layout_toEndOf="@+id/auto_complete"
+                android:autofillHints=""
+                android:background="#D5FFFD"
+
+
+                />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
