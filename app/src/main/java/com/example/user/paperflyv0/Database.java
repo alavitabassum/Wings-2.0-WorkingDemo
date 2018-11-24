@@ -251,12 +251,27 @@ public class Database extends SQLiteOpenHelper {
         values.put("ex_name",empname);
         values.put("empcode",empcode);
         values.put("order_count",count);
-        db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
+        //db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
+        db.update("assignexecutive",
+                values,
+                "rowid" + " = ?",
+                new String[]{rowid});
         db.close();
     }
 
 
+    /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
 
-
-
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("ex_name",empname);
+        values.put("empcode",empcode);
+        values.put("order_count",cou);
+        db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
+       *//* db.update("assignexecutive",
+                values,
+                "merchantCode" + " = ? AND " + "empcode" + " = ?",
+                new String[]{merchantcode, beforeempcode});*//*
+        db.close();
+    }*/
 }

@@ -27,6 +27,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     private List<UpdateAssign_Model> updateAssignModelList;
     private Context context;
     private OnEditTextChanged onEditTextChanged;
+
     Database database;
     String merchantcode;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -34,7 +35,6 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     public interface OnEditTextChanged {
         void onTextChanged(int position, String charSeq);
     }
-
 
     public UpdateAssignsAdapter(List<UpdateAssign_Model> updateAssignModelList, Context context,String merchantcode,OnEditTextChanged onEditTextChanged) {
         this.updateAssignModelList = updateAssignModelList;
@@ -89,7 +89,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
                     android.R.layout.simple_list_item_1, lables);
-            /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
+                   adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         viewHolder.itemExe.setAdapter(adapter);
         viewHolder.itemExe.addTextChangedListener(new TextWatcher() {
             @Override
@@ -99,11 +99,15 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                try{onEditTextChanged.onTextChanged(j, charSequence.toString());}catch (Exception e){}
+                try{onEditTextChanged.onTextChanged(j, charSequence.toString());}catch (Exception e){
+
+                }
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
+                /*final String beforeempname = viewHolder.itemExe.getText().toString();
+                final String beforeempcode = database.getSelectedEmployeeCode(beforeempname);*/
                 final String cou = viewHolder.itemCount.getText().toString();
                 final String empname = editable.toString();
                 final String empcode = database.getSelectedEmployeeCode(empname);
@@ -148,7 +152,6 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                 });
             }
         });
-
         }
 
 
