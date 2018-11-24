@@ -62,14 +62,14 @@ public class AssignPickup_Manager extends AppCompatActivity
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    private String INSERT_URL = "http://192.168.0.108/new/insertassign.php";
+    private String INSERT_URL = "http://192.168.0.114/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
     private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
     Database database;
-    int count = 0;
+
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
