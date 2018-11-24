@@ -26,7 +26,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/auto_complete"
-                android:layout_width="195dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="left"
@@ -46,14 +46,13 @@
                 android:id="@+id/order_count"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_alignBaseline="@id/auto_complete"
+                android:layout_alignParentEnd="true"
                 android:layout_gravity="right"
-                android:layout_marginStart="33dp"
+                android:layout_marginStart="45dp"
                 android:layout_marginTop="9dp"
-                android:layout_marginEnd="67dp"
+                android:layout_marginEnd="30dp"
                 android:layout_toEndOf="@+id/auto_complete"
-                android:autofillHints=""
                 android:background="@color/light_grey"
                 android:ems="10"
                 android:hint="Count"
@@ -102,15 +101,6 @@
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
-            <View
-                android:id="@+id/divider6"
-                android:layout_width="1dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginEnd="150dp"
-                android:layout_marginBottom="55dp"
-                android:background="?android:attr/listDivider" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
