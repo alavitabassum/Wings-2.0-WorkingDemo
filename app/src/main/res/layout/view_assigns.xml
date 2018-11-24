@@ -14,7 +14,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="0dp"
-
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/merchant_name"
@@ -35,33 +34,36 @@
 
     <TextView
         android:id="@+id/eName_header"
-        android:layout_width="wrap_content"
+        android:layout_width="195dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/merchant_name_view"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="19dp"
         android:layout_marginEnd="8dp"
+        android:background="@color/colorAccent"
+        android:padding="5dp"
         android:text="@string/assigned_executives"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/white"
         android:textSize="15sp"
-        android:textStyle="bold"
-    />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/assignedCount_header"
-        android:layout_width="wrap_content"
+        android:layout_width="155dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/eName_header"
-        android:layout_marginStart="44dp"
+        android:layout_marginStart="-2dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
         android:layout_toEndOf="@+id/eName_header"
+        android:background="@color/colorAccent"
         android:foregroundGravity="right"
         android:gravity="end"
         android:lines="1"
+        android:padding="5dp"
         android:text="@string/assigned_counts"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold" />
 

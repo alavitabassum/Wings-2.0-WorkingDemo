@@ -28,10 +28,8 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/tv_style1"
-                android:layout_below="@+id/merchant_name"
                 android:layout_alignParentStart="true"
                 android:layout_gravity="left"
-
                 android:layout_marginTop="10dp"
                 android:completionHint="Executive Name"
                 android:lines="1"
