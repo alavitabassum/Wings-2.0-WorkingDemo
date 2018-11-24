@@ -19,8 +19,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdapter.ViewHolder> {
 
@@ -147,6 +156,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                     public void onClick(View view) {
                         String rowid = updateAssign_model.getRowid();
                         database.updateassign(rowid,empname,empcode,cou);
+                        assignexecutiveupdate(merchantcode,empcode,cou);
                         Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -159,6 +169,40 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     @Override
     public int getItemCount() {
         return updateAssignModelList.size();
+    }
+
+    private void assignexecutiveupdate(final String merchantcode, final String empcode,final String cou) {
+
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateassign.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        //   Log.d("Error",error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchantcode);
+                params.put("executive_code", empcode);
+                params.put("order_count", cou);
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(postRequest);
+
     }
 
     private void getallexecutives() {

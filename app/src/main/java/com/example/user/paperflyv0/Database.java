@@ -25,7 +25,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp1 = "create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
         String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,assigned text)";
-        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text)";
+        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int)";
         String tableEmp5 = "create table executivelist(empName text,empCode text)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
@@ -168,10 +168,19 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("currentDateTimeString", created_date);
 
+       // values.put("status", status);
+
 
         sqLiteDatabase.insert("assignexecutive", null, values);
 
         sqLiteDatabase.close();
+    }
+
+    public Cursor getUnsyncedassignment() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + "assignexecutive" + " WHERE " + "status" + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
     }
 
     public Cursor getassignedexecutive(SQLiteDatabase db,String merchant_code)
