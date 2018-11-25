@@ -56,7 +56,6 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView item_phnNum;
 
 
-        @SuppressLint("ResourceAsColor")
         public ViewHolder(final View itemView, int i) {
             super(itemView);
             item_m_pul=itemView.findViewById(R.id.m_name_pul);

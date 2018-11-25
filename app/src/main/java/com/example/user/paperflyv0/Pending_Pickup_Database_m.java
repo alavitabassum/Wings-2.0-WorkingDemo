@@ -14,7 +14,7 @@ public class Pending_Pickup_Database_m extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String tableEmp="create table pen_manager(merchant_name text,executive_name text,assigned text,picked text,received text,unique(merchant_name,executive_name,assigned,picked,received))";
+        String tableEmp="create table pen_manager(id INTEGER PRIMARY KEY AUTOINCREMENT, merchant_name text,assigned text,uploaded text,received text,executive_name text)";
 
         sqLiteDatabase.execSQL(tableEmp);
     }
@@ -23,7 +23,7 @@ public class Pending_Pickup_Database_m extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
-    public void insertData(String merchant_name,String executive_name, String assigned,String picked,String received)
+    public void insertData(String merchant_name, String assigned,String uploaded,String received,String executive_name)
 
     {
 
@@ -33,21 +33,21 @@ public class Pending_Pickup_Database_m extends SQLiteOpenHelper {
 
         values.put("merchant_name",merchant_name);
 
-        values.put("executive_name",executive_name);
-
         values.put("assigned",assigned);
 
-        values.put("picked",picked);
+        values.put("uploaded",uploaded);
 
         values.put("received",received);
 
-        sqLiteDatabase.insert("pen_manager",null,values);
+        values.put("executive_name",executive_name);
 
+        sqLiteDatabase.insert("pen_manager",null,values);
+        sqLiteDatabase.close();
     }
 
     public Cursor getAllData(SQLiteDatabase db)
     {
-        String[] columns = {"merchant_name","executive_name","assigned","picked","received"};
+        String[] columns = {"merchant_name","assigned","uploaded","received","executive_name"};
         return db.query("pen_manager",columns,null,null,null,null,null);
     }
 }

@@ -43,7 +43,7 @@
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme">
-            <!--<intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -55,28 +55,12 @@
         <activity
             android:name=".PickupsToday_Manager"
             android:label="@string/title_activity_pickups_today__manager"
-            android:theme="@style/AppTheme">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
             android:theme="@style/AppTheme">
 
-            <!--
-                <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
         </activity>
         <activity
             android:name=".PickupHistory_Manager"
@@ -97,7 +81,7 @@
         <activity
             android:name=".PickupStatus_Executive"
             android:label="@string/title_activity_pickup_status__executive"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
@@ -114,7 +98,6 @@
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />
         <activity android:name=".ViewAssigns"></activity>
-
 
     </application>
 

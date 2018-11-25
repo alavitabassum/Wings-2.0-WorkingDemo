@@ -52,8 +52,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     }
 
 
-
-
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView itemMerchantName;
