@@ -26,8 +26,7 @@ public class UpdateAssigns extends AppCompatActivity  {
     List<UpdateAssign_Model> updateAssignModelList;
     Database database;
     private UpdateAssignsAdapter updateAssignsAdapter;
-    int[] enteredNumber = new int[1000];
-    AutoCompleteTextView autoComp_exename;
+
 
 
     @Override
@@ -65,10 +64,10 @@ public class UpdateAssigns extends AppCompatActivity  {
                 UpdateAssign_Model updateAssign_model = new UpdateAssign_Model(rowid,name,count,empcode);
                 updateAssignModelList.add(updateAssign_model);
             }
-            updateAssignsAdapter = new UpdateAssignsAdapter(updateAssignModelList, getApplicationContext(),merchantcode, new UpdateAssignsAdapter.OnEditTextChanged() {
+            updateAssignsAdapter = new UpdateAssignsAdapter(updateAssignModelList, getApplicationContext(), merchantcode, new UpdateAssignsAdapter.OnEditTextChanged() {
                 @Override
                 public void onTextChanged(int position, String charSeq) {
-                    enteredNumber[position] = Integer.parseInt(charSeq);
+
 
                 }
             });

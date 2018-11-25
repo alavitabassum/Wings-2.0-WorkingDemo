@@ -6,9 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Database extends SQLiteOpenHelper {
 
     public Database(Context context)
@@ -24,8 +21,8 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp = "create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1 = "create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
-        String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,assigned text)";
-        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text)";
+        String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,totalcount int)";
+        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
         String tableEmp5 = "create table executivelist(empName text,empCode text)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
@@ -133,7 +130,7 @@ public class Database extends SQLiteOpenHelper {
         return db.query("com_ex", columns, null, null, null, null, null);
     }
 
-    public void addmerchantlist(String merchantName, String merchantCode) {
+    public void addmerchantlist(String merchantName, String merchantCode,int cnt) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -142,16 +139,18 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("merchantCode", merchantCode);
 
+        values.put("totalcount",cnt);
+
         sqLiteDatabase.insert("merchantList", null, values);
         sqLiteDatabase.close();
     }
 
     public Cursor get_merchantlist(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "merchantCode", "assigned"};
+        String[] columns = {"merchantName", "merchantCode","totalcount"};
         return db.query("merchantList", columns, null, null, null, null, null);
     }
 
-    public void assignexecutive(String executive_name, String empcode, String ordercount, String merchantCode, String user, String created_date) {
+    public void assignexecutive(String executive_name, String empcode, String ordercount, String merchantCode, String user, String created_date,int status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -168,11 +167,30 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("currentDateTimeString", created_date);
 
+        values.put("status",status);
 
         sqLiteDatabase.insert("assignexecutive", null, values);
 
         sqLiteDatabase.close();
     }
+    //getunsynced
+    public Cursor getUnsyncedassignment() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + "assignexecutive" + " WHERE " + "status" + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateAssignStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("status", status);
+        db.update("assignexecutive", contentValues, "id" + "=" + id, null);
+        db.close();
+        return true;
+    }
+
+
 
     public Cursor getassignedexecutive(SQLiteDatabase db,String merchant_code)
     {
@@ -199,7 +217,7 @@ public class Database extends SQLiteOpenHelper {
         return db.query("executivelist", columns, null, null, null, null, null);
     }
 
-    public int getTotalOfAmount(String merchantCode) {
+    /*public int getTotalOfAmount(String merchantCode) {
         int total=0;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor sumQuery = db.rawQuery("SELECT SUM(order_count) FROM " + "assignexecutive"+ " WHERE " + "merchantCode" + "='" + merchantCode + "'", null);
@@ -207,9 +225,9 @@ public class Database extends SQLiteOpenHelper {
             total = sumQuery.getInt(0);
         }
         return total;
-    }
+    }*/
 
-    public void update_row( String total_assigned,String merchantCode) {
+    /*public void update_row( String total_assigned,String merchantCode) {
 
 
             SQLiteDatabase db = this.getWritableDatabase();
@@ -221,7 +239,7 @@ public class Database extends SQLiteOpenHelper {
 
 
 
-    }
+    }*/
 
     public String getSelectedMerchantCode(String merchantname){
         String selection = "Error";
@@ -251,12 +269,28 @@ public class Database extends SQLiteOpenHelper {
         values.put("ex_name",empname);
         values.put("empcode",empcode);
         values.put("order_count",count);
-        db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
+        //db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
+        db.update("assignexecutive",
+                values,
+                "rowid" + " = ?",
+                new String[]{rowid});
         db.close();
     }
 
 
 
+    /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
 
-
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("ex_name",empname);
+        values.put("empcode",empcode);
+        values.put("order_count",cou);
+        db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
+       *//* db.update("assignexecutive",
+                values,
+                "merchantCode" + " = ? AND " + "empcode" + " = ?",
+                new String[]{merchantcode, beforeempcode});*//*
+        db.close();
+    }*/
 }

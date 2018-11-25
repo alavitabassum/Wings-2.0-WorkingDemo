@@ -30,7 +30,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
     private Context context;
     private OnItemClickListener mListener;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
+    //private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
 
 
@@ -73,14 +73,14 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             item_call = itemView.findViewById(R.id.call_merchant);
 
             //underline phoneNumber
-            item_call.setPaintFlags(item_call.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            //item_call.setPaintFlags(item_call.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
 
             itemViewAssign = itemView.findViewById(R.id.view_assign);
             itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
 
 
-            item_call.setOnClickListener(new View.OnClickListener() {
+           /* item_call.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent callIntent =new Intent(Intent.ACTION_CALL);
@@ -97,7 +97,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
                 }
             });
 
-
+*/
             itembtnAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -162,11 +162,8 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         AssignManager_Model assignManager_model = assignManager_modelList.get(i);
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
         viewHolder.itemMerchantAddress.setText(assignManager_model.getM_address());
-      //  viewHolder.itemassign.setText(assignManager_model.getAssigned());
-       // viewHolder.executive1.setText(assignManager_model.getExecutive1());
-      //  viewHolder.executive2.setText(assignManager_model.getExecutive2());
-//        viewHolder.executive3.setText(assignManager_model.getExecutive3());
-
+        viewHolder.item_call.setText(String.valueOf(assignManager_model.getTotalcount()));
+        //viewHolder.item_call.setText(assignManager_model.getTotalcount());
         }
 
     @Override
