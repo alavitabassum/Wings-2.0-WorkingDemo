@@ -1,6 +1,5 @@
 package com.example.user.paperflyv0;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +17,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     private Context context;
     private OnItemClickListener mListner;
     BarcodeDbHelper db;
+
 
  /*   final CharSequence[] status_options = {"Cancel","Pending"};
     int selection = 1;*/
@@ -49,7 +49,6 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView item_phnNum;
 
 
-        @SuppressLint("ResourceAsColor")
         public ViewHolder(final View itemView, int i) {
             super(itemView);
             item_m_pul=itemView.findViewById(R.id.m_name_pul);

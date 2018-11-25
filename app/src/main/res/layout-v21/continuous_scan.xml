@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pause"
-            android:onClick="pause" />
+            android:onClick="pause1" />
 
         <Button
             android:layout_width="match_parent"

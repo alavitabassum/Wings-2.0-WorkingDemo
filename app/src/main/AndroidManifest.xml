@@ -84,11 +84,6 @@
             android:label="@string/title_activity_my_pickups__executive"
             android:theme="@style/AppTheme" />
         <activity android:name=".ScanningScreen"></activity>
-        <receiver android:name=".NetworkMonitor">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
-            </intent-filter>
-        </receiver>
 
     </application>
 
