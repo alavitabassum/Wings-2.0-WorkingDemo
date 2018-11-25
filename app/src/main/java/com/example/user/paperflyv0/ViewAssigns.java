@@ -41,7 +41,7 @@ public class ViewAssigns extends AppCompatActivity {
          getData(merchantcode);
     }
 
-    private void getData(final String merchantcode)
+    public void getData(final String merchantcode)
     {
         try{
 

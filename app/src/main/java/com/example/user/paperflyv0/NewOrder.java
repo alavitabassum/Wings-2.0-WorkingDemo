@@ -80,7 +80,10 @@ public class NewOrder extends AppCompatActivity {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(NewOrder.this,
                 android.R.layout.simple_list_item_1, merchantnames);
-        /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
+
+
+       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         actv_m_name.setAdapter(adapter);
         actv_m_name.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -115,11 +118,16 @@ public class NewOrder extends AppCompatActivity {
         }
         ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(NewOrder.this,
                 android.R.layout.simple_list_item_1, executivenames);
-        /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
+
+
+       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         actv_exe_name.setAdapter(adapter1);
 
         }
-   /* private AdapterView.OnItemClickListener onItemClickListener =
+
+
+ private AdapterView.OnItemClickListener onItemClickListener =
             new AdapterView.OnItemClickListener(){
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -131,7 +139,9 @@ public class NewOrder extends AppCompatActivity {
                             , Toast.LENGTH_SHORT).show();
                 }
             };
-*/
+
+
+
 
 
     private void getallmerchant() {
@@ -142,9 +152,9 @@ public class NewOrder extends AppCompatActivity {
             while (c.moveToNext()) {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
-                String assigned = c.getString(2);
+                int totalcount =c.getInt(2);
 
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, assigned);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
                 assignManager_modelList.add(todaySummary);
             }
 

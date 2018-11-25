@@ -5,12 +5,10 @@ public class ViewAssign_Model {
     private String count;
     private int status;
 
-    public ViewAssign_Model(String ex_name, String count,int status) {
-        this.ex_name = ex_name;
+    public ViewAssign_Model(String ex_name, String count) {
+            this.ex_name = ex_name;
         this.count = count;
-        this.status = status;
-
-    }
+        }
 
     public int getStatus() {
         return status;

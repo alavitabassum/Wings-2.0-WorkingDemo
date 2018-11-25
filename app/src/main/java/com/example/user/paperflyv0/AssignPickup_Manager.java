@@ -64,11 +64,12 @@ public class AssignPickup_Manager extends AppCompatActivity
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     private String INSERT_URL = "http://192.168.0.111/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
-    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
     Database database;
+
 
 
     RecyclerView recyclerView;
@@ -209,10 +210,10 @@ public class AssignPickup_Manager extends AppCompatActivity
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("merchantlist");
+                            JSONArray array = jsonObject.getJSONArray("unAssignedlist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"));
+                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                             }
                             getallmerchant();
 
@@ -251,9 +252,10 @@ public class AssignPickup_Manager extends AppCompatActivity
             while (c.moveToNext()) {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
-                String assigned = c.getString(2);
+                int totalcount = c.getInt(2);
 
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, assigned);
+
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
                 assignManager_modelList.add(todaySummary);
             }
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
@@ -268,9 +270,9 @@ public class AssignPickup_Manager extends AppCompatActivity
     private void assignexecutivetosqlite(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString) {
 
             database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
-            final int total_assign = database.getTotalOfAmount(merchant_code);
-            final String strI = String.valueOf(total_assign);
-            database.update_row(strI, merchant_code);
+            //final int total_assign = database.getTotalOfAmount(merchant_code);
+            //final String strI = String.valueOf(total_assign);
+            //database.update_row(strI, merchant_code);
 
     }
         //For assigning executive API into mysql

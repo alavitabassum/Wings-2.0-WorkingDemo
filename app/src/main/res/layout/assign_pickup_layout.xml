@@ -118,7 +118,7 @@
             android:layout_below="@+id/m_add"
             android:layout_alignStart="@+id/m_add"
             android:layout_marginTop="1dp"
-            android:text="@string/call"
+            android:text="Total Order:"
             android:textColor="#000"
             android:textSize="15sp" />
 
@@ -134,7 +134,6 @@
             android:layout_toEndOf="@+id/calltxt"
             android:lines="1"
             android:maxLines="1"
-            android:text="@string/_01781278896"
             android:textAlignment="textStart"
             android:textColor="@color/blue_link"
             android:textSize="15sp"
