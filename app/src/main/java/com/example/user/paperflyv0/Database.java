@@ -22,7 +22,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp1 = "create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
         String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,totalcount int)";
-        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text)";
+        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
         String tableEmp5 = "create table executivelist(empName text,empCode text)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
@@ -150,7 +150,7 @@ public class Database extends SQLiteOpenHelper {
         return db.query("merchantList", columns, null, null, null, null, null);
     }
 
-    public void assignexecutive(String executive_name, String empcode, String ordercount, String merchantCode, String user, String created_date) {
+    public void assignexecutive(String executive_name, String empcode, String ordercount, String merchantCode, String user, String created_date,int status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -167,12 +167,29 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("currentDateTimeString", created_date);
 
-
+        values.put("status",status);
 
         sqLiteDatabase.insert("assignexecutive", null, values);
 
         sqLiteDatabase.close();
     }
+    //getunsynced
+    public Cursor getUnsyncedassignment() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + "assignexecutive" + " WHERE " + "status" + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateAssignStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("status", status);
+        db.update("assignexecutive", contentValues, "id" + "=" + id, null);
+        db.close();
+        return true;
+    }
+
 
 
     public Cursor getassignedexecutive(SQLiteDatabase db,String merchant_code)
@@ -260,15 +277,6 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public boolean updateAssignStatus(int id, int status) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("status", status);
-        db.update("assignexecutive", contentValues, "rowid" + "=" + id, null);
-        db.close();
-        return true;
-    }
 
 
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
