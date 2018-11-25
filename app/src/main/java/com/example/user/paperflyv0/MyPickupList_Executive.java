@@ -179,6 +179,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     private void loadRecyclerView(final String user)
     {
 //        boolean check;
+          list.clear();
           StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/merchantListForExecutive.php",
            new Response.Listener<String>()
            {
@@ -468,7 +469,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     @Override
     public void onItemClick(int position) {
-       /* Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
+        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
 
         PickupList_Model_For_Executive clickedItem = list.get(position);
 
@@ -476,7 +477,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         scanIntent.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
 //        scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
 
-        startActivity(scanIntent);*/
+        startActivity(scanIntent);
     }
     @Override
     public void onRefresh() {

@@ -191,7 +191,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     // updateLocalDatabase
-    public void update_row(String scan_count, String merchantId, String updated_by, String updated_at) {
+    public void update_row(String scan_count, String updated_by, String updated_at,  String merchantId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SCAN_COUNT, scan_count);
