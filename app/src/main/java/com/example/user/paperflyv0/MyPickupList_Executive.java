@@ -298,7 +298,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         final CharSequence[] status_options = {"Cancel","Pending"};
         final String[] selection = new String[1];
         vwParentRow = (android.widget.RelativeLayout) view.getParent();
-        final Button btn_status  = (Button)vwParentRow.getChildAt(13);
+        final Button btn_status  = (Button)vwParentRow.getChildAt(10);
         AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
         eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
             @Override
@@ -468,7 +468,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     @Override
     public void onItemClick(int position) {
-       /* Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
+        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
 
         PickupList_Model_For_Executive clickedItem = list.get(position);
 
@@ -476,7 +476,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         scanIntent.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
 //        scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
 
-        startActivity(scanIntent);*/
+        startActivity(scanIntent);
     }
     @Override
     public void onRefresh() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_pu_list"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="220dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -29,38 +29,29 @@
             android:layout_marginTop="10dp"
             android:lines="1"
             android:maxLines="2"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
             android:textColor="#000"
             android:textSize="18sp"
             android:textStyle="bold" />
 
 
-        <!--<TextView-->
-            <!--android:id="@+id/m_add_pul"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_marginTop="40dp"-->
-            <!--android:lines="2"-->
-            <!--android:maxLines="2"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textColor="#000"-->
-            <!--android:textSize="15sp"-->
-            <!--android:textStyle="normal" />-->
-
-
         <TextView
             android:id="@+id/statustxt"
-            android:layout_width="86dp"
-            android:layout_height="wrap_content"
+            android:layout_width="89dp"
+            android:layout_height="35dp"
+            android:layout_below="@id/scantxt"
+            android:layout_alignStart="@+id/m_name_pul"
             android:layout_alignTop="@+id/btn_status"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="10dp"
-            android:text="Status: "
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_alignBottom="@id/btn_scan"
+            android:text="Status:"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:layout_alignBaseline="@id/btn_scan"/>
 
         <TextView
             android:id="@+id/assignedtxt"
@@ -68,20 +59,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="70dp"
-            android:layout_marginBottom="95dp"
+            android:layout_marginBottom="80dp"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Assigned Qty:"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/pickedtxt"
-            android:layout_width="121dp"
-            android:layout_height="21dp"
-            android:layout_alignEnd="@+id/assignedtxt"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="70dp"
-            android:text="Picked Qty:"
-            android:textSize="15sp" />
+            android:textColor="@color/pfColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/scantxt"
@@ -89,9 +73,11 @@
             android:layout_height="wrap_content"
             android:layout_alignEnd="@+id/assignedtxt"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="46dp"
+            android:layout_marginBottom="60dp"
             android:text="Scan Count:"
-            android:textSize="15sp" />
+            android:textColor="@color/pfColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/a_qty_pul"
@@ -102,32 +88,25 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="-115dp"
             android:layout_marginEnd="60dp"
+            android:layout_toEndOf="@+id/assignedtxt"
             android:text=""
             android:textAlignment="textStart"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/p_qty_pul"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/scantxt"
-            android:layout_alignEnd="@+id/a_qty_pul"
-            android:layout_alignBaseline="@+id/pickedtxt"
-            android:layout_marginBottom="4dp"
-            android:text=""
-            android:textAlignment="textStart"
-            android:textSize="15sp" />
+            android:textColor="@color/pfColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/scan_qty_pul"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/a_qty_pul"
             android:layout_alignBaseline="@+id/scantxt"
+            android:layout_alignEnd="@+id/a_qty_pul"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="46dp"
+            android:layout_toEndOf="@+id/assignedtxt"
             android:text=""
             android:textAlignment="textStart"
+            android:textColor="@color/pfColor"
             android:textSize="15sp" />
 
         <View
@@ -136,27 +115,24 @@
             android:layout_height="1dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="70dp"
             android:background="?android:attr/listDivider" />
 
         <View
             android:id="@+id/divider5"
-            android:layout_width="350dp"
-            android:layout_height="0dp"
-            android:layout_above="@+id/btn_scan"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginBottom="-39dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="130dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
             android:id="@+id/calltxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/m_add_pul"
-            android:layout_alignStart="@+id/statustxt"
-            android:layout_marginStart="11dp"
+            android:layout_below="@+id/m_name_pul"
+            android:layout_alignStart="@+id/merchant_name_view"
             android:layout_marginTop="4dp"
             android:text="Call:"
             android:textColor="#000" />
@@ -165,7 +141,7 @@
             android:id="@+id/m_phn_num"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/m_add_pul"
+            android:layout_below="@+id/m_name_pul"
             android:layout_alignBaseline="@+id/calltxt"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="0dp"
@@ -174,16 +150,20 @@
             android:textAlignment="textStart"
             android:textColor="@color/blue_link"
             android:textSize="15sp" />
-            <!--android:onClick="callMerchant"-->
+        <!--android:onClick="callMerchant"-->
 
         <Button
             android:id="@+id/btn_status"
-            android:layout_width="wrap_content"
+            android:layout_width="115dp"
             android:layout_height="35dp"
-            android:layout_above="@+id/divider4"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/btnleftmargin"
-            android:layout_marginBottom="-137dp"
+
+            android:layout_alignBottom="@id/btn_scan"
+
+
+            android:layout_marginRight="5dp"
+
+            android:layout_marginBottom="-1dp"
+            android:layout_toLeftOf="@id/btn_scan"
             android:background="@drawable/buttonstyle"
             android:onClick="changeStatus"
             android:padding="10dp"
@@ -194,13 +174,12 @@
             android:id="@+id/btn_scan"
             android:layout_width="115dp"
             android:layout_height="35dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="1dp"
+            android:layout_below="@id/divider4"
+            android:layout_alignEnd="@+id/m_name_pul"
+            android:layout_marginTop="70dp"
             android:background="@drawable/buttonstyle_scan"
             android:text="SCAN"
-            android:textColor="@color/white"
-            />
+            android:textColor="@color/white" />
 
 
     </RelativeLayout>
