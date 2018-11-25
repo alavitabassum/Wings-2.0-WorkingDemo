@@ -127,9 +127,9 @@ public class ManagerCardMenu extends AppCompatActivity
             while (c.moveToNext()) {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
-                String assigned = c.getString(2);
+                int totalcount = c.getInt(2);
 
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, assigned);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, totalcount);
                 assignManager_modelList.add(todaySummary);
             }
 

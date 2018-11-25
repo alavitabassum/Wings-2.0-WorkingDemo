@@ -130,7 +130,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     private void loadRecyclerView(final String user)
     {
 //        boolean check;
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.142/new/merchantListForExecutive.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/merchantListForExecutive.php",
            new Response.Listener<String>()
            {
             @Override
