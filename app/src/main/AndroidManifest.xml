@@ -34,12 +34,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <receiver android:name=".NetworkStateChecker">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme">
@@ -49,6 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme" />
@@ -70,6 +67,7 @@
             android:label="@string/title_activity_assign_pickup__manager"
             android:theme="@style/AppTheme">
 
+
             <!--
                 <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,6 +76,11 @@
             </intent-filter>
             -->
         </activity>
+        <receiver android:name=".NetworkStateChecker">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".PickupHistory_Manager"
             android:label="@string/title_activity_pickup_history__manager"
@@ -106,8 +109,6 @@
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />
         <activity android:name=".ViewAssigns"></activity>
-
-
     </application>
 
 </manifest>

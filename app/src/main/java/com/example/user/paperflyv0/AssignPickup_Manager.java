@@ -76,7 +76,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     //a broadcast to know weather the data is synced or not
-    public static final String DATA_SAVED_BROADCAST = "com.example.user.paperflyv0";
+    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
@@ -92,11 +92,11 @@ public class AssignPickup_Manager extends AppCompatActivity
     //    RecyclerView.Adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign_pickup__manager);
         database = new Database(getApplicationContext());
         database.getWritableDatabase();
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         executiveLists = new ArrayList<>();
         assignManager_modelList = new ArrayList<>();
 
