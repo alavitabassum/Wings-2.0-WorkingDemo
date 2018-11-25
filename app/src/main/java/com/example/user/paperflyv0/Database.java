@@ -101,7 +101,7 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public Cursor get_complete_pickups_history_ex(SQLiteDatabase db) {
+    public Cursor get_complete_pickups_history_ex(SQLiteDatabase db, String user) {
         String[] columns = {"merchant_name", "executive_name", "assigned", "picked", "received"};
         return db.query("com_ex", columns, null, null, null, null, null);
     }
@@ -125,7 +125,7 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-    public Cursor get_pending_pickups_history_ex(SQLiteDatabase db) {
+    public Cursor get_pending_pickups_history_ex(SQLiteDatabase db, String user) {
         String[] columns = {"merchant_name", "executive_name", "assigned", "picked", "received"};
         return db.query("com_ex", columns, null, null, null, null, null);
     }
