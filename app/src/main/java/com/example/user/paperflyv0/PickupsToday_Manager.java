@@ -173,6 +173,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                             JSONArray array = jsonObject.getJSONArray("unAssignedlist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
+                                assignManager_modelList.clear();
                                 database.add_pickups_today_manager(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                             }
                             getallmerchant();
