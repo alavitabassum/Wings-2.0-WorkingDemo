@@ -94,7 +94,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickups_today__manager);
         database = new Database(getApplicationContext());
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         assignManager_modelList = new ArrayList<>();
 
 

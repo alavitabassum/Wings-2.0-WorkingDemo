@@ -63,7 +63,7 @@ public class ManagerCardMenu extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_card_menu);
 
@@ -105,7 +105,7 @@ public class ManagerCardMenu extends AppCompatActivity
 /*        initBubble();
         addNewBubble();*/
 
-        //check permission
+       /* //check permission
         if (Build.VERSION.SDK_INT>=23){
             if (!Settings.canDrawOverlays(this)){
                 Intent intent_b =  new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package: "+getPackageName()));
@@ -116,7 +116,7 @@ public class ManagerCardMenu extends AppCompatActivity
                 startService(intent);
 
             }
-        }
+        }*/
     }
 
     private void getallmerchant() {
