@@ -14,6 +14,10 @@ public class AssignManager_Model  {
         this.totalcount = totalcount;
 
         }
+    public AssignManager_Model(String m_names, String m_address) {
+        this.m_names = m_names;
+        this.m_address = m_address;
+        }
 
     public int getTotalcount() {
         return totalcount;

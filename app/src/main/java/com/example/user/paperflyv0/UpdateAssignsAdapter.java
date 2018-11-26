@@ -58,6 +58,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
         public AutoCompleteTextView itemExe;
         public TextView itemCount;
         public Button button;
+        public Button deletebutton;
 
 
         public ViewHolder(View itemView) {
@@ -68,6 +69,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
             itemExe = (AutoCompleteTextView)itemView.findViewById(R.id.auto_complete);
             itemCount = (TextView)itemView.findViewById(R.id.order_count);
             button = (Button) itemView.findViewById(R.id.update_assigns);
+            deletebutton = (Button) itemView.findViewById(R.id.delete_assigns);
 
             itemExe.setDropDownBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.black)));
             itemExe.setTextColor(itemView.getResources().getColor(R.color.black));
@@ -87,6 +89,16 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
         final UpdateAssign_Model updateAssign_model = updateAssignModelList.get(j);
         viewHolder.itemExe.setText(updateAssign_model.getEx_name());
         viewHolder.itemCount.setText(updateAssign_model.getCount());
+        viewHolder.deletebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String ex = updateAssign_model.getEx_name().toString();
+                String count = updateAssign_model.getCount().toString();
+                String rowid = updateAssign_model.getRowid();
+                database.deleteassign(rowid,ex,count);
+                Toast.makeText(context, "Deleted" ,Toast.LENGTH_SHORT).show();
+            }
+        });
 
         /*autocomplete*/
 

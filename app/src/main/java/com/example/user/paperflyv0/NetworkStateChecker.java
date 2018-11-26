@@ -70,7 +70,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
      * we will update the status as synced in SQLite
      * */
     private void saveName(final int id, final String executive_name,final String executive_code, final String order_count,final String merchant_code,final String assigned_by,final String created_at) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.114/new/insertassign.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.INSERT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

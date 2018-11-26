@@ -65,9 +65,10 @@ public class AssignPickup_Manager extends AppCompatActivity
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://192.168.0.114/new/insertassign.php";
+    public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
+    private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
@@ -92,7 +93,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     //    RecyclerView.Adapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign_pickup__manager);
         database = new Database(getApplicationContext());
@@ -109,11 +110,13 @@ public class AssignPickup_Manager extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         getallmerchant();
         getallexecutives();
+
         loadmerchantlist(user);
         loadexecutivelist(user);
+        loadallmerchantlist(user);
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -285,6 +288,46 @@ public class AssignPickup_Manager extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //Merchant List API hit
+    private void loadallmerchantlist(final String user) {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, ALL_MERCHANT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("merchantlist");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                database.addallmerchantlist(o.getString("merchantName"), o.getString("merchantCode"));
+                            }
+
+                            } catch (JSONException e) {
+                            e.printStackTrace();
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
     }
 
     private void assignexecutivetosqlite(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString,final int status) {
@@ -603,7 +646,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        assignManager_modelList.clear();
+          assignManager_modelList.clear();
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
