@@ -1,15 +1,27 @@
 package com.example.user.paperflyv0;
 
+import android.app.NotificationManager;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,24 +31,55 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
+import com.txusballesteros.bubbles.BubbleLayout;
+
+import com.google.android.gms.nearby.connection.Connections;
+import com.nex3z.notificationbadge.NotificationBadge;
+import com.txusballesteros.bubbles.BubbleLayout;
+import com.txusballesteros.bubbles.BubblesManager;
+import com.txusballesteros.bubbles.OnInitializedCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManagerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    List<AssignManager_Model> assignManager_modelList;
+    Database database;
+
+    private BubblesManager bubblesManager;
+    private NotificationBadge mBadge;
+
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
 
+    TextView OrderCount;
+    int pendingOrders = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_card_menu);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        database = new Database(getApplicationContext());
+        database.getWritableDatabase();
+        assignManager_modelList = new ArrayList<>();
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_m);
         setSupportActionBar(toolbar);
 
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        getallmerchant();
+
 
 
         recyclerView =
@@ -48,17 +91,6 @@ public class ManagerCardMenu extends AppCompatActivity
         adapter = new RecyclerAdapterManager();
         recyclerView.setAdapter(adapter);
 
-/*
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -68,7 +100,51 @@ public class ManagerCardMenu extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_manager);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+/*        initBubble();
+        addNewBubble();*/
+
+        //check permission
+        if (Build.VERSION.SDK_INT>=23){
+            if (!Settings.canDrawOverlays(this)){
+                Intent intent_b =  new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package: "+getPackageName()));
+                startActivityForResult(intent_b,101);
+            }
+            else{
+                Intent intent = new Intent(ManagerCardMenu.this, Service.class);
+                startService(intent);
+
+            }
+        }
     }
+
+    private void getallmerchant() {
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_merchantlist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String merchantName = c.getString(0);
+                String merchantCode = c.getString(1);
+                int totalcount = c.getInt(2);
+
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, totalcount);
+                assignManager_modelList.add(todaySummary);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+      /*  bubblesManager.recycle();*/
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -83,9 +159,25 @@ public class ManagerCardMenu extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.manager_card_menu, menu);
+        getMenuInflater().inflate(R.menu.notification_menu, menu);
+
+       final MenuItem menuItem = menu.findItem(R.id.action_notification);
+
+        View actionView = MenuItemCompat.getActionView(menuItem);
+        OrderCount = actionView.findViewById(R.id.notification_badge);
+
+      setupBadge();
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -95,13 +187,35 @@ public class ManagerCardMenu extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_notification) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void setupBadge() {
+/*
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.custom_notification_layout, null);
+        OrderCount = view.findViewById(R.id.notification_badge);*/
+
+        int pendingCount =  assignManager_modelList.size();
+
+        if (OrderCount !=null){
+            if (pendingCount == 0){
+                if (OrderCount.getVisibility() != View.GONE){
+                    OrderCount.setVisibility(View.GONE);
+                }
+            }else{
+                OrderCount.setText(String.valueOf(pendingCount));
+                if (OrderCount.getVisibility() != View.VISIBLE){
+                    OrderCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

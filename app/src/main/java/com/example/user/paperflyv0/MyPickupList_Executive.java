@@ -299,7 +299,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         final CharSequence[] status_options = {"Cancel","Pending"};
         final String[] selection = new String[1];
         vwParentRow = (android.widget.RelativeLayout) view.getParent();
-        final Button btn_status  = (Button)vwParentRow.getChildAt(13);
+        final Button btn_status  = (Button)vwParentRow.getChildAt(10);
         AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
         eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
             @Override
@@ -444,9 +444,45 @@ public class MyPickupList_Executive extends AppCompatActivity
                     PickupStatus_Executive.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
-            Intent loginIntent = new Intent(MyPickupList_Executive.this,
-                    LoginActivity.class);
-            startActivity(loginIntent);
+            //Creating an alert dialog to confirm logout
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Are you sure you want to logout?");
+            alertDialogBuilder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            //Getting out sharedpreferences
+                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                            //Getting editor
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            //Puting the value false for loggedin
+                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                            //Putting blank value to email
+                            editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                            //Saving the sharedpreferences
+                            editor.commit();
+
+                            //Starting login activity
+                            Intent intent = new Intent(MyPickupList_Executive.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+            alertDialogBuilder.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+
+            //Showing the alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

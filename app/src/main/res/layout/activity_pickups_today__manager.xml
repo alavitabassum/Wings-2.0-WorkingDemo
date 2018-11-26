@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_pickups_today__manager"
+        app:headerLayout="@layout/nav_header_manager_card_menu"
         app:menu="@menu/activity_pickups_today__manager_drawer" />
 
 </android.support.v4.widget.DrawerLayout>

@@ -1,7 +1,14 @@
 package com.example.user.paperflyv0;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +24,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     private Context context;
     private OnItemClickListener mListner;
     BarcodeDbHelper db;
-
+    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
  /*   final CharSequence[] status_options = {"Cancel","Pending"};
     int selection = 1;*/
@@ -39,9 +46,9 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView item_m_pul;
-//        public TextView item_add_pul;
+        public TextView item_add_pul;
         public TextView itme_a_pul;
-        public TextView item_p_pul;
+
         public TextView item_scanCount;
         public Button scan_button;
 
@@ -54,7 +61,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             item_m_pul=itemView.findViewById(R.id.m_name_pul);
 //            item_add_pul=itemView.findViewById(R.id.m_add_pul);
             itme_a_pul=itemView.findViewById(R.id.a_qty_pul);
-            item_p_pul=itemView.findViewById(R.id.p_qty_pul);
+
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
             scan_button = itemView.findViewById(R.id.btn_scan);
@@ -62,6 +69,22 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
             //underline phoneNumber
             item_phnNum.setPaintFlags(item_phnNum.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+            item_phnNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent =new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:01781278896"));
+                    if (ActivityCompat.checkSelfPermission(v.getContext(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions((Activity) v.getContext(),
+                                new String[]{Manifest.permission.CALL_PHONE},
+                                MY_PERMISSIONS_REQUEST_CALL_PHONE);
+                        return;
+                    }
+                    v.getContext().startActivity(callIntent);
+                }
+            });
 
             scan_button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,7 +115,6 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
         viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
-        viewHolder.item_p_pul.setText(list.get(i).getPicked_qty());
         viewHolder.item_scanCount.setText(list.get(i).getScan_count());
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
 

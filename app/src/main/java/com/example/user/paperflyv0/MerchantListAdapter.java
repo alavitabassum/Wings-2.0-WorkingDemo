@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -31,12 +32,14 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         public TextView itemUploadedQty;
         public TextView itemReceivedQty;
 
+
         public ViewHolder(View itemView) {
             super(itemView);
             itemMerchantName=itemView.findViewById(R.id.merchant_name);
             itemAssignedQty=itemView.findViewById(R.id.a_qty);
             itemUploadedQty=itemView.findViewById(R.id.u_qty);
             itemReceivedQty=itemView.findViewById(R.id.r_qty);
+
         }
     }
 
