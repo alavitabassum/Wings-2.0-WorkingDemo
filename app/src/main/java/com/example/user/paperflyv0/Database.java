@@ -37,25 +37,21 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
-    public void insert_pickups_today_manager(String name, String assigned, String uploaded, String received) {
+    public void insert_pickups_today_manager(String name, String order_count) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
         values.put("name", name);
 
-        values.put("assigned", assigned);
-
-        values.put("uploaded", uploaded);
-
-        values.put("received", received);
+        values.put("ordercount", order_count);
 
         sqLiteDatabase.insert("merchants", null, values);
         sqLiteDatabase.close();
     }
 
     public Cursor get_pickups_today_manager(SQLiteDatabase db) {
-        String[] columns = {"name", "assigned", "uploaded", "received"};
+        String[] columns = {"name", "ordercount"};
         return db.query("merchants", columns, null, null, null, null, null);
     }
 
