@@ -62,7 +62,7 @@ public class NewOrder extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
-        getallmerchant();
+        getallmerchantlist();
         getallexecutives();
 
         final AutoCompleteTextView actv_m_name = findViewById(R.id.auto_m_name);
@@ -90,7 +90,7 @@ public class NewOrder extends AppCompatActivity {
             public void onItemClick(final AdapterView<?> adapterView, View view, final int i, long l) {
                 final String merchantname = adapterView.getItemAtPosition(i).toString();
 
-                final String merchantcode = database.getSelectedMerchantCode(adapterView.getItemAtPosition(i).toString());
+                final String merchantcode = database.getSelectedMerchantCodeAll(adapterView.getItemAtPosition(i).toString());
 
                 Toast.makeText(getApplicationContext(),
                         "Clicked item from auto completion list "
@@ -144,17 +144,16 @@ public class NewOrder extends AppCompatActivity {
 
 
 
-    private void getallmerchant() {
+    private void getallmerchantlist() {
         try {
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_merchantlist(sqLiteDatabase);
+            Cursor c = database.get_All_merchantlist(sqLiteDatabase);
             while (c.moveToNext()) {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
-                int totalcount =c.getInt(2);
 
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode);
                 assignManager_modelList.add(todaySummary);
             }
 

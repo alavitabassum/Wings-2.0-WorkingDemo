@@ -63,7 +63,6 @@ public class ManagerCardMenu extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_card_menu);
 
