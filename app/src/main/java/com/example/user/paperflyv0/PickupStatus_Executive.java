@@ -45,6 +45,9 @@ public class PickupStatus_Executive extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+
         //Date Picker
 
         pickDate_e = findViewById(R.id.pickDateTxt_exe);
@@ -108,6 +111,9 @@ public class PickupStatus_Executive extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_e);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.executive_name);
+        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
     }
 

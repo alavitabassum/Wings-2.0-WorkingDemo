@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -97,6 +98,9 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.manager_name);
+        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
     }
     private void loadRecyclerView()

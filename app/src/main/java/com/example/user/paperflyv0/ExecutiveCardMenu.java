@@ -16,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 
 public class ExecutiveCardMenu extends AppCompatActivity
@@ -32,6 +34,10 @@ public class ExecutiveCardMenu extends AppCompatActivity
         setContentView(R.layout.activity_executive_card_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //Fetching email from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+
 
         recyclerView_exe =
                 (RecyclerView) findViewById(R.id.recycler_view_executive);
@@ -58,6 +64,9 @@ public class ExecutiveCardMenu extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_exe);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.executive_name);
+        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
     }
 

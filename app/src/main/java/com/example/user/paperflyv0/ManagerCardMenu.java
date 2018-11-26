@@ -64,6 +64,9 @@ public class ManagerCardMenu extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_manager);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.manager_name);
+        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
