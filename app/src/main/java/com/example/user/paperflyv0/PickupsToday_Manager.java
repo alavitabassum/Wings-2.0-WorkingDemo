@@ -60,8 +60,11 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -123,9 +126,9 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         swipeRefreshLayout = findViewById(R.id.refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-        getData();
+        //getData();
         swipeRefreshLayout.setRefreshing(true);
-        loadRecyclerView();
+        //loadRecyclerView();
         // getData();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -153,31 +156,42 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
 
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("unAssignedlist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
+                                database.add_pickups_today_manager(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                             }
                             getallmerchant();
+                            swipeRefreshLayout.setRefreshing(false);
 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-
-
+                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                        progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
+
                     }
                 }
         ) {
@@ -190,13 +204,14 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest1);
+
     }
     // merchant List generation from sqlite
     private void getallmerchant() {
         try {
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_merchantlist(sqLiteDatabase);
+            Cursor c = database.getdata_pickups_today_manager(sqLiteDatabase);
             while (c.moveToNext()) {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
@@ -208,6 +223,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             }
             merchantListAdapter = new MerchantListAdapter(assignManager_modelList, getApplicationContext());
             recyclerView.setAdapter(merchantListAdapter);
+            swipeRefreshLayout.setRefreshing(false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -215,7 +231,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     }
 
 
-    private void loadRecyclerView()
+    /*private void loadRecyclerView()
     {
         assignManager_modelList.clear();
         progress=new ProgressDialog(this);
@@ -260,9 +276,9 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                 });
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }
+    }*/
 
-    private void getData()
+   /* private void getData()
     {
         try{
 
@@ -284,7 +300,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         {
             Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 
 
     @Override
@@ -299,6 +315,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_item, menu);
 
@@ -314,6 +331,10 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                Set<AssignManager_Model> hs = new HashSet<>();
+                hs.addAll(assignManager_modelList);
+                assignManager_modelList.clear();
+                assignManager_modelList.addAll(hs);
                 merchantListAdapter.getFilter().filter(newText);
                 return false;
             }
@@ -410,6 +431,10 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     @Override
     public void onRefresh() {
         assignManager_modelList.clear();
-        loadRecyclerView();
+        //Fetching email from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        String user = username.toString();
+        loadmerchantlist(user);
     }
 }

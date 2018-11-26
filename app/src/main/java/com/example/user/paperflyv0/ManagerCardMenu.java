@@ -1,27 +1,16 @@
 package com.example.user.paperflyv0;
 
-import android.app.NotificationManager;
-import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,17 +21,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.txusballesteros.bubbles.BubbleLayout;
 
-import com.google.android.gms.nearby.connection.Connections;
 import com.nex3z.notificationbadge.NotificationBadge;
-import com.txusballesteros.bubbles.BubbleLayout;
 import com.txusballesteros.bubbles.BubblesManager;
-import com.txusballesteros.bubbles.OnInitializedCallback;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ManagerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -120,6 +106,7 @@ public class ManagerCardMenu extends AppCompatActivity
     }
 
     private void getallmerchant() {
+        assignManager_modelList.size();
         try {
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
@@ -165,6 +152,7 @@ public class ManagerCardMenu extends AppCompatActivity
 
         View actionView = MenuItemCompat.getActionView(menuItem);
         OrderCount = actionView.findViewById(R.id.notification_badge);
+        assignManager_modelList.size();
 
       setupBadge();
 
@@ -196,6 +184,13 @@ public class ManagerCardMenu extends AppCompatActivity
 
 
     private void setupBadge() {
+
+
+        Set<AssignManager_Model> hs = new HashSet<>();
+        hs.addAll(assignManager_modelList);
+        assignManager_modelList.clear();
+        assignManager_modelList.addAll(hs);
+
 /*
         LayoutInflater inflater = LayoutInflater.from(this);
         View view = inflater.inflate(R.layout.custom_notification_layout, null);
@@ -206,7 +201,7 @@ public class ManagerCardMenu extends AppCompatActivity
         if (OrderCount !=null){
             if (pendingCount == 0){
                 if (OrderCount.getVisibility() != View.GONE){
-                    OrderCount.setVisibility(View.GONE);
+                    OrderCount.setVisibility(View.VISIBLE);
                 }
             }else{
                 OrderCount.setText(String.valueOf(pendingCount));

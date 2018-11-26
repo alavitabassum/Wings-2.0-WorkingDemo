@@ -24,12 +24,14 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,totalcount int)";
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
         String tableEmp5 = "create table executivelist(empName text,empCode text)";
+        String tableEmp6 = "create table pickups_today_manager(merchantName text,merchantCode text,totalcount int)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
         sqLiteDatabase.execSQL(tableEmp3);
         sqLiteDatabase.execSQL(tableEmp4);
         sqLiteDatabase.execSQL(tableEmp5);
+        sqLiteDatabase.execSQL(tableEmp6);
     }
 
     @Override
@@ -37,6 +39,26 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
+
+    public void add_pickups_today_manager(String merchantName, String merchantCode,int cnt) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("merchantName", merchantName);
+
+        values.put("merchantCode", merchantCode);
+
+        values.put("totalcount",cnt);
+
+        sqLiteDatabase.insert("pickups_today_manager", null, values);
+        sqLiteDatabase.close();
+    }
+
+    public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
+        String[] columns = {"merchantName", "merchantCode","totalcount"};
+        return db.query("pickups_today_manager", columns, null, null, null, null, null);
+    }
     public void insert_pickups_today_manager(String name, String order_count) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
@@ -140,6 +162,8 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.insert("merchantList", null, values);
         sqLiteDatabase.close();
     }
+
+
 
     public Cursor get_merchantlist(SQLiteDatabase db) {
         String[] columns = {"merchantName", "merchantCode","totalcount"};
