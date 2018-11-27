@@ -236,15 +236,15 @@ public class Database extends SQLiteOpenHelper {
         return db.query("executivelist", columns, null, null, null, null, null);
     }
 
-    /*public int getTotalOfAmount(String merchantCode) {
+    public int getTotalOfAmount() {
         int total=0;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT SUM(order_count) FROM " + "assignexecutive"+ " WHERE " + "merchantCode" + "='" + merchantCode + "'", null);
+        Cursor sumQuery = db.rawQuery("SELECT SUM(totalcount) FROM " + "merchantList",null);
         if (sumQuery.moveToFirst()) {
             total = sumQuery.getInt(0);
         }
         return total;
-    }*/
+    }
 
     /*public void update_row( String total_assigned,String merchantCode) {
 

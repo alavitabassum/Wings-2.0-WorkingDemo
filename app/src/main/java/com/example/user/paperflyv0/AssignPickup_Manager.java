@@ -60,7 +60,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener {
 
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
@@ -111,6 +111,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         getallmerchant();
         getallexecutives();
 
@@ -279,11 +280,13 @@ public class AssignPickup_Manager extends AppCompatActivity
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
                 int totalcount = c.getInt(2);
-
-
                 AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
                 assignManager_modelList.add(todaySummary);
             }
+            //Get the Total Order For Today
+            final int total_assign = database.getTotalOfAmount();
+            AssignManager_Model amounts = new AssignManager_Model(total_assign);
+            assignManager_modelList.add(amounts);
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
             recyclerView.setAdapter(assignExecutiveAdapter);
             assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
@@ -646,14 +649,4 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     }
 
-
-    @Override
-    public void onRefresh() {
-          assignManager_modelList.clear();
-        //Fetching email from shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        String user = username.toString();
-        loadmerchantlist(user);
-    }
 }

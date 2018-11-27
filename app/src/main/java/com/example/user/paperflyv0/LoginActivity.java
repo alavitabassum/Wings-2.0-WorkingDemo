@@ -157,6 +157,10 @@ public class LoginActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
+    @Override
+    public void onBackPressed() {
+        //do nothing
+    }
 
 
 }
