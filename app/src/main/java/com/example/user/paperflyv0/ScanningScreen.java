@@ -75,9 +75,10 @@ public class ScanningScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.continuous_scan);
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
 
         // Pass value through intent
         Intent intent = getIntent();
@@ -98,11 +99,11 @@ public class ScanningScreen extends AppCompatActivity {
 
         //the broadcast receiver to update sync status
         broadcastReceiver = new BroadcastReceiver() {
-            SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+           /* SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");*/
             @Override
             public void onReceive(Context context, Intent intent) {
-                getDataFromSQLite(username);
+
             }
         };
         //registering the broadcast receiver to update sync status
