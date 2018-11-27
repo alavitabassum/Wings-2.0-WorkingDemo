@@ -6,9 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -79,7 +78,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         setSupportActionBar(toolbar);
         list = new ArrayList<>();
 
-        // Feching email from shared preferences
+        // Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final String user = username.toString();
@@ -131,50 +130,75 @@ public class MyPickupList_Executive extends AppCompatActivity
         }
     }
 
-    public void getData(final String user)
-    {
-        try{
+//    public void getData(final String user)
+//    {
+//        try{
+//
+//
+//            BarcodeDbHelper dbHelper = new BarcodeDbHelper(this);
+//            SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+//            Cursor c = dbHelper.get_mypickups_today(sqLiteDatabase, user);
+//            while (c.moveToNext())
+//            {
+//                int key_id = c.getInt(0);
+//                String merchant_id = c.getString(1);
+//                String merchant_name = c.getString(2);
+//                String executive_name = c.getString(3);
+//                String assined_qty = c.getString(4);
+//                String picked_qty = c.getString(5);
+//                String scan_count = c.getString(6);
+//                String phone_no = c.getString(7);
+//                String assigned_by = c.getString(8);
+//                String created_at = c.getString(9);
+//                String updated_by = c.getString(10);
+//                String updated_at = c.getString(11);
+//                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(key_id,merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at);
+//                list.add(detail);
+//
+//
+//            }
+////            pickuplistForExecutiveAdapter.notifyDataSetChanged();
+//            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+//            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+//            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
+////            c.close();
+////            dbHelper.close();
+//            swipeRefreshLayout.setRefreshing(false);
+//
+////            adapter.notifyDataSetChanged();
+////            cursor.close();
+////            dbHelper.close();
+//
+//
+//        }catch (Exception e)
+//        {
+////            Toast.makeText(getContext(), "some error getData" +e ,Toast.LENGTH_LONG).show();
+//        }
+//    }
 
+    /**
+     * This method is to fetch all user records from SQLite
+     */
+    private void getData(final String user) {
+        // AsyncTask is used that SQLite operation not blocks the UI Thread.
+        new AsyncTask<String, Void, Void>() {
+            @Override
+            protected Void doInBackground(String... params) {
+                list.clear();
+                list.addAll(db.getAllData(user));
 
-            BarcodeDbHelper dbHelper = new BarcodeDbHelper(this);
-            SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
-            Cursor c = dbHelper.get_mypickups_today(sqLiteDatabase, user);
-            while (c.moveToNext())
-            {
-                int key_id = c.getInt(0);
-                String merchant_id = c.getString(1);
-                String merchant_name = c.getString(2);
-                String executive_name = c.getString(3);
-                String assined_qty = c.getString(4);
-                String picked_qty = c.getString(5);
-                String scan_count = c.getString(6);
-                String phone_no = c.getString(7);
-                String assigned_by = c.getString(8);
-                String created_at = c.getString(9);
-                String updated_by = c.getString(10);
-                String updated_at = c.getString(11);
-                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(key_id,merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at);
-                list.add(detail);
-
-
+                return null;
             }
-//            pickuplistForExecutiveAdapter.notifyDataSetChanged();
-            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
-            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
-//            c.close();
-//            dbHelper.close();
-            swipeRefreshLayout.setRefreshing(false);
 
-//            adapter.notifyDataSetChanged();
-//            cursor.close();
-//            dbHelper.close();
-
-
-        }catch (Exception e)
-        {
-//            Toast.makeText(getContext(), "some error getData" +e ,Toast.LENGTH_LONG).show();
-        }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+                recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+                pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
+                pickuplistForExecutiveAdapter.notifyDataSetChanged();
+            }
+        }.execute();
     }
 
     private void loadRecyclerView(final String user)
@@ -208,7 +232,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("updated_at"), NAME_NOT_SYNCED_WITH_SERVER );
 
                     }
-                    getData(user);
+                     getData(user);
                     swipeRefreshLayout.setRefreshing(false);
 
                 } catch (JSONException e) {
@@ -526,6 +550,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     public void onRefresh() {
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        getData(username);
         loadRecyclerView(username);
     }
 

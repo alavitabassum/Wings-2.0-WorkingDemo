@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -103,7 +102,7 @@ public class ScanningScreen extends AppCompatActivity {
             String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
             @Override
             public void onReceive(Context context, Intent intent) {
-                      getData(username);
+                getDataFromSQLite(username);
             }
         };
         //registering the broadcast receiver to update sync status
@@ -337,75 +336,72 @@ public class ScanningScreen extends AppCompatActivity {
 
     }
 
-    public void getData(final String user)
-    {
-        try{
-
-            BarcodeDbHelper dbHelper = new BarcodeDbHelper(this);
-            SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
-            Cursor c = dbHelper.get_mypickups_today(sqLiteDatabase, user);
-            while (c.moveToNext())
-            {
-                int key_id = c.getInt(0);
-                String merchant_id = c.getString(1);
-                String merchant_name = c.getString(2);
-                String executive_name = c.getString(3);
-                String assined_qty = c.getString(4);
-                String picked_qty = c.getString(5);
-                String scan_count = c.getString(6);
-                String phone_no = c.getString(7);
-                String assigned_by = c.getString(8);
-                String created_at = c.getString(9);
-                String updated_by = c.getString(10);
-                String updated_at = c.getString(11);
-                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(key_id,merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at);
-                list.add(detail);
-
-
-            }
-//            pickuplistForExecutiveAdapter.notifyDataSetChanged();
-            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
-//            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
-//            c.close();
-//            dbHelper.close();
-            swipeRefreshLayout.setRefreshing(false);
-
-//            adapter.notifyDataSetChanged();
-//            cursor.close();
-//            dbHelper.close();
-
-
-        }catch (Exception e)
-        {
-//            Toast.makeText(getContext(), "some error getData" +e ,Toast.LENGTH_LONG).show();
-        }
-    }
-
+//    public void getData(final String user)
+//    {
+//        try{
+//
+//            BarcodeDbHelper dbHelper = new BarcodeDbHelper(this);
+//            SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+//            Cursor c = dbHelper.get_mypickups_today(sqLiteDatabase, user);
+//            while (c.moveToNext())
+//            {
+//                int key_id = c.getInt(0);
+//                String merchant_id = c.getString(1);
+//                String merchant_name = c.getString(2);
+//                String executive_name = c.getString(3);
+//                String assined_qty = c.getString(4);
+//                String picked_qty = c.getString(5);
+//                String scan_count = c.getString(6);
+//                String phone_no = c.getString(7);
+//                String assigned_by = c.getString(8);
+//                String created_at = c.getString(9);
+//                String updated_by = c.getString(10);
+//                String updated_at = c.getString(11);
+//                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(key_id,merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at);
+//                list.add(detail);
+//
+//
+//            }
+////            pickuplistForExecutiveAdapter.notifyDataSetChanged();
+//            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+//            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+////            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
+////            c.close();
+////            dbHelper.close();
+//            swipeRefreshLayout.setRefreshing(false);
+//
+////            adapter.notifyDataSetChanged();
+////            cursor.close();
+////            dbHelper.close();
+//
+//
+//        }catch (Exception e)
+//        {
+////            Toast.makeText(getContext(), "some error getData" +e ,Toast.LENGTH_LONG).show();
+//        }
+//    }
 
 
     /**
      * This method is to fetch all user records from SQLite
      */
-//    private void getDataFromSQLite() {
-//        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-//        new AsyncTask<Void, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                list.clear();
-//                list.addAll(db.getAllBeneficiary());
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-//                super.onPostExecute(aVoid);
-//                beneficiaryRecyclerAdapter.notifyDataSetChanged();
-//            }
-//        }.execute();
-//    }
-//}
+    private void getDataFromSQLite(final String user) {
+        // AsyncTask is used that SQLite operation not blocks the UI Thread.
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                list.clear();
+                list.addAll(db.getAllData(user));
 
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                pickuplistForExecutiveAdapter.notifyDataSetChanged();
+            }
+        }.execute();
+    }
 
 }

@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "WingsDB";
@@ -209,7 +212,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 
-
     public int getRowsCount(String merchantId) {
         String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='"+ merchantId +"'";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -240,5 +242,67 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_1,values,"merchantId='" + merchantId + "'",null);
         db.close();
     }
+
+    //Demo Testing
+    public List<PickupList_Model_For_Executive> getAllData(String user) {
+        // array of columns to fetch
+        String[] columns = {KEY_ID,
+                            MERCHANT_ID,
+                            MERCHANT_NAME,
+                            EXECUTIVE_NAME,
+                            ASSIGNED_QTY,
+                            PICKED_QTY,
+                            SCAN_COUNT,
+                            PHONE_NO,
+                            ASSIGNED_BY,
+                            CREATED_AT,
+                            UPDATED_BY,
+                            UPDATED_AT};
+
+        // sorting orders
+        String sortOrder = CREATED_AT + " ASC";
+        List<PickupList_Model_For_Executive> list = new ArrayList<PickupList_Model_For_Executive>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query(TABLE_NAME_1, //Table to query
+                columns,    //columns to return
+                "executive_name='" + user + "'",        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                PickupList_Model_For_Executive beneficiary = new PickupList_Model_For_Executive();
+
+//                Beneficiary beneficiary = new Beneficiary();
+                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ID))));
+                beneficiary.setMerchant_id(cursor.getString(cursor.getColumnIndex(MERCHANT_ID)));
+                beneficiary.setMerchant_name(cursor.getString(cursor.getColumnIndex(MERCHANT_NAME)));
+                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex(EXECUTIVE_NAME)));
+                beneficiary.setAssined_qty(cursor.getString(cursor.getColumnIndex(ASSIGNED_QTY)));
+                beneficiary.setPicked_qty(cursor.getString(cursor.getColumnIndex(PICKED_QTY)));
+                beneficiary.setScan_count(cursor.getString(cursor.getColumnIndex(SCAN_COUNT)));
+                beneficiary.setPhone_no(cursor.getString(cursor.getColumnIndex(PHONE_NO)));
+                beneficiary.setAssigned_by(cursor.getString(cursor.getColumnIndex(ASSIGNED_BY)));
+                beneficiary.setCreated_at(cursor.getString(cursor.getColumnIndex(CREATED_AT)));
+                beneficiary.setUpdated_by(cursor.getString(cursor.getColumnIndex(UPDATED_BY)));
+                beneficiary.setUpdated_at(cursor.getString(cursor.getColumnIndex(UPDATED_AT)));
+                // Adding user record to list
+                list.add(beneficiary);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return list;
+    }
+
 }
 
