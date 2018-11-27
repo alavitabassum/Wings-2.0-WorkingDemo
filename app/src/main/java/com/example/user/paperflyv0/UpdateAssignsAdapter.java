@@ -1,5 +1,6 @@
 package com.example.user.paperflyv0;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -27,6 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -34,11 +36,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.user.paperflyv0.AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER;
+
 public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdapter.ViewHolder> {
 
     private List<UpdateAssign_Model> updateAssignModelList;
     private Context context;
     private OnEditTextChanged onEditTextChanged;
+
 
     Database database;
     String merchantcode;
@@ -81,7 +86,6 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
 
     @Override
     public UpdateAssignsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.update_assigns_layout, viewGroup, false);
         UpdateAssignsAdapter.ViewHolder viewHolder = new UpdateAssignsAdapter.ViewHolder(v);
@@ -142,7 +146,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                     @Override
                     public void onClick(View view) {
                         String rowid = updateAssign_model.getRowid();
-                        database.updateassign(rowid,empname,empcode,cou);
+                        database.updateassign(rowid,empname,empcode,cou,UpdateAssigns.UPDATE_NOT_SYNCED_WITH_SERVER);
                         Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -174,9 +178,9 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                     @Override
                     public void onClick(View view) {
                         String rowid = updateAssign_model.getRowid();
-                        database.updateassign(rowid,empname,empcode,cou);
+                        //database.updateassign(rowid,empname,empcode,cou);
                        /* getrowid(merchantcode,empcode);*/
-                        assignexecutiveupdate(merchantcode,empcode,cou);
+                        assignexecutiveupdate(rowid,empname,merchantcode,empcode,cou);
                         Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -224,7 +228,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
 
     }
 
-    /*private void getrowid(final String merchantcode, final String empcode) {
+   /* private String getrowid(final String merchantcode, final String empcode) {
 
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/getrowid.php",
@@ -234,7 +238,8 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                        try{
                            JSONArray arr = new JSONArray(response);
                            JSONObject jObj = arr.getJSONObject(0);
-                           int id = jObj.getInt("id");
+                           String id = jObj.getString("id");
+
 
 
                        }catch (Exception e)
@@ -262,26 +267,41 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(postRequest);
+        return id;
 
-    }*/
+    }
+*/
 
-
-    private void assignexecutiveupdate(final String merchantcode, final String empcode,final String cou) {
+    private void assignexecutiveupdate(final String rowid,final String empname,final String merchantcode, final String empcode,final String cou) {
 
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateassign.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // response
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+                                database.updateassign(rowid,empname,empcode,cou,UpdateAssigns.UPDATE_SYNCED_WITH_SERVER);
+
+
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                database.updateassign(rowid,empname,empcode,cou,UpdateAssigns.UPDATE_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // error
-                        //   Log.d("Error",error);
+                        database.updateassign(rowid,empname,empcode,cou,UpdateAssigns.UPDATE_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {

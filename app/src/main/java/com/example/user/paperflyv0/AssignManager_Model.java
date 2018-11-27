@@ -5,7 +5,6 @@ public class AssignManager_Model  {
     private String m_address;
     private String assigned;
     private int totalcount;
-    private int totalamount;
 
 
 
@@ -19,10 +18,7 @@ public class AssignManager_Model  {
         this.m_names = m_names;
         this.m_address = m_address;
         }
-    public AssignManager_Model(int totalamount)
-        {
-            this.totalamount = totalamount;
-        }
+
 
     public int getTotalcount() {
         return totalcount;

@@ -65,7 +65,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
+    public static final String INSERT_URL = "http://192.168.0.111/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
@@ -283,10 +283,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
                 assignManager_modelList.add(todaySummary);
             }
-            //Get the Total Order For Today
-            final int total_assign = database.getTotalOfAmount();
-            AssignManager_Model amounts = new AssignManager_Model(total_assign);
-            assignManager_modelList.add(amounts);
+
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
             recyclerView.setAdapter(assignExecutiveAdapter);
             assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);

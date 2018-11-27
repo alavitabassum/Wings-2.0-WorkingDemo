@@ -22,7 +22,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp1 = "create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
         String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,totalcount int)";
-        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
+        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,updatesyncStatus int)";
         String tableEmp5 = "create table executivelist(empName text,empCode text)";
         String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text)";
         sqLiteDatabase.execSQL(tableEmp);
@@ -291,24 +291,37 @@ public class Database extends SQLiteOpenHelper {
         }
         return null;
     }
-    public void updateassign(String rowid,String empname,String empcode,String count)
+    public void updateassign(String rowid,String empname,String empcode,String count,int updateStatus)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("ex_name",empname);
         values.put("empcode",empcode);
         values.put("order_count",count);
+        values.put("updatesyncStatus",updateStatus);
         //db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
-        db.update("assignexecutive",
-                values,
-                "rowid" + " = ?",
-                new String[]{rowid});
+        db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
         db.close();
+    }
+    public Cursor getUnsyncedUpdate() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + "assignexecutive" + " WHERE " + "updatesyncStatus" + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
     }
     public void deleteassign(String rowid, String ex,String count)
     {     SQLiteDatabase db = this.getWritableDatabase();
         db.delete("assignexecutive", "rowid" + " = ?", new String[] { rowid });
     }
+    public boolean updateTheUpdateStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("updatesyncStatus", status);
+        db.update("assignexecutive", contentValues, "id" + "=" + id, null);
+        db.close();
+        return true;
+    }
+
 
 
 

@@ -1,8 +1,12 @@
 package com.example.user.paperflyv0;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,10 +31,21 @@ public class UpdateAssigns extends AppCompatActivity  {
     Database database;
     private UpdateAssignsAdapter updateAssignsAdapter;
 
+    //1 means data is synced and 0 means data is not synced
+    public static final int UPDATE_SYNCED_WITH_SERVER = 1;
+    public static final int UPDATE_NOT_SYNCED_WITH_SERVER = 0;
+
+    //a broadcast to know weather the data is synced or not
+    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
+
+    //Broadcast receiver to know the sync status
+    private BroadcastReceiver broadcastReceiver;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         database=new Database(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_assigns);
@@ -44,7 +59,18 @@ public class UpdateAssigns extends AppCompatActivity  {
         recyclerView_ua.setHasFixedSize(true);
         layoutManager_ua = new LinearLayoutManager(this);
         recyclerView_ua.setLayoutManager(layoutManager_ua);
+        //the broadcast receiver to update sync status
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+            }
+        };
+
+        //registering the broadcast receiver to update sync status
+        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
         getData(merchantcode);
+
     }
 
 
