@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -25,6 +25,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String UPDATED_BY = "updated_by";
     private static final String UPDATED_AT = "updated_at";
     private static final String STATE = "state";
+    private static final String STATUS = "status";
 
 
     private static final String[] COLUMNS = { KEY_ID, MERCHANT_ID, KEY_NAME };
@@ -41,6 +42,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "merchantId TEXT, "
                 + "barcodeNumber TEXT UNIQUE, "
                 + "state BOOLEAN, "
+                + "status INT, "
                 + "updated_by TEXT, "
                 + "updated_at TEXT)";
 
@@ -56,7 +58,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "assigned_by TEXT, "
                 + "created_at TEXT, "
                 + "updated_by TEXT, "
-                + "updated_at TEXT )";
+                + "updated_at TEXT , "
+                + "status INT )";
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -93,7 +96,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     // saveToLocalDatabase
 
-    public void insert_my_assigned_pickups(String merchant_id,String merchant_name, String executive_name,String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at)
+    public void insert_my_assigned_pickups(String merchant_id,String merchant_name, String executive_name,String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at,int status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
@@ -110,6 +113,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CREATED_AT, created_at);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
+        values.put(STATUS, status);
 
 //        db.insert(TABLE_NAME_1,null,values);
         db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
@@ -158,7 +162,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public void add(String merchantId, String barcodeNumber, boolean state, String updated_by, String updated_at) {
+    public void add(String merchantId, String barcodeNumber, boolean state, String updated_by, String updated_at,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(MERCHANT_ID, merchantId);
@@ -166,10 +170,44 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(String.valueOf(STATE), state);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
+        values.put(STATUS,status);
         // insert
         db.insert(TABLE_NAME,null, values);
         db.close();
     }
+
+    public Cursor getUnsyncedBarcode() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateBarcodeStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
+    }
+
+    public Cursor getUnsyncedData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_1 + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateDataStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME_1, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
+    }
+
 
 
     public int getRowsCount(String merchantId) {
@@ -191,12 +229,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     // updateLocalDatabase
-    public void update_row(String scan_count, String updated_by, String updated_at,  String merchantId) {
+    public void update_row(String scan_count, String updated_by, String updated_at,  String merchantId, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SCAN_COUNT, scan_count);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
+        values.put(STATUS, status);
         // insert
         db.update(TABLE_NAME_1,values,"merchantId='" + merchantId + "'",null);
         db.close();

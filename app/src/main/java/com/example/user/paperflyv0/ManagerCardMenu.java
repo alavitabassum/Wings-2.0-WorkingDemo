@@ -1,45 +1,29 @@
 package com.example.user.paperflyv0;
 
-import android.app.NotificationManager;
-import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NotificationBuilderWithBuilderAccessor;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-import com.txusballesteros.bubbles.BubbleLayout;
 
-import com.google.android.gms.nearby.connection.Connections;
 import com.nex3z.notificationbadge.NotificationBadge;
-import com.txusballesteros.bubbles.BubbleLayout;
 import com.txusballesteros.bubbles.BubblesManager;
-import com.txusballesteros.bubbles.OnInitializedCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +89,7 @@ public class ManagerCardMenu extends AppCompatActivity
         addNewBubble();*/
 
         //check permission
-        if (Build.VERSION.SDK_INT>=23){
+       /* if (Build.VERSION.SDK_INT>=23){
             if (!Settings.canDrawOverlays(this)){
                 Intent intent_b =  new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package: "+getPackageName()));
                 startActivityForResult(intent_b,101);
@@ -115,7 +99,7 @@ public class ManagerCardMenu extends AppCompatActivity
                 startService(intent);
 
             }
-        }
+        }*/
     }
 
     private void getallmerchant() {

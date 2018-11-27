@@ -49,11 +49,6 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".PickupsToday_Manager"
@@ -93,11 +88,15 @@
         <activity
             android:name=".MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
+            android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
         </activity>
-        <activity android:name=".ScanningScreen">
-
+        <activity android:name=".ScanningScreen"
+            android:parentActivityName=".MyPickupList_Executive"
+            android:theme="@style/AppTheme">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPickupList_Executive"/>
         </activity>
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />

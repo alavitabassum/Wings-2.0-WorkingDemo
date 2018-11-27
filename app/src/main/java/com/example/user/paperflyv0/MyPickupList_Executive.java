@@ -65,6 +65,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
     private List<PickupList_Model_For_Executive> list;
+    public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +95,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 
         getData(user);
         swipeRefreshLayout.setRefreshing(true);
-        list.clear();
+//        list.clear();
         loadRecyclerView(user);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -130,7 +131,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         }
     }
 
-    private void getData(final String user)
+    public void getData(final String user)
     {
         try{
 
@@ -172,14 +173,14 @@ public class MyPickupList_Executive extends AppCompatActivity
 
         }catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(), "some error getData" +e ,Toast.LENGTH_LONG).show();
+//            Toast.makeText(getContext(), "some error getData" +e ,Toast.LENGTH_LONG).show();
         }
     }
 
     private void loadRecyclerView(final String user)
     {
 //        boolean check;
-          list.clear();
+//          list.clear();
           StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/merchantListForExecutive.php",
            new Response.Listener<String>()
            {
@@ -204,7 +205,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("assigned_by"),
                                 o.getString("created_at"),
                                 o.getString("updated_by"),
-                                o.getString("updated_at"));
+                                o.getString("updated_at"), NAME_NOT_SYNCED_WITH_SERVER );
 
                     }
                     getData(user);
@@ -393,8 +394,14 @@ public class MyPickupList_Executive extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            Intent homeIntent = new Intent(MyPickupList_Executive.this,
+                    ExecutiveCardMenu.class);
+            startActivity(homeIntent);
         } else {
             super.onBackPressed();
+            Intent homeIntent = new Intent(MyPickupList_Executive.this,
+                    ExecutiveCardMenu.class);
+            startActivity(homeIntent);
         }
     }
 
