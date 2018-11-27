@@ -29,6 +29,19 @@ public class PickupList_Model_For_Executive {
         this.key_id = key_id;
     }
 
+    public int getKey_id() {
+        return key_id;
+    }
+
+    public void setKey_id(int key_id) {
+        this.key_id = key_id;
+    }
+
+    public PickupList_Model_For_Executive() {
+
+
+    }
+
     public String getMerchant_id() {
 
         return merchant_id;
