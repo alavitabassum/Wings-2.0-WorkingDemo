@@ -26,6 +26,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,6 +81,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
 
     @Override
     public UpdateAssignsAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.update_assigns_layout, viewGroup, false);
         UpdateAssignsAdapter.ViewHolder viewHolder = new UpdateAssignsAdapter.ViewHolder(v);
@@ -164,12 +168,14 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
 
             @Override
             public void afterTextChanged(Editable editable) {
+
                 final String cou = editable.toString();
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String rowid = updateAssign_model.getRowid();
                         database.updateassign(rowid,empname,empcode,cou);
+                       /* getrowid(merchantcode,empcode);*/
                         assignexecutiveupdate(merchantcode,empcode,cou);
                         Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
                     }
@@ -217,6 +223,47 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
         requestQueue.add(postRequest);
 
     }
+
+    /*private void getrowid(final String merchantcode, final String empcode) {
+
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/getrowid.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       try{
+                           JSONArray arr = new JSONArray(response);
+                           JSONObject jObj = arr.getJSONObject(0);
+                           int id = jObj.getInt("id");
+
+
+                       }catch (Exception e)
+                       {
+
+                       }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        //   Log.d("Error",error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchantcode);
+                params.put("executive_code", empcode);
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(postRequest);
+
+    }*/
 
 
     private void assignexecutiveupdate(final String merchantcode, final String empcode,final String cou) {

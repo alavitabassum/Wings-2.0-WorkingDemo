@@ -125,7 +125,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                         JSONObject o = array.getJSONObject(i);
                         database.insert_pickups_today_manager(o.getString("name"),o.getString("assigned"),o.getString("uploaded"),o.getString("received"));
                     }
-                    getData();
                     swipeRefreshLayout.setRefreshing(false);
                     //swipeRefreshLayout.setRefreshing(false);
 
