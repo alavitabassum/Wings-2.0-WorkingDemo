@@ -4,14 +4,14 @@ public class Pending_Pickup_Model_Manager {
     private String name;
     private String exec_name;
     private String assined_qty;
-    private String picked_qty;
+    private String uploaded_qty;
     private String received_qty;
 
-    public Pending_Pickup_Model_Manager(String name, String exec_name, String assined_qty, String picked_qty, String received_qty) {
+    public Pending_Pickup_Model_Manager(String name, String assined_qty, String uploaded_qty, String received_qty, String exec_name) {
         this.name = name;
         this.exec_name = exec_name;
         this.assined_qty = assined_qty;
-        this.picked_qty = picked_qty;
+        this.uploaded_qty = uploaded_qty;
         this.received_qty = received_qty;
     }
 
@@ -27,8 +27,8 @@ public class Pending_Pickup_Model_Manager {
         return assined_qty;
     }
 
-    public String getPicked_qty() {
-        return picked_qty;
+    public String getUploaded_qty() {
+        return uploaded_qty;
     }
 
     public String getReceived_qty() {

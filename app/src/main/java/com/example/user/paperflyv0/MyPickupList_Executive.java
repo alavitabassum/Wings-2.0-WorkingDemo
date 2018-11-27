@@ -65,22 +65,23 @@ public class MyPickupList_Executive extends AppCompatActivity
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
     private List<PickupList_Model_For_Executive> list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         db=new BarcodeDbHelper(getApplicationContext());
+        db.getWritableDatabase();
 
         setContentView(R.layout.activity_my_pickups__executive);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         list = new ArrayList<>();
 
-        //Fet
-        //        db.getWritableDatabase();ching email from shared preferences
+        // Feching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String user = username.toString();
+        final String user = username.toString();
 
         recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_mylist);
 
@@ -90,8 +91,10 @@ public class MyPickupList_Executive extends AppCompatActivity
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
+
         getData(user);
         swipeRefreshLayout.setRefreshing(true);
+        list.clear();
         loadRecyclerView(user);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -127,10 +130,56 @@ public class MyPickupList_Executive extends AppCompatActivity
         }
     }
 
+    private void getData(final String user)
+    {
+        try{
+
+
+            BarcodeDbHelper dbHelper = new BarcodeDbHelper(this);
+            SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+            Cursor c = dbHelper.get_mypickups_today(sqLiteDatabase, user);
+            while (c.moveToNext())
+            {
+                int key_id = c.getInt(0);
+                String merchant_id = c.getString(1);
+                String merchant_name = c.getString(2);
+                String executive_name = c.getString(3);
+                String assined_qty = c.getString(4);
+                String picked_qty = c.getString(5);
+                String scan_count = c.getString(6);
+                String phone_no = c.getString(7);
+                String assigned_by = c.getString(8);
+                String created_at = c.getString(9);
+                String updated_by = c.getString(10);
+                String updated_at = c.getString(11);
+                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(key_id,merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at);
+                list.add(detail);
+
+
+            }
+//            pickuplistForExecutiveAdapter.notifyDataSetChanged();
+            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
+//            c.close();
+//            dbHelper.close();
+            swipeRefreshLayout.setRefreshing(false);
+
+//            adapter.notifyDataSetChanged();
+//            cursor.close();
+//            dbHelper.close();
+
+
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "some error getData" +e ,Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void loadRecyclerView(final String user)
     {
 //        boolean check;
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/merchantListForExecutive.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/merchantListForExecutive.php",
            new Response.Listener<String>()
            {
             @Override
@@ -171,7 +220,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected" +error ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected loadrecylerview" +error ,Toast.LENGTH_SHORT).show();
 
                     }
                 })
@@ -188,42 +237,6 @@ public class MyPickupList_Executive extends AppCompatActivity
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
-
-
-    private void getData(final String user)
-    {
-        try{
-
-            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_mypickups_today(sqLiteDatabase, user);
-            while (c.moveToNext())
-            {
-                String merchant_id = c.getString(0);
-                String merchant_name = c.getString(1);
-                String executive_name = c.getString(2);
-                String assined_qty = c.getString(3);
-                String picked_qty = c.getString(4);
-                String scan_count = c.getString(5);
-                String phone_no = c.getString(6);
-                String assigned_by = c.getString(7);
-                String created_at = c.getString(8);
-                String updated_by = c.getString(9);
-                String updated_at = c.getString(10);
-                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at);
-                list.add(detail);
-            }
-            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
-            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
-            swipeRefreshLayout.setRefreshing(false);
-
-
-        }catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(), "some error" +e ,Toast.LENGTH_LONG).show();
-        }
-    }
-
 
 
     // Function for camera permission
@@ -285,7 +298,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         final CharSequence[] status_options = {"Cancel","Pending"};
         final String[] selection = new String[1];
         vwParentRow = (android.widget.RelativeLayout) view.getParent();
-        final Button btn_status  = (Button)vwParentRow.getChildAt(13);
+        final Button btn_status  = (Button)vwParentRow.getChildAt(10);
         AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
         eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
             @Override
@@ -301,9 +314,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                         btn_status.setTextColor(Color.BLACK);
                         btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.btn_yellow));
                         btn_status.setText("Pending");
-                       // RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
-                       // params2.setMargins(250, 200, 0, -140);
-                        //btn_status.setLayoutParams(params2);
                         dialogInterface.dismiss();
                         break;
                 }
@@ -338,10 +348,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                                             btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
                                             btn_status.setTextColor(Color.WHITE);
                                             btn_status.setText("cancel");
-                                          //  btn_status.setText(cancelSelection[0]); // catch the cancel reason from this line.
-                                            //RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,70);
-                                            //params.setMargins(250, 200, 0, -140);
-                                           // btn_status.setLayoutParams(params);
                                         }
                                     }).setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                                         @Override
@@ -380,29 +386,6 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     }
 
-    //change status code section (end)
-
-
-    //Scan button onclick function (start)
-    //    public void goto_ScanScreen(View view){
-    //        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
-    //        startActivity(scanIntent);
-    //    }
-
-    //Scan button onclick function (end)
-
-
-    //CallMerchant (start)
-     /*   public void callMerchant(View view){
-        Intent callIntent =new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:01781278896"));
-        if (ActivityCompat.checkSelfPermission(MyPickupList_Executive.this,
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        startActivity(callIntent);
-    }*/
-    //CallMerchant (end)
 
     @Override
     public void onBackPressed() {
@@ -460,15 +443,64 @@ public class MyPickupList_Executive extends AppCompatActivity
                     PickupStatus_Executive.class);
             startActivity(historyIntent);
         } else if (id == R.id.nav_logout) {
-            Intent loginIntent = new Intent(MyPickupList_Executive.this,
-                    LoginActivity.class);
-            startActivity(loginIntent);
+            //Creating an alert dialog to confirm logout
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Are you sure you want to logout?");
+            alertDialogBuilder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            //Getting out sharedpreferences
+                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                            //Getting editor
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            //Puting the value false for loggedin
+                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                            //Putting blank value to email
+                            editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                            //Saving the sharedpreferences
+                            editor.commit();
+
+                            //Starting login activity
+                            Intent intent = new Intent(MyPickupList_Executive.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+            alertDialogBuilder.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+
+            //Showing the alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+//    public void saveToLocalStorage(String scan_count, String merchant_id, String updated_by, String updated_at,  int sync)
+//    {
+//        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+//        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+//
+//        BarcodeDbHelper dbHelper = new BarcodeDbHelper(this);
+//        SQLiteDatabase database = dbHelper.getWritableDatabase();
+//        dbHelper.update_row(scan_count, merchant_id, updated_by, updated_at, sync, database);
+//
+//        dbHelper.close();
+//        getData(username);
+//    }
 
     @Override
     public void onItemClick(int position) {
@@ -482,10 +514,11 @@ public class MyPickupList_Executive extends AppCompatActivity
 
         startActivity(scanIntent);
     }
-
     @Override
     public void onRefresh() {
-        list.clear();
-        loadRecyclerView("executive_name");
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        loadRecyclerView(username);
     }
+
 }

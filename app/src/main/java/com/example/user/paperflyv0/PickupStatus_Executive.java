@@ -1,6 +1,7 @@
 package com.example.user.paperflyv0;
 
 import android.content.Context;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -251,6 +252,10 @@ public class PickupStatus_Executive extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
+            //Fetching email from shared preferences
+            SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+            String user = username.toString();
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
             //return PickupStatus_Executive.PlaceholderFragment.newInstance(position + 1);
@@ -259,10 +264,10 @@ public class PickupStatus_Executive extends AppCompatActivity
           switch (position){
 
                 case 0:
-                    fragment = new Complete_Pickup_Fragment_Executive();
+                    fragment = new Complete_Pickup_Fragment_Executive(user);
                     break;
                 case 1:
-                    fragment = new Pending_Pickup_Fragment_Executive();
+                    fragment = new Pending_Pickup_Fragment_Executive(user);
                     break;
             }
             return fragment;

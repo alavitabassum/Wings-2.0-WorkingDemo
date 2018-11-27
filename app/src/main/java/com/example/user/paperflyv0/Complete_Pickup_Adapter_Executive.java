@@ -35,10 +35,10 @@ public class Complete_Pickup_Adapter_Executive extends RecyclerView.Adapter<Comp
     @Override
     public void onBindViewHolder(@NonNull Complete_Pickup_Adapter_Executive.MyViewHolder holder, int position) {
         holder.tv_name.setText(listitems.get(position).getName());
-        holder.tv_exec_name.setText(listitems.get(position).getExec_name());
         holder.a_qty.setText(listitems.get(position).getAssined_qty());
         holder.u_qty.setText(listitems.get(position).getPicked_qty());
         holder.r_qty.setText(listitems.get(position).getReceived_qty());
+//        holder.tv_exec_name.setText(listitems.get(position).getExec_name());
     }
 
     @Override
@@ -49,19 +49,19 @@ public class Complete_Pickup_Adapter_Executive extends RecyclerView.Adapter<Comp
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tv_name;
-        private TextView tv_exec_name;
         private TextView a_qty;
         private TextView u_qty;
         private TextView r_qty;
+//        private TextView tv_exec_name;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tv_name = (TextView) itemView.findViewById(R.id.m_name_pc);
-            tv_exec_name = (TextView) itemView.findViewById(R.id.exe_name_pc);
             a_qty = (TextView) itemView.findViewById(R.id.a_qty_pc);
             u_qty = (TextView) itemView.findViewById(R.id.u_qty_pc);
             r_qty = (TextView) itemView.findViewById(R.id.r_qty_pc);
+//            tv_exec_name = (TextView) itemView.findViewById(R.id.exe_name_pc);
         }
     }
 }

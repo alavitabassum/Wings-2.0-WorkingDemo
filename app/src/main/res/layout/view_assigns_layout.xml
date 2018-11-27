@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view_va="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:padding="2dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_va"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="10dp"
+        card_view_va:cardBackgroundColor="@android:color/transparent"
+        card_view_va:cardElevation="0dp"
+        card_view_va:contentPadding="2dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/exeName_view"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tv_style1"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
+                android:completionHint="Executive Name"
+                android:lines="1"
+                android:maxLines="2"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="Executive Name" />
+
+            <TextView
+                android:id="@+id/order_count_view"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/exeName_view"
+                android:layout_alignBottom="@+id/exeName_view"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="right"
+                android:layout_marginStart="33dp"
+                android:layout_marginTop="9dp"
+                android:layout_marginEnd="67dp"
+                android:layout_toEndOf="@+id/auto_complete"
+                android:ems="10"
+                android:padding="5dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+
+
+                tools:text="Count" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+</RelativeLayout>

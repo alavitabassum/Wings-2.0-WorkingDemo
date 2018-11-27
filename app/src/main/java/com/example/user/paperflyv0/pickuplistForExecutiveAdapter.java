@@ -48,7 +48,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView item_m_pul;
         public TextView item_add_pul;
         public TextView itme_a_pul;
-        public TextView item_p_pul;
+
         public TextView item_scanCount;
         public Button scan_button;
 
@@ -56,13 +56,12 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView item_phnNum;
 
 
-        @SuppressLint("ResourceAsColor")
         public ViewHolder(final View itemView, int i) {
             super(itemView);
             item_m_pul=itemView.findViewById(R.id.m_name_pul);
 //            item_add_pul=itemView.findViewById(R.id.m_add_pul);
             itme_a_pul=itemView.findViewById(R.id.a_qty_pul);
-            item_p_pul=itemView.findViewById(R.id.p_qty_pul);
+
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
             scan_button = itemView.findViewById(R.id.btn_scan);
@@ -116,7 +115,6 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
         viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
-        viewHolder.item_p_pul.setText(list.get(i).getPicked_qty());
         viewHolder.item_scanCount.setText(list.get(i).getScan_count());
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
 

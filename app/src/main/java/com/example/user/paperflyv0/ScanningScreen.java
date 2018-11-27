@@ -60,13 +60,16 @@ public class ScanningScreen extends AppCompatActivity {
         barcodeView.decodeContinuous(callback);
 
         beepManager = new BeepManager(this);
-        }
+
+    }
+
 
     private BarcodeCallback callback = new BarcodeCallback() {
 
 
         @Override
         public void barcodeResult(BarcodeResult result) {
+            final MyPickupList_Executive mex = new MyPickupList_Executive();
             //Fetching email from shared preferences
             SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
             String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -129,6 +132,7 @@ public class ScanningScreen extends AppCompatActivity {
                     db.update_state(state1, merchant_id);
                     // TODO: Merchant id, scan count, created-by, creation-date, flag
                     db.update_row(strI, updated_by1, updated_at1, merchant_id);
+
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
                     startActivity(intent);
 
@@ -171,5 +175,6 @@ public class ScanningScreen extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
+
 
 }

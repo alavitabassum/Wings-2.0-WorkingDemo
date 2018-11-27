@@ -3,32 +3,23 @@ package com.example.user.paperflyv0;
 public class TodaySummary {
 
     private String m_names;
-    private String asgn_pu;
-    private String upload_pu;
-    private String received_pu;
+    private String m_codes;
+    private int order_count;
 
-    public TodaySummary(String m_names,String asgn_pu,String upload_pu,String received_pu)
+    public TodaySummary(String m_names,String m_codes,int order_count)
     {
         this.m_names = m_names;
-        this.asgn_pu = asgn_pu;
-        this.upload_pu = upload_pu;
-        this.received_pu = received_pu;
+        this.m_codes = m_codes;
+        this.order_count = order_count;
     }
 
     public String getM_names()
     {
         return m_names;
     }
-    public String getAsgn_pu()
+    public String getM_codes()
     {
-        return asgn_pu;
+        return m_codes;
     }
-    public String getUpload_pu()
-    {
-        return upload_pu;
-    }
-    public String getReceived_pu()
-    {
-        return received_pu;
-    }
+    public int getTotalcount() { return order_count; }
 }

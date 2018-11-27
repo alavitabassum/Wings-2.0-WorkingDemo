@@ -70,7 +70,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/pfColor"
+        android:background="@drawable/buttonstyle_default"
         android:color="#000"
         android:text="Login"
         android:textColor="#fff"

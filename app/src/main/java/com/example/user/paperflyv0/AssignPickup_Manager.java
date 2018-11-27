@@ -1,12 +1,15 @@
 package com.example.user.paperflyv0;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import android.support.design.widget.Snackbar;
@@ -25,6 +28,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -61,14 +65,23 @@ public class AssignPickup_Manager extends AppCompatActivity
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
+    public static final String INSERT_URL = "http://192.168.0.114/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
-    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
     Database database;
-    int count = 0;
+
+    public static final int NAME_SYNCED_WITH_SERVER = 1;
+    public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
+    //a broadcast to know weather the data is synced or not
+    public static final String DATA_SAVED_BROADCAST = "com.example.user.paperflyv0";
+
+    //Broadcast receiver to know the sync status
+    private BroadcastReceiver broadcastReceiver;
+
+
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -83,7 +96,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         setContentView(R.layout.activity_assign_pickup__manager);
         database = new Database(getApplicationContext());
         database.getWritableDatabase();
-
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         executiveLists = new ArrayList<>();
         assignManager_modelList = new ArrayList<>();
 
@@ -102,13 +115,22 @@ public class AssignPickup_Manager extends AppCompatActivity
         loadmerchantlist(user);
         loadexecutivelist(user);
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                //loading the names again
+
+            }
+        };
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
          fab1 = (FloatingActionButton) findViewById(R.id.menu_item1);
-         fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);
+    /*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*/
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,13 +144,14 @@ public class AssignPickup_Manager extends AppCompatActivity
             }
         });
 
-        fab2.setOnClickListener(new View.OnClickListener() {
+       /* fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intentorderupdate = new Intent(AssignPickup_Manager.this,
+                        NewOrder.class);
+                startActivity(intentorderupdate);
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -207,10 +230,10 @@ public class AssignPickup_Manager extends AppCompatActivity
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("merchantlist");
+                            JSONArray array = jsonObject.getJSONArray("unAssignedlist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"));
+                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                             }
                             getallmerchant();
 
@@ -249,10 +272,10 @@ public class AssignPickup_Manager extends AppCompatActivity
             while (c.moveToNext()) {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
-                String assigned = c.getString(2);
-                String executive1 = c.getString(3);
-                String executive2 = c.getString(4);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, assigned, executive1, executive2);
+                int totalcount = c.getInt(2);
+
+
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
                 assignManager_modelList.add(todaySummary);
             }
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
@@ -264,28 +287,42 @@ public class AssignPickup_Manager extends AppCompatActivity
         }
     }
 
-    /*private void assignexecutive(final String ex_name, final String order_count,final String merchant_code)
-    {
-              database.insert_assignexecutive(ex_name,order_count,merchant_code);
-    }*/
+    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString,final int status) {
 
-    //For assigning executive API into mysql
-    private void assignexecutive(final String ex_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString) {
+            database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString,status);
+            //final int total_assign = database.getTotalOfAmount(merchant_code);
+            //final String strI = String.valueOf(total_assign);
+            //database.update_row(strI, merchant_code);
 
+    }
+        //For assigning executive API into mysql
+    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // response
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+                                assignexecutivetosqlite(ex_name,empcode,order_count,merchant_code,user,currentDateTimeString,NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                assignexecutivetosqlite(ex_name,empcode,order_count,merchant_code,user,currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // error
-                        //   Log.d("Error",error);
+                        assignexecutivetosqlite(ex_name,empcode,order_count,merchant_code,user,currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -293,14 +330,15 @@ public class AssignPickup_Manager extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("executive_name", ex_name);
+                params.put("executive_code", empcode);
                 params.put("order_count", order_count);
                 params.put("merchant_code", merchant_code);
                 params.put("assigned_by", user);
                 params.put("created_at", currentDateTimeString);
-                database.insert_assignexecutive(ex_name, order_count, merchant_code, user, currentDateTimeString);
+               /* database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
                 final String strI = String.valueOf(total_assign);
-                database.update_row(strI, merchant_code, ex_name);
+                database.update_row(strI, merchant_code);*/
                 return params;
             }
 
@@ -309,7 +347,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest);
 
     }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -436,9 +473,10 @@ public class AssignPickup_Manager extends AppCompatActivity
 
         final AssignManager_Model clickeditem = assignManager_modelList.get(position);
 
-        AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
+       AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
         spinnerBuilder.setTitle("Select executive and assign number.");
+
 
         final TextView dialog_mName = mView.findViewById(R.id.dialog_m_name);
         final AutoCompleteTextView mAutoComplete = mView.findViewById(R.id.auto_exe);
@@ -465,11 +503,15 @@ public class AssignPickup_Manager extends AppCompatActivity
         mAutoComplete.setAdapter(adapter);
 
         spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialog, int i1) {
-                assignexecutive(mAutoComplete.getText().toString(), et1.getText().toString(), merchant_code, user, currentDateTimeString);
-                finish();
-                startActivity(getIntent());
+                 String empname = mAutoComplete.getText().toString();
+                 final String empcode = database.getSelectedEmployeeCode(empname);
+
+                //assignexecutivetosqlite(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString);
+                assignexecutive(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString);
+
                 if (!mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                     + "(" + et1.getText().toString() + ")",
@@ -480,6 +522,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
             }
         });
+
         spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i1) {
@@ -491,6 +534,8 @@ public class AssignPickup_Manager extends AppCompatActivity
         spinnerBuilder.setView(mView);
         AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
+
+
     }
 
     @Override
@@ -499,7 +544,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         final AssignManager_Model clickeditem2 = assignManager_modelList.get(position2);
         //  final TextView selection1 =findViewById(R.id.selection1);
 
-
+/*
         AlertDialog.Builder viewBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_view_assigns, null);
         viewBuilder.setTitle("Assigned Executive List");
@@ -507,18 +552,6 @@ public class AssignPickup_Manager extends AppCompatActivity
 
         dialog_mNameView.setText(clickeditem2.getM_names());
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        final String user = username.toString();
-
-        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-
-
-        List<String> lables = new ArrayList<String>();
-
-        for (int z = 0; z < executiveLists.size(); z++) {
-            lables.add(executiveLists.get(z).getExecutive_name());
-        }
 
         viewBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -534,22 +567,35 @@ public class AssignPickup_Manager extends AppCompatActivity
         // vwParentRow2.refreshDrawableState();
         viewBuilder.setView(mView);
         AlertDialog dialog2 = viewBuilder.create();
-        dialog2.show();
+        dialog2.show();*/
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String user = username.toString();
+        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        String merchantname = clickeditem2.getM_names();
+        String merchantcode = clickeditem2.getM_address();
+        Intent intent = new Intent(AssignPickup_Manager.this, ViewAssigns.class);
+        intent.putExtra("MERCHANTNAME", merchantname);
+        intent.putExtra("MERCHANTCODE",merchantcode);
+        startActivity(intent);
+
     }
 
 
     @Override
     public void onItemClick_update(View view3, int position3) {
-
         final AssignManager_Model clickeditem3 = assignManager_modelList.get(position3);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final String user = username.toString();
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String merchantname = clickeditem3.getM_names();
+        String merchantcode = clickeditem3.getM_address();
         Intent intent = new Intent(AssignPickup_Manager.this, UpdateAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
+        intent.putExtra("MERCHANTCODE",merchantcode);
         startActivity(intent);
+
 
 
     }

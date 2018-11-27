@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,8 +22,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.nex3z.notificationbadge.NotificationBadge;
+import com.txusballesteros.bubbles.BubblesManager;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class ManagerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    List<AssignManager_Model> assignManager_modelList;
+    Database database;
+
+    private BubblesManager bubblesManager;
+    private NotificationBadge mBadge;
+
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -34,15 +49,23 @@ public class ManagerCardMenu extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_card_menu);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        database = new Database(getApplicationContext());
+        database.getWritableDatabase();
+        assignManager_modelList = new ArrayList<>();
+
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_m);
         setSupportActionBar(toolbar);
 
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        getallmerchant();
+
 
 
         recyclerView =
@@ -63,7 +86,52 @@ public class ManagerCardMenu extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_manager);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+/*        initBubble();
+        addNewBubble();*/
+
+       /* //check permission
+        if (Build.VERSION.SDK_INT>=23){
+            if (!Settings.canDrawOverlays(this)){
+                Intent intent_b =  new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package: "+getPackageName()));
+                startActivityForResult(intent_b,101);
+            }
+            else{
+                Intent intent = new Intent(ManagerCardMenu.this, Service.class);
+                startService(intent);
+
+            }
+        }*/
     }
+
+    private void getallmerchant() {
+        assignManager_modelList.size();
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_merchantlist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String merchantName = c.getString(0);
+                String merchantCode = c.getString(1);
+                int totalcount = c.getInt(2);
+
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, totalcount);
+                assignManager_modelList.add(todaySummary);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+      /*  bubblesManager.recycle();*/
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -78,9 +146,26 @@ public class ManagerCardMenu extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.manager_card_menu, menu);
+        getMenuInflater().inflate(R.menu.notification_menu, menu);
+
+       final MenuItem menuItem = menu.findItem(R.id.action_notification);
+
+        View actionView = MenuItemCompat.getActionView(menuItem);
+        OrderCount = actionView.findViewById(R.id.notification_badge);
+        assignManager_modelList.size();
+
+      setupBadge();
+
+        actionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onOptionsItemSelected(menuItem);
+            }
+        });
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -90,13 +175,38 @@ public class ManagerCardMenu extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_notification) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void setupBadge() {
+
+
+        Set<AssignManager_Model> hs = new HashSet<>();
+        hs.addAll(assignManager_modelList);
+        assignManager_modelList.clear();
+        assignManager_modelList.addAll(hs);
+
+
+        int pendingCount =  assignManager_modelList.size();
+
+        if (OrderCount !=null){
+            if (pendingCount == 0){
+                if (OrderCount.getVisibility() != View.GONE){
+                    OrderCount.setVisibility(View.VISIBLE);
+                }
+            }else{
+                OrderCount.setText(String.valueOf(pendingCount));
+                if (OrderCount.getVisibility() != View.VISIBLE){
+                    OrderCount.setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
