@@ -276,6 +276,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
             Cursor c = database.get_merchantlist(sqLiteDatabase);
+
             while (c.moveToNext()) {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
@@ -283,10 +284,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
                 assignManager_modelList.add(todaySummary);
             }
-            //Get the Total Order For Today
-            final int total_assign = database.getTotalOfAmount();
-            AssignManager_Model amounts = new AssignManager_Model(total_assign);
-            assignManager_modelList.add(amounts);
+
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
             recyclerView.setAdapter(assignExecutiveAdapter);
             assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);

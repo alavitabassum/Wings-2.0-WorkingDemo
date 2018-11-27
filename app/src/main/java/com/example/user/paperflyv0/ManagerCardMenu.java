@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,18 +22,31 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.nex3z.notificationbadge.NotificationBadge;
 import com.txusballesteros.bubbles.BubblesManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ManagerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     List<AssignManager_Model> assignManager_modelList;
     Database database;
 
@@ -46,12 +60,16 @@ public class ManagerCardMenu extends AppCompatActivity
 
     TextView OrderCount;
     int pendingOrders = 10;
-
+    Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_card_menu);
+/*
+        this.mHandler = new Handler();
+
+        this.mHandler.postDelayed(m_Runnable,5000);*/
 
         database = new Database(getApplicationContext());
         database.getWritableDatabase();
@@ -65,7 +83,7 @@ public class ManagerCardMenu extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         getallmerchant();
-
+        loadmerchantlist(username);
 
 
         recyclerView =
@@ -91,9 +109,65 @@ public class ManagerCardMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+/*
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+            Toast.makeText(ManagerCardMenu.this,"in runnable",Toast.LENGTH_SHORT).show();
+
+            ManagerCardMenu.this.mHandler.postDelayed(m_Runnable, 5000);
+        }
+
+    };//runnable*/
+
+    private void loadmerchantlist(final String user) {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("unAssignedlist");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+
+                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
+                            }
+
+                            getallmerchant();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }
+
     private void getallmerchant() {
-        assignManager_modelList.size();
         try {
+
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
             Cursor c = database.get_merchantlist(sqLiteDatabase);
@@ -138,7 +212,7 @@ public class ManagerCardMenu extends AppCompatActivity
 
         View actionView = MenuItemCompat.getActionView(menuItem);
         OrderCount = actionView.findViewById(R.id.notification_badge);
-        assignManager_modelList.size();
+
 
       setupBadge();
 
@@ -168,23 +242,26 @@ public class ManagerCardMenu extends AppCompatActivity
 
 
     private void setupBadge() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-
-        Set<AssignManager_Model> hs = new HashSet<>();
+      /*  Set<AssignManager_Model> hs = new HashSet<>();
         hs.addAll(assignManager_modelList);
         assignManager_modelList.clear();
-        assignManager_modelList.addAll(hs);
+        assignManager_modelList.addAll(hs);*/
 
+        //Get the Total Order For Today
+        int amounts = database.getTotalOfAmount();
+        //int pendingCount =  assignManager_modelList.size();
 
-        int pendingCount =  assignManager_modelList.size();
 
         if (OrderCount !=null){
-            if (pendingCount == 0){
+            if (amounts ==0){
                 if (OrderCount.getVisibility() != View.GONE){
                     OrderCount.setVisibility(View.VISIBLE);
                 }
             }else{
-                OrderCount.setText(String.valueOf(pendingCount));
+                OrderCount.setText(String.valueOf(amounts));
                 if (OrderCount.getVisibility() != View.VISIBLE){
                     OrderCount.setVisibility(View.VISIBLE);
                 }

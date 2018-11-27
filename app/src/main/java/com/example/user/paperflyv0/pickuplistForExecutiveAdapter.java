@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +18,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
+
+import static com.example.user.paperflyv0.R.color.red;
+import static com.example.user.paperflyv0.R.color.white;
 
 public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickuplistForExecutiveAdapter.ViewHolder> {
 
@@ -48,12 +52,10 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView item_m_pul;
         public TextView item_add_pul;
         public TextView itme_a_pul;
-
         public TextView item_scanCount;
         public Button scan_button;
-
-      //  public TextView item_scanTxtButton;
         public TextView item_phnNum;
+        public  Button itemStatus;
 
 
         public ViewHolder(final View itemView, int i) {
@@ -65,6 +67,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
             scan_button = itemView.findViewById(R.id.btn_scan);
+            itemStatus = itemView.findViewById(R.id.btn_status);
            // item_scanTxtButton=itemView.findViewById(R.id.txt_btn_scan);
 
             //underline phoneNumber
@@ -117,6 +120,14 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
         viewHolder.item_scanCount.setText(list.get(i).getScan_count());
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
+        int count_assigned = Integer.parseInt(list.get(i).getAssined_qty());
+        int count = Integer.parseInt(list.get(i).getScan_count());
+        if (count == count_assigned || count > count_assigned){
+            viewHolder.itemStatus.setText("Complete");
+            viewHolder.itemStatus.setBackgroundResource(R.color.green);
+          //  viewHolder.itemStatus.setTextColor(white);
+        }
+
 
     }
 
