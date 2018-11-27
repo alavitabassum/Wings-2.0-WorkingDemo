@@ -85,24 +85,10 @@ public class ManagerCardMenu extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_manager);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.manager_name);
+        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-/*        initBubble();
-        addNewBubble();*/
-
-       /* //check permission
-        if (Build.VERSION.SDK_INT>=23){
-            if (!Settings.canDrawOverlays(this)){
-                Intent intent_b =  new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package: "+getPackageName()));
-                startActivityForResult(intent_b,101);
-            }
-            else{
-                Intent intent = new Intent(ManagerCardMenu.this, Service.class);
-                startService(intent);
-
-            }
-        }*/
     }
 
     private void getallmerchant() {
@@ -164,8 +150,6 @@ public class ManagerCardMenu extends AppCompatActivity
         });
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

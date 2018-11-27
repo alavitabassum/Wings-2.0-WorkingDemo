@@ -58,6 +58,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
         public AutoCompleteTextView itemExe;
         public TextView itemCount;
         public Button button;
+        public Button deletebutton;
 
 
         public ViewHolder(View itemView) {
@@ -68,6 +69,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
             itemExe = (AutoCompleteTextView)itemView.findViewById(R.id.auto_complete);
             itemCount = (TextView)itemView.findViewById(R.id.order_count);
             button = (Button) itemView.findViewById(R.id.update_assigns);
+            deletebutton = (Button) itemView.findViewById(R.id.delete_assigns);
 
             itemExe.setDropDownBackgroundDrawable(new ColorDrawable(context.getResources().getColor(R.color.black)));
             itemExe.setTextColor(itemView.getResources().getColor(R.color.black));
@@ -87,6 +89,18 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
         final UpdateAssign_Model updateAssign_model = updateAssignModelList.get(j);
         viewHolder.itemExe.setText(updateAssign_model.getEx_name());
         viewHolder.itemCount.setText(updateAssign_model.getCount());
+        viewHolder.deletebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String ex = updateAssign_model.getEx_name().toString();
+                final String empcode = database.getSelectedEmployeeCode(ex);
+                String count = updateAssign_model.getCount().toString();
+                String rowid = updateAssign_model.getRowid();
+                database.deleteassign(rowid,ex,count);
+                assignexecutivedelete(merchantcode,empcode);
+                Toast.makeText(context, "Deleted" ,Toast.LENGTH_SHORT).show();
+            }
+        });
 
         /*autocomplete*/
 
@@ -170,6 +184,40 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     public int getItemCount() {
         return updateAssignModelList.size();
     }
+
+    private void assignexecutivedelete(final String merchantcode, final String empcode) {
+
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.114/new/deleteassign.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        //   Log.d("Error",error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchantcode);
+                params.put("executive_code", empcode);
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(postRequest);
+
+    }
+
 
     private void assignexecutiveupdate(final String merchantcode, final String empcode,final String cou) {
 

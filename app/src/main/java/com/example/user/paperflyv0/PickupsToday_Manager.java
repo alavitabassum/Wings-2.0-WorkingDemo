@@ -33,6 +33,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -82,15 +84,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     List<AssignManager_Model> assignManager_modelList;
     Database database;
 
-    public static final int NAME_SYNCED_WITH_SERVER = 1;
-    public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    //a broadcast to know weather the data is synced or not
-    public static final String DATA_SAVED_BROADCAST = "com.example.user.paperflyv0";
-
-    //Broadcast receiver to know the sync status
-    private BroadcastReceiver broadcastReceiver;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +91,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         setContentView(R.layout.activity_pickups_today__manager);
         database = new Database(getApplicationContext());
         assignManager_modelList = new ArrayList<>();
+        database.getReadableDatabase();
 
 
         //Fetching email from shared preferences
@@ -113,15 +107,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
         getallmerchant();
         loadmerchantlist(user);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                //loading the names again
-
-            }
-        };
 
         swipeRefreshLayout = findViewById(R.id.refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -149,6 +134,9 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.manager_name);
+        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
