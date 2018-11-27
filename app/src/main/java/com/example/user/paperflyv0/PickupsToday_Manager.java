@@ -173,7 +173,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                             JSONArray array = jsonObject.getJSONArray("unAssignedlist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                assignManager_modelList.clear();
+
                                 database.add_pickups_today_manager(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                             }
                             getallmerchant();
@@ -231,79 +231,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         }
     }
 
-
-    /*private void loadRecyclerView()
-    {
-        assignManager_modelList.clear();
-        progress=new ProgressDialog(this);
-        progress.setMessage("Loading Data");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, MERCHANT_URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                progress.dismiss();
-
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("unAssignedlist");
-                    for(int i =0;i<array.length();i++)
-                    {
-                        JSONObject o = array.getJSONObject(i);
-                        database.insert_pickups_today_manager(o.getString("name"),o.getString("ordercount"));
-                    }
-                    getData();
-                    swipeRefreshLayout.setRefreshing(false);
-                    //swipeRefreshLayout.setRefreshing(false);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progress.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
-
-                    }
-                });
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }*/
-
-   /* private void getData()
-    {
-        try{
-
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_pickups_today_manager(sqLiteDatabase);
-            while (c.moveToNext())
-            {
-                String name = c.getString(0);
-                String order_count = c.getString(1);
-                TodaySummary todaySummary = new TodaySummary(name,order_count);
-                listItems.add(todaySummary);
-            }
-            merchantListAdapter = new MerchantListAdapter(assignManager_modelList,getApplicationContext());
-            recyclerView.setAdapter(merchantListAdapter);
-            swipeRefreshLayout.setRefreshing(false);
-
-
-        }catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -332,10 +259,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Set<AssignManager_Model> hs = new HashSet<>();
-                hs.addAll(assignManager_modelList);
-                assignManager_modelList.clear();
-                assignManager_modelList.addAll(hs);
                 merchantListAdapter.getFilter().filter(newText);
                 return false;
             }

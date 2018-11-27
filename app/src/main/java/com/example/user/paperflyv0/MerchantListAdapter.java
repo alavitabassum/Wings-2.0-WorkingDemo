@@ -30,8 +30,8 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
     private List<AssignManager_Model> assignManager_modelList;
 
-    //private List<AssignManager_Model> assignManager_modelListFull;
-   private  Set<AssignManager_Model> assignManager_modelListFull;
+   // private Set<AssignManager_Model> assignManager_modelListFull;
+  private  List<AssignManager_Model> assignManager_modelListFull;
 
    // private List<TodaySummary> listItems;
     private  Context context;
@@ -42,7 +42,8 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     public MerchantListAdapter(List<AssignManager_Model> assignManager_modelList, Context context) {
         this.assignManager_modelList = assignManager_modelList;
         this.context = context;
-        assignManager_modelListFull = new HashSet<>(assignManager_modelList);
+        assignManager_modelListFull = new ArrayList<>();
+        //assignManager_modelListFull = new HashSet<>(assignManager_modelList);
 
 
     }
@@ -93,9 +94,11 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     private Filter NamesFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
+       /*     assignManager_modelListFull.clear();
             assignManager_modelListFull.addAll(assignManager_modelList);
             assignManager_modelList.clear();
-            assignManager_modelList.addAll(assignManager_modelListFull);
+            assignManager_modelList.addAll(assignManager_modelListFull);*/
+
            List<AssignManager_Model> filteredList = new ArrayList<>();
 
            if (constraint == null || constraint.length() == 0){
@@ -116,7 +119,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            assignManager_modelList.clear();
+
             assignManager_modelList.addAll((List) results.values);
             notifyDataSetChanged();
 

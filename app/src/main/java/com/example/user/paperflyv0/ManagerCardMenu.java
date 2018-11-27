@@ -191,10 +191,6 @@ public class ManagerCardMenu extends AppCompatActivity
         assignManager_modelList.clear();
         assignManager_modelList.addAll(hs);
 
-/*
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.custom_notification_layout, null);
-        OrderCount = view.findViewById(R.id.notification_badge);*/
 
         int pendingCount =  assignManager_modelList.size();
 
