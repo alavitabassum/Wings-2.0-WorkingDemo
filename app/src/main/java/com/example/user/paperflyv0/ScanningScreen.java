@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -73,6 +72,7 @@ public class ScanningScreen extends AppCompatActivity {
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,16 +98,15 @@ public class ScanningScreen extends AppCompatActivity {
 
         //the broadcast receiver to update sync status
         broadcastReceiver = new BroadcastReceiver() {
-            SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
             @Override
             public void onReceive(Context context, Intent intent) {
-                getDataFromSQLite(username);
+
             }
         };
         //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
     }
+
 
     private BarcodeCallback callback = new BarcodeCallback() {
 
@@ -123,7 +122,7 @@ public class ScanningScreen extends AppCompatActivity {
 
             db = new BarcodeDbHelper(ScanningScreen.this);
             if(result.getText() == null || result.getText().equals(lastText)) {
-            // Toast.makeText(ScanningScreen.this, "Entry is null or already entered", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(ScanningScreen.this, "Entry is null or already entered", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -139,7 +138,7 @@ public class ScanningScreen extends AppCompatActivity {
             final boolean state = true;
             final String updated_by = user;
             final String updated_at = currentDateTimeString;
-           // db.add(merchant_id, lastText, state, updated_by, updated_at);
+            // db.add(merchant_id, lastText, state, updated_by, updated_at);
             barcodesave(merchant_id, lastText, state, updated_by, updated_at);
 
             final int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
@@ -177,10 +176,10 @@ public class ScanningScreen extends AppCompatActivity {
                     db.update_state(state1, merchant_id);
                     // TODO: Merchant id, scan count, created-by, creation-date, flag
 //                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
-                   try{ updateScanCount(strI, updated_by1, updated_at1, merchant_id);
-                } catch (Exception e) {
-                    Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
-                }
+                    try{ updateScanCount(strI, updated_by1, updated_at1, merchant_id);
+                    } catch (Exception e) {
+                        Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
+                    }
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
                     startActivity(intent);
 
@@ -226,7 +225,6 @@ public class ScanningScreen extends AppCompatActivity {
 
 
     //API HIT
-
     private void barcodesave(final String merchant_id, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/insert_barcode.php",
@@ -283,7 +281,7 @@ public class ScanningScreen extends AppCompatActivity {
 //    strI, updated_by1, updated_at1, merchant_id
     public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, " http://192.168.0.133/new/updateTable.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -315,10 +313,10 @@ public class ScanningScreen extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchant_id);
                 params.put("scan_count", strI);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
-                params.put("merchant_id", merchant_id);
 
                /* database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
@@ -334,74 +332,6 @@ public class ScanningScreen extends AppCompatActivity {
             Toast.makeText(ScanningScreen.this, "Request Queue" +e, Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-//    public void getData(final String user)
-//    {
-//        try{
-//
-//            BarcodeDbHelper dbHelper = new BarcodeDbHelper(this);
-//            SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
-//            Cursor c = dbHelper.get_mypickups_today(sqLiteDatabase, user);
-//            while (c.moveToNext())
-//            {
-//                int key_id = c.getInt(0);
-//                String merchant_id = c.getString(1);
-//                String merchant_name = c.getString(2);
-//                String executive_name = c.getString(3);
-//                String assined_qty = c.getString(4);
-//                String picked_qty = c.getString(5);
-//                String scan_count = c.getString(6);
-//                String phone_no = c.getString(7);
-//                String assigned_by = c.getString(8);
-//                String created_at = c.getString(9);
-//                String updated_by = c.getString(10);
-//                String updated_at = c.getString(11);
-//                PickupList_Model_For_Executive detail = new PickupList_Model_For_Executive(key_id,merchant_id, merchant_name, executive_name, assined_qty, picked_qty, scan_count, phone_no, assigned_by, created_at, updated_by, updated_at);
-//                list.add(detail);
-//
-//
-//            }
-////            pickuplistForExecutiveAdapter.notifyDataSetChanged();
-//            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
-//            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
-////            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
-////            c.close();
-////            dbHelper.close();
-//            swipeRefreshLayout.setRefreshing(false);
-//
-////            adapter.notifyDataSetChanged();
-////            cursor.close();
-////            dbHelper.close();
-//
-//
-//        }catch (Exception e)
-//        {
-////            Toast.makeText(getContext(), "some error getData" +e ,Toast.LENGTH_LONG).show();
-//        }
-//    }
-
-
-    /**
-     * This method is to fetch all user records from SQLite
-     */
-    private void getDataFromSQLite(final String user) {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                list.clear();
-                list.addAll(db.getAllData(user));
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                pickuplistForExecutiveAdapter.notifyDataSetChanged();
-            }
-        }.execute();
     }
 
 }

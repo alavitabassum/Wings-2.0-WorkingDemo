@@ -94,7 +94,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 + "11updated_at TEXT , "
                 + "12status INT )";;*/
                         //calling the method to save the unsynced name to MySQL
-                        saveData(cursor2.getInt(0),cursor2.getString(1),cursor2.getString(6),cursor2.getString(10),cursor2.getString(11));
+                        saveData(cursor2.getInt(0),cursor2.getString(6),cursor2.getString(10),cursor2.getString(11),cursor2.getString(1));
                     } while (cursor2.moveToNext());
                 }
             }
@@ -192,8 +192,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
     //Update scan count
-    private void saveData(final int id,final String merchant_id, final String strI, final String updated_by, final String updated_at) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/updateTable.php",
+    private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -223,7 +223,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("scan_count", strI);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
-                params.put("merchant_id", merchant_id);
+                params.put("merchant_code", merchant_id);
                 return params;
             }
         };

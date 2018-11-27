@@ -205,7 +205,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     {
 //        boolean check;
 //          list.clear();
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/merchantListForExecutive.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/showassign.php",
            new Response.Listener<String>()
            {
             @Override
@@ -217,19 +217,21 @@ public class MyPickupList_Executive extends AppCompatActivity
 
                     for(int i =0;i<array.length();i++)
                     {
+
                         JSONObject o = array.getJSONObject(i);
                         db.insert_my_assigned_pickups(
-                                o.getString("merchant_id"),
-                                o.getString("merchant_name"),
                                 o.getString("executive_name"),
-                                o.getString("assined_qty"),
-                                o.getString("picked_qty"),
-                                o.getString("scan_count"),
-                                o.getString("phone_no"),
+                                o.getString("order_count"),
+                                o.getString("merchant_code"),
                                 o.getString("assigned_by"),
                                 o.getString("created_at"),
                                 o.getString("updated_by"),
-                                o.getString("updated_at"), NAME_NOT_SYNCED_WITH_SERVER );
+                                o.getString("updated_at"),
+                                o.getString("scan_count"),
+                                o.getString("phone_no"),
+                                o.getString("picked_qty"),
+                                o.getString("merchant_name")
+                               , NAME_NOT_SYNCED_WITH_SERVER );
 
                     }
                      getData(user);
@@ -520,19 +522,6 @@ public class MyPickupList_Executive extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-//    public void saveToLocalStorage(String scan_count, String merchant_id, String updated_by, String updated_at,  int sync)
-//    {
-//        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-//
-//        BarcodeDbHelper dbHelper = new BarcodeDbHelper(this);
-//        SQLiteDatabase database = dbHelper.getWritableDatabase();
-//        dbHelper.update_row(scan_count, merchant_id, updated_by, updated_at, sync, database);
-//
-//        dbHelper.close();
-//        getData(username);
-//    }
 
     @Override
     public void onItemClick(int position) {

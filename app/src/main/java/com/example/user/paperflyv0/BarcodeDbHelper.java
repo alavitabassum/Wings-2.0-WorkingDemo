@@ -86,7 +86,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 //    }
 
     public boolean checkDuplicate(String TableName, String dbfield, String fieldValue, int merchant_id) {
-        SQLiteDatabase db= this.getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String Query = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE "+ MERCHANT_ID +"="+ merchant_id; // your query
         Cursor cursor = db.rawQuery(Query, null);
         if(cursor.getCount() <= 0){
@@ -99,7 +99,20 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     // saveToLocalDatabase
 
-    public void insert_my_assigned_pickups(String merchant_id,String merchant_name, String executive_name,String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at,int status)
+    /*  "id": "1",
+"executive_name": "tonoy",
+"executive_code": "E0184",
+"order_count": "12",
+"merchant_code": "M-1-0055",
+"assigned_by": "haris",
+"created_at": "Nov 27, 2018 5:42:05 PM",
+"updated_by": null,
+"updated_at": null,
+"scan_count": null,
+"phone_no": null,
+"picked_qty": null,
+"merchant_name": "Womens World BD - WWB"*/
+    public void insert_my_assigned_pickups(String executive_name,String assined_qty, String merchant_id,String assigned_by,String created_at, String updated_by, String updated_at, String scan_count, String phone_no,String picked_qty, String merchant_name, int status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
@@ -179,6 +192,16 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
+    public int getRowsCount(String merchantId) {
+        String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='"+ merchantId +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount() + 1;
+        cursor.close();
+        return count;
+    }
+
     public Cursor getUnsyncedBarcode() {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + STATUS + " = 0;";
@@ -211,16 +234,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-
-    public int getRowsCount(String merchantId) {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='"+ merchantId +"'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
-    }
-
     public void update_state(boolean state, String merchantId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -231,7 +244,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     // updateLocalDatabase
-    public void update_row(String scan_count, String updated_by, String updated_at,  String merchantId, int status) {
+    public void update_row(String scan_count, String updated_by, String updated_at, String merchantId, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SCAN_COUNT, scan_count);
