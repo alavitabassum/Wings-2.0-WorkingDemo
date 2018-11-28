@@ -48,31 +48,24 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 Cursor cursor = database.getUnsyncedassignment();
                 if (cursor.moveToFirst()) {
                     do {
-                       /* String executive_name = cursor.getString(0);
-                        String executive_code = cursor.getString(1);
-                        String order_count = cursor.getString(2);
-                        String merchant_code = cursor.getString(3);
-                        String assigned_by = cursor.getString(4);
-                        String created_at = cursor.getString(5);
-                        int id = cursor.getInt(7);*/
                         //calling the method to save the unsynced name to MySQL
                         saveName(cursor.getInt(7),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5));
                     } while (cursor.moveToNext());
                 }
-                Cursor cursor3 = database.getUnsyncedUpdate();
+                /*Cursor cursor3 = database.getUnsyncedUpdate();
                 if (cursor3.moveToFirst()) {
                     do {
-                       /* String executive_name = cursor.getString(0);
+                       *//* String executive_name = cursor.getString(0);
                         String executive_code = cursor.getString(1);
                         String order_count = cursor.getString(2);
                         String merchant_code = cursor.getString(3);
                         String assigned_by = cursor.getString(4);
                         String created_at = cursor.getString(5);
-                        int id = cursor.getInt(7);*/
+                        int id = cursor.getInt(7);*//*
                         //calling the method to save the unsynced name to MySQL
                         UpdateSync(cursor3.getInt(7),cursor3.getString(3),cursor3.getString(1),cursor3.getString(2));
                     } while (cursor3.moveToNext());
-                }
+                }*/
             }
         }
     }
@@ -126,7 +119,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
     //Update Sync
-    private void UpdateSync(final int id,final String merchantcode, final String empcode,final String cou) {
+   /* private void UpdateSync(final int id,final String merchantcode, final String empcode,final String cou) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateassign.php",
                 new Response.Listener<String>() {
                     @Override
@@ -163,7 +156,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
-    }
+    }*/
 
 
 }

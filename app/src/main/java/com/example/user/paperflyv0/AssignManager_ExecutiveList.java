@@ -8,6 +8,18 @@ public class AssignManager_ExecutiveList {
         this.executive_name = executive_name;
         this.executive_code = executive_code;
     }
+    public AssignManager_ExecutiveList()
+    {
+
+    }
+
+    public void setExecutive_name(String executive_name) {
+        this.executive_name = executive_name;
+    }
+
+    public void setExecutive_code(String executive_code) {
+        this.executive_code = executive_code;
+    }
 
     public String getExecutive_name() {
         return executive_name;

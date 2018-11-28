@@ -43,6 +43,8 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     private List<UpdateAssign_Model> updateAssignModelList;
     private Context context;
     private OnEditTextChanged onEditTextChanged;
+    public static final String UPDATE_URL = "http://192.168.0.117/new/updateassign.php";
+    public static final String DELETE_URL = "http://192.168.0.117/new/deleteasign.php";
 
 
     Database database;
@@ -146,7 +148,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                     @Override
                     public void onClick(View view) {
                         String rowid = updateAssign_model.getRowid();
-                        database.updateassign(rowid,empname,empcode,cou,UpdateAssigns.UPDATE_NOT_SYNCED_WITH_SERVER);
+                        database.updateassign(rowid,empname,empcode,cou);
                         Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -178,9 +180,8 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                     @Override
                     public void onClick(View view) {
                         String rowid = updateAssign_model.getRowid();
-                        //database.updateassign(rowid,empname,empcode,cou);
-                       /* getrowid(merchantcode,empcode);*/
-                        assignexecutiveupdate(rowid,empname,merchantcode,empcode,cou);
+                        database.updateassign(rowid,empname,empcode,cou);
+                        assignexecutiveupdate(merchantcode,empcode,cou);
                         Toast.makeText(context, "updated" ,Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -198,7 +199,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     private void assignexecutivedelete(final String merchantcode, final String empcode) {
 
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.114/new/deleteassign.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELETE_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -272,36 +273,21 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     }
 */
 
-    private void assignexecutiveupdate(final String rowid,final String empname,final String merchantcode, final String empcode,final String cou) {
+    private void assignexecutiveupdate(final String merchantcode, final String empcode,final String cou) {
 
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateassign.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                //if there is a success
-                                //storing the name to sqlite with status synced
-                                database.updateassign(rowid,empname,empcode,cou,UpdateAssigns.UPDATE_SYNCED_WITH_SERVER);
 
-
-                            } else {
-                                //if there is some error
-                                //saving the name to sqlite with status unsynced
-                                database.updateassign(rowid,empname,empcode,cou,UpdateAssigns.UPDATE_NOT_SYNCED_WITH_SERVER);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
 
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        database.updateassign(rowid,empname,empcode,cou,UpdateAssigns.UPDATE_NOT_SYNCED_WITH_SERVER);
+
                     }
                 }
         ) {
