@@ -317,5 +317,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public Cursor get_mypickups_today(SQLiteDatabase sqLiteDatabase) {
+        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT};
+        return (db.query(TABLE_NAME_1,columns,"executive_name='" + "'",null,null,null,null));
+
+    }
 }
 

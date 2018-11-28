@@ -22,7 +22,7 @@ public class Database extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String tableEmp = "create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
-        String tableEmp1 = "create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
+        String tableEmp1 = "create table merchantsfor_executives(merchant_name text,order_count text, picked_qty text, scan_count text,unique (merchant_name, order_count,picked_qty,scan_count))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
         String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,totalcount int)";
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
@@ -82,25 +82,25 @@ public class Database extends SQLiteOpenHelper {
         return db.query("merchants", columns, null, null, null, null, null);
     }
 
-    public void insert_pickups_today_executive(String name, String assigned, String uploaded, String picked) {
+    public void insert_pickups_today_executive(String merchant_name, String order_count, String picked_qty, String scan_count) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put("name", name);
+        values.put("merchant_name", merchant_name);
 
-        values.put("assigned", assigned);
+        values.put("order_count", order_count);
 
-        values.put("uploaded", uploaded);
+        values.put("picked_qty", picked_qty);
 
-        values.put("picked", picked);
+        values.put("scan_count", scan_count);
 
         sqLiteDatabase.insert("merchantsfor_executives", null, values);
         sqLiteDatabase.close();
     }
 
     public Cursor get_pickups_today_executive(SQLiteDatabase db) {
-        String[] columns = {"name", "assigned", "uploaded", "picked"};
+        String[] columns = {"merchant_name", "order_count", "picked_qty", "scan_count"};
         return db.query("merchantsfor_executives", columns, null, null, null, null, null);
     }
 

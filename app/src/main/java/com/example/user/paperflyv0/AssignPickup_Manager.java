@@ -108,7 +108,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         String user = username.toString();
 
         //recycler with cardview
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_assign);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));

@@ -12,10 +12,10 @@ import java.util.List;
 
 class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder> {
 
-    private List<PickupTodaySummary_ex> summaries;
+    private List<PickupList_Model_For_Executive> summaries;
     private Context context;
 
-    public mListForExecutiveAdapter(List<PickupTodaySummary_ex> summaries, Context context) {
+    public mListForExecutiveAdapter(List<PickupList_Model_For_Executive> summaries, Context context) {
         this.summaries = summaries;
         this.context = context;
     }
@@ -50,11 +50,11 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        PickupTodaySummary_ex summary_ex = summaries.get(i);
-        viewHolder.item_mName.setText(summary_ex.getM_names_e());
-        viewHolder.item_aQty.setText(summary_ex.getAsgn_qtyList());
-        viewHolder.item_uQty.setText(summary_ex.getUpld_qtyList());
-        viewHolder.item_rQty.setText(summary_ex.getRcv_qtyList());
+        PickupList_Model_For_Executive summary_ex = summaries.get(i);
+        viewHolder.item_mName.setText(summary_ex.getMerchant_name());
+        viewHolder.item_aQty.setText(summary_ex.getAssined_qty());
+        viewHolder.item_uQty.setText(summary_ex.getPicked_qty());
+        viewHolder.item_rQty.setText(summary_ex.getScan_count());
     }
 
     @Override
