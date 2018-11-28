@@ -24,9 +24,9 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp = "create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1 = "create table merchantsfor_executives(name text,assigned text, uploaded text, picked text,unique (name, assigned,uploaded,picked))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
-        String tableEmp3 = "create table merchantList(merchantName text,merchantCode text,totalcount int)";
+        String tableEmp3 = "create table merchantList(id integer primary key AUTOINCREMENT, merchantName text,merchantCode text unique,totalcount int)";
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
-        String tableEmp5 = "create table executivelist(empName text,empCode text)";
+        String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
         String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text)";
         String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text,totalcount int)";
         sqLiteDatabase.execSQL(tableEmp);
@@ -247,7 +247,8 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("empCode", empCode);
 
-        sqLiteDatabase.insert("executivelist", null, values);
+//        sqLiteDatabase.insert("executivelist", null, values);
+        sqLiteDatabase.insertWithOnConflict("executivelist", null, values, SQLiteDatabase.CONFLICT_IGNORE);
 
         sqLiteDatabase.close();
     }
@@ -400,4 +401,88 @@ public class Database extends SQLiteOpenHelper {
                 new String[]{merchantcode, beforeempcode});*//*
         db.close();
     }*/
+
+    //Get all merchant list
+    public List<AssignManager_Model> getAllMerchantList() {
+        // array of columns to fetch
+        String[] columns = {"id", "merchantName", "merchantCode", "totalcount"};
+
+        // sorting orders
+        String sortOrder = "merchantName" + " ASC";
+        List<AssignManager_Model> list = new ArrayList<AssignManager_Model>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query("merchantList", //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                AssignManager_Model beneficiary = new AssignManager_Model();
+
+//                Beneficiary beneficiary = new Beneficiary();
+                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));
+                beneficiary.setM_names(cursor.getString(cursor.getColumnIndex("merchantName")));
+                beneficiary.setM_address(cursor.getString(cursor.getColumnIndex("merchantCode")));
+                beneficiary.setTotalcount(cursor.getInt(cursor.getColumnIndex("totalcount")));
+
+                // Adding user record to list
+                list.add(beneficiary);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return list;
+    }
+
+    // Get all executives
+    public List<AssignManager_ExecutiveList> getAllExecutiveList() {
+        // array of columns to fetch
+        String[] columns = {"id", "empName", "empCode"};
+        // sorting orders
+        String sortOrder = "empName" + " ASC";
+        List<AssignManager_ExecutiveList> list = new ArrayList<AssignManager_ExecutiveList>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query("executivelist", //Table to query
+                columns,    //columns to return
+                null,        //columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,       //filter by row groups
+                sortOrder); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                AssignManager_ExecutiveList beneficiary = new AssignManager_ExecutiveList();
+
+//                Beneficiary beneficiary = new Beneficiary();
+                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));
+                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex("empName")));
+                beneficiary.setExecutive_code(cursor.getString(cursor.getColumnIndex("empCode")));
+
+                // Adding user record to list
+                list.add(beneficiary);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return list;
+    }
 }

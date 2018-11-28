@@ -6,10 +6,13 @@ public class AssignManager_Model  {
     private String assigned;
     private int totalcount;
     private String totalamount;
+    int key_id;
 
+    public void setTotalcount(int totalcount) {
+        this.totalcount = totalcount;
+    }
 
-
-    public AssignManager_Model(String m_names, String m_address,int totalcount) {
+    public AssignManager_Model(String m_names, String m_address, int totalcount) {
         this.m_names = m_names;
         this.m_address = m_address;
         this.totalcount = totalcount;
@@ -24,12 +27,24 @@ public class AssignManager_Model  {
             this.totalamount = totalamount;
         }
 
+    public AssignManager_Model() {
+
+    }
+
     public int getTotalcount() {
         return totalcount;
     }
 
     public void setAssigned(String assigned) {
         this.assigned = assigned;
+    }
+
+    public int getKey_id() {
+        return key_id;
+    }
+
+    public void setKey_id(int key_id) {
+        this.key_id = key_id;
     }
 
     public String getAssigned() {

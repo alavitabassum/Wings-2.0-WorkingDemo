@@ -179,6 +179,4 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         }
     };
 
-
-
 }

@@ -6,37 +6,26 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.support.v7.widget.SearchView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +35,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,8 +48,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
 public class AssignPickup_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener{
@@ -211,23 +200,70 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest1);
     }
 
-    //Get Executive List from sqlite
-    private void getallexecutives() {
-        try {
 
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_executivelist(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String empName = c.getString(0);
-                String empCode = c.getString(1);
-                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(empName, empCode);
-                executiveLists.add(assignManager_executiveList);
+
+
+
+
+
+
+
+//
+//
+//
+//
+//    //Get Executive List from sqlite
+//    private void getallexecutives() {
+//        try {
+//
+//            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+//            Cursor c = database.get_executivelist(sqLiteDatabase);
+//            while (c.moveToNext()) {
+//                String empName = c.getString(0);
+//                String empCode = c.getString(1);
+//                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(empName, empCode);
+//                executiveLists.add(assignManager_executiveList);
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    /**
+     * This method is to fetch all user records from SQLite
+     */
+    private void getallexecutives() {
+        // AsyncTask is used that SQLite operation not blocks the UI Thread.
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                executiveLists.clear();
+                executiveLists.addAll(database.getAllExecutiveList());
+
+                return null;
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+            }
+        }.execute();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
 
@@ -243,7 +279,6 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                             }
                             getallmerchant();
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -271,28 +306,54 @@ public class AssignPickup_Manager extends AppCompatActivity
     }
 
     // merchant List generation from sqlite
+//    private void getallmerchant() {
+//        try {
+//
+//            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+//            Cursor c = database.get_merchantlist(sqLiteDatabase);
+//
+//            while (c.moveToNext()) {
+//                String merchantName = c.getString(0);
+//                String merchantCode = c.getString(1);
+//                int totalcount = c.getInt(2);
+//                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
+//                assignManager_modelList.add(todaySummary);
+//            }
+//
+//            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
+//            recyclerView.setAdapter(assignExecutiveAdapter);
+//            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    /**
+     * This method is to fetch all merchant list from SQLite
+     */
     private void getallmerchant() {
-        try {
+        // AsyncTask is used that SQLite operation not blocks the UI Thread.
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                assignManager_modelList.clear();
+                assignManager_modelList.addAll(database.getAllMerchantList());
 
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_merchantlist(sqLiteDatabase);
-
-            while (c.moveToNext()) {
-                String merchantName = c.getString(0);
-                String merchantCode = c.getString(1);
-                int totalcount = c.getInt(2);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
-                assignManager_modelList.add(todaySummary);
+                return null;
             }
 
-            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
-            recyclerView.setAdapter(assignExecutiveAdapter);
-            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
+                recyclerView.setAdapter(assignExecutiveAdapter);
+                assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
+                assignExecutiveAdapter.notifyDataSetChanged();
+            }
+        }.execute();
     }
+
 
     //Merchant List API hit
     private void loadallmerchantlist(final String user) {
@@ -623,9 +684,5 @@ try{
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE",merchantcode);
         startActivity(intent);
-
-
-
     }
-
 }
