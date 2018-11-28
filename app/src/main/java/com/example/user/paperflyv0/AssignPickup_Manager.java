@@ -252,18 +252,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         }.execute();
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
 
@@ -649,7 +637,6 @@ try{
         spinnerBuilder.setView(mView);
         AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
-
 
     }
 

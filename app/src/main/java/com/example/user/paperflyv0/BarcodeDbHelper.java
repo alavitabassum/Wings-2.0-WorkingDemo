@@ -29,6 +29,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String UPDATED_AT = "updated_at";
     private static final String STATE = "state";
     private static final String STATUS = "status";
+    private static final String COMPLETE_STATUS = "complete_status";
 
 
     private static final String[] COLUMNS = { KEY_ID, MERCHANT_ID, KEY_NAME };
@@ -62,7 +63,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "created_at TEXT, "
                 + "updated_by TEXT, "
                 + "updated_at TEXT , "
-                + "status INT )";
+                + "status INT, "
+                + "complete_status TEXT )";
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -112,7 +114,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 "phone_no": null,
 "picked_qty": null,
 "merchant_name": "Womens World BD - WWB"*/
-    public void insert_my_assigned_pickups(String executive_name,String assined_qty, String merchant_id,String assigned_by,String created_at, String updated_by, String updated_at, String scan_count, String phone_no,String picked_qty, String merchant_name, int status)
+    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String status, int complete_status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
@@ -130,6 +132,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
         values.put(STATUS, status);
+        values.put(COMPLETE_STATUS, complete_status);
 
 //        db.insert(TABLE_NAME_1,null,values);
         db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
@@ -270,7 +273,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                             ASSIGNED_BY,
                             CREATED_AT,
                             UPDATED_BY,
-                            UPDATED_AT};
+                            UPDATED_AT,
+                            COMPLETE_STATUS };
 
         // sorting orders
         String sortOrder = CREATED_AT + " ASC";
@@ -306,6 +310,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 beneficiary.setCreated_at(cursor.getString(cursor.getColumnIndex(CREATED_AT)));
                 beneficiary.setUpdated_by(cursor.getString(cursor.getColumnIndex(UPDATED_BY)));
                 beneficiary.setUpdated_at(cursor.getString(cursor.getColumnIndex(UPDATED_AT)));
+                beneficiary.setComplete_status(cursor.getString(cursor.getColumnIndex(COMPLETE_STATUS)));
                 // Adding user record to list
                 list.add(beneficiary);
             } while (cursor.moveToNext());

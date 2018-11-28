@@ -182,8 +182,9 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("scan_count"),
                                 o.getString("phone_no"),
                                 o.getString("picked_qty"),
-                                o.getString("merchant_name")
-                               , NAME_NOT_SYNCED_WITH_SERVER );
+                                o.getString("merchant_name"),
+                                o.getString("complete_status")
+                                , NAME_NOT_SYNCED_WITH_SERVER );
 
                     }
                      getData(user);
@@ -509,6 +510,12 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
         startActivity(scanIntent);
     }
+
+    @Override
+    public void onItemClick_view(View view2, int position2) {
+
+    }
+
     @Override
     public void onRefresh() {
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
