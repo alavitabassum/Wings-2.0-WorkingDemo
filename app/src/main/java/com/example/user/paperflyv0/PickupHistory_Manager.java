@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,14 +22,36 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PickupHistory_Manager extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,6 +77,19 @@ public class PickupHistory_Manager extends AppCompatActivity
     private ViewPager mViewPager;
 
 
+    String[] executive_num_list;
+    public static final String MERCHANT_NAME = "Merchant Name";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
+    public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
+    //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
+    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
+    private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    private AssignExecutiveAdapter assignExecutiveAdapter;
+    List<AssignManager_ExecutiveList> executiveLists;
+    List<AssignManager_Model> assignManager_modelList;
+    Database database;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +99,17 @@ public class PickupHistory_Manager extends AppCompatActivity
         day = mCurrentDate.get(Calendar.DAY_OF_MONTH);
         month = mCurrentDate.get(Calendar.MONTH);
         year = mCurrentDate.get(Calendar.YEAR);
+        database = new Database(getApplicationContext());
+        database.getWritableDatabase();
+        database.getReadableDatabase();
+        executiveLists = new ArrayList<>();
 
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
+        getallexecutives();
+        loadexecutivelist(username);
         month = month + 1;
         pickDate.setText("Select Date : "+day+"/"+month+"/"+year);
 
@@ -100,14 +143,14 @@ public class PickupHistory_Manager extends AppCompatActivity
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+   /*     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -120,6 +163,125 @@ public class PickupHistory_Manager extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.manager_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //select executive
+
+        TextView selectExe = findViewById(R.id.pickExecutive);
+        selectExe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder exe_list_Builder = new AlertDialog.Builder(PickupHistory_Manager.this);
+                View mView = getLayoutInflater().inflate(R.layout.dialog_exe_list, null);
+                exe_list_Builder.setTitle("Select executive");
+
+                final AutoCompleteTextView mAutoComplete = mView.findViewById(R.id.auto_exe);
+
+                SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+
+                final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+
+                List<String> lables = new ArrayList<String>();
+
+                for (int z = 0; z < executiveLists.size(); z++) {
+                    lables.add(executiveLists.get(z).getExecutive_name());
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(PickupHistory_Manager.this,
+                        android.R.layout.simple_list_item_1, lables);
+                mAutoComplete.setAdapter(adapter);
+
+                exe_list_Builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int i1) {
+                        String empname = mAutoComplete.getText().toString();
+                        final String empcode = database.getSelectedEmployeeCode(empname);
+
+
+
+                        if (!mAutoComplete.getText().toString().equals(null)) {
+                            Toast.makeText(PickupHistory_Manager.this, mAutoComplete.getText().toString(),Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+
+                        }
+
+                    }
+                });
+
+                exe_list_Builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i1) {
+                        dialog.dismiss();
+                    }
+                });
+                exe_list_Builder.setCancelable(false);
+                exe_list_Builder.setView(mView);
+                AlertDialog dialog2 = exe_list_Builder.create();
+                dialog2.show();
+
+            }
+        });
+    }
+
+
+    //Load executive from api
+    private void loadexecutivelist(final String user) {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, EXECUTIVE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("executivelist");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                database.addexecutivelist(o.getString("empName"), o.getString("empCode"));
+                            }
+                            getallexecutives();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }
+    //Get Executive List from sqlite
+    private void getallexecutives() {
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_executivelist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String empName = c.getString(0);
+                String empCode = c.getString(1);
+                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(empName, empCode);
+                executiveLists.add(assignManager_executiveList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
