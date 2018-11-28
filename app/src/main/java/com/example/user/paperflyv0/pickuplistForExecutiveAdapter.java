@@ -15,16 +15,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.user.paperflyv0.R.color.red;
 import static com.example.user.paperflyv0.R.color.white;
 
-public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickuplistForExecutiveAdapter.ViewHolder> {
+public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickuplistForExecutiveAdapter.ViewHolder>implements Filterable  {
 
     private List<PickupList_Model_For_Executive> list;
+    private List<PickupList_Model_For_Executive> listFull;
+
     private Context context;
     private OnItemClickListener mListner;
     BarcodeDbHelper db;
@@ -44,6 +52,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     public pickuplistForExecutiveAdapter(List<PickupList_Model_For_Executive> list, Context context) {
         this.list = list;
         this.context = context;
+        listFull = new ArrayList<>(list);
     }
 
 
@@ -125,15 +134,51 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         if (count == count_assigned || count > count_assigned){
             viewHolder.itemStatus.setText("Complete");
             viewHolder.itemStatus.setBackgroundResource(R.color.green);
-          //  viewHolder.itemStatus.setTextColor(white);
+            viewHolder.itemStatus.setTextColor(Color.WHITE);
+            viewHolder.itemStatus.setEnabled(false);
         }
-
-
     }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
+
+    //search/filter list
+    @Override
+    public Filter getFilter() {
+        return NamesFilter;
+    }
+    private Filter NamesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<PickupList_Model_For_Executive> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0){
+                filteredList.addAll(listFull);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (PickupList_Model_For_Executive item : listFull){
+                    if (item.getMerchant_name().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            list.clear();
+            list.addAll((List) results.values);
+            notifyDataSetChanged();
+
+        }
+    };
+
+
 
 }
