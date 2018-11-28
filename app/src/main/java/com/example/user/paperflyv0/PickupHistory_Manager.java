@@ -202,10 +202,13 @@ public class PickupHistory_Manager extends AppCompatActivity
 
 
 
-                        if (!mAutoComplete.getText().toString().equals(null)) {
-                            Toast.makeText(PickupHistory_Manager.this, mAutoComplete.getText().toString(),Toast.LENGTH_SHORT).show();
+                        if (mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null) ) {
+                            Toast.makeText(PickupHistory_Manager.this, "No Executive Selected",Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
 
+                        }else{
+                            Toast.makeText(PickupHistory_Manager.this, mAutoComplete.getText().toString(),Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
                         }
 
                     }
