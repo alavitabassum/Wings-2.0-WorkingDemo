@@ -10,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.support.design.widget.Snackbar;
@@ -60,12 +61,12 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener{
 
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
+    public static final String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
@@ -113,7 +114,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
         getallmerchant();
-        getallexecutives();
+        //getallexecutives();
 
         loadmerchantlist(user);
         loadexecutivelist(user);
@@ -182,7 +183,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                             JSONArray array = jsonObject.getJSONArray("executivelist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                database.addexecutivelist(o.getString("empName"), o.getString("empCode"));
+                                database.addexecutivelist(o.getString("userName"), o.getString("empCode"));
                             }
                             getallexecutives();
 
@@ -227,7 +228,6 @@ public class AssignPickup_Manager extends AppCompatActivity
             e.printStackTrace();
         }
     }
-
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
 
@@ -343,7 +343,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     }
         //For assigning executive API into mysql
-    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString) {
+    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString,final String m_name) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
                 new Response.Listener<String>() {
@@ -382,6 +382,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 params.put("merchant_code", merchant_code);
                 params.put("assigned_by", user);
                 params.put("created_at", currentDateTimeString);
+                params.put("merchant_name", m_name);
                /* database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
                 final String strI = String.valueOf(total_assign);
@@ -538,7 +539,7 @@ try{
         final EditText et1 = mView.findViewById(R.id.spinner1num);
         dialog_mName.setText(clickeditem.getM_names());
         final String merchant_code = clickeditem.getM_address();
-
+        final String m_name = clickeditem.getM_names();
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
@@ -554,7 +555,7 @@ try{
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AssignPickup_Manager.this,
                 android.R.layout.simple_list_item_1, lables);
-        /*       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
+
         mAutoComplete.setAdapter(adapter);
 
         spinnerBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
@@ -563,9 +564,7 @@ try{
             public void onClick(DialogInterface dialog, int i1) {
                  String empname = mAutoComplete.getText().toString();
                  final String empcode = database.getSelectedEmployeeCode(empname);
-
-                //assignexecutivetosqlite(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString);
-                assignexecutive(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString);
+                 assignexecutive(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString,m_name);
 
                 if (!mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
@@ -597,32 +596,6 @@ try{
     public void onItemClick_view(View view2, int position2) {
 
         final AssignManager_Model clickeditem2 = assignManager_modelList.get(position2);
-        //  final TextView selection1 =findViewById(R.id.selection1);
-
-/*
-        AlertDialog.Builder viewBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
-        View mView = getLayoutInflater().inflate(R.layout.dialog_view_assigns, null);
-        viewBuilder.setTitle("Assigned Executive List");
-        final TextView dialog_mNameView = mView.findViewById(R.id.dialog_m_name_view);
-
-        dialog_mNameView.setText(clickeditem2.getM_names());
-
-
-        viewBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i1) {
-
-                dialog.dismiss();
-
-            }
-
-
-        });
-
-        // vwParentRow2.refreshDrawableState();
-        viewBuilder.setView(mView);
-        AlertDialog dialog2 = viewBuilder.create();
-        dialog2.show();*/
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final String user = username.toString();

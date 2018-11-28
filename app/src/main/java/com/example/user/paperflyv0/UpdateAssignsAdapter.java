@@ -1,5 +1,6 @@
 package com.example.user.paperflyv0;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,16 +27,25 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.example.user.paperflyv0.AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER;
 
 public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdapter.ViewHolder> {
 
     private List<UpdateAssign_Model> updateAssignModelList;
     private Context context;
     private OnEditTextChanged onEditTextChanged;
+    public static final String UPDATE_URL = "http://192.168.0.117/new/updateassign.php";
+    public static final String DELETE_URL = "http://192.168.0.117/new/deleteasign.php";
+
 
     Database database;
     String merchantcode;
@@ -164,6 +174,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
 
             @Override
             public void afterTextChanged(Editable editable) {
+
                 final String cou = editable.toString();
                 viewHolder.button.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -188,7 +199,7 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     private void assignexecutivedelete(final String merchantcode, final String empcode) {
 
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.114/new/deleteassign.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELETE_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -218,16 +229,24 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
 
     }
 
+   /* private String getrowid(final String merchantcode, final String empcode) {
 
-    private void assignexecutiveupdate(final String merchantcode, final String empcode,final String cou) {
 
-
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateassign.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/getrowid.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // response
+                       try{
+                           JSONArray arr = new JSONArray(response);
+                           JSONObject jObj = arr.getJSONObject(0);
+                           String id = jObj.getString("id");
 
+
+
+                       }catch (Exception e)
+                       {
+
+                       }
                     }
                 },
                 new Response.ErrorListener() {
@@ -235,6 +254,40 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
                     public void onErrorResponse(VolleyError error) {
                         // error
                         //   Log.d("Error",error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchantcode);
+                params.put("executive_code", empcode);
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(postRequest);
+        return id;
+
+    }
+*/
+
+    private void assignexecutiveupdate(final String merchantcode, final String empcode,final String cou) {
+
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
                     }
                 }
         ) {

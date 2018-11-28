@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Database extends SQLiteOpenHelper {
 
     public Database(Context context)
@@ -317,17 +320,70 @@ public class Database extends SQLiteOpenHelper {
         values.put("empcode",empcode);
         values.put("order_count",count);
         //db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
-        db.update("assignexecutive",
-                values,
-                "rowid" + " = ?",
-                new String[]{rowid});
+        db.update("assignexecutive", values, "rowid" + " = ?", new String[]{rowid});
         db.close();
+    }
+    public Cursor getUnsyncedUpdate() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + "assignexecutive" + " WHERE " + "updatesyncStatus" + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
     }
     public void deleteassign(String rowid, String ex,String count)
     {     SQLiteDatabase db = this.getWritableDatabase();
         db.delete("assignexecutive", "rowid" + " = ?", new String[] { rowid });
     }
+    public boolean updateTheUpdateStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("updatesyncStatus", status);
+        db.update("assignexecutive", contentValues, "id" + "=" + id, null);
+        db.close();
+        return true;
+    }
 
+
+   /* //Demo Testing
+    public List<AssignManager_ExecutiveList> getAllData() {
+        // array of columns to fetch
+        String[] columns = {"empname","empcode"};
+
+        // sorting orders
+        //String sortOrder = CREATED_AT + " ASC";
+        List<AssignManager_ExecutiveList> list = new ArrayList<AssignManager_ExecutiveList>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query("executivelist", //Table to query
+                columns,
+                null,//columns for the WHERE clause
+                null,        //The values for the WHERE clause
+                null,       //group the rows
+                null,null); //The sort order
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                AssignManager_ExecutiveList beneficiary = new AssignManager_ExecutiveList();
+
+//                Beneficiary beneficiary = new Beneficiary();
+
+                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex("empname")));
+                beneficiary.setExecutive_code(cursor.getString(cursor.getColumnIndex("empcode")));
+                // Adding user record to list
+                list.add(beneficiary);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return list;
+    }
+
+*/
 
 
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
