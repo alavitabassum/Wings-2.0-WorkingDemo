@@ -48,7 +48,7 @@ public class Complete_Pickup__Fragment_Manager extends Fragment implements Swipe
         database2=new Complete_Pickup_Database_Manager(getContext());
         database2.getWritableDatabase();
         listitems = new ArrayList<>();
-
+//testing
         v = inflater.inflate(R.layout.frag1_layout, container, false);
         myrecyclerview = v.findViewById(R.id.recycler_view_history);
         myrecyclerview.setHasFixedSize(true);
