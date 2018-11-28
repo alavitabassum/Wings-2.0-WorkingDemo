@@ -61,6 +61,7 @@ public class ManagerCardMenu extends AppCompatActivity
     TextView OrderCount;
     int pendingOrders = 10;
     Handler mHandler;
+    int amounts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -82,8 +83,8 @@ public class ManagerCardMenu extends AppCompatActivity
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        getallmerchant();
-        loadmerchantlist(username);
+     /*   getallmerchant();
+        loadmerchantlist(username);*/
 
 
         recyclerView =
@@ -205,6 +206,13 @@ public class ManagerCardMenu extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        //Fetching email from shared preferences
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        getallmerchant();
+        loadmerchantlist(username);
+        amounts = database.getTotalOfAmount();
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.notification_menu, menu);
 
@@ -242,8 +250,6 @@ public class ManagerCardMenu extends AppCompatActivity
 
 
     private void setupBadge() {
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
       /*  Set<AssignManager_Model> hs = new HashSet<>();
         hs.addAll(assignManager_modelList);
@@ -251,7 +257,7 @@ public class ManagerCardMenu extends AppCompatActivity
         assignManager_modelList.addAll(hs);*/
 
         //Get the Total Order For Today
-        int amounts = database.getTotalOfAmount();
+        amounts = database.getTotalOfAmount();
         //int pendingCount =  assignManager_modelList.size();
 
 
