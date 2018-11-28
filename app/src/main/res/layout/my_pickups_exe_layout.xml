@@ -37,18 +37,18 @@
 
         <TextView
             android:id="@+id/statustxt"
-            android:layout_width="89dp"
+            android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_below="@id/scantxt"
             android:layout_alignStart="@+id/m_name_pul"
             android:layout_alignTop="@+id/btn_status"
-            android:layout_marginStart="5dp"
             android:layout_marginTop="2dp"
             android:layout_alignBottom="@id/btn_scan"
+            android:layout_alignEnd="@+id/scantxt"
             android:text="Status:"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:textAllCaps="true"
             android:layout_alignBaseline="@id/btn_scan"/>
@@ -154,12 +154,9 @@
 
         <Button
             android:id="@+id/btn_status"
-            android:layout_width="115dp"
+            android:layout_width="105dp"
             android:layout_height="35dp"
-
             android:layout_alignBottom="@id/btn_scan"
-
-
             android:layout_marginRight="5dp"
 
             android:layout_marginBottom="-1dp"
@@ -172,7 +169,7 @@
 
         <Button
             android:id="@+id/btn_scan"
-            android:layout_width="115dp"
+            android:layout_width="105dp"
             android:layout_height="35dp"
             android:layout_below="@id/divider4"
             android:layout_alignEnd="@+id/m_name_pul"

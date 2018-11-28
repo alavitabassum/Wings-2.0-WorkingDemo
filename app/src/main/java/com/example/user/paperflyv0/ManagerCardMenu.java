@@ -7,30 +7,46 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
+import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.nex3z.notificationbadge.NotificationBadge;
 import com.txusballesteros.bubbles.BubblesManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ManagerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     List<AssignManager_Model> assignManager_modelList;
     Database database;
 
@@ -44,11 +60,16 @@ public class ManagerCardMenu extends AppCompatActivity
 
     TextView OrderCount;
     int pendingOrders = 10;
-
+    Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager_card_menu);
+/*
+        this.mHandler = new Handler();
+
+        this.mHandler.postDelayed(m_Runnable,5000);*/
 
         database = new Database(getApplicationContext());
         database.getWritableDatabase();
@@ -62,7 +83,7 @@ public class ManagerCardMenu extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         getallmerchant();
-
+        loadmerchantlist(username);
 
 
         recyclerView =
@@ -82,28 +103,71 @@ public class ManagerCardMenu extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_manager);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.manager_name);
+        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+/*
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
+
+        {
+            Toast.makeText(ManagerCardMenu.this,"in runnable",Toast.LENGTH_SHORT).show();
+
+            ManagerCardMenu.this.mHandler.postDelayed(m_Runnable, 5000);
+        }
+
+    };//runnable*/
+
+    private void loadmerchantlist(final String user) {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("unAssignedlist");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+
+                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
+                            }
+
+                            getallmerchant();
 
 
-/*        initBubble();
-        addNewBubble();*/
+                        } catch (JSONException e) {
+                            e.printStackTrace();
 
-        //check permission
-       /* if (Build.VERSION.SDK_INT>=23){
-            if (!Settings.canDrawOverlays(this)){
-                Intent intent_b =  new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package: "+getPackageName()));
-                startActivityForResult(intent_b,101);
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
             }
-            else{
-                Intent intent = new Intent(ManagerCardMenu.this, Service.class);
-                startService(intent);
-
-            }
-        }*/
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
     }
 
     private void getallmerchant() {
         try {
+
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
             Cursor c = database.get_merchantlist(sqLiteDatabase);
@@ -149,6 +213,7 @@ public class ManagerCardMenu extends AppCompatActivity
         View actionView = MenuItemCompat.getActionView(menuItem);
         OrderCount = actionView.findViewById(R.id.notification_badge);
 
+
       setupBadge();
 
         actionView.setOnClickListener(new View.OnClickListener() {
@@ -159,8 +224,6 @@ public class ManagerCardMenu extends AppCompatActivity
         });
         return true;
     }
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -179,20 +242,26 @@ public class ManagerCardMenu extends AppCompatActivity
 
 
     private void setupBadge() {
-/*
-        LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.custom_notification_layout, null);
-        OrderCount = view.findViewById(R.id.notification_badge);*/
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-        int pendingCount =  assignManager_modelList.size();
+      /*  Set<AssignManager_Model> hs = new HashSet<>();
+        hs.addAll(assignManager_modelList);
+        assignManager_modelList.clear();
+        assignManager_modelList.addAll(hs);*/
+
+        //Get the Total Order For Today
+        int amounts = database.getTotalOfAmount();
+        //int pendingCount =  assignManager_modelList.size();
+
 
         if (OrderCount !=null){
-            if (pendingCount == 0){
+            if (amounts ==0){
                 if (OrderCount.getVisibility() != View.GONE){
-                    OrderCount.setVisibility(View.GONE);
+                    OrderCount.setVisibility(View.VISIBLE);
                 }
             }else{
-                OrderCount.setText(String.valueOf(pendingCount));
+                OrderCount.setText(String.valueOf(amounts));
                 if (OrderCount.getVisibility() != View.VISIBLE){
                     OrderCount.setVisibility(View.VISIBLE);
                 }

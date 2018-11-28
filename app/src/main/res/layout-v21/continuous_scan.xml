@@ -26,12 +26,24 @@
         android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/done"
+            android:layout_width="105dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/buttonstyle_done"
+            android:elevation="5dp"
+            android:text="Done"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
         <ImageButton
             android:layout_width="47dp"
             android:layout_height="44dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="1dp"
-            android:layout_toStartOf="@+id/buttonsLayout"
             android:adjustViewBounds="true"
             android:background="@drawable/buttonstyle_pause"
             android:cropToPadding="true"
@@ -69,34 +81,18 @@
 
     <ImageView
         android:id="@+id/barcodePreview"
-        android:layout_width="253dp"
+        android:layout_width="200dp"
         android:layout_height="91dp"
-        android:layout_alignTop="@id/buttonsLayout"
-        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="6dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="-45dp"
         android:layout_marginEnd="11dp"
         android:layout_marginBottom="10dp"
         android:layout_toRightOf="@id/buttonsLayout"
-        android:background="@color/light_grey" />
+        android:background="@color/light_grey"
+        android:contentDescription="TODO" />
 
-    <Button
-        android:id="@+id/done"
-        android:layout_width="105dp"
-        android:layout_height="40dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/buttonstyle_done"
-        android:elevation="5dp"
-        android:text="Done"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+
 
     <TextView
         android:id="@+id/merchant_name"
@@ -106,21 +102,22 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="11dp"
         android:layout_marginEnd="11dp"
-        android:layout_marginTop="-104dp"
+        android:layout_marginTop="-90dp"
         android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/pfColor" />
 
     <TextView
         android:id="@+id/scan_count"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/merchant_name"
-        android:layout_marginEnd="11dp"
         android:layout_below="@id/merchant_name"
-        android:layout_marginBottom="137dp"
+        android:layout_alignStart="@+id/merchant_name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="11dp"
+        android:textColor="@color/red"
         android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/red" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

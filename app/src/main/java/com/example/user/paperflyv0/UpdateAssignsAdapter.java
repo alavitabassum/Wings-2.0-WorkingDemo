@@ -93,9 +93,11 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
             @Override
             public void onClick(View view) {
                 String ex = updateAssign_model.getEx_name().toString();
+                final String empcode = database.getSelectedEmployeeCode(ex);
                 String count = updateAssign_model.getCount().toString();
                 String rowid = updateAssign_model.getRowid();
                 database.deleteassign(rowid,ex,count);
+                assignexecutivedelete(merchantcode,empcode);
                 Toast.makeText(context, "Deleted" ,Toast.LENGTH_SHORT).show();
             }
         });
@@ -182,6 +184,40 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     public int getItemCount() {
         return updateAssignModelList.size();
     }
+
+    private void assignexecutivedelete(final String merchantcode, final String empcode) {
+
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.114/new/deleteassign.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        //   Log.d("Error",error);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchantcode);
+                params.put("executive_code", empcode);
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(postRequest);
+
+    }
+
 
     private void assignexecutiveupdate(final String merchantcode, final String empcode,final String cou) {
 
