@@ -205,5 +205,4 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         }
     };
 
-
 }

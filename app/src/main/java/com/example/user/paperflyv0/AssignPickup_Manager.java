@@ -413,19 +413,27 @@ public class AssignPickup_Manager extends AppCompatActivity
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+try{
+    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+            return false;
+        }
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+        @Override
+        public boolean onQueryTextChange(String newText) {
+            assignExecutiveAdapter.getFilter().filter(newText);
+            return false;
+        }
+    });
+}catch (Exception e)
+{
+    e.printStackTrace();
+    Intent intent_stay = new Intent(AssignPickup_Manager.this,AssignPickup_Manager.class);
+    Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
+    startActivity(intent_stay);
+}
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                assignExecutiveAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
         return true;
     }
 

@@ -53,6 +53,7 @@
         android:layout_width="145dp"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/eName_header"
+        android:layout_alignEnd="@id/recycler_view_ua"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
