@@ -566,7 +566,7 @@ try{
                  final String empcode = database.getSelectedEmployeeCode(empname);
                  assignexecutive(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString,m_name);
 
-                if (!mAutoComplete.getText().toString().equals(null)) {
+                if (mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                     + "(" + et1.getText().toString() + ")",
                             Toast.LENGTH_SHORT).show();
