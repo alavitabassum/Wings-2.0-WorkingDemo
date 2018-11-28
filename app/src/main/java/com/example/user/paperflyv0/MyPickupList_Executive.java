@@ -364,7 +364,6 @@ public class MyPickupList_Executive extends AppCompatActivity
         vwParentRow.refreshDrawableState();
         AlertDialog eDialog = eBuilder.create();
         eDialog.show();
-
     }
 
 
