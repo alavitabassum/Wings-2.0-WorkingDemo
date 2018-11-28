@@ -282,7 +282,7 @@ public class ScanningScreen extends AppCompatActivity {
 //    strI, updated_by1, updated_at1, merchant_id
     public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateTable.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

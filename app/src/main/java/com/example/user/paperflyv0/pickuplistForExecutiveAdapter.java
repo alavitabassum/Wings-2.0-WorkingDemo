@@ -1,7 +1,6 @@
 package com.example.user.paperflyv0;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -17,16 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.user.paperflyv0.R.color.red;
-import static com.example.user.paperflyv0.R.color.white;
 
 public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickuplistForExecutiveAdapter.ViewHolder>implements Filterable  {
 
@@ -130,13 +124,19 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.item_scanCount.setText(list.get(i).getScan_count());
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
         int count_assigned = Integer.parseInt(list.get(i).getAssined_qty());
-        int count = Integer.parseInt(list.get(i).getScan_count());
-        if (count == count_assigned || count > count_assigned){
-            viewHolder.itemStatus.setText("Complete");
-            viewHolder.itemStatus.setBackgroundResource(R.color.green);
-            viewHolder.itemStatus.setTextColor(Color.WHITE);
-            viewHolder.itemStatus.setEnabled(false);
+        try {
+            int count = Integer.parseInt(list.get(i).getScan_count());
+            if (count == count_assigned || count > count_assigned){
+                viewHolder.itemStatus.setText("Complete");
+                viewHolder.itemStatus.setBackgroundResource(R.color.green);
+                viewHolder.itemStatus.setTextColor(Color.WHITE);
+                viewHolder.itemStatus.setEnabled(false);
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "pickuplistForExecutiveeAdapter" +e ,Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
