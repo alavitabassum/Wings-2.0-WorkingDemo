@@ -567,7 +567,7 @@ try{
                 //assignexecutivetosqlite(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString);
                 assignexecutive(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString);
 
-                if (!mAutoComplete.getText().toString().equals(null)) {
+                if (mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                     + "(" + et1.getText().toString() + ")",
                             Toast.LENGTH_SHORT).show();
