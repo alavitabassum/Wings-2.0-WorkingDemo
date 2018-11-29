@@ -9,10 +9,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.support.design.widget.SwipeDismissBehavior;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,6 +24,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +37,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
     private Context context;
     private OnItemClickListener mListner;
+    private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
@@ -41,11 +46,14 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-        void onItemClick_status (View view2, int position2);
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {
         this.mListner = listner;
+    }
+
+    public void setOnItemTouchListener(RecyclerView.OnItemTouchListener t_listener){
+        this.touchListener = t_listener;
     }
 
     public pickuplistForExecutiveAdapter(List<PickupList_Model_For_Executive> list, Context context) {
@@ -64,6 +72,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public Button scan_button;
         public TextView item_phnNum;
         public  Button itemStatus;
+        public CardView cardview;
 
 
         public ViewHolder(final View itemView, int i) {
@@ -76,7 +85,8 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
             scan_button = itemView.findViewById(R.id.btn_scan);
             itemStatus = itemView.findViewById(R.id.btn_status);
-           // item_scanTxtButton=itemView.findViewById(R.id.txt_btn_scan);
+            cardview = itemView.findViewById(R.id.card_view_pu_list);
+
 
             //underline phoneNumber
             item_phnNum.setPaintFlags(item_phnNum.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -95,126 +105,6 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                     }
                     v.getContext().startActivity(callIntent);
                 }
-            });
-
-            scan_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view2) {
-                    if(mListner!=null){
-                        int position2 = getAdapterPosition();
-                        if(position2!=RecyclerView.NO_POSITION){
-                            mListner.onItemClick(view2, position2);
-
-                        }
-                    }
-                }
-
-
-            });
-
-
-            itemStatus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view2) {
-                    if(mListner!=null){
-                        int position2 = getAdapterPosition();
-                        if(position2!=RecyclerView.NO_POSITION){
-                            mListner.onItemClick_status(view2, position2);
-
-               /*             final CharSequence[] status_options = {"Cancel","Pending"};
-                            final String[] selection = new String[1];
-                            AlertDialog.Builder eBuilder = new AlertDialog.Builder(context);
-                            eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options,
-                                    -1 , new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    switch (i){
-
-                                        case 0:
-                                            selection[0] = (String) status_options[0];
-                                            break;
-
-                                        case 1:
-                                            selection[0] = (String) status_options[1];
-                                            itemStatus.setTextColor(Color.BLACK);
-                                            itemStatus.setBackgroundResource(R.color.yellow);
-                                            itemStatus.setText("Pending");
-                                            dialogInterface.dismiss();
-                                            break;
-                                    }
-
-                                }
-                            });
-                            eBuilder.setCancelable(false);
-                            eBuilder.setPositiveButton("Change", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                    final CharSequence[] cancel_options = {"Merchant unavailable","Fautly order","Others"};
-                                    final String[] cancelSelection = new String[1];
-
-                                    AlertDialog.Builder cancelreasonBuilder = new AlertDialog.Builder(context);
-                                    if (selection[0] == status_options[0]){
-
-                                        cancelreasonBuilder.setTitle("Cancellation Reason").setSingleChoiceItems(cancel_options, -1, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface1, int position) {
-                                                switch (position){
-                                                    case 0:
-                                                        cancelSelection[0] = (String) cancel_options[0];
-                                                        break;
-                                                    case 1:
-                                                        cancelSelection[0] = (String) cancel_options[1];
-                                                        break;
-                                                    case 2:
-                                                        cancelSelection[0] = (String) cancel_options[2];
-                                                        break;
-
-                                                }
-
-                                                itemStatus.setBackgroundResource(R.color.yellow);
-                                                itemStatus.setTextColor(Color.WHITE);
-                                                itemStatus.setText("cancel");
-                                            }
-                                        }).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialogInterface1, int which) {
-                                                if ( cancelSelection[0] == cancel_options[0] || cancelSelection[0] == cancel_options[1] ||cancelSelection[0] == cancel_options[2]){
-                                                    Toast.makeText(context, "Pickup Cancelled", Toast.LENGTH_SHORT).show();
-                                                    dialogInterface1.dismiss();
-                                                }else{
-                                                    ((AlertDialog)dialogInterface1).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                                                }
-                                            }
-                                        });
-
-                                    }else if (selection[0] == status_options[1]){
-
-                                        //    dialogInterface.dismiss();
-                                        Toast.makeText(context, "Pickup Pending", Toast.LENGTH_SHORT).show();
-
-                                    }else if(selection[0] != status_options[1] && selection[0] != status_options[0]){
-
-                                        ((AlertDialog)dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-                                        Toast.makeText(context, "Pickup Pending", Toast.LENGTH_SHORT).show();
-
-                                    }
-
-                                    AlertDialog rDialog = cancelreasonBuilder.create();
-                                    rDialog.show();
-
-
-                                }
-                            });
-                            AlertDialog eDialog = eBuilder.create();
-                            eDialog.show();
-*/
-                        }
-                    }
-                }
-
-
             });
 
         }
