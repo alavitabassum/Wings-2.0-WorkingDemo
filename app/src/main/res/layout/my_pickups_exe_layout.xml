@@ -162,7 +162,6 @@
             android:layout_marginBottom="-1dp"
             android:layout_toLeftOf="@id/btn_scan"
             android:background="@drawable/buttonstyle"
-            android:onClick="changeStatus"
             android:padding="10dp"
             android:text="Pending"
             android:textSize="14sp" />

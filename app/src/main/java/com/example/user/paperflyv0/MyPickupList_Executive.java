@@ -42,7 +42,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -273,98 +275,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                 .show();
     }
 
-    // Change status code section (start)
-    public void changeStatus(View view){
-        final CharSequence[] status_options = {"Cancel","Pending"};
-        final String[] selection = new String[1];
-        vwParentRow = (android.widget.RelativeLayout) view.getParent();
-        final Button btn_status  = (Button)vwParentRow.getChildAt(10);
-        AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
-        eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                switch (i){
-
-                    case 0:
-                        selection[0] = (String) status_options[0];
-                        break;
-
-                    case 1:
-                        selection[0] = (String) status_options[1];
-                        btn_status.setTextColor(Color.BLACK);
-                        btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.btn_yellow));
-                        btn_status.setText("Pending");
-                        dialogInterface.dismiss();
-                        break;
-                }
-
-            }
-        }).setCancelable(false).setPositiveButton("Change", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                             final CharSequence[] cancel_options = {"Merchant unavailable","Fautly order","Others"};
-                             final String[] cancelSelection = new String[1];
-
-                             AlertDialog.Builder cancelreasonBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
-                           if (selection[0] == status_options[0]){
-
-                                    cancelreasonBuilder.setTitle("Cancellation Reason").setSingleChoiceItems(cancel_options, -1, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface1, int position) {
-                                            switch (position){
-                                                case 0:
-                                                    cancelSelection[0] = (String) cancel_options[0];
-                                                    break;
-                                                case 1:
-                                                    cancelSelection[0] = (String) cancel_options[1];
-                                                    break;
-                                                case 2:
-                                                    cancelSelection[0] = (String) cancel_options[2];
-                                                    break;
-
-                                            }
-
-                                            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
-                                            btn_status.setTextColor(Color.WHITE);
-                                            btn_status.setText("cancel");
-                                        }
-                                    }).setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface1, int which) {
-                                            if ( cancelSelection[0] == cancel_options[0] || cancelSelection[0] == cancel_options[1] ||cancelSelection[0] == cancel_options[2]){
-                                                Toast.makeText(MyPickupList_Executive.this, "Pickup Cancelled", Toast.LENGTH_SHORT).show();
-                                                dialogInterface1.dismiss();
-                                            }else{
-                                                ((AlertDialog)dialogInterface1).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                                            }
-                                        }
-                                    });
-
-                           }else if (selection[0] == status_options[1]){
-
-                                    //    dialogInterface.dismiss();
-                               Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
-
-                           }else if(selection[0] != status_options[1] && selection[0] != status_options[0]){
-
-                               ((AlertDialog)dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-                               Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
-
-                           }
-
-                AlertDialog rDialog = cancelreasonBuilder.create();
-                rDialog.show();
-
-
-            }
-        });
-        vwParentRow.refreshDrawableState();
-        AlertDialog eDialog = eBuilder.create();
-        eDialog.show();
-
-    }
 
 
     @Override
@@ -498,7 +408,15 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onRefresh() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        getData(username);
+        loadRecyclerView(username);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
         Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
 
         PickupList_Model_For_Executive clickedItem = list.get(position);
@@ -509,12 +427,110 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
         startActivity(scanIntent);
     }
+
     @Override
-    public void onRefresh() {
+    public void onItemClick_status(final View view2, final int position2) {
+
+        final PickupList_Model_For_Executive clickeditem2 = list.get(position2);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        getData(username);
-        loadRecyclerView(username);
-    }
+        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        //String merchantname = clickeditem2.getMerchant_name();
 
+        final CharSequence[] status_options = {"Cancel","Pending"};
+        final String[] selection = new String[1];
+
+        //final Button btn_status  = findViewById(R.id.btn_status);
+        AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+        eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (i){
+
+                    case 0:
+                        selection[0] = (String) status_options[0];
+                        break;
+
+                    case 1:
+                        selection[0] = (String) status_options[1];
+                       /* btn_status.setTextColor(Color.BLACK);
+                        btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.btn_yellow));
+                        btn_status.setText("Pending");*/
+                        dialogInterface.dismiss();
+                        break;
+                }
+
+            }
+        }).setCancelable(false).setPositiveButton("Change", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                final CharSequence[] cancel_options = {"Merchant unavailable","Fautly order","Others"};
+                final String[] cancelSelection = new String[1];
+
+                AlertDialog.Builder cancelreasonBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+                if (selection[0] == status_options[0]){
+
+                    cancelreasonBuilder.setTitle("Cancellation Reason").setSingleChoiceItems(cancel_options, -1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface1, int position) {
+                            switch (position){
+                                case 0:
+                                    cancelSelection[0] = (String) cancel_options[0];
+                                    break;
+                                case 1:
+                                    cancelSelection[0] = (String) cancel_options[1];
+                                    break;
+                                case 2:
+                                    cancelSelection[0] = (String) cancel_options[2];
+                                    break;
+
+                            }
+                         //   list.remove(position2);
+
+
+                           /* clickeditem2.setBackgroundDrawable(getResources().getDrawable(R.color.red));
+                            clickeditem2.setTextColor(Color.WHITE);
+                            clickeditem2.setText("cancel");*/
+
+                        }
+                    }).setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface1, int which) {
+                            if ( cancelSelection[0] == cancel_options[0] || cancelSelection[0] == cancel_options[1] ||cancelSelection[0] == cancel_options[2]){
+                                Toast.makeText(MyPickupList_Executive.this, "Pickup Cancelled", Toast.LENGTH_SHORT).show();
+                                dialogInterface1.dismiss();
+                            }else{
+                                ((AlertDialog)dialogInterface1).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                            }
+                        }
+                    });
+
+                }else if (selection[0] == status_options[1]){
+
+                    //    dialogInterface.dismiss();
+                    Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
+
+                }else if(selection[0] != status_options[1] && selection[0] != status_options[0]){
+
+                    ((AlertDialog)dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+
+                    Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
+
+                }
+
+                AlertDialog rDialog = cancelreasonBuilder.create();
+                rDialog.show();
+
+
+            }
+        });
+
+        AlertDialog eDialog = eBuilder.create();
+        eDialog.show();
+
+    }
+    public void removeItem(int position2){
+
+    }
 }
