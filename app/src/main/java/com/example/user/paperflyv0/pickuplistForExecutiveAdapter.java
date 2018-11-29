@@ -141,7 +141,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                 viewHolder.itemStatus.setText("Pending");
                 viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
                 viewHolder.itemStatus.setTextColor(Color.BLACK);
-                viewHolder.itemStatus.setEnabled(true);
+                viewHolder.itemStatus.setEnabled(false);
             }
         } catch(Exception e) {
             e.printStackTrace();
