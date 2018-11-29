@@ -61,11 +61,11 @@
             android:theme="@style/AppTheme">
 
         </activity>
-        <receiver android:name=".NetworkStateChecker">
+       <!-- <receiver android:name=".NetworkStateChecker">
         <intent-filter>
             <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
         </intent-filter>
-    </receiver>
+    </receiver>-->
         <activity
             android:name=".PickupHistory_Manager"
             android:label="@string/title_activity_pickup_history__manager"

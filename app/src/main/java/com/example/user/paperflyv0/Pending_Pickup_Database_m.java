@@ -14,7 +14,7 @@ public class Pending_Pickup_Database_m extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String tableEmp="create table pen_manager(id INTEGER PRIMARY KEY AUTOINCREMENT, merchant_name text,assigned text,uploaded text,received text,executive_name text)";
+        String tableEmp="create table pen_manager(merchant_name text,assigned text,uploaded text,received text,executive_name text)";
 
         sqLiteDatabase.execSQL(tableEmp);
     }
@@ -23,7 +23,7 @@ public class Pending_Pickup_Database_m extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
     }
-    public void insertData(String merchant_name, String assigned,String uploaded,String received,String executive_name)
+    public void insertData(String merchant_name,String executive_name, String assigned,String uploaded,String received)
 
     {
 
@@ -33,13 +33,15 @@ public class Pending_Pickup_Database_m extends SQLiteOpenHelper {
 
         values.put("merchant_name",merchant_name);
 
+        values.put("executive_name",executive_name);
+
         values.put("assigned",assigned);
 
         values.put("uploaded",uploaded);
 
         values.put("received",received);
 
-        values.put("executive_name",executive_name);
+
 
         sqLiteDatabase.insert("pen_manager",null,values);
         sqLiteDatabase.close();

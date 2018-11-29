@@ -32,9 +32,9 @@ import java.util.List;
 
 public class Pending_Pickup_Fragment_Manager extends Fragment {
 
-    private static final String URL_DATA = "http://192.168.0.132/new/pick_complete.php";
+    private static final String URL_DATA = "http://192.168.0.117/new/complete.php";
     public SwipeRefreshLayout swipeRefreshLayout2;
-    private List<Pending_Pickup_Model_Manager> listitems;
+    private List<Pending_Pickup_Model_Manager> listitems1;
     private Context context;
     private ProgressDialog progress;
     View v;
@@ -49,7 +49,7 @@ public class Pending_Pickup_Fragment_Manager extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         database3 = new Pending_Pickup_Database_m(getContext());
         database3.getWritableDatabase();
-        listitems = new ArrayList<>();
+        listitems1 = new ArrayList<>();
 
         View view = inflater.inflate(R.layout.frag2_layout, container, false);
         myrecyclerview = view.findViewById(R.id.recycler_view_history_d);
@@ -70,21 +70,21 @@ public class Pending_Pickup_Fragment_Manager extends Fragment {
         progress.setProgress(0);
         progress.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, "http://192.168.0.132/new/pick_complete.php", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();
-                listitems.clear();
+                listitems1.clear();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("summary");
+                    JSONArray array = jsonObject.getJSONArray("summaryforcomplete");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject o = array.getJSONObject(i);
                         database3.insertData(o.getString("merchant_name"),
+                                o.getString("executive_name"),
                                 o.getString("assigned"),
-                                o.getString("uploaded"),
-                                o.getString("received"),
-                                o.getString("executive_name"));
+                                o.getString("picked"),
+                                o.getString("received"));
                     }
                     getinfos();
 
@@ -121,10 +121,10 @@ public class Pending_Pickup_Fragment_Manager extends Fragment {
                 String received = c.getString(3);
                 String executive_name = c.getString(4);
                 Pending_Pickup_Model_Manager today = new Pending_Pickup_Model_Manager(merchant_name, assigned, uploaded, received, executive_name);
-                listitems.add(today);
+                listitems1.add(today);
             }
 
-            myrecyclerview.setAdapter(new Pending_Pickup_Adapter_Manager(getContext(), listitems));
+            myrecyclerview.setAdapter(new Pending_Pickup_Adapter_Manager(getContext(), listitems1));
 
 
         }catch (Exception e)

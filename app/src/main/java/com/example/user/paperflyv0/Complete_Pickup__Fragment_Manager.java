@@ -31,7 +31,7 @@ import java.util.List;
 
 public class Complete_Pickup__Fragment_Manager extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String URL_DATA = "http://192.168.0.132/new/pick_complete.php";
+    private static final String URL_DATA = "http://192.168.0.117/new/complete.php";
     View v;
 
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -74,22 +74,23 @@ public class Complete_Pickup__Fragment_Manager extends Fragment implements Swipe
         progress.setProgress(0);
         progress.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,"http://192.168.0.132/new/pick_complete.php", new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();
-                listitems.clear();
+
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("summary");
+                    JSONArray array = jsonObject.getJSONArray("summaryforcomplete");
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
                         database2.insertData(o.getString("merchant_name"),
+                                o.getString("executive_name"),
                                 o.getString("assigned"),
-                                o.getString("uploaded"),
-                                o.getString("received"),
-                                o.getString("executive_name"));
+                                o.getString("picked"),
+                                o.getString("received")
+                              );
 
                     }
                     getdata();
@@ -113,18 +114,18 @@ public class Complete_Pickup__Fragment_Manager extends Fragment implements Swipe
         requestQueue.add(stringRequest);
     }
     public void getdata() {
-        listitems.clear();
+
         try {
             //database2 = new Complete_pickup_database_mng(getActivity());
             SQLiteDatabase sqLiteDatabase = database2.getReadableDatabase();
             Cursor c = database2.getAllData(sqLiteDatabase);
             while (c.moveToNext()) {
                 String merchant_name = c.getString(0);
-                String assigned = c.getString(1);
-                String uploaded = c.getString(2);
-                String received = c.getString(3);
-                String executive_name = c.getString(4);
-                Complete_Pickup_Model_Manager todaySummary = new Complete_Pickup_Model_Manager(merchant_name, assigned, uploaded, received , executive_name);
+                String executive_name = c.getString(1);
+                String assigned = c.getString(2);
+                String picked = c.getString(3);
+                String received = c.getString(4);
+                Complete_Pickup_Model_Manager todaySummary = new Complete_Pickup_Model_Manager(merchant_name, executive_name,assigned, picked, received);
                 listitems.add(todaySummary);
             }
 
