@@ -28,7 +28,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
         String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text unique)";
-        String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text,totalcount int)";
+        String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text unique,totalcount int)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
@@ -64,7 +64,7 @@ public class Database extends SQLiteOpenHelper {
         String[] columns = {"merchantName", "merchantCode","totalcount"};
         return db.query("pickups_today_manager", columns, null, null, null, null, null);
     }
-    public void insert_pickups_today_manager(String name, String order_count) {
+    /*public void insert_pickups_today_manager(String name, String order_count) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -75,13 +75,13 @@ public class Database extends SQLiteOpenHelper {
 
         sqLiteDatabase.insert("merchants", null, values);
         sqLiteDatabase.close();
-    }
+    }*/
 
-    public Cursor get_pickups_today_manager(SQLiteDatabase db) {
+ /*   public Cursor get_pickups_today_manager(SQLiteDatabase db) {
         String[] columns = {"name", "ordercount"};
         return db.query("merchants", columns, null, null, null, null, null);
     }
-
+*/
     public void insert_pickups_today_executive(String name, String assigned, String uploaded, String picked) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
@@ -343,50 +343,6 @@ public class Database extends SQLiteOpenHelper {
         return true;
     }
 
-
-   /* //Demo Testing
-    public List<AssignManager_ExecutiveList> getAllData() {
-        // array of columns to fetch
-        String[] columns = {"empname","empcode"};
-
-        // sorting orders
-        //String sortOrder = CREATED_AT + " ASC";
-        List<AssignManager_ExecutiveList> list = new ArrayList<AssignManager_ExecutiveList>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-
-        Cursor cursor = db.query("executivelist", //Table to query
-                columns,
-                null,//columns for the WHERE clause
-                null,        //The values for the WHERE clause
-                null,       //group the rows
-                null,null); //The sort order
-
-
-        // Traversing through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                AssignManager_ExecutiveList beneficiary = new AssignManager_ExecutiveList();
-
-//                Beneficiary beneficiary = new Beneficiary();
-
-                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex("empname")));
-                beneficiary.setExecutive_code(cursor.getString(cursor.getColumnIndex("empcode")));
-                // Adding user record to list
-                list.add(beneficiary);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        // return user list
-        return list;
-    }
-
-*/
-
-
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -402,89 +358,4 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }*/
 
-    //Get all merchant list
-    public List<AssignManager_Model> getAllMerchantList() {
-        // array of columns to fetch
-        String[] columns = {"id", "merchantName", "merchantCode", "totalcount"};
-
-        // sorting orders
-        String sortOrder = "merchantName" + " ASC";
-        List<AssignManager_Model> list = new ArrayList<AssignManager_Model>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        db.isOpen();
-
-
-        Cursor cursor = db.query("merchantList", //Table to query
-                columns,    //columns to return
-                null,        //columns for the WHERE clause
-                null,        //The values for the WHERE clause
-                null,       //group the rows
-                null,       //filter by row groups
-                sortOrder); //The sort order
-
-
-        // Traversing through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                AssignManager_Model beneficiary = new AssignManager_Model();
-
-//                Beneficiary beneficiary = new Beneficiary();
-
-                beneficiary.setM_names(cursor.getString(cursor.getColumnIndex("merchantName")));
-                beneficiary.setM_address(cursor.getString(cursor.getColumnIndex("merchantCode")));
-                beneficiary.setTotalcount(cursor.getInt(cursor.getColumnIndex("totalcount")));
-                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));;
-
-                // Adding user record to list
-                list.add(beneficiary);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        // return user list
-        return list;
-    }
-
-    // Get all executives
-//    public List<AssignManager_ExecutiveList> getAllExecutiveList() {
-//        // array of columns to fetch
-//        String[] columns = {"id", "empName", "empCode"};
-//        // sorting orders
-//        String sortOrder = "empName" + " ASC";
-//        List<AssignManager_ExecutiveList> list = new ArrayList<AssignManager_ExecutiveList>();
-//
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//
-//        Cursor cursor = db.query("executivelist", //Table to query
-//                columns,    //columns to return
-//                null,        //columns for the WHERE clause
-//                null,        //The values for the WHERE clause
-//                null,       //group the rows
-//                null,       //filter by row groups
-//                sortOrder); //The sort order
-//
-//
-//        // Traversing through all rows and adding to list
-//        if (cursor.moveToFirst()) {
-//            do {
-//                AssignManager_ExecutiveList beneficiary = new AssignManager_ExecutiveList();
-//
-////                Beneficiary beneficiary = new Beneficiary();
-//                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));
-//                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex("empName")));
-//                beneficiary.setExecutive_code(cursor.getString(cursor.getColumnIndex("empCode")));
-//
-//                // Adding user record to list
-//                list.add(beneficiary);
-//            } while (cursor.moveToNext());
-//        }
-//        cursor.close();
-//        db.close();
-//
-//        // return user list
-//        return list;
-//    }
 }

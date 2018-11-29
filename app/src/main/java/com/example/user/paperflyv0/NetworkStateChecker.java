@@ -1,4 +1,3 @@
-/*
 package com.example.user.paperflyv0;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -44,14 +43,13 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 Cursor cursor1 = database2.getUnsyncedBarcode();
                 if (cursor1.moveToFirst()) {
                     do {
-                       */
-/* String executive_name = cursor.getString(0);
+ String executive_name = cursor.getString(0);
                         String executive_code = cursor.getString(1);
                         String order_count = cursor.getString(2);
                         String merchant_code = cursor.getString(3);
                         String assigned_by = cursor.getString(4);
                         String created_at = cursor.getString(5);
-                        int id = cursor.getInt(7);*//*
+                        int id = cursor.getInt(7);
 
                         //calling the method to save the unsynced name to MySQL
                         saveBarcode(cursor1.getInt(0),cursor1.getString(1),cursor1.getString(2), Boolean.valueOf(cursor1.getString(3)),cursor1.getString(5),cursor1.getString(6));
@@ -61,56 +59,36 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 Cursor cursor2 = database2.getUnsyncedData();
                 if (cursor2.moveToFirst()) {
                     do {
-                       */
-/*    + "0id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "1merchantId TEXT UNIQUE, "
-                + "2merchant_name TEXT, "
-                + "3executive_name TEXT, "
-                + "4assined_qty TEXT, "
-                + "5picked_qty TEXT, "
-                + "6scan_count TEXT, "
-                + "7phone_no TEXT, "
-                + "8assigned_by TEXT, "
-                + "9created_at TEXT, "
-                + "10updated_by TEXT, "
-                + "11updated_at TEXT , "
-                + "12status INT )";;*//*
 
                         //calling the method to save the unsynced name to MySQL
                         saveData(cursor2.getInt(0),cursor2.getString(6),cursor2.getString(10),cursor2.getString(11),cursor2.getString(1));
                     } while (cursor2.moveToNext());
                 }
-                */
 /*Cursor cursor3 = database.getUnsyncedUpdate();
                 if (cursor3.moveToFirst()) {
                     do {
-                       *//*
-*/
-/* String executive_name = cursor.getString(0);
+
+ String executive_name = cursor.getString(0);
                         String executive_code = cursor.getString(1);
                         String order_count = cursor.getString(2);
                         String merchant_code = cursor.getString(3);
                         String assigned_by = cursor.getString(4);
                         String created_at = cursor.getString(5);
-                        int id = cursor.getInt(7);*//*
-*/
-/*
+                        int id = cursor.getInt(7);
                         //calling the method to save the unsynced name to MySQL
                         UpdateSync(cursor3.getInt(7),cursor3.getString(3),cursor3.getString(1),cursor3.getString(2));
                     } while (cursor3.moveToNext());
-                }*//*
+                }*/
 
             }
         }
     }
-    */
-/*
-     * method taking two arguments
+    /* * method taking two arguments
      * name that is to be saved and id of the name from SQLite
      * if the name is successfully sent
      * we will update the status as synced in SQLite
-     * *//*
-
+     *
+*/
     private void saveName(final int id, final String executive_name,final String executive_code, final String order_count,final String merchant_code,final String assigned_by,final String created_at) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.INSERT_URL,
                 new Response.Listener<String>() {
@@ -150,8 +128,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
     //Update Sync
-   */
-/* private void UpdateSync(final int id,final String merchantcode, final String empcode,final String cou) {
+ /*private void UpdateSync(final int id,final String merchantcode, final String empcode,final String cou) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateassign.php",
                 new Response.Listener<String>() {
                     @Override
@@ -185,8 +162,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
-    }*//*
-
+    }
+*/
     //Barcode save to server
     private void saveBarcode(final int id,final String merchant_id, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/insert_barcode.php",
@@ -262,4 +239,4 @@ public class NetworkStateChecker extends BroadcastReceiver {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
-}*/
+}

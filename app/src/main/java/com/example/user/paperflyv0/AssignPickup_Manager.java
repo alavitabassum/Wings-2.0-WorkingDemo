@@ -107,11 +107,11 @@ public class AssignPickup_Manager extends AppCompatActivity
 
 
 
-      //registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+      registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
 
         getallmerchant();
-        //getallexecutives();
+        getallexecutives();
 
         loadmerchantlist(user);
         loadexecutivelist(user);
@@ -209,35 +209,6 @@ public class AssignPickup_Manager extends AppCompatActivity
     }
 
 
-
-
-
-
-    //Get Executive List from sqlite
-   /* private void getallexecutives() {
-        try {
-
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_executivelist(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String empName = c.getString(0);
-                String empCode = c.getString(1);
-                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(empName, empCode);
-                executiveLists.add(assignManager_executiveList);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
-    /**
-     * This method is to fetch all user records from SQLite
-     */
-//
-//
-//
-
     //Get Executive List from sqlite
     private void getallexecutives() {
         try {
@@ -256,28 +227,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         }
     }
 
-    /**
-     * This method is to fetch all user records from SQLite
-     */
-//    private void getallexecutives() {
-//        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-//        new AsyncTask<Void, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                executiveLists.clear();
-//                executiveLists.addAll(database.getAllExecutiveList());
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-//                super.onPostExecute(aVoid);
-//
-//            }
-//        }.execute();
-//    }
-
 
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
@@ -293,7 +242,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"));
                             }
-                            getallmerchant();
+                            //getallmerchant();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -320,55 +269,28 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest1);
     }
 
-    // merchant List generation from sqlite
-//    private void getallmerchant() {
-//        try {
-//
-//            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-//            Cursor c = database.get_merchantlist(sqLiteDatabase);
-//
-//            while (c.moveToNext()) {
-//                String merchantName = c.getString(0);
-//                String merchantCode = c.getString(1);
-//                int totalcount = c.getInt(2);
-//                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
-//                assignManager_modelList.add(todaySummary);
-//            }
-//
-//            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
-//            recyclerView.setAdapter(assignExecutiveAdapter);
-//            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    /**
-     * This method is to fetch all merchant list from SQLite
-     */
+    /* merchant List generation from sqlite*/
     private void getallmerchant() {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                assignManager_modelList.clear();
-                assignManager_modelList.addAll(database.getAllMerchantList());
-//                assignExecutiveAdapter = new AssignExecutiveAdapter();
+        try {
 
-                return null;
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_merchantlist(sqLiteDatabase);
+
+            while (c.moveToNext()) {
+                String merchantName = c.getString(0);
+                String merchantCode = c.getString(1);
+                int totalcount = c.getInt(2);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
+                assignManager_modelList.add(todaySummary);
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
-                recyclerView.setAdapter(assignExecutiveAdapter);
-                //recyclerView.swapAdapter(assignExecutiveAdapter, true);
-                assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
-                assignExecutiveAdapter.notifyDataSetChanged();
-            }
-        }.execute();
+            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
+            recyclerView.setAdapter(assignExecutiveAdapter);
+            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
