@@ -1,14 +1,7 @@
 package com.example.user.paperflyv0;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Paint;
-import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +11,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +83,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
             });
 
-
             itemViewAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
@@ -107,7 +97,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
 
             });
-
 
             itemUpdateAssign.setOnClickListener(new View.OnClickListener() {
                 @Override

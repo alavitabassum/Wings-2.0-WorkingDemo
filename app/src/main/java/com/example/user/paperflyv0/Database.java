@@ -27,7 +27,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp3 = "create table merchantList(id integer primary key AUTOINCREMENT, merchantName text,merchantCode text unique,totalcount int)";
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
-        String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text)";
+        String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text unique)";
         String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text,totalcount int)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
@@ -448,45 +448,43 @@ public class Database extends SQLiteOpenHelper {
     }
 
     // Get all executives
-    public List<AssignManager_ExecutiveList> getAllExecutiveList() {
-        // array of columns to fetch
-        String[] columns = {"id", "empName", "empCode"};
-        // sorting orders
-        String sortOrder = "empName" + " ASC";
-        List<AssignManager_ExecutiveList> list = new ArrayList<AssignManager_ExecutiveList>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        db.isOpen();
-
-
-        Cursor cursor = db.query("executivelist", //Table to query
-                columns,    //columns to return
-                null,        //columns for the WHERE clause
-                null,        //The values for the WHERE clause
-                null,       //group the rows
-                null,       //filter by row groups
-                sortOrder); //The sort order
-
-
-        // Traversing through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                AssignManager_ExecutiveList beneficiary = new AssignManager_ExecutiveList();
-
-//                Beneficiary beneficiary = new Beneficiary();
-
-                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex("empName")));
-                beneficiary.setExecutive_code(cursor.getString(cursor.getColumnIndex("empCode")));
-                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));
-
-                // Adding user record to list
-                list.add(beneficiary);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-
-        // return user list
-        return list;
-    }
+//    public List<AssignManager_ExecutiveList> getAllExecutiveList() {
+//        // array of columns to fetch
+//        String[] columns = {"id", "empName", "empCode"};
+//        // sorting orders
+//        String sortOrder = "empName" + " ASC";
+//        List<AssignManager_ExecutiveList> list = new ArrayList<AssignManager_ExecutiveList>();
+//
+//        SQLiteDatabase db = this.getReadableDatabase();
+//
+//
+//        Cursor cursor = db.query("executivelist", //Table to query
+//                columns,    //columns to return
+//                null,        //columns for the WHERE clause
+//                null,        //The values for the WHERE clause
+//                null,       //group the rows
+//                null,       //filter by row groups
+//                sortOrder); //The sort order
+//
+//
+//        // Traversing through all rows and adding to list
+//        if (cursor.moveToFirst()) {
+//            do {
+//                AssignManager_ExecutiveList beneficiary = new AssignManager_ExecutiveList();
+//
+////                Beneficiary beneficiary = new Beneficiary();
+//                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));
+//                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex("empName")));
+//                beneficiary.setExecutive_code(cursor.getString(cursor.getColumnIndex("empCode")));
+//
+//                // Adding user record to list
+//                list.add(beneficiary);
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//        db.close();
+//
+//        // return user list
+//        return list;
+//    }
 }

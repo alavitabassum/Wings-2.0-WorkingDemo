@@ -12,10 +12,10 @@ import java.util.List;
 
 public class Complete_Pickup_Adapter_Executive extends RecyclerView.Adapter<Complete_Pickup_Adapter_Executive.MyViewHolder> {
     Context mContext;
-    List<Complete_Pickup_Model_Executive> listitems;
+    List<PickupList_Model_For_Executive> listitems;
 
     // Constructor
-    public Complete_Pickup_Adapter_Executive(Context mContext, List<Complete_Pickup_Model_Executive> listitems){
+    public Complete_Pickup_Adapter_Executive(Context mContext, List<PickupList_Model_For_Executive> listitems){
         this.mContext = mContext;
         this.listitems = listitems;
     }
@@ -34,10 +34,10 @@ public class Complete_Pickup_Adapter_Executive extends RecyclerView.Adapter<Comp
 
     @Override
     public void onBindViewHolder(@NonNull Complete_Pickup_Adapter_Executive.MyViewHolder holder, int position) {
-        holder.tv_name.setText(listitems.get(position).getName());
+        holder.tv_name.setText(listitems.get(position).getMerchant_name());
         holder.a_qty.setText(listitems.get(position).getAssined_qty());
         holder.u_qty.setText(listitems.get(position).getPicked_qty());
-        holder.r_qty.setText(listitems.get(position).getReceived_qty());
+        holder.r_qty.setText(listitems.get(position).getScan_count());
 //        holder.tv_exec_name.setText(listitems.get(position).getExec_name());
     }
 

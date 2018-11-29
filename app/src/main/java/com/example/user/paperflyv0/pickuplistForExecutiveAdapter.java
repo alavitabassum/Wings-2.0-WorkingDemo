@@ -37,6 +37,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+        void onItemClick_view (View view2, int position2);
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {

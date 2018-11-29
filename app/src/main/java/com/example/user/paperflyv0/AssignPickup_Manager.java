@@ -234,24 +234,49 @@ public class AssignPickup_Manager extends AppCompatActivity
     /**
      * This method is to fetch all user records from SQLite
      */
+//
+//
+//
+
+    //Get Executive List from sqlite
     private void getallexecutives() {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                executiveLists.clear();
-                executiveLists.addAll(database.getAllExecutiveList());
+        try {
 
-                return null;
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_executivelist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String empName = c.getString(0);
+                String empCode = c.getString(1);
+                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(empName, empCode);
+                executiveLists.add(assignManager_executiveList);
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
-            }
-        }.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    /**
+     * This method is to fetch all user records from SQLite
+     */
+//    private void getallexecutives() {
+//        // AsyncTask is used that SQLite operation not blocks the UI Thread.
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... params) {
+//                executiveLists.clear();
+//                executiveLists.addAll(database.getAllExecutiveList());
+//
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void aVoid) {
+//                super.onPostExecute(aVoid);
+//
+//            }
+//        }.execute();
+//    }
 
 
     //Merchant List API hit
@@ -642,7 +667,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         spinnerBuilder.setView(mView);
         AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
-
 
     }
 
