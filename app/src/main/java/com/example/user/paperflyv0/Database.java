@@ -28,7 +28,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement)";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
         String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text unique)";
-        String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text unique,totalcount int)";
+        String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text,totalcount int,created_at text unique)";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
@@ -45,7 +45,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    public void add_pickups_today_manager(String merchantName, String merchantCode,int cnt) {
+    public void add_pickups_today_manager(String merchantName, String merchantCode,int cnt,String created_at) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -55,6 +55,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("merchantCode", merchantCode);
 
         values.put("totalcount",cnt);
+        values.put("created_at",created_at);
 
         sqLiteDatabase.insert("pickups_today_manager", null, values);
         sqLiteDatabase.close();

@@ -45,12 +45,12 @@ import java.util.Map;
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private String URL_DATA = "http://paperflybd.com/unassignedAPI.php";
+    private String URL_DATA = "http://192.168.0.117/new/showassign.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
-    List<AssignManager_Model> assignManager_modelList;
+    List<PickupList_Model_For_Executive> pickupList_model_for_executives;
     Database database;
 
 
@@ -67,7 +67,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-        assignManager_modelList = new ArrayList<>();
+        pickupList_model_for_executives = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
         recyclerView.setHasFixedSize(true);
@@ -77,7 +77,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         swipeRefreshLayout = findViewById(R.id.refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-        assignManager_modelList.clear();
+        pickupList_model_for_executives.clear();
         getData();
         swipeRefreshLayout.setRefreshing(true);
         loadRecyclerView(username);
@@ -117,18 +117,18 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         progress.setProgress(0);
         progress.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();
 
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("unAssignedlist");
+                    JSONArray array = jsonObject.getJSONArray("summary");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject o = array.getJSONObject(i);
 
-                        database.add_pickups_today_manager(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
+                        database.add_pickups_today_manager(o.getString("merchant_name"), o.getString("order_count"),o.getInt("scan_count"),o.getString("created_at"));
                     }
                     getData();
                     swipeRefreshLayout.setRefreshing(false);
@@ -150,12 +150,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
                     }
                 }){
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params1 = new HashMap<String, String>();
-                params1.put("username", user);
-                return params1;
-            }
+
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
@@ -163,21 +158,21 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     }
 
     private void getData()
-    {    assignManager_modelList.clear();
+    {
         try{
-
+            pickupList_model_for_executives.clear();
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
             Cursor c = database.getdata_pickups_today_manager(sqLiteDatabase);
             while (c.moveToNext())
             {
                 String name = c.getString(0);
                 String code = c.getString(1);
-                int count = c.getInt(2);
+                String count = String.valueOf(c.getInt(2));
 
-                AssignManager_Model todaySummary = new AssignManager_Model(name,code,count);
-                assignManager_modelList.add(todaySummary);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count);
+                pickupList_model_for_executives.add(todaySummary);
             }
-            adapter = new MerchantListAdapter(assignManager_modelList,getApplicationContext());
+            adapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
             recyclerView.setAdapter(adapter);
             swipeRefreshLayout.setRefreshing(false);
 
@@ -296,7 +291,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     public void onRefresh() {
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        assignManager_modelList.clear();
+        pickupList_model_for_executives.clear();
         getData();
         loadRecyclerView(username);
     }
