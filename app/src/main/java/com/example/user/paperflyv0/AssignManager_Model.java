@@ -7,6 +7,7 @@ public class AssignManager_Model  {
     private int totalcount;
     private String totalamount;
     int key_id;
+    private int scan_count;
 
     public void setTotalcount(int totalcount) {
         this.totalcount = totalcount;
@@ -22,6 +23,11 @@ public class AssignManager_Model  {
         this.m_names = m_names;
         this.m_address = m_address;
         }
+
+    public int getScan_count() {
+        return scan_count;
+    }
+
     public AssignManager_Model(String totalamount)
         {
             this.totalamount = totalamount;

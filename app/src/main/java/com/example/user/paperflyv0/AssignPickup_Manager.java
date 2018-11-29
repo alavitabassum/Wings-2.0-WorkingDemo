@@ -1,5 +1,6 @@
 package com.example.user.paperflyv0;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -53,9 +55,10 @@ import java.util.List;
 import java.util.Map;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener {
 
-    String[] executive_num_list;
+    public SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog progress;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     public static final String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
@@ -105,9 +108,14 @@ public class AssignPickup_Manager extends AppCompatActivity
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
 
+        swipeRefreshLayout = findViewById(R.id.refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setRefreshing(true);
+        assignManager_modelList.clear();
+        swipeRefreshLayout.setRefreshing(true);
 
-
-      registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        //Offline sync
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
 
         getallmerchant();
@@ -231,10 +239,18 @@ public class AssignPickup_Manager extends AppCompatActivity
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
 
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("unAssignedlist");
@@ -242,10 +258,12 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"));
                             }
-                            //getallmerchant();
+                            getallmerchant();
+                            swipeRefreshLayout.setRefreshing(false);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            swipeRefreshLayout.setRefreshing(false);
 
 
                         }
@@ -254,6 +272,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -271,6 +291,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     /* merchant List generation from sqlite*/
     private void getallmerchant() {
+        assignManager_modelList.clear();
         try {
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
@@ -286,6 +307,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
             assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
             recyclerView.setAdapter(assignExecutiveAdapter);
+            swipeRefreshLayout.setRefreshing(false);
             assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
 
         } catch (Exception e) {
@@ -624,25 +646,14 @@ public class AssignPickup_Manager extends AppCompatActivity
         intent.putExtra("MERCHANTCODE", merchantcode);
         startActivity(intent);
     }
-//
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        registerReceiver(new NetworkStateChecker(), new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-//    }
 
-//    @Override
-//    public void onPause() {
-////        unregisterReceiver(new NetworkStateChecker());
-//        super.onPause();
-//    }
+    @Override
+    public void onRefresh() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        assignManager_modelList.clear();
+        getallmerchant();
+        loadmerchantlist(username);
+    }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        if (broadcastReceiver != null) {
-////            unregisterReceiver(new NetworkStateChecker());
-//        }
-//
-//    }
 }

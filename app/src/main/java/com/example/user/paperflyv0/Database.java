@@ -62,7 +62,7 @@ public class Database extends SQLiteOpenHelper {
 
     public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
         String[] columns = {"merchantName", "merchantCode","totalcount"};
-        return db.query("pickups_today_manager", columns, null, null, null, null, null);
+        return db.query("pickups_today_manager", columns, null, null, null, null, "merchantName");
     }
     /*public void insert_pickups_today_manager(String name, String order_count) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

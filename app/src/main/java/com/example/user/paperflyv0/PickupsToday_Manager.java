@@ -77,6 +77,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         swipeRefreshLayout = findViewById(R.id.refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
+        assignManager_modelList.clear();
         getData();
         swipeRefreshLayout.setRefreshing(true);
         loadRecyclerView(username);
@@ -129,6 +130,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
                         database.add_pickups_today_manager(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                     }
+                    getData();
                     swipeRefreshLayout.setRefreshing(false);
                     //swipeRefreshLayout.setRefreshing(false);
 
@@ -161,7 +163,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     }
 
     private void getData()
-    {
+    {    assignManager_modelList.clear();
         try{
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
@@ -295,6 +297,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         assignManager_modelList.clear();
+        getData();
         loadRecyclerView(username);
     }
 }
