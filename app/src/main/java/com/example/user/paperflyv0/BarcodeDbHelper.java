@@ -54,7 +54,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE1 = "CREATE TABLE My_pickups ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "merchantId TEXT UNIQUE, "
+                + "merchantId TEXT, "
                 + "merchant_name TEXT, "
                 + "executive_name TEXT, "
                 + "assined_qty TEXT, "
@@ -62,7 +62,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "scan_count TEXT, "
                 + "phone_no TEXT, "
                 + "assigned_by TEXT, "
-                + "created_at TEXT, "
+                + "created_at TEXT unique, "
                 + "updated_by TEXT, "
                 + "updated_at TEXT , "
                 + "status INT, "
@@ -274,6 +274,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     //Demo Testing
     public List<PickupList_Model_For_Executive> getAllData(String user) {
         // array of columns to fetch
+
         String[] columns = {KEY_ID,
                             MERCHANT_ID,
                             MERCHANT_NAME,
@@ -294,7 +295,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-
         Cursor cursor = db.query(TABLE_NAME_1, //Table to query
                 columns,    //columns to return
                 "executive_name='" + user + "'",        //columns for the WHERE clause
@@ -303,6 +303,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 null,       //filter by row groups
                 sortOrder); //The sort order
 
+//        Cursor cursor = db.query(TABLE_NAME_1, columns, "executive_name=? and created_at=?", new String[] { user, sdf.format(date) }, null, null, null);
+
+//        Date date = new Date();
 
         // Traversing through all rows and adding to list
         if (cursor.moveToFirst()) {

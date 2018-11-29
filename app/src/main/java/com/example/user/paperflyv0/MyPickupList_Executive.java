@@ -43,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,13 +93,20 @@ public class MyPickupList_Executive extends AppCompatActivity
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
+        Date date = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dd = String.valueOf(date);
 
         getData(user);
         swipeRefreshLayout.setRefreshing(true);
 //        list.clear();
         loadRecyclerView(user);
 
-
+//        public String getBackupFolderName() {
+//            Date date = new Date();
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd.hhmmss");
+//            return sdf.format(date);
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -133,7 +141,9 @@ public class MyPickupList_Executive extends AppCompatActivity
      */
     private void getData(final String user) {
         // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<String, Void, Void>() {
+        ;
+
+        new AsyncTask<String, Void , Void>() {
             @Override
             protected Void doInBackground(String... params) {
                 list.clear();
@@ -157,6 +167,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     {
 //        boolean check;
 //          list.clear();
+          final Date date = new Date();
           StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/showassign.php",
            new Response.Listener<String>()
            {
@@ -518,6 +529,9 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     public void onRefresh() {
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        Date date = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dd = String.valueOf(date);
         getData(username);
         loadRecyclerView(username);
     }
