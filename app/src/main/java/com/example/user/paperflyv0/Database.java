@@ -165,7 +165,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("totalcount",cnt);
 
         sqLiteDatabase.insertWithOnConflict("merchantList", null, values,SQLiteDatabase.CONFLICT_IGNORE);
-        sqLiteDatabase.close();
+        //sqLiteDatabase.close();
     }
 
     public void addallmerchantlist(String merchantName, String merchantCode) {
@@ -250,7 +250,7 @@ public class Database extends SQLiteOpenHelper {
 //        sqLiteDatabase.insert("executivelist", null, values);
         sqLiteDatabase.insertWithOnConflict("executivelist", null, values, SQLiteDatabase.CONFLICT_IGNORE);
 
-        sqLiteDatabase.close();
+        //sqLiteDatabase.close();
     }
 
     public Cursor get_executivelist(SQLiteDatabase db) {
@@ -412,6 +412,7 @@ public class Database extends SQLiteOpenHelper {
         List<AssignManager_Model> list = new ArrayList<AssignManager_Model>();
 
         SQLiteDatabase db = this.getReadableDatabase();
+        db.isOpen();
 
 
         Cursor cursor = db.query("merchantList", //Table to query
@@ -429,10 +430,11 @@ public class Database extends SQLiteOpenHelper {
                 AssignManager_Model beneficiary = new AssignManager_Model();
 
 //                Beneficiary beneficiary = new Beneficiary();
-                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));
+
                 beneficiary.setM_names(cursor.getString(cursor.getColumnIndex("merchantName")));
                 beneficiary.setM_address(cursor.getString(cursor.getColumnIndex("merchantCode")));
                 beneficiary.setTotalcount(cursor.getInt(cursor.getColumnIndex("totalcount")));
+                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));;
 
                 // Adding user record to list
                 list.add(beneficiary);
@@ -454,6 +456,7 @@ public class Database extends SQLiteOpenHelper {
         List<AssignManager_ExecutiveList> list = new ArrayList<AssignManager_ExecutiveList>();
 
         SQLiteDatabase db = this.getReadableDatabase();
+        db.isOpen();
 
 
         Cursor cursor = db.query("executivelist", //Table to query
@@ -471,9 +474,10 @@ public class Database extends SQLiteOpenHelper {
                 AssignManager_ExecutiveList beneficiary = new AssignManager_ExecutiveList();
 
 //                Beneficiary beneficiary = new Beneficiary();
-                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));
+
                 beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex("empName")));
                 beneficiary.setExecutive_code(cursor.getString(cursor.getColumnIndex("empCode")));
+                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));
 
                 // Adding user record to list
                 list.add(beneficiary);

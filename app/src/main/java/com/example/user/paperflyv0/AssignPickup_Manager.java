@@ -339,6 +339,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 super.onPostExecute(aVoid);
                 assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
                 recyclerView.setAdapter(assignExecutiveAdapter);
+                //recyclerView.swapAdapter(assignExecutiveAdapter, true);
                 assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
                 assignExecutiveAdapter.notifyDataSetChanged();
             }
