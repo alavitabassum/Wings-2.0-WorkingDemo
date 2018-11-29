@@ -12,10 +12,10 @@ import java.util.List;
 
 public class Pending_Pickup_Adapter_Executive extends RecyclerView.Adapter<Pending_Pickup_Adapter_Executive.MyViewHolder> {
     Context mContext;
-    List<Pending_Pickup_Model_Executive> listitems;
+    List<PickupList_Model_For_Executive> listitems;
 
     // Constructor
-    public Pending_Pickup_Adapter_Executive(Context mContext, List<Pending_Pickup_Model_Executive> listitems){
+    public Pending_Pickup_Adapter_Executive(Context mContext, List<PickupList_Model_For_Executive> listitems){
         this.mContext = mContext;
         this.listitems = listitems;
     }
@@ -34,11 +34,11 @@ public class Pending_Pickup_Adapter_Executive extends RecyclerView.Adapter<Pendi
 
     @Override
     public void onBindViewHolder(@NonNull Pending_Pickup_Adapter_Executive.MyViewHolder holder, int position) {
-        holder.tv_name.setText(listitems.get(position).getName());
-       holder.tv_exec_name.setText(listitems.get(position).getExec_name());
+        holder.tv_name.setText(listitems.get(position).getMerchant_name());
+        holder.tv_exec_name.setText(listitems.get(position).getExecutive_name());
         holder.a_qty.setText(listitems.get(position).getAssined_qty());
         holder.u_qty.setText(listitems.get(position).getPicked_qty());
-        holder.r_qty.setText(listitems.get(position).getReceived_qty());
+        holder.r_qty.setText(listitems.get(position).getScan_count());
     }
 
     @Override

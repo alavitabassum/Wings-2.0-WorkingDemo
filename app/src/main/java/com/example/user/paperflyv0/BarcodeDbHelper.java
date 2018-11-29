@@ -14,6 +14,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
+    private static final String TABLE_NAME_2 = "Pending_pickups";
     private static final String KEY_ID = "id";
     private static final String MERCHANT_ID = "merchantId";
     private static final String KEY_NAME = "barcodeNumber";
@@ -27,6 +28,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String CREATED_AT = "created_at";
     private static final String UPDATED_BY = "updated_by";
     private static final String UPDATED_AT = "updated_at";
+    private static final String RECEIVED_QTY = "received_qty";
     private static final String STATE = "state";
     private static final String STATUS = "status";
     private static final String COMPLETE_STATUS = "complete_status";
@@ -66,14 +68,24 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "status INT, "
                 + "complete_status TEXT )";
 
+        String CREATION_TABLE2 = "CREATE TABLE Pending_pickups ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "merchant_name TEXT, "
+                + "executive_name TEXT, "
+                + "assined_qty TEXT, "
+                + "picked_qty TEXT, "
+                + "received_qty TEXT )";
+
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
+        db.execSQL(CREATION_TABLE2);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_1);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
         this.onCreate(db);
     }
 
@@ -311,6 +323,69 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 beneficiary.setUpdated_by(cursor.getString(cursor.getColumnIndex(UPDATED_BY)));
                 beneficiary.setUpdated_at(cursor.getString(cursor.getColumnIndex(UPDATED_AT)));
                 beneficiary.setComplete_status(cursor.getString(cursor.getColumnIndex(COMPLETE_STATUS)));
+                // Adding user record to list
+                list.add(beneficiary);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        // return user list
+        return list;
+    }
+
+    public void insert_pending_pickups_history_ex(String merchant_name, String executive_name, String assigned, String picked, String received) {
+        SQLiteDatabase sdb = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(MERCHANT_NAME, merchant_name);
+
+        values.put(EXECUTIVE_NAME, executive_name);
+
+        values.put(ASSIGNED_QTY, assigned);
+
+        values.put(PICKED_QTY, picked);
+
+        values.put(SCAN_COUNT, received);
+
+        sdb.insertWithOnConflict(TABLE_NAME_2, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+        sdb.close();
+    }
+
+    // Get all executives
+    public List<PickupList_Model_For_Executive> getPending(String user) {
+        // array of columns to fetch
+//        String[] columns = {"id", "empName", "empCode"};
+        String[] columns = {KEY_ID,
+                MERCHANT_NAME,
+                EXECUTIVE_NAME,
+                ASSIGNED_QTY,
+                PICKED_QTY,
+                SCAN_COUNT };
+        // sorting orders
+        String sortOrder = KEY_ID + " ASC";
+        List<PickupList_Model_For_Executive> list = new ArrayList<PickupList_Model_For_Executive>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.query(TABLE_NAME_1, columns,  "executive_name='" + user + "'", null, null, null,sortOrder);
+
+
+        // Traversing through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                PickupList_Model_For_Executive beneficiary = new PickupList_Model_For_Executive();
+
+//                Beneficiary beneficiary = new Beneficiary();
+                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ID))));
+                beneficiary.setMerchant_name(cursor.getString(cursor.getColumnIndex(MERCHANT_NAME)));
+                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex(EXECUTIVE_NAME)));
+                beneficiary.setAssined_qty(cursor.getString(cursor.getColumnIndex(ASSIGNED_QTY)));
+                beneficiary.setPicked_qty(cursor.getString(cursor.getColumnIndex(PICKED_QTY)));
+                beneficiary.setScan_count(cursor.getString(cursor.getColumnIndex(SCAN_COUNT)));
+
                 // Adding user record to list
                 list.add(beneficiary);
             } while (cursor.moveToNext());

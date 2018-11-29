@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -211,46 +213,46 @@ public class AssignPickup_Manager extends AppCompatActivity
 //
 //
 //
-//
-//    //Get Executive List from sqlite
-//    private void getallexecutives() {
-//        try {
-//
-//            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-//            Cursor c = database.get_executivelist(sqLiteDatabase);
-//            while (c.moveToNext()) {
-//                String empName = c.getString(0);
-//                String empCode = c.getString(1);
-//                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(empName, empCode);
-//                executiveLists.add(assignManager_executiveList);
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+
+    //Get Executive List from sqlite
+    private void getallexecutives() {
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_executivelist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String empName = c.getString(0);
+                String empCode = c.getString(1);
+                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(empName, empCode);
+                executiveLists.add(assignManager_executiveList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * This method is to fetch all user records from SQLite
      */
-    private void getallexecutives() {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                executiveLists.clear();
-                executiveLists.addAll(database.getAllExecutiveList());
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
-            }
-        }.execute();
-    }
+//    private void getallexecutives() {
+//        // AsyncTask is used that SQLite operation not blocks the UI Thread.
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... params) {
+//                executiveLists.clear();
+//                executiveLists.addAll(database.getAllExecutiveList());
+//
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void aVoid) {
+//                super.onPostExecute(aVoid);
+//
+//            }
+//        }.execute();
+//    }
 
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
