@@ -38,7 +38,7 @@
     <string name="title_activity_pickups_today__manager">Pickup Summary</string>
     <string name="title_activity_assign_pickup__manager">Assign Pickups</string>
     <string name="title_activity_pickup_history__manager">Pickup History</string>
-    <string name="uploaded_product_count">Uploaded Qty :</string>
+    <string name="uploaded_product_count">Executive :</string>
     <string name="assigned_product_count">Order Qty :</string>
     <string name="total_products_picked">Picked Qty :</string>
 

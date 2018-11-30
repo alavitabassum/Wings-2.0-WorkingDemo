@@ -49,11 +49,13 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         public TextView itemMerchantName;
         public TextView itemAssignedQty;
         public TextView itemReceivedQty;
+        public TextView itemUploadedQty;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemMerchantName=itemView.findViewById(R.id.merchant_name);
+            itemUploadedQty = itemView.findViewById(R.id.u_qty);
             itemAssignedQty=itemView.findViewById(R.id.a_qty);
             itemReceivedQty=itemView.findViewById(R.id.r_qty);
 
@@ -72,6 +74,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         PickupList_Model_For_Executive pickupList_model_for_executive = pickupList_model_for_executives.get(i);
         viewHolder.itemMerchantName.setText(pickupList_model_for_executive.getMerchant_name());
+        viewHolder.itemUploadedQty.setText(pickupList_model_for_executive.getExecutive_name());
         viewHolder.itemAssignedQty.setText(pickupList_model_for_executive.getAssined_qty());
         viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
     }

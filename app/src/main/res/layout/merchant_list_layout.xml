@@ -27,11 +27,22 @@
             android:gravity="center"
             android:padding="16dp" tools:targetApi="lollipop">
 
+            <TextView
+                android:id="@+id/u_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txt2"
+                android:layout_toEndOf="@+id/txt2"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="15sp" />
+
 
             <TextView
                 android:id="@+id/a_qty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/u_qty"
                 android:layout_alignBaseline="@+id/txt1"
                 android:layout_toEndOf="@+id/txt1"
                 android:textAlignment="center"
@@ -50,9 +61,24 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txt2"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txt1"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="-1dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/uploaded_product_count"
+                android:textSize="15sp" />
+
+
+
+            <TextView
                 android:id="@+id/txt1"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/txt2"
                 android:layout_alignParentStart="true"
                 android:layout_marginTop="2dp"
                 android:lines="1"

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -48,7 +49,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,9 +65,9 @@ public class AssignPickup_Manager extends AppCompatActivity
     private ProgressDialog progress;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
-    //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
+    public static final String INSERT_URL = "http://192.168.1.112/new/insertassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
+    //private String MERCHANT_URL = "http://192.168.1.112/new/order.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -96,6 +100,9 @@ public class AssignPickup_Manager extends AppCompatActivity
         executiveLists = new ArrayList<>();
         assignManager_modelList = new ArrayList<>();
 
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -118,10 +125,20 @@ public class AssignPickup_Manager extends AppCompatActivity
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
 
-        getallmerchant();
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadmerchantlist(user);
+            Toast.makeText(getApplicationContext(), "Internet Available", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            getallmerchant();
+            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+        }
+
+
         getallexecutives();
 
-        loadmerchantlist(user);
         loadexecutivelist(user);
         loadallmerchantlist(user);
 
@@ -256,10 +273,22 @@ public class AssignPickup_Manager extends AppCompatActivity
                             JSONArray array = jsonObject.getJSONArray("unAssignedlist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"));
+                                AssignManager_Model todaySummary = new AssignManager_Model(
+                                        o.getString("merchantName"),
+                                        o.getString("merchantCode"),
+                                        o.getInt("cnt"),
+                                        o.getString("contactNumber")
+                                );
+                                SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                                database.deletemerchantList(sqLiteDatabase);
+                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"),o.getString("contactNumber"));
+                                assignManager_modelList.add(todaySummary);
+
                             }
-                            getallmerchant();
+                            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
+                            recyclerView.setAdapter(assignExecutiveAdapter);
                             swipeRefreshLayout.setRefreshing(false);
+                            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -274,7 +303,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "NO INTERNET CONNECTION", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -301,7 +330,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
                 int totalcount = c.getInt(2);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
+                String contactNumber = c.getString(3);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount,contactNumber);
                 assignManager_modelList.add(todaySummary);
             }
 
@@ -366,7 +396,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     }
 
     //For assigning executive API into mysql
-    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name) {
+    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
                 new Response.Listener<String>() {
@@ -406,6 +436,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 params.put("assigned_by", user);
                 params.put("created_at", currentDateTimeString);
                 params.put("merchant_name", m_name);
+                params.put("phone_no", contactNumber);
                /* database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
                 final String strI = String.valueOf(total_assign);
@@ -563,9 +594,11 @@ public class AssignPickup_Manager extends AppCompatActivity
         dialog_mName.setText(clickeditem.getM_names());
         final String merchant_code = clickeditem.getM_address();
         final String m_name = clickeditem.getM_names();
+        final String contactNumber = clickeditem.getPhone_no();
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
+
 
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
@@ -587,7 +620,7 @@ public class AssignPickup_Manager extends AppCompatActivity
             public void onClick(DialogInterface dialog, int i1) {
                 String empname = mAutoComplete.getText().toString();
                 final String empcode = database.getSelectedEmployeeCode(empname);
-                assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name);
+                assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name,contactNumber);
 
                 if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
@@ -652,7 +685,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         assignManager_modelList.clear();
-        getallmerchant();
         loadmerchantlist(username);
     }
 

@@ -123,7 +123,7 @@ public class ManagerCardMenu extends AppCompatActivity
 
     };//runnable*/
 
-    private void loadmerchantlist(final String user) {
+   /* private void loadmerchantlist(final String user) {
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
                 new Response.Listener<String>() {
@@ -138,7 +138,7 @@ public class ManagerCardMenu extends AppCompatActivity
                                 database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                             }
 
-                            getallmerchant();
+                            //getallmerchant();
 
 
                         } catch (JSONException e) {
@@ -164,9 +164,9 @@ public class ManagerCardMenu extends AppCompatActivity
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest1);
-    }
+    }*/
 
-    private void getallmerchant() {
+   /* private void getallmerchant() {
         try {
 
 
@@ -185,7 +185,7 @@ public class ManagerCardMenu extends AppCompatActivity
             e.printStackTrace();
         }
     }
-
+*/
 
     @Override
     protected void onDestroy() {
@@ -209,8 +209,8 @@ public class ManagerCardMenu extends AppCompatActivity
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        getallmerchant();
-        loadmerchantlist(username);
+        //getallmerchant();
+        //loadmerchantlist(username);
         amounts = database.getTotalOfAmount();
 
         // Inflate the menu; this adds items to the action bar if it is present.

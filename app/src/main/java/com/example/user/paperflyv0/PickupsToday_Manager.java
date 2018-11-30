@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -45,7 +47,7 @@ import java.util.Map;
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private String URL_DATA = "http://192.168.0.117/new/showassign.php";
+    private String URL_DATA = "http://192.168.1.112/new/showassign.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
@@ -58,6 +60,9 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickups_today__manager);
+
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
         database=new Database(this);
         database.getWritableDatabase();
@@ -78,22 +83,25 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
         pickupList_model_for_executives.clear();
-        getData();
         swipeRefreshLayout.setRefreshing(true);
-        loadRecyclerView(username);
-        // getData();
+
+
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadRecyclerView(username);
+
+            Toast.makeText(getApplicationContext(), "Internet Available", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            getData();
+            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-      /*  fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        })*/;
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -117,7 +125,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         progress.setProgress(0);
         progress.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 progress.dismiss();
@@ -127,14 +135,22 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     JSONArray array = jsonObject.getJSONArray("summary");
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject o = array.getJSONObject(i);
-
-                        database.add_pickups_today_manager(o.getString("merchant_name"), o.getString("order_count"),o.getInt("scan_count"),o.getString("created_at"));
+                        PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(
+                                o.getString("merchant_name"),
+                                o.getString("order_count"),
+                                String.valueOf(o.getInt("scan_count")),
+                                o.getString("executive_name"));
+                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                        database.clearPTMList(sqLiteDatabase);
+                        database.add_pickups_today_manager(o.getString("merchant_name"), o.getString("order_count"),o.getInt("scan_count"),o.getString("created_at"),o.getString("executive_name"));
+                        pickupList_model_for_executives.add(todaySummary);
                     }
-                    getData();
-                    swipeRefreshLayout.setRefreshing(false);
-                    //swipeRefreshLayout.setRefreshing(false);
 
-                } catch (JSONException e) {
+                    adapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
+                    recyclerView.setAdapter(adapter);
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    } catch (JSONException e) {
                     e.printStackTrace();
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -150,6 +166,13 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
                     }
                 }){
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
 
         };
 
@@ -168,8 +191,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                 String name = c.getString(0);
                 String code = c.getString(1);
                 String count = String.valueOf(c.getInt(2));
-
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count);
+                String executive_name = c.getString(3);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name);
                 pickupList_model_for_executives.add(todaySummary);
             }
             adapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());

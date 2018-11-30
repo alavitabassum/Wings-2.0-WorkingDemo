@@ -157,7 +157,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     {
 //        boolean check;
 //          list.clear();
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/showassign.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "",
            new Response.Listener<String>()
            {
             @Override

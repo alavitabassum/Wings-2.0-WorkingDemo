@@ -8,21 +8,27 @@ public class AssignManager_Model  {
     private String totalamount;
     int key_id;
     private int scan_count;
+    private String phone_no;
 
     public void setTotalcount(int totalcount) {
         this.totalcount = totalcount;
     }
 
-    public AssignManager_Model(String m_names, String m_address, int totalcount) {
+    public AssignManager_Model(String m_names, String m_address, int totalcount,String phone_no) {
         this.m_names = m_names;
         this.m_address = m_address;
         this.totalcount = totalcount;
+        this.phone_no = phone_no;
 
         }
     public AssignManager_Model(String m_names, String m_address) {
         this.m_names = m_names;
         this.m_address = m_address;
         }
+
+    public String getPhone_no() {
+        return phone_no;
+    }
 
     public int getScan_count() {
         return scan_count;
