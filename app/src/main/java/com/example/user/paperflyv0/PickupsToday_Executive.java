@@ -50,7 +50,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
 
     //private static final String URL_DATA = "http://192.168.0.117/new/merchantListForExecutive.php";
-    private static final String URL_DATA = "http://192.168.0.117/new/showassign.php";
+    private static final String URL_DATA = "http://192.168.0.129/new/showassign.php";
     private ProgressDialog progress;
     Database database;
 
@@ -169,7 +169,7 @@ public class PickupsToday_Executive extends AppCompatActivity
    {
 //        boolean check;
 //          list.clear();
-       StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/showexecutiveassign.php",
+       StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA,
                new Response.Listener<String>()
                {
                    @Override
@@ -210,7 +210,7 @@ public class PickupsToday_Executive extends AppCompatActivity
                new Response.ErrorListener() {
                    @Override
                    public void onErrorResponse(VolleyError error) {
-//                        progress.dismiss();
+                       // progress.dismiss();
                        swipeRefreshLayout.setRefreshing(false);
                        Toast.makeText(getApplicationContext(), "Serve not connected loadrecylerview" +error ,Toast.LENGTH_SHORT).show();
 

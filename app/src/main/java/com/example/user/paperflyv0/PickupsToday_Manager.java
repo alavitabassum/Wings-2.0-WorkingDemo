@@ -20,10 +20,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,7 +52,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
-    RecyclerView.Adapter adapter;
+    MerchantListAdapter merchantListAdapter;
     List<PickupList_Model_For_Executive> pickupList_model_for_executives;
     Database database;
 
@@ -146,8 +148,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                         pickupList_model_for_executives.add(todaySummary);
                     }
 
-                    adapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
-                    recyclerView.setAdapter(adapter);
+                    merchantListAdapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
+                    recyclerView.setAdapter(merchantListAdapter);
                     swipeRefreshLayout.setRefreshing(false);
 
                 } catch (JSONException e) {
@@ -195,8 +197,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                 PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name);
                 pickupList_model_for_executives.add(todaySummary);
             }
-            adapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
-            recyclerView.setAdapter(adapter);
+            merchantListAdapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
+            recyclerView.setAdapter(merchantListAdapter);
             swipeRefreshLayout.setRefreshing(false);
 
 
@@ -220,7 +222,31 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.pickups_today__manager, menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        try {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    merchantListAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Intent intent_stay = new Intent(PickupsToday_Manager.this, AssignPickup_Manager.class);
+            Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
+            startActivity(intent_stay);
+        }
+
         return true;
     }
 
@@ -315,7 +341,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         pickupList_model_for_executives.clear();
-        getData();
         loadRecyclerView(username);
     }
 }

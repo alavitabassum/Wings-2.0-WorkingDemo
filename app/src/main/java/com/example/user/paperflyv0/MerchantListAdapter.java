@@ -1,32 +1,18 @@
 package com.example.user.paperflyv0;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Paint;
-import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder>  {
+public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder>implements Filterable{
 
     private List<PickupList_Model_For_Executive> pickupList_model_for_executives;
     private List<PickupList_Model_For_Executive> PickupList_Model_For_ExecutiveFull;
@@ -85,20 +71,20 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     }
 
     //search/filter list
-  /*  @Override
+    @Override
     public Filter getFilter() {
         return NamesFilter;
-    }*/
+    }
 
-   /* private Filter NamesFilter = new Filter() {
+    private Filter NamesFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-       *//*     assignManager_modelListFull.clear();
-            assignManager_modelListFull.addAll(assignManager_modelList);
-            assignManager_modelList.clear();
-            assignManager_modelList.addAll(assignManager_modelListFull);*//*
-
-           List<AssignManager_Model> filteredList = new ArrayList<>();
+    /*        PickupList_Model_For_ExecutiveFull.clear();
+            PickupList_Model_For_ExecutiveFull.addAll(pickupList_model_for_executives);
+            pickupList_model_for_executives.clear();
+            pickupList_model_for_executives.addAll(PickupList_Model_For_ExecutiveFull);
+*/
+           List<PickupList_Model_For_Executive> filteredList = new ArrayList<>();
 
            if (constraint == null || constraint.length() == 0){
                filteredList.addAll(PickupList_Model_For_ExecutiveFull);
@@ -118,12 +104,11 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            assignManager_modelList.clear();
-            assignManager_modelList.addAll((List) results.values);
+            pickupList_model_for_executives.clear();
+            pickupList_model_for_executives.addAll((List) results.values);
             notifyDataSetChanged();
 
         }
     };
-*/
 
 }

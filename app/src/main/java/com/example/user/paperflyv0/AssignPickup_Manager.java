@@ -62,7 +62,6 @@ public class AssignPickup_Manager extends AppCompatActivity
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     public static final String INSERT_URL = "http://192.168.0.129/new/insertassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
-    //private String MERCHANT_URL = "http://192.168.1.112/new/order.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -202,7 +201,6 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 database.addexecutivelist(o.getString("userName"), o.getString("empCode"));
                             }
-
 
 
                         } catch (JSONException e) {
