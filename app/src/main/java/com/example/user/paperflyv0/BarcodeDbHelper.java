@@ -126,7 +126,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 "phone_no": null,
 "picked_qty": null,
 "merchant_name": "Womens World BD - WWB"*/
-    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String status, int complete_status)
+    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, int status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
@@ -143,8 +143,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CREATED_AT, created_at);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
-        values.put(STATUS, status);
         values.put(COMPLETE_STATUS, complete_status);
+        values.put(STATUS, status);
 
 //        db.insert(TABLE_NAME_1,null,values);
         db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);

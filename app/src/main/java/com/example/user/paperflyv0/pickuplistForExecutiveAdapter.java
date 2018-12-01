@@ -3,19 +3,15 @@ package com.example.user.paperflyv0;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.support.design.widget.SwipeDismissBehavior;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,7 +20,6 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +99,19 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                         return;
                     }
                     v.getContext().startActivity(callIntent);
+                }
+            });
+
+            scan_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListner != null) {
+                        // Position of the item will be saved in this variable
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListner.onItemClick(itemView, position);
+                        }
+                    }
                 }
             });
 

@@ -242,7 +242,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     //Update scan count
     private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/updateTable.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

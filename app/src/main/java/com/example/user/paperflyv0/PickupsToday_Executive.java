@@ -169,7 +169,7 @@ public class PickupsToday_Executive extends AppCompatActivity
    {
 //        boolean check;
 //          list.clear();
-       StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/showassign.php",
+       StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/showexecutiveassign.php",
                new Response.Listener<String>()
                {
                    @Override
@@ -194,8 +194,8 @@ public class PickupsToday_Executive extends AppCompatActivity
                                        o.getString("scan_count"),
                                        o.getString("phone_no"),
                                        o.getString("picked_qty"),
-                                       o.getString("merchant_name")
-                                       , NAME_NOT_SYNCED_WITH_SERVER );
+                                       o.getString("merchant_name"),
+                                       o.getString("complete_status"), NAME_NOT_SYNCED_WITH_SERVER );
 
                            }
                            getData(user);

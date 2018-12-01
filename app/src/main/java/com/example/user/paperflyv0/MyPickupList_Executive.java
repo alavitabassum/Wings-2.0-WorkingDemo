@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +27,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +41,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -184,7 +181,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 //        boolean check;
 //          list.clear();
           final Date date = new Date();
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/showassign.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/showexecutiveassign.php",
            new Response.Listener<String>()
            {
             @Override
