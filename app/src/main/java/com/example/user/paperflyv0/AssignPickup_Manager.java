@@ -65,9 +65,8 @@ public class AssignPickup_Manager extends AppCompatActivity
     private ProgressDialog progress;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://192.168.1.112/new/insertassign.php";
+    public static final String INSERT_URL = "http://192.168.0.129/new/insertassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
-    //private String MERCHANT_URL = "http://192.168.1.112/new/order.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -267,6 +266,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                        database.deletemerchantList(sqLiteDatabase);
                         progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -279,8 +280,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                                         o.getInt("cnt"),
                                         o.getString("contactNumber")
                                 );
-                                SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
-                                database.deletemerchantList(sqLiteDatabase);
+
                                 database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"),o.getString("contactNumber"));
                                 assignManager_modelList.add(todaySummary);
 
