@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -116,7 +116,7 @@ public class ScanningScreen extends AppCompatActivity {
             //Fetching email from shared preferences
             SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
             String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-            String user = username.toString();
+            final String user = username.toString();
 
             // current date and time
             final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
@@ -181,6 +181,7 @@ public class ScanningScreen extends AppCompatActivity {
                     } catch (Exception e) {
                         Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
                     }
+//                    getData(username);
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
                     startActivity(intent);
 
@@ -282,7 +283,7 @@ public class ScanningScreen extends AppCompatActivity {
 //    strI, updated_by1, updated_at1, merchant_id
     public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/updateTable.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -333,6 +334,32 @@ public class ScanningScreen extends AppCompatActivity {
             Toast.makeText(ScanningScreen.this, "Request Queue" +e, Toast.LENGTH_SHORT).show();
         }
 
+    }
+    /**
+     * This method is to fetch all user records from SQLite
+     */
+    private void getData(final String user) {
+        // AsyncTask is used that SQLite operation not blocks the UI Thread.
+        ;
+
+        new AsyncTask<String, Void , Void>() {
+            @Override
+            protected Void doInBackground(String... params) {
+                list.clear();
+                list.addAll(db.getAllData(user));
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+                recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+//                pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.class);
+                pickuplistForExecutiveAdapter.notifyDataSetChanged();
+            }
+        }.execute();
     }
 
 }

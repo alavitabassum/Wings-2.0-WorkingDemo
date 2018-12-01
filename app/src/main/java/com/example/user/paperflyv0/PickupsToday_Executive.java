@@ -169,7 +169,7 @@ public class PickupsToday_Executive extends AppCompatActivity
    {
 //        boolean check;
 //          list.clear();
-       StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/showexecutiveassign.php",
+       StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/showexecutiveassign.php",
                new Response.Listener<String>()
                {
                    @Override

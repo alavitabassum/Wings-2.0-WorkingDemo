@@ -11,9 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -49,10 +47,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +60,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     private ProgressDialog progress;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://192.168.1.112/new/insertassign.php";
+    public static final String INSERT_URL = "http://192.168.0.129/new/insertassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     //private String MERCHANT_URL = "http://192.168.1.112/new/order.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
@@ -207,7 +202,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 database.addexecutivelist(o.getString("userName"), o.getString("empCode"));
                             }
-                            getallexecutives();
+
 
 
                         } catch (JSONException e) {
@@ -267,6 +262,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                        database.deletemerchantList(sqLiteDatabase);
                         progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -279,8 +276,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                                         o.getInt("cnt"),
                                         o.getString("contactNumber")
                                 );
-                                SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
-                                database.deletemerchantList(sqLiteDatabase);
+
                                 database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"),o.getString("contactNumber"));
                                 assignManager_modelList.add(todaySummary);
 

@@ -12,7 +12,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -47,7 +46,7 @@ import java.util.Map;
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private String URL_DATA = "http://192.168.1.112/new/showassign.php";
+    private String URL_DATA = "http://192.168.0.129/new/showassign.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
@@ -128,6 +127,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                database.clearPTMList(sqLiteDatabase);
                 progress.dismiss();
 
                 try {
@@ -140,8 +141,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                                 o.getString("order_count"),
                                 String.valueOf(o.getInt("scan_count")),
                                 o.getString("executive_name"));
-                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
-                        database.clearPTMList(sqLiteDatabase);
+
                         database.add_pickups_today_manager(o.getString("merchant_name"), o.getString("order_count"),o.getInt("scan_count"),o.getString("created_at"),o.getString("executive_name"));
                         pickupList_model_for_executives.add(todaySummary);
                     }
@@ -150,7 +150,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     recyclerView.setAdapter(adapter);
                     swipeRefreshLayout.setRefreshing(false);
 
-                    } catch (JSONException e) {
+                } catch (JSONException e) {
                     e.printStackTrace();
                     swipeRefreshLayout.setRefreshing(false);
                 }
