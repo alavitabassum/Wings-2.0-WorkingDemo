@@ -206,7 +206,6 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 database.addexecutivelist(o.getString("userName"), o.getString("empCode"));
                             }
-                            getallexecutives();
 
 
                         } catch (JSONException e) {

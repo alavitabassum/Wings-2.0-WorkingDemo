@@ -169,7 +169,7 @@ public class PickupsToday_Executive extends AppCompatActivity
    {
 //        boolean check;
 //          list.clear();
-       StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/showexecutiveassign.php",
+       StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA,
                new Response.Listener<String>()
                {
                    @Override
@@ -210,9 +210,9 @@ public class PickupsToday_Executive extends AppCompatActivity
                new Response.ErrorListener() {
                    @Override
                    public void onErrorResponse(VolleyError error) {
-//                        progress.dismiss();
+                       // progress.dismiss();
                        swipeRefreshLayout.setRefreshing(false);
-                       Toast.makeText(getApplicationContext(), "Serve not connected loadrecylerview" +error ,Toast.LENGTH_SHORT).show();
+                       Toast.makeText(getApplicationContext(), "Serve not connected" +error ,Toast.LENGTH_SHORT).show();
 
                    }
                })
