@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,22 +37,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.example.user.paperflyv0.MyPickupList_Executive.NAME_NOT_SYNCED_WITH_SERVER;
 
 public class PickupsToday_Executive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener{
 
+    BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
 
+    //private static final String URL_DATA = "http://192.168.0.117/new/merchantListForExecutive.php";
+    private static final String URL_DATA = "http://192.168.0.117/new/showassign.php";
     private ProgressDialog progress;
-    private static final String URL_DATA = "http://192.168.0.118/new/executive.php";
-
-
     Database database;
+
     RecyclerView recyclerView_exec;
     RecyclerView.LayoutManager layoutManager_exec;
-    RecyclerView.Adapter adapter_exec;
-    private List<PickupTodaySummary_ex> summaries;
+    //RecyclerView.Adapter adapter_exec;
+    private List<PickupList_Model_For_Executive> summaries;
+    private  mListForExecutiveAdapter mListForExecutiveAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,30 +69,28 @@ public class PickupsToday_Executive extends AppCompatActivity
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String user = username.toString();
 
+        database=new Database(getApplicationContext());
+        database.getReadableDatabase();
 
-        database=new Database(this);
-        database.getWritableDatabase();
+        db= new BarcodeDbHelper(getApplicationContext());
+        db.getReadableDatabase();
 
+        summaries = new ArrayList<PickupList_Model_For_Executive>();
 
         recyclerView_exec = (RecyclerView) findViewById(R.id.recycler_view_e);
-        recyclerView_exec.setHasFixedSize(true);
-        summaries = new ArrayList<>();
-
         layoutManager_exec = new LinearLayoutManager(this);
         recyclerView_exec.setLayoutManager(layoutManager_exec);
-
+        getData(user);
+        loadRecyclerView(user);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-        getDatas();
-        swipeRefreshLayout.setRefreshing(true);
-        loadRecyclerView();
 
 
-
-
+     /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +98,7 @@ public class PickupsToday_Executive extends AppCompatActivity
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_e);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -109,8 +113,7 @@ public class PickupsToday_Executive extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadRecyclerView()
-    {    summaries.clear();
+   /* private void loadRecyclerView(final String user) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -118,24 +121,25 @@ public class PickupsToday_Executive extends AppCompatActivity
         progress.setProgress(0);
         progress.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_DATA, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                progress.dismiss();
+               progress.dismiss();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("summaryforexecutive");
+                    JSONArray array = jsonObject.getJSONArray("summary");
                     for(int i =0;i<array.length();i++)
                     {
                         JSONObject o = array.getJSONObject(i);
-                        database.insert_pickups_today_executive(o.getString("name"),o.getString("assigned"),o.getString("uploaded"),o.getString("picked"));
+                        database.insert_pickups_today_executive(o.getString("merchant_name"),o.getString("order_count"),o.getString("picked_qty"),o.getString("scan_count"));
                     }
 
-                   getDatas();
+                   getData();
+                    swipeRefreshLayout.setRefreshing(false);
 
                 } catch (JSONException e) {
-                    swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
 
             }
@@ -144,36 +148,106 @@ public class PickupsToday_Executive extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                     }
-                });
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("executive_name", user);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }
-    private void getDatas()
+    }*/
+   private void loadRecyclerView(final String user)
+   {
+//        boolean check;
+//          list.clear();
+       StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.117/new/showexecutiveassign.php",
+               new Response.Listener<String>()
+               {
+                   @Override
+                   public void onResponse(String response) {
+                       //                progress.dismiss();
+                       try {
+                           JSONObject jsonObject = new JSONObject(response);
+                           JSONArray array = jsonObject.getJSONArray("summary");
+
+                           for(int i =0;i<array.length();i++)
+                           {
+
+                               JSONObject o = array.getJSONObject(i);
+                               db.insert_my_assigned_pickups(
+                                       o.getString("executive_name"),
+                                       o.getString("order_count"),
+                                       o.getString("merchant_code"),
+                                       o.getString("assigned_by"),
+                                       o.getString("created_at"),
+                                       o.getString("updated_by"),
+                                       o.getString("updated_at"),
+                                       o.getString("scan_count"),
+                                       o.getString("phone_no"),
+                                       o.getString("picked_qty"),
+                                       o.getString("merchant_name"),
+                                       o.getString("complete_status"), NAME_NOT_SYNCED_WITH_SERVER );
+
+                           }
+                           getData(user);
+                           swipeRefreshLayout.setRefreshing(false);
+
+                       } catch (JSONException e) {
+                           e.printStackTrace();
+                           swipeRefreshLayout.setRefreshing(false);
+                       }
+                   }
+               },
+               new Response.ErrorListener() {
+                   @Override
+                   public void onErrorResponse(VolleyError error) {
+//                        progress.dismiss();
+                       swipeRefreshLayout.setRefreshing(false);
+                       Toast.makeText(getApplicationContext(), "Serve not connected loadrecylerview" +error ,Toast.LENGTH_SHORT).show();
+
+                   }
+               })
+       {
+           @Override
+           protected Map<String, String> getParams()
+           {
+               Map<String,String> params1 = new HashMap<String,String>();
+               params1.put("executive_name",user);
+               return params1;
+           }
+       };
+
+       RequestQueue requestQueue = Volley.newRequestQueue(this);
+       requestQueue.add(stringRequest);
+   }
+
+    private void getData(final String user)
     {
-        try{
+        new AsyncTask<String, Void, Void>() {
+            @Override
+            protected Void doInBackground(String... params) {
+                summaries.clear();
+                summaries.addAll(db.getAllData(user));
 
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_pickups_today_executive(sqLiteDatabase);
-            while (c.moveToNext())
-            {
-                String name = c.getString(0);
-                String assigned = c.getString(1);
-                String uploaded = c.getString(2);
-                String picked = c.getString(3);
-                PickupTodaySummary_ex todaySummary = new PickupTodaySummary_ex(name,assigned,uploaded,picked);
-                summaries.add(todaySummary);
+                return null;
             }
-            adapter_exec = new mListForExecutiveAdapter(summaries,getApplicationContext());
-            recyclerView_exec.setAdapter(adapter_exec);
-            swipeRefreshLayout.setRefreshing(false);
 
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());
+                recyclerView_exec.setAdapter(mListForExecutiveAdapter);
+            }
+        }.execute();
     }
 
     @Override
@@ -188,10 +262,37 @@ public class PickupsToday_Executive extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.pickups_today__executive, menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        try {
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    mListForExecutiveAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            Intent intent_stay = new Intent(PickupsToday_Executive.this,PickupsToday_Manager.class);
+            Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
+            startActivity(intent_stay);
+        }
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -281,6 +382,9 @@ public class PickupsToday_Executive extends AppCompatActivity
     @Override
     public void onRefresh() {
         summaries.clear();
-        loadRecyclerView();
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        String user = username.toString();
+        loadRecyclerView(user);
     }
 }

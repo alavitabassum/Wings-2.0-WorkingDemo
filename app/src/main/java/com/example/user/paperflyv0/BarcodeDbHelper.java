@@ -54,7 +54,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE1 = "CREATE TABLE My_pickups ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "merchantId TEXT UNIQUE, "
+                + "merchantId TEXT, "
                 + "merchant_name TEXT, "
                 + "executive_name TEXT, "
                 + "assined_qty TEXT, "
@@ -62,7 +62,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "scan_count TEXT, "
                 + "phone_no TEXT, "
                 + "assigned_by TEXT, "
-                + "created_at TEXT, "
+                + "created_at TEXT unique, "
                 + "updated_by TEXT, "
                 + "updated_at TEXT , "
                 + "status INT, "
@@ -126,7 +126,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 "phone_no": null,
 "picked_qty": null,
 "merchant_name": "Womens World BD - WWB"*/
-    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String status, int complete_status)
+    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, int status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
@@ -143,8 +143,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CREATED_AT, created_at);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
-        values.put(STATUS, status);
         values.put(COMPLETE_STATUS, complete_status);
+        values.put(STATUS, status);
 
 //        db.insert(TABLE_NAME_1,null,values);
         db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
@@ -274,6 +274,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     //Demo Testing
     public List<PickupList_Model_For_Executive> getAllData(String user) {
         // array of columns to fetch
+
         String[] columns = {KEY_ID,
                             MERCHANT_ID,
                             MERCHANT_NAME,
@@ -294,7 +295,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
-
         Cursor cursor = db.query(TABLE_NAME_1, //Table to query
                 columns,    //columns to return
                 "executive_name='" + user + "'",        //columns for the WHERE clause
@@ -303,6 +303,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 null,       //filter by row groups
                 sortOrder); //The sort order
 
+//        Cursor cursor = db.query(TABLE_NAME_1, columns, "executive_name=? and created_at=?", new String[] { user, sdf.format(date) }, null, null, null);
+
+//        Date date = new Date();
 
         // Traversing through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -397,5 +400,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return list;
     }
 
+    public Cursor get_mypickups_today(SQLiteDatabase sqLiteDatabase) {
+        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT};
+        return (db.query(TABLE_NAME_1,columns,"executive_name='" + "'",null,null,null,null));
+
+    }
 }
 

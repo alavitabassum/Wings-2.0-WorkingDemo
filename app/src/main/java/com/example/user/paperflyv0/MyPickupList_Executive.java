@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,11 +22,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +50,7 @@ import java.util.Map;
 import static android.Manifest.permission.CAMERA;
 
 public class MyPickupList_Executive extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, pickuplistForExecutiveAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener{
+        implements NavigationView.OnNavigationItemSelectedListener, pickuplistForExecutiveAdapter.OnItemClickListener,  SwipeRefreshLayout.OnRefreshListener{
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -85,6 +85,20 @@ public class MyPickupList_Executive extends AppCompatActivity
         final String user = username.toString();
 
         recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_mylist);
+        recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                list.remove(viewHolder.getAdapterPosition());
+                Toast.makeText(MyPickupList_Executive.this, "Item Removed" + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                pickuplistForExecutiveAdapter.notifyDataSetChanged();
+            }
+        }).attachToRecyclerView(recyclerView_pul);
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
@@ -92,13 +106,20 @@ public class MyPickupList_Executive extends AppCompatActivity
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
+        Date date = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String dd = String.valueOf(date);
 
         getData(user);
         swipeRefreshLayout.setRefreshing(true);
 //        list.clear();
         loadRecyclerView(user);
 
-
+//        public String getBackupFolderName() {
+//            Date date = new Date();
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd.hhmmss");
+//            return sdf.format(date);
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -133,7 +154,9 @@ public class MyPickupList_Executive extends AppCompatActivity
      */
     private void getData(final String user) {
         // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<String, Void, Void>() {
+        ;
+
+        new AsyncTask<String, Void , Void>() {
             @Override
             protected Void doInBackground(String... params) {
                 list.clear();
@@ -157,7 +180,8 @@ public class MyPickupList_Executive extends AppCompatActivity
     {
 //        boolean check;
 //          list.clear();
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "",
+          final Date date = new Date();
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/showexecutiveassign.php",
            new Response.Listener<String>()
            {
             @Override
@@ -274,97 +298,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                 .show();
     }
 
-    // Change status code section (start)
-    public void changeStatus(View view){
-        final CharSequence[] status_options = {"Cancel","Pending"};
-        final String[] selection = new String[1];
-        vwParentRow = (android.widget.RelativeLayout) view.getParent();
-        final Button btn_status  = (Button)vwParentRow.getChildAt(10);
-        AlertDialog.Builder eBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
-        eBuilder.setTitle("Change Pickup Status").setSingleChoiceItems(status_options, -1 , new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                switch (i){
 
-                    case 0:
-                        selection[0] = (String) status_options[0];
-                        break;
-
-                    case 1:
-                        selection[0] = (String) status_options[1];
-                        btn_status.setTextColor(Color.BLACK);
-                        btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.btn_yellow));
-                        btn_status.setText("Pending");
-                        dialogInterface.dismiss();
-                        break;
-                }
-
-            }
-        }).setCancelable(false).setPositiveButton("Change", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                             final CharSequence[] cancel_options = {"Merchant unavailable","Fautly order","Others"};
-                             final String[] cancelSelection = new String[1];
-
-                             AlertDialog.Builder cancelreasonBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
-                           if (selection[0] == status_options[0]){
-
-                                    cancelreasonBuilder.setTitle("Cancellation Reason").setSingleChoiceItems(cancel_options, -1, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface1, int position) {
-                                            switch (position){
-                                                case 0:
-                                                    cancelSelection[0] = (String) cancel_options[0];
-                                                    break;
-                                                case 1:
-                                                    cancelSelection[0] = (String) cancel_options[1];
-                                                    break;
-                                                case 2:
-                                                    cancelSelection[0] = (String) cancel_options[2];
-                                                    break;
-
-                                            }
-
-                                            btn_status.setBackgroundDrawable(getResources().getDrawable(R.color.red));
-                                            btn_status.setTextColor(Color.WHITE);
-                                            btn_status.setText("cancel");
-                                        }
-                                    }).setCancelable(false).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface1, int which) {
-                                            if ( cancelSelection[0] == cancel_options[0] || cancelSelection[0] == cancel_options[1] ||cancelSelection[0] == cancel_options[2]){
-                                                Toast.makeText(MyPickupList_Executive.this, "Pickup Cancelled", Toast.LENGTH_SHORT).show();
-                                                dialogInterface1.dismiss();
-                                            }else{
-                                                ((AlertDialog)dialogInterface1).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                                            }
-                                        }
-                                    });
-
-                           }else if (selection[0] == status_options[1]){
-
-                                    //    dialogInterface.dismiss();
-                               Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
-
-                           }else if(selection[0] != status_options[1] && selection[0] != status_options[0]){
-
-                               ((AlertDialog)dialogInterface).getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-
-                               Toast.makeText(MyPickupList_Executive.this, "Pickup Pending", Toast.LENGTH_SHORT).show();
-
-                           }
-
-                AlertDialog rDialog = cancelreasonBuilder.create();
-                rDialog.show();
-
-
-            }
-        });
-        vwParentRow.refreshDrawableState();
-        AlertDialog eDialog = eBuilder.create();
-        eDialog.show();
-    }
 
     @Override
     public void onBackPressed() {
@@ -497,7 +431,15 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     }
 
     @Override
-    public void onItemClick(int position) {
+    public void onRefresh() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        getData(username);
+        loadRecyclerView(username);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
         Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
 
         PickupList_Model_For_Executive clickedItem = list.get(position);
@@ -507,19 +449,6 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 //        scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
 
         startActivity(scanIntent);
-    }
-
-    @Override
-    public void onItemClick_view(View view2, int position2) {
-
-    }
-
-    @Override
-    public void onRefresh() {
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        getData(username);
-        loadRecyclerView(username);
     }
 
 }

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +28,11 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     private List<PickupList_Model_For_Executive> list;
     private List<PickupList_Model_For_Executive> listFull;
 
+    private int currentPosition =-1;
+
     private Context context;
     private OnItemClickListener mListner;
+    private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
@@ -36,12 +40,15 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     int selection = 1;*/
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
-        void onItemClick_view (View view2, int position2);
+        void onItemClick(View view, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {
         this.mListner = listner;
+    }
+
+    public void setOnItemTouchListener(RecyclerView.OnItemTouchListener t_listener){
+        this.touchListener = t_listener;
     }
 
     public pickuplistForExecutiveAdapter(List<PickupList_Model_For_Executive> list, Context context) {
@@ -60,6 +67,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public Button scan_button;
         public TextView item_phnNum;
         public  Button itemStatus;
+        public CardView cardview;
 
 
         public ViewHolder(final View itemView, int i) {
@@ -72,7 +80,8 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
             scan_button = itemView.findViewById(R.id.btn_scan);
             itemStatus = itemView.findViewById(R.id.btn_status);
-           // item_scanTxtButton=itemView.findViewById(R.id.txt_btn_scan);
+            cardview = itemView.findViewById(R.id.card_view_pu_list);
+
 
             //underline phoneNumber
             item_phnNum.setPaintFlags(item_phnNum.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -100,7 +109,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                         // Position of the item will be saved in this variable
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            mListner.onItemClick(position);
+                            mListner.onItemClick(itemView, position);
                         }
                     }
                 }
@@ -126,16 +135,25 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
         int count_assigned = Integer.parseInt(list.get(i).getAssined_qty());
         try {
+
             int count = Integer.parseInt(list.get(i).getScan_count());
+
+
+
             if (count == count_assigned || count > count_assigned){
                 viewHolder.itemStatus.setText("Complete");
                 viewHolder.itemStatus.setBackgroundResource(R.color.green);
                 viewHolder.itemStatus.setTextColor(Color.WHITE);
                 viewHolder.itemStatus.setEnabled(false);
+            }else if (count < count_assigned ){
+                viewHolder.itemStatus.setText("Pending");
+                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
+                viewHolder.itemStatus.setTextColor(Color.BLACK);
+                viewHolder.itemStatus.setEnabled(true);
             }
         } catch(Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "pickuplistForExecutiveeAdapter" +e ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
         }
 
     }

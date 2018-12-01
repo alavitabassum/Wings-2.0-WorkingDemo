@@ -6,18 +6,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Filter;
+import android.widget.Filterable;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder> {
+class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder>  implements Filterable {
 
-    private List<PickupTodaySummary_ex> summaries;
+    private List<PickupList_Model_For_Executive> summaries;
+    private List<PickupList_Model_For_Executive> summariesCopy;
     private Context context;
 
-    public mListForExecutiveAdapter(List<PickupTodaySummary_ex> summaries, Context context) {
+    public mListForExecutiveAdapter(List<PickupList_Model_For_Executive> summaries, Context context) {
         this.summaries = summaries;
         this.context = context;
+        summariesCopy = new ArrayList<>(summaries);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -50,16 +56,51 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        PickupTodaySummary_ex summary_ex = summaries.get(i);
-        viewHolder.item_mName.setText(summary_ex.getM_names_e());
-        viewHolder.item_aQty.setText(summary_ex.getAsgn_qtyList());
-        viewHolder.item_uQty.setText(summary_ex.getUpld_qtyList());
-        viewHolder.item_rQty.setText(summary_ex.getRcv_qtyList());
+        PickupList_Model_For_Executive summary_ex = summaries.get(i);
+        viewHolder.item_mName.setText(summary_ex.getMerchant_name());
+        viewHolder.item_aQty.setText(summary_ex.getAssined_qty());
+        viewHolder.item_uQty.setText(summary_ex.getPicked_qty());
+        viewHolder.item_rQty.setText(summary_ex.getScan_count());
     }
 
     @Override
     public int getItemCount() {
         return summaries.size();
     }
+    //search/filter list
+    @Override
+    public Filter getFilter() {
+        return NamesFilter;
+    }
 
+    private Filter NamesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+
+            List<PickupList_Model_For_Executive> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0){
+                filteredList.addAll(summariesCopy);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (PickupList_Model_For_Executive item : summariesCopy){
+                    if (item.getMerchant_name().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            summaries.clear();
+            summaries.addAll((List) results.values);
+            notifyDataSetChanged();
+
+        }
+    };
 }
