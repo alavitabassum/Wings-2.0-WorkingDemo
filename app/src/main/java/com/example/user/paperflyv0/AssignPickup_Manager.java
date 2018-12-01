@@ -1,5 +1,6 @@
 package com.example.user.paperflyv0;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,11 +10,14 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -45,21 +49,25 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AssignPickup_Manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener, AssignExecutiveAdapter.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener {
 
-    String[] executive_num_list;
+    public SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog progress;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
-    //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
+    public static final String INSERT_URL = "http://192.168.1.112/new/insertassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
+    //private String MERCHANT_URL = "http://192.168.1.112/new/order.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -73,7 +81,6 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
-
 
 
     RecyclerView recyclerView;
@@ -93,21 +100,45 @@ public class AssignPickup_Manager extends AppCompatActivity
         executiveLists = new ArrayList<>();
         assignManager_modelList = new ArrayList<>();
 
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         String user = username.toString();
 
+
         //recycler with cardview
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_assign);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+
+        swipeRefreshLayout = findViewById(R.id.refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setRefreshing(true);
+        assignManager_modelList.clear();
+        swipeRefreshLayout.setRefreshing(true);
+
+        //Offline sync
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-        getallmerchant();
-        //getallexecutives();
 
-        loadmerchantlist(user);
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadmerchantlist(user);
+            Toast.makeText(getApplicationContext(), "Internet Available", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            getallmerchant();
+            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+        }
+
+
+        getallexecutives();
+
         loadexecutivelist(user);
         loadallmerchantlist(user);
 
@@ -125,8 +156,8 @@ public class AssignPickup_Manager extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
-         fab1 = (FloatingActionButton) findViewById(R.id.menu_item1);
-    /*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*/
+        fab1 = (FloatingActionButton) findViewById(R.id.menu_item1);
+        /*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*/
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,17 +234,6 @@ public class AssignPickup_Manager extends AppCompatActivity
     }
 
 
-
-
-
-
-
-
-
-//
-//
-//
-
     //Get Executive List from sqlite
     private void getallexecutives() {
         try {
@@ -232,46 +252,47 @@ public class AssignPickup_Manager extends AppCompatActivity
         }
     }
 
-    /**
-     * This method is to fetch all user records from SQLite
-     */
-//    private void getallexecutives() {
-//        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-//        new AsyncTask<Void, Void, Void>() {
-//            @Override
-//            protected Void doInBackground(Void... params) {
-//                executiveLists.clear();
-//                executiveLists.addAll(database.getAllExecutiveList());
-//
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-//                super.onPostExecute(aVoid);
-//
-//            }
-//        }.execute();
-//    }
 
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
+
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("unAssignedlist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
+                                AssignManager_Model todaySummary = new AssignManager_Model(
+                                        o.getString("merchantName"),
+                                        o.getString("merchantCode"),
+                                        o.getInt("cnt"),
+                                        o.getString("contactNumber")
+                                );
+                                SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                                database.deletemerchantList(sqLiteDatabase);
+                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"),o.getString("contactNumber"));
+                                assignManager_modelList.add(todaySummary);
+
                             }
-                            getallmerchant();
+                            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
+                            recyclerView.setAdapter(assignExecutiveAdapter);
+                            swipeRefreshLayout.setRefreshing(false);
+                            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            swipeRefreshLayout.setRefreshing(false);
 
 
                         }
@@ -280,7 +301,9 @@ public class AssignPickup_Manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                        progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "NO INTERNET CONNECTION", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -295,53 +318,31 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest1);
     }
 
-    // merchant List generation from sqlite
-//    private void getallmerchant() {
-//        try {
-//
-//            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-//            Cursor c = database.get_merchantlist(sqLiteDatabase);
-//
-//            while (c.moveToNext()) {
-//                String merchantName = c.getString(0);
-//                String merchantCode = c.getString(1);
-//                int totalcount = c.getInt(2);
-//                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
-//                assignManager_modelList.add(todaySummary);
-//            }
-//
-//            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
-//            recyclerView.setAdapter(assignExecutiveAdapter);
-//            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    /**
-     * This method is to fetch all merchant list from SQLite
-     */
+    /* merchant List generation from sqlite*/
     private void getallmerchant() {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                assignManager_modelList.clear();
-                assignManager_modelList.addAll(database.getAllMerchantList());
+        assignManager_modelList.clear();
+        try {
 
-                return null;
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_merchantlist(sqLiteDatabase);
+
+            while (c.moveToNext()) {
+                String merchantName = c.getString(0);
+                String merchantCode = c.getString(1);
+                int totalcount = c.getInt(2);
+                String contactNumber = c.getString(3);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount,contactNumber);
+                assignManager_modelList.add(todaySummary);
             }
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
-                recyclerView.setAdapter(assignExecutiveAdapter);
-                assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
-                assignExecutiveAdapter.notifyDataSetChanged();
-            }
-        }.execute();
+            assignExecutiveAdapter = new AssignExecutiveAdapter(assignManager_modelList, getApplicationContext());
+            recyclerView.setAdapter(assignExecutiveAdapter);
+            swipeRefreshLayout.setRefreshing(false);
+            assignExecutiveAdapter.setOnItemClickListener(AssignPickup_Manager.this);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -360,7 +361,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 database.addallmerchantlist(o.getString("merchantName"), o.getString("merchantCode"));
                             }
 
-                            } catch (JSONException e) {
+                        } catch (JSONException e) {
                             e.printStackTrace();
 
 
@@ -385,16 +386,17 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest1);
     }
 
-    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString,final int status) {
+    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status) {
 
-            database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString,status);
-            //final int total_assign = database.getTotalOfAmount(merchant_code);
-            //final String strI = String.valueOf(total_assign);
-            //database.update_row(strI, merchant_code);
+        database.assignexecutive(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, status);
+        //final int total_assign = database.getTotalOfAmount(merchant_code);
+        //final String strI = String.valueOf(total_assign);
+        //database.update_row(strI, merchant_code);
 
     }
-        //For assigning executive API into mysql
-    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString,final String m_name) {
+
+    //For assigning executive API into mysql
+    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
                 new Response.Listener<String>() {
@@ -405,11 +407,11 @@ public class AssignPickup_Manager extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                assignexecutivetosqlite(ex_name,empcode,order_count,merchant_code,user,currentDateTimeString,NAME_SYNCED_WITH_SERVER);
+                                assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                assignexecutivetosqlite(ex_name,empcode,order_count,merchant_code,user,currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER);
+                                assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -420,7 +422,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        assignexecutivetosqlite(ex_name,empcode,order_count,merchant_code,user,currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER);
+                        assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -434,6 +436,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 params.put("assigned_by", user);
                 params.put("created_at", currentDateTimeString);
                 params.put("merchant_name", m_name);
+                params.put("phone_no", contactNumber);
                /* database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
                 final String strI = String.valueOf(total_assign);
@@ -446,6 +449,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest);
 
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -465,26 +469,25 @@ public class AssignPickup_Manager extends AppCompatActivity
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-try{
-    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            return false;
-        }
+        try {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
 
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            assignExecutiveAdapter.getFilter().filter(newText);
-            return false;
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    assignExecutiveAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Intent intent_stay = new Intent(AssignPickup_Manager.this, AssignPickup_Manager.class);
+            Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
+            startActivity(intent_stay);
         }
-    });
-}catch (Exception e)
-{
-    e.printStackTrace();
-    Intent intent_stay = new Intent(AssignPickup_Manager.this,AssignPickup_Manager.class);
-    Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
-    startActivity(intent_stay);
-}
 
         return true;
     }
@@ -580,7 +583,7 @@ try{
 
         final AssignManager_Model clickeditem = assignManager_modelList.get(position);
 
-       AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
+        AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AssignPickup_Manager.this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_spinner, null);
         spinnerBuilder.setTitle("Select executive and assign number.");
 
@@ -591,9 +594,11 @@ try{
         dialog_mName.setText(clickeditem.getM_names());
         final String merchant_code = clickeditem.getM_address();
         final String m_name = clickeditem.getM_names();
+        final String contactNumber = clickeditem.getPhone_no();
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
+
 
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
@@ -613,11 +618,11 @@ try{
 
             @Override
             public void onClick(DialogInterface dialog, int i1) {
-                 String empname = mAutoComplete.getText().toString();
-                 final String empcode = database.getSelectedEmployeeCode(empname);
-                 assignexecutive(mAutoComplete.getText().toString(),empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString,m_name);
+                String empname = mAutoComplete.getText().toString();
+                final String empcode = database.getSelectedEmployeeCode(empname);
+                assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name,contactNumber);
 
-                if (mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
+                if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                     + "(" + et1.getText().toString() + ")",
                             Toast.LENGTH_SHORT).show();
@@ -647,14 +652,14 @@ try{
 
         final AssignManager_Model clickeditem2 = assignManager_modelList.get(position2);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String merchantname = clickeditem2.getM_names();
         String merchantcode = clickeditem2.getM_address();
         Intent intent = new Intent(AssignPickup_Manager.this, ViewAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
-        intent.putExtra("MERCHANTCODE",merchantcode);
+        intent.putExtra("MERCHANTCODE", merchantcode);
         startActivity(intent);
 
     }
@@ -664,14 +669,23 @@ try{
     public void onItemClick_update(View view3, int position3) {
         final AssignManager_Model clickeditem3 = assignManager_modelList.get(position3);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String merchantname = clickeditem3.getM_names();
         String merchantcode = clickeditem3.getM_address();
         Intent intent = new Intent(AssignPickup_Manager.this, UpdateAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
-        intent.putExtra("MERCHANTCODE",merchantcode);
+        intent.putExtra("MERCHANTCODE", merchantcode);
         startActivity(intent);
     }
+
+    @Override
+    public void onRefresh() {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        assignManager_modelList.clear();
+        loadmerchantlist(username);
+    }
+
 }

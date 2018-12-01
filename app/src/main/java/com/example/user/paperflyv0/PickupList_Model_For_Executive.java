@@ -31,6 +31,13 @@ public class PickupList_Model_For_Executive {
         this.complete_status = complete_status;
     }
 
+    public PickupList_Model_For_Executive(String merchant_name, String assined_qty, String scan_count,String executive_name) {
+        this.merchant_name = merchant_name;
+        this.assined_qty = assined_qty;
+        this.scan_count = scan_count;
+        this.executive_name = executive_name;
+    }
+
     public int getKey_id() {
         return key_id;
     }

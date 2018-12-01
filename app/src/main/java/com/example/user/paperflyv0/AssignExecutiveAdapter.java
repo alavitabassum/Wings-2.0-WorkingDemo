@@ -15,12 +15,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable {
+public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable  {
     private List<AssignManager_Model> assignManager_modelList;
     private List<AssignManager_Model> assignManager_modelListFull;
 
     private Context context;
     private OnItemClickListener mListener;
+
+    public AssignExecutiveAdapter() {
+
+    }
     //private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
 
@@ -61,32 +65,9 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             itembtnAssign = itemView.findViewById(R.id.btn_assign);
             item_call = itemView.findViewById(R.id.call_merchant);
 
-            //underline phoneNumber
-            //item_call.setPaintFlags(item_call.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-
             itemViewAssign = itemView.findViewById(R.id.view_assign);
             itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
 
-
-           /* item_call.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent callIntent =new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:01781278896"));
-                    if (ActivityCompat.checkSelfPermission(v.getContext(),
-                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions((Activity) v.getContext(),
-                                new String[]{Manifest.permission.CALL_PHONE},
-                                MY_PERMISSIONS_REQUEST_CALL_PHONE);
-
-                        return;
-                    }
-                    v.getContext().startActivity(callIntent);
-                }
-            });
-
-*/
             itembtnAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -193,5 +174,4 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
         }
     };
-
 }

@@ -1,25 +1,16 @@
 package com.example.user.paperflyv0;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -35,16 +26,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.support.v7.widget.SearchView;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -58,30 +39,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String MERCHANT_NAME = "Merchant Name";
-    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     public SwipeRefreshLayout swipeRefreshLayout;
+    private String URL_DATA = "http://192.168.1.112/new/showassign.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
-   // RecyclerView.Adapter adapter;
-    List<TodaySummary> listItems;
-    private MerchantListAdapter merchantListAdapter;
-    List<AssignManager_Model> assignManager_modelList;
+    RecyclerView.Adapter adapter;
+    List<PickupList_Model_For_Executive> pickupList_model_for_executives;
     Database database;
 
 
@@ -89,44 +60,48 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickups_today__manager);
-        database = new Database(getApplicationContext());
-        assignManager_modelList = new ArrayList<>();
-        database.getReadableDatabase();
+
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
+        database=new Database(this);
+        database.getWritableDatabase();
 
 
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String user = username.toString();
-      //  listItems = new ArrayList<>();
+
+        pickupList_model_for_executives = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
-        //recyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
-        getallmerchant();
-        loadmerchantlist(user);
 
         swipeRefreshLayout = findViewById(R.id.refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-        //getData();
+        pickupList_model_for_executives.clear();
         swipeRefreshLayout.setRefreshing(true);
-        //loadRecyclerView();
-        // getData();
+
+
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadRecyclerView(username);
+
+            Toast.makeText(getApplicationContext(), "Internet Available", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            getData();
+            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -141,9 +116,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     }
 
 
-    //Merchant List API hit
-    private void loadmerchantlist(final String user) {
-
+    private void loadRecyclerView(final String user)
+    {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -151,29 +125,38 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         progress.setProgress(0);
         progress.show();
 
-        StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        progress.dismiss();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("unAssignedlist");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                progress.dismiss();
 
-                                database.add_pickups_today_manager(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
-                            }
-                            getallmerchant();
-                            swipeRefreshLayout.setRefreshing(false);
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray array = jsonObject.getJSONArray("summary");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject o = array.getJSONObject(i);
+                        PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(
+                                o.getString("merchant_name"),
+                                o.getString("order_count"),
+                                String.valueOf(o.getInt("scan_count")),
+                                o.getString("executive_name"));
+                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                        database.clearPTMList(sqLiteDatabase);
+                        database.add_pickups_today_manager(o.getString("merchant_name"), o.getString("order_count"),o.getInt("scan_count"),o.getString("created_at"),o.getString("executive_name"));
+                        pickupList_model_for_executives.add(todaySummary);
                     }
-                },
+
+                    adapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
+                    recyclerView.setAdapter(adapter);
+                    swipeRefreshLayout.setRefreshing(false);
+
+                    } catch (JSONException e) {
+                    e.printStackTrace();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+
+            }
+        },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
@@ -182,42 +165,47 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                         Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                     }
-                }
-        ) {
+                }){
+
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params1 = new HashMap<String, String>();
                 params1.put("username", user);
                 return params1;
             }
+
         };
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(postRequest1);
-
+        requestQueue.add(stringRequest);
     }
-    // merchant List generation from sqlite
-    private void getallmerchant() {
-        try {
 
+    private void getData()
+    {
+        try{
+            pickupList_model_for_executives.clear();
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
             Cursor c = database.getdata_pickups_today_manager(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String merchantName = c.getString(0);
-                String merchantCode = c.getString(1);
-                int totalcount = c.getInt(2);
-
-
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount);
-                assignManager_modelList.add(todaySummary);
+            while (c.moveToNext())
+            {
+                String name = c.getString(0);
+                String code = c.getString(1);
+                String count = String.valueOf(c.getInt(2));
+                String executive_name = c.getString(3);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name);
+                pickupList_model_for_executives.add(todaySummary);
             }
-            merchantListAdapter = new MerchantListAdapter(assignManager_modelList, getApplicationContext());
-            recyclerView.setAdapter(merchantListAdapter);
+            adapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
+            recyclerView.setAdapter(adapter);
             swipeRefreshLayout.setRefreshing(false);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -231,34 +219,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_item, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-try {
-
-    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            merchantListAdapter.getFilter().filter(newText);
-            return false;
-        }
-    });
-}catch (Exception e)
-{
-    e.printStackTrace();
-    Intent intent_stay = new Intent(PickupsToday_Manager.this,PickupsToday_Manager.class);
-    Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
-    startActivity(intent_stay);
-}
+        getMenuInflater().inflate(R.menu.pickups_today__manager, menu);
         return true;
     }
 
@@ -350,11 +312,10 @@ try {
 
     @Override
     public void onRefresh() {
-        assignManager_modelList.clear();
-        //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        String user = username.toString();
-        loadmerchantlist(user);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        pickupList_model_for_executives.clear();
+        getData();
+        loadRecyclerView(username);
     }
 }

@@ -26,10 +26,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder> implements Filterable {
+public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapter.ViewHolder>  {
 
-    private List<AssignManager_Model> assignManager_modelList;
-    private List<AssignManager_Model> assignManager_modelListFull;
+    private List<PickupList_Model_For_Executive> pickupList_model_for_executives;
+    private List<PickupList_Model_For_Executive> PickupList_Model_For_ExecutiveFull;
 
    // private List<TodaySummary> listItems;
     private  Context context;
@@ -37,10 +37,10 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
 
 
-    public MerchantListAdapter(List<AssignManager_Model> assignManager_modelList, Context context) {
-        this.assignManager_modelList = assignManager_modelList;
+    public MerchantListAdapter(List<PickupList_Model_For_Executive> pickupList_model_for_executives, Context context) {
+        this.pickupList_model_for_executives = pickupList_model_for_executives;
         this.context = context;
-        assignManager_modelListFull = new ArrayList<>(assignManager_modelList);
+        PickupList_Model_For_ExecutiveFull = new ArrayList<>(pickupList_model_for_executives);
     }
 
 
@@ -49,11 +49,13 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         public TextView itemMerchantName;
         public TextView itemAssignedQty;
         public TextView itemReceivedQty;
+        public TextView itemUploadedQty;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemMerchantName=itemView.findViewById(R.id.merchant_name);
+            itemUploadedQty = itemView.findViewById(R.id.u_qty);
             itemAssignedQty=itemView.findViewById(R.id.a_qty);
             itemReceivedQty=itemView.findViewById(R.id.r_qty);
 
@@ -70,38 +72,40 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        AssignManager_Model assignManager_model = assignManager_modelList.get(i);
-        viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
-        viewHolder.itemAssignedQty.setText(String.valueOf(assignManager_model.getTotalcount()));
+        PickupList_Model_For_Executive pickupList_model_for_executive = pickupList_model_for_executives.get(i);
+        viewHolder.itemMerchantName.setText(pickupList_model_for_executive.getMerchant_name());
+        viewHolder.itemUploadedQty.setText(pickupList_model_for_executive.getExecutive_name());
+        viewHolder.itemAssignedQty.setText(pickupList_model_for_executive.getAssined_qty());
+        viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
     }
 
     @Override
     public int getItemCount() {
-        return assignManager_modelList.size();
+        return pickupList_model_for_executives.size();
     }
 
     //search/filter list
-    @Override
+  /*  @Override
     public Filter getFilter() {
         return NamesFilter;
-    }
+    }*/
 
-    private Filter NamesFilter = new Filter() {
+   /* private Filter NamesFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-       /*     assignManager_modelListFull.clear();
+       *//*     assignManager_modelListFull.clear();
             assignManager_modelListFull.addAll(assignManager_modelList);
             assignManager_modelList.clear();
-            assignManager_modelList.addAll(assignManager_modelListFull);*/
+            assignManager_modelList.addAll(assignManager_modelListFull);*//*
 
            List<AssignManager_Model> filteredList = new ArrayList<>();
 
            if (constraint == null || constraint.length() == 0){
-               filteredList.addAll(assignManager_modelListFull);
+               filteredList.addAll(PickupList_Model_For_ExecutiveFull);
            }else{
                String filterPattern = constraint.toString().toLowerCase().trim();
-               for (AssignManager_Model item : assignManager_modelListFull){
-                   if (item.getM_names().toLowerCase().contains(filterPattern)){
+               for (PickupList_Model_For_Executive item : PickupList_Model_For_ExecutiveFull){
+                   if (item.getMerchant_name().toLowerCase().contains(filterPattern)){
                        filteredList.add(item);
                    }
                }
@@ -120,6 +124,6 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
         }
     };
-
+*/
 
 }
