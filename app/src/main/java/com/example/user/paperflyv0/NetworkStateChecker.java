@@ -166,7 +166,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 */
     //Barcode save to server
     private void saveBarcode(final int id,final String merchant_id, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/insert_barcode.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -204,7 +204,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
     //Update scan count
     private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/updateTable.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

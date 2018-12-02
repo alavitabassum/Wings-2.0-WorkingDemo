@@ -50,7 +50,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
 
     //private static final String URL_DATA = "http://192.168.0.117/new/merchantListForExecutive.php";
-    private static final String URL_DATA = "http://192.168.0.129/new/showassign.php";
+    private static final String URL_DATA = "http://192.168.0.136/new/showassign.php";
     private ProgressDialog progress;
     Database database;
 

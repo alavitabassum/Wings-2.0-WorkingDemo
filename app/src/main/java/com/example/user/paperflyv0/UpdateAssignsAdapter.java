@@ -1,12 +1,9 @@
 package com.example.user.paperflyv0;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.ColorDrawable;
-import android.provider.ContactsContract;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,24 +23,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.example.user.paperflyv0.AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER;
 
 public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdapter.ViewHolder> {
 
     private List<UpdateAssign_Model> updateAssignModelList;
     private Context context;
     private OnEditTextChanged onEditTextChanged;
-    public static final String UPDATE_URL = "http://192.168.0.129/new/updateassign.php";
-    public static final String DELETE_URL = "http://192.168.0.129/new/deleteasign.php";
+    public static final String UPDATE_URL = "http://192.168.0.136/new/updateassign.php";
+    public static final String DELETE_URL = "http://192.168.0.136/new/deleteasign.php";
 
 
     Database database;

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -122,8 +123,27 @@ public class ScanningScreen extends AppCompatActivity {
             final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
             db = new BarcodeDbHelper(ScanningScreen.this);
-            if(result.getText() == null || result.getText().equals(lastText)) {
-                // Toast.makeText(ScanningScreen.this, "Entry is null or already entered", Toast.LENGTH_SHORT).show();
+//            if(result.getText() == null || result.getText().equals(lastText)) {
+            if(result.getText().equals(lastText)) {
+
+                // Set the toast and duration
+                int toastDurationInMilliSeconds = 1000;
+                final Toast mToastToShow = Toast.makeText(ScanningScreen.this, result + "already scanned.", Toast.LENGTH_LONG);
+
+                // Set the countdown to display the toast
+                CountDownTimer toastCountDown;
+                toastCountDown = new CountDownTimer(toastDurationInMilliSeconds, 1000 /*Tick duration*/) {
+                    public void onTick(long millisUntilFinished) {
+                        mToastToShow.show();
+                    }
+                    public void onFinish() {
+                        mToastToShow.cancel();
+                    }
+                };
+
+                // Show the toast and starts the countdown
+                mToastToShow.show();
+                toastCountDown.start();
                 return;
             }
 
@@ -145,7 +165,7 @@ public class ScanningScreen extends AppCompatActivity {
             final int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
 
             final String strI = String.valueOf(db.getRowsCount(merchant_id));
-            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
+//            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
             scan_count1.setText("Scan count: " +strI);
 
 //          builder.setTitle(strI);
@@ -229,7 +249,7 @@ public class ScanningScreen extends AppCompatActivity {
     //API HIT
     private void barcodesave(final String merchant_id, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/insert_barcode.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -283,7 +303,7 @@ public class ScanningScreen extends AppCompatActivity {
 //    strI, updated_by1, updated_at1, merchant_id
     public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/updateTable.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -181,7 +181,7 @@ public class MyPickupList_Executive extends AppCompatActivity
 //        boolean check;
 //          list.clear();
           final Date date = new Date();
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.129/new/showexecutiveassign.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/showexecutiveassign.php",
            new Response.Listener<String>()
            {
             @Override
@@ -225,7 +225,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected loadrecylerview" +error ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected loadrecylerview" +error ,Toast.LENGTH_LONG).show();
 
                     }
                 })
