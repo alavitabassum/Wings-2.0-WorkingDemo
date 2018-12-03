@@ -12,6 +12,8 @@ import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +53,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
         public TextView itemMerchantName;
         public TextView itemMerchantAddress;
+        public TextView itemPickupMerchantName;
         public Button itembtnAssign;
         public ImageButton itemViewAssign;
         public TextView item_call;
@@ -64,6 +67,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
             itemMerchantAddress=itemView.findViewById(R.id.m_add);
             itembtnAssign = itemView.findViewById(R.id.btn_assign);
             item_call = itemView.findViewById(R.id.call_merchant);
+            itemPickupMerchantName = itemView.findViewById(R.id.childMerchantName);
 
             itemViewAssign = itemView.findViewById(R.id.view_assign);
             itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
@@ -129,9 +133,9 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         AssignManager_Model assignManager_model = assignManager_modelList.get(i);
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
+        viewHolder.itemPickupMerchantName.setText(assignManager_model.getPick_m_name());
         viewHolder.itemMerchantAddress.setText(assignManager_model.getM_address());
         viewHolder.item_call.setText(String.valueOf(assignManager_model.getTotalcount()));
-        //viewHolder.item_call.setText(assignManager_model.getTotalcount());
         }
 
     @Override

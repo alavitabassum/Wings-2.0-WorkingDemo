@@ -49,7 +49,7 @@ import java.util.Map;
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private String URL_DATA = "http://192.168.0.129/new/showassign.php";
+    private String URL_DATA = "http://192.168.0.136/new/showassign.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView recyclerView;
