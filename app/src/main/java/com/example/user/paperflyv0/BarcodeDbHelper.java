@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -32,6 +32,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String STATE = "state";
     private static final String STATUS = "status";
     private static final String COMPLETE_STATUS = "complete_status";
+    private static final String PICK_M_NAME = "p_m_name";
+    private static final String PICK_M_ADD = "p_m_add";
 
 
     private static final String[] COLUMNS = { KEY_ID, MERCHANT_ID, KEY_NAME };
@@ -66,7 +68,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "updated_by TEXT, "
                 + "updated_at TEXT , "
                 + "status INT, "
-                + "complete_status TEXT )";
+                + "complete_status TEXT, "
+                + "p_m_name TEXT , "
+                + "p_m_add TEXT )";
 
         String CREATION_TABLE2 = "CREATE TABLE Pending_pickups ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -126,7 +130,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 "phone_no": null,
 "picked_qty": null,
 "merchant_name": "Womens World BD - WWB"*/
-    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, int status)
+    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_add, int status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
@@ -144,6 +148,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
         values.put(COMPLETE_STATUS, complete_status);
+        values.put(PICK_M_NAME, p_m_name);
+        values.put(PICK_M_ADD, p_m_add);
         values.put(STATUS, status);
 
 //        db.insert(TABLE_NAME_1,null,values);
@@ -188,7 +194,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     // readFromLocalDatabase
     public Cursor get_mypickups_today(SQLiteDatabase db, String user)
     {
-        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT};
+        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD};
+        return (db.query(TABLE_NAME_1,columns,"executive_name='" + user + "'",null,null,null,null));
+    }
+    public Cursor get_mypickups_complete(SQLiteDatabase db, String user)
+    {
+        String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT};
         return (db.query(TABLE_NAME_1,columns,"executive_name='" + user + "'",null,null,null,null));
     }
 

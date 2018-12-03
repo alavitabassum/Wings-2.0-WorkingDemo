@@ -14,8 +14,10 @@ public class PickupList_Model_For_Executive {
     private String updated_at;
     int key_id;
     private String complete_status;
+    private String p_m_name;
+    private String p_m_add;
 
-    public PickupList_Model_For_Executive(int key_id,String merchant_id, String merchant_name, String executive_name, String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at, String complete_status) {
+    public PickupList_Model_For_Executive(int key_id,String merchant_id, String merchant_name, String executive_name, String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at, String complete_status, String p_m_name, String p_m_add) {
         this.merchant_id = merchant_id;
         this.merchant_name = merchant_name;
         this.executive_name = executive_name;
@@ -29,13 +31,24 @@ public class PickupList_Model_For_Executive {
         this.updated_at = updated_at;
         this.key_id = key_id;
         this.complete_status = complete_status;
+        this.p_m_name = p_m_name;
+        this.p_m_add = p_m_add;
     }
 
-    public PickupList_Model_For_Executive(String merchant_name, String assined_qty, String scan_count,String executive_name) {
+    public PickupList_Model_For_Executive(String merchant_name,String executive_name, String assined_qty, String picked_qty ,String scan_count) {
         this.merchant_name = merchant_name;
+        this.executive_name = executive_name;
+        this.assined_qty = assined_qty;
+        this.picked_qty = picked_qty;
+        this.scan_count = scan_count;
+
+    }
+    public PickupList_Model_For_Executive(String merchant_name,String executive_name, String assined_qty,String scan_count) {
+        this.merchant_name = merchant_name;
+        this.executive_name = executive_name;
         this.assined_qty = assined_qty;
         this.scan_count = scan_count;
-        this.executive_name = executive_name;
+
     }
 
     public int getKey_id() {
@@ -53,6 +66,22 @@ public class PickupList_Model_For_Executive {
 
     public String getComplete_status() {
         return complete_status;
+    }
+
+    public String getP_m_name() {
+        return p_m_name;
+    }
+
+    public void setP_m_name(String p_m_name) {
+        this.p_m_name = p_m_name;
+    }
+
+    public String getP_m_add() {
+        return p_m_add;
+    }
+
+    public void setP_m_add(String p_m_add) {
+        this.p_m_add = p_m_add;
     }
 
     public void setComplete_status(String complete_status) {

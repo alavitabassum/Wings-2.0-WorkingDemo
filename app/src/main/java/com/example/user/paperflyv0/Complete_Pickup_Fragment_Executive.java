@@ -2,6 +2,8 @@ package com.example.user.paperflyv0;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,12 +24,11 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
 
     private static final String URL_DATA = "http://192.168.0.142/new/exec_pick_complete.php";
     private final String user;
-    View v;
-    private RecyclerView myrecyclerview;
     public SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog progress;
     private List<PickupList_Model_For_Executive> listitems;
     private Complete_Pickup_Adapter_Executive complete_Pickup_Adapter_Executive;
+    private RecyclerView myrecyclerview;
     BarcodeDbHelper database;
 
     @SuppressLint("ValidFragment")
@@ -41,18 +42,75 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
         database = new BarcodeDbHelper(getContext());
         database.getWritableDatabase();
         listitems = new ArrayList<>();
-        v = inflater.inflate(R.layout.exe_frag_pc, container, false);
+        View v = inflater.inflate(R.layout.exe_frag_pc, container, false);
         myrecyclerview = v.findViewById(R.id.recycler_view_pc);
         myrecyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-        getPendingData(user);
+        getallmerchant(user);
+//        getPendingData(user);
 //        getdata(user);
         swipeRefreshLayout.setRefreshing(true);
 //        loadRecyclerView(user);
         return v;
+
+        /*
+    View rootView = inflater.inflate(R.layout.recyclerview_list, container, false);
+    rootView.setTag("RecyclerViewFragment");
+    RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+
+
+    final LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+    layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+    recycler.setLayoutManager(layoutManager);
+
+    ArrayList ingredients = new ArrayList<Ingredient>();
+    ingredients.add(new Ingredient("carrot", BitmapFactory.decodeResource(this.getContext().getResources(),R.drawable.carrot)));
+    System.out.println(ingredients.size());
+    IngredientAdapter adapter = new IngredientAdapter(this.getContext());
+    adapter.setDataset(ingredients);
+    recycler.setAdapter(adapter);
+
+    return inflater.inflate(R.layout.recyclerview_list, container, false);*/
+    }
+
+    /* merchant List generation from sqlite*/
+    private void getallmerchant(String user) {
+        listitems.clear();
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_mypickups_complete(sqLiteDatabase, user);
+
+            while (c.moveToNext()) {
+//                int key_id = c.getInt(0);
+//                String merchantid = c.getString(1);
+                String  merchant_name = c.getString(0);
+                String executive_name = c.getString(1);
+                String assined_qty = c.getString(2);
+                String picked_qty = c.getString(3);
+                String scan_count = c.getString(4);
+//                String phone_no = c.getString(7);
+//                String assigned_by = c.getString(8);
+//                String created_at = c.getString(9);
+//                String updated_by = c.getString(10);
+//                String updated_at = c.getString(11);
+//                String complete_status = c.getString(12);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(merchant_name,executive_name,assined_qty,picked_qty,scan_count);
+
+                listitems.add(todaySummary);
+            }
+
+            complete_Pickup_Adapter_Executive  = new Complete_Pickup_Adapter_Executive(getContext(), listitems);
+            myrecyclerview.setAdapter(complete_Pickup_Adapter_Executive);
+            swipeRefreshLayout.setRefreshing(false);
+//            complete_Pickup_Adapter_Executive.setOnItemClickListener(AssignPickup_Manager.this);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -60,21 +118,21 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
      */
     private void getPendingData(final String user) {
         // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        new AsyncTask<String, Void, Void>() {
+        new AsyncTask<String, Void , String >() {
             @Override
-            protected Void doInBackground(String... params) {
+            protected String doInBackground(String... params) {
                 listitems.clear();
-                listitems.addAll(database.getPending(user));
+                listitems.addAll(database.getAllData(user));
 
                 return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
+            protected void onPostExecute(String string) {
+                super.onPostExecute(string);
                 complete_Pickup_Adapter_Executive = new Complete_Pickup_Adapter_Executive(getContext(), listitems);
                 myrecyclerview.setAdapter(complete_Pickup_Adapter_Executive);
-//                pending_Pickup_Adapter_Executive.setOnItemClickListener(Pending_Pickup_Model_Executive.this);
+//                complete_Pickup_Adapter_Executive.setOnItemClickListener(Complete_Pickup_Model_Executive.this);
                 complete_Pickup_Adapter_Executive.notifyDataSetChanged();
             }
         }.execute();

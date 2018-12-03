@@ -6,7 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -55,6 +56,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     public static final String MERCHANT_NAME = "Merchant Name";
+    public static final String SUB_MERCHANT_NAME = "Sub merchant Name";
     public static final String MERCHANT_ID = "MerchantID";
     private static final String URL_DATA = "";
     private static final int REQUEST_CAMERA = 1;
@@ -149,9 +151,9 @@ public class MyPickupList_Executive extends AppCompatActivity
     }
 
 
-    /**
+/*    *//**
      * This method is to fetch all user records from SQLite
-     */
+     *//*
     private void getData(final String user) {
         // AsyncTask is used that SQLite operation not blocks the UI Thread.
         ;
@@ -174,6 +176,45 @@ public class MyPickupList_Executive extends AppCompatActivity
                 pickuplistForExecutiveAdapter.notifyDataSetChanged();
             }
         }.execute();
+    }*/
+    /* merchant List generation from sqlite*/
+    private void getData(String user) {
+        list.clear();
+        try {
+
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_mypickups_today(sqLiteDatabase, user);
+
+            while (c.moveToNext()) {
+                int key_id = c.getInt(0);
+                String merchantid = c.getString(1);
+                String  merchant_name = c.getString(2);
+                String executive_name = c.getString(3);
+                String assined_qty = c.getString(4);
+                String picked_qty = c.getString(5);
+                String scan_count = c.getString(6);
+                String phone_no = c.getString(7);
+                String assigned_by = c.getString(8);
+                String created_at = c.getString(9);
+                String updated_by = c.getString(10);
+                String updated_at = c.getString(11);
+                String complete_status = c.getString(12);
+                String p_m_name = c.getString(13);
+                String p_m_add = c.getString(14);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add);
+
+                list.add(todaySummary);
+            }
+
+            pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+            recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
+            pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
+            pickuplistForExecutiveAdapter.notifyDataSetChanged();
+            swipeRefreshLayout.setRefreshing(false);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadRecyclerView(final String user)
@@ -207,7 +248,9 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("phone_no"),
                                 o.getString("picked_qty"),
                                 o.getString("merchant_name"),
-                                o.getString("complete_status")
+                                o.getString("complete_status"),
+                                o.getString("p_m_name"),
+                                o.getString("p_m_address")
                                 , NAME_NOT_SYNCED_WITH_SERVER );
 
                     }
@@ -445,6 +488,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         PickupList_Model_For_Executive clickedItem = list.get(position);
 
         scanIntent.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
+        scanIntent.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
         scanIntent.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
 //        scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
 

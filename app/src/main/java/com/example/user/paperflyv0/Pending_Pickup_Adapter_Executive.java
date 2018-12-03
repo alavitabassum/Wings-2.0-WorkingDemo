@@ -24,11 +24,11 @@ public class Pending_Pickup_Adapter_Executive extends RecyclerView.Adapter<Pendi
     @Override
     public Pending_Pickup_Adapter_Executive.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v;
-        v = LayoutInflater.from(mContext).inflate(R.layout.exe_pp_layout, parent, false);
 
-        Pending_Pickup_Adapter_Executive.MyViewHolder vHolder = new Pending_Pickup_Adapter_Executive.MyViewHolder(v);
-        return vHolder;
+        View v = LayoutInflater.from(mContext).inflate(R.layout.exe_pp_layout, parent, false);
+
+        return new Pending_Pickup_Adapter_Executive.MyViewHolder(v);
+
     }
 
 
