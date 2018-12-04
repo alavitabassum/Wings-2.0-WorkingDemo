@@ -58,6 +58,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     public static final String MERCHANT_NAME = "Merchant Name";
     public static final String SUB_MERCHANT_NAME = "Sub merchant Name";
     public static final String MERCHANT_ID = "MerchantID";
+    public static final String CREATED_AT = "Created at";
     private static final String URL_DATA = "";
     private static final int REQUEST_CAMERA = 1;
     private ProgressDialog progress;
@@ -490,6 +491,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         scanIntent.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
         scanIntent.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
         scanIntent.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
+        scanIntent.putExtra(CREATED_AT, clickedItem.getCreated_at());
 //        scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
 
         startActivity(scanIntent);

@@ -37,15 +37,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.user.paperflyv0.MyPickupList_Executive.CREATED_AT;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
+import static com.example.user.paperflyv0.MyPickupList_Executive.SUB_MERCHANT_NAME;
 
 public class ScanningScreen extends AppCompatActivity {
 
@@ -56,6 +60,7 @@ public class ScanningScreen extends AppCompatActivity {
     private String lastText;
     private Button done;
     private TextView merchant_name_textview;
+    private TextView sub_merchant_name_textview;
     private TextView scan_count1 ;
     private pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
     RecyclerView recyclerView_pul;
@@ -80,14 +85,20 @@ public class ScanningScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.continuous_scan);
 
-
         // Pass value through intent
         Intent intent = getIntent();
         String merchant_name = intent.getStringExtra(MERCHANT_NAME);
+        String sub_merchant_name = intent.getStringExtra(SUB_MERCHANT_NAME);
         scan_count1 = (TextView) findViewById(R.id.scan_count);
 
         merchant_name_textview = (TextView) findViewById(R.id.merchant_name);
-        merchant_name_textview.setText("Scan started for: " +merchant_name);
+        sub_merchant_name_textview = (TextView) findViewById(R.id.sub_merchant_name);
+
+        if( sub_merchant_name.equals("None") || sub_merchant_name.equals("")) {
+            merchant_name_textview.setText("Scan started for: " +merchant_name);
+        } else {
+            sub_merchant_name_textview.setText("Scan started for: " +sub_merchant_name);
+        }
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
@@ -152,19 +163,27 @@ public class ScanningScreen extends AppCompatActivity {
             // get merchant id
             Intent intentID = getIntent();
             final String merchant_id = intentID.getStringExtra(MERCHANT_ID);
+            final String sub_merchant_name = intentID.getStringExtra(SUB_MERCHANT_NAME);
+            final String match_date = intentID.getStringExtra(CREATED_AT);
 
             barcodeView.setStatusText("Barcode"+result.getText());
 
             // TODO: add added-by, current-date , vaiia says to add flag in this table
             final boolean state = true;
             final String updated_by = user;
-            final String updated_at = currentDateTimeString;
+//            final String updated_at = currentDateTimeString;
+
+            Date c = Calendar.getInstance().getTime();
+            System.out.println("Current time => " + c);
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            final String updated_at = df.format(c);
+
             // db.add(merchant_id, lastText, state, updated_by, updated_at);
-            barcodesave(merchant_id, lastText, state, updated_by, updated_at);
+            barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at);
 
-            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id);
+            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
 
-            final String strI = String.valueOf(db.getRowsCount(merchant_id));
+            final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
 //            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
             scan_count1.setText("Scan count: " +strI);
 
@@ -191,13 +210,18 @@ public class ScanningScreen extends AppCompatActivity {
                     // current date and time
                     final String currentDateTimeString1 = DateFormat.getDateTimeInstance().format(new Date());
                     final String updated_by1 = user1;
-                    final String updated_at1 = currentDateTimeString1;
+//                    final String updated_at1 = currentDateTimeString1;
+
+                    Date c = Calendar.getInstance().getTime();
+                    System.out.println("Current time => " + c);
+                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                    final String updated_at1 = df.format(c);
 
                     boolean state1 = false;
-                    db.update_state(state1, merchant_id);
+                    db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
                     // TODO: Merchant id, scan count, created-by, creation-date, flag
 //                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
-                    try{ updateScanCount(strI, updated_by1, updated_at1, merchant_id);
+                    try{ updateScanCount(strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
                     } catch (Exception e) {
                         Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
                     }
@@ -245,11 +269,11 @@ public class ScanningScreen extends AppCompatActivity {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-
+//http://paperflybd.com/insert_barcode.php
     //API HIT
-    private void barcodesave(final String merchant_id, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
+    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -258,11 +282,11 @@ public class ScanningScreen extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.add(merchant_id, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
+                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.add(merchant_id, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -273,7 +297,7 @@ public class ScanningScreen extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.add(merchant_id, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.add(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -281,6 +305,7 @@ public class ScanningScreen extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("merchant_code", merchant_id);
+                params.put("sub_merchant_name", sub_merchant_name);
                 params.put("barcodeNumber", lastText);
                 params.put("state", String.valueOf(state));
                 params.put("updated_by", updated_by);
@@ -301,7 +326,7 @@ public class ScanningScreen extends AppCompatActivity {
 
     // API for update
 //    strI, updated_by1, updated_at1, merchant_id
-    public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id) {
+    public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/updateTable.php",
                 new Response.Listener<String>() {
@@ -313,11 +338,11 @@ public class ScanningScreen extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row(strI, updated_by, updated_at, merchant_id, NAME_SYNCED_WITH_SERVER);
+                                db.update_row(strI, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row(strI, updated_by, updated_at, merchant_id, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_row(strI, updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -328,7 +353,7 @@ public class ScanningScreen extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row(strI, updated_by, updated_at, merchant_id,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_row(strI, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -336,6 +361,8 @@ public class ScanningScreen extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("merchant_code", merchant_id);
+                params.put("p_m_name", sub_merchant_name);
+                params.put("created_at", match_date);
                 params.put("scan_count", strI);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);

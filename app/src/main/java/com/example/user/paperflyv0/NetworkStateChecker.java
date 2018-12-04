@@ -52,7 +52,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         int id = cursor.getInt(7);
 
                         //calling the method to save the unsynced name to MySQL
-                        saveBarcode(cursor1.getInt(0),cursor1.getString(1),cursor1.getString(2), Boolean.valueOf(cursor1.getString(3)),cursor1.getString(5),cursor1.getString(6));
+                        saveBarcode(cursor1.getInt(0),cursor1.getString(1), cursor1.getString(2),cursor1.getString(3), Boolean.valueOf(cursor1.getString(4)),cursor1.getString(6),cursor1.getString(7));
                     } while (cursor1.moveToNext());
                 }
                 //getting all the unsynced data
@@ -61,7 +61,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     do {
 
                         //calling the method to save the unsynced name to MySQL
-                        saveData(cursor2.getInt(0),cursor2.getString(6),cursor2.getString(10),cursor2.getString(11),cursor2.getString(1));
+                        saveData(cursor2.getInt(0),cursor2.getString(6),cursor2.getString(10),cursor2.getString(11),cursor2.getString(1), cursor2.getString(14), cursor2.getString(9));
                     } while (cursor2.moveToNext());
                 }
 /*Cursor cursor3 = database.getUnsyncedUpdate();
@@ -165,8 +165,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 */
     //Barcode save to server
-    private void saveBarcode(final int id,final String merchant_id, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
+    private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -192,6 +192,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("merchant_code", merchant_id);
+                params.put("sub_merchant_name", sub_merchant_name);
                 params.put("barcodeNumber", lastText);
                 params.put("state", String.valueOf(state));
                 params.put("updated_by", updated_by);
@@ -203,7 +204,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
     //Update scan count
-    private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id) {
+    private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
@@ -233,6 +234,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
                 params.put("merchant_code", merchant_id);
+                params.put("p_m_name", sub_merchant_name);
+                params.put("created_at", match_date);
                 return params;
             }
         };
