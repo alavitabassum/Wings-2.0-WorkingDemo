@@ -607,7 +607,12 @@ public class AssignPickup_Manager extends AppCompatActivity
         final String user = username.toString();
 
 
-        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        //final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String currentDateTimeString = df.format(c);
 
 
         List<String> lables = new ArrayList<String>();

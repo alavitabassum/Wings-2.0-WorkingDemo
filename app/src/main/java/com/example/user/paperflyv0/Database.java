@@ -352,6 +352,17 @@ public class Database extends SQLiteOpenHelper {
         return true;
     }
 
+    public String get_order_count(String phone){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT order_count FROM " + "assignexecutive"+ " WHERE " + "contactNumber" + " = '" + phone + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("contactNumber"));
+            return selection;
+        }
+        return null;
+    }
+
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
 
         SQLiteDatabase db = this.getWritableDatabase();
