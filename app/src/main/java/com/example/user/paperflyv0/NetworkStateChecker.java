@@ -1,21 +1,29 @@
 package com.example.user.paperflyv0;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
+
+
 public class NetworkStateChecker extends BroadcastReceiver {
+
     //context and database helper object
     private Context context;
     private Database database;
@@ -36,7 +44,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 if (cursor.moveToFirst()) {
                     do {
                         //calling the method to save the unsynced name to MySQL
-                        saveName(cursor.getInt(7),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5));
+                        saveName(cursor.getInt(7),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(8),cursor.getString(9),cursor.getString(10),cursor.getString(11));
                     } while (cursor.moveToNext());
                 }
                 //getting all the unsynced barcode
@@ -65,31 +73,31 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor2.moveToNext());
                 }
 /*Cursor cursor3 = database.getUnsyncedUpdate();
+                /*Cursor cursor3 = database.getUnsyncedUpdate();
                 if (cursor3.moveToFirst()) {
                     do {
-
- String executive_name = cursor.getString(0);
+                       *//* String executive_name = cursor.getString(0);
                         String executive_code = cursor.getString(1);
                         String order_count = cursor.getString(2);
                         String merchant_code = cursor.getString(3);
                         String assigned_by = cursor.getString(4);
                         String created_at = cursor.getString(5);
-                        int id = cursor.getInt(7);
+                        int id = cursor.getInt(7);*//*
                         //calling the method to save the unsynced name to MySQL
                         UpdateSync(cursor3.getInt(7),cursor3.getString(3),cursor3.getString(1),cursor3.getString(2));
                     } while (cursor3.moveToNext());
                 }*/
-
             }
         }
     }
-    /* * method taking two arguments
+
+    /*
+     * method taking two arguments
      * name that is to be saved and id of the name from SQLite
      * if the name is successfully sent
      * we will update the status as synced in SQLite
-     *
-*/
-    private void saveName(final int id, final String executive_name,final String executive_code, final String order_count,final String merchant_code,final String assigned_by,final String created_at) {
+     * */
+    private void saveName(final int id, final String executive_name,final String executive_code, final String order_count,final String merchant_code,final String assigned_by,final String created_at,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.INSERT_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -99,6 +107,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                             if (!obj.getBoolean("error")) {
                                 //updating the status in sqlite
                                 database.updateAssignStatus(id, AssignPickup_Manager.NAME_SYNCED_WITH_SERVER);
+
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(AssignPickup_Manager.DATA_SAVED_BROADCAST));
                             }
@@ -110,6 +119,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+
                     }
                 }) {
             @Override
@@ -121,14 +131,20 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("merchant_code", merchant_code);
                 params.put("assigned_by", assigned_by);
                 params.put("created_at", created_at);
+                params.put("merchant_name", m_name);
+                params.put("phone_no", contactNumber);
+                params.put("p_m_name",pick_m_name);
+                params.put("p_m_address",pick_m_address);
                 return params;
             }
         };
+
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
+
     //Update Sync
- /*private void UpdateSync(final int id,final String merchantcode, final String empcode,final String cou) {
+   /* private void UpdateSync(final int id,final String merchantcode, final String empcode,final String cou) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateassign.php",
                 new Response.Listener<String>() {
                     @Override

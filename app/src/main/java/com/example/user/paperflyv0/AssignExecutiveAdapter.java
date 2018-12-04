@@ -2,6 +2,9 @@ package com.example.user.paperflyv0;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.provider.ContactsContract;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +24,7 @@ import java.util.List;
 public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable  {
     private List<AssignManager_Model> assignManager_modelList;
     private List<AssignManager_Model> assignManager_modelListFull;
+    Database database;
 
     private Context context;
     private OnItemClickListener mListener;
@@ -51,22 +58,26 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
         public TextView itemMerchantName;
         public TextView itemMerchantAddress;
+        public TextView itemPickupMerchantName;
         public Button itembtnAssign;
         public ImageButton itemViewAssign;
         public TextView item_call;
         public ImageButton itemUpdateAssign;
-
+        public CardView cardview;
 
         @SuppressLint("ResourceAsColor")
         public ViewHolder(View itemView) {
             super(itemView);
+            database = new Database(context);
             itemMerchantName=itemView.findViewById(R.id.merchant_name);
             itemMerchantAddress=itemView.findViewById(R.id.m_add);
             itembtnAssign = itemView.findViewById(R.id.btn_assign);
             item_call = itemView.findViewById(R.id.call_merchant);
+            itemPickupMerchantName = itemView.findViewById(R.id.childMerchantName);
 
             itemViewAssign = itemView.findViewById(R.id.view_assign);
             itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
+            cardview = itemView.findViewById(R.id.card_view_assign);
 
             itembtnAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,9 +140,27 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         AssignManager_Model assignManager_model = assignManager_modelList.get(i);
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
-        viewHolder.itemMerchantAddress.setText(assignManager_model.getM_address());
+        final String p_name = assignManager_model.getPick_m_name();
+
+        if(p_name.length()==0)
+        {
+            viewHolder.itemPickupMerchantName.setText("No Pickup Merchant");
+        }
+        else{
+            viewHolder.itemPickupMerchantName.setText(p_name);
+        }
+        final String p_address = assignManager_model.getM_address();
+        if(p_address.length()==0)
+        {
+            viewHolder.itemMerchantAddress.setText("No Pickup Address");
+        }
+        else
+        {
+            viewHolder.itemMerchantAddress.setText(p_address);
+        }
+
+
         viewHolder.item_call.setText(String.valueOf(assignManager_model.getTotalcount()));
-        //viewHolder.item_call.setText(assignManager_model.getTotalcount());
         }
 
     @Override

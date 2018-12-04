@@ -40,9 +40,10 @@ public class NewOrder extends AppCompatActivity {
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
+    //private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
     private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
@@ -69,6 +70,9 @@ public class NewOrder extends AppCompatActivity {
         final AutoCompleteTextView actv_exe_name = findViewById(R.id.auto_exe_name);
         final EditText count = findViewById(R.id.editText);
         button = findViewById(R.id.btn_assign);
+        final EditText p_m_name = findViewById(R.id.childMerchant_name);
+        final EditText p_m_address = findViewById(R.id.pickup_address);
+
 
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
@@ -89,6 +93,8 @@ public class NewOrder extends AppCompatActivity {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, View view, final int i, long l) {
                 final String merchantname = adapterView.getItemAtPosition(i).toString();
+                final String empcode = "0";
+                final String contactNumber = "0";
 
                 final String merchantcode = database.getSelectedMerchantCodeAll(adapterView.getItemAtPosition(i).toString());
 
@@ -101,9 +107,11 @@ public class NewOrder extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //database.assignexecutive(actv_exe_name.getText().toString(),count.getText().toString(),merchantcode,user,currentDateTimeString);
+                        assignexecutive(actv_exe_name.getText().toString(),empcode,count.getText().toString(), merchantcode, user, currentDateTimeString,merchantname,contactNumber,p_m_name.getText().toString(),p_m_address.getText().toString());
+                        //database.assignexecutive(actv_exe_name.getText().toString(), empcode, count.getText().toString(), merchantcode, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER);
                         Toast.makeText(getApplicationContext(),
                                 "You have inserted new order for "
-                                        + merchantname
+                                        + p_m_name.getText().toString()
                                 , Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -122,7 +130,8 @@ public class NewOrder extends AppCompatActivity {
 
        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        actv_exe_name.setAdapter(adapter1);
+       actv_exe_name.setAdapter(adapter1);
+
 
         }
 
@@ -180,6 +189,71 @@ public class NewOrder extends AppCompatActivity {
         }
     }
 
+    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String p_m_name,final String p_m_address) {
+
+        database.assignexecutive(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, status,m_name,contactNumber,p_m_name,p_m_address);
+        //final int total_assign = database.getTotalOfAmount(merchant_code);
+        //final String strI = String.valueOf(total_assign);
+        //database.update_row(strI, merchant_code);
+
+    }
+
+
+    //For assigning executive API into mysql
+    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String p_m_name,final String p_m_address) {
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.INSERT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+                                assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("executive_name", ex_name);
+                params.put("executive_code", empcode);
+                params.put("order_count", order_count);
+                params.put("merchant_code", merchant_code);
+                params.put("assigned_by", user);
+                params.put("created_at", currentDateTimeString);
+                params.put("merchant_name", m_name);
+                params.put("phone_no", contactNumber);
+                params.put("p_m_name", p_m_name);
+                params.put("p_m_address", p_m_address);
+
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest);
+
+    }
+
+    //
 
 
 
