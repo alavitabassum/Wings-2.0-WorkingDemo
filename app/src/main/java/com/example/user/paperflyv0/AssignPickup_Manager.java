@@ -65,7 +65,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     private ProgressDialog progress;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://192.168.0.136/new/insertassign.php";
+    public static final String INSERT_URL = "http://192.168.0.138/new/insertassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
@@ -124,21 +124,24 @@ public class AssignPickup_Manager extends AppCompatActivity
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
 
+
+
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
             loadmerchantlist(user);
+            loadexecutivelist(user);
             Toast.makeText(getApplicationContext(), "Internet Available", Toast.LENGTH_SHORT).show();
         }
         else{
             getallmerchant();
+            getallexecutives();
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
 
-        getallexecutives();
 
-        loadexecutivelist(user);
+
         loadallmerchantlist(user);
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -204,9 +207,13 @@ public class AssignPickup_Manager extends AppCompatActivity
                             JSONArray array = jsonObject.getJSONArray("executivelist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
+                                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(
+                                        o.getString("userName"),
+                                        o.getString("empCode")
+                                );
+                                executiveLists.add(assignManager_executiveList);
                                 database.addexecutivelist(o.getString("userName"), o.getString("empCode"));
                             }
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();

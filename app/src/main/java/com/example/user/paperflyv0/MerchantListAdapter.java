@@ -1,13 +1,17 @@
 package com.example.user.paperflyv0;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,10 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         public TextView itemAssignedQty;
         public TextView itemReceivedQty;
         public TextView itemUploadedQty;
+        public TextView date_of_assign;
+        public CardView cardView;
+        public RelativeLayout relativeLayout;
+        public RelativeLayout relativeLayout2;
 
 
         public ViewHolder(View itemView) {
@@ -44,6 +52,10 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             itemUploadedQty = itemView.findViewById(R.id.u_qty);
             itemAssignedQty=itemView.findViewById(R.id.a_qty);
             itemReceivedQty=itemView.findViewById(R.id.r_qty);
+            date_of_assign = itemView.findViewById(R.id.asgn_date);
+            cardView = itemView.findViewById(R.id.card_view_merchant);
+            relativeLayout = itemView.findViewById(R.id.inside_rl);
+            relativeLayout2 = itemView.findViewById(R.id.rl2);
 
         }
     }
@@ -63,6 +75,23 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         viewHolder.itemUploadedQty.setText(pickupList_model_for_executive.getExecutive_name());
         viewHolder.itemAssignedQty.setText(pickupList_model_for_executive.getAssined_qty());
         viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
+        viewHolder.date_of_assign.setText(pickupList_model_for_executive.getCreated_at());
+        int count_assigned = Integer.parseInt(pickupList_model_for_executive.getAssined_qty());
+
+        try {
+
+            int count = Integer.parseInt(pickupList_model_for_executive.getScan_count());
+            if (count == count_assigned || count > count_assigned){
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                //viewHolder.relativeLayout2.setBackgroundResource(R.color.put_hd_color);
+                }else if (count < count_assigned ){
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

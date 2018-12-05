@@ -24,11 +24,11 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp = "create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1 = "create table merchantsfor_executives(merchant_name text,order_count text, picked_qty text, scan_count text,unique (merchant_name, order_count,picked_qty,scan_count))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
-        String tableEmp3 = "create table merchantList(id integer primary key AUTOINCREMENT, merchantName text,merchantCode text unique,totalcount int,contactNumber text,pick_m_name text,pick_m_address text)";
+        String tableEmp3 = "create table merchantList(id integer primary key AUTOINCREMENT, merchantName text,merchantCode text,totalcount int,contactNumber text,pick_m_name text,pick_m_address text,unique(merchantName,totalcount))";
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text)";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
         String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text unique)";
-        String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text,totalcount int,created_at text unique,executive_name text)";
+        String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text,totalcount int,created_at text,executive_name text,unique(merchantName,totalcount))";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
@@ -63,8 +63,8 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "merchantCode","totalcount","executive_name"};
-        return db.query("pickups_today_manager", columns, null, null, null, null, "merchantName");
+        String[] columns = {"merchantName", "merchantCode","totalcount","executive_name","created_at"};
+        return db.query("pickups_today_manager", columns, null, null, null, null,null);
     }
 
     public void clearPTMList(SQLiteDatabase sqLiteDatabase)
@@ -187,7 +187,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public Cursor get_merchantlist(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "merchantCode","totalcount","contactNumber"};
+        String[] columns = {"merchantName", "merchantCode","totalcount","contactNumber","pick_m_name","pick_m_address"};
         return db.query("merchantList", columns, null, null, null, null, null);
     }
 

@@ -31,11 +31,12 @@ public class PickupList_Model_For_Executive {
         this.complete_status = complete_status;
     }
 
-    public PickupList_Model_For_Executive(String merchant_name, String assined_qty, String scan_count,String executive_name) {
+    public PickupList_Model_For_Executive(String merchant_name, String assined_qty, String scan_count,String executive_name,String created_at) {
         this.merchant_name = merchant_name;
         this.assined_qty = assined_qty;
         this.scan_count = scan_count;
         this.executive_name = executive_name;
+        this.created_at = created_at;
     }
 
     public int getKey_id() {

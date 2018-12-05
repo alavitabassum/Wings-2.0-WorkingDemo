@@ -29,7 +29,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +76,12 @@ public class NewOrder extends AppCompatActivity {
         final EditText p_m_address = findViewById(R.id.pickup_address);
 
 
-        final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String currentDateTimeString = df.format(c);
+
 
         List<String> merchantnames = new ArrayList<String>();
         List<String> executivenames = new ArrayList<String>();
@@ -111,7 +118,7 @@ public class NewOrder extends AppCompatActivity {
                         //database.assignexecutive(actv_exe_name.getText().toString(), empcode, count.getText().toString(), merchantcode, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER);
                         Toast.makeText(getApplicationContext(),
                                 "You have inserted new order for "
-                                        + p_m_name.getText().toString()
+                                        + merchantname
                                 , Toast.LENGTH_SHORT).show();
                     }
                 });
