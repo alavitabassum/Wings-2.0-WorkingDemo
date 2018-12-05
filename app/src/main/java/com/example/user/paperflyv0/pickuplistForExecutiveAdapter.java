@@ -133,6 +133,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
         viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
+
         viewHolder.item_p_m_name_pul.setText(list.get(i).getP_m_name());
         viewHolder.item_p_m_add_pul.setText(list.get(i).getP_m_add());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
@@ -142,8 +143,6 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         try {
 
             int count = Integer.parseInt(list.get(i).getScan_count());
-
-
 
             if (count == count_assigned || count > count_assigned){
                 viewHolder.itemStatus.setText("Complete");

@@ -189,7 +189,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public Cursor get_mypickups_today(SQLiteDatabase db, String user)
     {
         String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD};
-        return (db.query(TABLE_NAME_1,columns,"executive_name='" + user + "'",null,null,null,null));
+        String sortOrder = CREATED_AT + " DESC";
+
+
+        return (db.query(TABLE_NAME_1,columns,"executive_name='" + user + "'",null,null,null,sortOrder));
     }
     public Cursor get_mypickups_complete(SQLiteDatabase db, String user)
     {

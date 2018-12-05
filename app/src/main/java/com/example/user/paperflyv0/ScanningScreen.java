@@ -101,7 +101,7 @@ public class ScanningScreen extends AppCompatActivity {
         }
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
-        Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_39);
+        Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.UPC_A);
         barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
         barcodeView.initializeFromIntent(getIntent());
         barcodeView.decodeContinuous(callback);
@@ -121,10 +121,10 @@ public class ScanningScreen extends AppCompatActivity {
     }
 
 
-    private BarcodeCallback callback = new BarcodeCallback() {
+    private BarcodeCallback callback = new BarcodeCallback()  {
 
         @Override
-        public void barcodeResult(BarcodeResult result) {
+        public void barcodeResult(BarcodeResult result)  {
             //Fetching email from shared preferences
             SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
             String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -179,13 +179,12 @@ public class ScanningScreen extends AppCompatActivity {
             final String updated_at = df.format(c);
 
             // db.add(merchant_id, lastText, state, updated_by, updated_at);
-            barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at);
+            barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, match_date);
 
             final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
 
-            final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
 //            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
-            scan_count1.setText("Scan count: " +strI);
+//            scan_count1.setText("Scan count: " +strI);
 
 //          builder.setTitle(strI);
             db.close();
@@ -221,7 +220,9 @@ public class ScanningScreen extends AppCompatActivity {
                     db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
                     // TODO: Merchant id, scan count, created-by, creation-date, flag
 //                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
-                    try{ updateScanCount(strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
+                    try{
+                        final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+                        updateScanCount(strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
                     } catch (Exception e) {
                         Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
                     }
@@ -271,9 +272,9 @@ public class ScanningScreen extends AppCompatActivity {
 
 //http://paperflybd.com/insert_barcode.php
     //API HIT
-    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
+    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String match_date) {
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/insert_barcode.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.139/new/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -283,10 +284,14 @@ public class ScanningScreen extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
                                 db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
+                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+                                scan_count1.setText("Scan count: " +strI);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
+                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+                                scan_count1.setText("Scan count: " +strI);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -298,6 +303,8 @@ public class ScanningScreen extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.add(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
+                        final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+                        scan_count1.setText("Scan count: " +strI);
                     }
                 }
         ) {
@@ -328,7 +335,7 @@ public class ScanningScreen extends AppCompatActivity {
 //    strI, updated_by1, updated_at1, merchant_id
     public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/updateTable.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.138/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

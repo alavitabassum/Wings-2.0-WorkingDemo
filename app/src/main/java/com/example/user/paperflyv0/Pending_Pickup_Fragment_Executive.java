@@ -22,7 +22,7 @@ import java.util.List;
 public class Pending_Pickup_Fragment_Executive extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
-    private static final String URL_DATA = "http://192.168.0.133/new/exec_pick_due.php";
+    private static final String URL_DATA = "http://192.168.0.139/new/exec_pick_due.php";
     private final String user;
     View v;
     public SwipeRefreshLayout swipeRefreshLayout;

@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,18 +47,11 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         saveName(cursor.getInt(7),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(8),cursor.getString(9),cursor.getString(10),cursor.getString(11));
                     } while (cursor.moveToNext());
                 }
+
                 //getting all the unsynced barcode
                 Cursor cursor1 = database2.getUnsyncedBarcode();
                 if (cursor1.moveToFirst()) {
                     do {
- String executive_name = cursor.getString(0);
-                        String executive_code = cursor.getString(1);
-                        String order_count = cursor.getString(2);
-                        String merchant_code = cursor.getString(3);
-                        String assigned_by = cursor.getString(4);
-                        String created_at = cursor.getString(5);
-                        int id = cursor.getInt(7);
-
                         //calling the method to save the unsynced name to MySQL
                         saveBarcode(cursor1.getInt(0),cursor1.getString(1), cursor1.getString(2),cursor1.getString(3), Boolean.valueOf(cursor1.getString(4)),cursor1.getString(6),cursor1.getString(7));
                     } while (cursor1.moveToNext());
@@ -182,7 +175,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 */
     //Barcode save to server
     private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.133/new/insert_barcode.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.139/new/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -196,12 +189,14 @@ public class NetworkStateChecker extends BroadcastReceiver {
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Toast.makeText(context, "Some exception while syncing" +e, Toast.LENGTH_LONG).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Error updating scan sync" +error, Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -214,6 +209,13 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
                 return params;
+
+                /*params.put("merchant_code", merchant_id);
+                params.put("sub_merchant_name", sub_merchant_name);
+                params.put("barcodeNumber", lastText);
+                params.put("state", String.valueOf(state));
+                params.put("updated_by", updated_by);
+                params.put("updated_at", updated_at);*/
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -221,7 +223,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
     //Update scan count
     private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/updateTable.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.138/new/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -253,6 +255,13 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("p_m_name", sub_merchant_name);
                 params.put("created_at", match_date);
                 return params;
+
+                /* params.put("merchant_code", merchant_id);
+                params.put("sub_merchant_name", sub_merchant_name);
+                params.put("barcodeNumber", lastText);
+                params.put("state", String.valueOf(state));
+                params.put("updated_by", updated_by);
+                params.put("updated_at", updated_at);*/
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
