@@ -142,7 +142,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                                 o.getString("merchant_name"),
                                 o.getString("order_count"),
                                 String.valueOf(o.getInt("scan_count")),
-                                o.getString("executive_name"));
+                                o.getString("executive_name"),
+                                o.getString("created_at"));
 
                         database.add_pickups_today_manager(o.getString("merchant_name"), o.getString("order_count"),o.getInt("scan_count"),o.getString("created_at"),o.getString("executive_name"));
                         pickupList_model_for_executives.add(todaySummary);
@@ -194,7 +195,8 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                 String code = c.getString(1);
                 String count = String.valueOf(c.getInt(2));
                 String executive_name = c.getString(3);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name);
+                String created_at = c.getString(4);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name,created_at);
                 pickupList_model_for_executives.add(todaySummary);
             }
             merchantListAdapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
