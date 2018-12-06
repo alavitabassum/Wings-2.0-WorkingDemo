@@ -55,6 +55,9 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
     MerchantListAdapter merchantListAdapter;
     List<PickupList_Model_For_Executive> pickupList_model_for_executives;
     Database database;
+    public TextView total_assigned;
+    public TextView complete;
+    public TextView pending;
 
 
     @Override
@@ -85,6 +88,19 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         swipeRefreshLayout.setRefreshing(true);
         pickupList_model_for_executives.clear();
         swipeRefreshLayout.setRefreshing(true);
+
+        int total = database.total_order();
+        total_assigned= findViewById(R.id.a_count);
+        total_assigned.setText(String.valueOf(total));
+
+        int cm = database.complete_order();
+        complete = findViewById(R.id.com_count);
+        complete.setText(String.valueOf(cm));
+
+        int pm = database.pending_order();
+        pending = findViewById(R.id.pen_count);
+        pending.setText(String.valueOf(pm));
+
 
 
         //If internet connection is available or not
@@ -145,7 +161,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                                 o.getString("executive_name"),
                                 o.getString("created_at"));
 
-                        database.add_pickups_today_manager(o.getString("merchant_name"), o.getString("order_count"),o.getInt("scan_count"),o.getString("created_at"),o.getString("executive_name"));
+                        database.add_pickups_today_manager(o.getString("merchant_name"), Integer.valueOf(o.getString("order_count")),o.getInt("scan_count"),o.getString("created_at"),o.getString("executive_name"));
                         pickupList_model_for_executives.add(todaySummary);
                     }
 
@@ -192,7 +208,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             while (c.moveToNext())
             {
                 String name = c.getString(0);
-                String code = c.getString(1);
+                String code = String.valueOf(c.getString(1));
                 String count = String.valueOf(c.getInt(2));
                 String executive_name = c.getString(3);
                 String created_at = c.getString(4);
