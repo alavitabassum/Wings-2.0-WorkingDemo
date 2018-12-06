@@ -64,7 +64,7 @@ public class Pending_Pickup_Fragment_Executive extends Fragment implements Swipe
         try {
 
             SQLiteDatabase sqLiteDatabase = database1.getReadableDatabase();
-            Cursor c = database1.get_mypickups_today(sqLiteDatabase, user);
+            Cursor c = database1.get_mypickups_complete(sqLiteDatabase, user);
 
             while (c.moveToNext()) {
                 int key_id = c.getInt(0);
@@ -96,7 +96,6 @@ public class Pending_Pickup_Fragment_Executive extends Fragment implements Swipe
             e.printStackTrace();
         }
     }
-
 
     /**
      * This method is to fetch all user records from SQLite

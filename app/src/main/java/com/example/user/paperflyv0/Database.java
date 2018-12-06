@@ -399,9 +399,9 @@ public class Database extends SQLiteOpenHelper {
         return count;
     }*/
 
-    public int totalassigned_order1(String user){
+    public int totalassigned_order_for_ex(String user, String currentDateTimeString){
 
-        String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'";
+        String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'AND " + "created_at" + " = '"+ currentDateTimeString +"'";
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor sumQuery = db.rawQuery(countQuery, null);
@@ -410,8 +410,8 @@ public class Database extends SQLiteOpenHelper {
         return count;
     }
 
-    public int complete_order1(String user){
-        String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'AND " + "scan_count" + ">=" + "totalcount";
+    public int complete_order_for_ex(String user, String currentDateTimeString){
+        String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"' AND " + "created_at" + " = '"+ currentDateTimeString +"'AND " + "scan_count" + ">=" + "totalcount";
         /*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*/
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor sumQuery = db.rawQuery(countQuery, null);
@@ -419,8 +419,8 @@ public class Database extends SQLiteOpenHelper {
         sumQuery.close();
         return count;
     }
-    public int pending_order1(String user){
-        String countQuery = "SELECT  merchantName FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'AND " + "scan_count" + "<" + "totalcount";
+    public int pending_order_for_ex(String user, String currentDateTimeString){
+        String countQuery = "SELECT  merchantName FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"' AND " + "created_at" + " = '"+ currentDateTimeString +"'AND " + "scan_count" + "<" + "totalcount";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount();

@@ -42,7 +42,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -182,9 +184,13 @@ public class MyPickupList_Executive extends AppCompatActivity
     private void getData(String user) {
         list.clear();
         try {
+            Date date = Calendar.getInstance().getTime();
+//            System.out.println("Current time => " + c);
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_mypickups_today(sqLiteDatabase, user);
+            Cursor c = db.get_mypickups_today(sqLiteDatabase, user, currentDateTimeString);
 
             while (c.moveToNext()) {
                 int key_id = c.getInt(0);

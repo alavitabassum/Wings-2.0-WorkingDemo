@@ -7,20 +7,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +36,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,15 +95,20 @@ public class PickupsToday_Executive extends AppCompatActivity
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
 
-        int total = database.totalassigned_order1(user);
+        Date c = Calendar.getInstance().getTime();
+//        System.out.println("Current time => " + c);
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String currentDateTimeString = df.format(c);
+
+        int total = database.totalassigned_order_for_ex(user, currentDateTimeString);
         total_assigned= findViewById(R.id.a_count);
         total_assigned.setText(String.valueOf(total));
 
-        int cm = database.complete_order1(user);
+        int cm = database.complete_order_for_ex(user, currentDateTimeString);
         complete = findViewById(R.id.com_count);
         complete.setText(String.valueOf(cm));
 
-        int pm = database.pending_order1(user);
+        int pm = database.pending_order_for_ex(user, currentDateTimeString);
         pending = findViewById(R.id.pen_count);
         pending.setText(String.valueOf(pm));
 
