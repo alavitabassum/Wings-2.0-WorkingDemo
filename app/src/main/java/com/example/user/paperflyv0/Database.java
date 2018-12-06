@@ -7,10 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class Database extends SQLiteOpenHelper {
 
@@ -385,6 +383,46 @@ public class Database extends SQLiteOpenHelper {
     public int pending_order(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + "<" + "totalcount" , null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+
+ /*   public int getRowsCount(String merchantId, String sub_merchant_name, String date) {
+        String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='"+ merchantId +"' AND " + SUB_MERCHANT_NAME + " = '"+ sub_merchant_name +"'AND " + UPDATED_AT + " = '"+ date +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }*/
+
+    public int totalassigned_order1(String user){
+
+        String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor sumQuery = db.rawQuery(countQuery, null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+    public int complete_order1(String user){
+        String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'AND " + "scan_count" + ">=" + "totalcount";
+        /*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*/
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery(countQuery, null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+    public int pending_order1(String user){
+        String countQuery = "SELECT  merchantName FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'AND " + "scan_count" + "<" + "totalcount";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount();
         sumQuery.close();
         return count;

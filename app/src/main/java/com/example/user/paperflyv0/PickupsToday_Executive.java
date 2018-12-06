@@ -53,6 +53,9 @@ public class PickupsToday_Executive extends AppCompatActivity
     private static final String URL_DATA = "http://192.168.0.138/new/showassign.php";
     private ProgressDialog progress;
     Database database;
+    public TextView total_assigned;
+    public TextView complete;
+    public TextView pending;
 
     RecyclerView recyclerView_exec;
     RecyclerView.LayoutManager layoutManager_exec;
@@ -88,6 +91,18 @@ public class PickupsToday_Executive extends AppCompatActivity
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
+
+        int total = database.totalassigned_order1(user);
+        total_assigned= findViewById(R.id.a_count);
+        total_assigned.setText(String.valueOf(total));
+
+        int cm = database.complete_order1(user);
+        complete = findViewById(R.id.com_count);
+        complete.setText(String.valueOf(cm));
+
+        int pm = database.pending_order1(user);
+        pending = findViewById(R.id.pen_count);
+        pending.setText(String.valueOf(pm));
 
 
      /*

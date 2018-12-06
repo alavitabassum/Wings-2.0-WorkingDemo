@@ -317,7 +317,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                             COMPLETE_STATUS };
 
         // sorting orders
-        String sortOrder = CREATED_AT + " ASC";
+        String sortOrder = CREATED_AT + " DESC";
         List<PickupList_Model_For_Executive> list = new ArrayList<PickupList_Model_For_Executive>();
 
         SQLiteDatabase db = this.getReadableDatabase();

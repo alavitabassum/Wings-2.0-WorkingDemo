@@ -2,14 +2,16 @@ package com.example.user.paperflyv0;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filterable;
-import android.widget.TextView;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,10 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
         public TextView item_aQty;
         public TextView item_uQty;
         public TextView item_rQty;
+        public TextView date_of_assign;
+        public CardView cardView;
+        public RelativeLayout relativeLayout;
+        public RelativeLayout relativeLayout2;
 
         @SuppressLint("ResourceAsColor")
         public ViewHolder(View itemView) {
@@ -40,8 +46,10 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
             item_aQty=itemView.findViewById(R.id.a_qty_e);
             item_uQty=itemView.findViewById(R.id.u_qty_e);
             item_rQty=itemView.findViewById(R.id.r_qty_e);
-
-
+            date_of_assign = itemView.findViewById(R.id.asgn_date);
+            cardView = itemView.findViewById(R.id.card_view_executive);
+            relativeLayout = itemView.findViewById(R.id.inside_rl);
+            relativeLayout2 = itemView.findViewById(R.id.rl2);
         }
     }
 
@@ -61,6 +69,23 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
         viewHolder.item_aQty.setText(summary_ex.getAssined_qty());
         viewHolder.item_uQty.setText(summary_ex.getPicked_qty());
         viewHolder.item_rQty.setText(summary_ex.getScan_count());
+        viewHolder.date_of_assign.setText(summary_ex.getCreated_at());
+
+        int count_assigned = Integer.parseInt(summary_ex.getAssined_qty());
+        try {
+
+            int count = Integer.parseInt(summary_ex.getScan_count());
+            if (count == count_assigned || count > count_assigned){
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                //viewHolder.relativeLayout2.setBackgroundResource(R.color.put_hd_color);
+            }else if (count < count_assigned ){
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

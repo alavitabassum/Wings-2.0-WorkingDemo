@@ -35,22 +35,13 @@ public class PickupList_Model_For_Executive {
         this.p_m_add = p_m_add;
     }
 
-    public PickupList_Model_For_Executive(String merchant_name,String executive_name, String assined_qty, String picked_qty ,String scan_count) {
+    public PickupList_Model_For_Executive(String merchant_name, String assined_qty, String scan_count,String executive_name,String created_at) {
         this.merchant_name = merchant_name;
-        this.executive_name = executive_name;
-        this.assined_qty = assined_qty;
-        this.picked_qty = picked_qty;
-        this.scan_count = scan_count;
-
-    }
-    public PickupList_Model_For_Executive(String merchant_name,String executive_name, String assined_qty,String scan_count) {
-        this.merchant_name = merchant_name;
-        this.executive_name = executive_name;
         this.assined_qty = assined_qty;
         this.scan_count = scan_count;
-
+        this.executive_name = executive_name;
+        this.created_at = created_at;
     }
-
     public int getKey_id() {
         return key_id;
     }
