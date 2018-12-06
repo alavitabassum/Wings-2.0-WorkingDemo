@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -171,18 +170,18 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                 database2.updateBarcodeStatus(id, ScanningScreen.NAME_SYNCED_WITH_SERVER);
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(ScanningScreen.DATA_SAVED_BROADCAST));
-                                Toast.makeText(context, "Successfully synced" +obj, Toast.LENGTH_LONG).show();
+//                                Toast.makeText(context, "Successfully synced" +obj, Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(context, "Some exception while syncing" +e, Toast.LENGTH_LONG).show();
+//                            Toast.makeText(context, "Some exception while syncing" +e, Toast.LENGTH_LONG).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Error updating scan sync" +error, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(context, "Error updating scan sync" +error, Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
