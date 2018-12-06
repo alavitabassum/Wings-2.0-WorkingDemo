@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Database extends SQLiteOpenHelper {
@@ -28,7 +31,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text,order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text)";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
         String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text unique)";
-        String tableEmp7 = "create table pickups_today_manager(merchantName text,merchantCode text,totalcount int,created_at text,executive_name text,unique(merchantName,totalcount))";
+        String tableEmp7 = "create table pickups_today_manager(merchantName text,totalcount int,scan_count integer,created_at text,executive_name text,unique(merchantName,totalcount))";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
@@ -45,25 +48,23 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    public void add_pickups_today_manager(String merchantName, String merchantCode,int cnt,String created_at,String executive_name) {
+    public void add_pickups_today_manager(String merchantName,int cnt,int scan_count,String created_at,String executive_name) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-
         values.put("merchantName", merchantName);
-
-        values.put("merchantCode", merchantCode);
-
         values.put("totalcount",cnt);
+        values.put("scan_count",scan_count);
         values.put("created_at",created_at);
         values.put("executive_name",executive_name);
+
 
         sqLiteDatabase.insert("pickups_today_manager", null, values);
         sqLiteDatabase.close();
     }
 
     public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "merchantCode","totalcount","executive_name","created_at"};
+        String[] columns = {"merchantName", "totalcount","scan_count","executive_name","created_at"};
         return db.query("pickups_today_manager", columns, null, null, null, null,null);
     }
 
@@ -362,6 +363,37 @@ public class Database extends SQLiteOpenHelper {
         }
         return null;
     }
+    Date c = Calendar.getInstance().getTime();
+    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+    final String currentDateTimeString = df.format(c);
+
+    public int total_order(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_manager", null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+    public int complete_order(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount", null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+    public int pending_order(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + "<" + "totalcount" , null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+
+
+
+
 
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
 
