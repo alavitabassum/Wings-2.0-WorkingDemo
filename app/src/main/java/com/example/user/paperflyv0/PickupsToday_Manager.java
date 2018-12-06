@@ -90,7 +90,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         pickupList_model_for_executives.clear();
         swipeRefreshLayout.setRefreshing(true);
 
-        int total = database.total_order();
+        int total = database.totalassigned_order();
         total_assigned= findViewById(R.id.a_count);
         total_assigned.setText(String.valueOf(total));
 

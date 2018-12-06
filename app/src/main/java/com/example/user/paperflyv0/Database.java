@@ -367,7 +367,7 @@ public class Database extends SQLiteOpenHelper {
     SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
     final String currentDateTimeString = df.format(c);
 
-    public int total_order(){
+    public int totalassigned_order(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_manager", null);
         int count = sumQuery.getCount();
