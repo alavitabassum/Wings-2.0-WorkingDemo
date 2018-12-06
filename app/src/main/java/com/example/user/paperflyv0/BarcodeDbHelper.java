@@ -49,11 +49,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "merchantId TEXT, "
                 + "sub_merchant_name TEXT, "
-                + "barcodeNumber TEXT UNIQUE, "
+                + "barcodeNumber TEXT, "
                 + "state BOOLEAN, "
                 + "status INT, "
                 + "updated_by TEXT, "
-                + "updated_at TEXT)";
+                + "updated_at TEXT, "
+                + " unique(barcodeNumber))" ;
 
         String CREATION_TABLE1 = "CREATE TABLE My_pickups ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -223,6 +224,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
         cursor.close();
+        db.close();
         return count;
     }
 
@@ -232,6 +234,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
+    /* private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
+     */
 
     public boolean updateBarcodeStatus(int id, int status) {
         SQLiteDatabase db = this.getWritableDatabase();

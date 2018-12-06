@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -81,7 +82,7 @@ public class ScanningScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       // registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.continuous_scan);
 
@@ -179,9 +180,9 @@ public class ScanningScreen extends AppCompatActivity {
             final String updated_at = df.format(c);
 
             // db.add(merchant_id, lastText, state, updated_by, updated_at);
-            barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, match_date);
+            barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at);
 
-            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
+//            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
 
 //            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
 //            scan_count1.setText("Scan count: " +strI);
@@ -272,12 +273,17 @@ public class ScanningScreen extends AppCompatActivity {
 
 //http://paperflybd.com/insert_barcode.php
     //API HIT
-    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String match_date) {
+    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
+
+        // get created date for match
+        Intent intentID = getIntent();
+        final String match_date = intentID.getStringExtra(CREATED_AT);
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.139/new/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
@@ -286,12 +292,14 @@ public class ScanningScreen extends AppCompatActivity {
                                 db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
                                 scan_count1.setText("Scan count: " +strI);
+                                Toast.makeText(ScanningScreen.this, "barcode save with no error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
                                 scan_count1.setText("Scan count: " +strI);
+                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -373,11 +381,6 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("scan_count", strI);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
-
-               /* database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
-                final int total_assign = database.getTotalOfAmount(merchant_code);
-                final String strI = String.valueOf(total_assign);
-                database.update_row(strI, merchant_code);*/
                 return params;
             }
 
@@ -393,8 +396,7 @@ public class ScanningScreen extends AppCompatActivity {
      * This method is to fetch all user records from SQLite
      */
     private void getData(final String user) {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        ;
+        // AsyncTask is used that SQLite operation not blocks the UI Thread
 
         new AsyncTask<String, Void , Void>() {
             @Override

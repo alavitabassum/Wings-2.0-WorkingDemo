@@ -65,21 +65,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         saveData(cursor2.getInt(0),cursor2.getString(6),cursor2.getString(10),cursor2.getString(11),cursor2.getString(1), cursor2.getString(14), cursor2.getString(9));
                     } while (cursor2.moveToNext());
                 }
-/*Cursor cursor3 = database.getUnsyncedUpdate();
-                /*Cursor cursor3 = database.getUnsyncedUpdate();
-                if (cursor3.moveToFirst()) {
-                    do {
-                       *//* String executive_name = cursor.getString(0);
-                        String executive_code = cursor.getString(1);
-                        String order_count = cursor.getString(2);
-                        String merchant_code = cursor.getString(3);
-                        String assigned_by = cursor.getString(4);
-                        String created_at = cursor.getString(5);
-                        int id = cursor.getInt(7);*//*
-                        //calling the method to save the unsynced name to MySQL
-                        UpdateSync(cursor3.getInt(7),cursor3.getString(3),cursor3.getString(1),cursor3.getString(2));
-                    } while (cursor3.moveToNext());
-                }*/
             }
         }
     }
@@ -186,6 +171,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                 database2.updateBarcodeStatus(id, ScanningScreen.NAME_SYNCED_WITH_SERVER);
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(ScanningScreen.DATA_SAVED_BROADCAST));
+                                Toast.makeText(context, "Successfully synced" +obj, Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -208,6 +194,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("state", String.valueOf(state));
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
+
                 return params;
 
                 /*params.put("merchant_code", merchant_id);
