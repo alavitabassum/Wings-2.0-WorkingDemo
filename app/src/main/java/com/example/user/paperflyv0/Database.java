@@ -369,7 +369,7 @@ public class Database extends SQLiteOpenHelper {
 
     public int totalassigned_order(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_manager", null);
+        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_manager" + " WHERE " + "created_at" + " = '" + currentDateTimeString + "'", null);
         int count = sumQuery.getCount();
         sumQuery.close();
         return count;
@@ -377,14 +377,37 @@ public class Database extends SQLiteOpenHelper {
 
     public int complete_order(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount", null);
+        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount" + " AND " + "created_at"+ " = '" + currentDateTimeString + "'", null);
         int count = sumQuery.getCount();
         sumQuery.close();
         return count;
     }
     public int pending_order(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + "<" + "totalcount" , null);
+        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + "<" + "totalcount" + " AND " + "created_at"+ " = '" + currentDateTimeString + "'" , null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+    public int totalassigned_order_till(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_manager", null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+    public int complete_order_till(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount", null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+    public int pending_order_till(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + "<" + "totalcount", null);
         int count = sumQuery.getCount();
         sumQuery.close();
         return count;
