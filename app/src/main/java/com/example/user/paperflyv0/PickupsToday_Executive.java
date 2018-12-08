@@ -418,19 +418,5 @@ public class PickupsToday_Executive extends AppCompatActivity
         loadRecyclerView(user);
         getData(user);
 
-        /*ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
-       NetworkInfo nInfo = cManager.getActiveNetworkInfo();
-       SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-       String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-       pickupList_model_for_executives.clear();
-       merchantListAdapter.notifyDataSetChanged();
-       //If internet connection is available or not
-       if(nInfo!= null && nInfo.isConnected())
-       {
-           loadRecyclerView(username);
-       }
-       else{
-           getData();
-       }*/
     }
 }

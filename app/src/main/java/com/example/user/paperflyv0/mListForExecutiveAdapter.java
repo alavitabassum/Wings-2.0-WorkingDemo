@@ -109,9 +109,11 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
             }else{
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (PickupList_Model_For_Executive item : summariesCopy){
+
                     if (item.getMerchant_name().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
+
                 }
             }
             FilterResults results = new FilterResults();

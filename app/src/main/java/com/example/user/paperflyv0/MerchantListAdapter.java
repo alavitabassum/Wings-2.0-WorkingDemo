@@ -1,7 +1,6 @@
 package com.example.user.paperflyv0;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -120,7 +119,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
            }else{
                String filterPattern = constraint.toString().toLowerCase().trim();
                for (PickupList_Model_For_Executive item : PickupList_Model_For_ExecutiveFull){
-                   if (item.getMerchant_name().toLowerCase().contains(filterPattern)){
+                   if (item.getMerchant_name().toLowerCase().contains(filterPattern) || item.getExecutive_name().toLowerCase().contains(filterPattern) || item.getCreated_at().toLowerCase().contains(filterPattern)){
                        filteredList.add(item);
                    }
                }
