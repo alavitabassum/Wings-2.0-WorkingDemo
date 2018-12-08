@@ -71,7 +71,7 @@ public class Database extends SQLiteOpenHelper {
 
     public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
         String[] columns = {"merchantName", "totalcount","scan_count","executive_name","created_at"};
-        return db.query("pickups_today_manager", columns, "created_at='" + currentDateTimeString + "'", null, null, null,null);
+        return db.query("pickups_today_manager", columns, "created_at='" + currentDateTimeString + "'", null, null, null,"scan_count"+" ASC");
     }
 
     public void clearPTMList(SQLiteDatabase sqLiteDatabase)
@@ -251,7 +251,7 @@ public class Database extends SQLiteOpenHelper {
     public Cursor getassignedexecutive(SQLiteDatabase db,String merchant_code)
     {
         String[] columns = {"rowid","ex_name","empCode","order_count"};
-        return db.query("assignexecutive",columns,"merchantCode='" + merchant_code + "'",null,null,null,null);
+        return db.query("assignexecutive",columns,"merchantCode=? and currentDateTimeString=?", new String[] { merchant_code, currentDateTimeString } ,null,null,null,null);
     }
 
     public void addexecutivelist(String empName, String empCode) {
@@ -392,33 +392,6 @@ public class Database extends SQLiteOpenHelper {
         sumQuery.close();
         return count;
     }
-
-    public int totalassigned_order_till(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_manager", null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-
-    public int complete_order_till(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount", null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-    public int pending_order_till(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + "<" + "totalcount", null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-
-
-
-
 
 
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {

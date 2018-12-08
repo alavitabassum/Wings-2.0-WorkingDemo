@@ -239,6 +239,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         }catch (Exception e)
         {
             Toast.makeText(getApplicationContext(), "some error" ,Toast.LENGTH_SHORT).show();
+            swipeRefreshLayout.setRefreshing(false);
         }
     }
 
@@ -372,9 +373,20 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
     @Override
     public void onRefresh() {
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         pickupList_model_for_executives.clear();
-        loadRecyclerView(username);
+        merchantListAdapter.notifyDataSetChanged();
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadRecyclerView(username);
+        }
+        else{
+            getData();
+        }
+
     }
 }

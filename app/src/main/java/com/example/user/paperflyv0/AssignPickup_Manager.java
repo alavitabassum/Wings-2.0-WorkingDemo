@@ -120,6 +120,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         assignManager_modelList.clear();
         swipeRefreshLayout.setRefreshing(true);
 
+
         //Offline sync
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -328,9 +329,9 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     /* merchant List generation from sqlite*/
     private void getallmerchant() {
-        assignManager_modelList.clear();
-        try {
 
+        try {
+            assignManager_modelList.clear();
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
             Cursor c = database.get_merchantlist(sqLiteDatabase);
 
@@ -701,10 +702,22 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     @Override
     public void onRefresh() {
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         assignManager_modelList.clear();
-        loadmerchantlist(username);
+        assignExecutiveAdapter.notifyDataSetChanged();
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadmerchantlist(username);
+        }
+        else{
+            getallmerchant();
+        }
+
+
     }
 
 }
