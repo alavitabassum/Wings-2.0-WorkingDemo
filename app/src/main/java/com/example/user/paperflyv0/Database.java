@@ -47,6 +47,12 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
+    //Current Date
+    Date c = Calendar.getInstance().getTime();
+    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+    final String currentDateTimeString = df.format(c);
+
+
 
     public void add_pickups_today_manager(String merchantName,int cnt,int scan_count,String created_at,String executive_name) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -65,7 +71,7 @@ public class Database extends SQLiteOpenHelper {
 
     public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
         String[] columns = {"merchantName", "totalcount","scan_count","executive_name","created_at"};
-        return db.query("pickups_today_manager", columns, null, null, null, null,null);
+        return db.query("pickups_today_manager", columns, "created_at='" + currentDateTimeString + "'", null, null, null,null);
     }
 
     public void clearPTMList(SQLiteDatabase sqLiteDatabase)
@@ -363,9 +369,6 @@ public class Database extends SQLiteOpenHelper {
         }
         return null;
     }
-    Date c = Calendar.getInstance().getTime();
-    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-    final String currentDateTimeString = df.format(c);
 
     public int totalassigned_order(){
         SQLiteDatabase db = this.getReadableDatabase();

@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/assignedcounttxt"
             android:layout_toEndOf="@+id/assignedcounttxt"
-            android:text="200"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/compltcounttxt"
             android:layout_toEndOf="@+id/compltcounttxt"
-            android:text="156"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />
@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/pendingcounttxt"
             android:layout_toEndOf="@+id/pendingcounttxt"
-            android:text="44"
+            android:text="0"
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />

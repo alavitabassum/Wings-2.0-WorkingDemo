@@ -222,6 +222,18 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             merchantListAdapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
             recyclerView.setAdapter(merchantListAdapter);
             swipeRefreshLayout.setRefreshing(false);
+            //Master Summary For Today
+            int total = database.totalassigned_order();
+            total_assigned= findViewById(R.id.a_count);
+            total_assigned.setText(String.valueOf(total));
+
+            int cm = database.complete_order();
+            complete = findViewById(R.id.com_count);
+            complete.setText(String.valueOf(cm));
+
+            int pm = database.pending_order();
+            pending = findViewById(R.id.pen_count);
+            pending.setText(String.valueOf(pm));
 
 
         }catch (Exception e)
