@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapterExecutive.ViewHolder> {
 
-    private String[] titles_exe_list = {"Pickups For Today", "Assigned Pickups","Pickup Status"};
+    private String[] titles_exe_list = {"Pickups For Today", "Assigned Pickups","Pickup Status (Coming Soon)"};
 
   /*  private String[] details_exe_list = {"View ->","View ->","View ->"};*/
 
@@ -41,7 +41,7 @@ if (position == 0){
     Intent intent_assign = new Intent (v.getContext(), MyPickupList_Executive.class);
     v.getContext().startActivity(intent_assign);
 }else {
-    Intent intent_history = new Intent (v.getContext(), PickupStatus_Executive.class);
+    Intent intent_history = new Intent (v.getContext(), ExecutiveCardMenu.class);
     v.getContext().startActivity(intent_history);
 }
                    /* Snackbar.make(v, "Click detected on item " + position,

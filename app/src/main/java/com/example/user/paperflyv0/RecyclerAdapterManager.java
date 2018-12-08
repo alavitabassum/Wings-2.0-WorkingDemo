@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapterManager.ViewHolder> {
 
-    private String[] titles = {"Pickups For Today", "Assign Pickups","Pickup History"};
+    private String[] titles = {"Pickups For Today", "Assign Pickups","Pickup History (Coming Soon)"};
 
    // private String[] details = {"View ->","View ->","View ->"};
 
@@ -41,7 +41,7 @@ public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapter
                             Intent intent_assign = new Intent (v.getContext(), AssignPickup_Manager.class);
                             v.getContext().startActivity(intent_assign);
                             }else {
-                              Intent intent_history = new Intent (v.getContext(), PickupHistory_Manager.class);
+                              Intent intent_history = new Intent (v.getContext(), ManagerCardMenu.class);
                           v.getContext().startActivity(intent_history);
                           }
                                /* Snackbar.make(v, "Click detected on item " + position,
