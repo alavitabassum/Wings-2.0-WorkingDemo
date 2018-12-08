@@ -129,7 +129,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         {
             loadmerchantlist(user);
             loadexecutivelist(user);
-            Toast.makeText(getApplicationContext(), "Internet Available", Toast.LENGTH_SHORT).show();
         }
         else{
             getallmerchant();

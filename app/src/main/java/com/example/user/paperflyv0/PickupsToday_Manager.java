@@ -97,8 +97,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
-
-            Toast.makeText(getApplicationContext(), "Internet Available", Toast.LENGTH_SHORT).show();
         }
         else {
             getData();
