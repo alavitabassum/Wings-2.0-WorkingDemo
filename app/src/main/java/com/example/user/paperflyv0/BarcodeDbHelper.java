@@ -420,5 +420,34 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_1,columns,"executive_name='" + "'",null,null,null,null));
 
     }
+
+    public int totalassigned_order_for_ex(String user, String currentDateTimeString){
+
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"'AND " + CREATED_AT + " = '"+ currentDateTimeString +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor sumQuery = db.rawQuery(countQuery, null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+    public int complete_order_for_ex(String user, String currentDateTimeString){
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + SCAN_COUNT + ">=" + ASSIGNED_QTY;
+        /*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*/
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery(countQuery, null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+    public int pending_order_for_ex(String user, String currentDateTimeString){
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + SCAN_COUNT + "<" + ASSIGNED_QTY;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery(countQuery, null);
+        int count = sumQuery.getCount( );
+        sumQuery.close();
+        return count;
+    }
 }
 

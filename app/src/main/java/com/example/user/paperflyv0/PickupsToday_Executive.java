@@ -55,7 +55,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     //private static final String URL_DATA = "http://192.168.0.117/new/merchantListForExecutive.php";
     private static final String URL_DATA = "http://192.168.0.138/new/showassign.php";
     private ProgressDialog progress;
-    Database database;
+//    Database database;
     public TextView total_assigned;
     public TextView complete;
     public TextView pending;
@@ -77,8 +77,8 @@ public class PickupsToday_Executive extends AppCompatActivity
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final String user = username.toString();
 
-        database=new Database(getApplicationContext());
-        database.getReadableDatabase();
+//        database=new Database(getApplicationContext());
+//        database.getReadableDatabase();
 
         db= new BarcodeDbHelper(getApplicationContext());
         db.getReadableDatabase();
@@ -96,19 +96,18 @@ public class PickupsToday_Executive extends AppCompatActivity
         swipeRefreshLayout.setRefreshing(true);
 
         Date c = Calendar.getInstance().getTime();
-//        System.out.println("Current time => " + c);
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String currentDateTimeString = df.format(c);
 
-        int total = database.totalassigned_order_for_ex(user, currentDateTimeString);
+        int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
         total_assigned= findViewById(R.id.a_count);
         total_assigned.setText(String.valueOf(total));
 
-        int cm = database.complete_order_for_ex(user, currentDateTimeString);
+        int cm = db.complete_order_for_ex(user, currentDateTimeString);
         complete = findViewById(R.id.com_count);
         complete.setText(String.valueOf(cm));
 
-        int pm = database.pending_order_for_ex(user, currentDateTimeString);
+        int pm = db.pending_order_for_ex(user, currentDateTimeString);
         pending = findViewById(R.id.pen_count);
         pending.setText(String.valueOf(pm));
 
@@ -238,7 +237,7 @@ public class PickupsToday_Executive extends AppCompatActivity
                    public void onErrorResponse(VolleyError error) {
                        // progress.dismiss();
                        swipeRefreshLayout.setRefreshing(false);
-                       Toast.makeText(getApplicationContext(), "Serve not connected loadrecylerview" +error ,Toast.LENGTH_SHORT).show();
+                       Toast.makeText(getApplicationContext(), "No Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                    }
                })
@@ -354,11 +353,13 @@ public class PickupsToday_Executive extends AppCompatActivity
             Intent assignIntent = new Intent(PickupsToday_Executive.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_pickStatus) {
+        }
+      /*  else if (id == R.id.nav_pickStatus) {
             Intent historyIntent = new Intent(PickupsToday_Executive.this,
                     PickupStatus_Executive.class);
             startActivity(historyIntent);
-        } else if (id == R.id.nav_logout) {
+        } */
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -407,10 +408,29 @@ public class PickupsToday_Executive extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-        summaries.clear();
+         //The list for update recycle view
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         String user = username.toString();
+
+        summaries.clear();
+        mListForExecutiveAdapter.notifyDataSetChanged();
         loadRecyclerView(user);
+        getData(user);
+
+        /*ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+       NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+       SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+       String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+       pickupList_model_for_executives.clear();
+       merchantListAdapter.notifyDataSetChanged();
+       //If internet connection is available or not
+       if(nInfo!= null && nInfo.isConnected())
+       {
+           loadRecyclerView(username);
+       }
+       else{
+           getData();
+       }*/
     }
 }

@@ -534,11 +534,13 @@ public class AssignPickup_Manager extends AppCompatActivity
             Intent assignIntent = new Intent(AssignPickup_Manager.this,
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_pickCompleted) {
+        }
+     /*   else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(AssignPickup_Manager.this,
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
-        } else if (id == R.id.nav_logout) {
+        } */
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

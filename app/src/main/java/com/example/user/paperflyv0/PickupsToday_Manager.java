@@ -305,11 +305,13 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             Intent assignIntent = new Intent(PickupsToday_Manager.this,
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_pickCompleted) {
+        }
+       /* else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(PickupsToday_Manager.this,
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
-        } else if (id == R.id.nav_logout) {
+        } */
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

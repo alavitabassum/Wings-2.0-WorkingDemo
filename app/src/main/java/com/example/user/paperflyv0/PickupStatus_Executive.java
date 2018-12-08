@@ -169,11 +169,13 @@ public class PickupStatus_Executive extends AppCompatActivity
             Intent assignIntent = new Intent(PickupStatus_Executive.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_pickStatus) {
+        }
+       /* else if (id == R.id.nav_pickStatus) {
             Intent historyIntent = new Intent(PickupStatus_Executive.this,
                     PickupStatus_Executive.class);
             startActivity(historyIntent);
-        } else if (id == R.id.nav_logout) {
+        } */
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

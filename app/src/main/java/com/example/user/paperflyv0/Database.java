@@ -422,7 +422,7 @@ public class Database extends SQLiteOpenHelper {
         return count;
     }*/
 
-    public int totalassigned_order_for_ex(String user, String currentDateTimeString){
+/*    public int totalassigned_order_for_ex(String user, String currentDateTimeString){
 
         String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'AND " + "created_at" + " = '"+ currentDateTimeString +"'";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -435,7 +435,7 @@ public class Database extends SQLiteOpenHelper {
 
     public int complete_order_for_ex(String user, String currentDateTimeString){
         String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"' AND " + "created_at" + " = '"+ currentDateTimeString +"'AND " + "scan_count" + ">=" + "totalcount";
-        /*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*/
+        *//*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*//*
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount();
@@ -449,12 +449,7 @@ public class Database extends SQLiteOpenHelper {
         int count = sumQuery.getCount();
         sumQuery.close();
         return count;
-    }
-
-
-
-
-
+    }*/
 
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
 

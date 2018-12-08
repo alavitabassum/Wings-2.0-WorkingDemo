@@ -112,8 +112,7 @@ public class ExecutiveCardMenu extends AppCompatActivity
             Intent homeIntent = new Intent(ExecutiveCardMenu.this,
                     ExecutiveCardMenu.class);
             startActivity(homeIntent);
-        }
-        else if (id == R.id.nav_pickup_sum) {
+        } else if (id == R.id.nav_pickup_sum) {
             Intent pickupIntent = new Intent(ExecutiveCardMenu.this,
                     PickupsToday_Executive.class);
             startActivity(pickupIntent);
@@ -121,11 +120,13 @@ public class ExecutiveCardMenu extends AppCompatActivity
             Intent assignIntent = new Intent(ExecutiveCardMenu.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_pickStatus) {
-            Intent historyIntent = new Intent(ExecutiveCardMenu.this,
-                    PickupStatus_Executive.class);
-            startActivity(historyIntent);
-        } else if (id == R.id.nav_logout) {
+        }
+//        else if (id == R.id.nav_pickStatus) {
+//            Intent historyIntent = new Intent(ExecutiveCardMenu.this,
+//                    PickupStatus_Executive.class);
+//            startActivity(historyIntent);
+//        }
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

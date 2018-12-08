@@ -11,8 +11,8 @@
 
     <item android:title="My Pickups" android:icon="@drawable/attention" android:id="@+id/nav_exe_pickup"/>
 
-    <item android:title="Pickup Status" android:icon="@drawable/pickcomplete" android:id="@+id/nav_pickStatus"/>
-
+   <!-- <item android:title="Pickup Status" android:icon="@drawable/pickcomplete" android:id="@+id/nav_pickStatus"/>
+-->
 </group>
 
 

@@ -66,8 +66,8 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         PickupList_Model_For_Executive summary_ex = summaries.get(i);
         viewHolder.item_mName.setText(summary_ex.getMerchant_name());
+        viewHolder.item_uQty.setText(summary_ex.getExecutive_name());
         viewHolder.item_aQty.setText(summary_ex.getAssined_qty());
-        viewHolder.item_uQty.setText(summary_ex.getPicked_qty());
         viewHolder.item_rQty.setText(summary_ex.getScan_count());
         viewHolder.date_of_assign.setText(summary_ex.getCreated_at());
 

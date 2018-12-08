@@ -228,7 +228,10 @@ public class MyPickupList_Executive extends AppCompatActivity
     {
 //        boolean check;
 //          list.clear();
-          final Date date = new Date();
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String match_date = df.format(c);
+
           StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.138/new/showexecutiveassign.php",
            new Response.Listener<String>()
            {
@@ -275,7 +278,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected loadrecylerview" +error ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
 
                     }
                 })
@@ -285,6 +288,7 @@ public class MyPickupList_Executive extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("executive_name",user);
+                params1.put("created_at",match_date);
                 return params1;
             }
         };
@@ -429,11 +433,13 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             Intent assignIntent = new Intent(MyPickupList_Executive.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_pickStatus) {
+        }
+      /*  else if (id == R.id.nav_pickStatus) {
             Intent historyIntent = new Intent(MyPickupList_Executive.this,
                     PickupStatus_Executive.class);
             startActivity(historyIntent);
-        } else if (id == R.id.nav_logout) {
+        } */
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

@@ -160,6 +160,14 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
         }
 
+        if(list.get(i).getP_m_name().equals("")) {
+            viewHolder.item_p_m_name_pul.setText("No Submerchant");
+        }
+
+        if(list.get(i).getP_m_add().equals("")) {
+            viewHolder.item_p_m_add_pul.setText("No Address");
+        }
+
     }
 
     @Override

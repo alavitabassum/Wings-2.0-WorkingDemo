@@ -12,7 +12,7 @@
 
     <item android:title="Assign Pickups" android:icon="@drawable/attention" android:id="@+id/nav_assign"/>
 
-    <item android:title="Pickup History" android:icon="@drawable/pickcomplete" android:id="@+id/nav_pickCompleted"/>
+    <!--<item android:title="Pickup History" android:icon="@drawable/pickcomplete" android:id="@+id/nav_pickCompleted"/>-->
 
 </group>
 

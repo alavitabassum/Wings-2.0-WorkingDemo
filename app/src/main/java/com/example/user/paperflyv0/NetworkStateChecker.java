@@ -207,6 +207,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
+
     //Update scan count
     private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.138/new/updateTable.php",

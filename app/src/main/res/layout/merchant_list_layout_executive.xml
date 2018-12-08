@@ -64,6 +64,30 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txt2"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/txt1"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="-1dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/uploaded_product_count"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/txt1"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt2"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="2dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/assigned_product_count"
+                android:textSize="15sp" />
+
+            <!--<TextView
                 android:id="@+id/txt1"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
@@ -85,9 +109,9 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:text="@string/uploaded_product_count"
-                android:textSize="15sp" />
+                android:textSize="15sp" />-->
 
-            <TextView
+           <!-- <TextView
                 android:id="@+id/txt3"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
@@ -98,7 +122,21 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:text="@string/total_products_picked"
+                android:textSize="15sp" />-->
+
+            <TextView
+                android:id="@+id/txt3"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt1"
+                android:layout_alignStart="@+id/txt1"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="1dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="@string/total_products_picked"
                 android:textSize="15sp" />
+
             <TextView
                 android:id="@+id/txt4"
                 android:layout_width="120dp"
