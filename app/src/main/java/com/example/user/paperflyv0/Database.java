@@ -45,6 +45,12 @@ public class Database extends SQLiteOpenHelper {
 
     }
 
+    //Current Date
+    Date c = Calendar.getInstance().getTime();
+    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+    final String currentDateTimeString = df.format(c);
+
+
 
     public void add_pickups_today_manager(String merchantName,int cnt,int scan_count,String created_at,String executive_name) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -63,7 +69,7 @@ public class Database extends SQLiteOpenHelper {
 
     public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
         String[] columns = {"merchantName", "totalcount","scan_count","executive_name","created_at"};
-        return db.query("pickups_today_manager", columns, null, null, null, null,null);
+        return db.query("pickups_today_manager", columns, "created_at='" + currentDateTimeString + "'", null, null, null,"scan_count"+" ASC");
     }
 
     public void clearPTMList(SQLiteDatabase sqLiteDatabase)
@@ -243,7 +249,7 @@ public class Database extends SQLiteOpenHelper {
     public Cursor getassignedexecutive(SQLiteDatabase db,String merchant_code)
     {
         String[] columns = {"rowid","ex_name","empCode","order_count"};
-        return db.query("assignexecutive",columns,"merchantCode='" + merchant_code + "'",null,null,null,null);
+        return db.query("assignexecutive",columns,"merchantCode=? and currentDateTimeString=?", new String[] { merchant_code, currentDateTimeString } ,null,null,null,null);
     }
 
     public void addexecutivelist(String empName, String empCode) {
@@ -361,9 +367,6 @@ public class Database extends SQLiteOpenHelper {
         }
         return null;
     }
-    Date c = Calendar.getInstance().getTime();
-    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-    final String currentDateTimeString = df.format(c);
 
     public int totalassigned_order(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -388,68 +391,6 @@ public class Database extends SQLiteOpenHelper {
         return count;
     }
 
-    public int totalassigned_order_till(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_manager", null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-
-    public int complete_order_till(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount", null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-    public int pending_order_till(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + "<" + "totalcount", null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-
-
- /*   public int getRowsCount(String merchantId, String sub_merchant_name, String date) {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='"+ merchantId +"' AND " + SUB_MERCHANT_NAME + " = '"+ sub_merchant_name +"'AND " + UPDATED_AT + " = '"+ date +"'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        db.close();
-        return count;
-    }*/
-
-/*    public int totalassigned_order_for_ex(String user, String currentDateTimeString){
-
-        String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"'AND " + "created_at" + " = '"+ currentDateTimeString +"'";
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor sumQuery = db.rawQuery(countQuery, null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-
-    public int complete_order_for_ex(String user, String currentDateTimeString){
-        String countQuery = "SELECT  * FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"' AND " + "created_at" + " = '"+ currentDateTimeString +"'AND " + "scan_count" + ">=" + "totalcount";
-        *//*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*//*
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery(countQuery, null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-    public int pending_order_for_ex(String user, String currentDateTimeString){
-        String countQuery = "SELECT  merchantName FROM " + "pickups_today_manager" + " WHERE " + "executive_name" + "='"+ user +"' AND " + "created_at" + " = '"+ currentDateTimeString +"'AND " + "scan_count" + "<" + "totalcount";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery(countQuery, null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }*/
 
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
 

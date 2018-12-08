@@ -163,6 +163,8 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         viewHolder.item_call.setText(String.valueOf(assignManager_model.getTotalcount()));
         }
 
+
+
     @Override
     public int getItemCount() {
         return assignManager_modelList.size();
