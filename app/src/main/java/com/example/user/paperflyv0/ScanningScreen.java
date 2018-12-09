@@ -13,6 +13,7 @@ import android.os.CountDownTimer;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -140,7 +141,12 @@ public class ScanningScreen extends AppCompatActivity {
 
                 // Set the toast and duration
                 int toastDurationInMilliSeconds = 1000;
-                final Toast mToastToShow = Toast.makeText(ScanningScreen.this, result + "already scanned.", Toast.LENGTH_LONG);
+
+                final Toast mToastToShow = Toast.makeText(ScanningScreen.this,
+                        result + " already scanned.", Toast.LENGTH_SHORT);
+                mToastToShow.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                mToastToShow.show();
+//                final Toast mToastToShow = Toast.makeText(ScanningScreen.this, result + "already scanned.", Toast.LENGTH_LONG);
 
                 // Set the countdown to display the toast
                 CountDownTimer toastCountDown;
@@ -292,14 +298,18 @@ public class ScanningScreen extends AppCompatActivity {
                                 db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
                                 scan_count1.setText("Scan count: " +strI);
-                                Toast.makeText(ScanningScreen.this, "barcode save with no error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
+//                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
+                                Toast toast= Toast.makeText(ScanningScreen.this,
+                                        "Barcode Number Added", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                                toast.show();
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
                                 scan_count1.setText("Scan count: " +strI);
-                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
+//                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

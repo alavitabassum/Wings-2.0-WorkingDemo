@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -82,21 +83,24 @@ public class PickupsToday_Executive extends AppCompatActivity
 
         db= new BarcodeDbHelper(getApplicationContext());
         db.getReadableDatabase();
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String currentDateTimeString = df.format(c);
 
         summaries = new ArrayList<PickupList_Model_For_Executive>();
 
         recyclerView_exec = (RecyclerView) findViewById(R.id.recycler_view_e);
         layoutManager_exec = new LinearLayoutManager(this);
         recyclerView_exec.setLayoutManager(layoutManager_exec);
-        getData(user);
+        getData(user, currentDateTimeString);
         loadRecyclerView(user);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String currentDateTimeString = df.format(c);
+
+
+
         int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
         total_assigned= findViewById(R.id.a_count);
         total_assigned.setText(String.valueOf(total));
@@ -228,7 +232,7 @@ public class PickupsToday_Executive extends AppCompatActivity
                                        NAME_NOT_SYNCED_WITH_SERVER );
 
                            }
-                           getData(user);
+                           getData(user, match_date);
                            swipeRefreshLayout.setRefreshing(false);
 
                        } catch (JSONException e) {
@@ -261,7 +265,7 @@ public class PickupsToday_Executive extends AppCompatActivity
        requestQueue.add(stringRequest);
    }
 
-    private void getData(final String user)
+   /* private void getData(final String user)
     {
 
         new AsyncTask<String, Void, Void>() {
@@ -280,7 +284,36 @@ public class PickupsToday_Executive extends AppCompatActivity
 
             }
         }.execute();
+    }*/
+
+
+    private void getData(final String user, final String match_date)
+    {
+        try{
+//            pickupList_model_for_executives.clear();
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.getdata_pickups_today_executive(sqLiteDatabase, user, match_date);
+            while (c.moveToNext())
+            {
+                String name = c.getString(0);
+                String executive_name = c.getString(1);
+                String code = String.valueOf(c.getString(2));
+                String count = String.valueOf(c.getString(3));
+                String created_at = c.getString(4);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name,created_at);
+                summaries.add(todaySummary);
+            }
+            mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());
+            recyclerView_exec.setAdapter(mListForExecutiveAdapter);
+            swipeRefreshLayout.setRefreshing(false);
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
+
+    /**/
 
     @Override
     public void onBackPressed() {
@@ -420,10 +453,14 @@ public class PickupsToday_Executive extends AppCompatActivity
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         String user = username.toString();
 
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String match_date = df.format(c);
+
         summaries.clear();
         mListForExecutiveAdapter.notifyDataSetChanged();
         loadRecyclerView(user);
-        getData(user);
+        getData(user, match_date);
 
     }
 }

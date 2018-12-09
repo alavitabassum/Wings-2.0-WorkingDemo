@@ -240,6 +240,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
+
     /* private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
      */
 
@@ -304,7 +305,19 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public Cursor getdata_pickups_today_executive(SQLiteDatabase db, String user, String currentDateTimeString) {
+        String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME,ASSIGNED_QTY,SCAN_COUNT,CREATED_AT};
+
+        String whereClause = EXECUTIVE_NAME + " = ? AND " + CREATED_AT  + " = ?";
+        String[] whereArgs = new String[] {
+                user,
+                currentDateTimeString
+        };
+        return db.query(TABLE_NAME_1, columns, whereClause, whereArgs, null, null,"scan_count"+" ASC");
+    }
+
     //Demo Testing
+/*
     public List<PickupList_Model_For_Executive> getAllData(String user) {
         // array of columns to fetch
 
@@ -365,10 +378,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         db.close();
-
         // return user list
         return list;
     }
+*/
 
 
     // Get all executives
@@ -422,28 +435,29 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     public int totalassigned_order_for_ex(String user, String currentDateTimeString){
-
-        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"'AND " + CREATED_AT + " = '"+ currentDateTimeString +"'";
         SQLiteDatabase db = this.getReadableDatabase();
 
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"'AND " + CREATED_AT + " = '"+ currentDateTimeString +"'";
         Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount();
-        sumQuery.close();
         return count;
     }
 
     public int complete_order_for_ex(String user, String currentDateTimeString){
+        SQLiteDatabase db = this.getReadableDatabase();
+
         String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + SCAN_COUNT + ">=" + ASSIGNED_QTY;
         /*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*/
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount();
         sumQuery.close();
         return count;
     }
     public int pending_order_for_ex(String user, String currentDateTimeString){
-        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + SCAN_COUNT + "<" + ASSIGNED_QTY;
+
         SQLiteDatabase db = this.getReadableDatabase();
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + SCAN_COUNT + "<" + ASSIGNED_QTY;
+
         Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount( );
         sumQuery.close();
