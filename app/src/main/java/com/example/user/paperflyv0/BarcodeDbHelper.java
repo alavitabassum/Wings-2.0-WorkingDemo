@@ -317,7 +317,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     //Demo Testing
-/*
+
     public List<PickupList_Model_For_Executive> getAllData(String user) {
         // array of columns to fetch
 
@@ -381,7 +381,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         // return user list
         return list;
     }
-*/
 
 
     // Get all executives
