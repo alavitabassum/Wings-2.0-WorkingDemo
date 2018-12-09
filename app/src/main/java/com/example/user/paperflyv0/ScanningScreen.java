@@ -279,7 +279,7 @@ public class ScanningScreen extends AppCompatActivity {
         Intent intentID = getIntent();
         final String match_date = intentID.getStringExtra(CREATED_AT);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.139/new/insert_barcode.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -343,7 +343,7 @@ public class ScanningScreen extends AppCompatActivity {
 //    strI, updated_by1, updated_at1, merchant_id
     public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.138/new/updateTable.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

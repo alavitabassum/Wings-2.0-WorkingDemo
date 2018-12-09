@@ -159,7 +159,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 */
     //Barcode save to server
     private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.139/new/insert_barcode.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -170,18 +170,15 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                 database2.updateBarcodeStatus(id, ScanningScreen.NAME_SYNCED_WITH_SERVER);
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(ScanningScreen.DATA_SAVED_BROADCAST));
-//                                Toast.makeText(context, "Successfully synced" +obj, Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-//                            Toast.makeText(context, "Some exception while syncing" +e, Toast.LENGTH_LONG).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(context, "Error updating scan sync" +error, Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -195,13 +192,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("updated_at", updated_at);
 
                 return params;
-
-                /*params.put("merchant_code", merchant_id);
-                params.put("sub_merchant_name", sub_merchant_name);
-                params.put("barcodeNumber", lastText);
-                params.put("state", String.valueOf(state));
-                params.put("updated_by", updated_by);
-                params.put("updated_at", updated_at);*/
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -210,7 +200,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     //Update scan count
     private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.138/new/updateTable.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTable.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -243,12 +233,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("created_at", match_date);
                 return params;
 
-                /* params.put("merchant_code", merchant_id);
-                params.put("sub_merchant_name", sub_merchant_name);
-                params.put("barcodeNumber", lastText);
-                params.put("state", String.valueOf(state));
-                params.put("updated_by", updated_by);
-                params.put("updated_at", updated_at);*/
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);

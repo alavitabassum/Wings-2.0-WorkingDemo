@@ -33,8 +33,8 @@ public class UpdateAssignsAdapter extends RecyclerView.Adapter<UpdateAssignsAdap
     private List<UpdateAssign_Model> updateAssignModelList;
     private Context context;
     private OnEditTextChanged onEditTextChanged;
-    public static final String UPDATE_URL = "http://192.168.0.138/new/updateassign.php";
-    public static final String DELETE_URL = "http://192.168.0.138/new/deleteasign.php";
+    public static final String UPDATE_URL = "http://paperflybd.com/updateassign.php";
+    public static final String DELETE_URL = "http://paperflybd.com/deleteasign.php";
 
 
     Database database;

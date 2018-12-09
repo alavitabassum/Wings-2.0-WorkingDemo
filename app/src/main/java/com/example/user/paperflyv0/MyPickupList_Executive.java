@@ -232,7 +232,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.138/new/showexecutiveassign.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/showexecutiveassign.php",
            new Response.Listener<String>()
            {
             @Override

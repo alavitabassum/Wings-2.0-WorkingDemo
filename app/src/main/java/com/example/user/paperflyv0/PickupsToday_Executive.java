@@ -53,7 +53,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
 
     //private static final String URL_DATA = "http://192.168.0.117/new/merchantListForExecutive.php";
-    private static final String URL_DATA = "http://192.168.0.138/new/showassign.php";
+    private static final String URL_DATA = "http://paperflybd.com/showassign.php";
     private ProgressDialog progress;
 //    Database database;
     public TextView total_assigned;
@@ -94,11 +94,9 @@ public class PickupsToday_Executive extends AppCompatActivity
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String currentDateTimeString = df.format(c);
-
         int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
         total_assigned= findViewById(R.id.a_count);
         total_assigned.setText(String.valueOf(total));
@@ -110,6 +108,9 @@ public class PickupsToday_Executive extends AppCompatActivity
         int pm = db.pending_order_for_ex(user, currentDateTimeString);
         pending = findViewById(R.id.pen_count);
         pending.setText(String.valueOf(pm));
+
+
+
 
 
      /*
@@ -189,6 +190,10 @@ public class PickupsToday_Executive extends AppCompatActivity
     }*/
    private void loadRecyclerView(final String user)
    {
+       Date c = Calendar.getInstance().getTime();
+       SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+       final String match_date = df.format(c);
+
 //        boolean check;
 //          list.clear();
        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA,
@@ -247,6 +252,7 @@ public class PickupsToday_Executive extends AppCompatActivity
            {
                Map<String,String> params1 = new HashMap<String,String>();
                params1.put("executive_name",user);
+               params1.put("created_at",match_date);
                return params1;
            }
        };
@@ -257,12 +263,12 @@ public class PickupsToday_Executive extends AppCompatActivity
 
     private void getData(final String user)
     {
+
         new AsyncTask<String, Void, Void>() {
             @Override
             protected Void doInBackground(String... params) {
                 summaries.clear();
                 summaries.addAll(db.getAllData(user));
-
                 return null;
             }
 
@@ -271,6 +277,7 @@ public class PickupsToday_Executive extends AppCompatActivity
                 super.onPostExecute(aVoid);
                 mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());
                 recyclerView_exec.setAdapter(mListForExecutiveAdapter);
+
             }
         }.execute();
     }
