@@ -139,6 +139,8 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
         viewHolder.item_scanCount.setText(list.get(i).getScan_count());
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
+
+
         int count_assigned = Integer.parseInt(list.get(i).getAssined_qty());
         try {
 

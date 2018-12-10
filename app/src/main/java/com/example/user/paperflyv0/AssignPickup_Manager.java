@@ -405,6 +405,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     //For assigning executive API into mysql
     private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address) {
 
+//        checkDataEntered( order_count);
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -602,6 +603,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         final TextView dialog_mName = mView.findViewById(R.id.dialog_m_name);
         final AutoCompleteTextView mAutoComplete = mView.findViewById(R.id.auto_exe);
         final EditText et1 = mView.findViewById(R.id.spinner1num);
+        final TextView tv1 = mView.findViewById(R.id.textView3);
         dialog_mName.setText(clickeditem.getM_names());
         final String merchant_code = clickeditem.getMerchant_code();
         final String m_name = clickeditem.getM_names();
@@ -636,9 +638,16 @@ public class AssignPickup_Manager extends AppCompatActivity
 
             @Override
             public void onClick(DialogInterface dialog, int i1) {
-                String empname = mAutoComplete.getText().toString();
-                final String empcode = database.getSelectedEmployeeCode(empname);
-                assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name,contactNumber,pick_merchant_name,pick_merchant_address);
+
+
+           /*     if(et1.getText().toString().trim().isEmpty()) {
+                    tv1.setText("Order count can't be empty");
+//                    dialog.equals("Order count can't be empty");
+
+
+                } else {
+
+                    assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
 
                 if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
@@ -646,7 +655,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                             Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
 
-                }
+                    }
+                }*/
 
             }
         });
@@ -660,10 +670,44 @@ public class AssignPickup_Manager extends AppCompatActivity
         spinnerBuilder.setCancelable(false);
         // vwParentRow2.refreshDrawableState();
         spinnerBuilder.setView(mView);
-        AlertDialog dialog2 = spinnerBuilder.create();
+        final AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
+        dialog2.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String empname = mAutoComplete.getText().toString();
+                final String empcode = database.getSelectedEmployeeCode(empname);
+                if(et1.getText().toString().trim().isEmpty() || empname.trim().isEmpty()) {
+                    tv1.setText("Field can't be empty");
+//                    dialog.equals("Order count can't be empty");
 
+
+                } else {
+                    assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
+
+                    if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
+                        Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
+                                        + "(" + et1.getText().toString() + ")",
+                                Toast.LENGTH_SHORT).show();
+                        dialog2.dismiss();
+
+                    }
+                }
+            }
+        });
     }
+
+//    boolean isEmpty(String text){
+//        CharSequence et1 = text.toString();
+//       return TextUtils.isEmpty(et1);
+//    }
+//
+//    private void checkDataEntered(String et1) {
+//         if (isEmpty(et1)){
+//             Toast t = Toast.makeText(this, "Enter Order number", Toast.LENGTH_LONG);
+//             t.show();
+//         }
+//    }
 
     @Override
     public void onItemClick_view(View view2, int position2) {
