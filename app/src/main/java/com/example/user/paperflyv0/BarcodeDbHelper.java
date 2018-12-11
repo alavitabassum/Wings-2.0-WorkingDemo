@@ -305,6 +305,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteAssignedList(SQLiteDatabase sqLiteDatabase)
+    {
+        sqLiteDatabase.execSQL("delete from "+ TABLE_NAME_1);
+    }
+
     public Cursor getdata_pickups_today_executive(SQLiteDatabase db, String user, String currentDateTimeString) {
         String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME,ASSIGNED_QTY,SCAN_COUNT,CREATED_AT};
 

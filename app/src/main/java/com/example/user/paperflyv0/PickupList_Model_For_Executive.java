@@ -42,6 +42,24 @@ public class PickupList_Model_For_Executive {
         this.executive_name = executive_name;
         this.created_at = created_at;
     }
+
+    public PickupList_Model_For_Executive(String executive_name, String order_count, String merchant_code, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_address) {
+        this.merchant_id = merchant_code;
+        this.merchant_name = merchant_name;
+        this.executive_name = executive_name;
+        this.assined_qty = order_count;
+        this.picked_qty = picked_qty;
+        this.scan_count = scan_count;
+        this.phone_no = phone_no;
+        this.assigned_by = assigned_by;
+        this.created_at = created_at;
+        this.updated_by = updated_by;
+        this.updated_at = updated_at;
+        this.complete_status = complete_status;
+        this.p_m_name = p_m_name;
+        this.p_m_add = p_m_address;
+    }
+
     public int getKey_id() {
         return key_id;
     }

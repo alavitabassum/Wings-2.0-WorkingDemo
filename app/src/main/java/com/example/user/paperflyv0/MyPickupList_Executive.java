@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -89,6 +91,9 @@ public class MyPickupList_Executive extends AppCompatActivity
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final String user = username.toString();
 
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
         recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_mylist);
         recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
@@ -111,14 +116,23 @@ public class MyPickupList_Executive extends AppCompatActivity
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-        Date date = new Date();
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dd = String.valueOf(date);
-
-        getData(user);
+        list.clear();
         swipeRefreshLayout.setRefreshing(true);
+
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadRecyclerView(user);
+        }
+        else{
+            getData(user);
+            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+        }
+
+//        getData(user);
+
 //        list.clear();
-        loadRecyclerView(user);
+//        loadRecyclerView(user);
 
 //        public String getBackupFolderName() {
 //            Date date = new Date();
@@ -182,8 +196,8 @@ public class MyPickupList_Executive extends AppCompatActivity
     }*/
     /* merchant List generation from sqlite*/
     private void getData(String user) {
-        list.clear();
         try {
+            list.clear();
             Date date = Calendar.getInstance().getTime();
 //            System.out.println("Current time => " + c);
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -237,15 +251,32 @@ public class MyPickupList_Executive extends AppCompatActivity
            {
             @Override
             public void onResponse(String response) {
-                //                progress.dismiss();
+                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                db.deleteAssignedList(sqLiteDatabase);
+
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray array = jsonObject.getJSONArray("summary");
 
                     for(int i =0;i<array.length();i++)
                     {
-
                         JSONObject o = array.getJSONObject(i);
+                        PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(
+                                o.getString("executive_name"),
+                                o.getString("order_count"),
+                                o.getString("merchant_code"),
+                                o.getString("assigned_by"),
+                                o.getString("created_at"),
+                                o.getString("updated_by"),
+                                o.getString("updated_at"),
+                                o.getString("scan_count"),
+                                o.getString("phone_no"),
+                                o.getString("picked_qty"),
+                                o.getString("merchant_name"),
+                                o.getString("complete_status"),
+                                o.getString("p_m_name"),
+                                o.getString("p_m_address"));
+
                         db.insert_my_assigned_pickups(
                                 o.getString("executive_name"),
                                 o.getString("order_count"),
@@ -263,9 +294,16 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("p_m_address")
                                 , NAME_NOT_SYNCED_WITH_SERVER );
 
+                        list.add(todaySummary);
+
                     }
-                     getData(user);
+//                     getData(user);
+//                    swipeRefreshLayout.setRefreshing(false);
+
+                    pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
+                    recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
                     swipeRefreshLayout.setRefreshing(false);
+                    pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -488,10 +526,21 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
     @Override
     public void onRefresh() {
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        getData(username);
-        loadRecyclerView(username);
+        list.clear();
+        pickuplistForExecutiveAdapter.notifyDataSetChanged();
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadRecyclerView(username);
+        }
+        else{
+            getData(username);
+        }
     }
 
     @Override
