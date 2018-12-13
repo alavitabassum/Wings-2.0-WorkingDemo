@@ -120,7 +120,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-    //Update Sync
+   //Update Sync
    /* private void UpdateSync(final int id,final String merchantcode, final String empcode,final String cou) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://192.168.0.111/new/updateassign.php",
                 new Response.Listener<String>() {
@@ -157,7 +157,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 */
-    //Barcode save to server
+    // Barcode save to server
     private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
                 new Response.Listener<String>() {
@@ -198,7 +198,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-    //Update scan count
+    // Update scan count
     private void saveData(final int id, final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTable.php",
                 new Response.Listener<String>() {
@@ -207,10 +207,13 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
+
                                 //updating the status in sqlite
                                 database2.updateDataStatus(id, ScanningScreen.NAME_SYNCED_WITH_SERVER);
+
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(ScanningScreen.DATA_SAVED_BROADCAST));
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

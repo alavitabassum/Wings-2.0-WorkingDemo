@@ -73,7 +73,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "complete_status TEXT, "
                 + "p_m_name TEXT , "
                 + "p_m_add TEXT, "
-                + " unique(merchantId, p_m_name, created_at) )";
+                + " unique(merchantId, p_m_name, created_at))";
 
 
         db.execSQL(CREATION_TABLE);
@@ -89,7 +89,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 //    boolean check;
-//
 //    check = checkDuplicate(...,...,...,id_post); // check whether data exists
 //    if(check == true)  // if exists
 //    {
@@ -110,21 +109,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    // saveToLocalDatabase
-
-    /*  "id": "1",
-"executive_name": "tonoy",
-"executive_code": "E0184",
-"order_count": "12",
-"merchant_code": "M-1-0055",
-"assigned_by": "haris",
-"created_at": "Nov 27, 2018 5:42:05 PM",
-"updated_by": null,
-"updated_at": null,
-"scan_count": null,
-"phone_no": null,
-"picked_qty": null,
-"merchant_name": "Womens World BD - WWB"*/
     public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_add, int status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
@@ -147,9 +131,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(PICK_M_ADD, p_m_add);
         values.put(STATUS, status);
 
-//        db.insert(TABLE_NAME_1,null,values);
+//      db.insert(TABLE_NAME_1,null,values);
         db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-//        db.update(TABLE_NAME_1, updateValues, "merchant_id = ' " + merchant_id + " ' ", null);
+//      db.update(TABLE_NAME_1, updateValues, "merchant_id = ' " + merchant_id + " ' ", null);
 
 //        INSERT OR REPLACE INTO TABLE_NAME_1 (MERCHANT_ID, MERCHANT_NAME,EXECUTIVE_NAME,ASSIGNED_QTY,PICKED_QTY,SCAN_COUNT,PHONE_NO,ASSIGNED_BY,CREATED_AT,UPDATED_BY,UPDATED_AT)
 //        VALUES (  merchant_id,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by,created_at,updated_by,updated_at
@@ -157,34 +141,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 //                COALESCE((SELECT ASSIGNED_QTY FROM TABLE_NAME_1 WHERE MERCHANT_ID = merchant_id), assined_qty)
 //          );
 
-//        String countQuery = "INSERT INTO" +TABLE_NAME_1 "VALUES (values)
-//        ON CONFLICT(MERCHANT_ID)
-//            DO UPDATE SET ASSIGNED_QTY= excluded.ASSIGNED_QTY";
-
-//        WITH new (name, title, author) AS ( VALUES('about', 'About this site', 42) )
-//        INSERT OR REPLACE INTO page (id, name, title, content, author)
-//        SELECT old.id, new.name, new.title, old.content, new.author
-//        FROM new LEFT JOIN page AS old ON new.name = old.name;
-//        ContentValues values = new ContentValues();
-//        values.put("_id", 1); // the execution is different if _id is 2
-//        values.put("columnA", "valueNEW");
-
-//           final String s = "INSERT INTO " + TABLE_NAME_1 + " VALUES " + values + " ON CONFLICT " + merchant_id + " DO UPDATE SET " + ASSIGNED_QTY + " = " + assined_qty;
-
-//           db.execSQL(s);
-
-//           this.insert_my_assigned_pickups(merchant_id,merchant_name, executive_name,assined_qty, picked_qty,scan_count,phone_no,assigned_by,created_at,updated_by,updated_at));
-
-//        int id = (int) db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-//        if (id == -1) {
-//            db.update(TABLE_NAME_1, updateValues, "merchant_id= ' " + merchant_id + " ' ", null);  // number 1 is the _id here, update to variable for your code
-//        }
-
-//            db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-//            db.update(TABLE_NAME_1,updateValues,"merchant_id='" + merchant_id + "'",null);
             db.close();
     }
-
 
     // readFromLocalDatabase
     public Cursor get_mypickups_today(SQLiteDatabase db, String user, String currentDateTimeString)
