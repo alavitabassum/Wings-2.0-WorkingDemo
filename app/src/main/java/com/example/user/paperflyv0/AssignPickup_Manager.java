@@ -536,7 +536,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
         }
-     /*   else if (id == R.id.nav_pickCompleted) {
+        /*  else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(AssignPickup_Manager.this,
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
@@ -552,6 +552,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
                             //Getting editor
                             SharedPreferences.Editor editor = preferences.edit();
 
@@ -606,6 +607,9 @@ public class AssignPickup_Manager extends AppCompatActivity
         final EditText et1 = mView.findViewById(R.id.spinner1num);
         final TextView tv1 = mView.findViewById(R.id.textView3);
         dialog_mName.setText(clickeditem.getM_names());
+
+        String totalCount = String.valueOf(clickeditem.getTotalcount());
+        et1.setText(totalCount);
 
         final String merchant_code = clickeditem.getMerchant_code();
         final String m_name = clickeditem.getM_names();
