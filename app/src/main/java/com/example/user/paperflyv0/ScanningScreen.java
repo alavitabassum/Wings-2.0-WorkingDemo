@@ -142,16 +142,14 @@ public class ScanningScreen extends AppCompatActivity {
 
             db = new BarcodeDbHelper(ScanningScreen.this);
 //            if(result.getText() == null || result.getText().equals(lastText)) {
-            if(result.getText().equals(lastText)) {
+            if(result.getText().equals(lastText) || result.getText().trim().length() != 12) {
 
                 // Set the toast and duration
                 int toastDurationInMilliSeconds = 1000;
-
                 final Toast mToastToShow = Toast.makeText(ScanningScreen.this,
                         result + " already scanned.", Toast.LENGTH_SHORT);
                 mToastToShow.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
                 mToastToShow.show();
-//                final Toast mToastToShow = Toast.makeText(ScanningScreen.this, result + "already scanned.", Toast.LENGTH_LONG);
 
                 // Set the countdown to display the toast
                 CountDownTimer toastCountDown;
@@ -191,8 +189,16 @@ public class ScanningScreen extends AppCompatActivity {
             final String updated_at = df.format(c);
 
             // db.add(merchant_id, lastText, state, updated_by, updated_at);
-            barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at);
 
+            if ( lastText.trim().length() != 12 ) {
+
+                Toast.makeText(ScanningScreen.this, "garbage", Toast.LENGTH_LONG).show();
+
+            } else {
+
+                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at);
+
+            }
 //            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
 
 //            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
