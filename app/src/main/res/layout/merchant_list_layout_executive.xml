@@ -183,7 +183,7 @@
                 android:lines="1"
                 android:maxLines="2"
                 android:textAlignment="center"
-                android:textColor="#fff"
+                android:textColor="#000"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 />

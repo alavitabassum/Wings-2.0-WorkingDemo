@@ -48,6 +48,7 @@ import java.util.Map;
 public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
+
     private String URL_DATA = "http://paperflybd.com/showassign.php";
     private ProgressDialog progress;
     RecyclerView.LayoutManager layoutManager;

@@ -73,8 +73,6 @@
                 android:text="@string/uploaded_product_count"
                 android:textSize="15sp" />
 
-
-
             <TextView
                 android:id="@+id/txt1"
                 android:layout_width="120dp"

@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapterExecutive.ViewHolder> {
 
-    private String[] titles_exe_list = {"Pickups For Today", "Assigned Pickups","Pickup Status (Coming Soon)"};
+    private String[] titles_exe_list = { "Assigned Pickups","Pickups For Today", "Pickup Status (Coming Soon)"};
 
   /*  private String[] details_exe_list = {"View ->","View ->","View ->"};*/
 
-    private int[] images_exe_list = { R.drawable.pickupstoday, R.drawable.assigned, R.drawable.puhistory };
+    private int[] images_exe_list = {  R.drawable.assigned,R.drawable.pickupstoday, R.drawable.puhistory };
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -32,18 +32,19 @@ public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapt
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     int position = getAdapterPosition();
-if (position == 0){
-    Intent intent = new Intent (v.getContext(), PickupsToday_Executive.class);
-    v.getContext().startActivity(intent);
-}else if (position == 1){
-    Intent intent_assign = new Intent (v.getContext(), MyPickupList_Executive.class);
-    v.getContext().startActivity(intent_assign);
-}else {
-    Intent intent_history = new Intent (v.getContext(), ExecutiveCardMenu.class);
-    v.getContext().startActivity(intent_history);
-}
+                    if (position == 0) {
+                        Intent intent_assign = new Intent(v.getContext(), MyPickupList_Executive.class);
+                        v.getContext().startActivity(intent_assign);
+                    } else if (position == 1) {
+                        Intent intent = new Intent(v.getContext(), PickupsToday_Executive.class);
+                        v.getContext().startActivity(intent);
+                    } else {
+                        Intent intent_history = new Intent(v.getContext(), ExecutiveCardMenu.class);
+                        v.getContext().startActivity(intent_history);
+                    }
                    /* Snackbar.make(v, "Click detected on item " + position,
                             Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();*/

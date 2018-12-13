@@ -1,5 +1,7 @@
 package com.example.user.paperflyv0;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -7,9 +9,10 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +55,7 @@ import static com.example.user.paperflyv0.MyPickupList_Executive.CREATED_AT;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
 import static com.example.user.paperflyv0.MyPickupList_Executive.SUB_MERCHANT_NAME;
+import static com.example.user.paperflyv0.Notification.CHANNEL_1_ID;
 
 public class ScanningScreen extends AppCompatActivity {
 
@@ -73,6 +77,7 @@ public class ScanningScreen extends AppCompatActivity {
     //1 means data is synced and 0 means data is not synced
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
+    public NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
@@ -109,7 +114,7 @@ public class ScanningScreen extends AppCompatActivity {
         barcodeView.decodeContinuous(callback);
 
         beepManager = new BeepManager(this);
-
+        notificationManager = NotificationManagerCompat.from(this);
 
         //the broadcast receiver to update sync status
         broadcastReceiver = new BroadcastReceiver() {
@@ -234,6 +239,7 @@ public class ScanningScreen extends AppCompatActivity {
                         Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
                     }
 //                    getData(username);
+//                    sendNotification();
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
                     startActivity(intent);
 
@@ -245,6 +251,34 @@ public class ScanningScreen extends AppCompatActivity {
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
+
+    private void sendNotification() {
+        String title = "Title";
+        String message = "Test Message";
+
+        Intent activityIntent = new Intent(this, MyPickupList_Executive.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, activityIntent,0 );
+
+        Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
+        broadcastIntent.putExtra("toastMessage", message);
+
+        PendingIntent actionIntent = PendingIntent.getBroadcast(this, 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_one)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setColor(Color.BLUE)
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .addAction(R.mipmap.ic_launcher, "Toast", actionIntent)
+                .build();
+
+        notificationManager.notify(1, notification);
+    }
 
     @Override
     protected void onResume() {
@@ -277,7 +311,7 @@ public class ScanningScreen extends AppCompatActivity {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-//http://paperflybd.com/insert_barcode.php
+
     //API HIT
     private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
 
@@ -336,21 +370,15 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
 
-               /* database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
-                final int total_assign = database.getTotalOfAmount(merchant_code);
-                final String strI = String.valueOf(total_assign);
-                database.update_row(strI, merchant_code);*/
                 return params;
             }
-
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest);
-
     }
 
     // API for update
-//    strI, updated_by1, updated_at1, merchant_id
+    // StrI, updated_by1, updated_at1, merchant_id
     public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTable.php",
@@ -393,7 +421,6 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("updated_at", updated_at);
                 return params;
             }
-
         };
         try { RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
@@ -402,30 +429,4 @@ public class ScanningScreen extends AppCompatActivity {
         }
 
     }
-    /**
-     * This method is to fetch all user records from SQLite
-     */
-    private void getData(final String user) {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread
-
-        new AsyncTask<String, Void , Void>() {
-            @Override
-            protected Void doInBackground(String... params) {
-                list.clear();
-                list.addAll(db.getAllData(user));
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
-                recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
-//                pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.class);
-                pickuplistForExecutiveAdapter.notifyDataSetChanged();
-            }
-        }.execute();
-    }
-
 }

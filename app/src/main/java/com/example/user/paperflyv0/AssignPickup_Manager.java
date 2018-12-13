@@ -601,10 +601,12 @@ public class AssignPickup_Manager extends AppCompatActivity
 
 
         final TextView dialog_mName = mView.findViewById(R.id.dialog_m_name);
+
         final AutoCompleteTextView mAutoComplete = mView.findViewById(R.id.auto_exe);
         final EditText et1 = mView.findViewById(R.id.spinner1num);
         final TextView tv1 = mView.findViewById(R.id.textView3);
         dialog_mName.setText(clickeditem.getM_names());
+
         final String merchant_code = clickeditem.getMerchant_code();
         final String m_name = clickeditem.getM_names();
         final String contactNumber = clickeditem.getPhone_no();
@@ -680,7 +682,6 @@ public class AssignPickup_Manager extends AppCompatActivity
                 if(et1.getText().toString().trim().isEmpty() || empname.trim().isEmpty()) {
                     tv1.setText("Field can't be empty");
 //                    dialog.equals("Order count can't be empty");
-
 
                 } else {
                     assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);

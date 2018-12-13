@@ -23,15 +23,11 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
    // private List<TodaySummary> listItems;
     private  Context context;
 
-
-
-
     public MerchantListAdapter(List<PickupList_Model_For_Executive> pickupList_model_for_executives, Context context) {
         this.pickupList_model_for_executives = pickupList_model_for_executives;
         this.context = context;
         PickupList_Model_For_ExecutiveFull = new ArrayList<>(pickupList_model_for_executives);
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -55,7 +51,6 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             cardView = itemView.findViewById(R.id.card_view_merchant);
             relativeLayout = itemView.findViewById(R.id.inside_rl);
             relativeLayout2 = itemView.findViewById(R.id.rl2);
-
         }
     }
 
@@ -107,11 +102,11 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     private Filter NamesFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-    /*        PickupList_Model_For_ExecutiveFull.clear();
+        /*  PickupList_Model_For_ExecutiveFull.clear();
             PickupList_Model_For_ExecutiveFull.addAll(pickupList_model_for_executives);
             pickupList_model_for_executives.clear();
             pickupList_model_for_executives.addAll(PickupList_Model_For_ExecutiveFull);
-*/
+        */
            List<PickupList_Model_For_Executive> filteredList = new ArrayList<>();
 
            if (constraint == null || constraint.length() == 0){
@@ -131,7 +126,6 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-
             pickupList_model_for_executives.clear();
             pickupList_model_for_executives.addAll((List) results.values);
             notifyDataSetChanged();
