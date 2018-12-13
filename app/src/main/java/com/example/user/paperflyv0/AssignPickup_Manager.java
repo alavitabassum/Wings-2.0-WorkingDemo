@@ -628,7 +628,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String currentDateTimeString = df.format(c);
 
-
         List<String> lables = new ArrayList<String>();
 
         for (int z = 0; z < executiveLists.size(); z++) {
