@@ -238,7 +238,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 date
         };
         // insert
-//        db.update(TABLE_NAME,values,"merchantId='" + merchantId + "'" + "&&" + "sub_merchant_name='" + sub_merchant_name + "'",null);
+        // db.update(TABLE_NAME,values,"merchantId='" + merchantId + "'" + "&&" + "sub_merchant_name='" + sub_merchant_name + "'",null);
         db.update(TABLE_NAME,values,whereClause, whereArgs );
         db.close();
     }
