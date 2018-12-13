@@ -582,9 +582,7 @@ public class AssignPickup_Manager extends AppCompatActivity
             //Showing the alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
