@@ -2,6 +2,7 @@ package com.example.user.paperflyv0;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -11,12 +12,14 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,8 +56,7 @@ import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
 import static com.example.user.paperflyv0.MyPickupList_Executive.SUB_MERCHANT_NAME;
 
-public class ScanningScreen extends AppCompatActivity {
-
+public class dummy extends AppCompatActivity{
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private DecoratedBarcodeView barcodeView;
@@ -123,8 +125,6 @@ public class ScanningScreen extends AppCompatActivity {
         //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
     }
-
-
     private BarcodeCallback callback = new BarcodeCallback()  {
 
         @Override
@@ -137,13 +137,13 @@ public class ScanningScreen extends AppCompatActivity {
             // current date and time
             final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-            db = new BarcodeDbHelper(ScanningScreen.this);
+            db = new BarcodeDbHelper(dummy.this);
 //            if(result.getText() == null || result.getText().equals(lastText)) {
             if(result.getText().equals(lastText) || result.getText().trim().length() != 12) {
 
                 // Set the toast and duration
                 int toastDurationInMilliSeconds = 1000;
-                final Toast mToastToShow = Toast.makeText(ScanningScreen.this,
+                final Toast mToastToShow = Toast.makeText(dummy.this,
                         result + " already scanned.", Toast.LENGTH_SHORT);
                 mToastToShow.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
                 mToastToShow.show();
@@ -189,7 +189,7 @@ public class ScanningScreen extends AppCompatActivity {
 
             if ( lastText.trim().length() != 12 ) {
 
-                Toast.makeText(ScanningScreen.this, "garbage", Toast.LENGTH_LONG).show();
+                Toast.makeText(dummy.this, "garbage", Toast.LENGTH_LONG).show();
 
             } else {
 
@@ -235,12 +235,12 @@ public class ScanningScreen extends AppCompatActivity {
                     db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
                     // TODO: Merchant id, scan count, created-by, creation-date, flag
 //                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
-                    try{
-                        final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
-                        updateScanCount(strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
+                  /*  try{
+//                        final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+//                        updateScanCount(strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
                     } catch (Exception e) {
-                        Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
-                    }
+                        Toast.makeText(dummy.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
+                    }*/
 //                    getData(username);
 //                    sentOnChannel1();
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
@@ -254,18 +254,6 @@ public class ScanningScreen extends AppCompatActivity {
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
-
-   /* public void sentOnChannel1(){
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_notifucation)
-                .setContentTitle("Title")
-                .setContentText("Notification message")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
-        notificationManager.notify(1, notification);
-    }*/
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -315,21 +303,132 @@ public class ScanningScreen extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
+                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
-                                scan_count1.setText("Scan count: " +strI);
+                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
-                                Toast toast= Toast.makeText(ScanningScreen.this,
+                                Toast toast = Toast.makeText(dummy.this,
                                         "Barcode Number Added", Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                                toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
                                 toast.show();
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(dummy.this);
+                                View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
+                                builder.setTitle("Select executive and assign number.");
+
+                                final EditText et1 = mView.findViewById(R.id.product_qty);
+                                final TextView tv1 = mView.findViewById(R.id.textView3);
+
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+//                                        scannerView.resumeCameraPreview(MainActivity.this);
+                                        // update quantity
+
+                                    }
+                                });
+
+
+                                builder.setCancelable(false);
+                                builder.setView(mView);
+
+                                final AlertDialog alert1 = builder.create();
+                                alert1.show();
+
+
+                                alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        if (et1.getText().toString().trim().isEmpty()) {
+                                            tv1.setText("Field can't be empty");
+                                            //  dialog.equals("Order count can't be empty");
+
+                                        } else {
+
+                                            final String product_qty = et1.getText().toString().trim();
+                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
+                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
+
+                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
+                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
+                                                                + "(" + et1.getText().toString() + ")",
+                                                        Toast.LENGTH_SHORT).show();
+                                                alert1.dismiss();
+
+                                            }*/
+
+                                            /// update the product quantity
+
+                                            alert1.dismiss();
+                                        }
+                                        onResume();
+                                    }
+                                });
+
+                                onPause();
+
+
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
-                                scan_count1.setText("Scan count: " +strI);
+                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
+
+
+                                AlertDialog.Builder builder = new AlertDialog.Builder(dummy.this);
+                                View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
+                                builder.setTitle("Select executive and assign number.");
+
+                                final EditText et1 = mView.findViewById(R.id.product_qty);
+                                final TextView tv1 = mView.findViewById(R.id.textView3);
+
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+//                                        scannerView.resumeCameraPreview(MainActivity.this);
+                                        // update quantity
+//                                        onResume();
+                                    }
+                                });
+                                builder.setCancelable(false);
+                                builder.setView(mView);
+                                final AlertDialog alert1 = builder.create();
+                                alert1.show();
+
+                                alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        if (et1.getText().toString().trim().isEmpty()) {
+                                            tv1.setText("Field can't be empty");
+                                            //  dialog.equals("Order count can't be empty");
+
+                                        } else {
+                                            final String product_qty = et1.getText().toString().trim();
+                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
+                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
+
+                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
+                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
+                                                                + "(" + et1.getText().toString() + ")",
+                                                        Toast.LENGTH_SHORT).show();
+                                                alert1.dismiss();
+
+                                            }*/
+
+                                            /// update the product quantity
+
+                                            alert1.dismiss();
+                                        }
+                                        onResume();
+                                    }
+                                });
+
+                                onPause();
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -343,6 +442,59 @@ public class ScanningScreen extends AppCompatActivity {
                         db.add(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
                         final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
                         scan_count1.setText("Scan count: " +strI);
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(dummy.this);
+
+                            View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
+                            builder.setTitle("Select executive and assign number.");
+
+                            final EditText et1 = mView.findViewById(R.id.product_qty);
+                            final TextView tv1 = mView.findViewById(R.id.textView3);
+
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+//                                        scannerView.resumeCameraPreview(MainActivity.this);
+                                    // update quantity
+//                                onResume();
+                                }
+                            });
+
+                            builder.setCancelable(false);
+                            builder.setView(mView);
+                            final AlertDialog alert1 = builder.create();
+                            alert1.show();
+
+                            alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    if (et1.getText().toString().trim().isEmpty()) {
+                                        tv1.setText("Field can't be empty");
+                                        //  dialog.equals("Order count can't be empty");
+
+                                    } else {
+                                        final String product_qty = et1.getText().toString().trim();
+                                        updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
+                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
+
+                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
+                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
+                                                                + "(" + et1.getText().toString() + ")",
+                                                        Toast.LENGTH_SHORT).show();
+                                                alert1.dismiss();
+
+                                            }*/
+
+                                        /// update the product quantity
+
+                                        alert1.dismiss();
+                                    }
+                                    onResume();
+                                }
+                            });
+
+                            onPause();
                     }
                 }
         ) {
@@ -365,9 +517,9 @@ public class ScanningScreen extends AppCompatActivity {
 
     // API for update
     // StrI, updated_by1, updated_at1, merchant_id
-    public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
+    public void updateScanCount(final String strI,final String product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTable.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/updateTableForFulfillment.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -377,11 +529,11 @@ public class ScanningScreen extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row(strI, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row(strI, updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -392,7 +544,7 @@ public class ScanningScreen extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row(strI, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_row_for_fulfillment(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -403,6 +555,7 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("p_m_name", sub_merchant_name);
                 params.put("created_at", match_date);
                 params.put("scan_count", strI);
+                params.put("picked_qty", product_qty);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
                 return params;
@@ -411,8 +564,9 @@ public class ScanningScreen extends AppCompatActivity {
         try { RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(ScanningScreen.this, "Request Queue" +e, Toast.LENGTH_SHORT).show();
+            Toast.makeText(dummy.this, "Request Queue" +e, Toast.LENGTH_SHORT).show();
         }
 
     }
+
 }

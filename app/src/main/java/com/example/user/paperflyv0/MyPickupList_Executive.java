@@ -545,17 +545,26 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
     @Override
     public void onItemClick(View view, int position) {
-        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
 
         PickupList_Model_For_Executive clickedItem = list.get(position);
-
+        if (clickedItem.getComplete_status().equals("p")){
+        Intent scanIntent = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
         scanIntent.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
         scanIntent.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
         scanIntent.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
         scanIntent.putExtra(CREATED_AT, clickedItem.getCreated_at());
 //        scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
 
-        startActivity(scanIntent);
+        startActivity(scanIntent); }
+        else if(clickedItem.getComplete_status().equals("f")) {
+            Intent scanIntent1 = new Intent(MyPickupList_Executive.this, dummy.class);
+            scanIntent1.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
+            scanIntent1.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
+            scanIntent1.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
+            scanIntent1.putExtra(CREATED_AT, clickedItem.getCreated_at());
+            startActivity(scanIntent1);
+        }
+
     }
 
 }

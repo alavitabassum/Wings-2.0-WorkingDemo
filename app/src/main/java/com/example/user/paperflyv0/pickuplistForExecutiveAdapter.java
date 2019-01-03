@@ -30,6 +30,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
     private int currentPosition =-1;
 
+
     private Context context;
     private OnItemClickListener mListner;
     private RecyclerView.OnItemTouchListener touchListener;

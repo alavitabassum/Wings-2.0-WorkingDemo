@@ -99,7 +99,13 @@
             <meta-data android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MyPickupList_Executive"/>
         </activity>
-
+        <activity android:name=".dummy"
+            android:parentActivityName=".MyPickupList_Executive"
+            android:theme="@style/AppTheme"
+            >
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPickupList_Executive"/>
+        </activity>
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />
         <activity android:name=".ViewAssigns"></activity>

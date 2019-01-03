@@ -36,6 +36,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String SUB_MERCHANT_NAME = "sub_merchant_name";
 
 
+
     private static final String[] COLUMNS = { KEY_ID, MERCHANT_ID, KEY_NAME };
     private SQLiteDatabase db;
 
@@ -240,6 +241,28 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         // insert
         // db.update(TABLE_NAME,values,"merchantId='" + merchantId + "'" + "&&" + "sub_merchant_name='" + sub_merchant_name + "'",null);
         db.update(TABLE_NAME,values,whereClause, whereArgs );
+        db.close();
+    }
+
+
+    public void update_row_for_fulfillment(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, int status)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SCAN_COUNT, scan_count);
+        values.put(PICKED_QTY, picked_qty);
+        values.put(UPDATED_BY, updated_by);
+        values.put(UPDATED_AT, updated_at);
+        values.put(STATUS, status);
+
+        String whereClause = MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + CREATED_AT  + " = ?";
+        String[] whereArgs = new String[] {
+                merchantId,
+                sub_merchant_name,
+                match_date
+        };
+        // insert
+        db.update(TABLE_NAME_1,values,whereClause,whereArgs );
         db.close();
     }
 
