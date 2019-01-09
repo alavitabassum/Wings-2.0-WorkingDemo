@@ -276,6 +276,10 @@ public class ManagerCardMenu extends AppCompatActivity
             Intent assignIntent = new Intent(ManagerCardMenu.this,
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
+        } else if (id == R.id.nav_fulfill) {
+            Intent assignIntent = new Intent(ManagerCardMenu.this,
+                    AssignFulfillmentPickup_Manager.class);
+            startActivity(assignIntent);
         }
       /*  else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(ManagerCardMenu.this,

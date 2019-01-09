@@ -58,8 +58,13 @@
             android:name=".AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
             android:theme="@style/AppTheme">
-
         </activity>
+        <activity
+            android:name=".AssignFulfillmentPickup_Manager"
+            android:label="@string/title_activity_assign_pickup__manager"
+            android:theme="@style/AppTheme">
+        </activity>
+
         <receiver android:name=".NetworkStateChecker">
         <intent-filter>
             <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

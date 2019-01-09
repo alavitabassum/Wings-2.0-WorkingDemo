@@ -76,6 +76,7 @@ public class ScanningScreen extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
+    public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updateTableForFulfillment.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -367,7 +368,7 @@ public class ScanningScreen extends AppCompatActivity {
     // StrI, updated_by1, updated_at1, merchant_id
     public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTable.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -403,6 +404,7 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("p_m_name", sub_merchant_name);
                 params.put("created_at", match_date);
                 params.put("scan_count", strI);
+                params.put("picked_qty", "0");
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
                 return params;

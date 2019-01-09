@@ -229,6 +229,7 @@ public class PickupsToday_Executive extends AppCompatActivity
                                        o.getString("complete_status"),
                                        o.getString("p_m_name"),
                                        o.getString("p_m_add"),
+                                       o.getString("product_name"),
                                        NAME_NOT_SYNCED_WITH_SERVER );
 
                            }

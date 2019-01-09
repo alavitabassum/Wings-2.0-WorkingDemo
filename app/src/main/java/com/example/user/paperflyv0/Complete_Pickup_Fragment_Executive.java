@@ -2,8 +2,6 @@ package com.example.user.paperflyv0;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -49,7 +47,7 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
         swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
-        getallmerchant(user);
+//        getallmerchant(user);
 //        getPendingData(user);
 //        getdata(user);
         swipeRefreshLayout.setRefreshing(true);
@@ -77,7 +75,7 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
     }
 
     /* merchant List generation from sqlite*/
-    private void getallmerchant(String user) {
+/*    private void getallmerchant(String user) {
         listitems.clear();
         try {
 
@@ -111,7 +109,7 @@ public class Complete_Pickup_Fragment_Executive extends Fragment implements Swip
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * This method is to fetch all user records from SQLite

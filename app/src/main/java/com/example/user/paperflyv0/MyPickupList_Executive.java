@@ -63,6 +63,10 @@ public class MyPickupList_Executive extends AppCompatActivity
     public static final String SUB_MERCHANT_NAME = "Sub merchant Name";
     public static final String MERCHANT_ID = "MerchantID";
     public static final String CREATED_AT = "Created at";
+    public static final String PRODUCT_ID= "Product ID";
+    public static final String PRODUCT_NAME= "Product Name";
+    public static final String PICKED_QTY = "Picked Qty";
+    public static final String SCAN_COUNT = "Scan Count";
     private static final String URL_DATA = "";
     private static final int REQUEST_CAMERA = 1;
     private ProgressDialog progress;
@@ -126,6 +130,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         }
         else{
             getData(user);
+
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
@@ -167,33 +172,6 @@ public class MyPickupList_Executive extends AppCompatActivity
         }
     }
 
-
-/*    *//**
-     * This method is to fetch all user records from SQLite
-     *//*
-    private void getData(final String user) {
-        // AsyncTask is used that SQLite operation not blocks the UI Thread.
-        ;
-
-        new AsyncTask<String, Void , Void>() {
-            @Override
-            protected Void doInBackground(String... params) {
-                list.clear();
-                list.addAll(db.getAllData(user));
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
-                recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
-                pickuplistForExecutiveAdapter.setOnItemClickListener(MyPickupList_Executive.this);
-                pickuplistForExecutiveAdapter.notifyDataSetChanged();
-            }
-        }.execute();
-    }*/
     /* merchant List generation from sqlite*/
     private void getData(String user) {
         try {
@@ -222,7 +200,8 @@ public class MyPickupList_Executive extends AppCompatActivity
                 String complete_status = c.getString(12);
                 String p_m_name = c.getString(13);
                 String p_m_add = c.getString(14);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add);
+                String product_name = c.getString(15);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add, product_name);
 
                 list.add(todaySummary);
             }
@@ -263,6 +242,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                         JSONObject o = array.getJSONObject(i);
                         PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(
                                 o.getString("executive_name"),
+                                o.getString("product_name"),
                                 o.getString("order_count"),
                                 o.getString("merchant_code"),
                                 o.getString("assigned_by"),
@@ -291,7 +271,8 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("merchant_name"),
                                 o.getString("complete_status"),
                                 o.getString("p_m_name"),
-                                o.getString("p_m_address")
+                                o.getString("p_m_address"),
+                                o.getString("product_name")
                                 , NAME_NOT_SYNCED_WITH_SERVER );
 
                         list.add(todaySummary);
@@ -562,6 +543,10 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             scanIntent1.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
             scanIntent1.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
             scanIntent1.putExtra(CREATED_AT, clickedItem.getCreated_at());
+            scanIntent1.putExtra(PRODUCT_ID, clickedItem.getMerchant_id());
+            scanIntent1.putExtra(SCAN_COUNT, clickedItem.getScan_count());
+            scanIntent1.putExtra(PRODUCT_NAME, clickedItem.getProduct_name());
+            scanIntent1.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
             startActivity(scanIntent1);
         }
 

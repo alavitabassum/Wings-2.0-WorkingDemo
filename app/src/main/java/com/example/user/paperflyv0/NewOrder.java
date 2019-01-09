@@ -1,20 +1,17 @@
 package com.example.user.paperflyv0;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,11 +21,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -102,6 +97,8 @@ public class NewOrder extends AppCompatActivity {
                 final String merchantname = adapterView.getItemAtPosition(i).toString();
                 final String empcode = "0";
                 final String contactNumber = "0";
+                final String complete_sttaus = "p";
+                final String product_name = "0";
 
                 final String merchantcode = database.getSelectedMerchantCodeAll(adapterView.getItemAtPosition(i).toString());
 
@@ -114,7 +111,7 @@ public class NewOrder extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //database.assignexecutive(actv_exe_name.getText().toString(),count.getText().toString(),merchantcode,user,currentDateTimeString);
-                        assignexecutive(actv_exe_name.getText().toString(),empcode,count.getText().toString(), merchantcode, user, currentDateTimeString,merchantname,contactNumber,p_m_name.getText().toString(),p_m_address.getText().toString());
+                        assignexecutive(actv_exe_name.getText().toString(),empcode, product_name, count.getText().toString(), merchantcode, user, currentDateTimeString,merchantname,contactNumber,p_m_name.getText().toString(),p_m_address.getText().toString(), complete_sttaus);
                         //database.assignexecutive(actv_exe_name.getText().toString(), empcode, count.getText().toString(), merchantcode, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER);
                         Toast.makeText(getApplicationContext(),
                                 "You have inserted new order for "
@@ -196,9 +193,9 @@ public class NewOrder extends AppCompatActivity {
         }
     }
 
-    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String p_m_name,final String p_m_address) {
+    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String p_m_name,final String p_m_address, final String complete_status) {
 
-        database.assignexecutive(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, status,m_name,contactNumber,p_m_name,p_m_address);
+        database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, status,m_name,contactNumber,p_m_name,p_m_address, complete_status);
         //final int total_assign = database.getTotalOfAmount(merchant_code);
         //final String strI = String.valueOf(total_assign);
         //database.update_row(strI, merchant_code);
@@ -207,7 +204,7 @@ public class NewOrder extends AppCompatActivity {
 
 
     //For assigning executive API into mysql
-    private void assignexecutive(final String ex_name, final String empcode, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String p_m_name,final String p_m_address) {
+    private void assignexecutive(final String ex_name, final String empcode, final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String p_m_name,final String p_m_address, final String complete_status) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.INSERT_URL,
                 new Response.Listener<String>() {
@@ -218,11 +215,11 @@ public class NewOrder extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address);
+                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address);
+                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -233,7 +230,7 @@ public class NewOrder extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        assignexecutivetosqlite(ex_name, empcode, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address);
+                        assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status);
                     }
                 }
         ) {
@@ -242,6 +239,7 @@ public class NewOrder extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("executive_name", ex_name);
                 params.put("executive_code", empcode);
+                params.put("product_name", product_name);
                 params.put("order_count", order_count);
                 params.put("merchant_code", merchant_code);
                 params.put("assigned_by", user);

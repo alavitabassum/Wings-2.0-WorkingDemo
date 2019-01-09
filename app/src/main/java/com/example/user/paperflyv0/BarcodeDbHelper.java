@@ -14,6 +14,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
+    private static final String TABLE_NAME_2 = "Barcode_Fulfillment";
     private static final String KEY_ID = "id";
     private static final String MERCHANT_ID = "merchantId";
     private static final String KEY_NAME = "barcodeNumber";
@@ -34,6 +35,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String PICK_M_NAME = "p_m_name";
     private static final String PICK_M_ADD = "p_m_add";
     private static final String SUB_MERCHANT_NAME = "sub_merchant_name";
+    private static final String ORDER_ID = "order_id";
+    private static final String PRODUCT_NAME = "product_name";
 
 
 
@@ -74,11 +77,26 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "complete_status TEXT, "
                 + "p_m_name TEXT , "
                 + "p_m_add TEXT, "
+                + "product_name TEXT, "
                 + " unique(merchantId, p_m_name, created_at))";
+
+        String CREATION_TABLE2 = "CREATE TABLE Barcode_Fulfillment ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "merchantId TEXT, "
+                + "sub_merchant_name TEXT, "
+                + "barcodeNumber TEXT, "
+                + "state BOOLEAN, "
+                + "status INT, "
+                + "updated_by TEXT, "
+                + "updated_at TEXT, "
+                + "order_id TEXT, "
+                + "picked_qty TEXT, "
+                + " unique(barcodeNumber))" ;
 
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
+        db.execSQL(CREATION_TABLE2);
 
     }
 
@@ -86,6 +104,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_1);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
         this.onCreate(db);
     }
 
@@ -110,7 +129,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_add, int status)
+    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_add, String product_name, int status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
@@ -130,7 +149,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(COMPLETE_STATUS, complete_status);
         values.put(PICK_M_NAME, p_m_name);
         values.put(PICK_M_ADD, p_m_add);
+        values.put(PRODUCT_NAME, product_name);
         values.put(STATUS, status);
+
 
 //      db.insert(TABLE_NAME_1,null,values);
         db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
@@ -149,7 +170,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public Cursor get_mypickups_today(SQLiteDatabase db, String user, String currentDateTimeString)
     {
 
-        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD};
+        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD, PRODUCT_NAME};
         String sortOrder = CREATED_AT + " DESC";
         String whereClause = EXECUTIVE_NAME + " = ? AND " + CREATED_AT  + " = ?";
         String[] whereArgs = new String[] {
@@ -160,12 +181,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_1,columns,whereClause,whereArgs,null,null,sortOrder));
     }
 
-    public Cursor get_mypickups_complete(SQLiteDatabase db, String user)
+   /* public Cursor get_mypickups_complete(SQLiteDatabase db, String user)
     {
-        String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT};
+        String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PRODUCT_NAME};
         return (db.query(TABLE_NAME_1,columns,"executive_name='" + user + "'",null,null,null,null));
     }
-
+*/
 
     public void add(String merchantId, String sub_merchant_name, String barcodeNumber, boolean state, String updated_by, String updated_at,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -193,12 +214,132 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    // For Fulfillment start
+    public void add_fulfillment(String merchantId, String sub_merchant_name, String barcodeNumber, boolean state, String updated_by, String updated_at,int status, String order_id, String picked_qty) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SUB_MERCHANT_NAME, sub_merchant_name);
+        values.put(MERCHANT_ID, merchantId);
+        values.put(KEY_NAME, barcodeNumber);
+        values.put(String.valueOf(STATE), state);
+        values.put(UPDATED_BY, updated_by);
+        values.put(UPDATED_AT, updated_at);
+        values.put(STATUS,status);
+        values.put(ORDER_ID,order_id);
+        values.put(PICKED_QTY,picked_qty);
+        // insert
+        db.insert(TABLE_NAME_2,null, values);
+        db.close();
+    }
+
+    public void updatePickedQty(String product_qty,String barcodeNumber, int status ){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(String.valueOf(PICKED_QTY), product_qty);
+        values.put(STATUS,status);
+        String whereClause = KEY_NAME + " = ?";
+        String[] whereArgs = new String[] {
+                barcodeNumber
+        };
+        // insert
+        // db.update(TABLE_NAME,values,"merchantId='" + merchantId + "'" + "&&" + "sub_merchant_name='" + sub_merchant_name + "'",null);
+        db.update(TABLE_NAME_2,values,whereClause, whereArgs );
+        db.close();
+    }
+
+    public int getRowsCountForFulfillment(String merchantId, String sub_merchant_name, String date, String order_id) {
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_2 + " WHERE " + MERCHANT_ID + "='"+ merchantId +"' AND " + SUB_MERCHANT_NAME + " = '"+ sub_merchant_name +"'AND " + UPDATED_AT + " = '"+ date +"'AND " + ORDER_ID + " = '"+ order_id +"'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
+    public int getPickedSumByOrderId(String match_date, String order_id) {
+
+        int sum=0;
+        db = this.getReadableDatabase();
+        String sumQuery=String.format("SELECT  SUM(" + PICKED_QTY + ") as Total FROM " + TABLE_NAME_2 + " WHERE " + UPDATED_AT + " = '"+ match_date +"'AND " + ORDER_ID + " = '"+ order_id +"'");
+        Cursor cursor= db.rawQuery(sumQuery,null);
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total"));
+        return sum;
+
+      /*
+        int sum=0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sumQuery = String.format("SELECT  SUM(" + PICKED_QTY + ") FROM " + TABLE_NAME_2 + " WHERE " + MERCHANT_ID + "='"+ merchantId +"' AND " + SUB_MERCHANT_NAME + " = '"+ sub_merchant_name +"'AND " + UPDATED_AT + " = '"+ date +"'AND " + ORDER_ID + " = '"+ order_id +"'");
+      *//*  SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;*//*
+
+
+//        String sumQuery=String.format("SELECT SUM(%s) as Total FROM %s",dbHelper.VALUE,dbHelper.TABLE_NAME);
+        Cursor cursor=  db.rawQuery(sumQuery,null);
+*//*
+        try {
+            cursor.moveToFirst();
+            String sum = cursor.getString(cursor.getColumnIndex("picked_qty"));
+            if (sum == null)
+                return new BigDecimal("0");
+            return new BigDecimal(sum);
+        } finally {
+            cursor.close();
+        }*//*
+        if(cursor.moveToFirst())
+            sum = cursor.getInt(cursor.getColumnIndex("picked_qty"));
+        return sum;*/
+    }
+
+    /* private BigDecimal findSum(String category, long fromTime, long toTime) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String sql = "select sum(" + VALUE + ") " +
+                "from " + TABLE_NAME + " " +
+                "where " + CATEGORY + " = ? and " + TIME + " between ? and ?";
+
+        Cursor cursor = db.rawQuery(sql, new String[]{category, String.valueOf(fromTime), String.valueOf(toTime)});
+
+        try {
+            cursor.moveToFirst();
+            String sum = cursor.getString(0);
+            if (sum == null)
+                return new BigDecimal("0");
+            return new BigDecimal(sum);
+        } finally {
+            cursor.close();
+        }
+    }*/
+
+    //For fulfillment end
+
+
     public Cursor getUnsyncedBarcode() {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + STATUS + " = 0;";
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
+
+    public Cursor getUnsyncedFulfillmentBarcodeData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_2 + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public Cursor getUnsyncedPickedQtyData() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_1 + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
 
     /* private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
      */
@@ -208,6 +349,16 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(STATUS, status);
         db.update(TABLE_NAME, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
+    }
+
+
+    public boolean updateFulfillmentBarcodeStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME_2, contentValues, KEY_ID + "=" + id, null);
         db.close();
         return true;
     }
@@ -227,6 +378,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
         return true;
     }
+
 
     public void update_state(boolean state, String merchantId, String sub_merchant_name, String date) {
         SQLiteDatabase db = this.getWritableDatabase();

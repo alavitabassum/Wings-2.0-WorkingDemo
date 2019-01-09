@@ -1,8 +1,6 @@
 package com.example.user.paperflyv0;
 
 import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -49,7 +47,7 @@ public class Pending_Pickup_Fragment_Executive extends Fragment implements Swipe
 //        swipeRefreshLayout = v.findViewById(R.id.swipe_refresh);
 //        swipeRefreshLayout.setOnRefreshListener(this);
 //        swipeRefreshLayout.setRefreshing(true);
-        getallmerchant(user);
+//        getallmerchant(user);
 //        getPendingData(user);
 //        getdata(user);
 //        swipeRefreshLayout.setRefreshing(true);
@@ -59,7 +57,7 @@ public class Pending_Pickup_Fragment_Executive extends Fragment implements Swipe
     }
 
     /* merchant List generation from sqlite*/
-    private void getallmerchant(String user) {
+    /*private void getallmerchant(String user) {
         listitems1.clear();
         try {
 
@@ -82,7 +80,8 @@ public class Pending_Pickup_Fragment_Executive extends Fragment implements Swipe
                 String complete_status = c.getString(12);
                 String p_m_name = c.getString(13);
                 String p_m_add = c.getString(14);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add );
+                String product_name = c.getString(15);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add, product_name );
 
                 listitems1.add(todaySummary);
             }
@@ -95,7 +94,7 @@ public class Pending_Pickup_Fragment_Executive extends Fragment implements Swipe
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     /**
      * This method is to fetch all user records from SQLite

@@ -55,6 +55,9 @@ import static com.example.user.paperflyv0.MyPickupList_Executive.CREATED_AT;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
 import static com.example.user.paperflyv0.MyPickupList_Executive.SUB_MERCHANT_NAME;
+import static com.example.user.paperflyv0.MyPickupList_Executive.PRODUCT_ID;
+import static com.example.user.paperflyv0.MyPickupList_Executive.PICKED_QTY;
+import static com.example.user.paperflyv0.MyPickupList_Executive.PRODUCT_NAME;
 
 public class dummy extends AppCompatActivity{
     BarcodeDbHelper db;
@@ -65,7 +68,8 @@ public class dummy extends AppCompatActivity{
     private Button done;
     private TextView merchant_name_textview;
     private TextView sub_merchant_name_textview;
-    private TextView scan_count1 ;
+    private TextView product_name_textview;
+//    private TextView scan_count1 ;
     private pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
@@ -78,6 +82,8 @@ public class dummy extends AppCompatActivity{
     private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
+    public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_fulfillment_barcode.php";
+    public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updateTableForFulfillment.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -96,16 +102,20 @@ public class dummy extends AppCompatActivity{
         Intent intent = getIntent();
         String merchant_name = intent.getStringExtra(MERCHANT_NAME);
         String sub_merchant_name = intent.getStringExtra(SUB_MERCHANT_NAME);
-        scan_count1 = (TextView) findViewById(R.id.scan_count);
+        String product_name = intent.getStringExtra(PRODUCT_NAME);
+//        scan_count1 = (TextView) findViewById(R.id.scan_count);
 
         merchant_name_textview = (TextView) findViewById(R.id.merchant_name);
         sub_merchant_name_textview = (TextView) findViewById(R.id.sub_merchant_name);
+        product_name_textview = (TextView) findViewById(R.id.product_name);
 
         if( sub_merchant_name.equals("None") || sub_merchant_name.equals("")) {
             merchant_name_textview.setText("Scan started for: " +merchant_name);
         } else {
             sub_merchant_name_textview.setText("Scan started for: " +sub_merchant_name);
         }
+
+        product_name_textview.setText("Product Name: " +product_name);
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.UPC_A);
@@ -144,7 +154,7 @@ public class dummy extends AppCompatActivity{
                 // Set the toast and duration
                 int toastDurationInMilliSeconds = 1000;
                 final Toast mToastToShow = Toast.makeText(dummy.this,
-                        result + " already scanned.", Toast.LENGTH_SHORT);
+                        result + " already scanned.", Toast.LENGTH_LONG);
                 mToastToShow.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
                 mToastToShow.show();
 
@@ -171,6 +181,10 @@ public class dummy extends AppCompatActivity{
             Intent intentID = getIntent();
             final String merchant_id = intentID.getStringExtra(MERCHANT_ID);
             final String sub_merchant_name = intentID.getStringExtra(SUB_MERCHANT_NAME);
+
+            final String order_id = intentID.getStringExtra(PRODUCT_ID);
+            final String picked_qty = intentID.getStringExtra(PICKED_QTY);
+
             final String match_date = intentID.getStringExtra(CREATED_AT);
 
             barcodeView.setStatusText("Barcode"+result.getText());
@@ -193,7 +207,7 @@ public class dummy extends AppCompatActivity{
 
             } else {
 
-                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at);
+                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, picked_qty);
 
             }
 //            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
@@ -233,16 +247,17 @@ public class dummy extends AppCompatActivity{
 
                     boolean state1 = false;
                     db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
-                    // TODO: Merchant id, scan count, created-by, creation-date, flag
-//                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
-                  /*  try{
-//                        final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
-//                        updateScanCount(strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
+                    // TODO: get the total product quantity
+
+
+                    try{
+                        final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
+                        final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
+                        updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
                     } catch (Exception e) {
-                        Toast.makeText(dummy.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
-                    }*/
-//                    getData(username);
-//                    sentOnChannel1();
+                        Toast.makeText(dummy.this, "ScanningScreen" +e, Toast.LENGTH_LONG).show();
+                    }
+
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
                     startActivity(intent);
 
@@ -287,13 +302,13 @@ public class dummy extends AppCompatActivity{
 
 
     //API HIT
-    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
+    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty) {
 
         // get created date for match
         Intent intentID = getIntent();
         final String match_date = intentID.getStringExtra(CREATED_AT);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, BARCODE_INSERT_AND_UPDATE_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -303,12 +318,12 @@ public class dummy extends AppCompatActivity{
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER);
-                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
-                                scan_count1.setText("Scan count: " + strI);
+                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty);
+                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
+//                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
                                 Toast toast = Toast.makeText(dummy.this,
-                                        "Barcode Number Added", Toast.LENGTH_SHORT);
+                                        "Barcode Number Added", Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
                                 toast.show();
 
@@ -347,13 +362,18 @@ public class dummy extends AppCompatActivity{
                                         } else {
 
                                             final String product_qty = et1.getText().toString().trim();
-                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
+                                            ///////ekhane update hobe barcode er picked quantity field
+//                                            updatePickedQty(product_qty, lastText);
+                                            updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
+
+//                                            db.updatePickedQty(product_qty, merchant_id, sub_merchant_name, match_date, order_id);
+//                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
                                             /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
 
                                             if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                                                 Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                                                 + "(" + et1.getText().toString() + ")",
-                                                        Toast.LENGTH_SHORT).show();
+                                                        Toast.LENGTH_LONG).show();
                                                 alert1.dismiss();
 
                                             }*/
@@ -372,9 +392,9 @@ public class dummy extends AppCompatActivity{
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER);
-                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
-                                scan_count1.setText("Scan count: " + strI);
+                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER,order_id, picked_qty);
+                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
+//                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
 
 
@@ -408,13 +428,16 @@ public class dummy extends AppCompatActivity{
 
                                         } else {
                                             final String product_qty = et1.getText().toString().trim();
-                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
+                                            ///////ekhane update hobe barcode er picked quantity field
+//                                            updatePickedQty(product_qty, lastText);
+                                            updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
+//                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
                                             /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
 
                                             if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                                                 Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                                                 + "(" + et1.getText().toString() + ")",
-                                                        Toast.LENGTH_SHORT).show();
+                                                        Toast.LENGTH_LONG).show();
                                                 alert1.dismiss();
 
                                             }*/
@@ -439,9 +462,9 @@ public class dummy extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.add(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
-                        final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
-                        scan_count1.setText("Scan count: " +strI);
+                        db.add_fulfillment(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty);
+                        final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
+//                        scan_count1.setText("Scan count: " +strI);
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(dummy.this);
 
@@ -475,13 +498,16 @@ public class dummy extends AppCompatActivity{
 
                                     } else {
                                         final String product_qty = et1.getText().toString().trim();
-                                        updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
+                                        ///////ekhane update hobe barcode er picked quantity field
+//                                        updatePickedQty(product_qty, lastText);
+                                        updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
+//                                        updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
                                             /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
 
                                             if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                                                 Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                                                 + "(" + et1.getText().toString() + ")",
-                                                        Toast.LENGTH_SHORT).show();
+                                                        Toast.LENGTH_LONG).show();
                                                 alert1.dismiss();
 
                                             }*/
@@ -507,6 +533,8 @@ public class dummy extends AppCompatActivity{
                 params.put("state", String.valueOf(state));
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
+                params.put("order_id", order_id);
+                params.put("picked_qty", picked_qty);
 
                 return params;
             }
@@ -515,11 +543,11 @@ public class dummy extends AppCompatActivity{
         requestQueue.add(postRequest);
     }
 
-    // API for update
-    // StrI, updated_by1, updated_at1, merchant_id
-    public void updateScanCount(final String strI,final String product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
+    // API for updating scan count, picked_product_count, updated by and updated at
+    public void updatePickedQty(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty) {
+
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://192.168.0.136/new/updateTableForFulfillment.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, BARCODE_INSERT_AND_UPDATE_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -529,11 +557,13 @@ public class dummy extends AppCompatActivity{
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row_for_fulfillment(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
+//                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
+                                db.updatePickedQty(picked_qty, lastText,NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row_for_fulfillment(strI, product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+//                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.updatePickedQty(picked_qty, lastText, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -544,7 +574,64 @@ public class dummy extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row_for_fulfillment(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+//                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.updatePickedQty(picked_qty, lastText, NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchant_id);
+                params.put("sub_merchant_name", sub_merchant_name);
+                params.put("barcodeNumber", lastText);
+                params.put("state", String.valueOf(state));
+                params.put("updated_by", updated_by);
+                params.put("updated_at", updated_at);
+                params.put("order_id", order_id);
+                params.put("picked_qty", picked_qty);
+
+                return params;
+            }
+        };
+        try { RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(dummy.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
+    // API for updating scan count, picked_product_count, updated by and updated at
+    public void updateScanCount(final String strI,final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+//                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -555,16 +642,17 @@ public class dummy extends AppCompatActivity{
                 params.put("p_m_name", sub_merchant_name);
                 params.put("created_at", match_date);
                 params.put("scan_count", strI);
-                params.put("picked_qty", product_qty);
+                params.put("picked_qty", picked_product_qty);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
+
                 return params;
             }
         };
         try { RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(dummy.this, "Request Queue" +e, Toast.LENGTH_SHORT).show();
+            Toast.makeText(dummy.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
         }
 
     }

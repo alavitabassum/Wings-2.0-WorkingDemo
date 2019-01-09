@@ -66,6 +66,11 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView item_p_m_add_pul;
         public TextView itme_a_pul;
         public TextView item_scanCount;
+        public TextView text_scanCount;
+        public TextView item_productName;
+        public TextView text_productName;
+        public TextView item_pickedCount;
+        public TextView text_pickedCount;
         public Button scan_button;
         public TextView item_phnNum;
         public  Button itemStatus;
@@ -81,6 +86,11 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             itme_a_pul=itemView.findViewById(R.id.a_qty_pul);
 
             item_scanCount=itemView.findViewById(R.id.scan_qty_pul);
+            text_scanCount=itemView.findViewById(R.id.scantxt);
+            item_productName=itemView.findViewById(R.id.product_name_pul);
+            text_productName=itemView.findViewById(R.id.product_name);
+            item_pickedCount=itemView.findViewById(R.id.picked_qty_pul);
+            text_pickedCount=itemView.findViewById(R.id.pickedtxt);
             item_phnNum = itemView.findViewById(R.id.m_phn_num);
             scan_button = itemView.findViewById(R.id.btn_scan);
             itemStatus = itemView.findViewById(R.id.btn_status);
@@ -138,21 +148,42 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.item_p_m_name_pul.setText(list.get(i).getP_m_name());
         viewHolder.item_p_m_add_pul.setText(list.get(i).getP_m_add());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
-        viewHolder.item_scanCount.setText(list.get(i).getScan_count());
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
 
+        String complete_status = list.get(i).getComplete_status();
 
-        int count_assigned = Integer.parseInt(list.get(i).getAssined_qty());
+
+        if(complete_status.equals("p")) {
+            viewHolder.text_scanCount.setText("Scan Count: ");
+            viewHolder.item_scanCount.setText(list.get(i).getScan_count());
+        } else if ( complete_status.equals("f")) {
+            viewHolder.text_productName.setText("Product: ");
+            viewHolder.item_productName.setText(list.get(i).getProduct_name());
+            viewHolder.text_pickedCount.setText("Picked: ");
+            viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
+        }
+
         try {
-
+            int count_assigned = Integer.parseInt(list.get(i).getAssined_qty());
+            int count_picked = Integer.parseInt(list.get(i).getPicked_qty());
             int count = Integer.parseInt(list.get(i).getScan_count());
 
-            if (count == count_assigned || count > count_assigned){
+            if (count == count_assigned || count > count_assigned && complete_status.equals("p")){
                 viewHolder.itemStatus.setText("Complete");
                 viewHolder.itemStatus.setBackgroundResource(R.color.green);
                 viewHolder.itemStatus.setTextColor(Color.WHITE);
                 viewHolder.itemStatus.setEnabled(false);
-            }else if (count < count_assigned ){
+            } else if (count < count_assigned && complete_status.equals("p")){
+                viewHolder.itemStatus.setText("Pending");
+                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
+                viewHolder.itemStatus.setTextColor(Color.BLACK);
+                viewHolder.itemStatus.setEnabled(true);
+            } else if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("f")){
+                viewHolder.itemStatus.setText("Complete");
+                viewHolder.itemStatus.setBackgroundResource(R.color.green);
+                viewHolder.itemStatus.setTextColor(Color.WHITE);
+                viewHolder.itemStatus.setEnabled(false);
+            } else if(count_picked < count_assigned && complete_status.equals("f")) {
                 viewHolder.itemStatus.setText("Pending");
                 viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
                 viewHolder.itemStatus.setTextColor(Color.BLACK);
