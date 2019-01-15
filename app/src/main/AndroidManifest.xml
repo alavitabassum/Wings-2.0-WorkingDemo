@@ -20,11 +20,10 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
 
     <application
         android:name=".CustomFontApp"
@@ -35,41 +34,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".PickupsToday_Manager"
             android:label="@string/title_activity_pickups_today__manager"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
-            android:theme="@style/AppTheme">
-        </activity>
-        <activity
-            android:name=".AssignFulfillmentPickup_Manager"
-            android:label="@string/title_activity_assign_pickup__manager"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme" />
 
         <receiver android:name=".NetworkStateChecker">
-        <intent-filter>
-            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-        </intent-filter>
-    </receiver>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".PickupHistory_Manager"
             android:label="@string/title_activity_pickup_history__manager"
@@ -89,32 +80,36 @@
         <activity
             android:name=".PickupStatus_Executive"
             android:label="@string/title_activity_pickup_status__executive"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
             android:supportsRtl="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ScanningScreen"
+            android:parentActivityName=".MyPickupList_Executive"
             android:theme="@style/AppTheme">
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPickupList_Executive" />
         </activity>
-        <activity android:name=".ScanningScreen"
+        <activity
+            android:name=".FulfillmentScanningScreen"
             android:parentActivityName=".MyPickupList_Executive"
-            android:theme="@style/AppTheme"
-           >
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MyPickupList_Executive"/>
-        </activity>
-        <activity android:name=".dummy"
-            android:parentActivityName=".MyPickupList_Executive"
-            android:theme="@style/AppTheme"
-            >
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MyPickupList_Executive"/>
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPickupList_Executive" />
         </activity>
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />
-        <activity android:name=".ViewAssigns"></activity>
-
+        <activity android:name=".ViewAssigns" />
+        <activity
+            android:name=".Fulfillment_Assign_pickup_Manager"
+            android:label="@string/title_activity_testing_fulfillment"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".NewOrderEntry_ful"></activity>
     </application>
 
 </manifest>

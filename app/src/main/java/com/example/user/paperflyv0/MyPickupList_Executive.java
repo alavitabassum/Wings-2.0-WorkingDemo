@@ -65,6 +65,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     public static final String CREATED_AT = "Created at";
     public static final String PRODUCT_ID= "Product ID";
     public static final String PRODUCT_NAME= "Product Name";
+    public static final String ASSIGNED_QTY= "Assigned Qty";
     public static final String PICKED_QTY = "Picked Qty";
     public static final String SCAN_COUNT = "Scan Count";
     private static final String URL_DATA = "";
@@ -538,7 +539,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
         startActivity(scanIntent); }
         else if(clickedItem.getComplete_status().equals("f")) {
-            Intent scanIntent1 = new Intent(MyPickupList_Executive.this, dummy.class);
+            Intent scanIntent1 = new Intent(MyPickupList_Executive.this, FulfillmentScanningScreen.class);
             scanIntent1.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
             scanIntent1.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
             scanIntent1.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
@@ -546,6 +547,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             scanIntent1.putExtra(PRODUCT_ID, clickedItem.getMerchant_id());
             scanIntent1.putExtra(SCAN_COUNT, clickedItem.getScan_count());
             scanIntent1.putExtra(PRODUCT_NAME, clickedItem.getProduct_name());
+            scanIntent1.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
             scanIntent1.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
             startActivity(scanIntent1);
         }

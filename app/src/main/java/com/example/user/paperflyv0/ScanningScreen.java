@@ -238,7 +238,7 @@ public class ScanningScreen extends AppCompatActivity {
 //                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
                     try{
                         final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
-                        updateScanCount(strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
+                        updateScanCount(strI, strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
                     } catch (Exception e) {
                         Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
                     }
@@ -366,7 +366,7 @@ public class ScanningScreen extends AppCompatActivity {
 
     // API for update
     // StrI, updated_by1, updated_at1, merchant_id
-    public void updateScanCount(final String strI, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
+    public void updateScanCount(final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
                 new Response.Listener<String>() {
@@ -378,11 +378,11 @@ public class ScanningScreen extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row(strI, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
+                                db.update_row(strI, picked_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row(strI, updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_row(strI, picked_qty,updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -393,7 +393,7 @@ public class ScanningScreen extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row(strI, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_row(strI, picked_qty ,updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -404,7 +404,7 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("p_m_name", sub_merchant_name);
                 params.put("created_at", match_date);
                 params.put("scan_count", strI);
-                params.put("picked_qty", "0");
+                params.put("picked_qty", picked_qty);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
                 return params;

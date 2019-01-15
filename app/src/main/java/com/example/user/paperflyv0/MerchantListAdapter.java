@@ -34,6 +34,12 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         public TextView itemMerchantName;
         public TextView itemAssignedQty;
         public TextView itemReceivedQty;
+
+        public TextView textReceivedQty;
+        public TextView itemPickedQty;
+        public TextView textPickedQty;
+
+
         public TextView itemUploadedQty;
         public TextView date_of_assign;
         public CardView cardView;
@@ -47,6 +53,11 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             itemUploadedQty = itemView.findViewById(R.id.u_qty);
             itemAssignedQty=itemView.findViewById(R.id.a_qty);
             itemReceivedQty=itemView.findViewById(R.id.r_qty);
+
+            textReceivedQty=itemView.findViewById(R.id.txt3);
+            itemPickedQty=itemView.findViewById(R.id.picked_qty);
+            textPickedQty=itemView.findViewById(R.id.txt300);
+
             date_of_assign = itemView.findViewById(R.id.asgn_date);
             cardView = itemView.findViewById(R.id.card_view_merchant);
             relativeLayout = itemView.findViewById(R.id.inside_rl);
@@ -68,24 +79,73 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         viewHolder.itemMerchantName.setText(pickupList_model_for_executive.getMerchant_name());
         viewHolder.itemUploadedQty.setText(pickupList_model_for_executive.getExecutive_name());
         viewHolder.itemAssignedQty.setText(pickupList_model_for_executive.getAssined_qty());
-        viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
         viewHolder.date_of_assign.setText(pickupList_model_for_executive.getCreated_at());
-        int count_assigned = Integer.parseInt(pickupList_model_for_executive.getAssined_qty());
+//        int count_assigned = Integer.parseInt(pickupList_model_for_executive.getAssined_qty());
+        String complete_status = pickupList_model_for_executive.getComplete_status();
+
+
+        if(complete_status.equals("p")) {
+            viewHolder.textReceivedQty.setText("Scan Count: ");
+            viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
+        } else if ( complete_status.equals("f")) {
+            viewHolder.textPickedQty.setText("Picked: ");
+            viewHolder.itemPickedQty.setText(pickupList_model_for_executive.getPicked_qty());
+        }
+
 
         try {
 
+            int count_assigned = Integer.parseInt(pickupList_model_for_executive.getAssined_qty());
             int count = Integer.parseInt(pickupList_model_for_executive.getScan_count());
-            if (count == count_assigned || count > count_assigned){
+            int count_picked = Integer.parseInt(pickupList_model_for_executive.getPicked_qty());
+
+
+            if (count == count_assigned || count > count_assigned && complete_status.equals("p")){
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
                 //viewHolder.relativeLayout2.setBackgroundResource(R.color.put_hd_color);
-                }else if (count < count_assigned ){
+                } else if (count < count_assigned && complete_status.equals("p")){
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
-
+            } else if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals('f')) {
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+            } else if (count_picked < count_assigned && complete_status.equals('f')) {
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
             }
+
         } catch(Exception e) {
             e.printStackTrace();
             Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
         }
+
+        /*String complete_status = summaries.get(i).getComplete_status();
+
+        if(complete_status.equals("p")) {
+            viewHolder.text_rQty.setText("Scan Count: ");
+            viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
+        } else if ( complete_status.equals("f")) {
+            viewHolder.text_pQty.setText("Picked: ");
+            viewHolder.item_pQty.setText(summaries.get(i).getPicked_qty());
+        }
+
+        try {
+            int count_assigned = Integer.parseInt(summaries.get(i).getAssined_qty());
+            int count = Integer.parseInt(summaries.get(i).getScan_count());
+            int count_picked = Integer.parseInt(summaries.get(i).getPicked_qty());
+
+
+                if (count == count_assigned || count > count_assigned && complete_status.equals('p')) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                } else if (count < count_assigned && complete_status.equals('p')) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+                } else if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals('f')) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                } else if (count_picked < count_assigned && complete_status.equals('f')) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+                }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
+        }*/
     }
 
     @Override

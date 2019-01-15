@@ -150,6 +150,19 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/scan_qty_pul"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/product_name"
+            android:layout_alignEnd="@+id/a_qty_pul"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="-76dp"
+            android:layout_marginBottom="7dp"
+            android:layout_toEndOf="@+id/assignedtxt"
+            android:textAlignment="textStart"
+            android:textColor="@color/pfColor"
+            android:textSize="15sp" />
+        <TextView
             android:id="@+id/product_name_pul"
             android:layout_width="165dp"
             android:layout_height="wrap_content"
@@ -165,6 +178,7 @@
             android:textAlignment="textStart"
             android:textColor="@color/pfColor"
             android:textSize="12sp" />
+<!--
 
         <TextView
             android:id="@+id/scan_qty_pul"
@@ -180,6 +194,7 @@
             android:textAlignment="textStart"
             android:textColor="@color/pfColor"
             android:textSize="15sp" />
+-->
 
         <TextView
             android:id="@+id/picked_qty_pul"

@@ -34,6 +34,9 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
         public TextView item_aQty;
         public TextView item_uQty;
         public TextView item_rQty;
+        public TextView item_pQty;
+        public TextView text_rQty;
+        public TextView text_pQty;
         public TextView date_of_assign;
         public CardView cardView;
         public RelativeLayout relativeLayout;
@@ -46,6 +49,9 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
             item_aQty=itemView.findViewById(R.id.a_qty_e);
             item_uQty=itemView.findViewById(R.id.u_qty_e);
             item_rQty=itemView.findViewById(R.id.r_qty_e);
+            text_rQty=itemView.findViewById(R.id.txt3);
+            item_pQty=itemView.findViewById(R.id.picked_qty_e);
+            text_pQty=itemView.findViewById(R.id.txt100);
             date_of_assign = itemView.findViewById(R.id.asgn_date);
             cardView = itemView.findViewById(R.id.card_view_executive);
             relativeLayout = itemView.findViewById(R.id.inside_rl);
@@ -64,24 +70,39 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        PickupList_Model_For_Executive summary_ex = summaries.get(i);
-        viewHolder.item_mName.setText(summary_ex.getMerchant_name());
-        viewHolder.item_uQty.setText(summary_ex.getExecutive_name());
-        viewHolder.item_aQty.setText(summary_ex.getAssined_qty());
-        viewHolder.item_rQty.setText(summary_ex.getScan_count());
-        viewHolder.date_of_assign.setText(summary_ex.getCreated_at());
+//        PickupList_Model_For_Executive summary_ex = summaries.get(i);
+        viewHolder.item_mName.setText(summaries.get(i).getMerchant_name());
+        viewHolder.item_uQty.setText(summaries.get(i).getExecutive_name());
+        viewHolder.item_aQty.setText(summaries.get(i).getAssined_qty());
 
-        int count_assigned = Integer.parseInt(summary_ex.getAssined_qty());
+        viewHolder.date_of_assign.setText(summaries.get(i).getCreated_at());
+
+        String complete_status = summaries.get(i).getComplete_status();
+
+        if(complete_status.equals("p")) {
+            viewHolder.text_rQty.setText("Scan Count: ");
+            viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
+        } else if ( complete_status.equals("f")) {
+            viewHolder.text_pQty.setText("Picked: ");
+            viewHolder.item_pQty.setText(summaries.get(i).getPicked_qty());
+        }
+
         try {
+            int count_assigned = Integer.parseInt(summaries.get(i).getAssined_qty());
+            int count = Integer.parseInt(summaries.get(i).getScan_count());
+            int count_picked = Integer.parseInt(summaries.get(i).getPicked_qty());
 
-            int count = Integer.parseInt(summary_ex.getScan_count());
-            if (count == count_assigned || count > count_assigned){
-                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
-                //viewHolder.relativeLayout2.setBackgroundResource(R.color.put_hd_color);
-            }else if (count < count_assigned ){
-                viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
 
-            }
+                if (count == count_assigned || count > count_assigned && complete_status.equals('p')) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                } else if (count < count_assigned && complete_status.equals('p')) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+                } else if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals('f')) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                } else if (count_picked < count_assigned && complete_status.equals('f')) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+                }
+
         } catch(Exception e) {
             e.printStackTrace();
             Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();

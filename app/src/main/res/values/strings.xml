@@ -36,7 +36,8 @@
 
     </string>
     <string name="title_activity_pickups_today__manager">Pickup Summary</string>
-    <string name="title_activity_assign_pickup__manager">Assign Pickups</string>
+    <string name="title_activity_assign_pickup__manager">Assign Pickups for Logistics</string>
+    <string name="title_activity_assign_pickup_fulfillment__manager">Assign Pickups for Fulfillment</string>
     <string name="title_activity_pickup_history__manager">Pickup History</string>
     <string name="uploaded_product_count">Executive :</string>
     <string name="assigned_product_count">Order Qty :</string>
@@ -85,5 +86,6 @@
     <string name="assigned_executives">Assigned Executives</string>
     <string name="assigned_counts">Assigned Counts</string>
     <string name="merchant_name">Merchant Name</string>
+    <string name="title_activity_testing_fulfillment">Assign Pickups for Fulfillment</string>
 
 </resources>

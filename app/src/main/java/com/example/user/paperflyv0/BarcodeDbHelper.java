@@ -419,10 +419,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     // updateLocalDatabase
-    public void update_row(String scan_count, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, int status) {
+    public void update_row(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SCAN_COUNT, scan_count);
+        values.put(PICKED_QTY, picked_qty);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
         values.put(STATUS, status);
@@ -444,7 +445,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getdata_pickups_today_executive(SQLiteDatabase db, String user, String currentDateTimeString) {
-        String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME,ASSIGNED_QTY,SCAN_COUNT,CREATED_AT};
+        String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME,ASSIGNED_QTY,SCAN_COUNT,CREATED_AT, COMPLETE_STATUS, PICKED_QTY, PICK_M_NAME};
 
         String whereClause = EXECUTIVE_NAME + " = ? AND " + CREATED_AT  + " = ?";
         String[] whereArgs = new String[] {
@@ -583,7 +584,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public int complete_order_for_ex(String user, String currentDateTimeString){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + SCAN_COUNT + ">=" + ASSIGNED_QTY;
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + PICKED_QTY + ">=" + ASSIGNED_QTY;
         /*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*/
         Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount();
@@ -593,7 +594,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public int pending_order_for_ex(String user, String currentDateTimeString){
 
         SQLiteDatabase db = this.getReadableDatabase();
-        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + SCAN_COUNT + "<" + ASSIGNED_QTY;
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + PICKED_QTY + "<" + ASSIGNED_QTY;
 
         Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount( );

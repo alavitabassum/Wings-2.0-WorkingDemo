@@ -366,7 +366,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                             JSONArray array = jsonObject.getJSONArray("merchantlist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                database.addallmerchantlist(o.getString("merchantName"), o.getString("merchantCode"));
+                                database.addallmerchantlist(o.getString("merchantName"),
+                                        o.getString("merchantCode"));
                             }
 
                         } catch (JSONException e) {
@@ -540,7 +541,7 @@ public class AssignPickup_Manager extends AppCompatActivity
             startActivity(assignIntent);
         } else if (id == R.id.nav_fulfill) {
             Intent assignFulfillmentIntent = new Intent(AssignPickup_Manager.this,
-                    AssignFulfillmentPickup_Manager.class);
+                    Fulfillment_Assign_pickup_Manager.class);
             startActivity(assignFulfillmentIntent);
         }
         /*  else if (id == R.id.nav_pickCompleted) {

@@ -37,12 +37,15 @@ public class PickupList_Model_For_Executive {
         this. product_name =  product_name;
     }
 
-    public PickupList_Model_For_Executive(String merchant_name, String assined_qty, String scan_count,String executive_name,String created_at) {
+    public PickupList_Model_For_Executive(String merchant_name, String assined_qty, String scan_count,String executive_name,String created_at, String complete_status,String picked_qty, String p_m_name) {
         this.merchant_name = merchant_name;
         this.assined_qty = assined_qty;
         this.scan_count = scan_count;
         this.executive_name = executive_name;
         this.created_at = created_at;
+        this.complete_status = complete_status;
+        this.picked_qty = picked_qty;
+        this.p_m_name = p_m_name;
     }
 
     public String getProduct_name() {

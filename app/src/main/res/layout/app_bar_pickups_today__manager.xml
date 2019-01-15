@@ -53,12 +53,12 @@
             android:id="@+id/assignedcounttxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/master_summary_header"
+            android:layout_marginTop="15dp"
             android:lines="1"
             android:maxLines="1"
             android:text="Assigned Pickups: "
-            android:textSize="15sp"
-            android:layout_below="@+id/master_summary_header"
-            android:layout_marginTop="15dp"/>
+            android:textSize="15sp" />
         <TextView
             android:id="@+id/compltcounttxt"
             android:layout_width="wrap_content"

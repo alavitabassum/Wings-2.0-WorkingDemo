@@ -77,7 +77,7 @@ public class PickupHistory_Manager extends AppCompatActivity
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
-    public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
+    // public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";

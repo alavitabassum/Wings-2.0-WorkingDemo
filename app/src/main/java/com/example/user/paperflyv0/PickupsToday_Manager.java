@@ -148,9 +148,12 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                                 o.getString("order_count"),
                                 String.valueOf(o.getInt("scan_count")),
                                 o.getString("executive_name"),
-                                o.getString("created_at"));
+                                o.getString("created_at"),
+                                o.getString("complete_status"),
+                                String.valueOf(o.getInt("picked_qty")),
+                                o.getString("p_m_name"));
 
-                        database.add_pickups_today_manager(o.getString("merchant_name"), Integer.valueOf(o.getString("order_count")),o.getInt("scan_count"),o.getString("created_at"),o.getString("executive_name"));
+                        database.add_pickups_today_manager(o.getString("merchant_name"), Integer.valueOf(o.getString("order_count")),o.getInt("scan_count"),o.getString("created_at"),o.getString("executive_name"), o.getString("complete_status"), o.getInt("picked_qty"),o.getString("p_m_name"));
                         pickupList_model_for_executives.add(todaySummary);
                     }
 
@@ -214,7 +217,10 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                 String count = String.valueOf(c.getInt(2));
                 String executive_name = c.getString(3);
                 String created_at = c.getString(4);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name,created_at);
+                String complete_status = c.getString(5);
+                String picked_qty = c.getString(6);
+                String p_m_name = c.getString(7);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name,created_at, complete_status, picked_qty, p_m_name);
                 pickupList_model_for_executives.add(todaySummary);
             }
             merchantListAdapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
@@ -317,6 +323,10 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             Intent assignIntent = new Intent(PickupsToday_Manager.this,
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
+        } else if (id == R.id.nav_fulfill) {
+            Intent assignFulfillmentIntent = new Intent(PickupsToday_Manager.this,
+                    Fulfillment_Assign_pickup_Manager.class);
+            startActivity(assignFulfillmentIntent);
         }
        /* else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(PickupsToday_Manager.this,

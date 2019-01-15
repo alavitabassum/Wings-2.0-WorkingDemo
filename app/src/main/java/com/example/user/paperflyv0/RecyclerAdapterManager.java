@@ -10,9 +10,9 @@ import android.widget.TextView;
 
 public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapterManager.ViewHolder> {
 
-    private String[] titles = { "Assign Pickups","Pickups For Today", "Pickup History (Coming Soon)"};
+    private String[] titles = { "Assign Pickups(LOGISTIC)","Assign Pickup(FULFILLMENT)","Pickups For Today"};
 
-    private int[] images = { R.drawable.assignpickup, R.drawable.pickupstoday, R.drawable.puhistory };
+    private int[] images = { R.drawable.assignpickup, R.drawable.puhistory , R.drawable.pickupstoday};
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -37,11 +37,11 @@ public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapter
                         Intent intent_assign = new Intent(v.getContext(), AssignPickup_Manager.class);
                         v.getContext().startActivity(intent_assign);
                     } else if (position == 1) {
+                        Intent intent_assign_fulfillment = new Intent(v.getContext(), Fulfillment_Assign_pickup_Manager.class);
+                        v.getContext().startActivity(intent_assign_fulfillment);
+                    } else {
                         Intent intent = new Intent(v.getContext(), PickupsToday_Manager.class);
                         v.getContext().startActivity(intent);
-                    } else {
-                        Intent intent_history = new Intent(v.getContext(), ManagerCardMenu.class);
-                        v.getContext().startActivity(intent_history);
                     }
                                /* Snackbar.make(v, "Click detected on item " + position,
                                         Snackbar.LENGTH_LONG)

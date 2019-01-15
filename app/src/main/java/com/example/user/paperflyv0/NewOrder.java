@@ -102,11 +102,6 @@ public class NewOrder extends AppCompatActivity {
 
                 final String merchantcode = database.getSelectedMerchantCodeAll(adapterView.getItemAtPosition(i).toString());
 
-                Toast.makeText(getApplicationContext(),
-                        "Clicked item from auto completion list "
-                                + merchantcode
-                        , Toast.LENGTH_SHORT).show();
-
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -248,6 +243,7 @@ public class NewOrder extends AppCompatActivity {
                 params.put("phone_no", contactNumber);
                 params.put("p_m_name", p_m_name);
                 params.put("p_m_address", p_m_address);
+                params.put("complete_status", "p");
 
                 return params;
             }

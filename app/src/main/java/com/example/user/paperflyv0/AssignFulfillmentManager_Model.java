@@ -10,9 +10,10 @@ public class AssignFulfillmentManager_Model  {
     private int sum;
     private String product_count;
     private String scan_count;
+    private String created_at;
     int key_id;
 
-    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id,int sum) {
+    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id,int sum, String created_at) {
 
         this.main_merchant = main_merchant;
         this.supplier_name = supplier_name;
@@ -21,8 +22,18 @@ public class AssignFulfillmentManager_Model  {
         this.product_name = product_name;
         this.product_id = product_id;
         this.sum = sum;
+        this.created_at = created_at;
     }
 
+
+    public AssignFulfillmentManager_Model( String supplier_name) {
+        this.supplier_name = supplier_name;
+    }
+
+    public AssignFulfillmentManager_Model( String product_name, String product_id) {
+        this.product_name = product_name;
+        this.product_id = Integer.parseInt(product_id);
+    }
 
     public String getMain_merchant() {
         return main_merchant;

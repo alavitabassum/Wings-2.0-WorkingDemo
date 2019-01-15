@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapterExecutive.ViewHolder> {
 
-    private String[] titles_exe_list = { "Assigned Pickups","Pickups For Today", "Pickup Status (Coming Soon)"};
+    private String[] titles_exe_list = { "Assigned Pickups","Pickups For Today"};
 
   /*  private String[] details_exe_list = {"View ->","View ->","View ->"};*/
 
-    private int[] images_exe_list = {  R.drawable.assigned,R.drawable.pickupstoday, R.drawable.puhistory };
+    private int[] images_exe_list = {  R.drawable.assigned,R.drawable.pickupstoday };
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -41,10 +41,11 @@ public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapt
                     } else if (position == 1) {
                         Intent intent = new Intent(v.getContext(), PickupsToday_Executive.class);
                         v.getContext().startActivity(intent);
-                    } else {
+                    }
+                  /*  else {
                         Intent intent_history = new Intent(v.getContext(), ExecutiveCardMenu.class);
                         v.getContext().startActivity(intent_history);
-                    }
+                    }*/
                    /* Snackbar.make(v, "Click detected on item " + position,
                             Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();*/

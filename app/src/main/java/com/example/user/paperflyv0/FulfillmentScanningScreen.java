@@ -51,6 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.user.paperflyv0.MyPickupList_Executive.ASSIGNED_QTY;
 import static com.example.user.paperflyv0.MyPickupList_Executive.CREATED_AT;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
@@ -59,7 +60,7 @@ import static com.example.user.paperflyv0.MyPickupList_Executive.PRODUCT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.PICKED_QTY;
 import static com.example.user.paperflyv0.MyPickupList_Executive.PRODUCT_NAME;
 
-public class dummy extends AppCompatActivity{
+public class FulfillmentScanningScreen extends AppCompatActivity{
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private DecoratedBarcodeView barcodeView;
@@ -147,13 +148,13 @@ public class dummy extends AppCompatActivity{
             // current date and time
             final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-            db = new BarcodeDbHelper(dummy.this);
+            db = new BarcodeDbHelper(FulfillmentScanningScreen.this);
 //            if(result.getText() == null || result.getText().equals(lastText)) {
             if(result.getText().equals(lastText) || result.getText().trim().length() != 12) {
 
                 // Set the toast and duration
                 int toastDurationInMilliSeconds = 1000;
-                final Toast mToastToShow = Toast.makeText(dummy.this,
+                final Toast mToastToShow = Toast.makeText(FulfillmentScanningScreen.this,
                         result + " already scanned.", Toast.LENGTH_LONG);
                 mToastToShow.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
                 mToastToShow.show();
@@ -203,7 +204,7 @@ public class dummy extends AppCompatActivity{
 
             if ( lastText.trim().length() != 12 ) {
 
-                Toast.makeText(dummy.this, "garbage", Toast.LENGTH_LONG).show();
+                Toast.makeText(FulfillmentScanningScreen.this, "garbage", Toast.LENGTH_LONG).show();
 
             } else {
 
@@ -255,7 +256,7 @@ public class dummy extends AppCompatActivity{
                         final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
                         updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date);
                     } catch (Exception e) {
-                        Toast.makeText(dummy.this, "ScanningScreen" +e, Toast.LENGTH_LONG).show();
+                        Toast.makeText(FulfillmentScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_LONG).show();
                     }
 
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
@@ -307,6 +308,8 @@ public class dummy extends AppCompatActivity{
         // get created date for match
         Intent intentID = getIntent();
         final String match_date = intentID.getStringExtra(CREATED_AT);
+        final String product_name = intentID.getStringExtra(PRODUCT_NAME);
+        final String assigned_qty = intentID.getStringExtra(ASSIGNED_QTY);
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, BARCODE_INSERT_AND_UPDATE_URL,
                 new Response.Listener<String>() {
@@ -322,17 +325,23 @@ public class dummy extends AppCompatActivity{
                                 final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
-                                Toast toast = Toast.makeText(dummy.this,
+                                Toast toast = Toast.makeText(FulfillmentScanningScreen.this,
                                         "Barcode Number Added", Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
                                 toast.show();
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(dummy.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreen.this);
                                 View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
-                                builder.setTitle("Select executive and assign number.");
+                                builder.setTitle("Enter product quantity...");
 
                                 final EditText et1 = mView.findViewById(R.id.product_qty);
                                 final TextView tv1 = mView.findViewById(R.id.textView3);
+                                final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
+
+                                final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
+                                et1.setText(assigned_qty);
+                                Product_Name.setText("Product Name: " +product_name);
+                                Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
 
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
@@ -398,13 +407,19 @@ public class dummy extends AppCompatActivity{
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
 
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(dummy.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreen.this);
                                 View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
-                                builder.setTitle("Select executive and assign number.");
+                                builder.setTitle("Enter product quantity...");
 
                                 final EditText et1 = mView.findViewById(R.id.product_qty);
                                 final TextView tv1 = mView.findViewById(R.id.textView3);
+                                final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
 
+                                final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
+
+                                Product_Name.setText("Product Name: " +product_name);
+                                Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
+                                et1.setText(assigned_qty);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -466,14 +481,20 @@ public class dummy extends AppCompatActivity{
                         final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
 //                        scan_count1.setText("Scan count: " +strI);
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(dummy.this);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreen.this);
 
                             View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
-                            builder.setTitle("Select executive and assign number.");
+                            builder.setTitle("Enter product quantity...");
 
                             final EditText et1 = mView.findViewById(R.id.product_qty);
                             final TextView tv1 = mView.findViewById(R.id.textView3);
+                            final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
+                            final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
 
+                            Product_Name.setText("Product Name: " +product_name);
+                            Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
+                            et1.setText(assigned_qty);
+                            
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -597,7 +618,7 @@ public class dummy extends AppCompatActivity{
         try { RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(dummy.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
+            Toast.makeText(FulfillmentScanningScreen.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -652,7 +673,7 @@ public class dummy extends AppCompatActivity{
         try { RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(dummy.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
+            Toast.makeText(FulfillmentScanningScreen.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
         }
 
     }

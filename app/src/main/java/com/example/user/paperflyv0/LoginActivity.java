@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 if(response.contains("failure")){
-                    Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please login with correct Name or Password!",Toast.LENGTH_SHORT).show();
 
                 }
                 else
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(getApplicationContext(),"Welcome!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                     //Creating a shared preference
                     SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
