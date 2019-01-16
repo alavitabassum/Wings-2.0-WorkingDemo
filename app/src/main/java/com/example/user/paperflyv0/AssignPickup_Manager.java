@@ -395,9 +395,9 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest1);
     }
 
-    private void assignexecutivetosqlite(final String ex_name, final String empcode,final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status) {
+    private void assignexecutivetosqlite(final String ex_name, final String empcode,final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String pick_from_merchant_status, final String received_from_HQ_status) {
 
-        database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, status,m_name,contactNumber,pick_m_name,pick_m_address, complete_status);
+        database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, status,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,  pick_from_merchant_status, received_from_HQ_status);
         //final int total_assign = database.getTotalOfAmount(merchant_code);
         //final String strI = String.valueOf(total_assign);
         //database.update_row(strI, merchant_code);
@@ -405,7 +405,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     }
 
     //For assigning executive API into mysql
-    private void assignexecutive(final String ex_name, final String empcode, final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status) {
+    private void assignexecutive(final String ex_name, final String empcode, final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String pick_from_merchant_status, final String received_from_HQ_status) {
 
 //        checkDataEntered( order_count);
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
@@ -417,11 +417,11 @@ public class AssignPickup_Manager extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status);
+                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,  pick_from_merchant_status, received_from_HQ_status);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                assignexecutivetosqlite(ex_name, empcode,product_name,order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status);
+                                assignexecutivetosqlite(ex_name, empcode,product_name,order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, pick_from_merchant_status, received_from_HQ_status);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -432,7 +432,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status);
+                        assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, pick_from_merchant_status, received_from_HQ_status);
                     }
                 }
         ) {
@@ -451,6 +451,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 params.put("p_m_name",pick_m_name);
                 params.put("p_m_address",pick_m_address);
                 params.put("complete_status","p");
+                params.put("pick_from_merchant_status",pick_from_merchant_status);
+                params.put("received_from_HQ_status",received_from_HQ_status);
                /* database.assignexecutive(ex_name,empcode,order_count, merchant_code, user, currentDateTimeString);
                 final int total_assign = database.getTotalOfAmount(merchant_code);
                 final String strI = String.valueOf(total_assign);
@@ -624,6 +626,8 @@ public class AssignPickup_Manager extends AppCompatActivity
         final String pick_merchant_name = clickeditem.getPick_m_name();
         final String pick_merchant_address = clickeditem.getM_address();
         final String complete_status = "p";
+        final String  pick_from_merchant_status = "0";
+        final String received_from_HQ_status = "0";
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
@@ -695,7 +699,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 //                    dialog.equals("Order count can't be empty");
 
                 } else {
-                    assignexecutive(mAutoComplete.getText().toString(), empcode, product_name,et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status);
+                    assignexecutive(mAutoComplete.getText().toString(), empcode, product_name,et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status, pick_from_merchant_status, received_from_HQ_status);
 
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                         Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()

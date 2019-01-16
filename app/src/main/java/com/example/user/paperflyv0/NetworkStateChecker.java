@@ -46,7 +46,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 if (cursor.moveToFirst()) {
                     do {
                         //calling the method to save the unsynced name to MySQL
-                        saveName(cursor.getInt(8),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(9),cursor.getString(10),cursor.getString(11), cursor.getString(12),cursor.getString(13));
+                        saveName(cursor.getInt(8),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(9),cursor.getString(10),cursor.getString(11), cursor.getString(12),cursor.getString(13), cursor.getString(14), cursor.getString(15));
 
                         } while (cursor.moveToNext());
                 }
@@ -87,7 +87,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
      * if the name is successfully sent
      * we will update the status as synced in SQLite
      * */
-    private void saveName(final int id, final String executive_name,final String executive_code,final String product_name,final String order_count,final String merchant_code,final String assigned_by,final String created_at,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status) {
+    private void saveName(final int id, final String executive_name,final String executive_code,final String product_name,final String order_count,final String merchant_code,final String assigned_by,final String created_at,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String pick_from_merchant_status, final String received_from_HQ_status) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.INSERT_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -127,6 +127,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("p_m_name",pick_m_name);
                 params.put("p_m_address",pick_m_address);
                 params.put("complete_status",complete_status);
+                params.put("pick_from_merchant_status",pick_from_merchant_status);
+                params.put("received_from_HQ_status",received_from_HQ_status);
+
                 return params;
             }
         };

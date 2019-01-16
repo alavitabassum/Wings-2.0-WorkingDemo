@@ -30,7 +30,7 @@ public class Database extends SQLiteOpenHelper {
         // Fulfillment
         String tableEmp8 = "create table merchantListFulfillment(id integer primary key AUTOINCREMENT,main_merchant text,supplier_name text,supplier_phone text,supplier_address text,product_name text, product_id integer,sum integer, created_at text,unique(product_id))";
 
-        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text, product_name text, order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text, complete_status text)";
+        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text, product_name text, order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text, complete_status text, pick_from_merchant_status text, received_from_HQ_status text)";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
         String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text unique)";
         String tableEmp9 = "create table Fulfillmentmerchantlist(merchantName text unique)";
@@ -280,7 +280,7 @@ public class Database extends SQLiteOpenHelper {
         return db.query("merchantList", columns, null, null, null, null, null);
     }
 
-    public void assignexecutive(String executive_name, String empcode,String product_name, String ordercount, String merchantCode, String user, String created_date,int status,String m_name,String contactNumber,String pick_m_name,String pick_m_address, String complete_status) {
+    public void assignexecutive(String executive_name, String empcode,String product_name, String ordercount, String merchantCode, String user, String created_date,int status,String m_name,String contactNumber,String pick_m_name,String pick_m_address, String complete_status, String pick_from_merchant_status, String received_from_HQ_status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -298,6 +298,8 @@ public class Database extends SQLiteOpenHelper {
         values.put("pick_m_name",pick_m_name);
         values.put("pick_m_address",pick_m_address);
         values.put("complete_status",complete_status);
+        values.put("pick_from_merchant_status",pick_from_merchant_status);
+        values.put("received_from_HQ_status",received_from_HQ_status);
 
         sqLiteDatabase.insert("assignexecutive", null, values);
 

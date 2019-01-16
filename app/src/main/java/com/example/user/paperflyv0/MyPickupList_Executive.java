@@ -76,6 +76,8 @@ public class MyPickupList_Executive extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager_pul;
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
+//    private String FULFILLMENT_PICKUP_URL = "http://paperflybd.com/tbl_fulfillment_pickuplist.php";
+
     private List<PickupList_Model_For_Executive> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
 
@@ -202,7 +204,9 @@ public class MyPickupList_Executive extends AppCompatActivity
                 String p_m_name = c.getString(13);
                 String p_m_add = c.getString(14);
                 String product_name = c.getString(15);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add, product_name);
+                String pick_from_merchant_status = c.getString(16);
+                String received_from_HQ_status = c.getString(17);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add, product_name, pick_from_merchant_status, received_from_HQ_status);
 
                 list.add(todaySummary);
             }
@@ -256,7 +260,9 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("merchant_name"),
                                 o.getString("complete_status"),
                                 o.getString("p_m_name"),
-                                o.getString("p_m_address"));
+                                o.getString("p_m_address"),
+                                o.getString("pick_from_merchant_status"),
+                                o.getString("received_from_HQ_status"));
 
                         db.insert_my_assigned_pickups(
                                 o.getString("executive_name"),
@@ -273,7 +279,9 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("complete_status"),
                                 o.getString("p_m_name"),
                                 o.getString("p_m_address"),
-                                o.getString("product_name")
+                                o.getString("product_name"),
+                                o.getString("pick_from_merchant_status"),
+                                o.getString("received_from_HQ_status")
                                 , NAME_NOT_SYNCED_WITH_SERVER );
 
                         list.add(todaySummary);
