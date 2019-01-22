@@ -156,9 +156,12 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         if(complete_status.equals("p")) {
             viewHolder.text_scanCount.setText("Scan Count: ");
             viewHolder.item_scanCount.setText(list.get(i).getScan_count());
-        } else if ( complete_status.equals("f")) {
+        } if ( complete_status.equals("f")) {
             viewHolder.text_productName.setText("Product: ");
             viewHolder.item_productName.setText(list.get(i).getProduct_name());
+            viewHolder.text_pickedCount.setText("Picked: ");
+            viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
+        } if ( complete_status.equals("ad")) {
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
         }
@@ -173,17 +176,32 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                 viewHolder.itemStatus.setBackgroundResource(R.color.green);
                 viewHolder.itemStatus.setTextColor(Color.WHITE);
                 viewHolder.itemStatus.setEnabled(false);
-            } else if (count < count_assigned && complete_status.equals("p")){
+            }
+            if (count < count_assigned && complete_status.equals("p")){
                 viewHolder.itemStatus.setText("Pending");
                 viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
                 viewHolder.itemStatus.setTextColor(Color.BLACK);
                 viewHolder.itemStatus.setEnabled(true);
-            } else if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("f")){
+            }
+            if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("f")){
                 viewHolder.itemStatus.setText("Complete");
                 viewHolder.itemStatus.setBackgroundResource(R.color.green);
                 viewHolder.itemStatus.setTextColor(Color.WHITE);
                 viewHolder.itemStatus.setEnabled(false);
-            } else if(count_picked < count_assigned && complete_status.equals("f")) {
+            }
+            if(count_picked < count_assigned && complete_status.equals("f")) {
+                viewHolder.itemStatus.setText("Pending");
+                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
+                viewHolder.itemStatus.setTextColor(Color.BLACK);
+                viewHolder.itemStatus.setEnabled(true);
+            }
+            if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("ad")){
+                viewHolder.itemStatus.setText("Complete");
+                viewHolder.itemStatus.setBackgroundResource(R.color.green);
+                viewHolder.itemStatus.setTextColor(Color.WHITE);
+                viewHolder.itemStatus.setEnabled(false);
+            }
+            if(count_picked < count_assigned && complete_status.equals("ad")) {
                 viewHolder.itemStatus.setText("Pending");
                 viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
                 viewHolder.itemStatus.setTextColor(Color.BLACK);

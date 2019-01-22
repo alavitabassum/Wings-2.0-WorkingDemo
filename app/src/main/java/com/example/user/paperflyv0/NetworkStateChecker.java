@@ -46,7 +46,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 if (cursor.moveToFirst()) {
                     do {
                         //calling the method to save the unsynced name to MySQL
-                        saveName(cursor.getInt(8),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(9),cursor.getString(10),cursor.getString(11), cursor.getString(12),cursor.getString(13), cursor.getString(14), cursor.getString(15));
+                        saveName(cursor.getInt(8),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(9),cursor.getString(10),cursor.getString(11), cursor.getString(12),cursor.getString(13), cursor.getString(14), cursor.getString(15), cursor.getString(16), cursor.getString(17));
 
                         } while (cursor.moveToNext());
                 }
@@ -64,7 +64,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 if (cursor2.moveToFirst()) {
                     do {
                         //calling the method to save the unsynced name to MySQL
-                        saveData(cursor2.getInt(0),cursor2.getString(6),cursor2.getString(5),cursor2.getString(10),cursor2.getString(11),cursor2.getString(1), cursor2.getString(14), cursor2.getString(9));
+                        saveData(cursor2.getInt(0),cursor2.getString(6),cursor2.getString(5),cursor2.getString(10),cursor2.getString(11),cursor2.getString(1), cursor2.getString(14), cursor2.getString(9),cursor2.getString(17),cursor2.getString(19));
                     } while (cursor2.moveToNext());
                 }
 
@@ -87,7 +87,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
      * if the name is successfully sent
      * we will update the status as synced in SQLite
      * */
-    private void saveName(final int id, final String executive_name,final String executive_code,final String product_name,final String order_count,final String merchant_code,final String assigned_by,final String created_at,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String pick_from_merchant_status, final String received_from_HQ_status) {
+    private void saveName(final int id, final String executive_name,final String executive_code,final String product_name,final String order_count,final String merchant_code,final String assigned_by,final String created_at,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo , final String pick_from_merchant_status, final String received_from_HQ_status) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.INSERT_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -127,6 +127,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("p_m_name",pick_m_name);
                 params.put("p_m_address",pick_m_address);
                 params.put("complete_status",complete_status);
+                params.put("api_order_id",apiOrderID);
+                params.put("demo",demo);
                 params.put("pick_from_merchant_status",pick_from_merchant_status);
                 params.put("received_from_HQ_status",received_from_HQ_status);
 
@@ -180,7 +182,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
     // Update scan count
-    private void saveData(final int id, final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date) {
+    private void saveData(final int id, final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date,final String apiOrderID, final String pick_from_merchant_status) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTableForFulfillment.php",
                 new Response.Listener<String>() {
                     @Override
@@ -216,6 +218,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("merchant_code", merchant_id);
                 params.put("p_m_name", sub_merchant_name);
                 params.put("created_at", match_date);
+                params.put("api_order_id", apiOrderID);
+                params.put("pick_from_merchant_status", pick_from_merchant_status);
                 return params;
 
             }

@@ -90,6 +90,9 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         } else if ( complete_status.equals("f")) {
             viewHolder.textPickedQty.setText("Picked: ");
             viewHolder.itemPickedQty.setText(pickupList_model_for_executive.getPicked_qty());
+        } else if ( complete_status.equals("ad")) {
+            viewHolder.textPickedQty.setText("Picked: ");
+            viewHolder.itemPickedQty.setText(pickupList_model_for_executive.getPicked_qty());
         }
 
 
@@ -108,6 +111,10 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             } else if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals('f')) {
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
             } else if (count_picked < count_assigned && complete_status.equals('f')) {
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+            } else if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals("ad")) {
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+            } else if (count_picked < count_assigned && complete_status.equals("ad")) {
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
             }
 

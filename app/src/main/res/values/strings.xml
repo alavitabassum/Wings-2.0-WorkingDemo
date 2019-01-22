@@ -87,5 +87,14 @@
     <string name="assigned_counts">Assigned Counts</string>
     <string name="merchant_name">Merchant Name</string>
     <string name="title_activity_testing_fulfillment">Assign Pickups for Fulfillment</string>
+    <string name="title_activity_ajker_deal__assign__pickup_manager">
+        AjkerDeal_Assign_Pickup_manager
+    </string>
+    <string name="title_activity_ajker_deal_other__assign__pickup_manager">
+        AjkerDealOther_Assign_Pickup_manager
+    </string>
+    <string name="title_activity_ajker_deal_ekshop__assign__pickup_manager">
+        AjkerDealEkshop_Assign_Pickup_manager
+    </string>
 
 </resources>

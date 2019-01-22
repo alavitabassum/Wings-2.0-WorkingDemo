@@ -68,6 +68,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     public static final String ASSIGNED_QTY= "Assigned Qty";
     public static final String PICKED_QTY = "Picked Qty";
     public static final String SCAN_COUNT = "Scan Count";
+    public static final String APIORDERID = "Api Order ID";
     private static final String URL_DATA = "";
     private static final int REQUEST_CAMERA = 1;
     private ProgressDialog progress;
@@ -204,9 +205,11 @@ public class MyPickupList_Executive extends AppCompatActivity
                 String p_m_name = c.getString(13);
                 String p_m_add = c.getString(14);
                 String product_name = c.getString(15);
-                String pick_from_merchant_status = c.getString(16);
-                String received_from_HQ_status = c.getString(17);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add, product_name, pick_from_merchant_status, received_from_HQ_status);
+                String apiOrderID = c.getString(16);
+                String demo = c.getString(17);
+                String pick_from_merchant_status = c.getString(18);
+                String received_from_HQ_status = c.getString(19);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add, product_name,apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
 
                 list.add(todaySummary);
             }
@@ -261,6 +264,8 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("complete_status"),
                                 o.getString("p_m_name"),
                                 o.getString("p_m_address"),
+                                o.getString("api_order_id"),
+                                o.getString("demo"),
                                 o.getString("pick_from_merchant_status"),
                                 o.getString("received_from_HQ_status"));
 
@@ -280,6 +285,8 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("p_m_name"),
                                 o.getString("p_m_address"),
                                 o.getString("product_name"),
+                                o.getString("api_order_id"),
+                                o.getString("demo"),
                                 o.getString("pick_from_merchant_status"),
                                 o.getString("received_from_HQ_status")
                                 , NAME_NOT_SYNCED_WITH_SERVER );
@@ -558,6 +565,21 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             scanIntent1.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
             scanIntent1.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
             startActivity(scanIntent1);
+        }
+
+        else if(clickedItem.getComplete_status().equals("ad")) {
+            Intent scanIntent2 = new Intent(MyPickupList_Executive.this, FulfillmentScanningScreenAjkerDeal.class);
+            scanIntent2.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
+            scanIntent2.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
+            scanIntent2.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
+            scanIntent2.putExtra(CREATED_AT, clickedItem.getCreated_at());
+            scanIntent2.putExtra(PRODUCT_ID, clickedItem.getApiOrderID());
+            scanIntent2.putExtra(SCAN_COUNT, clickedItem.getScan_count());
+            scanIntent2.putExtra(PRODUCT_NAME, clickedItem.getProduct_name());
+            scanIntent2.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
+            scanIntent2.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
+
+            startActivity(scanIntent2);
         }
 
     }

@@ -17,10 +17,45 @@ public class PickupList_Model_For_Executive {
     private String p_m_name;
     private String p_m_add;
     private String product_name;
+    private String apiOrderID;
+
+    public String getApiOrderID() {
+        return apiOrderID;
+    }
+
+    public void setApiOrderID(String apiOrderID) {
+        this.apiOrderID = apiOrderID;
+    }
+
+    public String getDemo() {
+        return demo;
+    }
+
+    public void setDemo(String demo) {
+        this.demo = demo;
+    }
+
+    public String getPick_from_merchant_status() {
+        return pick_from_merchant_status;
+    }
+
+    public void setPick_from_merchant_status(String pick_from_merchant_status) {
+        this.pick_from_merchant_status = pick_from_merchant_status;
+    }
+
+    public String getReceived_from_HQ_status() {
+        return received_from_HQ_status;
+    }
+
+    public void setReceived_from_HQ_status(String received_from_HQ_status) {
+        this.received_from_HQ_status = received_from_HQ_status;
+    }
+
+    private String demo;
     private String pick_from_merchant_status;
     private String received_from_HQ_status;
 
-    public PickupList_Model_For_Executive(int key_id,String merchant_id, String merchant_name, String executive_name, String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at, String complete_status, String p_m_name, String p_m_add, String product_name ,String pick_from_merchant_status, String received_from_HQ_status) {
+    public PickupList_Model_For_Executive(int key_id,String merchant_id, String merchant_name, String executive_name, String assined_qty, String picked_qty, String scan_count, String phone_no, String assigned_by, String created_at, String updated_by, String updated_at, String complete_status, String p_m_name, String p_m_add, String product_name, String apiOrderID, String demo,String pick_from_merchant_status, String received_from_HQ_status) {
         this.merchant_id = merchant_id;
         this.merchant_name = merchant_name;
         this.executive_name = executive_name;
@@ -37,6 +72,8 @@ public class PickupList_Model_For_Executive {
         this.p_m_name = p_m_name;
         this.p_m_add = p_m_add;
         this.product_name =  product_name;
+        this.apiOrderID =  apiOrderID;
+        this.demo =  demo;
         this.pick_from_merchant_status = pick_from_merchant_status;
         this.received_from_HQ_status =  received_from_HQ_status;
     }
@@ -60,7 +97,7 @@ public class PickupList_Model_For_Executive {
         this.product_name = product_name;
     }
 
-    public PickupList_Model_For_Executive(String executive_name, String product_name, String order_count, String merchant_code, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_address, String pick_from_merchant_status, String received_from_HQ_status) {
+    public PickupList_Model_For_Executive(String executive_name, String product_name, String order_count, String merchant_code, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_address, String apiOrderID, String demo,String pick_from_merchant_status, String received_from_HQ_status) {
         this.merchant_id = merchant_code;
         this.merchant_name = merchant_name;
         this.executive_name = executive_name;
@@ -77,6 +114,8 @@ public class PickupList_Model_For_Executive {
         this.complete_status = complete_status;
         this.p_m_name = p_m_name;
         this.p_m_add = p_m_address;
+        this.apiOrderID = apiOrderID;
+        this.demo = demo;
         this.pick_from_merchant_status = pick_from_merchant_status;
         this.received_from_HQ_status = received_from_HQ_status;
 

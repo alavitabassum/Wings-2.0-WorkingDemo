@@ -29,8 +29,11 @@ public class Database extends SQLiteOpenHelper {
 
         // Fulfillment
         String tableEmp8 = "create table merchantListFulfillment(id integer primary key AUTOINCREMENT,main_merchant text,supplier_name text,supplier_phone text,supplier_address text,product_name text, product_id integer,sum integer, created_at text,unique(product_id))";
+        String tableEmp12 = "create table ajkerDealList(id integer primary key AUTOINCREMENT,main_merchant text,supplier_phone text,supplier_address text,supplier_name text, apiOrderID text, product_id text, created_at text,unique(product_id) )";
+        String tableEmp14 = "create table ajkerDealEkshopList(id integer primary key AUTOINCREMENT,main_merchant text,supplier_phone text,supplier_address text,supplier_name text, apiOrderID text, product_id text, created_at text,unique(product_id) )";
+        String tableEmp13 = "create table ajkerDealOtherList(id integer primary key AUTOINCREMENT,main_merchant text,pick_supplier_name text,supplier_address text,supplier_phone text,supplier_name integer, product_id text, created_at text,unique(product_id) )";
 
-        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text, product_name text, order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text, complete_status text, pick_from_merchant_status text, received_from_HQ_status text)";
+        String tableEmp4 = "create table assignexecutive(ex_name text,empcode text, product_name text, order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text, complete_status text,apiOrderID integer,demo integer, pick_from_merchant_status text, received_from_HQ_status text,unique(ex_name,product_name,merchantCode,merchantname,pick_m_name,apiOrderID))";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
         String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text unique)";
         String tableEmp9 = "create table Fulfillmentmerchantlist(merchantName text unique)";
@@ -49,6 +52,9 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(tableEmp9);
         sqLiteDatabase.execSQL(tableEmp10);
         sqLiteDatabase.execSQL(tableEmp11);
+        sqLiteDatabase.execSQL(tableEmp12);
+        sqLiteDatabase.execSQL(tableEmp13);
+        sqLiteDatabase.execSQL(tableEmp14);
     }
 
     @Override
@@ -187,6 +193,84 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
+    public void addAjkerDeal(String merchantName, String companyPhone, String address, String apiOrderID, String merOrderRef, String currentDateTimeString) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("main_merchant", merchantName);
+        values.put("supplier_phone",companyPhone);
+        values.put("supplier_address",address);
+        values.put("supplier_name","Ajker Deal.com");
+        values.put("apiOrderID",apiOrderID);
+//        values.put("product_name",product_name);
+        values.put("product_id",merOrderRef);
+//        values.put("sum",sum);
+        values.put("created_at",currentDateTimeString);
+
+        sqLiteDatabase.insertWithOnConflict("ajkerDealList", null, values,SQLiteDatabase.CONFLICT_IGNORE);
+        sqLiteDatabase.close();
+    }
+
+    // get ajker deal merchant list
+    public Cursor get_ajkerDeal_merchantlist(SQLiteDatabase db) {
+
+        String[] columns = {"main_merchant","supplier_phone","supplier_address","supplier_name","apiOrderID", "product_id","created_at"};
+        return db.query("ajkerDealList", columns, null, null, null, null, null);
+    }
+
+    public void addAjkerDealEkshop(String merchantName, String companyPhone, String address, String apiOrderID, String merOrderRef, String currentDateTimeString) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("main_merchant", merchantName);
+        values.put("supplier_phone",companyPhone);
+        values.put("supplier_address",address);
+        values.put("supplier_name","Ekshop");
+        values.put("apiOrderID",apiOrderID);
+//        values.put("product_name",product_name);
+        values.put("product_id",merOrderRef);
+//        values.put("sum",sum);
+        values.put("created_at",currentDateTimeString);
+
+        sqLiteDatabase.insertWithOnConflict("ajkerDealEkshopList", null, values,SQLiteDatabase.CONFLICT_IGNORE);
+        sqLiteDatabase.close();
+    }
+
+    // get ajker deal merchant list
+    public Cursor get_ajkerDeal_ekshop_merchantlist(SQLiteDatabase db) {
+
+        String[] columns = {"main_merchant","supplier_phone","supplier_address","supplier_name","apiOrderID", "product_id","created_at"};
+        return db.query("ajkerDealEkshopList", columns, null, null, null, null, null);
+    }
+
+    public void addAjkerDealOther(String merchantName, String pickMerchantName, String pickMerchantAddress, String phone1, String apiOrderID,String merOrderRef, String currentDateTimeString) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("main_merchant", merchantName);
+        values.put("pick_supplier_name",pickMerchantName);
+        values.put("supplier_address",pickMerchantAddress);
+        values.put("supplier_phone",phone1);
+        values.put("supplier_name",apiOrderID);
+//        values.put("product_name",product_name);
+        values.put("product_id",merOrderRef);
+//        values.put("sum",sum);
+        values.put("created_at",currentDateTimeString);
+
+        sqLiteDatabase.insertWithOnConflict("ajkerDealOtherList", null, values,SQLiteDatabase.CONFLICT_IGNORE);
+        sqLiteDatabase.close();
+    }
+
+    // get ajker deal other merchant list
+    public Cursor get_ajkerDeal_other_merchantlist(SQLiteDatabase db) {
+
+        String[] columns = {"main_merchant","pick_supplier_name","supplier_address","supplier_phone","supplier_name", "product_id","created_at"};
+        return db.query("ajkerDealOtherList", columns, null, null, null, null, null);
+    }
+
     public Cursor get_fulfillment_merchantlist(SQLiteDatabase db, String match_date) {
 
         String[] columns = {"main_merchant","supplier_name","supplier_phone","supplier_address","product_name", "product_id","sum","created_at"};
@@ -275,12 +359,17 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from "+ "merchantListFulfillment");
     }
 
+    public void deletemerchantList_ajkerDeal(SQLiteDatabase sqLiteDatabase)
+    {
+        sqLiteDatabase.execSQL("delete from "+ "ajkerDealList");
+    }
+
     public Cursor get_merchantlist(SQLiteDatabase db) {
         String[] columns = {"merchantName", "merchantCode","totalcount","contactNumber","pick_m_name","pick_m_address"};
         return db.query("merchantList", columns, null, null, null, null, null);
     }
 
-    public void assignexecutive(String executive_name, String empcode,String product_name, String ordercount, String merchantCode, String user, String created_date,int status,String m_name,String contactNumber,String pick_m_name,String pick_m_address, String complete_status, String pick_from_merchant_status, String received_from_HQ_status) {
+    public void assignexecutive(String executive_name, String empcode,String product_name, String ordercount, String merchantCode, String user, String created_date,int status,String m_name,String contactNumber,String pick_m_name,String pick_m_address, String complete_status,String apiOrderID, String demo, String pick_from_merchant_status, String received_from_HQ_status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -298,6 +387,8 @@ public class Database extends SQLiteOpenHelper {
         values.put("pick_m_name",pick_m_name);
         values.put("pick_m_address",pick_m_address);
         values.put("complete_status",complete_status);
+        values.put("apiOrderID",apiOrderID);
+        values.put("demo",demo);
         values.put("pick_from_merchant_status",pick_from_merchant_status);
         values.put("received_from_HQ_status",received_from_HQ_status);
 

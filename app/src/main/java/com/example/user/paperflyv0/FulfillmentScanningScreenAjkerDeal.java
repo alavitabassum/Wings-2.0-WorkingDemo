@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -55,12 +56,12 @@ import static com.example.user.paperflyv0.MyPickupList_Executive.ASSIGNED_QTY;
 import static com.example.user.paperflyv0.MyPickupList_Executive.CREATED_AT;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
-import static com.example.user.paperflyv0.MyPickupList_Executive.SUB_MERCHANT_NAME;
-import static com.example.user.paperflyv0.MyPickupList_Executive.PRODUCT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.PICKED_QTY;
+import static com.example.user.paperflyv0.MyPickupList_Executive.PRODUCT_ID;
 import static com.example.user.paperflyv0.MyPickupList_Executive.PRODUCT_NAME;
+import static com.example.user.paperflyv0.MyPickupList_Executive.SUB_MERCHANT_NAME;
 
-public class FulfillmentScanningScreen extends AppCompatActivity{
+public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private DecoratedBarcodeView barcodeView;
@@ -70,12 +71,13 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
     private TextView merchant_name_textview;
     private TextView sub_merchant_name_textview;
     private TextView product_name_textview;
-//    private TextView scan_count1 ;
+    //    private TextView scan_count1 ;
     private pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
+    AlertDialog alert1;
     private List<PickupList_Model_For_Executive> list;
     //1 means data is synced and 0 means data is not synced
     public static final int NAME_SYNCED_WITH_SERVER = 1;
@@ -84,7 +86,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
     //a broadcast to know weather the data is synced or not
     public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_fulfillment_barcode.php";
-    public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updateTableForFulfillment.php";
+    public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -110,13 +112,13 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
         sub_merchant_name_textview = (TextView) findViewById(R.id.sub_merchant_name);
         product_name_textview = (TextView) findViewById(R.id.product_name);
 
-        if( sub_merchant_name.equals("None") || sub_merchant_name.equals("")) {
-            merchant_name_textview.setText("Scan started for: " +merchant_name);
+        if (sub_merchant_name.equals("None") || sub_merchant_name.equals("")) {
+            merchant_name_textview.setText("Scan started for: " + merchant_name);
         } else {
-            sub_merchant_name_textview.setText("Scan started for: " +sub_merchant_name);
+            sub_merchant_name_textview.setText("Scan started for: " + sub_merchant_name);
         }
 
-        product_name_textview.setText("Product Name: " +product_name);
+        product_name_textview.setText("Product Name: " + product_name);
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.UPC_A);
@@ -136,27 +138,28 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
         //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
     }
-    private BarcodeCallback callback = new BarcodeCallback()  {
+
+    private BarcodeCallback callback = new BarcodeCallback() {
 
         @Override
-        public void barcodeResult(BarcodeResult result)  {
+        public void barcodeResult(BarcodeResult result) {
             //Fetching email from shared preferences
             SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
             final String user = username.toString();
 
             // current date and time
             final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-            db = new BarcodeDbHelper(FulfillmentScanningScreen.this);
+            db = new BarcodeDbHelper(FulfillmentScanningScreenAjkerDeal.this);
 //            if(result.getText() == null || result.getText().equals(lastText)) {
-            if(result.getText().equals(lastText) || result.getText().trim().length() != 12) {
+            if (result.getText().equals(lastText) || result.getText().trim().length() != 12) {
 
                 // Set the toast and duration
                 int toastDurationInMilliSeconds = 1000;
-                final Toast mToastToShow = Toast.makeText(FulfillmentScanningScreen.this,
+                final Toast mToastToShow = Toast.makeText(FulfillmentScanningScreenAjkerDeal.this,
                         result + " already scanned.", Toast.LENGTH_LONG);
-                mToastToShow.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                mToastToShow.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
                 mToastToShow.show();
 
                 // Set the countdown to display the toast
@@ -165,6 +168,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                     public void onTick(long millisUntilFinished) {
                         mToastToShow.show();
                     }
+
                     public void onFinish() {
                         mToastToShow.cancel();
                     }
@@ -188,7 +192,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
             final String match_date = intentID.getStringExtra(CREATED_AT);
 
-            barcodeView.setStatusText("Barcode"+result.getText());
+            barcodeView.setStatusText("Barcode" + result.getText());
 
             // TODO: add added-by, current-date , vaiia says to add flag in this table
             final boolean state = true;
@@ -202,9 +206,9 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
             // db.add(merchant_id, lastText, state, updated_by, updated_at);
 
-            if ( lastText.trim().length() != 12 ) {
+            if (lastText.trim().length() != 12) {
 
-                Toast.makeText(FulfillmentScanningScreen.this, "garbage", Toast.LENGTH_LONG).show();
+                Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, "garbage", Toast.LENGTH_LONG).show();
 
             } else {
 
@@ -227,41 +231,10 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
             done = (Button) findViewById(R.id.done);
 
-            done.setOnClickListener(new View.OnClickListener(){
-
+            done.setOnClickListener(new View.OnClickListener() {
                 @Override
-                //On click function
                 public void onClick(View view) {
-                    SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                    String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-                    String user1 = username.toString();
-
-                    // current date and time
-                    final String currentDateTimeString1 = DateFormat.getDateTimeInstance().format(new Date());
-                    final String updated_by1 = user1;
-//                    final String updated_at1 = currentDateTimeString1;
-
-                    Date c = Calendar.getInstance().getTime();
-                    System.out.println("Current time => " + c);
-                    SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                    final String updated_at1 = df.format(c);
-
-                    final String pick_status = "1";
-                    boolean state1 = false;
-                    db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
-                    // TODO: get the total product quantity
-
-
-                    try{
-                        final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
-                        final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
-                        updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date, pick_status);
-                    } catch (Exception e) {
-                        Toast.makeText(FulfillmentScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_LONG).show();
-                    }
-
-                    Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
-                    startActivity(intent);
+                    radioButton();
 
                 }
             });
@@ -271,6 +244,85 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
+
+
+    public void radioButton() {
+
+        // get merchant id
+        Intent intentID = getIntent();
+        final String merchant_id = intentID.getStringExtra(MERCHANT_ID);
+        final String sub_merchant_name = intentID.getStringExtra(SUB_MERCHANT_NAME);
+
+        final String order_id = intentID.getStringExtra(PRODUCT_ID);
+        final String picked_qty = intentID.getStringExtra(PICKED_QTY);
+
+        final String match_date = intentID.getStringExtra(CREATED_AT);
+        final CharSequence[] values = {"Pick Complete"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreenAjkerDeal.this);
+//        View mView = getLayoutInflater().inflate(R.layout.ajker_deal_status, null);
+        builder.setTitle("Enter Status");
+
+
+        builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        switch (item) {
+                            case 0:
+                                SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                                String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+                                String user1 = username.toString();
+
+                                // current date and time
+                                final String currentDateTimeString1 = DateFormat.getDateTimeInstance().format(new Date());
+                                final String updated_by1 = user1;
+//                    final String updated_at1 = currentDateTimeString1;
+
+                                Date c = Calendar.getInstance().getTime();
+                                System.out.println("Current time => " + c);
+                                SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                                final String updated_at1 = df.format(c);
+
+                                boolean state1 = false;
+
+                                db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
+                                // TODO: get the total product quantity
+
+
+                                try {
+                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
+                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
+                                    final String pick_status = "1001";
+                                    updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date, pick_status);
+/*
+                                    try {
+                                        updateAjkerDeal(merchant_id, pick_status);
+                                    } catch (NumberFormatException e) {
+                                        e.printStackTrace();
+                                    }*/
+
+                                } catch (Exception e) {
+                                    Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, "AjkerdealScanningScreen" + e, Toast.LENGTH_LONG).show();
+                                }
+
+                                Intent intent = new Intent(FulfillmentScanningScreenAjkerDeal.this, MyPickupList_Executive.class);
+                                startActivity(intent);
+
+
+                                break;
+                            default:
+                                break;
+                        }
+
+//                alert1.dismiss();
+                    }
+                }
+        );
+        alert1 = builder.create();
+        alert1.show();
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -323,15 +375,15 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                                 //if there is a success
                                 //storing the name to sqlite with status synced
                                 db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty);
-                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
+                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
-                                Toast toast = Toast.makeText(FulfillmentScanningScreen.this,
+                                Toast toast = Toast.makeText(FulfillmentScanningScreenAjkerDeal.this,
                                         "Barcode Number Added", Toast.LENGTH_LONG);
                                 toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
                                 toast.show();
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreen.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreenAjkerDeal.this);
                                 View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
                                 builder.setTitle("Enter product quantity...");
 
@@ -341,8 +393,8 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
                                 final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
                                 et1.setText(assigned_qty);
-                                Product_Name.setText("Product Name: " +product_name);
-                                Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
+                                Product_Name.setText("Product Name: " + product_name);
+                                Assigned_qty.setText("Assigned Quantity: " + assigned_qty);
 
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
@@ -402,13 +454,13 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER,order_id, picked_qty);
-                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
+                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty);
+                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
 
 
-                                AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreen.this);
+                                AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreenAjkerDeal.this);
                                 View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
                                 builder.setTitle("Enter product quantity...");
 
@@ -418,8 +470,8 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
                                 final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
 
-                                Product_Name.setText("Product Name: " +product_name);
-                                Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
+                                Product_Name.setText("Product Name: " + product_name);
+                                Assigned_qty.setText("Assigned Quantity: " + assigned_qty);
                                 et1.setText(assigned_qty);
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
@@ -478,51 +530,51 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.add_fulfillment(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty);
-                        final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
+                        db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty);
+                        final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 //                        scan_count1.setText("Scan count: " +strI);
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreen.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreenAjkerDeal.this);
 
-                            View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
-                            builder.setTitle("Enter product quantity...");
+                        View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
+                        builder.setTitle("Enter product quantity...");
 
-                            final EditText et1 = mView.findViewById(R.id.product_qty);
-                            final TextView tv1 = mView.findViewById(R.id.textView3);
-                            final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
-                            final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
+                        final EditText et1 = mView.findViewById(R.id.product_qty);
+                        final TextView tv1 = mView.findViewById(R.id.textView3);
+                        final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
+                        final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
 
-                            Product_Name.setText("Product Name: " +product_name);
-                            Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
-                            et1.setText(assigned_qty);
-                            
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                        Product_Name.setText("Product Name: " + product_name);
+                        Assigned_qty.setText("Assigned Quantity: " + assigned_qty);
+                        et1.setText(assigned_qty);
+
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 //                                        scannerView.resumeCameraPreview(MainActivity.this);
-                                    // update quantity
+                                // update quantity
 //                                onResume();
-                                }
-                            });
+                            }
+                        });
 
-                            builder.setCancelable(false);
-                            builder.setView(mView);
-                            final AlertDialog alert1 = builder.create();
-                            alert1.show();
+                        builder.setCancelable(false);
+                        builder.setView(mView);
+                        final AlertDialog alert1 = builder.create();
+                        alert1.show();
 
-                            alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+                        alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
-                                    if (et1.getText().toString().trim().isEmpty()) {
-                                        tv1.setText("Field can't be empty");
-                                        //  dialog.equals("Order count can't be empty");
+                                if (et1.getText().toString().trim().isEmpty()) {
+                                    tv1.setText("Field can't be empty");
+                                    //  dialog.equals("Order count can't be empty");
 
-                                    } else {
-                                        final String product_qty = et1.getText().toString().trim();
-                                        ///////ekhane update hobe barcode er picked quantity field
+                                } else {
+                                    final String product_qty = et1.getText().toString().trim();
+                                    ///////ekhane update hobe barcode er picked quantity field
 //                                        updatePickedQty(product_qty, lastText);
-                                        updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
+                                    updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
 //                                        updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
                                             /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
 
@@ -534,15 +586,15 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
                                             }*/
 
-                                        /// update the product quantity
+                                    /// update the product quantity
 
-                                        alert1.dismiss();
-                                    }
-                                    onResume();
+                                    alert1.dismiss();
                                 }
-                            });
+                                onResume();
+                            }
+                        });
 
-                            onPause();
+                        onPause();
                     }
                 }
         ) {
@@ -580,7 +632,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
 //                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
-                                db.updatePickedQty(picked_qty, lastText,NAME_SYNCED_WITH_SERVER);
+                                db.updatePickedQty(picked_qty, lastText, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
@@ -616,17 +668,18 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                 return params;
             }
         };
-        try { RequestQueue requestQueue = Volley.newRequestQueue(this);
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(FulfillmentScanningScreen.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
+            Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
 
     }
 
 
     // API for updating scan count, picked_product_count, updated by and updated at
-    public void updateScanCount(final String strI,final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date, final String pick_status) {
+    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date, final String pick_status) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
                 new Response.Listener<String>() {
@@ -638,11 +691,11 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,pick_status, NAME_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date,pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -653,7 +706,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -672,12 +725,90 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                 return params;
             }
         };
-        try { RequestQueue requestQueue = Volley.newRequestQueue(this);
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(FulfillmentScanningScreen.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
+            Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
 
     }
 
+    public void updateAjkerDeal(final String merchant_order_ref, final String pick_status) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://bridge.ajkerdeal.com/ThirdPartyOrderAction/UpdateStatusByCourier",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+//                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
+//                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status, NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+//                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date,pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, "Error Bleh" + e, Toast.LENGTH_LONG).show();
+//
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, "Error sending data to ajker deal" + error, Toast.LENGTH_LONG).show();
+//                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("OrderIds", "['" + merchant_order_ref + "']");
+                params.put("StatusId", pick_status);
+                params.put("ThirdPartyId", String.valueOf(30));
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+
+//                headers.put("Content-Type", "application/json; charset=utf-8");
+                headers.put("Username", "PaperFly");
+                headers.put("Password", "HjFe5V5f");
+                headers.put("API_KEY", "Ajkerdeal_~La?Rj73FcLm");
+                headers.put("Authorization", "Basic UGFwZXJGbHk6SGpGZTVWNWY=");
+                return headers;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            /* String credentials = PaperFly+":"+HjFe5V5f;
+        String auth = "Basic "
+                + Base64.encodeToString(credentials.getBytes(),
+                Base64.NO_WRAP);
+        headers.put("Authorization", auth);
+        return headers;*/
+
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+
+    }
 }

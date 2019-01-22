@@ -102,6 +102,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MyPickupList_Executive" />
         </activity>
+        <activity
+            android:name=".FulfillmentScanningScreenAjkerDeal"
+            android:parentActivityName=".MyPickupList_Executive"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyPickupList_Executive" />
+        </activity>
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />
         <activity android:name=".ViewAssigns" />
@@ -109,7 +117,19 @@
             android:name=".Fulfillment_Assign_pickup_Manager"
             android:label="@string/title_activity_testing_fulfillment"
             android:theme="@style/AppTheme" />
-        <activity android:name=".NewOrderEntry_ful"></activity>
+        <activity android:name=".NewOrderEntry_ful" />
+        <activity
+            android:name=".AjkerDeal_Assign_Pickup_manager"
+            android:label="@string/title_activity_ajker_deal__assign__pickup_manager"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AjkerDealOther_Assign_Pickup_manager"
+            android:label="@string/title_activity_ajker_deal_other__assign__pickup_manager"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AjkerDealEkshop_Assign_Pickup_manager"
+            android:label="@string/title_activity_ajker_deal_ekshop__assign__pickup_manager"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

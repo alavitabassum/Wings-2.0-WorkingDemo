@@ -82,7 +82,12 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
         if(complete_status.equals("p")) {
             viewHolder.text_rQty.setText("Scan Count: ");
             viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
-        } else if ( complete_status.equals("f")) {
+        }
+        if ( complete_status.equals("f")) {
+            viewHolder.text_pQty.setText("Picked: ");
+            viewHolder.item_pQty.setText(summaries.get(i).getPicked_qty());
+        }
+        if ( complete_status.equals("ad")) {
             viewHolder.text_pQty.setText("Picked: ");
             viewHolder.item_pQty.setText(summaries.get(i).getPicked_qty());
         }
@@ -93,13 +98,22 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
             int count_picked = Integer.parseInt(summaries.get(i).getPicked_qty());
 
 
-                if (count == count_assigned || count > count_assigned && complete_status.equals('p')) {
+                if (count == count_assigned || count > count_assigned && complete_status.equals("p")) {
                     viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
-                } else if (count < count_assigned && complete_status.equals('p')) {
+                }
+                if (count < count_assigned && complete_status.equals("p")) {
                     viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
-                } else if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals('f')) {
+                }
+                if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals("f")) {
                     viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
-                } else if (count_picked < count_assigned && complete_status.equals('f')) {
+                }
+                if (count_picked < count_assigned && complete_status.equals("f")) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+                }
+                if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals("ad")) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                }
+                if (count_picked < count_assigned && complete_status.equals("ad")) {
                     viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
                 }
 
