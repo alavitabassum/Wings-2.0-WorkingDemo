@@ -19,7 +19,15 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Action"
+            android:id="@+id/txtOption"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="@dimen/activity_horizontal_margin"/>
         <TextView
             android:id="@+id/m_name_pul"
             android:layout_width="match_parent"

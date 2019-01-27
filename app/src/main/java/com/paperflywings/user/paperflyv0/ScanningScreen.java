@@ -406,6 +406,7 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("created_at", match_date);
                 params.put("scan_count", strI);
                 params.put("picked_qty", picked_qty);
+                params.put("api_order_id", "0");
                 params.put("pick_from_merchant_status", pick_status);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);

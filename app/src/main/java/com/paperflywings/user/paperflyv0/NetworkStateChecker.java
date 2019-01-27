@@ -220,6 +220,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("created_at", match_date);
                 params.put("api_order_id", apiOrderID);
                 params.put("pick_from_merchant_status", pick_from_merchant_status);
+
                 return params;
 
             }

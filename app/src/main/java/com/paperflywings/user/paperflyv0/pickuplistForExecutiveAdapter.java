@@ -12,11 +12,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +77,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public TextView item_phnNum;
         public  Button itemStatus;
         public CardView cardview;
+        public TextView txtOption;
 
 
         public ViewHolder(final View itemView, int i) {
@@ -95,6 +98,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             scan_button = itemView.findViewById(R.id.btn_scan);
             itemStatus = itemView.findViewById(R.id.btn_status);
             cardview = itemView.findViewById(R.id.card_view_pu_list);
+            txtOption = itemView.findViewById(R.id.txtOption);
 
 
             //underline phoneNumber
@@ -141,7 +145,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
 
         viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
 
@@ -151,6 +155,39 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
 
         String complete_status = list.get(i).getComplete_status();
+
+        viewHolder.txtOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(context, viewHolder.txtOption);
+                popupMenu.inflate(R.menu.option_menu_executive);
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.menu_item_pause :
+//                                FulfillmentScanningScreenAjkerDeal.updateAjkerDeal(merchant_order_ref, pick_status);
+                                Toast.makeText(context, "Pause", Toast.LENGTH_SHORT).show();
+                                break;
+
+                            case R.id.menu_item_cancel :
+//                                listItems.remove(i);
+                                notifyDataSetChanged();
+                                Toast.makeText(context, "Cancel", Toast.LENGTH_SHORT).show();
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
 
 
         if(complete_status.equals("p")) {

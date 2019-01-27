@@ -19,6 +19,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -71,6 +72,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     List<AssignManager_Model> assignManager_modelList;
     Database database;
 
+
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     //a broadcast to know weather the data is synced or not
@@ -96,6 +98,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         database.getWritableDatabase();
         executiveLists = new ArrayList<>();
         assignManager_modelList = new ArrayList<>();
+        CardView cardview = findViewById(R.id.card_view_assign);
 
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -706,9 +709,12 @@ public class AssignPickup_Manager extends AppCompatActivity
                     assignexecutive(mAutoComplete.getText().toString(), empcode, product_name,et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status, apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
 
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
+
+
                         Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
                                         + "(" + et1.getText().toString() + ")",
                                 Toast.LENGTH_SHORT).show();
+
                         dialog2.dismiss();
 
                     }

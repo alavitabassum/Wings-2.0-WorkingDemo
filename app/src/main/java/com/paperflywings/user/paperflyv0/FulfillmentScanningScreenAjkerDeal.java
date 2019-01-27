@@ -295,11 +295,11 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                                     final String pick_status = "1001";
                                     updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, order_id, match_date, pick_status);
 
-                                    try {
-                                        updateAjkerDeal(merchant_id, pick_status);
-                                    } catch (NumberFormatException e) {
-                                        e.printStackTrace();
-                                    }
+//                                    try {
+//                                        updateAjkerDeal(merchant_id, pick_status);
+//                                    } catch (NumberFormatException e) {
+//                                        e.printStackTrace();
+//                                    }
 
                                 } catch (Exception e) {
                                     Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -757,21 +757,6 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                         }
                 }
         ) {
-
-            /*@Override
-            public byte[] getBody() throws AuthFailureError {
-                String httpPostBody="OrderIds=[1180784,1180783]&StatusId=1001&ThirdPartyId=30";
-//                String httpPostBody = "{\n\t\"OrderIds\":[1180784,1180783],\n\t\"StatusId\":1001,\n\t\"ThirdPartyId\":\"30\"\n\t\n}";
-                // usually you'd have a field with some values you'd want to escape, you need to do it yourself if overriding getBody. here's how you do it
-                try {
-                    httpPostBody=httpPostBody+"&randomFieldFilledWithAwkwardCharacters="+URLEncoder.encode("{{%stuffToBe Escaped/","UTF-8");
-                } catch (UnsupportedEncodingException exception) {
-                    Log.e("ERROR", "exception", exception);
-                    // return null and don't pass any POST string if you encounter encoding error
-                    return null;
-                }
-                return httpPostBody.getBytes();
-            }*/
 
             @Override
             public byte[] getBody() throws AuthFailureError {
