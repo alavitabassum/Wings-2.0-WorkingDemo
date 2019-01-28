@@ -137,8 +137,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
         final String p_name = assignManager_model.getPick_m_name();
 
-
-
         if(p_name.length()==0)
         {
             viewHolder.itemPickupMerchantName.setText("No Pickup Merchant");

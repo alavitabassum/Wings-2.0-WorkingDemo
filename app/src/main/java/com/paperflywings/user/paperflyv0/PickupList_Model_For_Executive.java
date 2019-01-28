@@ -1,5 +1,7 @@
 package com.paperflywings.user.paperflyv0;
 
+import android.widget.Button;
+
 public class PickupList_Model_For_Executive {
     private String merchant_id;
     private String merchant_name;
@@ -18,6 +20,15 @@ public class PickupList_Model_For_Executive {
     private String p_m_add;
     private String product_name;
     private String apiOrderID;
+    private Button txtOption;
+
+    public Button getTxtOption() {
+        return txtOption;
+    }
+
+    public void setTxtOption(Button txtOption) {
+        this.txtOption = txtOption;
+    }
 
     public String getApiOrderID() {
         return apiOrderID;

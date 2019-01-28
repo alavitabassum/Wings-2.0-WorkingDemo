@@ -572,6 +572,13 @@ public class Database extends SQLiteOpenHelper {
         return count;
     }
 
+    public boolean matchtable_value(final String m_name, final String pick_merchant_name, final String pick_from_merchant_status) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        return true;
+    }
+
 
     /*public void updateassignexecutive(String merchantcode, String beforeempcode, String empname, String empcode, String cou) {
 

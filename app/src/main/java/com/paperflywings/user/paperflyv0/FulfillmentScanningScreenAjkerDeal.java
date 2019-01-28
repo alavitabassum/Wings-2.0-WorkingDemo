@@ -295,11 +295,11 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                                     final String pick_status = "1001";
                                     updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, order_id, match_date, pick_status);
 
-//                                    try {
-//                                        updateAjkerDeal(merchant_id, pick_status);
-//                                    } catch (NumberFormatException e) {
-//                                        e.printStackTrace();
-//                                    }
+                                    try {
+                                        updateAjkerDeal(merchant_id, pick_status);
+                                    } catch (NumberFormatException e) {
+                                        e.printStackTrace();
+                                    }
 
                                 } catch (Exception e) {
                                     Toast.makeText(FulfillmentScanningScreenAjkerDeal.this, e.getMessage(), Toast.LENGTH_LONG).show();

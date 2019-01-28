@@ -30,9 +30,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -93,6 +95,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         list = new ArrayList<>();
+
 
         // Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -580,6 +583,112 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             scanIntent2.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
 
             startActivity(scanIntent2);
+        }
+
+    }
+
+    @Override
+    public void onItemClick_view(final View view2, int position2) {
+        final Button txtoption;
+        txtoption = findViewById(R.id.txtOption);
+
+        final CharSequence[] values = {"Pause Pick", "Cancel Pick"};
+
+        final PickupList_Model_For_Executive clickedItem = list.get(position2);
+        final String merchant_order_ref = clickedItem.getMerchant_id();
+
+        final String pause = "1002";
+        final String cancel = "1002";
+        if (clickedItem.getComplete_status().equals("ad")) {
+
+            AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+
+            spinnerBuilder.setTitle("Select Action: ");
+
+            spinnerBuilder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            switch (item) {
+                                case 0:
+                                    updateAjkerDeal(merchant_order_ref,pause);
+                                    Toast.makeText(MyPickupList_Executive.this, "Pause", Toast.LENGTH_SHORT).show();
+//                                    txtoption.setText("Pause");
+                                    dialog.dismiss();
+                                    break;
+
+                                case 1:
+                                    updateAjkerDeal(merchant_order_ref,cancel);
+                                    Toast.makeText(MyPickupList_Executive.this, "Cancel", Toast.LENGTH_SHORT).show();
+                                    // txtOption.setText("Cancel");
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                        }
+                    }
+            );
+
+
+            spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i1) {
+                    dialog.dismiss();
+                }
+            });
+            spinnerBuilder.setCancelable(false);
+
+
+            final AlertDialog dialog2 = spinnerBuilder.create();
+            dialog2.show();
+
+        }
+    }
+
+    public void updateAjkerDeal(final String merchant_order_ref,final String pick_status) {
+
+        final String abcd = "1180784,1180783";
+
+        final String m_order_ref = "[" + abcd + "]";
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://bridge.ajkerdeal.com/ThirdPartyOrderAction/UpdateStatusByCourier",
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MyPickupList_Executive.this, "Done" +response, Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MyPickupList_Executive.this, "VOLL" +error, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String httpPostBody = "{\n\t\"OrderIds\":"+ m_order_ref +",\n\t\"StatusId\":"+ pick_status +",\n\t\"ThirdPartyId\":\"30\"\n\t\n}";
+                return httpPostBody.getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+
+                headers.put("Authorization", "Basic UGFwZXJGbHk6SGpGZTVWNWY=");
+                headers.put("API_KEY", "Ajkerdeal_~La?Rj73FcLm");
+                headers.put("Content-Type", "application/json");
+
+                return headers;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
 
     }

@@ -716,24 +716,13 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 Toast.LENGTH_SHORT).show();
 
                         dialog2.dismiss();
+                        database.matchtable_value(m_name, pick_merchant_name, pick_from_merchant_status);
 
                     }
                 }
             }
         });
     }
-
-//    boolean isEmpty(String text){
-//        CharSequence et1 = text.toString();
-//       return TextUtils.isEmpty(et1);
-//    }
-//
-//    private void checkDataEntered(String et1) {
-//         if (isEmpty(et1)){
-//             Toast t = Toast.makeText(this, "Enter Order number", Toast.LENGTH_LONG);
-//             t.show();
-//         }
-//    }
 
     @Override
     public void onItemClick_view(View view2, int position2) {
@@ -751,7 +740,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         startActivity(intent);
 
     }
-
 
     @Override
     public void onItemClick_update(View view3, int position3) {
@@ -784,8 +772,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         else{
             getallmerchant();
         }
-
-
     }
 
 }
