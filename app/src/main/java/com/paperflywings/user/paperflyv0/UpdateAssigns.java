@@ -32,6 +32,9 @@ public class UpdateAssigns extends AppCompatActivity  {
         TextView mName = findViewById(R.id.merchant_name_update);
         mName.setText(getIntent().getStringExtra("MERCHANTNAME"));
         final String merchantcode = getIntent().getStringExtra("MERCHANTCODE");
+        final String merchant_name = getIntent().getStringExtra("MERCHANTNAME");
+        final String p_m_name = getIntent().getStringExtra("SUBMERCHANT");
+        final String product_name = getIntent().getStringExtra("PRODUCTNAME");
 
 
         recyclerView_ua = (RecyclerView) findViewById(R.id.recycler_view_ua);
@@ -39,17 +42,17 @@ public class UpdateAssigns extends AppCompatActivity  {
         layoutManager_ua = new LinearLayoutManager(this);
         recyclerView_ua.setLayoutManager(layoutManager_ua);
 
-        getData(merchantcode);
+        getData(merchantcode, merchant_name, p_m_name, product_name);
 
     }
 
 
-    private void getData(final String merchantcode)
+    private void getData(final String merchantcode, final String merchat_name, final String p_m_name, final String product_name)
     {
         try{
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.getassignedexecutive(sqLiteDatabase,merchantcode);
+            Cursor c = database.getassignedexecutive(sqLiteDatabase,merchantcode,merchat_name,p_m_name,product_name);
             while (c.moveToNext())
             {
                 String rowid = c.getString(0);

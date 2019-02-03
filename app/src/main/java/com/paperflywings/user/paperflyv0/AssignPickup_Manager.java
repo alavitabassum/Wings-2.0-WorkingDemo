@@ -64,8 +64,10 @@ public class AssignPickup_Manager extends AppCompatActivity
     public static final String MERCHANT_NAME = "Merchant Name";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
+
 //    public static final String INSERT_URL = "http://paperflybd.com/insertfulfillmentassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
+    public static final String UPDATE_ASSIGN_URL = "http://paperflybd.com/updateUnassignedAPI.php";
     private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -287,10 +289,11 @@ public class AssignPickup_Manager extends AppCompatActivity
                                         o.getInt("cnt"),
                                         o.getString("contactNumber"),
                                         o.getString("pickMerchantName"),
-                                        o.getString("pickMerchantAddress")
+                                        o.getString("pickMerchantAddress"),
+                                        o.getString("pickAssignedStatus")
                                 );
 
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"),o.getString("contactNumber"),o.getString("pickMerchantName"),o.getString("pickMerchantAddress"));
+                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"),o.getString("contactNumber"),o.getString("pickMerchantName"),o.getString("pickMerchantAddress"),o.getString("pickAssignedStatus"));
                                 assignManager_modelList.add(todaySummary);
 
                             }
@@ -342,7 +345,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 String contactNumber = c.getString(3);
                 String p_m_name = c.getString(4);
                 String p_m_address = c.getString(5);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount,contactNumber,p_m_name,p_m_address);
+                String p_assigned_status = c.getString(6);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount,contactNumber,p_m_name,p_m_address,p_assigned_status);
                 assignManager_modelList.add(todaySummary);
             }
 
@@ -401,6 +405,15 @@ public class AssignPickup_Manager extends AppCompatActivity
     private void assignexecutivetosqlite(final String ex_name, final String empcode,final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo,final String pick_from_merchant_status, final String received_from_HQ_status) {
 
         database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, status,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo,  pick_from_merchant_status, received_from_HQ_status);
+        //final int total_assign = database.getTotalOfAmount(merchant_code);
+        //final String strI = String.valueOf(total_assign);
+        //database.update_row(strI, merchant_code);
+
+    }
+
+    private void updateAssignedStatus(final String merchant_code, final int status, final String pickAssignedStatus) {
+
+        database.updateAssignedStatusDB(merchant_code, status, pickAssignedStatus);
         //final int total_assign = database.getTotalOfAmount(merchant_code);
         //final String strI = String.valueOf(total_assign);
         //database.update_row(strI, merchant_code);
@@ -470,6 +483,50 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest);
 
     }
+
+    private void updatePickAssigedStatus(final String merchant_code, final String pickAssidnedStatus){
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_ASSIGN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
+                                updateAssignedStatus(merchant_code, NAME_SYNCED_WITH_SERVER, pickAssidnedStatus);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                updateAssignedStatus( merchant_code, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        updateAssignedStatus( merchant_code, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchantCode", merchant_code);
+                params.put("pickAssignedStatus", pickAssidnedStatus);
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -635,6 +692,7 @@ public class AssignPickup_Manager extends AppCompatActivity
         final String complete_status = "p";
         final String  pick_from_merchant_status = "0";
         final String received_from_HQ_status = "0";
+        final String pickAssidnedStatus = "1";
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
@@ -707,7 +765,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
                 } else {
                     assignexecutive(mAutoComplete.getText().toString(), empcode, product_name,et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status, apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
-
+                    updatePickAssigedStatus(merchant_code, pickAssidnedStatus);
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
 
 
@@ -716,7 +774,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                                 Toast.LENGTH_SHORT).show();
 
                         dialog2.dismiss();
-                        database.matchtable_value(m_name, pick_merchant_name, pick_from_merchant_status);
+//                        String n = database.matchtable_value(m_name);
 
                     }
                 }
@@ -734,9 +792,13 @@ public class AssignPickup_Manager extends AppCompatActivity
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String merchantname = clickeditem2.getM_names();
         String merchantcode = clickeditem2.getMerchant_code();
+        String p_m_name = clickeditem2.getPick_m_name();
+        String product_name = "0";
         Intent intent = new Intent(AssignPickup_Manager.this, ViewAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE", merchantcode);
+        intent.putExtra("SUBMERCHANT", p_m_name);
+        intent.putExtra("PRODUCTNAME", product_name);
         startActivity(intent);
 
     }
@@ -750,9 +812,13 @@ public class AssignPickup_Manager extends AppCompatActivity
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String merchantname = clickeditem3.getM_names();
         String merchantcode = clickeditem3.getMerchant_code();
+        String p_m_name = clickeditem3.getPick_m_name();
+        String product_name = "0";
         Intent intent = new Intent(AssignPickup_Manager.this, UpdateAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE", merchantcode);
+        intent.putExtra("SUBMERCHANT", p_m_name);
+        intent.putExtra("PRODUCTNAME", product_name);
         startActivity(intent);
     }
 

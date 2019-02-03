@@ -11,19 +11,21 @@ public class AssignManager_Model  {
     private String phone_no;
     private String merchant_code;
     private String pick_m_name;
+    private String pick_assign_status;
 
 
     public void setTotalcount(int totalcount) {
         this.totalcount = totalcount;
     }
 
-    public AssignManager_Model(String m_names, String merchant_code,int totalcount,String phone_no,String pick_m_name,String m_address ) {
+    public AssignManager_Model(String m_names, String merchant_code,int totalcount,String phone_no,String pick_m_name,String m_address, String pick_assign_status) {
         this.m_names = m_names;
         this.merchant_code = merchant_code;
         this.totalcount = totalcount;
         this.phone_no = phone_no;
         this.pick_m_name = pick_m_name;
         this.m_address = m_address;
+        this.pick_assign_status = pick_assign_status;
 
         }
     public AssignManager_Model(String m_names, String m_address) {

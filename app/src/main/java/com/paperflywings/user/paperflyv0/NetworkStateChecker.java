@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -50,6 +51,16 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
                         } while (cursor.moveToNext());
                 }
+
+                Cursor cursor4 = database.getUnsyncedAssignedList();
+                if (cursor4.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateUnAssignedAPI(cursor4.getInt(0),cursor4.getString(2),cursor4.getString(7));
+
+                    } while (cursor4.moveToNext());
+                }
+
 
                 //getting all the unsynced barcode
                 Cursor cursor1 = database2.getUnsyncedBarcode();
@@ -139,6 +150,47 @@ public class NetworkStateChecker extends BroadcastReceiver {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
+
+
+    private void updateUnAssignedAPI(final int id, final String merchant_code, final String pickAssignedStatus){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.UPDATE_ASSIGN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //updating the status in sqlite
+                                database.updateUnassignStatus(id, NAME_SYNCED_WITH_SERVER);
+
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly" +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchantCode", merchant_code);
+                params.put("pickAssignedStatus", pickAssignedStatus);
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
 
     // Barcode save to server
     private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {

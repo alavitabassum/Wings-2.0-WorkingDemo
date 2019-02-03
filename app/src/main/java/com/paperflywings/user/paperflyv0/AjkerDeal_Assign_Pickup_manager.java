@@ -795,10 +795,14 @@ public class AjkerDeal_Assign_Pickup_manager extends AppCompatActivity
         final String user = username.toString();
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String merchantname = clickeditem2.getMerchantName();
+        String p_m_name = "AjkerDeal.com";
+        String product_name = "Nothing";
         String merchantcode = String.valueOf(clickeditem2.getMerOrderRef());
         Intent intent = new Intent(AjkerDeal_Assign_Pickup_manager.this, ViewAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE", merchantcode);
+        intent.putExtra("SUBMERCHANT", p_m_name);
+        intent.putExtra("PRODUCTNAME", product_name);
         startActivity(intent);
 
     }
@@ -812,10 +816,15 @@ public class AjkerDeal_Assign_Pickup_manager extends AppCompatActivity
         final String user = username.toString();
         final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String merchantname = clickeditem3.getMerchantName();
+        String p_m_name = "AjkerDeal.com";
+        String product_name = "Nothing";
+
         String merchantcode = String.valueOf(clickeditem3.getMerOrderRef());
         Intent intent = new Intent(AjkerDeal_Assign_Pickup_manager.this, UpdateAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE", merchantcode);
+        intent.putExtra("SUBMERCHANT", p_m_name);
+        intent.putExtra("PRODUCTNAME", product_name);
         startActivity(intent);
     }
 

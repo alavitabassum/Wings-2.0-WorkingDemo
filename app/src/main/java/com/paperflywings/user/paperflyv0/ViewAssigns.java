@@ -32,21 +32,24 @@ public class ViewAssigns extends AppCompatActivity {
         TextView mName = findViewById(R.id.merchant_name_view);
         mName.setText(getIntent().getStringExtra("MERCHANTNAME"));
         final String merchantcode = getIntent().getStringExtra("MERCHANTCODE");
+        final String merchant_name = getIntent().getStringExtra("MERCHANTNAME");
+        final String p_m_name = getIntent().getStringExtra("SUBMERCHANT");
+        final String product_name = getIntent().getStringExtra("PRODUCTNAME");
 
 
         recyclerView_va = (RecyclerView) findViewById(R.id.recycler_view_va);
         recyclerView_va.setHasFixedSize(true);
         layoutManager_va = new LinearLayoutManager(this);
         recyclerView_va.setLayoutManager(layoutManager_va);
-         getData(merchantcode);
+         getData(merchantcode, merchant_name, p_m_name, product_name);
     }
 
-    public void getData(final String merchantcode)
+    public void getData(final String merchantcode, final String merchat_name, final String p_m_name, final String product_name)
     {
         try{
 
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.getassignedexecutive(sqLiteDatabase,merchantcode);
+            Cursor c = database.getassignedexecutive(sqLiteDatabase,merchantcode,merchat_name,p_m_name,product_name);
             while (c.moveToNext())
             {
                 String name = c.getString(1);

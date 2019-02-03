@@ -31,6 +31,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
 
 
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
         void onItemClick_view (View view2, int position2);
@@ -47,7 +48,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         this.context = context;
         assignManager_modelListFull = new ArrayList<>(assignManager_modelList);
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -131,9 +131,20 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         return viewHolder;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         AssignManager_Model assignManager_model = assignManager_modelList.get(i);
+
+
+        /*String m_name = database.getMerchant_name(assignManager_model.getM_names());
+        String pick_m_name = database.getPick_Merchant_name(assignManager_model.getPick_m_name());
+//        String product_name = database.getProduct_name(assignManager_model.getM_names());
+
+        if( m_name != null && pick_m_name != null && m_name.equals(assignManager_model.getM_names()) && pick_m_name.equals(assignManager_model.getPick_m_name()) ){
+            viewHolder.cardview.setCardBackgroundColor(R.color.light_grey);
+        }*/
+
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
         final String p_name = assignManager_model.getPick_m_name();
 
