@@ -412,12 +412,7 @@ public class AssignPickup_Manager extends AppCompatActivity
     }
 
     private void updateAssignedStatus(final String merchant_code, final int status, final String pickAssignedStatus) {
-
         database.updateAssignedStatusDB(merchant_code, status, pickAssignedStatus);
-        //final int total_assign = database.getTotalOfAmount(merchant_code);
-        //final String strI = String.valueOf(total_assign);
-        //database.update_row(strI, merchant_code);
-
     }
 
     //For assigning executive API into mysql
