@@ -11,9 +11,11 @@ public class AssignFulfillmentManager_Model  {
     private String product_count;
     private String scan_count;
     private String created_at;
+    private String assign_status;
     int key_id;
+    int status;
 
-    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id,int sum, String created_at) {
+    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id,int sum, String created_at, String assign_status) {
 
         this.main_merchant = main_merchant;
         this.supplier_name = supplier_name;
@@ -23,6 +25,8 @@ public class AssignFulfillmentManager_Model  {
         this.product_id = product_id;
         this.sum = sum;
         this.created_at = created_at;
+        this.assign_status = assign_status;
+//        this.status = status;
     }
 
 

@@ -1,6 +1,7 @@
 package com.paperflywings.user.paperflyv0;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -116,6 +117,9 @@ public class NewOrder extends AppCompatActivity {
                                 "You have inserted new order for "
                                         + merchantname
                                 , Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(view.getContext(), AssignPickup_Manager.class);
+                        startActivity(intent);
                     }
                 });
 

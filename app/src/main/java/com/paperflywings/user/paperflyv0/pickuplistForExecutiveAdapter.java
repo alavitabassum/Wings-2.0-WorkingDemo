@@ -168,26 +168,27 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
 
         String complete_status = list.get(i).getComplete_status();
+        String product_name = list.get(i).getProduct_name();
 
 
-        if(complete_status.equals("p")) {
-
+        if(complete_status.equals("p") && product_name.equals("0")) {
             viewHolder.txtOption.setTextColor(Color.WHITE);
             viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Scan Count: ");
             viewHolder.item_scanCount.setText(list.get(i).getScan_count());
-        } if ( complete_status.equals("f")) {
+            viewHolder.text_pickedCount.setText("Picked: ");
+            viewHolder.item_pickedCount.setText(list.get(i).getScan_count());
 
+        } if ( complete_status.equals("f")) {
             viewHolder.txtOption.setTextColor(Color.WHITE);
             viewHolder.itemStatus.setEnabled(false);
-            viewHolder.text_productName.setText("Product: ");
+            viewHolder.text_scanCount.setText("Product: ");
             viewHolder.item_productName.setText(list.get(i).getProduct_name());
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
         } if ( complete_status.equals("ad")) {
             viewHolder.txtOption.setBackgroundResource(R.color.green);
             viewHolder.txtOption.setTextColor(Color.BLACK);
-
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
         }

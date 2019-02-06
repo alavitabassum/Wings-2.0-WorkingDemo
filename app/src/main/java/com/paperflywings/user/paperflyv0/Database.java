@@ -28,7 +28,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp3 = "create table merchantList(id integer primary key AUTOINCREMENT, merchantName text,merchantCode text,totalcount int,contactNumber text,pick_m_name text,pick_m_address text, pick_assigned_status text ,status int,unique(merchantName,totalcount))";
 
         // Fulfillment
-        String tableEmp8 = "create table merchantListFulfillment(id integer primary key AUTOINCREMENT,main_merchant text,supplier_name text,supplier_phone text,supplier_address text,product_name text, product_id integer,sum integer, created_at text,unique(product_id))";
+        String tableEmp8 = "create table merchantListFulfillment(id integer primary key AUTOINCREMENT,main_merchant text,supplier_name text,supplier_phone text,supplier_address text,product_name text, product_id integer,sum integer, created_at text,assign_status text, status int, unique(product_id))";
         String tableEmp12 = "create table ajkerDealList(id integer primary key AUTOINCREMENT,main_merchant text,supplier_phone text,supplier_address text,supplier_name text, apiOrderID text, product_id text, created_at text,unique(product_id) )";
         String tableEmp14 = "create table ajkerDealEkshopList(id integer primary key AUTOINCREMENT,main_merchant text,supplier_phone text,supplier_address text,supplier_name text, apiOrderID text, product_id text, created_at text,unique(product_id) )";
         String tableEmp13 = "create table ajkerDealOtherList(id integer primary key AUTOINCREMENT,main_merchant text,pick_supplier_name text,supplier_address text,supplier_phone text,supplier_name integer, product_id text, created_at text,unique(product_id) )";
@@ -39,7 +39,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp9 = "create table Fulfillmentmerchantlist(merchantName text unique)";
         String tableEmp10 = "create table Fulfillmentsupplier(supplierName text unique)";
         String tableEmp11 = "create table Fulfillmentproduct(productName text, productID text unique)";
-        String tableEmp7 = "create table pickups_today_manager(merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text, unique(merchantName, p_m_name, totalcount))";
+        String tableEmp7 = "create table pickups_today_manager(merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text, unique(merchantName, p_m_name, product_name))";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
@@ -69,7 +69,7 @@ public class Database extends SQLiteOpenHelper {
 
 
 
-    public void add_pickups_today_manager(String merchantName,int cnt,int scan_count,String created_at,String executive_name, String complete_status, int picked_qty,String p_m_name) {
+    public void add_pickups_today_manager(String merchantName,int cnt,int scan_count,String created_at,String executive_name, String complete_status, int picked_qty,String p_m_name, String product_name) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -81,6 +81,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("complete_status",complete_status);
         values.put("picked_qty",picked_qty);
         values.put("p_m_name",p_m_name);
+        values.put("product_name",product_name);
 
 
         sqLiteDatabase.insert("pickups_today_manager", null, values);
@@ -88,7 +89,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "totalcount","scan_count","executive_name","created_at","complete_status","picked_qty", "product_name", "p_m_name"};
+        String[] columns = {"merchantName", "totalcount","scan_count","executive_name","created_at","complete_status","picked_qty", "product_name", "p_m_name", "product_name"};
         return db.query("pickups_today_manager", columns, "created_at='" + currentDateTimeString + "'", null, null, null,"scan_count"+" ASC");
     }
 
@@ -176,7 +177,7 @@ public class Database extends SQLiteOpenHelper {
 
     //Add Merchant list for Fulfillment
 
-    public void addfulfillmentmerchantlist(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String currentDateTimeString) {
+    public void addfulfillmentmerchantlist(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String currentDateTimeString, String assign_status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -189,6 +190,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("product_id",product_id);
         values.put("sum",sum);
         values.put("created_at",currentDateTimeString);
+        values.put("assign_status",assign_status);
 
         sqLiteDatabase.insertWithOnConflict("merchantListFulfillment", null, values,SQLiteDatabase.CONFLICT_IGNORE);
         sqLiteDatabase.close();
@@ -274,8 +276,8 @@ public class Database extends SQLiteOpenHelper {
 
     public Cursor get_fulfillment_merchantlist(SQLiteDatabase db, String match_date) {
 
-        String[] columns = {"main_merchant","supplier_name","supplier_phone","supplier_address","product_name", "product_id","sum","created_at"};
-        return db.query("merchantListFulfillment", columns, "created_at='" + match_date + "'", null, null, null, null);
+        String[] columns = {"main_merchant","supplier_name","supplier_phone","supplier_address","product_name", "product_id","sum","created_at","assign_status", "status"};
+        return db.query("merchantListFulfillment", columns,"created_at=? and assign_status=?", new String[] { match_date, "0"}, null, null, null);
     }
 
 
@@ -380,6 +382,16 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateFulAssignedStatusDB(int product_id, int status, String assign_status){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("assign_status",assign_status);
+        values.put("status",status);
+
+        db.update("merchantListFulfillment", values, "product_id='" + product_id + "'",null );
+        db.close();
+    }
+
     public void assignexecutive(String executive_name, String empcode,String product_name, String ordercount, String merchantCode, String user, String created_date,int status,String m_name,String contactNumber,String pick_m_name,String pick_m_address, String complete_status,String apiOrderID, String demo, String pick_from_merchant_status, String received_from_HQ_status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
@@ -423,6 +435,14 @@ public class Database extends SQLiteOpenHelper {
         return c;
     }
 
+
+    public Cursor getUnsyncedAssignedFulList() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + "merchantListFulfillment" + " WHERE " + "status" + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
     public boolean updateAssignStatus(int id, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -437,6 +457,15 @@ public class Database extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("status", status);
         db.update("merchantList", contentValues, "id" + "=" + id, null);
+        db.close();
+        return true;
+    }
+
+    public boolean updateUnassignFulStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("status", status);
+        db.update("merchantListFulfillment", contentValues, "id" + "=" + id, null);
         db.close();
         return true;
     }

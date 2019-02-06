@@ -61,6 +61,15 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor4.moveToNext());
                 }
 
+                Cursor cursor5 = database.getUnsyncedAssignedFulList();
+                if (cursor5.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateUnAssignedFulAPI(cursor5.getInt(0),cursor5.getString(6),cursor5.getString(9));
+
+                    } while (cursor5.moveToNext());
+                }
+
 
                 //getting all the unsynced barcode
                 Cursor cursor1 = database2.getUnsyncedBarcode();
@@ -161,7 +170,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
                                 //updating the status in sqlite
-                                database.updateUnassignStatus(id, NAME_SYNCED_WITH_SERVER);
+                                database.updateUnassignFulStatus(id, NAME_SYNCED_WITH_SERVER);
 
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
@@ -191,6 +200,44 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
+    private void updateUnAssignedFulAPI(final int id, final String product_id, final String assign_status){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Fulfillment_Assign_pickup_Manager.UPDATE_FUL_ASSIGN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //updating the status in sqlite
+                                database.updateUnassignStatus(id, NAME_SYNCED_WITH_SERVER);
+
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly" +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("product_id", String.valueOf(product_id));
+                params.put("assign_status", assign_status);
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
 
     // Barcode save to server
     private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {

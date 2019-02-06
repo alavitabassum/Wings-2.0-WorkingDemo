@@ -308,7 +308,8 @@ public class PickupsToday_Executive extends AppCompatActivity
                 String complete_status= c.getString(5);
                 String picked_qty= String.valueOf(c.getString(6));
                 String p_m_name= c.getString(7);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name,created_at,complete_status,picked_qty, p_m_name);
+                String product_name= c.getString(8);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name,created_at,complete_status,picked_qty, p_m_name, product_name);
                 summaries.add(todaySummary);
             }
             mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());

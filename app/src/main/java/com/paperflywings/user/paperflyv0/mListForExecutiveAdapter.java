@@ -34,9 +34,7 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
         public TextView item_aQty;
         public TextView item_uQty;
         public TextView item_rQty;
-        public TextView item_pQty;
         public TextView text_rQty;
-        public TextView text_pQty;
         public TextView date_of_assign;
         public CardView cardView;
         public RelativeLayout relativeLayout;
@@ -50,8 +48,6 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
             item_uQty=itemView.findViewById(R.id.u_qty_e);
             item_rQty=itemView.findViewById(R.id.r_qty_e);
             text_rQty=itemView.findViewById(R.id.txt3);
-            item_pQty=itemView.findViewById(R.id.picked_qty_e);
-            text_pQty=itemView.findViewById(R.id.txt100);
             date_of_assign = itemView.findViewById(R.id.asgn_date);
             cardView = itemView.findViewById(R.id.card_view_executive);
             relativeLayout = itemView.findViewById(R.id.inside_rl);
@@ -84,12 +80,12 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
             viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
         }
         if ( complete_status.equals("f")) {
-            viewHolder.text_pQty.setText("Picked: ");
-            viewHolder.item_pQty.setText(summaries.get(i).getPicked_qty());
+            viewHolder.text_rQty.setText("Picked: ");
+            viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
         }
         if ( complete_status.equals("ad")) {
-            viewHolder.text_pQty.setText("Picked: ");
-            viewHolder.item_pQty.setText(summaries.get(i).getPicked_qty());
+            viewHolder.text_rQty.setText("Picked: ");
+            viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
         }
 
         try {

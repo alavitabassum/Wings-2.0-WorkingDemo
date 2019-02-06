@@ -459,7 +459,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getdata_pickups_today_executive(SQLiteDatabase db, String user, String currentDateTimeString) {
-        String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME,ASSIGNED_QTY,SCAN_COUNT,CREATED_AT, COMPLETE_STATUS, PICKED_QTY, PICK_M_NAME};
+        String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME,ASSIGNED_QTY,SCAN_COUNT,CREATED_AT, COMPLETE_STATUS, PICKED_QTY, PICK_M_NAME, PRODUCT_NAME};
 
         String whereClause = EXECUTIVE_NAME + " = ? AND " + CREATED_AT  + " = ?";
         String[] whereArgs = new String[] {

@@ -126,6 +126,7 @@ public class ScanningScreen extends AppCompatActivity {
     }
 
 
+
     private BarcodeCallback callback = new BarcodeCallback()  {
 
         @Override
@@ -139,7 +140,7 @@ public class ScanningScreen extends AppCompatActivity {
             final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
             db = new BarcodeDbHelper(ScanningScreen.this);
-//            if(result.getText() == null || result.getText().equals(lastText)) {
+            // if(result.getText() == null || result.getText().equals(lastText)) {
             if(result.getText().equals(lastText) || result.getText().trim().length() != 12) {
 
                 // Set the toast and duration

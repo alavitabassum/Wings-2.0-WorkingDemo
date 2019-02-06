@@ -293,7 +293,13 @@ public class AssignPickup_Manager extends AppCompatActivity
                                         o.getString("pickAssignedStatus")
                                 );
 
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"), o.getInt("cnt"),o.getString("contactNumber"),o.getString("pickMerchantName"),o.getString("pickMerchantAddress"),o.getString("pickAssignedStatus"));
+                                database.addmerchantlist(o.getString("merchantName"),
+                                        o.getString("merchantCode"),
+                                        o.getInt("cnt"),
+                                        o.getString("contactNumber"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("pickMerchantAddress"),
+                                        o.getString("pickAssignedStatus"));
                                 assignManager_modelList.add(todaySummary);
 
                             }
@@ -761,6 +767,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 } else {
                     assignexecutive(mAutoComplete.getText().toString(), empcode, product_name,et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status, apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
                     updatePickAssigedStatus(merchant_code, pickAssidnedStatus);
+
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
 
 
