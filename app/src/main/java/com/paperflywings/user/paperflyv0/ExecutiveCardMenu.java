@@ -4,20 +4,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class ExecutiveCardMenu extends AppCompatActivity
@@ -27,6 +32,7 @@ public class ExecutiveCardMenu extends AppCompatActivity
     RecyclerView recyclerView_exe;
     RecyclerView.LayoutManager layoutManager_exe;
     RecyclerView.Adapter adapter_exe;
+    BarcodeDbHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,8 @@ public class ExecutiveCardMenu extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
+        db = new BarcodeDbHelper(getApplicationContext());
+        db.getWritableDatabase();
 
         recyclerView_exe =
                 (RecyclerView) findViewById(R.id.recycler_view_executive);
@@ -77,6 +85,7 @@ public class ExecutiveCardMenu extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+//            finish();
         }
     }
 
@@ -134,7 +143,14 @@ public class ExecutiveCardMenu extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
+                            Date c = Calendar.getInstance().getTime();
+                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                            final String match_date = df.format(c);
 
+                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                            db.deleteAssignedList(sqLiteDatabase);
+                            db.barcode_factory(sqLiteDatabase,match_date);
+                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                             //Getting editor
@@ -172,5 +188,6 @@ public class ExecutiveCardMenu extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_exe);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
     }
 }

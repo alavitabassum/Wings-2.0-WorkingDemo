@@ -3,6 +3,7 @@ package com.paperflywings.user.paperflyv0;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,6 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     private boolean loggedIn = false;
     private String userRole;
     Button tempButton;
+    BarcodeDbHelper barcodedb;
+    Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +47,11 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.username);
         pass = (EditText) findViewById(R.id.pass);
         // tempButton = findViewById(R.id.temp_btn);
+
+        barcodedb=new BarcodeDbHelper(getApplicationContext());
+        barcodedb.getWritableDatabase();
+        db = new Database(getApplicationContext());
+        db.getWritableDatabase();
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,9 +122,28 @@ public class LoginActivity extends AppCompatActivity {
                         editor.commit();
 
                         if (userRole.contains("1")) {
+                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                            db.clearPTMList(sqLiteDatabase);
+                            db.deletemerchantList(sqLiteDatabase);
+                            db.deletemerchantList_Fulfillment(sqLiteDatabase);
+                            db.deletemerchantList_ajkerDeal(sqLiteDatabase);
+                            db.deletemerchantList_ajkerDealEkshopList(sqLiteDatabase);
+                            db.deletemerchantList_ajkerDealOtherList(sqLiteDatabase);
+                            db.deletemerchants(sqLiteDatabase);
+                            db.deletemerchantsfor_executives(sqLiteDatabase);
+                            db.deletecom_ex(sqLiteDatabase);
 
                             startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
                         } else {
+
+                            Date c = Calendar.getInstance().getTime();
+                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                            final String match_date = df.format(c);
+
+                            SQLiteDatabase sqLiteDatabase = barcodedb.getWritableDatabase();
+                            barcodedb.deleteAssignedList(sqLiteDatabase);
+                            barcodedb.barcode_factory(sqLiteDatabase,match_date);
+                            barcodedb.barcode_factory_fulfillment(sqLiteDatabase,match_date);
 
                             startActivity(new Intent(getApplicationContext(),ExecutiveCardMenu.class));
                         }
@@ -159,7 +189,6 @@ public class LoginActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        //do nothing
         finish();
     }
 

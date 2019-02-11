@@ -351,7 +351,16 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-
+                            SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                            database.clearPTMList(sqLiteDatabase);
+                            database.deletemerchantList(sqLiteDatabase);
+                            database.deletemerchantList_Fulfillment(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDeal(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDealEkshopList(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDealOtherList(sqLiteDatabase);
+                            database.deletemerchants(sqLiteDatabase);
+                            database.deletemerchantsfor_executives(sqLiteDatabase);
+                            database.deletecom_ex(sqLiteDatabase);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                             //Getting editor

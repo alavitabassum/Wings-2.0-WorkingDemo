@@ -535,7 +535,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return list;
     }
 
-
     // Get all executives
     public List<PickupList_Model_For_Executive> getPending(String user) {
         // array of columns to fetch
@@ -599,12 +598,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + PICKED_QTY + ">=" + ASSIGNED_QTY;
-        /*"SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "scan_count" + ">=" + "totalcount"*/
         Cursor sumQuery = db.rawQuery(countQuery, null);
         int count = sumQuery.getCount();
         sumQuery.close();
         return count;
     }
+
     public int pending_order_for_ex(String user, String currentDateTimeString){
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -614,6 +613,18 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         int count = sumQuery.getCount( );
         sumQuery.close();
         return count;
+    }
+
+    public void barcode_factory(SQLiteDatabase sqLiteDatabase, String match_date)
+    {
+         sqLiteDatabase.delete("Barcode", "updated_at<>?", new String[]{match_date});
+        //  sqLiteDatabase.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + UPDATED_AT + "!='"+ match_date +"'");
+    }
+
+    public void barcode_factory_fulfillment(SQLiteDatabase sqLiteDatabase, String match_date)
+    {
+        //  sqLiteDatabase.execSQL("DELETE FROM " + TABLE_NAME_2 + " WHERE " + UPDATED_AT + "!='"+ match_date +"'");
+         sqLiteDatabase.delete("Barcode_Fulfillment", "updated_at<>?", new String[]{match_date});
     }
 }
 

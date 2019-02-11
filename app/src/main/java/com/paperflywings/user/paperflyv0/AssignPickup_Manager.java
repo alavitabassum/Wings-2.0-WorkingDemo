@@ -520,6 +520,7 @@ public class AssignPickup_Manager extends AppCompatActivity
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("merchantCode", merchant_code);
                 params.put("pickAssignedStatus", pickAssidnedStatus);
+//                params.put("order_count", order_count);
                 return params;
             }
 
@@ -622,7 +623,16 @@ public class AssignPickup_Manager extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-
+                            SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                            database.clearPTMList(sqLiteDatabase);
+                            database.deletemerchantList(sqLiteDatabase);
+                            database.deletemerchantList_Fulfillment(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDeal(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDealEkshopList(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDealOtherList(sqLiteDatabase);
+                            database.deletemerchants(sqLiteDatabase);
+                            database.deletemerchantsfor_executives(sqLiteDatabase);
+                            database.deletecom_ex(sqLiteDatabase);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -766,6 +776,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
                 } else {
                     assignexecutive(mAutoComplete.getText().toString(), empcode, product_name,et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status, apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+//                    updatePickAssigedStatus(merchant_code, pickAssidnedStatus,et1.getText().toString());
                     updatePickAssigedStatus(merchant_code, pickAssidnedStatus);
 
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {

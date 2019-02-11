@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -294,7 +295,16 @@ public class ManagerCardMenu extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-
+                            SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                            database.clearPTMList(sqLiteDatabase);
+                            database.deletemerchantList(sqLiteDatabase);
+                            database.deletemerchantList_Fulfillment(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDeal(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDealEkshopList(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDealOtherList(sqLiteDatabase);
+                            database.deletemerchants(sqLiteDatabase);
+                            database.deletemerchantsfor_executives(sqLiteDatabase);
+                            database.deletecom_ex(sqLiteDatabase);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                             //Getting editor

@@ -166,6 +166,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         viewHolder.item_p_m_add_pul.setText(list.get(i).getP_m_add());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
+//        viewHolder.item_phnNum.setText(list.get(i).getComplete_status());
 
         String complete_status = list.get(i).getComplete_status();
         String product_name = list.get(i).getProduct_name();
@@ -175,17 +176,18 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             viewHolder.txtOption.setTextColor(Color.WHITE);
             viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Scan Count: ");
-            viewHolder.item_scanCount.setText(list.get(i).getScan_count());
+            viewHolder.item_productName.setText(list.get(i).getScan_count());
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getScan_count());
 
-        } if ( complete_status.equals("f")) {
+        } if ( complete_status.equals("f") && product_name != "0") {
             viewHolder.txtOption.setTextColor(Color.WHITE);
             viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Product: ");
             viewHolder.item_productName.setText(list.get(i).getProduct_name());
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
+
         } if ( complete_status.equals("ad")) {
             viewHolder.txtOption.setBackgroundResource(R.color.green);
             viewHolder.txtOption.setTextColor(Color.BLACK);
@@ -220,15 +222,15 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                 viewHolder.itemStatus.setText("Pending");
                 viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
                 viewHolder.itemStatus.setTextColor(Color.BLACK);
-                viewHolder.itemStatus.setEnabled(true);
+//                viewHolder.itemStatus.setEnabled(true);
             }
             if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("ad")){
                 viewHolder.itemStatus.setText("Complete");
                 viewHolder.itemStatus.setBackgroundResource(R.color.green);
                 viewHolder.itemStatus.setTextColor(Color.WHITE);
                 viewHolder.itemStatus.setEnabled(false);
-                viewHolder.scan_button.setBackgroundResource(R.color.material_grey_100);
-                viewHolder.scan_button.setEnabled(false);
+//                viewHolder.scan_button.setBackgroundResource(R.color.material_grey_100);
+//                viewHolder.scan_button.setEnabled(false);
 
             }
             if(count_picked < count_assigned && complete_status.equals("ad")) {

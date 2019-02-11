@@ -3,6 +3,7 @@ package com.paperflywings.user.paperflyv0;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -13,12 +14,9 @@ import java.util.Date;
 public class Database extends SQLiteOpenHelper {
 
     public Database(Context context)
-
-    {
-
-        super(context, "MerchantDatabase.db", null, 1);
-
-    }
+        {
+            super(context, "MerchantDatabase.db", null, 1);
+        }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -354,18 +352,86 @@ public class Database extends SQLiteOpenHelper {
 
     public void deletemerchantList(SQLiteDatabase sqLiteDatabase)
     {
-        sqLiteDatabase.execSQL("delete from "+ "merchantList");
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"merchantList");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "merchantList");
+        }
+        //  sqLiteDatabase.execSQL("delete from "+ "merchantList");
     }
 
     public void deletemerchantList_Fulfillment(SQLiteDatabase sqLiteDatabase)
     {
-        sqLiteDatabase.execSQL("delete from "+ "merchantListFulfillment");
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"merchantListFulfillment");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "merchantListFulfillment");
+        }
+//        sqLiteDatabase.execSQL("delete from "+ "merchantListFulfillment");
     }
 
     public void deletemerchantList_ajkerDeal(SQLiteDatabase sqLiteDatabase)
     {
-        sqLiteDatabase.execSQL("delete from "+ "ajkerDealList");
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"ajkerDealList");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "ajkerDealList");
+        }
     }
+
+    public void deletemerchantList_ajkerDealEkshopList(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"ajkerDealEkshopList");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "ajkerDealEkshopList");
+        }
+    }
+
+    public void deletemerchantsfor_executives(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"merchantsfor_executives");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "merchantsfor_executives");
+        }
+    }
+
+    public void deletecom_ex(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"com_ex");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "com_ex");
+        }
+    }
+
+    public void deletemerchantList_ajkerDealOtherList(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"ajkerDealOtherList");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "ajkerDealOtherList");
+        }
+    }
+
+    public void deletemerchants(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"merchants");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "merchants");
+        }
+    }
+
 
     public Cursor get_merchantlist(SQLiteDatabase db) {
         String[] columns = {"merchantName", "merchantCode","totalcount","contactNumber","pick_m_name","pick_m_address","pick_assigned_status"};
@@ -583,7 +649,14 @@ public class Database extends SQLiteOpenHelper {
     }*/
     public void deleteassign(String rowid, String ex,String count)
     {     SQLiteDatabase db = this.getWritableDatabase();
-          db.delete("assignexecutive", "rowid" + " = ?", new String[] { rowid });
+
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"assignexecutive");
+
+        if (NoOfRows != 0){
+            db.delete("assignexecutive", "rowid" + " = ?", new String[] { rowid });
+        }
+//          db.delete("assignexecutive", "rowid" + " = ?", new String[] { rowid });
     }
   /*  public boolean updateTheUpdateStatus(int id, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -652,7 +725,7 @@ public class Database extends SQLiteOpenHelper {
 
     public int complete_order(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_manager"+ " WHERE " + "picked_qty" + ">=" + "totalcount" + " AND " + "created_at"+ " = '" + currentDateTimeString + "'", null);
+        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_manager"+ " WHERE " + "picked_qty" + ">=" + "totalcount" + " AND " + "created_at"+ " = '" + currentDateTimeString + "'", null);
         int count = sumQuery.getCount();
         sumQuery.close();
         return count;
