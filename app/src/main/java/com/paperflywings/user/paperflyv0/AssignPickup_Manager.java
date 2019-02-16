@@ -633,6 +633,9 @@ public class AssignPickup_Manager extends AppCompatActivity
                             database.deletemerchants(sqLiteDatabase);
                             database.deletemerchantsfor_executives(sqLiteDatabase);
                             database.deletecom_ex(sqLiteDatabase);
+                            database.delete_fullfillment_merchantList(sqLiteDatabase);
+                            database.deletecom_fulfillment_supplier(sqLiteDatabase);
+                            database.deletecom_fullfillment_product(sqLiteDatabase);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 

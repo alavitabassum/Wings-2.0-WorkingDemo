@@ -33,10 +33,10 @@ public class Database extends SQLiteOpenHelper {
 
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text, product_name text, order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text, complete_status text,apiOrderID integer,demo integer, pick_from_merchant_status text, received_from_HQ_status text,unique(ex_name,product_name,merchantCode,merchantname,pick_m_name,apiOrderID))";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
-        String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text unique)";
+        String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text, unique(merchantName,merchantCode))";
         String tableEmp9 = "create table Fulfillmentmerchantlist(merchantName text unique)";
         String tableEmp10 = "create table Fulfillmentsupplier(supplierName text unique)";
-        String tableEmp11 = "create table Fulfillmentproduct(productName text, productID text unique)";
+        String tableEmp11 = "create table Fulfillmentproduct(productName text, productID text, unique(productName,productID))";
         String tableEmp7 = "create table pickups_today_manager(merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text, unique(merchantName, p_m_name, product_name))";
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
@@ -409,6 +409,36 @@ public class Database extends SQLiteOpenHelper {
 
         if (NoOfRows != 0){
             sqLiteDatabase.execSQL("delete from "+ "com_ex");
+        }
+    }
+
+    public void delete_fullfillment_merchantList(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"Fulfillmentmerchantlist");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "Fulfillmentmerchantlist");
+        }
+    }
+
+    public void deletecom_fullfillment_product(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"Fulfillmentproduct");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "Fulfillmentproduct");
+        }
+    }
+
+    public void deletecom_fulfillment_supplier(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"Fulfillmentsupplier");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "Fulfillmentsupplier");
         }
     }
 

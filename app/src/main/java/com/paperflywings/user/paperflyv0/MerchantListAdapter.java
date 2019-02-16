@@ -32,6 +32,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView itemMerchantName;
+        public TextView itemProductName;
         public TextView itemAssignedQty;
         public TextView itemReceivedQty;
 
@@ -47,6 +48,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             itemMerchantName=itemView.findViewById(R.id.merchant_name);
+            itemProductName=itemView.findViewById(R.id.prod_name_1);
             itemUploadedQty = itemView.findViewById(R.id.u_qty);
             itemAssignedQty=itemView.findViewById(R.id.a_qty);
             itemReceivedQty=itemView.findViewById(R.id.r_qty);
@@ -70,7 +72,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         PickupList_Model_For_Executive pickupList_model_for_executive = pickupList_model_for_executives.get(i);
-        viewHolder.itemMerchantName.setText(pickupList_model_for_executive.getMerchant_name());
+
         viewHolder.itemUploadedQty.setText(pickupList_model_for_executive.getExecutive_name());
         viewHolder.itemAssignedQty.setText(pickupList_model_for_executive.getAssined_qty());
         viewHolder.date_of_assign.setText(pickupList_model_for_executive.getCreated_at());
@@ -79,10 +81,14 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
 
         if(complete_status.equals("p")) {
+            viewHolder.itemMerchantName.setText(pickupList_model_for_executive.getMerchant_name());
+            viewHolder.itemProductName.setText("Null");
             viewHolder.textReceivedQty.setText("Scan Count: ");
             viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
         }
         if ( complete_status.equals("f")) {
+            viewHolder.itemMerchantName.setText("Shoparu-"+pickupList_model_for_executive.getP_m_name());
+            viewHolder.itemProductName.setText(pickupList_model_for_executive.getProduct_name());
             viewHolder.textReceivedQty.setText("Picked: ");
             viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getPicked_qty());
         }

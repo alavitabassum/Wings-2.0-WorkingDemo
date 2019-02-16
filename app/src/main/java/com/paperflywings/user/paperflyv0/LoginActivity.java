@@ -132,6 +132,9 @@ public class LoginActivity extends AppCompatActivity {
                             db.deletemerchants(sqLiteDatabase);
                             db.deletemerchantsfor_executives(sqLiteDatabase);
                             db.deletecom_ex(sqLiteDatabase);
+                            db.delete_fullfillment_merchantList(sqLiteDatabase);
+                            db.deletecom_fulfillment_supplier(sqLiteDatabase);
+                            db.deletecom_fullfillment_product(sqLiteDatabase);
 
                             startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
                         } else {

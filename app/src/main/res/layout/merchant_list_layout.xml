@@ -19,7 +19,7 @@
         <RelativeLayout
             android:layout_width="320dp"
             android:id="@+id/inside_rl"
-            android:layout_height="140dp"
+            android:layout_height="160dp"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:background="@color/white"
@@ -36,7 +36,7 @@
                 android:layout_toEndOf="@+id/txt2"
                 android:textAlignment="center"
                 android:textColor="#000"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_toEndOf="@+id/txt3"
                 android:textAlignment="center"
                 android:textColor="#000"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txt2"
@@ -71,7 +71,7 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:text="@string/uploaded_product_count"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txt1"
@@ -83,7 +83,7 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:text="@string/assigned_product_count"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txt3"
@@ -95,7 +95,7 @@
                 android:layout_marginTop="1dp"
                 android:lines="1"
                 android:maxLines="1"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/txt4"
@@ -107,8 +107,9 @@
                 android:layout_marginTop="1dp"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="Assigned Date"
-                android:textSize="15sp" />
+                android:text="Date :"
+                android:textSize="14sp" />
+
 
             <TextView
                 android:id="@+id/asgn_date"
@@ -119,10 +120,34 @@
                 android:layout_toEndOf="@+id/txt4"
                 android:textAlignment="center"
                 android:textColor="#000"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 />
 
+            <TextView
+                android:id="@+id/prod_name"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt4"
+                android:layout_alignStart="@+id/txt4"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="1dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Product :"
+                android:textSize="13sp" />
 
+            <TextView
+                android:id="@+id/prod_name_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/asgn_date"
+                android:layout_alignBaseline="@+id/prod_name"
+                android:layout_toEndOf="@+id/prod_name"
+                android:textAlignment="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:textColor="#000"
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -145,7 +170,7 @@
                 android:maxLines="2"
                 android:textAlignment="center"
                 android:textColor= "@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                />
         </RelativeLayout>
