@@ -141,17 +141,6 @@ public class MyPickupList_Executive extends AppCompatActivity
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-//        getData(user);
-
-//        list.clear();
-//        loadRecyclerView(user);
-
-//        public String getBackupFolderName() {
-//            Date date = new Date();
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd.hhmmss");
-//            return sdf.format(date);
-//        }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -574,6 +563,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             scanIntent1.putExtra(PRODUCT_NAME, clickedItem.getProduct_name());
             scanIntent1.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
             scanIntent1.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
+            scanIntent1.putExtra(APIORDERID, clickedItem.getApiOrderID());
             startActivity(scanIntent1);
         }
 

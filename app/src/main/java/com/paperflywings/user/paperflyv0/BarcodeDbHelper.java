@@ -39,6 +39,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String PRODUCT_NAME = "product_name";
     private static final String APIORDERID = "apiOrderID";
     private static final String DEMO = "demo";
+    private static final String MERCHANT_CODE = "merchant_code";
     private static final String PICKED_STATUS = "pick_from_merchant_status";
     private static final String RECEIVED_STATUS = "received_from_HQ_status";
 
@@ -99,6 +100,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "updated_at TEXT, "
                 + "order_id TEXT, "
                 + "picked_qty TEXT, "
+                + "merchant_code TEXT, "
                 + "unique(merchantId,barcodeNumber,order_id))" ;
 
 
@@ -227,7 +229,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     // For Fulfillment start
-    public void add_fulfillment(String merchantId, String sub_merchant_name, String barcodeNumber, boolean state, String updated_by, String updated_at,int status, String order_id, String picked_qty) {
+    public void add_fulfillment(String merchantId, String sub_merchant_name, String barcodeNumber, boolean state, String updated_by, String updated_at,int status, String order_id, String picked_qty, String merchant_code) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SUB_MERCHANT_NAME, sub_merchant_name);
@@ -239,6 +241,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(STATUS,status);
         values.put(ORDER_ID,order_id);
         values.put(PICKED_QTY,picked_qty);
+        values.put(MERCHANT_CODE,merchant_code);
         // insert
         db.insert(TABLE_NAME_2,null, values);
         db.close();

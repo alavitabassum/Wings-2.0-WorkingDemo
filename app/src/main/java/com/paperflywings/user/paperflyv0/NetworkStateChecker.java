@@ -79,21 +79,57 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         saveBarcode(cursor1.getInt(0),cursor1.getString(1), cursor1.getString(2),cursor1.getString(3), Boolean.valueOf(cursor1.getString(4)),cursor1.getString(6),cursor1.getString(7));
                     } while (cursor1.moveToNext());
                 }
+
+
                 //getting all the unsynced data
                 Cursor cursor2 = database2.getUnsyncedData();
                 if (cursor2.moveToFirst()) {
                     do {
                         //calling the method to save the unsynced name to MySQL
-                        saveData(cursor2.getInt(0),cursor2.getString(6),cursor2.getString(5),cursor2.getString(10),cursor2.getString(11),cursor2.getString(1), cursor2.getString(14), cursor2.getString(9),cursor2.getString(17),cursor2.getString(19));
+                        saveData(cursor2.getInt(0),
+                                cursor2.getString(6),
+                                cursor2.getString(5),
+                                cursor2.getString(10),
+                                cursor2.getString(11),
+                                cursor2.getString(1),
+                                cursor2.getString(14),
+                                cursor2.getString(9),
+                                cursor2.getString(17),
+                                cursor2.getString(19));
                     } while (cursor2.moveToNext());
                 }
+
+                /* + "id INTEGER PRIMARY KEY AUTOINCREMENT, "0
+                + "merchantId TEXT, "1
+                + "picked_qty TEXT, "5
+                + "scan_count TEXT, "6
+                + "created_at TEXT , "9
+                + "updated_by TEXT, "10
+                + "updated_at TEXT , "11
+                + "p_m_name TEXT , "14
+                + "apiOrderID TEXT, "17
+                + "pick_from_merchant_status TEXT, "19*/
+
+               /* final int id, 0
+                final String strI,6
+                final String picked_qty, 5
+                final String updated_by, 10
+                final String updated_at, 11
+                final String merchant_id, 1
+                final String sub_merchant_name, 14
+                final String match_date,9
+                final String apiOrderID,17
+                final String pick_from_merchant_status,19*/
+
+
+
 
                 //getting all the unsynced data
                 Cursor cursor3 = database2.getUnsyncedFulfillmentBarcodeData();
                 if (cursor3.moveToFirst()) {
                     do {
 
-                        saveFulfillmentBarcode(cursor3.getInt(0),cursor3.getString(1),cursor3.getString(2),cursor3.getString(3),Boolean.valueOf(cursor3.getString(4)), cursor3.getString(6), cursor3.getString(7), cursor3.getString(8), cursor3.getString(9));
+                        saveFulfillmentBarcode(cursor3.getInt(0),cursor3.getString(1),cursor3.getString(2),cursor3.getString(3),Boolean.valueOf(cursor3.getString(4)), cursor3.getString(6), cursor3.getString(7), cursor3.getString(8), cursor3.getString(9), cursor3.getString(10));
                     } while (cursor3.moveToNext());
                 }
 
@@ -282,7 +318,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     // Update scan count
     private void saveData(final int id, final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date,final String apiOrderID, final String pick_from_merchant_status) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTableForFulfillment.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTableFulShoparu.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -329,7 +365,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
     //Fulfillment Barcode save to server
-    private void saveFulfillmentBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty) {
+    private void saveFulfillmentBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty, final String merchant_code) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, FulfillmentScanningScreen.BARCODE_INSERT_AND_UPDATE_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -363,6 +399,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("updated_at", updated_at);
                 params.put("order_id", order_id);
                 params.put("picked_qty", picked_qty);
+                params.put("merchant_id", merchant_code);
 
                 return params;
             }

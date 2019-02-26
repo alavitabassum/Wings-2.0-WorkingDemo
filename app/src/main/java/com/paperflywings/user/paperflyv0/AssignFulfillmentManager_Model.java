@@ -12,10 +12,43 @@ public class AssignFulfillmentManager_Model  {
     private String scan_count;
     private String created_at;
     private String assign_status;
+    private String merchant_code; // merchant code
     int key_id;
     int status;
 
-    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id,int sum, String created_at, String assign_status) {
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getAssign_status() {
+        return assign_status;
+    }
+
+    public void setAssign_status(String assign_status) {
+        this.assign_status = assign_status;
+    }
+
+    public String getMerchant_code() {
+        return merchant_code;
+    }
+
+    public void setMerchant_code(String merchant_code) {
+        this.merchant_code = merchant_code;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String created_at, String assign_status, String merchant_code) {
 
         this.main_merchant = main_merchant;
         this.supplier_name = supplier_name;
@@ -24,9 +57,27 @@ public class AssignFulfillmentManager_Model  {
         this.product_name = product_name;
         this.product_id = product_id;
         this.sum = sum;
+
         this.created_at = created_at;
         this.assign_status = assign_status;
+        this.merchant_code = merchant_code;
 //        this.status = status;
+    }
+
+    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String created_at, String assign_status, String merchant_code, int status) {
+
+        this.main_merchant = main_merchant;
+        this.supplier_name = supplier_name;
+        this.supplier_phone = supplier_phone;
+        this.supplier_address = supplier_address;
+        this.product_name = product_name;
+        this.product_id = product_id;
+        this.sum = sum;
+
+        this.created_at = created_at;
+        this.assign_status = assign_status;
+        this.merchant_code = merchant_code;
+        this.status = status;
     }
 
 
