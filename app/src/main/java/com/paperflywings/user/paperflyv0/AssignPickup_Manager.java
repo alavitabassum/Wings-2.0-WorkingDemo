@@ -68,7 +68,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 //    public static final String INSERT_URL = "http://paperflybd.com/insertfulfillmentassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     public static final String UPDATE_ASSIGN_URL = "http://paperflybd.com/updateUnassignedAPI.php";
-    private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    private String ALL_MERCHANT_URL = "http://paperflybd.com/merchantAPI1.php";
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
@@ -290,7 +290,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                                         o.getString("contactNumber"),
                                         o.getString("pickMerchantName"),
                                         o.getString("pickMerchantAddress"),
-                                        o.getString("pickAssignedStatus")
+                                        o.getString("pickAssignedStatus"),
+                                        o.getString("address")
                                 );
 
                                 database.addmerchantlist(o.getString("merchantName"),
@@ -299,7 +300,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                                         o.getString("contactNumber"),
                                         o.getString("pickMerchantName"),
                                         o.getString("pickMerchantAddress"),
-                                        o.getString("pickAssignedStatus"));
+                                        o.getString("pickAssignedStatus"),
+                                        o.getString("address"));
                                 assignManager_modelList.add(todaySummary);
 
                             }
@@ -352,7 +354,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                 String p_m_name = c.getString(4);
                 String p_m_address = c.getString(5);
                 String p_assigned_status = c.getString(6);
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount,contactNumber,p_m_name,p_m_address,p_assigned_status);
+                String address = c.getString(7);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,totalcount,contactNumber,p_m_name,p_m_address,p_assigned_status,address);
                 assignManager_modelList.add(todaySummary);
             }
 
@@ -380,7 +383,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
                                 database.addallmerchantlist(o.getString("merchantName"),
-                                        o.getString("merchantCode"));
+                                        o.getString("merchantCode"),
+                                        o.getString("address"));
                             }
 
                         } catch (JSONException e) {
@@ -699,8 +703,25 @@ public class AssignPickup_Manager extends AppCompatActivity
         final String product_name = "0";
         final String m_name = clickeditem.getM_names();
         final String contactNumber = clickeditem.getPhone_no();
-        final String pick_merchant_name = clickeditem.getPick_m_name();
-        final String pick_merchant_address = clickeditem.getM_address();
+
+//        final String p_m_name_test = clickeditem.getPick_m_name()
+
+        String pick_merchant_name = "";
+        String pick_merchant_address = "";
+
+
+        if(clickeditem.getPick_m_name().equals("")){
+            pick_merchant_name = clickeditem.getM_names();
+        }else{
+            pick_merchant_name = clickeditem.getPick_m_name();
+        }
+
+        if(clickeditem.getM_address().equals("")){
+            pick_merchant_address = clickeditem.getAddress();
+        }else{
+            pick_merchant_address = clickeditem.getM_address();
+        }
+
         final String apiOrderID ="0";
         final String demo = "0";
         final String complete_status = "p";
@@ -768,6 +789,8 @@ public class AssignPickup_Manager extends AppCompatActivity
         spinnerBuilder.setView(mView);
         final AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
+        final String finalPick_merchant_name = pick_merchant_name;
+        final String finalPick_merchant_address = pick_merchant_address;
         dialog2.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -778,7 +801,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 //                    dialog.equals("Order count can't be empty");
 
                 } else {
-                    assignexecutive(mAutoComplete.getText().toString(), empcode, product_name,et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status, apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+                    assignexecutive(mAutoComplete.getText().toString(), empcode, product_name,et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, finalPick_merchant_name, finalPick_merchant_address, complete_status, apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
 //                    updatePickAssigedStatus(merchant_code, pickAssidnedStatus,et1.getText().toString());
                     updatePickAssigedStatus(merchant_code, pickAssidnedStatus);
 

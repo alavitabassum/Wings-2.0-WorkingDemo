@@ -2,6 +2,7 @@ package com.paperflywings.user.paperflyv0;
 
 public class AssignManager_Model  {
     private String m_names;
+    private String address;
     private String m_address;
     private String assigned;
     private int totalcount;
@@ -18,6 +19,27 @@ public class AssignManager_Model  {
         this.totalcount = totalcount;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public AssignManager_Model(String m_names, String merchant_code, int totalcount, String phone_no, String pick_m_name, String m_address, String pick_assign_status, String address) {
+        this.m_names = m_names;
+        this.merchant_code = merchant_code;
+        this.totalcount = totalcount;
+        this.phone_no = phone_no;
+        this.pick_m_name = pick_m_name;
+        this.m_address = m_address;
+
+        this.pick_assign_status = pick_assign_status;
+        this.address = address;
+
+    }
+
     public AssignManager_Model(String m_names, String merchant_code,int totalcount,String phone_no,String pick_m_name,String m_address, String pick_assign_status) {
         this.m_names = m_names;
         this.merchant_code = merchant_code;
@@ -28,9 +50,10 @@ public class AssignManager_Model  {
         this.pick_assign_status = pick_assign_status;
 
         }
-    public AssignManager_Model(String m_names, String m_address) {
+    public AssignManager_Model(String m_names, String m_address, String address) {
         this.m_names = m_names;
-        this.m_address = m_address;
+        this.m_address = m_address; // mainly the merchant code is saved here
+        this.address = address; // main merchant address is saved here for creating a new order
         }
 
     public String getMerchant_code() {

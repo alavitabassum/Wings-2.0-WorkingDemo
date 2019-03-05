@@ -23,7 +23,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp = "create table merchants(name text,assigned text, uploaded text, received text,unique (name, assigned,uploaded,received))";
         String tableEmp1 = "create table merchantsfor_executives(merchant_name text,order_count text, picked_qty text, scan_count text,unique (merchant_name, order_count,picked_qty,scan_count))";
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
-        String tableEmp3 = "create table merchantList(id integer primary key AUTOINCREMENT, merchantName text,merchantCode text,totalcount int,contactNumber text,pick_m_name text,pick_m_address text, pick_assigned_status text ,status int,unique(merchantName,totalcount))";
+        String tableEmp3 = "create table merchantList(id integer primary key AUTOINCREMENT, merchantName text,merchantCode text,totalcount int,contactNumber text,pick_m_name text,pick_m_address text, pick_assigned_status text, address text ,status int,unique(merchantName,totalcount))";
 
         // Fulfillment
         String tableEmp8 = "create table merchantListFulfillment(id integer primary key AUTOINCREMENT,main_merchant text,supplier_name text,supplier_phone text,supplier_address text,product_name text, product_id integer,sum integer, created_at text,assign_status text, merchant_code text,status int, unique(product_id))";
@@ -33,7 +33,7 @@ public class Database extends SQLiteOpenHelper {
 
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text, product_name text, order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text, complete_status text,apiOrderID integer,demo integer, pick_from_merchant_status text, received_from_HQ_status text,unique(ex_name,product_name,merchantCode,merchantname,pick_m_name,apiOrderID))";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
-        String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text, unique(merchantName,merchantCode))";
+        String tableEmp6 = "create table Allmerchantlist(merchantName text,merchantCode text,address text, unique(merchantName,merchantCode))";
         String tableEmp9 = "create table Fulfillmentmerchantlist(merchantName text unique, merchant_code text)";
         String tableEmp10 = "create table Fulfillmentsupplier(supplierName text unique)";
         String tableEmp11 = "create table Fulfillmentproduct(productName text, productID text, unique(productName,productID))";
@@ -156,7 +156,7 @@ public class Database extends SQLiteOpenHelper {
         return db.query("com_ex", columns, null, null, null, null, null);
     }
 
-    public void addmerchantlist(String merchantName, String merchantCode,int cnt,String contactNumber,String pick_merchant_name,String pick_merchant_address, String pick_assigned_status) {
+    public void addmerchantlist(String merchantName, String merchantCode,int cnt,String contactNumber,String pick_merchant_name,String pick_merchant_address, String pick_assigned_status, String address) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -168,6 +168,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("pick_m_name",pick_merchant_name);
         values.put("pick_m_address",pick_merchant_address);
         values.put("pick_assigned_status",pick_assigned_status);
+        values.put("address",address);
 
         sqLiteDatabase.insertWithOnConflict("merchantList", null, values,SQLiteDatabase.CONFLICT_IGNORE);
         sqLiteDatabase.close();
@@ -280,13 +281,14 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
-    public void addallmerchantlist(String merchantName, String merchantCode) {
+    public void addallmerchantlist(String merchantName, String merchantCode, String address) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
         values.put("merchantName", merchantName);
         values.put("merchantCode", merchantCode);
+        values.put("address", address);
 
         sqLiteDatabase.insert("Allmerchantlist", null, values);
         sqLiteDatabase.close();
@@ -348,7 +350,7 @@ public class Database extends SQLiteOpenHelper {
 
 
     public Cursor get_All_merchantlist(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "merchantCode"};
+        String[] columns = {"merchantName", "merchantCode","address"};
         return db.query("Allmerchantlist", columns, null, null, null, null, null);
     }
 
@@ -466,7 +468,7 @@ public class Database extends SQLiteOpenHelper {
 
 
     public Cursor get_merchantlist(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "merchantCode","totalcount","contactNumber","pick_m_name","pick_m_address","pick_assigned_status"};
+        String[] columns = {"merchantName", "merchantCode","totalcount","contactNumber","pick_m_name","pick_m_address","pick_assigned_status","address"};
         return db.query("merchantList", columns, "pick_assigned_status= 0", null, null, null, null);
     }
 
@@ -629,6 +631,18 @@ public class Database extends SQLiteOpenHelper {
         }
         return null;
     }
+
+    public String getSelectedMerchantAddress(String merchantname){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT address FROM " + "Allmerchantlist"+ " WHERE " + "merchantName" + " = '" + merchantname + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("address"));
+            return selection;
+        }
+        return null;
+    }
+
 
     public String getSelectedProductID(String productname){
         String selection = "Error";

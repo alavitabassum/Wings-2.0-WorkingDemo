@@ -40,7 +40,7 @@ public class NewOrder extends AppCompatActivity {
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     //private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
-    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    private String MERCHANT_URL = "http://paperflybd.com/merchantAPI1.php";
 
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
@@ -104,14 +104,31 @@ public class NewOrder extends AppCompatActivity {
                 final String demo = "0";
                 final String pick_from_merchant_status = "0";
                 final String received_from_HQ_status = "0";
+                String pick_merchant_name = "";
+                String pick_merchant_address = "";
+
+                if(p_m_name.getText().toString().equals("")){
+                    pick_merchant_name = merchantname;
+                } else {
+                    pick_merchant_name = p_m_name.getText().toString();
+                }
 
                 final String merchantcode = database.getSelectedMerchantCodeAll(adapterView.getItemAtPosition(i).toString());
+                final String merchantaddress = database.getSelectedMerchantAddress(adapterView.getItemAtPosition(i).toString());
 
+                if(p_m_address.getText().toString().equals("")){
+                    pick_merchant_address = merchantaddress;
+                } else {
+                    pick_merchant_address = p_m_address.getText().toString();
+                }
+
+                final String finalPick_merchant_name = pick_merchant_name;
+                final String finalPick_merchant_address = pick_merchant_address;
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //database.assignexecutive(actv_exe_name.getText().toString(),count.getText().toString(),merchantcode,user,currentDateTimeString);
-                        assignexecutive(actv_exe_name.getText().toString(),empcode, product_name, count.getText().toString(), merchantcode, user, currentDateTimeString,merchantname,contactNumber,p_m_name.getText().toString(),p_m_address.getText().toString(), complete_sttaus,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+                        assignexecutive(actv_exe_name.getText().toString(),empcode, product_name, count.getText().toString(), merchantcode, user, currentDateTimeString,merchantname,contactNumber, finalPick_merchant_name, finalPick_merchant_address, complete_sttaus,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
                         //database.assignexecutive(actv_exe_name.getText().toString(), empcode, count.getText().toString(), merchantcode, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER);
                         Toast.makeText(getApplicationContext(),
                                 "You have inserted new order for "
@@ -168,8 +185,9 @@ public class NewOrder extends AppCompatActivity {
             while (c.moveToNext()) {
                 String merchantName = c.getString(0);
                 String merchantCode = c.getString(1);
+                String address = c.getString(2);
 
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode);
+                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode,address);
                 assignManager_modelList.add(todaySummary);
             }
 

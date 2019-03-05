@@ -150,7 +150,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
         if(p_name.length()==0)
         {
-            viewHolder.itemPickupMerchantName.setText("No Pickup Merchant");
+            viewHolder.itemPickupMerchantName.setText(assignManager_model.getM_names());
         }
         else{
             viewHolder.itemPickupMerchantName.setText(p_name);
@@ -158,7 +158,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         final String p_address = assignManager_model.getM_address();
         if(p_address.length()==0)
         {
-            viewHolder.itemMerchantAddress.setText("No Pickup Address");
+            viewHolder.itemMerchantAddress.setText(assignManager_model.getAddress());
         }
         else
         {
@@ -166,9 +166,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         }
         viewHolder.item_call.setText(String.valueOf(assignManager_model.getTotalcount()));
     }
-
-
-
 
 
     @Override
