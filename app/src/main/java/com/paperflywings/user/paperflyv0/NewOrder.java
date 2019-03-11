@@ -104,7 +104,10 @@ public class NewOrder extends AppCompatActivity {
                 final String demo = "0";
                 final String pick_from_merchant_status = "0";
                 final String received_from_HQ_status = "0";
-                String pick_merchant_name = "";
+
+                final String merchantcode = database.getSelectedMerchantCodeAll(adapterView.getItemAtPosition(i).toString());
+                final String merchantaddress = database.getSelectedMerchantAddress(adapterView.getItemAtPosition(i).toString());
+                /*String pick_merchant_name = "";
                 String pick_merchant_address = "";
 
                 if(p_m_name.getText().toString().equals("")){
@@ -120,15 +123,15 @@ public class NewOrder extends AppCompatActivity {
                     pick_merchant_address = merchantaddress;
                 } else {
                     pick_merchant_address = p_m_address.getText().toString();
-                }
+                }*/
 
-                final String finalPick_merchant_name = pick_merchant_name;
-                final String finalPick_merchant_address = pick_merchant_address;
+                /*final String finalPick_merchant_name = pick_merchant_name;
+                final String finalPick_merchant_address = pick_merchant_address;*/
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //database.assignexecutive(actv_exe_name.getText().toString(),count.getText().toString(),merchantcode,user,currentDateTimeString);
-                        assignexecutive(actv_exe_name.getText().toString(),empcode, product_name, count.getText().toString(), merchantcode, user, currentDateTimeString,merchantname,contactNumber, finalPick_merchant_name, finalPick_merchant_address, complete_sttaus,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+                        assignexecutive(actv_exe_name.getText().toString(),empcode, product_name, count.getText().toString(), merchantcode, user, currentDateTimeString,merchantname,contactNumber, p_m_name.getText().toString(),  p_m_address.getText().toString(), complete_sttaus,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
                         //database.assignexecutive(actv_exe_name.getText().toString(), empcode, count.getText().toString(), merchantcode, user, currentDateTimeString, AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER);
                         Toast.makeText(getApplicationContext(),
                                 "You have inserted new order for "
