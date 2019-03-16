@@ -38,6 +38,8 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp10 = "create table Fulfillmentsupplier(supplierName text unique)";
         String tableEmp11 = "create table Fulfillmentproduct(productName text, productID text, unique(productName,productID))";
         String tableEmp7 = "create table pickups_today_manager(merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text, unique(merchantName, p_m_name, product_name))";
+        String tableEmp15 = "create table robiShopList(id integer primary key AUTOINCREMENT, merchantCode text,address text,merchantName text,pickMerchantName text,pickMerchantAddress text, pickupMerchantPhone text,merOrderRef text, productBrief text,created_at text, unique(merOrderRef))";
+
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
         sqLiteDatabase.execSQL(tableEmp2);
@@ -53,6 +55,7 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(tableEmp12);
         sqLiteDatabase.execSQL(tableEmp13);
         sqLiteDatabase.execSQL(tableEmp14);
+        sqLiteDatabase.execSQL(tableEmp15);
     }
 
     @Override
@@ -241,11 +244,38 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
+
+    public void addRobishop(String merchantCode, String address, String merchantName, String pickMerchantName, String pickMerchantAddress, String pickupMerchantPhone,String merOrderRef, String productBrief, String date) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("merchantCode", merchantCode);
+        values.put("address",address);
+        values.put("merchantName",merchantName);
+        values.put("pickMerchantName",pickMerchantName);
+        values.put("pickMerchantAddress",pickMerchantAddress);
+        values.put("pickupMerchantPhone",pickupMerchantPhone);
+        values.put("merOrderRef",merOrderRef);
+        values.put("productBrief",productBrief);
+        values.put("created_at",date);
+
+        sqLiteDatabase.insertWithOnConflict("robiShopList", null, values,SQLiteDatabase.CONFLICT_IGNORE);
+        sqLiteDatabase.close();
+    }
+
     // get ajker deal merchant list
     public Cursor get_ajkerDeal_ekshop_merchantlist(SQLiteDatabase db) {
 
         String[] columns = {"main_merchant","supplier_phone","supplier_address","supplier_name","apiOrderID", "product_id","created_at"};
         return db.query("ajkerDealEkshopList", columns, null, null, null, null, null);
+    }
+
+    // get robishop merchant list
+    public Cursor get_robishop_merchantlist(SQLiteDatabase db) {
+
+        String[] columns = {"merchantCode","address","merchantName","pickMerchantName","pickMerchantAddress","pickupMerchantPhone", "merOrderRef","productBrief","created_at"};
+        return db.query("robiShopList", columns, null, null, null, null, null);
     }
 
     public void addAjkerDealOther(String merchantName, String pickMerchantName, String pickMerchantAddress, String phone1, String apiOrderID,String merOrderRef, String currentDateTimeString) {
@@ -383,6 +413,16 @@ public class Database extends SQLiteOpenHelper {
 
         if (NoOfRows != 0){
             sqLiteDatabase.execSQL("delete from "+ "ajkerDealList");
+        }
+    }
+
+    public void deletemerchantList_robishop(SQLiteDatabase sqLiteDatabase)
+    {
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"robiShopList");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "robiShopList");
         }
     }
 

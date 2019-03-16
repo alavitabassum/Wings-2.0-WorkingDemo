@@ -146,8 +146,6 @@ public class NewOrder extends AppCompatActivity {
             }
         });
 
-
-
         for (int k = 0; k < executiveLists.size(); k++) {
             executivenames.add(executiveLists.get(k).getExecutive_name());
         }
@@ -159,9 +157,7 @@ public class NewOrder extends AppCompatActivity {
 
        actv_exe_name.setAdapter(adapter1);
 
-
         }
-
 
  private AdapterView.OnItemClickListener onItemClickListener =
             new AdapterView.OnItemClickListener(){

@@ -96,5 +96,7 @@
     <string name="title_activity_ajker_deal_ekshop__assign__pickup_manager">
         AjkerDealEkshop_Assign_Pickup_manager
     </string>
+    <string name="title_activity_robishop__assign_pickup_manager">Robishop_Assign_pickup_manager
+    </string>
 
 </resources>

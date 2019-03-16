@@ -582,6 +582,21 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             startActivity(scanIntent2);
         }
 
+        else if(clickedItem.getComplete_status().equals("r")) {
+            Intent scanIntent3 = new Intent(MyPickupList_Executive.this, RobishopScanningScreen.class);
+            scanIntent3.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
+            scanIntent3.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
+            scanIntent3.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
+            scanIntent3.putExtra(CREATED_AT, clickedItem.getCreated_at());
+            scanIntent3.putExtra(PRODUCT_ID, clickedItem.getApiOrderID());
+            scanIntent3.putExtra(SCAN_COUNT, clickedItem.getScan_count());
+            scanIntent3.putExtra(PRODUCT_NAME, clickedItem.getProduct_name());
+            scanIntent3.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
+            scanIntent3.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
+
+            startActivity(scanIntent3);
+        }
+
     }
 
     @Override
