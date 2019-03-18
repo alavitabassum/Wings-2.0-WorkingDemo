@@ -11,9 +11,10 @@ public class RobishopAssignManager_Model {
     private String pickupMerchantPhone;
     private String productBrief;
     private String orderDate;
+    private String pickAssignedStatus;
     int key_id;
 
-    public RobishopAssignManager_Model(String merchantCode, String address, String merchantName, String pickMerchantName, String pickMerchantAddress, String pickupMerchantPhone, String merOrderRef, String productBrief, String orderDate) {
+    public RobishopAssignManager_Model(String merchantCode, String address, String merchantName, String pickMerchantName, String pickMerchantAddress, String pickupMerchantPhone, String merOrderRef, String productBrief, String orderDate,String pickAssignedStatus) {
       this.merchantCode = merchantCode;
       this.address = address;
       this.merchantName = merchantName;
@@ -23,6 +24,7 @@ public class RobishopAssignManager_Model {
       this.merOrderRef = merOrderRef;
       this.productBrief = productBrief;
       this.orderDate = orderDate;
+      this.pickAssignedStatus = pickAssignedStatus;
     }
 
     public String getMerchantCode() {

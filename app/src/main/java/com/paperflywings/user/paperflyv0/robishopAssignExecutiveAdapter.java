@@ -154,14 +154,12 @@ public class robishopAssignExecutiveAdapter extends RecyclerView.Adapter<robisho
         }
         else
         {
-            viewHolder.itemMerchantAddress.setText(p_address);
+            viewHolder.itemMerchantAddress.setText("Add: "+p_address);
         }
 
 
-       viewHolder.item_product_name.setText(String.valueOf(RobishopAssignManager_Model.getProductBrief()));
-//        viewHolder.item_product_name.setText("Nothing");
-//      viewHolder.item_call.setText(String.valueOf(RobishopAssignManager_Model.ge()));
-        viewHolder.item_call.setText(RobishopAssignManager_Model.getMerOrderRef());
+       viewHolder.item_product_name.setText("Brief: "+RobishopAssignManager_Model.getProductBrief());
+       viewHolder.item_call.setText(RobishopAssignManager_Model.getMerOrderRef());
     }
 
 

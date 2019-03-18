@@ -39,8 +39,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +61,7 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
     public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
     private String MERCHANT_URL = "http://paperflybd.com/r_api_pull_for_pick.php";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
+    public static final String UPDATE_ASSIGN_URL = "http://paperflybd.com/updateUnassignedAPI1.php";
 
     private String MAIN_MERCHANT_URL = "http://paperflybd.com/fulfillmentMerchantAPI.php";
     private String SUPPLIER_NAME_URL = "http://paperflybd.com/fulfillmentSupplierAPI.php";
@@ -72,6 +71,7 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
     List<AssignManager_ExecutiveList> executiveLists;
     List<RobishopAssignManager_Model> robishop_modelList;
     Database database;
+
 
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -84,9 +84,9 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    private FloatingActionMenu fabmenu;
+ /*   private FloatingActionMenu fabmenu;
     private FloatingActionButton fab1;
-    private FloatingActionButton fab2;
+    private FloatingActionButton fab2;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +105,7 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         String user = username.toString();
+
 
         //recycler with cardview
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_assign_robishop);
@@ -151,21 +152,21 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
+       /* fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
         fab1 = (FloatingActionButton) findViewById(R.id.menu_item1);
-        /*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*/
+        *//*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*//*
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             /*   Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+             *//*   Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*//*
 
                 Intent intentorder = new Intent(Robishop_Assign_pickup_manager.this,
                         NewOrderEntry_ful.class);
                 startActivity(intentorder);
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -274,7 +275,8 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
                                         o.getString("pickupMerchantPhone"),
                                         o.getString("merOrderRef"),
                                         o.getString("productBrief"),
-                                        o.getString("orderDate"));
+                                        o.getString("orderDate"),
+                                        o.getString("pickAssignedStatus"));
                               // the name of the attributes have to be the same as the api attributes
                                 database.addRobishop(
                                         o.getString("merchantCode"),
@@ -285,7 +287,8 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
                                         o.getString("pickupMerchantPhone"),
                                         o.getString("merOrderRef"),
                                         o.getString("productBrief"),
-                                        o.getString("orderDate"));
+                                        o.getString("orderDate"),
+                                        o.getString("pickAssignedStatus"));
                                 robishop_modelList.add(todaySummary);
 
                             }
@@ -318,11 +321,6 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
 
     /* merchant List generation from sqlite*/
     private void getallmerchant() {
-/*
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String match_date = df.format(date);*/
-/*"merchantCode","merchantName","address","pickMerchantName","pickMerchantAddress","pickupMerchantPhone", "merOrderRef","productBrief","created_at"*/
 
         try {
             robishop_modelList.clear();
@@ -342,7 +340,8 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
                 String merOrderRef = c.getString(6);
                 String productBrief = c.getString(7);
                 String created_at = c.getString(8);
-                RobishopAssignManager_Model todaySummary = new RobishopAssignManager_Model(merchantCode,address,merchantName,pickMerchantName, pickMerchantAddress, pickupMerchantPhone, merOrderRef, productBrief,created_at);
+                String pickAssignedStatus = c.getString(9);
+                RobishopAssignManager_Model todaySummary = new RobishopAssignManager_Model(merchantCode,address,merchantName,pickMerchantName, pickMerchantAddress, pickupMerchantPhone, merOrderRef, productBrief,created_at,pickAssignedStatus);
                 robishop_modelList.add(todaySummary);
             }
 
@@ -467,6 +466,10 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
 
     }
 
+    private void updateAssignedStatus(final String merchant_code, final int status, final String pickAssignedStatus, final String demo) {
+        database.updateAssignedStatusRobi(merchant_code, status, pickAssignedStatus, demo);
+    }
+
     //For assigning executive API into mysql
     private void assignexecutive(final String ex_name, final String empcode,final String product_name, final String sum, final String product_id, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo, final String pick_from_merchant_status,final String received_from_HQ_status) {
 
@@ -526,6 +529,51 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest);
 
+    }
+
+    private void updatePickAssigedStatus(final String merchant_code, final String pickAssignedStatus, final String demo){
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_ASSIGN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
+                                updateAssignedStatus(merchant_code, NAME_SYNCED_WITH_SERVER, pickAssignedStatus,demo);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                updateAssignedStatus( merchant_code, NAME_NOT_SYNCED_WITH_SERVER, pickAssignedStatus,demo);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        updateAssignedStatus( merchant_code, NAME_NOT_SYNCED_WITH_SERVER, pickAssignedStatus,demo);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchantCode", merchant_code);
+                params.put("pickAssignedStatus", pickAssignedStatus);
+                params.put("merOrderRef", demo);
+//                params.put("order_count", order_count);
+                return params;
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest);
     }
 
 
@@ -621,7 +669,19 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-
+                            SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                            database.clearPTMList(sqLiteDatabase);
+                            database.deletemerchantList(sqLiteDatabase);
+                            database.deletemerchantList_Fulfillment(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDeal(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDealEkshopList(sqLiteDatabase);
+                            database.deletemerchantList_ajkerDealOtherList(sqLiteDatabase);
+                            database.deletemerchants(sqLiteDatabase);
+                            database.deletemerchantsfor_executives(sqLiteDatabase);
+                            database.deletecom_ex(sqLiteDatabase);
+                            database.delete_fullfillment_merchantList(sqLiteDatabase);
+                            database.deletecom_fulfillment_supplier(sqLiteDatabase);
+                            database.deletecom_fullfillment_product(sqLiteDatabase);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -694,10 +754,10 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
         final String demo = clickeditem.getMerOrderRef();
         final String pick_from_merchant_status = "0";
         final String received_from_HQ_status = "0";
+        final String pickAssignedStatus = "1";
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
-
 
         //final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         Date c = Calendar.getInstance().getTime();
@@ -734,8 +794,8 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
                     final String empcode = database.getSelectedEmployeeCode(empname);
 
                     assignexecutive(empname, empcode, product_name, et1.getText().toString(), product_id, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status,apiOrderID, demo, pick_from_merchant_status,received_from_HQ_status);
-
-                if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
+                    updatePickAssigedStatus(product_id, pickAssignedStatus, demo);
+                    if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(Robishop_Assign_pickup_manager.this, mAutoComplete.getText().toString()
                                     + "(" + et1.getText().toString() + ")",
                             Toast.LENGTH_SHORT).show();
@@ -769,7 +829,7 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
 
                 } else {
                     assignexecutive(mAutoComplete.getText().toString(), empcode, product_name, et1.getText().toString(), product_id, user, currentDateTimeString, m_name, contactNumber, String.valueOf(pick_merchant_name), pick_merchant_address, complete_status,apiOrderID, demo,pick_from_merchant_status,received_from_HQ_status);
-
+                    updatePickAssigedStatus(product_id, pickAssignedStatus, demo);
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                         Toast.makeText(Robishop_Assign_pickup_manager.this, mAutoComplete.getText().toString()
                                         + "(" + et1.getText().toString() + ")",
@@ -781,18 +841,6 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
             }
         });
     }
-
-//    boolean isEmpty(String text){
-//        CharSequence et1 = text.toString();
-//       return TextUtils.isEmpty(et1);
-//    }
-//
-//    private void checkDataEntered(String et1) {
-//         if (isEmpty(et1)){
-//             Toast t = Toast.makeText(this, "Enter Order number", Toast.LENGTH_LONG);
-//             t.show();
-//         }
-//    }
 
     @Override
     public void onItemClick_view(View view2, int position2) {
@@ -852,9 +900,6 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
         else{
             getallmerchant();
         }
-
-
     }
-
 
 }

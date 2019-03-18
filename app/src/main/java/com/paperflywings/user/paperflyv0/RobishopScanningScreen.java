@@ -276,7 +276,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                                 // current date and time
                                 final String currentDateTimeString1 = DateFormat.getDateTimeInstance().format(new Date());
                                 final String updated_by1 = user1;
-//                    final String updated_at1 = currentDateTimeString1;
+                                // final String updated_at1 = currentDateTimeString1;
 
                                 Date c = Calendar.getInstance().getTime();
                                 System.out.println("Current time => " + c);
@@ -314,7 +314,6 @@ public class RobishopScanningScreen extends AppCompatActivity {
                                 break;
                         }
 
-//                alert1.dismiss();
                     }
                 }
         );
@@ -401,7 +400,6 @@ public class RobishopScanningScreen extends AppCompatActivity {
                                     public void onClick(DialogInterface dialog, int which) {
 //                                        scannerView.resumeCameraPreview(MainActivity.this);
                                         // update quantity
-
                                     }
                                 });
 
@@ -427,21 +425,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                                             ///////ekhane update hobe barcode er picked quantity field
 //                                            updatePickedQty(product_qty, lastText);
                                             updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
-
-//                                            db.updatePickedQty(product_qty, merchant_id, sub_merchant_name, match_date, order_id);
-//                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
-                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
-
-                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
-                                                                + "(" + et1.getText().toString() + ")",
-                                                        Toast.LENGTH_LONG).show();
-                                                alert1.dismiss();
-
-                                            }*/
-
-                                            /// update the product quantity
-
+//
                                             alert1.dismiss();
                                         }
                                         onResume();
@@ -492,26 +476,11 @@ public class RobishopScanningScreen extends AppCompatActivity {
 
                                         if (et1.getText().toString().trim().isEmpty()) {
                                             tv1.setText("Field can't be empty");
-                                            //  dialog.equals("Order count can't be empty");
 
                                         } else {
                                             final String product_qty = et1.getText().toString().trim();
-                                            ///////ekhane update hobe barcode er picked quantity field
-//                                            updatePickedQty(product_qty, lastText);
                                             updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
-//                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
-                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
-
-                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
-                                                                + "(" + et1.getText().toString() + ")",
-                                                        Toast.LENGTH_LONG).show();
-                                                alert1.dismiss();
-
-                                            }*/
-
-                                            /// update the product quantity
-
+//
                                             alert1.dismiss();
                                         }
                                         onResume();
@@ -572,22 +541,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
 
                                 } else {
                                     final String product_qty = et1.getText().toString().trim();
-                                    ///////ekhane update hobe barcode er picked quantity field
-//                                        updatePickedQty(product_qty, lastText);
                                     updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
-//                                        updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
-                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
-
-                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
-                                                                + "(" + et1.getText().toString() + ")",
-                                                        Toast.LENGTH_LONG).show();
-                                                alert1.dismiss();
-
-                                            }*/
-
-                                    /// update the product quantity
-
                                     alert1.dismiss();
                                 }
                                 onResume();
@@ -609,7 +563,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                 params.put("updated_at", updated_at);
                 params.put("order_id", order_id);
                 params.put("picked_qty", picked_qty);
-                params.put("merchant_id", "0");
+                params.put("merchant_id", merchant_id);
 
                 return params;
             }
@@ -629,15 +583,8 @@ public class RobishopScanningScreen extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                //if there is a success
-                                //storing the name to sqlite with status synced
-//                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-//                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_SYNCED_WITH_SERVER);
                                 db.updatePickedQty(picked_qty, lastText, NAME_SYNCED_WITH_SERVER);
                             } else {
-                                //if there is some error
-                                //saving the name to sqlite with status unsynced
-//                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                                 db.updatePickedQty(picked_qty, lastText, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
@@ -737,17 +684,8 @@ public class RobishopScanningScreen extends AppCompatActivity {
 
     }
 
-
-
+    // Robishop API hit, token generation and update status send
     void accessToken(final String merchant_order_ref, final String pick_status) {
-        /*JSONObject params = new JSONObject();
-        try {
-            params.put("Content-Type", "application/json");
-            params.put("username", "paperfly");
-            params.put("password", "PaperFly123@");
-        } catch (JSONException ignored) {
-            // never thrown in this case
-        }*/
 
         StringRequest TokenRequest = new StringRequest(Request.Method.POST, "https://robishop.com.bd/rest/V1/integration/admin/token",
          new Response.Listener<String>() {
@@ -755,28 +693,15 @@ public class RobishopScanningScreen extends AppCompatActivity {
              public void onResponse(String response) {
 
                  updateRobishop(merchant_order_ref,pick_status,response);
-                 Toast.makeText(RobishopScanningScreen.this, response, Toast.LENGTH_SHORT).show();
              }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // show error to user. refresh failed.
-//                Log.e("Error on token refresh", new String(error.networkResponse.data));
                 Toast.makeText(RobishopScanningScreen.this, "AC "+error.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         }){
-
-            //Pass Your Parameters here
-           /* @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("username", "paperfly");
-                params.put("password", "Paperfly123@");
-                return params;
-            }*/
 
             @Override
             public byte[] getBody() throws AuthFailureError {
@@ -804,13 +729,13 @@ public class RobishopScanningScreen extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(RobishopScanningScreen.this, "Done" +response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RobishopScanningScreen.this, "Successfull", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RobishopScanningScreen.this, "VOLL" +error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RobishopScanningScreen.this, "Unsuccessfull", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {

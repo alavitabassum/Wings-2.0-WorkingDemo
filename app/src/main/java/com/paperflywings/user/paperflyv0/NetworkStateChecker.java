@@ -61,6 +61,15 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor4.moveToNext());
                 }
 
+                Cursor cursor6 = database.getUnsyncedAssignedListRobi();
+                if (cursor6.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateUnAssignedAPIRobi(cursor6.getInt(0),cursor6.getString(1),cursor6.getString(11),cursor6.getString(8));
+
+                    } while (cursor6.moveToNext());
+                }
+
                 Cursor cursor5 = database.getUnsyncedAssignedFulList();
                 if (cursor5.moveToFirst()) {
                     do {
@@ -227,6 +236,47 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("merchantCode", merchant_code);
                 params.put("pickAssignedStatus", pickAssignedStatus);
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+
+    private void updateUnAssignedAPIRobi(final int id, final String merchant_code, final String pickAssignedStatus, final String demo){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Robishop_Assign_pickup_manager.UPDATE_ASSIGN_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //updating the status in sqlite
+                                database.updateUnassignRobiStatus(id, NAME_SYNCED_WITH_SERVER);
+
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly" +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchantCode", merchant_code);
+                params.put("pickAssignedStatus", pickAssignedStatus);
+                params.put("merOrderRef", demo);
 
                 return params;
             }

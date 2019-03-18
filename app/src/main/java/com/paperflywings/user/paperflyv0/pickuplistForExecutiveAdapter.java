@@ -161,7 +161,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
 
-        viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
+
         viewHolder.item_p_m_name_pul.setText(list.get(i).getP_m_name());
         viewHolder.item_p_m_add_pul.setText(list.get(i).getP_m_add());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
@@ -173,6 +173,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
 
         if(complete_status.equals("p") && product_name.equals("0")) {
+            viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
             viewHolder.txtOption.setTextColor(Color.WHITE);
             viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Scan Count: ");
@@ -181,6 +182,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             viewHolder.item_pickedCount.setText(list.get(i).getScan_count());
 
         } if ( complete_status.equals("f") && product_name != "0") {
+            viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
             viewHolder.txtOption.setTextColor(Color.WHITE);
             viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Product: ");
@@ -189,10 +191,22 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
 
         } if ( complete_status.equals("ad")) {
+            viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
             viewHolder.txtOption.setBackgroundResource(R.color.green);
             viewHolder.txtOption.setTextColor(Color.BLACK);
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
+        }
+
+        if ( complete_status.equals("r") && product_name != "0") {
+            viewHolder.item_m_pul.setText("M-Ref: " +list.get(i).getApiOrderID());
+            viewHolder.txtOption.setTextColor(Color.WHITE);
+            viewHolder.itemStatus.setEnabled(false);
+            viewHolder.text_scanCount.setText("Product: ");
+            viewHolder.item_productName.setText(list.get(i).getProduct_name());
+            viewHolder.text_pickedCount.setText("Picked: ");
+            viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
+
         }
 
         try {
@@ -239,6 +253,21 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                 viewHolder.itemStatus.setTextColor(Color.BLACK);
                 viewHolder.itemStatus.setEnabled(true);
             }
+
+            if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("r")){
+                viewHolder.itemStatus.setText("Complete");
+                viewHolder.itemStatus.setBackgroundResource(R.color.green);
+                viewHolder.itemStatus.setTextColor(Color.WHITE);
+                viewHolder.itemStatus.setEnabled(false);
+
+            }
+            if(count_picked < count_assigned && complete_status.equals("r")) {
+                viewHolder.itemStatus.setText("Pending");
+                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
+                viewHolder.itemStatus.setTextColor(Color.BLACK);
+                viewHolder.itemStatus.setEnabled(true);
+            }
+
         } catch(Exception e) {
             e.printStackTrace();
             Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();

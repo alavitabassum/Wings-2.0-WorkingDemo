@@ -137,8 +137,8 @@ card_view_assign:contentPadding="4dp">
         android:layout_alignStart="@+id/m_add_fulfillment"
         android:layout_marginTop="1dp"
         android:text="Product_name:"
-        android:textColor="#000"
-        android:textSize="15sp" />
+        android:textColor="#359324"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/calltxt_fulfillment"

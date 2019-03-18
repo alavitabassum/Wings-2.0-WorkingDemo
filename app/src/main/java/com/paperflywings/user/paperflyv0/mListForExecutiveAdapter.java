@@ -84,12 +84,18 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
             viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
         }
         if ( complete_status.equals("f")) {
-            viewHolder.item_mName.setText("Shoparu-"+summaries.get(i).getP_m_name());
+            viewHolder.item_mName.setText(summaries.get(i).getMerchant_name()+"-"+summaries.get(i).getP_m_name());
             viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
             viewHolder.text_rQty.setText("Picked: ");
             viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
         }
         if ( complete_status.equals("ad")) {
+            viewHolder.item_mName.setText(summaries.get(i).getP_m_name());
+            viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
+            viewHolder.text_rQty.setText("Picked: ");
+            viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
+        }
+        if ( complete_status.equals("r")) {
             viewHolder.item_mName.setText(summaries.get(i).getP_m_name());
             viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
             viewHolder.text_rQty.setText("Picked: ");
@@ -136,6 +142,18 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
                 if (count_picked < count_assigned && complete_status.equals("ad")) {
                     viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
                 }
+
+            if (count_picked == count_assigned && complete_status.equals("r")) {
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+            }
+
+            if (count_picked > count_assigned && complete_status.equals("r")) {
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+            }
+
+            if (count_picked < count_assigned && complete_status.equals("r")) {
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+            }
 
         } catch(Exception e) {
             e.printStackTrace();

@@ -11,10 +11,10 @@ import android.widget.TextView;
 public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapterManager.ViewHolder> {
 
 //    private String[] titles = { "Assign Pickups(LOGISTIC)","Assign Pickup(Shoparu)","Ajker Deal","Ajker Deal(Other Merchant)","Ajker Deal(EkShop)","Pickups Today"};
-    private String[] titles = { "Assign Pickups(LOGISTIC)","Assign Pickup(Shoparu)","AjkerDeal(DirectDelivery)","RobiShop","Pickups Today"};
+    private String[] titles = { "Assign Pickups(LOGISTIC)","Assign Pickup(Fulfillment)","RobiShop","AjkerDeal(Direct Delivery)","Pickups Today"};
 
 //    private int[] images = { R.drawable.assignpickup, R.drawable.puhistory ,R.drawable.puhistory, R.drawable.puhistory ,R.drawable.puhistory , R.drawable.pickupstoday};
-    private int[] images = { R.drawable.assignpickup,R.drawable.puhistory, R.drawable.puhistory , R.drawable.puhistory , R.drawable.pickupstoday};
+    private int[] images = { R.drawable.assignpickup,R.drawable.pickupstoday, R.drawable.robi ,R.drawable.ajkerdeal , R.drawable.pickupstoday};
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -44,36 +44,15 @@ public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapter
                     }
 
                     else if (position == 2) {
-                        Intent intent_assign_robishop = new Intent(v.getContext(), ManagerCardMenu.class);
+                        Intent intent_assign_robishop = new Intent(v.getContext(), Robishop_Assign_pickup_manager.class);
                         v.getContext().startActivity(intent_assign_robishop);
                     }
 
                     else if (position == 3) {
-                        Intent intent_assign_robishop = new Intent(v.getContext(), Robishop_Assign_pickup_manager.class);
+                        Intent intent_assign_robishop = new Intent(v.getContext(), ManagerCardMenu.class);
                         v.getContext().startActivity(intent_assign_robishop);
                     }
-                  /*  else if (position == 2) {
-                        *//*Intent intent_assign_ajker_deal = new Intent(v.getContext(), AjkerDeal_Assign_Pickup_manager.class);
-                        v.getContext().startActivity(intent_assign_ajker_deal);*//*
 
-                        Intent intent_assign_ajker_deal = new Intent(v.getContext(), ManagerCardMenu.class);
-                        v.getContext().startActivity(intent_assign_ajker_deal);
-
-                    }  else if (position == 3) {
-                        *//*Intent intent_assign_ajker_deal1 = new Intent(v.getContext(), AjkerDealOther_Assign_Pickup_manager.class);
-                        v.getContext().startActivity(intent_assign_ajker_deal1);*//*
-
-                        Intent intent_assign_ajker_deal1 = new Intent(v.getContext(), ManagerCardMenu.class);
-                        v.getContext().startActivity(intent_assign_ajker_deal1);
-
-                    } else if (position == 4) {
-                        *//*Intent intent_assign_ajker_deal2 = new Intent(v.getContext(), AjkerDealEkshop_Assign_Pickup_manager.class);
-                        v.getContext().startActivity(intent_assign_ajker_deal2);*//*
-
-                        Intent intent_assign_ajker_deal2 = new Intent(v.getContext(), ManagerCardMenu.class);
-                        v.getContext().startActivity(intent_assign_ajker_deal2);
-
-                    } */
                     else {
                         Intent intent = new Intent(v.getContext(), PickupsToday_Manager.class);
                         v.getContext().startActivity(intent);

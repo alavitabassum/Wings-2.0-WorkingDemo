@@ -23,10 +23,17 @@
 
     <include layout="@layout/content_robishop__assign_pickup_manager" />
 
-    <com.github.clans.fab.FloatingActionMenu
+   <!-- <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu"
-        fab:menu_animationDelayPerItem="50"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
         app:menu_backgroundColor="#CCFFFFFF"
+        fab:menu_animationDelayPerItem="50"
         fab:menu_buttonSpacing="0dp"
         fab:menu_colorNormal="@color/red"
         fab:menu_colorPressed="@color/dark_red"
@@ -59,35 +66,27 @@
         fab:menu_shadowRadius="4dp"
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="3dp"
-        fab:menu_showShadow="true"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:paddingBottom="8dp"
-        android:paddingEnd="8dp"
 
 
-        android:layout_gravity="bottom|end"
-        >
+        fab:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/menu_item1"
-            fab:fab_label="Create new order"
             style="@style/MenuButtonsSmall.Green"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/pen" />
+            android:src="@drawable/pen"
+            fab:fab_label="Create new order" />
 
-        <!--  <com.github.clans.fab.FloatingActionButton
+        &lt;!&ndash;  <com.github.clans.fab.FloatingActionButton
               android:id="@+id/menu_item2"
               fab:fab_label="Update Order"
               style="@style/MenuButtonsSmall"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/update"
-              android:cropToPadding="true"/>-->
+              android:cropToPadding="true"/>&ndash;&gt;
 
-    </com.github.clans.fab.FloatingActionMenu>
+    </com.github.clans.fab.FloatingActionMenu>-->
 
 </android.support.design.widget.CoordinatorLayout>
