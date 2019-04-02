@@ -11,6 +11,10 @@ public class AjkerDealOtherAssignManager_Model {
     //    private int sum;
     private String scan_count;
     private String created_at;
+    private String pickupMerchantPhone;
+    private String cnt;
+    private String merchantCode;
+    private String pickAssignedStatus;
     int key_id;
 
     /*   o.getString("merchantName"),
@@ -22,14 +26,47 @@ public class AjkerDealOtherAssignManager_Model {
                                         o.getString("date")*/
 
 
-    public AjkerDealOtherAssignManager_Model(String merchantName, String pickMerchantName, String pickMerchantAddress, String phone1,String apiOrderID, String merOrderRef, String created_at) {
-        this.merchantName = merchantName;
-        this.phone1 = phone1;
+    public String getPickupMerchantPhone() {
+        return pickupMerchantPhone;
+    }
+
+    public void setPickupMerchantPhone(String pickupMerchantPhone) {
+        this.pickupMerchantPhone = pickupMerchantPhone;
+    }
+
+    public String getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(String cnt) {
+        this.cnt = cnt;
+    }
+
+    public String getMerchantCode() {
+        return merchantCode;
+    }
+
+    public void setMerchantCode(String merchantCode) {
+        this.merchantCode = merchantCode;
+    }
+
+    public String getPickAssignedStatus() {
+        return pickAssignedStatus;
+    }
+
+    public void setPickAssignedStatus(String pickAssignedStatus) {
+        this.pickAssignedStatus = pickAssignedStatus;
+    }
+
+    public AjkerDealOtherAssignManager_Model(String merchantCode, String pickMerchantName, String pickMerchantAddress, String pickupMerchantPhone, String pickAssignedStatus, String cnt , String merOrderRef) {
+        this.merchantCode = merchantCode;
         this.pickMerchantAddress = pickMerchantAddress;
         this.pickMerchantName = pickMerchantName;
-        this.apiOrderID = apiOrderID;
+        this.pickupMerchantPhone = pickupMerchantPhone;
+        this.pickAssignedStatus = pickAssignedStatus;
+        this.cnt = cnt;
         this.merOrderRef = merOrderRef;
-        this.created_at = created_at;
+
     }
 
     public String getMerchantName() {

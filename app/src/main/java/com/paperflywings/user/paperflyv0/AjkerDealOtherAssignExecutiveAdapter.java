@@ -136,29 +136,29 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         AjkerDealOtherAssignManager_Model AjkerDealOtherAssignManager_Model = ajkerdealother_modelList.get(i);
-        viewHolder.itemMerchantName.setText(AjkerDealOtherAssignManager_Model.getMerchantName());
-        final String subMerchant = AjkerDealOtherAssignManager_Model.getPickMerchantName();
+        viewHolder.itemMerchantName.setText(AjkerDealOtherAssignManager_Model.getPickMerchantName());
+        final String subMerchantPhone = AjkerDealOtherAssignManager_Model.getPickupMerchantPhone();
 
-        if(subMerchant.length() == 0)
+        if(subMerchantPhone.length() == 0)
         {
             viewHolder.itemPickupMerchantName.setText("No contact number available");
         }
         else{
-            viewHolder.itemPickupMerchantName.setText("Pick From: " +subMerchant);
+            viewHolder.itemPickupMerchantName.setText("Call: " +subMerchantPhone);
         }
         final String p_address = AjkerDealOtherAssignManager_Model.getPickMerchantAddress();
         if(p_address.length()==0)
         {
-            viewHolder.itemMerchantAddress.setText("No Pickup Address");
+            viewHolder.itemMerchantAddress.setText("Address unavailable");
         }
         else
         {
-            viewHolder.itemMerchantAddress.setText(p_address);
+            viewHolder.itemMerchantAddress.setText("Add: "+p_address);
         }
 
 
 //        viewHolder.item_product_name.setText(String.valueOf(AjkerDealAssignManager_Model.getProduct_name()));
-        viewHolder.item_product_name.setText("Nothing");
+        viewHolder.item_product_name.setText("Order Qty: "+AjkerDealOtherAssignManager_Model.getCnt());
 //        viewHolder.item_call.setText(String.valueOf(AjkerDealAssignManager_Model.getSum()));
         viewHolder.item_call.setText(AjkerDealOtherAssignManager_Model.getMerOrderRef());
     }

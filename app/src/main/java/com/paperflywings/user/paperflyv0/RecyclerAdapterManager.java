@@ -49,8 +49,8 @@ public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapter
                     }
 
                     else if (position == 3) {
-                        Intent intent_assign_robishop = new Intent(v.getContext(), ManagerCardMenu.class);
-                        v.getContext().startActivity(intent_assign_robishop);
+                        Intent intent_assign_ad_direct_delivery = new Intent(v.getContext(), AjkerDealOther_Assign_Pickup_manager.class);
+                        v.getContext().startActivity(intent_assign_ad_direct_delivery);
                     }
 
                     else {

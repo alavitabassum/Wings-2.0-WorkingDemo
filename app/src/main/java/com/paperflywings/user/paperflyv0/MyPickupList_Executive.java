@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -567,13 +568,13 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             startActivity(scanIntent1);
         }
 
-        else if(clickedItem.getComplete_status().equals("ad")) {
+        else if(clickedItem.getComplete_status().equals("a")) {
             Intent scanIntent2 = new Intent(MyPickupList_Executive.this, FulfillmentScanningScreenAjkerDeal.class);
             scanIntent2.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
             scanIntent2.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
             scanIntent2.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
             scanIntent2.putExtra(CREATED_AT, clickedItem.getCreated_at());
-            scanIntent2.putExtra(PRODUCT_ID, clickedItem.getApiOrderID());
+            scanIntent2.putExtra(APIORDERID, clickedItem.getApiOrderID());
             scanIntent2.putExtra(SCAN_COUNT, clickedItem.getScan_count());
             scanIntent2.putExtra(PRODUCT_NAME, clickedItem.getProduct_name());
             scanIntent2.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
@@ -607,13 +608,19 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final CharSequence[] values = {"Pause Pick", "Cancel Pick"};
 
         final PickupList_Model_For_Executive clickedItem = list.get(position2);
-        final String merchant_order_ref = clickedItem.getMerchant_id();
+        final String merchant_order_ref = clickedItem.getApiOrderID();
 
         final String pause = "1002";
         final String cancel = "1002";
-        if (clickedItem.getComplete_status().equals("ad")) {
 
-            AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+        final View mView = getLayoutInflater().inflate(R.layout.insert_adeal_comment, null);
+
+
+        final EditText et1 = mView.findViewById(R.id.comments);
+        final TextView tv1 = mView.findViewById(R.id.textView3);
+        if (clickedItem.getComplete_status().equals("a")) {
+
+            final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
 
             spinnerBuilder.setTitle("Select Action: ");
 
@@ -622,26 +629,91 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         public void onClick(DialogInterface dialog, int item) {
                             switch (item) {
                                 case 0:
-                                    updateAjkerDeal(merchant_order_ref,pause);
-                                    Toast.makeText(MyPickupList_Executive.this, "Pause", Toast.LENGTH_SHORT).show();
-//                                    txtoption.setText("Pause");
+                                    AlertDialog.Builder spinnerBuilder1 = new AlertDialog.Builder(MyPickupList_Executive.this);
+                                    spinnerBuilder1.setTitle("Write Pause Reason: ");
+                                    spinnerBuilder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+
+                                    spinnerBuilder1.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int i1) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    spinnerBuilder1.setCancelable(false);
+                                    spinnerBuilder1.setView(mView);
+
+                                    final AlertDialog dialog3 = spinnerBuilder1.create();
+                                    dialog3.show();
+
+                                    dialog3.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            if (et1.getText().toString().trim().isEmpty()) {
+                                                tv1.setText("Field can't be empty");
+                                            } else {
+                                                // Pause
+                                                String comments = et1.getText().toString();
+                                                // TODO update Pause status and comment in insertassign table
+                                                // updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
+                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+                                                dialog3.dismiss();
+                                            }
+                                        }
+                                    });
                                     dialog.dismiss();
                                     break;
 
                                 case 1:
-                                    updateAjkerDeal(merchant_order_ref,cancel);
-                                    Toast.makeText(MyPickupList_Executive.this, "Cancel", Toast.LENGTH_SHORT).show();
-                                    // txtOption.setText("Cancel");
+                                    AlertDialog.Builder spinnerBuilder2 = new AlertDialog.Builder(MyPickupList_Executive.this);
+                                    spinnerBuilder2.setTitle("Write Delete Reason: ");
+
+                                    spinnerBuilder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    });
+
+                                    spinnerBuilder2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int i1) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    spinnerBuilder2.setCancelable(false);
+                                    spinnerBuilder2.setView(mView);
+
+                                    final AlertDialog dialog4 = spinnerBuilder2.create();
+                                    dialog4.show();
+
+                                    dialog4.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (et1.getText().toString().trim().isEmpty()) {
+                                                tv1.setText("Field can't be empty");
+                                            } else {
+                                                // delete
+                                                String comments = et1.getText().toString();
+                                                // TODO update Delete status and comment and a flag in insertassign table
+                                                // updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
+                                                updateAjkerDeal(merchant_order_ref,pause, comments);
+                                                dialog4.dismiss();
+                                            }
+                                        }
+                                    });
+                                    dialog.dismiss();
                                     break;
                                 default:
                                     break;
                             }
-
                         }
                     }
             );
-
-
             spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int i1) {
@@ -649,26 +721,22 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 }
             });
             spinnerBuilder.setCancelable(false);
-
-
             final AlertDialog dialog2 = spinnerBuilder.create();
             dialog2.show();
-
         }
     }
 
-    public void updateAjkerDeal(final String merchant_order_ref,final String pick_status) {
+    // Send Pause or Delete status to ajker deal
+    public void updateAjkerDeal(final String merchant_order_ref,final String pick_status, final String comm) {
 
-        final String abcd = "1180784,1180783";
-
-        final String m_order_ref = "[" + abcd + "]";
-
+        // final String abcd = "1180784,1180783";
+        final String m_order_ref = "[" + merchant_order_ref + "]";
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://bridge.ajkerdeal.com/ThirdPartyOrderAction/UpdateStatusByCourier",
 
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(MyPickupList_Executive.this, "Done" +response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyPickupList_Executive.this, "Success" +response, Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -681,7 +749,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public byte[] getBody() throws AuthFailureError {
-                String httpPostBody = "{\n\t\"OrderIds\":"+ m_order_ref +",\n\t\"StatusId\":"+ pick_status +",\n\t\"ThirdPartyId\":\"30\"\n\t\n}";
+                String httpPostBody = "{\n\t\"OrderIds\" : "+ m_order_ref + ",\n\t\"StatusId\" : "+ pick_status +",\n\t\"Comments\" : \""+comm+"\",\n\t\"ThirdPartyId\" : \"30\"\n\t\n}";
                 return httpPostBody.getBytes();
             }
 
@@ -702,7 +770,5 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         } catch (Exception e) {
             Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
-
     }
-
 }

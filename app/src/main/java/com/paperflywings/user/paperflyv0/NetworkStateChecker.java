@@ -61,6 +61,15 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor4.moveToNext());
                 }
 
+                Cursor cursor7 = database.getUnsyncedAssignedListAdeal();
+                if (cursor7.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateUnAssignedAPIAdeal(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(7));
+
+                    } while (cursor4.moveToNext());
+                }
+
                 Cursor cursor6 = database.getUnsyncedAssignedListRobi();
                 if (cursor6.moveToFirst()) {
                     do {
@@ -235,6 +244,45 @@ public class NetworkStateChecker extends BroadcastReceiver {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("merchantCode", merchant_code);
+                params.put("pickAssignedStatus", pickAssignedStatus);
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    private void updateUnAssignedAPIAdeal(final int id, final String order_id, final String pickAssignedStatus){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateassignadeal.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //updating the status in sqlite
+                                database.updateUnassignStatusAdeal(id, NAME_SYNCED_WITH_SERVER);
+
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly" +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchantCode", order_id);
                 params.put("pickAssignedStatus", pickAssignedStatus);
 
                 return params;

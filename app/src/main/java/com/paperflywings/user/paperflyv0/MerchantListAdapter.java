@@ -92,7 +92,9 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             viewHolder.textReceivedQty.setText("Picked: ");
             viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getPicked_qty());
         }
-        if ( complete_status.equals("ad")) {
+        if ( complete_status.equals("a")) {
+            viewHolder.itemMerchantName.setText("A-deal direct-"+pickupList_model_for_executive.getP_m_name());
+            viewHolder.itemProductName.setText(pickupList_model_for_executive.getProduct_name());
             viewHolder.textReceivedQty.setText("Picked: ");
             viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getPicked_qty());
         }
@@ -137,15 +139,15 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
             }
 
-            if (count_picked == count_assigned && complete_status.equals("ad")) {
+            if (count_picked == count_assigned && complete_status.equals("a")) {
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
             }
 
-            if(count_picked > count_assigned && complete_status.equals("ad")){
+            if(count_picked > count_assigned && complete_status.equals("a")){
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
             }
 
-            if (count_picked < count_assigned && complete_status.equals("ad")) {
+            if (count_picked < count_assigned && complete_status.equals("a")) {
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
             }
 

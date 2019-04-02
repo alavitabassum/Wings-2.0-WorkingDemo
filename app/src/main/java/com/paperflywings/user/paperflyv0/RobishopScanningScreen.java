@@ -86,7 +86,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
 
     //a broadcast to know weather the data is synced or not
     public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_fulfillment_barcode.php";
-    public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment.php";
+    public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment1.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -293,7 +293,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                                     final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
                                     final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
                                     final String pick_status = "processing";
-                                    updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, order_id, match_date, pick_status);
+                                    updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, order_id, "updated", match_date, pick_status);
 
                                     try {
                                         accessToken(order_id, pick_status);
@@ -627,7 +627,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
 
 
     // API for updating scan count, picked_product_count, updated by and updated at
-    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String apiOrderID, final String match_date, final String pick_status) {
+    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String apiOrderID, final String comments,final String match_date, final String pick_status) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
 
@@ -640,11 +640,11 @@ public class RobishopScanningScreen extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status, NAME_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name,apiOrderID, comments, match_date, pick_status, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name,apiOrderID, comments, match_date, pick_status, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -655,7 +655,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name,apiOrderID, comments, match_date, pick_status, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -668,6 +668,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                 params.put("scan_count", strI);
                 params.put("picked_qty", picked_product_qty);
                 params.put("api_order_id", apiOrderID);
+                params.put("demo", comments);
                 params.put("pick_from_merchant_status", pick_status);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);

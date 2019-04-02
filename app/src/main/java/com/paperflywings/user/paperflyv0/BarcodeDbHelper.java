@@ -411,8 +411,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
-    public void update_row_for_fulfillment(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, String pick_status, int status)
+    public void update_row_for_fulfillment_shop(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, String pick_status, int status)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -427,6 +426,30 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         String[] whereArgs = new String[] {
                 merchantId,
                 sub_merchant_name,
+                match_date
+        };
+        // insert
+        db.update(TABLE_NAME_1,values,whereClause,whereArgs );
+        db.close();
+    }
+
+    public void update_row_for_fulfillment(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String apiorderid, String comments , String match_date, String pick_status, int status)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(SCAN_COUNT, scan_count);
+        values.put(PICKED_QTY, picked_qty);
+        values.put(UPDATED_BY, updated_by);
+        values.put(UPDATED_AT, updated_at);
+        values.put(DEMO, comments);
+        values.put(PICKED_STATUS, pick_status);
+        values.put(STATUS, status);
+
+        String whereClause = MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + APIORDERID  + " = ?  AND " + CREATED_AT  + " = ?";
+        String[] whereArgs = new String[] {
+                merchantId,
+                sub_merchant_name,
+                apiorderid,
                 match_date
         };
         // insert
