@@ -81,9 +81,11 @@ public class MyPickupList_Executive extends AppCompatActivity
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
 //    private String FULFILLMENT_PICKUP_URL = "http://paperflybd.com/tbl_fulfillment_pickuplist.php";
+    public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment1.php";
 
     private List<PickupList_Model_For_Executive> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
+    public static final int NAME_SYNCED_WITH_SERVER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -607,11 +609,25 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
         final CharSequence[] values = {"Pause Pick", "Cancel Pick"};
 
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        final String updated_by = username.toString();
+
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String updated_at = df.format(c);
+
         final PickupList_Model_For_Executive clickedItem = list.get(position2);
         final String merchant_order_ref = clickedItem.getApiOrderID();
+        final String merchant_id = clickedItem.getMerchant_id();
+        final String sub_merchant_name = clickedItem.getP_m_name();
+        final String match_date = clickedItem.getCreated_at();
 
         final String pause = "1002";
         final String cancel = "1002";
+        final Intent picklistintent = new Intent(MyPickupList_Executive.this,
+                MyPickupList_Executive.class);
 
         final View mView = getLayoutInflater().inflate(R.layout.insert_adeal_comment, null);
 
@@ -659,9 +675,11 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                             } else {
                                                 // Pause
                                                 String comments = et1.getText().toString();
-                                                // TODO update Pause status and comment in insertassign table
-                                                // updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
+                                                //if order is cancelled this will save the status 2
+                                                updateScanCount("0", "0", updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, pause, "0");
                                                 updateAjkerDeal(merchant_order_ref,pause,comments);
+
+                                                startActivity(picklistintent);
                                                 dialog3.dismiss();
                                             }
                                         }
@@ -699,9 +717,11 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                             } else {
                                                 // delete
                                                 String comments = et1.getText().toString();
-                                                // TODO update Delete status and comment and a flag in insertassign table
-                                                // updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
+                                                //if order is cancelled this will save the status 2
+                                                updateScanCount("0", "0", updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, pause, "2");
                                                 updateAjkerDeal(merchant_order_ref,pause, comments);
+
+                                                startActivity(picklistintent);
                                                 dialog4.dismiss();
                                             }
                                         }
@@ -726,10 +746,70 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         }
     }
 
+
+    // API for updating scan count, picked_product_count, updated by and updated at and comments, pause ,delete
+    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String order_id, final String comments,final String match_date, final String pick_status, final String pause_or_delete) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+//                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status, pause_or_delete ,NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status,pause_or_delete, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status,pause_or_delete, NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchant_id);
+                params.put("p_m_name", sub_merchant_name);
+                params.put("created_at", match_date);
+                params.put("scan_count", strI);
+                params.put("picked_qty", picked_product_qty);
+                params.put("api_order_id", order_id);
+                params.put("demo", comments);
+                params.put("pick_from_merchant_status", pick_status);
+                params.put("received_from_HQ_status", pause_or_delete);
+                params.put("updated_by", updated_by);
+                params.put("updated_at", updated_at);
+
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
     // Send Pause or Delete status to ajker deal
     public void updateAjkerDeal(final String merchant_order_ref,final String pick_status, final String comm) {
 
-        // final String abcd = "1180784,1180783";
         final String m_order_ref = "[" + merchant_order_ref + "]";
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://bridge.ajkerdeal.com/ThirdPartyOrderAction/UpdateStatusByCourier",
 
@@ -742,7 +822,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MyPickupList_Executive.this, "VOLL" +error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyPickupList_Executive.this, "Unsuccessful" +error, Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {

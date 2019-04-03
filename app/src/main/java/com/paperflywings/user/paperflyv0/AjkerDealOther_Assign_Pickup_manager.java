@@ -137,19 +137,12 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-//        loadmainmerchantlist();
-//        loadSuppliermerchantlist();
-//        loadProductlist();
-
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
 
-                //loading the names again
-
             }
         };
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -225,7 +218,6 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest1);
     }
-
 
     //Get Executive List from sqlite
     private void getallexecutives() {

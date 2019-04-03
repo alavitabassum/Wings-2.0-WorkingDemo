@@ -20,14 +20,25 @@
         android:padding="16dp">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Action"
             android:id="@+id/txtOption"
-            android:textAppearance="?android:textAppearanceLarge"
-            android:layout_alignParentTop="true"
+            android:layout_width="105dp"
+            android:layout_height="35dp"
             android:layout_alignParentRight="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"/>
+            android:layout_marginRight="5dp"
+            android:background="#eee"
+            android:padding="10dp"
+            android:text="Action" />
+
+        <!-- android:id="@+id/btn_status"
+
+            android:layout_alignBottom="@id/btn_scan"
+            android:layout_marginRight="5dp"
+
+            android:layout_marginBottom="-1dp"
+            android:layout_toLeftOf="@id/btn_scan"
+            android:background="@drawable/buttonstyle"
+
+            android:textSize="14sp"-->
         <TextView
             android:id="@+id/m_name_pul"
             android:layout_width="match_parent"

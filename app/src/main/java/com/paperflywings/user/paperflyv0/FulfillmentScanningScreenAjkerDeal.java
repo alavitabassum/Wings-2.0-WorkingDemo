@@ -318,7 +318,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                                     final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
                                     final String pick_status = "1001";
                                     final String comments = et1.getText().toString();
-                                    updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, order_id,comments, match_date, pick_status);
+                                    updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, order_id,comments, match_date, pick_status, "0");
 
                                     try {
                                         updateAjkerDeal(order_id, pick_status, comments);
@@ -646,7 +646,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
 
 
     // API for updating scan count, picked_product_count, updated by and updated at and comments
-    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String order_id, final String comments,final String match_date, final String pick_status) {
+    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String order_id, final String comments,final String match_date, final String pick_status, final String pause_or_delete) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
 
@@ -659,11 +659,11 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status, NAME_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status, pause_or_delete ,NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status,pause_or_delete, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -674,7 +674,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status,pause_or_delete, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -689,6 +689,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                 params.put("api_order_id", order_id);
                 params.put("demo", comments);
                 params.put("pick_from_merchant_status", pick_status);
+                params.put("received_from_HQ_status", pause_or_delete);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
 

@@ -433,7 +433,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void update_row_for_fulfillment(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String apiorderid, String comments , String match_date, String pick_status, int status)
+    public void update_row_for_fulfillment(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String apiorderid, String comments , String match_date, String pick_status, String pause_or_delete,int status)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -443,6 +443,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(UPDATED_AT, updated_at);
         values.put(DEMO, comments);
         values.put(PICKED_STATUS, pick_status);
+        values.put(RECEIVED_STATUS, pause_or_delete);
         values.put(STATUS, status);
 
         String whereClause = MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + APIORDERID  + " = ?  AND " + CREATED_AT  + " = ?";

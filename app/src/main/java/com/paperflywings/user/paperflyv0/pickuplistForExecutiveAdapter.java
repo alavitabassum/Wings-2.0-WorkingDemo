@@ -170,6 +170,8 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
         String complete_status = list.get(i).getComplete_status();
         String product_name = list.get(i).getProduct_name();
+        String pick_status = list.get(i).getPick_from_merchant_status();
+        String pause_or_delete = list.get(i).getReceived_from_HQ_status();
 
 
         if(complete_status.equals("p") && product_name.equals("0")) {
@@ -259,13 +261,34 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                 viewHolder.itemStatus.setBackgroundResource(R.color.green);
                 viewHolder.itemStatus.setTextColor(Color.WHITE);
                 viewHolder.itemStatus.setEnabled(false);
-
             }
+
             if(count_picked < count_assigned && complete_status.equals("r")) {
                 viewHolder.itemStatus.setText("Pending");
                 viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
                 viewHolder.itemStatus.setTextColor(Color.BLACK);
                 viewHolder.itemStatus.setEnabled(true);
+            }
+
+            if(pick_status.equals("1001") && pause_or_delete.equals("0") && complete_status.equals("a")) {
+                viewHolder.txtOption.setText("Picked");
+                viewHolder.txtOption.setBackgroundResource(R.color.green);
+                viewHolder.txtOption.setTextColor(Color.BLACK);
+                viewHolder.txtOption.setEnabled(true);
+            }
+
+            if(pick_status.equals("1002") && pause_or_delete.equals("0") && complete_status.equals("a")) {
+                viewHolder.txtOption.setText("Pause");
+                viewHolder.txtOption.setBackgroundResource(R.color.yellow);
+                viewHolder.txtOption.setTextColor(Color.BLACK);
+                viewHolder.txtOption.setEnabled(true);
+            }
+
+            if(pick_status.equals("1002") && pause_or_delete.equals("2") && complete_status.equals("a")) {
+                viewHolder.txtOption.setText("Cancel");
+                viewHolder.txtOption.setBackgroundResource(R.color.red);
+                viewHolder.txtOption.setTextColor(Color.BLACK);
+                viewHolder.txtOption.setEnabled(true);
             }
 
         } catch(Exception e) {
