@@ -420,7 +420,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                                 final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
 
                                 final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
-                                et1.setText(assigned_qty);
+                                et1.setText("1");
                                 Product_Name.setText("Order Ids: " + order_id);
                                 Assigned_qty.setText("Assigned Quantity: " + assigned_qty);
 
@@ -475,7 +475,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
 
                                 Product_Name.setText("Order Ids: " + order_id);
                                 Assigned_qty.setText("Assigned Quantity: " + assigned_qty);
-                                et1.setText(assigned_qty);
+                                et1.setText("1");
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -531,7 +531,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
 
                         Product_Name.setText("Order IDs: " + order_id);
                         Assigned_qty.setText("Assigned Quantity: " + assigned_qty);
-                        et1.setText(assigned_qty);
+                        et1.setText("1");
 
                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
