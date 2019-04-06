@@ -147,21 +147,21 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
+       /* fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
         fab1 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.menu_item1);
-        /*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*/
+        *//*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*//*
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             /*   Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+             *//*   Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*//*
 
                 Intent intentorder = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
                         NewOrderEntry_ful.class);
                 startActivity(intentorder);
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -553,14 +553,21 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
             startActivity(assignIntent);
         } else if (id == R.id.nav_fulfill) {
             Intent assignFulfillmentIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
-                    AjkerDealOther_Assign_Pickup_manager.class);
+                    Fulfillment_Assign_pickup_Manager.class);
             startActivity(assignFulfillmentIntent);
+        }  else if (id == R.id.nav_robishop) {
+            Intent robishopIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
+                    Robishop_Assign_pickup_manager.class);
+            startActivity(robishopIntent);
+        }  else if (id == R.id.nav_adeal_direct) {
+            Intent adealdirectIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
+                    AjkerDealOther_Assign_Pickup_manager.class);
+            startActivity(adealdirectIntent);
+        } else if (id == R.id.nav_report) {
+            Intent reportIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
+                    PendingSummary_Manager.class);
+            startActivity(reportIntent);
         }
-        /*  else if (id == R.id.nav_pickCompleted) {
-            Intent historyIntent = new Intent(AssignPickup_Manager.this,
-                    PickupHistory_Manager.class);
-            startActivity(historyIntent);
-        } */
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

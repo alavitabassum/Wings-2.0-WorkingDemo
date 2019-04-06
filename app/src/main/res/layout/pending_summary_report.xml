@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:card_view_merchant="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_height="160dp"
+android:layout_width="wrap_content">
+
+<android.support.v7.widget.CardView
+    android:id="@+id/card_view_report"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    card_view_merchant:cardBackgroundColor="@android:color/transparent"
+    card_view_merchant:cardElevation="0dp"
+    card_view_merchant:contentPadding="2dp">
+    <!--card_view_merchant:cardBackgroundColor="#e1e1e1"
+     card_view_merchant:cardBackgroundColor="@android:color/transparent"-->
+
+    <RelativeLayout
+        android:layout_width="320dp"
+        android:id="@+id/inside_rl_report"
+        android:layout_height="160dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:foregroundGravity="center|fill"
+        android:gravity="center"
+        android:padding="16dp" tools:targetApi="lollipop">
+
+        <TextView
+            android:id="@+id/u_qty_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/txt2_report"
+            android:layout_toEndOf="@+id/txt2_report"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/a_qty_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/u_qty_report"
+            android:layout_alignBaseline="@+id/txt1_report"
+            android:layout_toEndOf="@+id/txt1_report"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/r_qty_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/a_qty_report"
+            android:layout_alignBaseline="@+id/txt3_report"
+            android:layout_toEndOf="@+id/txt3_report"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txt2_report"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/txt1_report"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="-1dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@string/uploaded_product_count"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txt1_report"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt2_report"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="2dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="@string/assigned_product_count"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txt3_report"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt1_report"
+            android:layout_alignStart="@+id/txt1_report"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txt4_report"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt3_report"
+            android:layout_alignStart="@+id/txt3_report"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text=""
+            android:textSize="14sp" />
+
+
+        <TextView
+            android:id="@+id/asgn_date_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/r_qty_report"
+            android:layout_alignBaseline="@+id/txt4_report"
+            android:layout_toEndOf="@+id/txt4_report"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:id="@+id/prod_name_report"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt4_report"
+            android:layout_alignStart="@+id/txt4_report"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="1dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text=""
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/prod_name_1_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/asgn_date_report"
+            android:layout_alignBaseline="@+id/prod_name_report"
+            android:layout_toEndOf="@+id/prod_name_report"
+            android:textAlignment="center"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="#000"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl2_report"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:background="#FCF3CF"
+        android:elevation="4dp" tools:targetApi="lollipop">
+
+        <TextView
+            android:id="@+id/merchant_name_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:textAlignment="center"
+            android:textColor= "@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+
+</RelativeLayout>

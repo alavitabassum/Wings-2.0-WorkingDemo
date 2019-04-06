@@ -23,7 +23,7 @@
 
     <include layout="@layout/content_ajker_deal_other__assign__pickup_manager" />
 
-    <com.github.clans.fab.FloatingActionMenu
+   <!-- <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu"
         fab:menu_animationDelayPerItem="50"
         app:menu_backgroundColor="#CCFFFFFF"
@@ -79,14 +79,14 @@
             android:layout_height="wrap_content"
             android:src="@drawable/pen" />
 
-        <!--  <com.github.clans.fab.FloatingActionButton
+        &lt;!&ndash;  <com.github.clans.fab.FloatingActionButton
               android:id="@+id/menu_item2"
               fab:fab_label="Update Order"
               style="@style/MenuButtonsSmall"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:src="@drawable/update"
-              android:cropToPadding="true"/>-->
+              android:cropToPadding="true"/>&ndash;&gt;
 
-    </com.github.clans.fab.FloatingActionMenu>
+    </com.github.clans.fab.FloatingActionMenu>-->
 </android.support.design.widget.CoordinatorLayout>

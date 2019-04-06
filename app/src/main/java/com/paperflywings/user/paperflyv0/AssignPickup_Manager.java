@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -335,7 +336,12 @@ public class AssignPickup_Manager extends AppCompatActivity
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        postRequest1.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(postRequest1);
+
     }
 
     /* merchant List generation from sqlite*/
@@ -613,6 +619,18 @@ public class AssignPickup_Manager extends AppCompatActivity
             Intent assignFulfillmentIntent = new Intent(AssignPickup_Manager.this,
                     Fulfillment_Assign_pickup_Manager.class);
             startActivity(assignFulfillmentIntent);
+        }  else if (id == R.id.nav_robishop) {
+            Intent robishopIntent = new Intent(AssignPickup_Manager.this,
+                    Robishop_Assign_pickup_manager.class);
+            startActivity(robishopIntent);
+        }  else if (id == R.id.nav_adeal_direct) {
+            Intent adealdirectIntent = new Intent(AssignPickup_Manager.this,
+                    AjkerDealOther_Assign_Pickup_manager.class);
+            startActivity(adealdirectIntent);
+        } else if (id == R.id.nav_report) {
+            Intent reportIntent = new Intent(AssignPickup_Manager.this,
+                    PendingSummary_Manager.class);
+            startActivity(reportIntent);
         }
         /*  else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(AssignPickup_Manager.this,

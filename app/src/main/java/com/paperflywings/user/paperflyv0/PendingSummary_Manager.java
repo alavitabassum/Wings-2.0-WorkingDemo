@@ -1,85 +1,117 @@
+
 package com.paperflywings.user.paperflyv0;
 
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.nex3z.notificationbadge.NotificationBadge;
-import com.txusballesteros.bubbles.BubblesManager;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ManagerCardMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
-    List<AssignManager_Model> assignManager_modelList;
+public class PendingSummary_Manager extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
     Database database;
+//    private WebView webView;
+    Button selectDate;
+    TextView dateShow;
+    DatePickerDialog datePickerDialog;
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
+    /*private AssignExecutiveAdapter assignExecutiveAdapter;
+    List<AssignManager_Model> assignManager_modelList;*/
 
-    private BubblesManager bubblesManager;
-    private NotificationBadge mBadge;
-
-
+    private PendingSummaryAdapter pendingSummaryAdapter;
+    List<PendingSummary_Model> pendingsummary_modelslist;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+    private ProgressDialog progress;
+    private String PENDING_REPORT_BY_DATE = "http://paperflybd.com/pendingAssignReport.php";
 
-    TextView OrderCount;
-    int pendingOrders = 10;
-    Handler mHandler;
-    int amounts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manager_card_menu);
-/*
-        this.mHandler = new Handler();
-
-        this.mHandler.postDelayed(m_Runnable,5000);*/
-
-        database = new Database(getApplicationContext());
-        database.getWritableDatabase();
-        assignManager_modelList = new ArrayList<>();
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_m);
+        setContentView(R.layout.activity_pending_summary__manager);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Fetching email from shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-     /*   getallmerchant();
-        loadmerchantlist(username);*/
+        selectDate = findViewById(R.id.btnSelectDate);
+        pendingsummary_modelslist = new ArrayList<>();
 
-
-        recyclerView =
-                (RecyclerView) findViewById(R.id.recycler_view_manager);
-
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_pending);
+        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        pendingsummary_modelslist.clear();
 
-        adapter = new RecyclerAdapterManager();
-        recyclerView.setAdapter(adapter);
+       selectDate.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               calendar = Calendar.getInstance();
+               year = calendar.get(Calendar.YEAR);
+               month = calendar.get(Calendar.MONTH);
+               dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+               datePickerDialog = new DatePickerDialog(PendingSummary_Manager.this, new DatePickerDialog.OnDateSetListener() {
+                   @Override
+                   public void onDateSet(DatePicker view, int year, int month, int day) {
+//                               dateShow.setText(day + "/" + month + "/" + year);
+                               selectDate.setText(day + "/" + (month+1) + "/" + year);
+                       String yearselected    = Integer.toString(year) ;
+                       String monthselected   = Integer.toString(month + 1);
+                       String dayselected     = Integer.toString(day);
 
+                       String dateTime = dayselected + "-" + monthselected + "-" + yearselected;
+                       loadPendingOrders(dateTime);
+                       pendingsummary_modelslist.clear();
+                       Toast.makeText(PendingSummary_Manager.this, dateTime, Toast.LENGTH_LONG);
+
+                   }
+               },year,month,dayOfMonth );
+               datePickerDialog.show();
+
+           }
+
+       });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -87,47 +119,45 @@ public class ManagerCardMenu extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_manager);
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.manager_name);
-        navUsername.setText(username);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-/*
-    private final Runnable m_Runnable = new Runnable()
-    {
-        public void run()
 
-        {
-            Toast.makeText(ManagerCardMenu.this,"in runnable",Toast.LENGTH_SHORT).show();
+    //Merchant List API hit
+    private void loadPendingOrders(final String date_match) {
 
-            ManagerCardMenu.this.mHandler.postDelayed(m_Runnable, 5000);
-        }
-
-    };//runnable*/
-
-   /* private void loadmerchantlist(final String user) {
-
-        StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, PENDING_REPORT_BY_DATE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+//                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+//                        database.deletemerchantList(sqLiteDatabase);
+//                        progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("unAssignedlist");
+                            JSONArray array = jsonObject.getJSONArray("summary");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
+                                PendingSummary_Model todaySummary = new PendingSummary_Model(
+                                        o.getString("executive_name"),
+                                        o.getString("product_name"),
+                                        o.getString("merchant_name"),
+                                        o.getString("p_m_name"),
+                                        o.getString("demo"),
+                                        String.valueOf(o.getInt("order_count")),
+                                        o.getString("picked_qty"),
+                                        o.getString("created_at"),
+                                        o.getString("complete_status"));
+                                pendingsummary_modelslist.add(todaySummary);
 
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
                             }
-
-                            //getallmerchant();
-
+                            pendingSummaryAdapter = new PendingSummaryAdapter(pendingsummary_modelslist, getApplicationContext());
+                            recyclerView.setAdapter(pendingSummaryAdapter);
+//                            pendingSummaryAdapter.setOnItemClickListener(PendingSummary_Manager.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-
 
                         }
                     }
@@ -135,46 +165,20 @@ public class ManagerCardMenu extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+//                        progress.dismiss();
+                        Toast.makeText(getApplicationContext(), "NO INTERNET CONNECTION", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params1 = new HashMap<String, String>();
-                params1.put("username", user);
+                params1.put("created_at", date_match);
                 return params1;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest1);
-    }*/
-
-   /* private void getallmerchant() {
-        try {
-
-
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_merchantlist(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String merchantName = c.getString(0);
-                String merchantCode = c.getString(1);
-                int totalcount = c.getInt(2);
-
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, totalcount);
-                assignManager_modelList.add(todaySummary);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-      /*  bubblesManager.recycle();*/
     }
 
 
@@ -190,30 +194,32 @@ public class ManagerCardMenu extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //Fetching email from shared preferences
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        //getallmerchant();
-        //loadmerchantlist(username);
-        amounts = database.getTotalOfAmount();
-
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.notification_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
 
-       final MenuItem menuItem = menu.findItem(R.id.action_notification);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        try {
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
 
-        View actionView = MenuItemCompat.getActionView(menuItem);
-        OrderCount = actionView.findViewById(R.id.notification_badge);
+                @Override
+                public boolean onQueryTextChange(String newText) {
+//                    assignExecutiveAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            Intent intent_stay = new Intent(PendingSummary_Manager.this, AssignPickup_Manager.class);
+            Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
+            startActivity(intent_stay);
+        }
 
-
-      setupBadge();
-
-        actionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onOptionsItemSelected(menuItem);
-            }
-        });
         return true;
     }
 
@@ -225,39 +231,13 @@ public class ManagerCardMenu extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_notification) {
+        if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void setupBadge() {
-
-      /*  Set<AssignManager_Model> hs = new HashSet<>();
-        hs.addAll(assignManager_modelList);
-        assignManager_modelList.clear();
-        assignManager_modelList.addAll(hs);*/
-
-        //Get the Total Order For Today
-        amounts = database.getTotalOfAmount();
-        //int pendingCount =  assignManager_modelList.size();
-
-
-        if (OrderCount !=null){
-            if (amounts ==0){
-                if (OrderCount.getVisibility() != View.GONE){
-                    OrderCount.setVisibility(View.VISIBLE);
-                }
-            }else{
-                OrderCount.setText(String.valueOf(amounts));
-                if (OrderCount.getVisibility() != View.VISIBLE){
-                    OrderCount.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-    }
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -265,36 +245,36 @@ public class ManagerCardMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(ManagerCardMenu.this,
+            Intent homeIntent = new Intent(PendingSummary_Manager.this,
                     ManagerCardMenu.class);
             startActivity(homeIntent);
         } else if (id == R.id.nav_pickDue) {
-            Intent pickupIntent = new Intent(ManagerCardMenu.this,
+            Intent pickupIntent = new Intent(PendingSummary_Manager.this,
                     PickupsToday_Manager.class);
             startActivity(pickupIntent);
         } else if (id == R.id.nav_assign) {
-            Intent assignIntent = new Intent(ManagerCardMenu.this,
+            Intent assignIntent = new Intent(PendingSummary_Manager.this,
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
         } else if (id == R.id.nav_fulfill) {
-            Intent assignFulfillmentIntent = new Intent(ManagerCardMenu.this,
+            Intent assignFulfillmentIntent = new Intent(PendingSummary_Manager.this,
                     Fulfillment_Assign_pickup_Manager.class);
             startActivity(assignFulfillmentIntent);
         }  else if (id == R.id.nav_robishop) {
-            Intent robishopIntent = new Intent(ManagerCardMenu.this,
+            Intent robishopIntent = new Intent(PendingSummary_Manager.this,
                     Robishop_Assign_pickup_manager.class);
             startActivity(robishopIntent);
         }  else if (id == R.id.nav_adeal_direct) {
-            Intent adealdirectIntent = new Intent(ManagerCardMenu.this,
+            Intent adealdirectIntent = new Intent(PendingSummary_Manager.this,
                     AjkerDealOther_Assign_Pickup_manager.class);
             startActivity(adealdirectIntent);
         } else if (id == R.id.nav_report) {
-            Intent reportIntent = new Intent(ManagerCardMenu.this,
+            Intent reportIntent = new Intent(PendingSummary_Manager.this,
                     PendingSummary_Manager.class);
             startActivity(reportIntent);
         }
-      /*  else if (id == R.id.nav_pickCompleted) {
-            Intent historyIntent = new Intent(ManagerCardMenu.this,
+        /*  else if (id == R.id.nav_pickCompleted) {
+            Intent historyIntent = new Intent(AssignPickup_Manager.this,
                     PickupHistory_Manager.class);
             startActivity(historyIntent);
         } */
@@ -320,7 +300,8 @@ public class ManagerCardMenu extends AppCompatActivity
                             database.deletecom_fulfillment_supplier(sqLiteDatabase);
                             database.deletecom_fullfillment_product(sqLiteDatabase);
                             //Getting out sharedpreferences
-                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
+                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
                             //Getting editor
                             SharedPreferences.Editor editor = preferences.edit();
 
@@ -334,7 +315,7 @@ public class ManagerCardMenu extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(ManagerCardMenu.this, LoginActivity.class);
+                            Intent intent = new Intent(PendingSummary_Manager.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -351,10 +332,13 @@ public class ManagerCardMenu extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+
     }
 }

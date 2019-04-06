@@ -840,7 +840,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 headers.put("Authorization", "Basic UGFwZXJGbHk6SGpGZTVWNWY=");
                 headers.put("API_KEY", "Ajkerdeal_~La?Rj73FcLm");
                 headers.put("Content-Type", "application/json");
-
+                
                 return headers;
             }
         };

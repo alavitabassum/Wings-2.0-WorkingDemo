@@ -119,7 +119,6 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
         robishop_modelList.clear();
         swipeRefreshLayout.setRefreshing(true);
 
-
         //Offline sync
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -460,11 +459,7 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
     private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String sum, final String product_id, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo, final String pick_from_merchant_status, final  String received_from_HQ_status) {
 
         database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString, status,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status);
-        //final int total_assign = database.getTotalOfAmount(merchant_code);
-        //final String strI = String.valueOf(total_assign);
-        //database.update_row(strI, merchant_code);
-
-    }
+     }
 
     private void updateAssignedStatus(final String merchant_code, final int status, final String pickAssignedStatus, final String demo) {
         database.updateAssignedStatusRobi(merchant_code, status, pickAssignedStatus, demo);
@@ -651,7 +646,24 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
             Intent assignIntent = new Intent(Robishop_Assign_pickup_manager.this,
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
-        } /*else if (id == R.id.nav_fulfill) {
+        } else if (id == R.id.nav_fulfill) {
+            Intent assignFulfillmentIntent = new Intent(Robishop_Assign_pickup_manager.this,
+                    Fulfillment_Assign_pickup_Manager.class);
+            startActivity(assignFulfillmentIntent);
+        }  else if (id == R.id.nav_robishop) {
+            Intent robishopIntent = new Intent(Robishop_Assign_pickup_manager.this,
+                    Robishop_Assign_pickup_manager.class);
+            startActivity(robishopIntent);
+        }  else if (id == R.id.nav_adeal_direct) {
+            Intent adealdirectIntent = new Intent(Robishop_Assign_pickup_manager.this,
+                    AjkerDealOther_Assign_Pickup_manager.class);
+            startActivity(adealdirectIntent);
+        } else if (id == R.id.nav_report) {
+            Intent reportIntent = new Intent(Robishop_Assign_pickup_manager.this,
+                    PendingSummary_Manager.class);
+            startActivity(reportIntent);
+        }
+        /*else if (id == R.id.nav_fulfill) {
             Intent assignFulfillmentIntent = new Intent(Robishop_Assign_pickup_manager.this,
                     AjkerDeal_Assign_Pickup_manager.class);
             startActivity(assignFulfillmentIntent);

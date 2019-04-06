@@ -61,15 +61,25 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor4.moveToNext());
                 }
 
-                Cursor cursor7 = database.getUnsyncedAssignedListAdeal();
+              /*  Cursor cursor7 = database.getUnsyncedAssignedListAdeal();
                 if (cursor7.moveToFirst()) {
                     do {
+                        *//*0 id integer primary key AUTOINCREMENT
+                        1 main_merchant text,
+                        2 pick_supplier_name text,
+                        3 supplier_address text,
+                        4 supplier_phone text,
+                        5 count text,
+                        6 pickAssignedStatus text,
+                        7 order_id text,
+                        8 status int,*//*
+
                         //calling the method to save the unsynced name to MySQL
-                        updateUnAssignedAPIAdeal(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(7));
+                       updateUnAssignedAPIAdeal(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(7));
 
-                    } while (cursor4.moveToNext());
+                    } while (cursor7.moveToNext());
                 }
-
+*/
                 Cursor cursor6 = database.getUnsyncedAssignedListRobi();
                 if (cursor6.moveToFirst()) {
                     do {
@@ -97,7 +107,28 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         saveBarcode(cursor1.getInt(0),cursor1.getString(1), cursor1.getString(2),cursor1.getString(3), Boolean.valueOf(cursor1.getString(4)),cursor1.getString(6),cursor1.getString(7));
                     } while (cursor1.moveToNext());
                 }
-
+                /*
+                *  + 0 "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + 1 "merchantId TEXT, "
+                + 2 "merchant_name TEXT, "
+                + 3 "executive_name TEXT, "
+                + 4 "assined_qty TEXT, "
+                + 5 "picked_qty TEXT, "
+                + 6 "scan_count TEXT, "
+                + 7 "phone_no TEXT, "
+                + 8 "assigned_by TEXT, "
+                + 9 "created_at TEXT , "
+                + 10 "updated_by TEXT, "
+                + 11 "updated_at TEXT , "
+                + 12 "status INT, "
+                + 13 "complete_status TEXT, "
+                + 14 "p_m_name TEXT , "
+                + 15 "p_m_add TEXT, "
+                + 16 "product_name TEXT, "
+                + 17 "apiOrderID TEXT, "
+                + 18 "demo TEXT, "
+                + 19 "pick_from_merchant_status TEXT, "
+                + 20 "received_from_HQ_status TEXT, "*/
 
                 //getting all the unsynced data
                 Cursor cursor2 = database2.getUnsyncedData();
@@ -116,31 +147,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                 cursor2.getString(19));
                     } while (cursor2.moveToNext());
                 }
-
-                /* + "id INTEGER PRIMARY KEY AUTOINCREMENT, "0
-                + "merchantId TEXT, "1
-                + "picked_qty TEXT, "5
-                + "scan_count TEXT, "6
-                + "created_at TEXT , "9
-                + "updated_by TEXT, "10
-                + "updated_at TEXT , "11
-                + "p_m_name TEXT , "14
-                + "apiOrderID TEXT, "17
-                + "pick_from_merchant_status TEXT, "19*/
-
-               /* final int id, 0
-                final String strI,6
-                final String picked_qty, 5
-                final String updated_by, 10
-                final String updated_at, 11
-                final String merchant_id, 1
-                final String sub_merchant_name, 14
-                final String match_date,9
-                final String apiOrderID,17
-                final String pick_from_merchant_status,19*/
-
-
-
 
                 //getting all the unsynced data
                 Cursor cursor3 = database2.getUnsyncedFulfillmentBarcodeData();
@@ -254,7 +260,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-    private void updateUnAssignedAPIAdeal(final int id, final String order_id, final String pickAssignedStatus){
+   /* private void updateUnAssignedAPIAdeal(final int id, final String order_id, final String pickAssignedStatus){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateassignadeal.php",
                 new Response.Listener<String>() {
                     @Override
@@ -292,7 +298,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
-
+*/
 
     private void updateUnAssignedAPIRobi(final int id, final String merchant_code, final String pickAssignedStatus, final String demo){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Robishop_Assign_pickup_manager.UPDATE_ASSIGN_URL,
@@ -416,7 +422,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     // Update scan count
     private void saveData(final int id, final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date,final String apiOrderID, final String pick_from_merchant_status) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTableFulShoparu.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTableInsertassign.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

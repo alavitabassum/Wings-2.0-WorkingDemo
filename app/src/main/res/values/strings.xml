@@ -12,7 +12,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+    <string name="permission_rationale">"Contact permissions are needed for providing email
         completions."
     </string>
     <string name="title_activity_pick_up">Pick Ups Today</string>
@@ -36,8 +36,8 @@
 
     </string>
     <string name="title_activity_pickups_today__manager">Pickup Summary</string>
-    <string name="title_activity_assign_pickup__manager">Assign Pickups for Logistics</string>
-    <string name="title_activity_assign_pickup_fulfillment__manager">Assign Pickups for Fulfillment</string>
+    <string name="title_activity_assign_pickup__manager">Logistics</string>
+    <string name="title_activity_assign_pickup_fulfillment__manager">Fulfillment</string>
     <string name="title_activity_pickup_history__manager">Pickup History</string>
     <string name="uploaded_product_count">Executive :</string>
     <string name="assigned_product_count">Order Qty :</string>
@@ -86,17 +86,18 @@
     <string name="assigned_executives">Assigned Executives</string>
     <string name="assigned_counts">Assigned Counts</string>
     <string name="merchant_name">Merchant Name</string>
-    <string name="title_activity_testing_fulfillment">Assign Pickups for Fulfillment</string>
+    <string name="title_activity_testing_fulfillment">Fulfillment</string>
     <string name="title_activity_ajker_deal__assign__pickup_manager">
         AjkerDeal_Assign_Pickup_manager
     </string>
     <string name="title_activity_ajker_deal_other__assign__pickup_manager">
-        AjkerDealOther_Assign_Pickup_manager
+        Ajker Deal Direct Delivery
     </string>
     <string name="title_activity_ajker_deal_ekshop__assign__pickup_manager">
         AjkerDealEkshop_Assign_Pickup_manager
     </string>
-    <string name="title_activity_robishop__assign_pickup_manager">Robishop_Assign_pickup_manager
+    <string name="title_activity_robishop__assign_pickup_manager">Robishop
     </string>
+    <string name="title_activity_pending_summary__manager">Pending Report</string>
 
 </resources>

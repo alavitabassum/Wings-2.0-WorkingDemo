@@ -324,8 +324,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             Intent homeIntent = new Intent(PickupsToday_Manager.this,
                     ManagerCardMenu.class);
             startActivity(homeIntent);
-        }
-        else if (id == R.id.nav_pickDue) {
+        } else if (id == R.id.nav_pickDue) {
             Intent pickupIntent = new Intent(PickupsToday_Manager.this,
                     PickupsToday_Manager.class);
             startActivity(pickupIntent);
@@ -337,6 +336,18 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             Intent assignFulfillmentIntent = new Intent(PickupsToday_Manager.this,
                     Fulfillment_Assign_pickup_Manager.class);
             startActivity(assignFulfillmentIntent);
+        }  else if (id == R.id.nav_robishop) {
+            Intent robishopIntent = new Intent(PickupsToday_Manager.this,
+                    Robishop_Assign_pickup_manager.class);
+            startActivity(robishopIntent);
+        }  else if (id == R.id.nav_adeal_direct) {
+            Intent adealdirectIntent = new Intent(PickupsToday_Manager.this,
+                    AjkerDealOther_Assign_Pickup_manager.class);
+            startActivity(adealdirectIntent);
+        } else if (id == R.id.nav_report) {
+            Intent reportIntent = new Intent(PickupsToday_Manager.this,
+                    PendingSummary_Manager.class);
+            startActivity(reportIntent);
         }
        /* else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(PickupsToday_Manager.this,

@@ -335,6 +335,10 @@ public class PickupHistory_Manager extends AppCompatActivity
             Intent assignIntent = new Intent(PickupHistory_Manager.this,
                     AssignPickup_Manager.class);
             startActivity(assignIntent);
+        } else if (id == R.id.nav_report) {
+            Intent assignIntent = new Intent(PickupHistory_Manager.this,
+                    PendingSummary_Manager.class);
+            startActivity(assignIntent);
         }
 //        else if (id == R.id.nav_pickCompleted) {
 //            Intent historyIntent = new Intent(PickupHistory_Manager.this,
