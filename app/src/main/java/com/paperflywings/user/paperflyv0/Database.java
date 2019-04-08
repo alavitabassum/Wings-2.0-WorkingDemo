@@ -25,7 +25,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp2 = "create table com_ex(merchant_name text,executive_name text,assigned text,picked text, received text,unique (merchant_name,executive_name,assigned,picked,received))";
         String tableEmp3 = "create table merchantList(id integer primary key AUTOINCREMENT, merchantName text,merchantCode text,totalcount int,contactNumber text,pick_m_name text,pick_m_address text, pick_assigned_status text, address text ,status int, unique(merchantName,totalcount))";
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text, product_name text, order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text, complete_status text,apiOrderID integer,demo integer, pick_from_merchant_status text, received_from_HQ_status text,unique(ex_name,product_name,merchantCode,merchantname,pick_m_name,apiOrderID))";
-        String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique)";
+        String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique,empUsername text,empContactNumber text)";
         String tableEmp6 = "create table Allmerchantlist(id integer primary key AUTOINCREMENT,merchantName text,merchantCode text,address text, unique(merchantName,merchantCode))";
         String tableEmp7 = "create table pickups_today_manager(merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text, unique(merchantName, p_m_name, product_name))";
         // Fulfillment
@@ -663,15 +663,18 @@ public class Database extends SQLiteOpenHelper {
         return db.query("assignexecutive",columns,"merchantCode=? and merchantname=? and pick_m_name=? and product_name=? and currentDateTimeString=?", new String[] { merchant_code, merchant_name, p_m_name, product_name, currentDateTimeString} ,null,null,null,null);
     }
 
-    public void addexecutivelist(String empName, String empCode) {
+    public void addexecutivelist(String empName, String empCode, String empUsername, String empContactNumber) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("empName", empName);
         values.put("empCode", empCode);
-//        sqLiteDatabase.insert("executivelist", null, values);
+        values.put("empUsername", empUsername);
+        values.put("empContactNumber", empContactNumber);
         sqLiteDatabase.insertWithOnConflict("executivelist", null, values, SQLiteDatabase.CONFLICT_IGNORE);
         sqLiteDatabase.close();
     }
+
+
 
     public Cursor get_executivelist(SQLiteDatabase db) {
         String[] columns = {"empName", "empCode"};
@@ -717,6 +720,28 @@ public class Database extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT address FROM " + "Allmerchantlist"+ " WHERE " + "merchantName" + " = '" + merchantname + "'", null);
         if(c.moveToFirst()){
             selection = c.getString(c.getColumnIndex("address"));
+            return selection;
+        }
+        return null;
+    }
+
+    public String getEmpFullname(String emp_code){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT empUsername FROM " + "executivelist"+ " WHERE " + "empCode" + " = '" + emp_code + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("empUsername"));
+            return selection;
+        }
+        return null;
+    }
+
+    public String getEmpContact(String emp_code){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT empContactNumber FROM " + "executivelist"+ " WHERE " + "empCode" + " = '" + emp_code + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("empContactNumber"));
             return selection;
         }
         return null;

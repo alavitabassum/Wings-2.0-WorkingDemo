@@ -463,13 +463,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             Intent assignIntent = new Intent(MyPickupList_Executive.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-        }
-      /*  else if (id == R.id.nav_pickStatus) {
-            Intent historyIntent = new Intent(MyPickupList_Executive.this,
-                    PickupStatus_Executive.class);
-            startActivity(historyIntent);
-        } */
-        else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -816,13 +810,13 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(MyPickupList_Executive.this, "Success" +response, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyPickupList_Executive.this, "Success, status send to ajker deal direct delivery", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MyPickupList_Executive.this, "Unsuccessful" +error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyPickupList_Executive.this, "Unsuccessful, error sending status", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {

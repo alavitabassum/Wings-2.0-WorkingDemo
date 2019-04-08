@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -65,6 +66,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
     private String MERCHANT_URL = "http://paperflybd.com/a_deal_submerchant_api.php";
     private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
     private String UPDATE_ASSIGN_ADEAL = "http://paperflybd.com/updateassignadeal.php";
+    private String GET_EMP_INFO = "http://paperflybd.com/getEmpInfo.php";
 
     private String MAIN_MERCHANT_URL = "http://paperflybd.com/fulfillmentMerchantAPI.php";
     private String SUPPLIER_NAME_URL = "http://paperflybd.com/fulfillmentSupplierAPI.php";
@@ -190,10 +192,16 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(
                                         o.getString("userName"),
-                                        o.getString("empCode")
+                                        o.getString("empCode"),
+                                        o.getString("empName"),
+                                        o.getString("contactNumber")
                                 );
                                 executiveLists.add(assignManager_executiveList);
-                                database.addexecutivelist(o.getString("userName"), o.getString("empCode"));
+                                database.addexecutivelist(o.getString("userName"),
+                                                          o.getString("empCode"),
+                                                          o.getString("empName"),
+                                                          o.getString("contactNumber")
+                                        );
                             }
 
                         } catch (JSONException e) {
@@ -260,13 +268,6 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                         database.deletemerchantList_ajkerDeal(sqLiteDatabase);
                         progress.dismiss();
                         try {
-                            /*"pickMerchantName": "Gadget Zone BD",
-                            "pickMerchantAddress": "308 Boro Madrasha Road ,(jatrabari chowrasta) , Jatrabari Dhaka",
-                            "phone1": "01903976446",
-                            "merOrderRef": "1998043",
-                            "apiOrderID": "9498",
-                            "merchantName": "Ajker Deal.com"*/
-
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
                             for (int i = 0; i < array.length(); i++) {
@@ -299,8 +300,6 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                         } catch (JSONException e) {
                             e.printStackTrace();
                             swipeRefreshLayout.setRefreshing(false);
-
-
                         }
                     }
                 },
@@ -323,11 +322,6 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
 
     /* merchant List generation from sqlite*/
     private void getallmerchant() {
-/*
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String match_date = df.format(date);*/
-
         try {
             ajkerdealother_modelList.clear();
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
@@ -338,9 +332,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                 String supplier_address = c.getString(2);
                 String supplier_phone = c.getString(3);
                 String count = c.getString(4); // Inserting apiOrderID
-//                String product_name = c.getString(4);
                 String pickAssignedStatus = c.getString(5);
-//                int sum = c.getInt(6);
                 String order_id = c.getString(6);
                 AjkerDealOtherAssignManager_Model todaySummary = new AjkerDealOtherAssignManager_Model(main_merchant,pick_supplier_name, supplier_address,supplier_phone,count,pickAssignedStatus,order_id);
                 ajkerdealother_modelList.add(todaySummary);
@@ -356,23 +348,19 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
         }
     }
 
-//    String status = "0";
+
     private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String sum, final String order_id, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String apiOrderID, final String demo, final String pick_from_merchant_status, final  String received_from_HQ_status) {
-
         database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(order_id), user, currentDateTimeString, status,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
-        //final int total_assign = database.getTotalOfAmount(merchant_code);
-        //final String strI = String.valueOf(total_assign);
-        //database.update_row(strI, merchant_code);
-
     }
 
     private void updateAssignedStatus(final String order_id, final int status, final String pickAssignedStatus) {
         database.updateAssignedStatusDBAdeal(order_id, status, pickAssignedStatus);
     }
 
-    //For assigning executive API into mysql
+    //Pick assign to executive API
     private void assignexecutive(final String ex_name, final String empcode,final String product_name, final String sum, final String order_id, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String apiOrderID, final String demo,final String pick_from_merchant_status,final String received_from_HQ_status) {
-
+        final String emp_username = database.getEmpFullname(ex_name);
+        final String emp_contactnumber = database.getEmpContact(empcode);
 //        checkDataEntered( sum);
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
                 new Response.Listener<String>() {
@@ -381,13 +369,21 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                //if there is a success
-                                //storing the name to sqlite with status synced
                                 assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address,complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
+
+                                // Update status if order is assigned to the executive successfully and change the status to 1
+                                // pickAssignedStatus=1 means order assigned
+                                // pickAssignedStatus=0 means order assigned
+                                updatePickAssigedStatus(order_id, "1");
+                                sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
+                                Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Assign successfull", Toast.LENGTH_SHORT).show();
+
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
+                                Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessfull,Please try again!", Toast.LENGTH_SHORT).show();
+                                // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -399,6 +395,8 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         assignexecutivetosqlite(ex_name, empcode,product_name, sum, String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+                        Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessfull, Check your internet connection", Toast.LENGTH_SHORT).show();
+                        // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                     }
                 }
         ) {
@@ -474,6 +472,58 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest);
+    }
+
+    private void getEmpInfo(final String m_order_ref,final String emp_code){
+        String emp_username = database.getEmpFullname(emp_code);
+        String emp_contactnumber = database.getEmpContact(emp_code);
+        sendEmpInfoToAjkerDeal(m_order_ref,emp_username,emp_contactnumber );
+    }
+
+
+    //Send Executive information to AjkerDeal
+    public void sendEmpInfoToAjkerDeal(final String merchant_order_ref,final String emp_name,final String emp_contact) {
+
+        final String m_order_ref = "[" + merchant_order_ref + "]";
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://bridge.ajkerdeal.com/ThirdPartyOrderAction/UpdateCollectorInfo",
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Employee information send", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessful sending information" +error, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                String httpPostBody = "{\n\t\"OrderIds\" : "+ m_order_ref + ",\n\t\"AssignedPersonName\" : \""+ emp_name +"\",\n\t\"AssignedPersonPhoneNo\" : \""+emp_contact+"\"\n\t\n}";
+                return httpPostBody.getBytes();
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+
+                headers.put("Authorization", "Basic UGFwZXJGbHk6SGpGZTVWNWY=");
+                headers.put("API_KEY", "Ajkerdeal_~La?Rj73FcLm");
+                headers.put("Content-Type", "application/json");
+
+                return headers;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -692,28 +742,6 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int i1) {
 
-
-              /*  if(et1.getText().toString().trim().isEmpty()) {
-                    tv1.setText("Order count can't be empty");
-//                    dialog.equals("Order count can't be empty");
-
-
-                } else {
-                    String empname = mAutoComplete.getText().toString();
-
-                    final String empcode = database.getSelectedEmployeeCode(empname);
-
-                    assignexecutive(empname, empcode, product_name, et1.getText().toString(), order_id, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status, apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
-                    updatePickAssigedStatus(order_id, pickAssidnedStatus);
-                if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-                    Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, mAutoComplete.getText().toString()
-                                    + "(" + et1.getText().toString() + ")",
-                            Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-
-                    }
-                }*/
-
             }
         });
 
@@ -738,32 +766,23 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
 //                    dialog.equals("Order count can't be empty");
 
                 } else {
-                    // test
+                    /*assignexecutive(mAutoComplete.getText().toString(), empcode, product_name, et1.getText().toString(), order_id, user, currentDateTimeString, m_name, contactNumber,pick_merchant_name, pick_merchant_address, complete_status,apiOrderID,demo,pick_from_merchant_status,received_from_HQ_status);
+                    updatePickAssigedStatus(order_id, pickAssidnedStatus);*/
+//                    getEmpInfo(order_id,empcode);
                     assignexecutive(mAutoComplete.getText().toString(), empcode, product_name, et1.getText().toString(), order_id, user, currentDateTimeString, m_name, contactNumber,pick_merchant_name, pick_merchant_address, complete_status,apiOrderID,demo,pick_from_merchant_status,received_from_HQ_status);
-                    updatePickAssigedStatus(order_id, pickAssidnedStatus);
-                    if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
+                    dialog2.dismiss();
+                  /*  if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                         Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, mAutoComplete.getText().toString()
                                         + "(" + et1.getText().toString() + ")",
                                 Toast.LENGTH_SHORT).show();
-                        dialog2.dismiss();
 
-                    }
+
+                    }*/
                 }
             }
         });
     }
 
-//    boolean isEmpty(String text){
-//        CharSequence et1 = text.toString();
-//       return TextUtils.isEmpty(et1);
-//    }
-//
-//    private void checkDataEntered(String et1) {
-//         if (isEmpty(et1)){
-//             Toast t = Toast.makeText(this, "Enter Order number", Toast.LENGTH_LONG);
-//             t.show();
-//         }
-//    }
 
     @Override
     public void onItemClick_view(View view2, int position2) {

@@ -239,7 +239,10 @@ public class PickupHistory_Manager extends AppCompatActivity
                             JSONArray array = jsonObject.getJSONArray("executivelist");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                database.addexecutivelist(o.getString("empName"), o.getString("empCode"));
+                                database.addexecutivelist(  o.getString("userName"),
+                                        o.getString("empCode"),
+                                        o.getString("empName"),
+                                        o.getString("contactNumber"));
                             }
                             getallexecutives();
 

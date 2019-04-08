@@ -194,10 +194,15 @@ public class AjkerDealEkshop_Assign_Pickup_manager extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(
                                         o.getString("userName"),
-                                        o.getString("empCode")
+                                        o.getString("empCode"),
+                                        o.getString("empName"),
+                                        o.getString("contactNumber")
                                 );
                                 executiveLists.add(assignManager_executiveList);
-                                database.addexecutivelist(o.getString("userName"), o.getString("empCode"));
+                                database.addexecutivelist(o.getString("userName"),
+                                        o.getString("empCode"),
+                                        o.getString("empName"),
+                                        o.getString("contactNumber"));
                             }
 
                         } catch (JSONException e) {

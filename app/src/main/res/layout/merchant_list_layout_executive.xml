@@ -170,7 +170,6 @@
                 android:layout_marginTop="1dp"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="Product :"
                 android:textSize="14sp" />
 
             <TextView

@@ -185,11 +185,11 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
                 filteredList.addAll(ajkerdealother_modelListFull);
             }else{
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                /*for (AjkerDealAssignManager_Model item : ajkerdeal_modelListFull){
-                    if (item.getApiOrderID().toLowerCase().contains(filterPattern)){
+                for (AjkerDealOtherAssignManager_Model item : ajkerdealother_modelListFull){
+                    if (item.getPickMerchantName().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
-                }*/
+                }
             }
             FilterResults results = new FilterResults();
             results.values = filteredList;

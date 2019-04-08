@@ -32,6 +32,7 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
 
         public TextView item_mName;
         public TextView item_pName;
+        public TextView item_prodName;
         public TextView item_aQty;
         public TextView item_uQty;
         public TextView item_rQty;
@@ -45,6 +46,7 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
         public ViewHolder(View itemView) {
             super(itemView);
             item_mName=itemView.findViewById(R.id.merchant_name_e);
+            item_prodName=itemView.findViewById(R.id.prod_name_ex);
             item_pName=itemView.findViewById(R.id.prod_name_ex_1);
             item_aQty=itemView.findViewById(R.id.a_qty_e);
             item_uQty=itemView.findViewById(R.id.u_qty_e);
@@ -79,24 +81,28 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
 
         if(complete_status.equals("p")) {
             viewHolder.item_mName.setText(summaries.get(i).getMerchant_name());
+            viewHolder.item_prodName.setText("Product :");
             viewHolder.item_pName.setText("Null");
             viewHolder.text_rQty.setText("Scan Count: ");
             viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
         }
         if ( complete_status.equals("f")) {
             viewHolder.item_mName.setText(summaries.get(i).getMerchant_name()+"-"+summaries.get(i).getP_m_name());
+            viewHolder.item_prodName.setText("Product :");
             viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
             viewHolder.text_rQty.setText("Picked: ");
             viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
         }
         if ( complete_status.equals("a")) {
             viewHolder.item_mName.setText("A-deal direct-"+summaries.get(i).getP_m_name());
-            viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
+            viewHolder.item_prodName.setText("Product :");
+            viewHolder.item_pName.setText(summaries.get(i).getDemo());
             viewHolder.text_rQty.setText("Picked: ");
             viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
         }
         if ( complete_status.equals("r")) {
             viewHolder.item_mName.setText(summaries.get(i).getP_m_name());
+            viewHolder.item_prodName.setText("Product :");
             viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
             viewHolder.text_rQty.setText("Picked: ");
             viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
