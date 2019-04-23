@@ -605,6 +605,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
 
+
     public Cursor getUnsyncedAssignedFulList() {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM " + "merchantListFulfillment" + " WHERE " + "status" + " = 0;";

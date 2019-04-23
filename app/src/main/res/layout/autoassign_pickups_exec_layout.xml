@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_autoAssignList"
+    android:layout_width="match_parent"
+    android:layout_height="290dp"
+    android:layout_margin="5dp"
+    android:foreground="?selectableItemBackground"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp"
+    card_view_assign:cardBackgroundColor="#fff"
+    card_view_assign:cardElevation="3dp"
+    card_view_assign:contentPadding="4dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/m_name_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/childMerchant_name_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="38dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/childMerchant_address_log"
+            android:layout_width="285dp"
+            android:layout_height="51dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="66dp"
+            android:layout_marginEnd="0dp"
+            android:inputType="textMultiLine"
+            android:lineSpacingMultiplier="1"
+            android:lines="3"
+            android:maxLines="3"
+            android:textAlignment="textStart"
+            android:layout_alignStart="@id/childMerchant_name_log"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+
+        <!--<TextView
+            android:id="@+id/statustxt"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@id/scantxt"
+            android:layout_alignStart="@+id/m_name_pul"
+            android:layout_alignTop="@+id/btn_status"
+            android:layout_marginTop="2dp"
+            android:layout_alignBottom="@id/btn_scan"
+            android:layout_alignEnd="@+id/scantxt"
+            android:text="Status:"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:textAllCaps="true"
+            android:layout_alignBaseline="@id/btn_scan"/>-->
+
+        <TextView
+            android:id="@+id/assignedtxt"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="80dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="By MANAGER:"
+            android:textColor="@color/pfColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/scantxt"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/assignedtxt"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="60dp"
+            android:textColor="@color/pfColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/assignedtxt"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="60dp"
+            android:textColor="@color/view_green"
+            android:text="By MERCHANT:"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pickedtxt"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/assignedtxt"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:textColor="@color/pfColor"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/a_qty_log"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/assignedtxt"
+            android:layout_alignBaseline="@+id/assignedtxt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-115dp"
+            android:layout_marginEnd="60dp"
+            android:layout_toEndOf="@+id/assignedtxt"
+            android:text=""
+            android:textAlignment="textStart"
+            android:textColor="@color/pfColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/scan_qty_log"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/product_name"
+            android:layout_alignEnd="@+id/a_qty_pul"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="-76dp"
+            android:layout_marginBottom="7dp"
+            android:layout_toEndOf="@+id/assignedtxt"
+            android:textAlignment="textStart"
+            android:textColor="@color/pfColor"
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/product_name_log"
+            android:layout_width="165dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/product_name"
+            android:layout_alignEnd="@+id/a_qty_log"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="-76dp"
+            android:layout_marginBottom="7dp"
+            android:layout_toEndOf="@+id/assignedtxt"
+            android:maxLines="1"
+            android:minLines="1"
+            android:text=""
+            android:textAlignment="textStart"
+            android:textColor="@color/view_green"
+            android:textSize="15sp" />
+        <!--
+
+                <TextView
+                    android:id="@+id/scan_qty_pul"
+                    android:layout_width="153dp"
+                    android:layout_height="0dp"
+                    android:layout_alignBaseline="@+id/scantxt"
+                    android:layout_alignEnd="@+id/a_qty_pul"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="-64dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_toEndOf="@+id/assignedtxt"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:textColor="@color/pfColor"
+                    android:textSize="15sp" />
+        -->
+
+        <TextView
+            android:id="@+id/picked_qty_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/pickedtxt"
+            android:layout_alignEnd="@+id/a_qty_log"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="-7dp"
+            android:layout_marginBottom="78dp"
+            android:layout_toEndOf="@+id/assignedtxt"
+            android:text=""
+            android:textAlignment="textStart"
+            android:textColor="@color/pfColor"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="150dp"
+            android:background="?android:attr/listDivider" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="210dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/calltxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/childMerchant_address_log"
+            android:layout_alignStart="@+id/merchant_name_view"
+            android:layout_marginTop="5dp"
+            android:text="Call:"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/m_phn_num"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/childMerchant_name_log"
+            android:layout_alignBaseline="@+id/calltxt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="55dp"
+            android:layout_toEndOf="@+id/calltxt"
+            android:textAlignment="textStart"
+            android:textColor="@color/blue_link"
+            android:textSize="15sp" />
+        <!--android:onClick="callMerchant"-->
+
+        <!--<Button
+            android:id="@+id/btn_status"
+            android:layout_width="105dp"
+            android:layout_height="35dp"
+            android:layout_alignBottom="@id/btn_scan"
+            android:layout_marginRight="5dp"
+
+            android:layout_marginBottom="-1dp"
+            android:layout_toLeftOf="@id/btn_scan"
+            android:background="@drawable/buttonstyle"
+            android:padding="10dp"
+            android:text="Pending"
+            android:textSize="14sp" />-->
+
+        <Button
+            android:id="@+id/btn_scan"
+            android:layout_width="106dp"
+            android:layout_height="35dp"
+            android:layout_below="@id/divider4"
+            android:layout_alignEnd="@+id/m_name_log"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/buttonstyle_scan"
+            android:text="SCAN"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

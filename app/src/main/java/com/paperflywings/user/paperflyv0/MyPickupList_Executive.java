@@ -81,6 +81,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
 //    private String FULFILLMENT_PICKUP_URL = "http://paperflybd.com/tbl_fulfillment_pickuplist.php";
+public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/showexecutiveassign.php";
     public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment1.php";
 
     private List<PickupList_Model_For_Executive> list;
@@ -228,7 +229,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-          StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/showexecutiveassign.php",
+          StringRequest stringRequest = new StringRequest(Request.Method.POST, ASSIGNED_LIST_FOR_EXECUTIVE,
            new Response.Listener<String>()
            {
             @Override

@@ -99,5 +99,6 @@
     <string name="title_activity_robishop__assign_pickup_manager">Robishop
     </string>
     <string name="title_activity_pending_summary__manager">Pending Report</string>
+    <string name="title_activity_auto_assign_my_pickuplist">AutoAssignMyPickuplist</string>
 
 </resources>

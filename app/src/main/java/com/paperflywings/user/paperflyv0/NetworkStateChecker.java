@@ -42,6 +42,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         if (activeNetwork != null) {
             //if connected to wifi or mobile data plan
             if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI || activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
+
                 //getting all the unsynced names
                 Cursor cursor = database.getUnsyncedassignment();
                 if (cursor.moveToFirst()) {
@@ -52,53 +53,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         } while (cursor.moveToNext());
                 }
 
-                Cursor cursor4 = database.getUnsyncedAssignedList();
-                if (cursor4.moveToFirst()) {
-                    do {
-                        //calling the method to save the unsynced name to MySQL
-                        updateUnAssignedAPI(cursor4.getInt(0),cursor4.getString(2),cursor4.getString(7));
-
-                    } while (cursor4.moveToNext());
-                }
-
-              /*  Cursor cursor7 = database.getUnsyncedAssignedListAdeal();
-                if (cursor7.moveToFirst()) {
-                    do {
-                        *//*0 id integer primary key AUTOINCREMENT
-                        1 main_merchant text,
-                        2 pick_supplier_name text,
-                        3 supplier_address text,
-                        4 supplier_phone text,
-                        5 count text,
-                        6 pickAssignedStatus text,
-                        7 order_id text,
-                        8 status int,*//*
-
-                        //calling the method to save the unsynced name to MySQL
-                       updateUnAssignedAPIAdeal(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(7));
-
-                    } while (cursor7.moveToNext());
-                }
-*/
-                Cursor cursor6 = database.getUnsyncedAssignedListRobi();
-                if (cursor6.moveToFirst()) {
-                    do {
-                        //calling the method to save the unsynced name to MySQL
-                        updateUnAssignedAPIRobi(cursor6.getInt(0),cursor6.getString(1),cursor6.getString(11),cursor6.getString(8));
-
-                    } while (cursor6.moveToNext());
-                }
-
-                Cursor cursor5 = database.getUnsyncedAssignedFulList();
-                if (cursor5.moveToFirst()) {
-                    do {
-                        //calling the method to save the unsynced name to MySQL
-                        updateUnAssignedFulAPI(cursor5.getInt(0),cursor5.getString(6),cursor5.getString(9));
-
-                    } while (cursor5.moveToNext());
-                }
-
-
                 //getting all the unsynced barcode
                 Cursor cursor1 = database2.getUnsyncedBarcode();
                 if (cursor1.moveToFirst()) {
@@ -107,28 +61,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         saveBarcode(cursor1.getInt(0),cursor1.getString(1), cursor1.getString(2),cursor1.getString(3), Boolean.valueOf(cursor1.getString(4)),cursor1.getString(6),cursor1.getString(7));
                     } while (cursor1.moveToNext());
                 }
-                /*
-                *  + 0 "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + 1 "merchantId TEXT, "
-                + 2 "merchant_name TEXT, "
-                + 3 "executive_name TEXT, "
-                + 4 "assined_qty TEXT, "
-                + 5 "picked_qty TEXT, "
-                + 6 "scan_count TEXT, "
-                + 7 "phone_no TEXT, "
-                + 8 "assigned_by TEXT, "
-                + 9 "created_at TEXT , "
-                + 10 "updated_by TEXT, "
-                + 11 "updated_at TEXT , "
-                + 12 "status INT, "
-                + 13 "complete_status TEXT, "
-                + 14 "p_m_name TEXT , "
-                + 15 "p_m_add TEXT, "
-                + 16 "product_name TEXT, "
-                + 17 "apiOrderID TEXT, "
-                + 18 "demo TEXT, "
-                + 19 "pick_from_merchant_status TEXT, "
-                + 20 "received_from_HQ_status TEXT, "*/
 
                 //getting all the unsynced data
                 Cursor cursor2 = database2.getUnsyncedData();
@@ -156,6 +88,74 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         saveFulfillmentBarcode(cursor3.getInt(0),cursor3.getString(1),cursor3.getString(2),cursor3.getString(3),Boolean.valueOf(cursor3.getString(4)), cursor3.getString(6), cursor3.getString(7), cursor3.getString(8), cursor3.getString(9), cursor3.getString(10));
                     } while (cursor3.moveToNext());
                 }
+
+                Cursor cursor4 = database.getUnsyncedAssignedList();
+                if (cursor4.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateUnAssignedAPI(cursor4.getInt(0),cursor4.getString(2),cursor4.getString(7));
+
+                    } while (cursor4.moveToNext());
+                }
+
+                Cursor cursor5 = database.getUnsyncedAssignedFulList();
+                if (cursor5.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateUnAssignedFulAPI(cursor5.getInt(0),cursor5.getString(6),cursor5.getString(9));
+
+                    } while (cursor5.moveToNext());
+                }
+
+                Cursor cursor6 = database.getUnsyncedAssignedListRobi();
+                if (cursor6.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateUnAssignedAPIRobi(cursor6.getInt(0),cursor6.getString(1),cursor6.getString(11),cursor6.getString(8));
+
+                    } while (cursor6.moveToNext());
+                }
+
+
+                /* + "id0 INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "merchantName1 TEXT, "
+                + "merchantCode2 TEXT, "
+                + "pickMerName3 TEXT, "
+                + "pickMerAddress4 TEXT, "
+                + "pickPhoneNo5 TEXT, "
+                + "executiveName6 TEXT, "
+                + "executiveCode7 TEXT, "
+                + "manualCountManager8 TEXT, "
+                + "autoCountMerchant9 TEXT, "
+                + "scanCount TEXT10 , "
+                + "pickedQty TEXT,11 "
+                + "productName12 TEXT , "
+                + "productId13 TEXT, "
+                + "productQty14 TEXT, "
+                + "merOrderRef15 TEXT , "
+                + "assignedBy16 TEXT, "
+                + "assignedAt17 TEXT, "
+                + "updatedBy18 TEXT, "
+                + "updatedAt19 TEXT, "
+                + "pickTypeStatus20 TEXT, "
+                + "pickedStatus21 TEXT, "
+                + "receivedStatus22 TEXT, "
+                + "updateSatus23 TEXT,"
+                + "deleteStatus24 TEXT,"
+                + "demo1 25 TEXT,"
+                + "demo2 26 TEXT,"
+                + "status27 INT,"*/
+
+                Cursor cursor7 = database2.getUnsyncedUpdateLogistic();
+                if (cursor7.moveToFirst()) {
+                    do {
+                        //update unsynced value in tbl_update_auto_insertassign_pickup
+                        updateUnsyncedData(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(3),cursor7.getString(6),cursor7.getString(10),cursor7.getString(11),cursor7.getString(18),cursor7.getString(19),cursor7.getString(21));
+
+                    } while (cursor7.moveToNext());
+                }
+
+
 
             }
         }
@@ -511,4 +511,52 @@ public class NetworkStateChecker extends BroadcastReceiver {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
+
+//    updateUnsyncedData(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(3),cursor7.getString(6),cursor7.getString(10),cursor7.getString(11),cursor7.getString(18),cursor7.getString(19),cursor7.getString(21))
+    private void updateUnsyncedData(final int id, final String merchantCode, final String pickMerName, final String executiveName, final String scanCount, final String pickedQty ,final String updatedBy, final String updatedAt, final String pickedStatus) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AutoScanningScreen.UPDATE_SCAN_AND_PICKED,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+
+                                //updating the status in sqlite
+                                database2.updateSyncedDataStatus(id, NAME_SYNCED_WITH_SERVER);
+
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchantCode", merchantCode);
+                params.put("pickMerName", pickMerName);
+                params.put("executiveName", executiveName);
+                params.put("scanCount", scanCount);
+                params.put("pickedQty", pickedQty);
+                params.put("updatedBy", updatedBy);
+                params.put("updatedAt", updatedAt);
+                params.put("pickedStatus", pickedStatus);
+
+                return params;
+
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
 }
