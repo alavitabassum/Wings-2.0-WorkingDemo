@@ -43,6 +43,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
         void onItemClick_view (View view2, int position2);
+        void onItemClick_view_orderIDs (View view3, int position3);
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {
@@ -79,7 +80,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         public Button txtOption;
 
 
-        public ViewHolder(final View itemView, int i) {
+        public ViewHolder(final View itemView, final int i) {
             super(itemView);
             item_m_pul=itemView.findViewById(R.id.m_name_pul);
             item_p_m_name_pul=itemView.findViewById(R.id.childMerchant_name_pul);
@@ -107,7 +108,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                 @Override
                 public void onClick(View v) {
                     Intent callIntent =new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:01781278896"));
+                    callIntent.setData(Uri.parse("tel: " +list.get(i).getPhone_no()));
                     if (ActivityCompat.checkSelfPermission(v.getContext(),
                             Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                         ActivityCompat.requestPermissions((Activity) v.getContext(),
@@ -147,6 +148,21 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
             });
 
+            cardview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view3) {
+                    if(mListner!=null){
+                        int position3 = getAdapterPosition();
+                        if(position3!=RecyclerView.NO_POSITION){
+                            mListner.onItemClick_view_orderIDs(view3, position3);
+
+                        }
+                    }
+                }
+
+
+            });
+
         }
     }
 
@@ -177,6 +193,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         if(complete_status.equals("p") && product_name.equals("0")) {
             viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
             viewHolder.txtOption.setTextColor(Color.WHITE);
+            viewHolder.txtOption.setEnabled(false);
             viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Scan Count: ");
             viewHolder.item_productName.setText(list.get(i).getScan_count());
@@ -186,6 +203,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         } if ( complete_status.equals("f") && product_name != "0") {
             viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
             viewHolder.txtOption.setTextColor(Color.WHITE);
+            viewHolder.txtOption.setEnabled(false);
             viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Product: ");
             viewHolder.item_productName.setText(list.get(i).getProduct_name());
@@ -196,6 +214,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             viewHolder.item_m_pul.setText(list.get(i).getP_m_name());
             viewHolder.txtOption.setBackgroundResource(R.color.green);
             viewHolder.txtOption.setTextColor(Color.BLACK);
+            viewHolder.txtOption.setEnabled(true);
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
         }
@@ -203,6 +222,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         if ( complete_status.equals("r") && product_name != "0") {
             viewHolder.item_m_pul.setText("M-Ref: " +list.get(i).getApiOrderID());
             viewHolder.txtOption.setTextColor(Color.WHITE);
+            viewHolder.txtOption.setEnabled(false);
             viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Product: ");
             viewHolder.item_productName.setText(list.get(i).getProduct_name());

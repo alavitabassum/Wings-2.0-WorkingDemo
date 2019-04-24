@@ -17,15 +17,6 @@ public class AjkerDealOtherAssignManager_Model {
     private String pickAssignedStatus;
     int key_id;
 
-    /*   o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("pickMerchantAddress"),
-                                        o.getString("phone1"),
-                                        o.getInt("apiOrderID"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("date")*/
-
-
     public String getPickupMerchantPhone() {
         return pickupMerchantPhone;
     }

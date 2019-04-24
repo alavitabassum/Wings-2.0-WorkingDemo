@@ -68,10 +68,6 @@
         </receiver>
 
         <activity
-            android:name=".PickupHistory_Manager"
-            android:label="@string/title_activity_pickup_history__manager"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".ExecutiveCardMenu"
             android:label="@string/title_activity_executive_card_menu"
             android:theme="@style/AppTheme" />
@@ -82,10 +78,6 @@
         <activity
             android:name=".PickupsToday_Executive"
             android:label="@string/title_activity_pickups_today__executive"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".PickupStatus_Executive"
-            android:label="@string/title_activity_pickup_status__executive"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".MyPickupList_Executive"
@@ -141,16 +133,8 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".NewOrderEntry_ful" />
         <activity
-            android:name=".AjkerDeal_Assign_Pickup_manager"
-            android:label="@string/title_activity_ajker_deal__assign__pickup_manager"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".AjkerDealOther_Assign_Pickup_manager"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_manager"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".AjkerDealEkshop_Assign_Pickup_manager"
-            android:label="@string/title_activity_ajker_deal_ekshop__assign__pickup_manager"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Robishop_Assign_pickup_manager"

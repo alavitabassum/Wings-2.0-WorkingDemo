@@ -741,6 +741,36 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         }
     }
 
+    @Override
+    public void onItemClick_view_orderIDs(View view3, int position3) {
+
+        final PickupList_Model_For_Executive clickedItem = list.get(position3);
+        final String merchant_order_ref = clickedItem.getApiOrderID();
+        final String sub_merchant_name = clickedItem.getP_m_name();
+
+        if (clickedItem.getComplete_status().equals("a")) {
+
+            final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
+
+            spinnerBuilder.setTitle(sub_merchant_name+" Order Ids :");
+            final View mViewOrderIds = getLayoutInflater().inflate(R.layout.view_order_ids_for_ajkerdealdirectdelivery, null);
+
+            final TextView tv1 = mViewOrderIds.findViewById(R.id.orderIDs);
+
+            tv1.setText(merchant_order_ref);
+
+            spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int i1) {
+                    dialog.dismiss();
+                }
+            });
+            spinnerBuilder.setCancelable(false);
+            spinnerBuilder.setView(mViewOrderIds);
+            final AlertDialog dialog2 = spinnerBuilder.create();
+            dialog2.show();
+        }
+    }
 
     // API for updating scan count, picked_product_count, updated by and updated at and comments, pause ,delete
     public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String order_id, final String comments,final String match_date, final String pick_status, final String pause_or_delete) {

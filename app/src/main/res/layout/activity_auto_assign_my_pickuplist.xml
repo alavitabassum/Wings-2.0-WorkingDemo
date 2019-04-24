@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
+        android:fontWeight="100"
         app:headerLayout="@layout/nav_header_executive_card_menu"
         app:menu="@menu/activity_executive_card_menu_drawer" />
 

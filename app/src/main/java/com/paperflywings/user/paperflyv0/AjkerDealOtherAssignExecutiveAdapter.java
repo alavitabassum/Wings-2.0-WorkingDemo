@@ -2,7 +2,8 @@ package com.paperflywings.user.paperflyv0;
 
         import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v7.widget.CardView;
+        import android.graphics.Color;
+        import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,18 +25,10 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
     private Context context;
     private OnItemClickListener mListener;
 
-    public AjkerDealOtherAssignExecutiveAdapter() {
-
-    }
-    //private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
-
-
-
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
         void onItemClick_view (View view2, int position2);
         void onItemClick_update (View view3, int position3);
-
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {
@@ -47,7 +40,6 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
         this.context = context;
         ajkerdealother_modelListFull = new ArrayList<>(ajkerdealother_modelList);
     }
-
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -83,7 +75,6 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
                         int position = getAdapterPosition();
                         if(position!=RecyclerView.NO_POSITION){
                             mListener.onItemClick(view, position);
-
                         }
                     }
                 }
@@ -98,7 +89,6 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
                         int position2 = getAdapterPosition();
                         if(position2!=RecyclerView.NO_POSITION){
                             mListener.onItemClick_view(view2, position2);
-
                         }
                     }
                 }
@@ -113,15 +103,12 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
                         int position3 = getAdapterPosition();
                         if(position3!=RecyclerView.NO_POSITION){
                             mListener.onItemClick_update(view3, position3);
-
                         }
                     }
                 }
 
 
             });
-
-
         }
     }
 
@@ -133,11 +120,27 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
         return viewHolder;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         AjkerDealOtherAssignManager_Model AjkerDealOtherAssignManager_Model = ajkerdealother_modelList.get(i);
         viewHolder.itemMerchantName.setText(AjkerDealOtherAssignManager_Model.getPickMerchantName());
         final String subMerchantPhone = AjkerDealOtherAssignManager_Model.getPickupMerchantPhone();
+        final int getPickAssignedStatus = Integer.parseInt(AjkerDealOtherAssignManager_Model.getPickAssignedStatus());
+
+        if (getPickAssignedStatus == 1){
+            viewHolder.itembtnAssign.setBackgroundResource(R.color.green);
+            viewHolder.itembtnAssign.setTextColor(Color.WHITE);
+            viewHolder.itembtnAssign.setText("Assigned");
+//            viewHolder.itembtnAssign.setEnabled(false);
+        }
+        if(getPickAssignedStatus == 0){
+            viewHolder.itembtnAssign.setBackgroundResource(R.color.wallet_holo_blue_light);
+            viewHolder.itembtnAssign.setTextColor(Color.WHITE);
+            viewHolder.itembtnAssign.setText("Assign Executive");
+        }
+
+
 
         if(subMerchantPhone.length() == 0)
         {
@@ -156,14 +159,10 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
             viewHolder.itemMerchantAddress.setText("Add: "+p_address);
         }
 
-
-//        viewHolder.item_product_name.setText(String.valueOf(AjkerDealAssignManager_Model.getProduct_name()));
         viewHolder.item_product_name.setText("Order Qty: "+AjkerDealOtherAssignManager_Model.getCnt());
-//        viewHolder.item_call.setText(String.valueOf(AjkerDealAssignManager_Model.getSum()));
         viewHolder.item_call.setText(AjkerDealOtherAssignManager_Model.getMerOrderRef());
+
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -198,11 +197,9 @@ public class AjkerDealOtherAssignExecutiveAdapter extends RecyclerView.Adapter<A
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-
             ajkerdealother_modelList.clear();
             ajkerdealother_modelList.addAll((List) results.values);
             notifyDataSetChanged();
-
         }
     };
 }
