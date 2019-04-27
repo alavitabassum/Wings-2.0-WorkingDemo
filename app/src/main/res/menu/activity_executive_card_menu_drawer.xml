@@ -7,12 +7,14 @@
 
     <item android:title="Home" android:icon="@drawable/home" android:id="@+id/nav_home"/>
 
+
+    <item android:title="Other Pickup" android:icon="@drawable/attention" android:id="@+id/nav_exe_pickup"/>
+
+    <item android:title="Logistic Pickups" android:icon="@drawable/attention" android:id="@+id/nav_exe_pickup_log"/>
+
     <item android:title="Pickups Today" android:icon="@drawable/box" android:id="@+id/nav_pickup_sum"/>
-
-    <item android:title="My Pickups" android:icon="@drawable/attention" android:id="@+id/nav_exe_pickup"/>
-
-    <item android:title="Pickup Status" android:icon="@drawable/pickcomplete" android:id="@+id/nav_pickStatus"/>
-
+   <!-- <item android:title="Pickup Status" android:icon="@drawable/pickcomplete" android:id="@+id/nav_pickStatus"/>
+-->
 </group>
 
 

@@ -20,6 +20,9 @@
     <color name="view_green">#00C52F</color>
     <color name="bright_yellow">#efff00</color>
     <color name="background_color">#cd1800</color>
+    <color name="put_bg_color">#A2D9CE</color>
+    <color name="pending_bg_color">#FCF3CF</color>
+    <color name="put_hd_color">#0B5345</color>
 
 
 
