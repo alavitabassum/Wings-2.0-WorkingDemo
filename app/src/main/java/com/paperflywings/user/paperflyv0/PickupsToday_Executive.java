@@ -398,12 +398,11 @@ public class PickupsToday_Executive extends AppCompatActivity
             Intent assignIntent = new Intent(PickupsToday_Executive.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
+        } else if (id == R.id.nav_exe_pickup_log) {
+            Intent assignIntent = new Intent(PickupsToday_Executive.this,
+                    AutoAssignMyPickuplist.class);
+            startActivity(assignIntent);
         }
-      /*  else if (id == R.id.nav_pickStatus) {
-            Intent historyIntent = new Intent(PickupsToday_Executive.this,
-                    PickupStatus_Executive.class);
-            startActivity(historyIntent);
-        } */
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

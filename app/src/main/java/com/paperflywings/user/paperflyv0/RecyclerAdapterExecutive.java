@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapterExecutive.ViewHolder> {
 
-    private String[] titles_exe_list = { "Assigned Pickups","Logistic","Pickups Today"};
+    private String[] titles_exe_list = { "Other Pickups(Ajker deal direct, robishop, fulfillemnt)","Logistic Pickups","Pickups Today"};
 
   /*  private String[] details_exe_list = {"View ->","View ->","View ->"};*/
 

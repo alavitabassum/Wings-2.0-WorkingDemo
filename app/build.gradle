@@ -6,8 +6,8 @@ android {
         applicationId "com.paperflywings.user.paperflyv0"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 16
-        versionName "16.0"
+        versionCode 17
+        versionName "17.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true;
     }
