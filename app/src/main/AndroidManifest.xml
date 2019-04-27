@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.user.paperflyv0">
+    package="com.paperflywings.user.paperflyv0">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -20,11 +18,10 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
 
     <application
         android:name=".CustomFontApp"
@@ -35,7 +32,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity
+            android:name=".AutoAssignMyPickuplist"
+            android:label="@string/title_activity_auto_assign_my_pickuplist"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".PendingSummary_Manager"
+            android:label="@string/title_activity_pending_summary__manager"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/AppTheme">
@@ -47,29 +51,22 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme" >
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".PickupsToday_Manager"
             android:label="@string/title_activity_pickups_today__manager"
-            android:theme="@style/AppTheme">
-
-        </activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
-            android:theme="@style/AppTheme">
-
-        </activity>
-        <receiver android:name=".NetworkStateChecker">
-        <intent-filter>
-            <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-        </intent-filter>
-    </receiver>
-        <activity
-            android:name=".PickupHistory_Manager"
-            android:label="@string/title_activity_pickup_history__manager"
             android:theme="@style/AppTheme" />
+
+        <receiver android:name=".NetworkStateChecker">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".ExecutiveCardMenu"
             android:label="@string/title_activity_executive_card_menu"
@@ -83,26 +80,66 @@
             android:label="@string/title_activity_pickups_today__executive"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupStatus_Executive"
-            android:label="@string/title_activity_pickup_status__executive"
-            android:theme="@style/AppTheme"/>
-        <activity
             android:name=".MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
-
-        </activity>
-        <activity android:name=".ScanningScreen"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ScanningScreen"
             android:parentActivityName=".MyPickupList_Executive"
             android:theme="@style/AppTheme">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MyPickupList_Executive"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+        </activity>
+        <activity
+            android:name=".AutoScanningScreen"
+            android:parentActivityName=".AutoAssignMyPickuplist"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+        </activity>
+        <activity
+            android:name=".FulfillmentScanningScreen"
+            android:parentActivityName=".MyPickupList_Executive"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+        </activity>
+        <activity
+            android:name=".FulfillmentScanningScreenAjkerDeal"
+            android:parentActivityName=".MyPickupList_Executive"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+        </activity>
+        <activity
+            android:name=".RobishopScanningScreen"
+            android:parentActivityName=".MyPickupList_Executive"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
         </activity>
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />
-        <activity android:name=".ViewAssigns"></activity>
-
+        <activity android:name=".ViewAssigns" />
+        <activity
+            android:name=".Fulfillment_Assign_pickup_Manager"
+            android:label="@string/title_activity_testing_fulfillment"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".NewOrderEntry_ful" />
+        <activity
+            android:name=".AjkerDealOther_Assign_Pickup_manager"
+            android:label="@string/title_activity_ajker_deal_other__assign__pickup_manager"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Robishop_Assign_pickup_manager"
+            android:label="@string/title_activity_robishop__assign_pickup_manager"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

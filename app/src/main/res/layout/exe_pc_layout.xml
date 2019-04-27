@@ -127,7 +127,7 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
- <!--      <TextView
+        <TextView
             android:id="@+id/exe_name_pc"
             android:layout_width="159dp"
             android:layout_height="wrap_content"
@@ -139,7 +139,7 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="15sp"
             android:textStyle="bold" />
--->
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
