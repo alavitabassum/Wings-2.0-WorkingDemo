@@ -290,21 +290,21 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
                 viewHolder.itemStatus.setEnabled(true);
             }
 
-            if(pick_status.equals("1001") && pause_or_delete.equals("0") && complete_status.equals("a")) {
+            if(pick_status.equals("1") && complete_status.equals("a")) {
                 viewHolder.txtOption.setText("Picked");
                 viewHolder.txtOption.setBackgroundResource(R.color.green);
                 viewHolder.txtOption.setTextColor(Color.BLACK);
                 viewHolder.txtOption.setEnabled(true);
             }
 
-            if(pick_status.equals("1002") && pause_or_delete.equals("0") && complete_status.equals("a")) {
+            if(pick_status.equals("2") && complete_status.equals("a")) {
                 viewHolder.txtOption.setText("Pause");
                 viewHolder.txtOption.setBackgroundResource(R.color.yellow);
                 viewHolder.txtOption.setTextColor(Color.BLACK);
                 viewHolder.txtOption.setEnabled(true);
             }
 
-            if(pick_status.equals("1002") && pause_or_delete.equals("2") && complete_status.equals("a")) {
+            if(pick_status.equals("3") && complete_status.equals("a")) {
                 viewHolder.txtOption.setText("Cancel");
                 viewHolder.txtOption.setBackgroundResource(R.color.red);
                 viewHolder.txtOption.setTextColor(Color.BLACK);

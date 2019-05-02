@@ -10,6 +10,39 @@ public class AssignManager_Model  {
     int key_id;
     private int scan_count;
     private String phone_no;
+
+    public String getTotalamount() {
+        return totalamount;
+    }
+
+    public void setTotalamount(String totalamount) {
+        this.totalamount = totalamount;
+    }
+
+    public void setScan_count(int scan_count) {
+        this.scan_count = scan_count;
+    }
+
+    public void setPhone_no(String phone_no) {
+        this.phone_no = phone_no;
+    }
+
+    public void setMerchant_code(String merchant_code) {
+        this.merchant_code = merchant_code;
+    }
+
+    public void setPick_m_name(String pick_m_name) {
+        this.pick_m_name = pick_m_name;
+    }
+
+    public String getPick_assign_status() {
+        return pick_assign_status;
+    }
+
+    public void setPick_assign_status(String pick_assign_status) {
+        this.pick_assign_status = pick_assign_status;
+    }
+
     private String merchant_code;
     private String pick_m_name;
     private String pick_assign_status;

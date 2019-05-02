@@ -35,7 +35,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -570,7 +569,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         }
 
         else if(clickedItem.getComplete_status().equals("a")) {
-            Intent scanIntent2 = new Intent(MyPickupList_Executive.this, FulfillmentScanningScreenAjkerDeal.class);
+            Intent scanIntent2 = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
             scanIntent2.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
             scanIntent2.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
             scanIntent2.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
@@ -606,7 +605,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final Button txtoption;
         txtoption = findViewById(R.id.txtOption);
 
-        final CharSequence[] values = {"Pause Pick", "Cancel Pick"};
+        final CharSequence[] values = {"Complete Pick","Pause Pick", "Cancel Pick"};
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -623,8 +622,9 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final String sub_merchant_name = clickedItem.getP_m_name();
         final String match_date = clickedItem.getCreated_at();
 
-        final String pause = "1002";
-        final String cancel = "1002";
+        final String complete = "1";
+        final String pause = "2";
+        final String cancel = "3";
         final Intent picklistintent = new Intent(MyPickupList_Executive.this,
                 MyPickupList_Executive.class);
 
@@ -644,6 +644,52 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                         public void onClick(DialogInterface dialog, int item) {
                             switch (item) {
                                 case 0:
+                                    AlertDialog.Builder spinnerBuilder3 = new AlertDialog.Builder(MyPickupList_Executive.this);
+                                    spinnerBuilder3.setTitle("Write Comment(Optional): ");
+                                    spinnerBuilder3.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+
+                                    spinnerBuilder3.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int i1) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    spinnerBuilder3.setCancelable(false);
+                                    spinnerBuilder3.setView(mView);
+
+                                    final AlertDialog dialog5 = spinnerBuilder3.create();
+                                    dialog5.show();
+
+                                    dialog5.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            if (et1.getText().toString().trim().isEmpty()) {
+                                                tv1.setText("Field can't be empty");
+                                            } else {
+                                                // complete
+                                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+
+                                                String comments = et1.getText().toString();
+                                                //if order is cancelled this will save the status 2
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "0");
+//                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+
+                                                startActivity(picklistintent);
+                                                dialog5.dismiss();
+                                            }
+                                        }
+                                    });
+                                    dialog.dismiss();
+
+                                    break;
+
+                                case 1:
                                     AlertDialog.Builder spinnerBuilder1 = new AlertDialog.Builder(MyPickupList_Executive.this);
                                     spinnerBuilder1.setTitle("Write Pause Reason: ");
                                     spinnerBuilder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -672,11 +718,13 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                             if (et1.getText().toString().trim().isEmpty()) {
                                                 tv1.setText("Field can't be empty");
                                             } else {
-                                                // Pause
+                                                // pause
+                                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+
                                                 String comments = et1.getText().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount("0", "0", updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, pause, "0");
-                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, pause, "0");
+//                                                updateAjkerDeal(merchant_order_ref,pause,comments);
 
                                                 startActivity(picklistintent);
                                                 dialog3.dismiss();
@@ -686,7 +734,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                     dialog.dismiss();
                                     break;
 
-                                case 1:
+                                case 2:
                                     AlertDialog.Builder spinnerBuilder2 = new AlertDialog.Builder(MyPickupList_Executive.this);
                                     spinnerBuilder2.setTitle("Write Delete Reason: ");
 
@@ -715,10 +763,12 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 tv1.setText("Field can't be empty");
                                             } else {
                                                 // delete
+                                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+
                                                 String comments = et1.getText().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount("0", "0", updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, pause, "2");
-                                                updateAjkerDeal(merchant_order_ref,pause, comments);
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "0");
+//                                                updateAjkerDeal(merchant_order_ref,pause, comments);
 
                                                 startActivity(picklistintent);
                                                 dialog4.dismiss();
@@ -837,47 +887,47 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     }
 
     // Send Pause or Delete status to ajker deal
-    public void updateAjkerDeal(final String merchant_order_ref,final String pick_status, final String comm) {
-
-        final String m_order_ref = "[" + merchant_order_ref + "]";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://bridge.ajkerdeal.com/ThirdPartyOrderAction/UpdateStatusByCourier",
-
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(MyPickupList_Executive.this, "Success, status send to ajker deal direct delivery", Toast.LENGTH_SHORT).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MyPickupList_Executive.this, "Unsuccessful, error sending status", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) {
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                String httpPostBody = "{\n\t\"OrderIds\" : "+ m_order_ref + ",\n\t\"StatusId\" : "+ pick_status +",\n\t\"Comments\" : \""+comm+"\",\n\t\"ThirdPartyId\" : \"30\"\n\t\n}";
-                return httpPostBody.getBytes();
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-
-                headers.put("Authorization", "Basic UGFwZXJGbHk6SGpGZTVWNWY=");
-                headers.put("API_KEY", "Ajkerdeal_~La?Rj73FcLm");
-                headers.put("Content-Type", "application/json");
-                
-                return headers;
-            }
-        };
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(postRequest);
-        } catch (Exception e) {
-            Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
-        }
-    }
+//    public void updateAjkerDeal(final String merchant_order_ref,final String pick_status, final String comm) {
+//
+//        final String m_order_ref = "[" + merchant_order_ref + "]";
+//        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://bridge.ajkerdeal.com/ThirdPartyOrderAction/UpdateStatusByCourier",
+//
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Toast.makeText(MyPickupList_Executive.this, "Success, status send to ajker deal direct delivery", Toast.LENGTH_SHORT).show();
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(MyPickupList_Executive.this, "Unsuccessful, error sending status", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//        ) {
+//
+//            @Override
+//            public byte[] getBody() throws AuthFailureError {
+//                String httpPostBody = "{\n\t\"OrderIds\" : "+ m_order_ref + ",\n\t\"StatusId\" : "+ pick_status +",\n\t\"Comments\" : \""+comm+"\",\n\t\"ThirdPartyId\" : \"30\"\n\t\n}";
+//                return httpPostBody.getBytes();
+//            }
+//
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//
+//                headers.put("Authorization", "Basic UGFwZXJGbHk6SGpGZTVWNWY=");
+//                headers.put("API_KEY", "Ajkerdeal_~La?Rj73FcLm");
+//                headers.put("Content-Type", "application/json");
+//
+//                return headers;
+//            }
+//        };
+//        try {
+//            RequestQueue requestQueue = Volley.newRequestQueue(this);
+//            requestQueue.add(postRequest);
+//        } catch (Exception e) {
+//            Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+//        }
+//    }
 }
