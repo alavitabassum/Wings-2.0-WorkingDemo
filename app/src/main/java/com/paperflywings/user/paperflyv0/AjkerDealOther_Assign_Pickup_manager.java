@@ -359,7 +359,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
 
     //Pick assign to executive API
     private void assignexecutive(final String ex_name, final String empcode,final String product_name, final String sum, final String order_id, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String apiOrderID, final String demo,final String pick_from_merchant_status,final String received_from_HQ_status) {
-        final String emp_username = database.getEmpFullname(ex_name);
+        final String emp_username = database.getEmpFullname(empcode);
         final String emp_contactnumber = database.getEmpContact(empcode);
 //        checkDataEntered( sum);
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_URL,
@@ -382,7 +382,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
-                                Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessfull,Please try again!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessfull,Please try again!" +obj, Toast.LENGTH_LONG).show();
                                 // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                             }
                         } catch (JSONException e) {

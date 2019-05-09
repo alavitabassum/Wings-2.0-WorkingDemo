@@ -50,6 +50,7 @@ import static com.paperflywings.user.paperflyv0.AutoAssignMyPickuplist.CREATED_A
 import static com.paperflywings.user.paperflyv0.AutoAssignMyPickuplist.MERCHANT_ID;
 import static com.paperflywings.user.paperflyv0.AutoAssignMyPickuplist.MERCHANT_NAME;
 import static com.paperflywings.user.paperflyv0.AutoAssignMyPickuplist.SUB_MERCHANT_NAME;
+import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.SQL_PRIMARY_ID;
 
 public class AutoScanningScreen extends AppCompatActivity {
 
@@ -224,7 +225,7 @@ public class AutoScanningScreen extends AppCompatActivity {
 
                     final String pickedStatus = "1";
                     boolean state1 = false;
-                    db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
+//                    db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
                     // TODO: Merchant id, scan count, created-by, creation-date, flag
 //                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
                     try{
@@ -292,7 +293,8 @@ public class AutoScanningScreen extends AppCompatActivity {
 
     //Insert barcode in barcode_factory table
     private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
-
+        Intent intentID = getIntent();
+        final String sql_primary_id = intentID.getStringExtra(SQL_PRIMARY_ID);
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
                 new Response.Listener<String>() {
                     @Override
@@ -303,7 +305,7 @@ public class AutoScanningScreen extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
+                                db.add(sql_primary_id,merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCountAuto(merchant_id, sub_merchant_name));
                                 scan_count1.setText("Scan count: " +strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
@@ -314,7 +316,7 @@ public class AutoScanningScreen extends AppCompatActivity {
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.add(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.add(sql_primary_id,merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCountAuto(merchant_id, sub_merchant_name));
                                 scan_count1.setText("Scan count: " +strI);
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
@@ -328,7 +330,7 @@ public class AutoScanningScreen extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.add(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.add(sql_primary_id,merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
                         final String strI = String.valueOf(db.getRowsCountAuto(merchant_id, sub_merchant_name));
                         scan_count1.setText("Scan count: " +strI);
                     }
@@ -343,6 +345,7 @@ public class AutoScanningScreen extends AppCompatActivity {
                 params.put("state", String.valueOf(state));
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
+                params.put("sql_primary_id,", sql_primary_id);
 
                 return params;
             }

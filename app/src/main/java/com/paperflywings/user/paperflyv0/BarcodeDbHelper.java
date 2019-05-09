@@ -17,6 +17,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_2 = "Barcode_Fulfillment";
     private static final String TABLE_NAME_3 = "My_pickups_auto";
     private static final String KEY_ID = "id";
+    private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
     private static final String KEY_NAME = "barcodeNumber";
     private static final String MERCHANT_NAME = "merchant_name";
@@ -57,6 +58,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATION_TABLE = "CREATE TABLE Barcode ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "sql_primary_id TEXT, "
                 + "merchantId TEXT, "
                 + "sub_merchant_name TEXT, "
                 + "barcodeNumber TEXT, "
@@ -68,6 +70,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE1 = "CREATE TABLE My_pickups ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "sql_primary_id TEXT, "
                 + "merchantId TEXT, "
                 + "merchant_name TEXT, "
                 + "executive_name TEXT, "
@@ -88,7 +91,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "demo TEXT, "
                 + "pick_from_merchant_status TEXT, "
                 + "received_from_HQ_status TEXT, "
-                + "unique(merchantId, p_m_name, product_name, apiOrderID, created_at))";
+                + "unique(sql_primary_id,merchantId, p_m_name, product_name, apiOrderID, created_at))";
 
         String CREATION_TABLE3 = "CREATE TABLE My_pickups_auto ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -136,11 +139,15 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "merchant_code TEXT, "
                 + "unique(merchantId,barcodeNumber,order_id))" ;
 
+        String tableEmp4 = "create table pickups_today_executive(id integer primary key AUTOINCREMENT,sql_primary_id,merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text,demo text, unique(sql_primary_id, merchantName, p_m_name, product_name))";
+
+
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
         db.execSQL(CREATION_TABLE2);
         db.execSQL(CREATION_TABLE3);
+        db.execSQL(tableEmp4);
 
     }
 
@@ -150,36 +157,17 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_1);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
+//        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
         this.onCreate(db);
     }
 
-//    boolean check;
-//    check = checkDuplicate(...,...,...,id_post); // check whether data exists
-//    if(check == true)  // if exists
-//    {
-//        Toast.makeText(MainActivity.this, " Data Already Exists", Toast.LENGTH_LONG).show();
-//    }else{
-//        db.insert_my_assigned_pickups(favorit);
-//    }
 
-/*    public boolean checkDuplicate(String TableName, String dbfield, String fieldValue, int merchant_id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String Query = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE "+ MERCHANT_ID +"="+ merchant_id; // your query
-        Cursor cursor = db.rawQuery(Query, null);
-        if(cursor.getCount() <= 0){
-            cursor.close();
-            return false;
-        }
-        cursor.close();
-        return true;
-    }*/
-
-    public void insert_my_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_add, String product_name,String apiOrderID, String demo,String pick_from_merchant_status, String received_from_HQ_status, int status)
+    public void insert_my_assigned_pickups(String sql_primary_id, String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_add, String product_name,String apiOrderID, String demo,String pick_from_merchant_status, String received_from_HQ_status, int status)
     {
         SQLiteDatabase db=this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-
+        values.put(SQL_PRIMARY_ID, sql_primary_id);
         values.put(MERCHANT_ID, merchant_id);
         values.put(MERCHANT_NAME, merchant_name);
         values.put(EXECUTIVE_NAME, executive_name);
@@ -201,32 +189,19 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(RECEIVED_STATUS, received_from_HQ_status);
         values.put(STATUS, status);
 
-        db.insertWithOnConflict(TABLE_NAME_1, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+        db.insert(TABLE_NAME_1,null, values);
 
         db.close();
     }
 
 
-    /*public void insert_autoassigned_assigned_pickups(String executive_name, String assined_qty, String merchant_id, String assigned_by, String created_at, String updated_by, String updated_at, String scan_count, String phone_no, String picked_qty, String merchant_name, String complete_status, String p_m_name, String p_m_add, String product_name,String apiOrderID, String demo,String pick_from_merchant_status, String received_from_HQ_status, int status)
+    public Cursor get_mypickups_today(SQLiteDatabase db, String user)
     {
-
-    }*/
-
-
-    /*public void (String merchantName, String merchantCode, String contactNumber, String executive_name, String pickMerchantAddress, String assigned_by, String assigned_at, String assignedByMerchant, String assignedByManager, String complete_status, int status)
-    {
-
-    }*/
-
-    // readFromLocalDatabase
-    public Cursor get_mypickups_today(SQLiteDatabase db, String user, String currentDateTimeString)
-    {
-        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD, PRODUCT_NAME, APIORDERID, DEMO, PICKED_STATUS, RECEIVED_STATUS};
+        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD, PRODUCT_NAME, APIORDERID, DEMO, PICKED_STATUS, RECEIVED_STATUS, SQL_PRIMARY_ID};
         String sortOrder = CREATED_AT + " DESC";
-        String whereClause = EXECUTIVE_NAME + " = ? AND " + CREATED_AT  + " = ? AND " + RECEIVED_STATUS+ "=?";
+        String whereClause = EXECUTIVE_NAME + " = ? AND " + RECEIVED_STATUS+ "=?";
         String[] whereArgs = new String[] {
                 user,
-                currentDateTimeString,
                 "0"
         };
 
@@ -241,9 +216,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 */
 
-    public void add(String merchantId, String sub_merchant_name, String barcodeNumber, boolean state, String updated_by, String updated_at,int status) {
+    public void add(String sql_primary_id, String merchantId, String sub_merchant_name, String barcodeNumber, boolean state, String updated_by, String updated_at,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(SQL_PRIMARY_ID, sql_primary_id);
         values.put(SUB_MERCHANT_NAME, sub_merchant_name);
         values.put(MERCHANT_ID, merchantId);
         values.put(KEY_NAME, barcodeNumber);
@@ -257,8 +233,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public int getRowsCount(String merchantId, String sub_merchant_name, String date) {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='"+ merchantId +"' AND " + SUB_MERCHANT_NAME + " = '"+ sub_merchant_name +"'AND " + UPDATED_AT + " = '"+ date +"'";
+    public int getRowsCount(String sql_primary_id, String merchantId, String sub_merchant_name, String date) {
+        String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='"+ merchantId +"' AND " + SUB_MERCHANT_NAME + " = '"+ sub_merchant_name +"' AND " + SQL_PRIMARY_ID + " = '"+ sql_primary_id +"'AND " + UPDATED_AT + " = '"+ date +"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
@@ -460,14 +436,15 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public void update_state(boolean state, String merchantId, String sub_merchant_name, String date) {
+    public void update_state(boolean state, String merchantId, String sub_merchant_name, String date, String sql_primary_id) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(String.valueOf(STATE), state);
-        String whereClause = MERCHANT_ID + " = ? AND " + SUB_MERCHANT_NAME  + " = ?  AND " + UPDATED_AT  + " = ?";
+        String whereClause = MERCHANT_ID + " = ? AND " + SUB_MERCHANT_NAME  + " = ?  AND " + SQL_PRIMARY_ID  + " = ?  AND " + UPDATED_AT  + " = ?";
         String[] whereArgs = new String[] {
                 merchantId,
                 sub_merchant_name,
+                String.valueOf(sql_primary_id),
                 date
         };
         // insert
@@ -498,7 +475,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void update_row_for_fulfillment(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String apiorderid, String comments , String match_date, String pick_status, String pause_or_delete,int status)
+    public void update_row_for_fulfillment(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String apiorderid, String comments , String match_date, String pick_status, String pause_or_delete,String sql_primary_id,int status)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -511,11 +488,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(RECEIVED_STATUS, pause_or_delete);
         values.put(STATUS, status);
 
-        String whereClause = MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + APIORDERID  + " = ?  AND " + CREATED_AT  + " = ?";
+        String whereClause = MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + APIORDERID  + " = ?  AND " + SQL_PRIMARY_ID  + " = ?  AND "+ CREATED_AT  + " = ?";
         String[] whereArgs = new String[] {
                 merchantId,
                 sub_merchant_name,
                 apiorderid,
+                String.valueOf(sql_primary_id),
                 match_date
         };
         // insert
@@ -524,7 +502,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     // updateLocalDatabase
-    public void update_row(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, String pick_status, int status) {
+    public void update_row(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, String pick_status,String sql_primary_id, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SCAN_COUNT, scan_count);
@@ -534,10 +512,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(PICKED_STATUS, pick_status);
         values.put(STATUS, status);
 
-        String whereClause = MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + CREATED_AT  + " = ?";
+        String whereClause = MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + SQL_PRIMARY_ID  + " = ?  AND "+ CREATED_AT  + " = ?";
         String[] whereArgs = new String[] {
                 merchantId,
                 sub_merchant_name,
+                String.valueOf(sql_primary_id),
                 match_date
         };
         // insert
@@ -574,7 +553,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from "+ TABLE_NAME_1);
     }
 
-    public Cursor getdata_pickups_today_executive(SQLiteDatabase db, String user, String currentDateTimeString) {
+ /*   public Cursor getdata_pickups_today_executive(SQLiteDatabase db, String user, String currentDateTimeString) {
         String[] columns = {MERCHANT_NAME, EXECUTIVE_NAME,ASSIGNED_QTY,SCAN_COUNT,CREATED_AT, COMPLETE_STATUS, PICKED_QTY, PICK_M_NAME, PRODUCT_NAME, DEMO};
 
         String whereClause = EXECUTIVE_NAME + " = ? AND " + CREATED_AT  + " = ?";
@@ -583,7 +562,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 currentDateTimeString
         };
         return db.query(TABLE_NAME_1, columns, whereClause, whereArgs, null, null,"scan_count"+" ASC");
-    }
+    }*/
 
     //Demo Testing
 
@@ -701,35 +680,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     }
 
-    public int totalassigned_order_for_ex(String user, String currentDateTimeString){
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"'AND " + CREATED_AT + " = '"+ currentDateTimeString +"'";
-        Cursor sumQuery = db.rawQuery(countQuery, null);
-        int count = sumQuery.getCount();
-        return count;
-    }
-
-    public int complete_order_for_ex(String user, String currentDateTimeString){
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + PICKED_QTY + ">=" + ASSIGNED_QTY;
-        Cursor sumQuery = db.rawQuery(countQuery, null);
-        int count = sumQuery.getCount();
-        sumQuery.close();
-        return count;
-    }
-
-    public int pending_order_for_ex(String user, String currentDateTimeString){
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        String countQuery = "SELECT  * FROM " + TABLE_NAME_1 + " WHERE " + EXECUTIVE_NAME + "='"+ user +"' AND " + CREATED_AT + " = '"+ currentDateTimeString +"'AND " + PICKED_QTY + "<" + ASSIGNED_QTY;
-
-        Cursor sumQuery = db.rawQuery(countQuery, null);
-        int count = sumQuery.getCount( );
-        sumQuery.close();
-        return count;
-    }
 
     public void barcode_factory(SQLiteDatabase sqLiteDatabase, String match_date)
     {
@@ -802,6 +752,62 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_3,columns,whereClause,whereArgs,null,null,null));
     }
 
+
+    public void add_pickups_today_executive(String sql_primary_id,String merchantName,int cnt,int scan_count,String created_at,String executive_name, String complete_status, int picked_qty,String p_m_name, String product_name, String demo) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("sql_primary_id", sql_primary_id);
+        values.put("merchantName", merchantName);
+        values.put("totalcount",cnt);
+        values.put("scan_count",scan_count);
+        values.put("created_at",created_at);
+        values.put("executive_name",executive_name);
+        values.put("complete_status",complete_status);
+        values.put("picked_qty",picked_qty);
+        values.put("p_m_name",p_m_name);
+        values.put("product_name",product_name);
+        values.put("demo",demo);
+
+
+        sqLiteDatabase.insert("pickups_today_executive", null, values);
+        sqLiteDatabase.close();
+    }
+
+    public void clearPTMListExec(SQLiteDatabase sqLiteDatabase)
+    {
+        sqLiteDatabase.execSQL("delete from "+ "pickups_today_executive");
+    }
+
+    public Cursor getdata_pickups_today_executive(SQLiteDatabase db, String user) {
+        String[] columns = {"sql_primary_id","merchantName", "totalcount","scan_count","executive_name","created_at","complete_status","picked_qty", "product_name", "p_m_name", "product_name", "demo"};
+        return db.query("pickups_today_executive", columns, "executive_name='" + user + "'", null, null, null,"scan_count"+" ASC");
+    }
+
+
+    public int totalassigned_order_for_ex(String user, String currentDateTimeString){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_executive" + " WHERE " + "executive_name" + " = '" + user + "' AND " + "created_at" + " = '" + currentDateTimeString + "'", null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+    public int complete_order_for_ex(String user, String currentDateTimeString){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT * FROM " + "pickups_today_executive"+ " WHERE " + "executive_name" + " = '" + user + "' AND  " + "picked_qty" + ">=" + "totalcount" + " AND " + "created_at"+ " = '" + currentDateTimeString + "'", null);
+        int count = sumQuery.getCount();
+        sumQuery.close();
+        return count;
+    }
+
+    public int pending_order_for_ex(String user, String currentDateTimeString){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor sumQuery = db.rawQuery("SELECT merchantName FROM " + "pickups_today_executive"+ " WHERE " + "executive_name" + " = '" + user + "' AND  " + "picked_qty" + "<" + "totalcount" + " AND " + "created_at"+ " = '" + currentDateTimeString + "'" , null);
+        int count = sumQuery.getCount( );
+        sumQuery.close();
+        return count;
+    }
 
 }
 

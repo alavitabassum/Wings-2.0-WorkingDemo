@@ -27,7 +27,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp4 = "create table assignexecutive(ex_name text,empcode text, product_name text, order_count text,merchantCode text,user text,currentDateTimeString text,status int,id integer primary key autoincrement,merchantname text,contactNumber text,pick_m_name text,pick_m_address text, complete_status text,apiOrderID integer,demo integer, pick_from_merchant_status text, received_from_HQ_status text,unique(ex_name,product_name,merchantCode,merchantname,pick_m_name,apiOrderID))";
         String tableEmp5 = "create table executivelist(id integer primary key AUTOINCREMENT,empName text,empCode text unique,empUsername text,empContactNumber text)";
         String tableEmp6 = "create table Allmerchantlist(id integer primary key AUTOINCREMENT,merchantName text,merchantCode text,address text, unique(merchantName,merchantCode))";
-        String tableEmp7 = "create table pickups_today_manager(merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text, unique(merchantName, p_m_name, product_name))";
+        String tableEmp7 = "create table pickups_today_manager(id integer primary key AUTOINCREMENT,sql_primary_id,merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text,demo text, unique(sql_primary_id, merchantName, p_m_name, product_name))";
         // Fulfillment
         String tableEmp8 = "create table merchantListFulfillment(id integer primary key AUTOINCREMENT,main_merchant text,supplier_name text,supplier_phone text,supplier_address text,product_name text, product_id integer,sum integer, created_at text,assign_status text, merchant_code text,status int, unique(product_id))";
         String tableEmp9 = "create table Fulfillmentmerchantlist(id integer primary key AUTOINCREMENT,merchantName text, merchant_code text, unique(merchantName,merchant_code))";
@@ -68,10 +68,11 @@ public class Database extends SQLiteOpenHelper {
 
 
 
-    public void add_pickups_today_manager(String merchantName,int cnt,int scan_count,String created_at,String executive_name, String complete_status, int picked_qty,String p_m_name, String product_name) {
+    public void add_pickups_today_manager(String sql_primary_id,String merchantName,int cnt,int scan_count,String created_at,String executive_name, String complete_status, int picked_qty,String p_m_name, String product_name, String demo) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("sql_primary_id", sql_primary_id);
         values.put("merchantName", merchantName);
         values.put("totalcount",cnt);
         values.put("scan_count",scan_count);
@@ -81,6 +82,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("picked_qty",picked_qty);
         values.put("p_m_name",p_m_name);
         values.put("product_name",product_name);
+        values.put("demo",demo);
 
 
         sqLiteDatabase.insert("pickups_today_manager", null, values);
@@ -88,7 +90,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public Cursor getdata_pickups_today_manager(SQLiteDatabase db) {
-        String[] columns = {"merchantName", "totalcount","scan_count","executive_name","created_at","complete_status","picked_qty", "product_name", "p_m_name", "product_name"};
+        String[] columns = {"sql_primary_id","merchantName", "totalcount","scan_count","executive_name","created_at","complete_status","picked_qty", "product_name", "p_m_name", "product_name", "demo"};
         return db.query("pickups_today_manager", columns, "created_at='" + currentDateTimeString + "'", null, null, null,"scan_count"+" ASC");
     }
 

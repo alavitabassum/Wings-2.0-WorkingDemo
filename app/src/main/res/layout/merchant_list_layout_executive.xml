@@ -3,18 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_merchant="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="160dp"
+    android:layout_height="180dp"
     android:layout_width="wrap_content">
-
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view_executive"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="180dp"
         card_view_merchant:cardBackgroundColor="@android:color/transparent"
         card_view_merchant:cardElevation="0dp"
         card_view_merchant:contentPadding="2dp">
-
 
         <RelativeLayout
             android:id="@+id/inside_rl"
@@ -30,20 +28,9 @@
             tools:targetApi="lollipop">
 
             <TextView
-                android:id="@+id/a_qty_e"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/txt1"
-                android:layout_toEndOf="@+id/txt1"
-                android:textAlignment="center"
-                android:textColor="#000"
-                android:textSize="14sp" />
-
-            <TextView
                 android:id="@+id/u_qty_e"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/a_qty_e"
                 android:layout_alignBaseline="@+id/txt2"
                 android:layout_toEndOf="@+id/txt2"
                 android:textAlignment="center"
@@ -51,18 +38,27 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/r_qty_e"
+                android:id="@+id/a_qty_e"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/u_qty_e"
+                android:layout_alignBaseline="@+id/txt1"
+                android:layout_toEndOf="@+id/txt1"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="15sp" />
 
+            <TextView
+                android:id="@+id/r_qty_e"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/a_qty_e"
                 android:layout_alignBaseline="@+id/txt3"
                 android:layout_toEndOf="@+id/txt3"
                 android:textAlignment="center"
                 android:textColor="#000"
                 android:textSize="14sp" />
 
-
             <TextView
                 android:id="@+id/txt2"
                 android:layout_width="120dp"
@@ -86,43 +82,6 @@
                 android:maxLines="1"
                 android:text="@string/assigned_product_count"
                 android:textSize="14sp" />
-
-            <!--<TextView
-                android:id="@+id/txt1"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="2dp"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="@string/assigned_product_count"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/txt2"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt1"
-                android:layout_alignStart="@+id/txt1"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="-1dp"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="@string/uploaded_product_count"
-                android:textSize="15sp" />-->
-
-            <!-- <TextView
-                android:id="@+id/txt3"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt2"
-                android:layout_alignStart="@+id/txt2"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="1dp"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="@string/total_products_picked"
-                android:textSize="15sp" />-->
 
             <TextView
                 android:id="@+id/txt3"
@@ -158,7 +117,8 @@
                 android:layout_toEndOf="@+id/txt4"
                 android:textAlignment="center"
                 android:textColor="#000"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                />
 
             <TextView
                 android:id="@+id/prod_name_ex"
@@ -168,8 +128,9 @@
                 android:layout_alignStart="@+id/txt4"
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="1dp"
-                android:lines="1"
-                android:maxLines="1"
+                android:lines="2"
+                android:text="Product :"
+                android:maxLines="2"
                 android:textSize="14sp" />
 
             <TextView
@@ -184,6 +145,30 @@
                 android:textAlignment="center"
                 android:textColor="#000"
                 android:textSize="12sp" />
+            <TextView
+                android:id="@+id/comment_field"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/prod_name_ex"
+                android:layout_alignStart="@+id/prod_name_ex"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="1dp"
+                android:text="Comment :"
+                android:lines="2"
+                android:maxLines="2"
+                android:textSize="14sp" />
+            <TextView
+                android:id="@+id/comment_field_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/prod_name_ex_1"
+                android:layout_alignBaseline="@+id/comment_field"
+                android:layout_toEndOf="@+id/comment_field"
+                android:lines="2"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -192,12 +177,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top|center"
             android:background="#FCF3CF"
+            android:layout_marginTop="10dp"
             android:elevation="4dp" tools:targetApi="lollipop">
 
             <TextView
                 android:id="@+id/merchant_name_e"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_marginEnd="2dp"
@@ -207,8 +194,7 @@
                 android:textAlignment="center"
                 android:textColor="#000"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold" />
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

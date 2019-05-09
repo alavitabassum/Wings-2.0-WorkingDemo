@@ -35,11 +35,10 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         public TextView itemProductName;
         public TextView itemAssignedQty;
         public TextView itemReceivedQty;
-
         public TextView textReceivedQty;
-
         public TextView itemUploadedQty;
         public TextView date_of_assign;
+        public TextView comment_text_m;
         public CardView cardView;
         public RelativeLayout relativeLayout;
         public RelativeLayout relativeLayout2;
@@ -53,8 +52,8 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             itemAssignedQty=itemView.findViewById(R.id.a_qty);
             itemReceivedQty=itemView.findViewById(R.id.r_qty);
             textReceivedQty=itemView.findViewById(R.id.txt3);
-
             date_of_assign = itemView.findViewById(R.id.asgn_date);
+            comment_text_m = itemView.findViewById(R.id.comment_field_value_m);
             cardView = itemView.findViewById(R.id.card_view_merchant);
             relativeLayout = itemView.findViewById(R.id.inside_rl);
             relativeLayout2 = itemView.findViewById(R.id.rl2);
@@ -76,7 +75,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
         viewHolder.itemUploadedQty.setText(pickupList_model_for_executive.getExecutive_name());
         viewHolder.itemAssignedQty.setText(pickupList_model_for_executive.getAssined_qty());
         viewHolder.date_of_assign.setText(pickupList_model_for_executive.getCreated_at());
-//        int count_assigned = Integer.parseInt(pickupList_model_for_executive.getAssined_qty());
+        viewHolder.comment_text_m.setText(pickupList_model_for_executive.getDemo());
         String complete_status = pickupList_model_for_executive.getComplete_status();
 
 
@@ -86,6 +85,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             viewHolder.textReceivedQty.setText("Scan Count: ");
             viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
         }
+
         if ( complete_status.equals("f")) {
             viewHolder.itemMerchantName.setText(pickupList_model_for_executive.getMerchant_name()+"-"+pickupList_model_for_executive.getP_m_name());
             viewHolder.itemProductName.setText(pickupList_model_for_executive.getProduct_name());
@@ -227,7 +227,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
            }else{
                String filterPattern = constraint.toString().toLowerCase().trim();
                for (PickupList_Model_For_Executive item : PickupList_Model_For_ExecutiveFull){
-                   if (item.getMerchant_name().toLowerCase().contains(filterPattern) || item.getExecutive_name().toLowerCase().contains(filterPattern) || item.getCreated_at().toLowerCase().contains(filterPattern)){
+                   if (item.getMerchant_name().toLowerCase().contains(filterPattern) || item.getExecutive_name().toLowerCase().contains(filterPattern) || item.getP_m_name().toLowerCase().contains(filterPattern) || item.getCreated_at().toLowerCase().contains(filterPattern)){
                        filteredList.add(item);
                    }
                }

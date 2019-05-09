@@ -45,7 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PickupsToday_Manager extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
+public class PickupsToday_Manager extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
 
@@ -72,26 +73,20 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         database=new Database(this);
         database.getWritableDatabase();
 
-
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
         pickupList_model_for_executives = new ArrayList<>();
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_merchant);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
         swipeRefreshLayout = findViewById(R.id.refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
         pickupList_model_for_executives.clear();
         swipeRefreshLayout.setRefreshing(true);
-
-
-
 
 
         //If internet connection is available or not
@@ -144,6 +139,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject o = array.getJSONObject(i);
                         PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(
+                                o.getString("id"),
                                 o.getString("merchant_name"),
                                 o.getString("order_count"),
                                 String.valueOf(o.getInt("scan_count")),
@@ -152,9 +148,12 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                                 o.getString("complete_status"),
                                 String.valueOf(o.getInt("picked_qty")),
                                 o.getString("p_m_name"),
-                                o.getString("product_name"));
+                                o.getString("product_name"),
+                                o.getString("demo"));
 
-                        database.add_pickups_today_manager(o.getString("merchant_name"),
+                        database.add_pickups_today_manager(
+                                o.getString("id"),
+                                o.getString("merchant_name"),
                                 Integer.valueOf(o.getString("order_count")),
                                 o.getInt("scan_count"),
                                 o.getString("created_at"),
@@ -162,13 +161,16 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                                 o.getString("complete_status"),
                                 o.getInt("picked_qty"),
                                 o.getString("p_m_name"),
-                                o.getString("product_name"));
+                                o.getString("product_name"),
+                                o.getString("demo"));
                         pickupList_model_for_executives.add(todaySummary);
                     }
 
                     merchantListAdapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
                     recyclerView.setAdapter(merchantListAdapter);
                     swipeRefreshLayout.setRefreshing(false);
+
+
                     //Master Summary For Today
                     int total = database.totalassigned_order();
                     total_assigned= findViewById(R.id.a_count);
@@ -221,21 +223,24 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
             Cursor c = database.getdata_pickups_today_manager(sqLiteDatabase);
             while (c.moveToNext())
             {
-                String name = c.getString(0);
-                String code = String.valueOf(c.getString(1));
-                String count = String.valueOf(c.getInt(2));
-                String executive_name = c.getString(3);
-                String created_at = c.getString(4);
-                String complete_status = c.getString(5);
-                String picked_qty = c.getString(6);
-                String p_m_name = c.getString(7);
-                String product_name = c.getString(8);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name,created_at, complete_status, picked_qty, p_m_name, product_name);
+                String sql_primary_key = c.getString(0);
+                String name = c.getString(1);
+                String code = String.valueOf(c.getString(2));
+                String count = String.valueOf(c.getInt(3));
+                String executive_name = c.getString(4);
+                String created_at = c.getString(5);
+                String complete_status = c.getString(6);
+                String picked_qty = c.getString(7);
+                String p_m_name = c.getString(8);
+                String product_name = c.getString(9);
+                String demo = c.getString(10);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(sql_primary_key, name,code,count,executive_name,created_at, complete_status, picked_qty, p_m_name, product_name,demo);
                 pickupList_model_for_executives.add(todaySummary);
             }
             merchantListAdapter = new MerchantListAdapter(pickupList_model_for_executives,getApplicationContext());
             recyclerView.setAdapter(merchantListAdapter);
             swipeRefreshLayout.setRefreshing(false);
+
             //Master Summary For Today
             int total = database.totalassigned_order();
             total_assigned= findViewById(R.id.a_count);
@@ -257,7 +262,6 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         }
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -270,6 +274,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_item, menu);
 
@@ -277,6 +282,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         try {
+
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -289,15 +295,16 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     return false;
                 }
             });
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
             Intent intent_stay = new Intent(PickupsToday_Manager.this, AssignPickup_Manager.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
-
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -349,11 +356,7 @@ public class PickupsToday_Manager extends AppCompatActivity implements Navigatio
                     PendingSummary_Manager.class);
             startActivity(reportIntent);
         }
-       /* else if (id == R.id.nav_pickCompleted) {
-            Intent historyIntent = new Intent(PickupsToday_Manager.this,
-                    PickupHistory_Manager.class);
-            startActivity(historyIntent);
-        } */
+
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

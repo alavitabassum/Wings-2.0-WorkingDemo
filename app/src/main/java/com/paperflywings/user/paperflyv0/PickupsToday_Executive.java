@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -45,8 +48,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.NAME_NOT_SYNCED_WITH_SERVER;
-
 public class PickupsToday_Executive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener{
 
@@ -54,7 +55,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
 
     //private static final String URL_DATA = "http://192.168.0.117/new/merchantListForExecutive.php";
-    private static final String URL_DATA = "http://paperflybd.com/showassign.php";
+    private static final String URL_DATA = "http://paperflybd.com/showexecutiveassign.php";
     private ProgressDialog progress;
 //    Database database;
     public TextView total_assigned;
@@ -71,8 +72,13 @@ public class PickupsToday_Executive extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickups_today__executive);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
+        db= new BarcodeDbHelper(this);
+        db.getWritableDatabase();
+
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -81,27 +87,18 @@ public class PickupsToday_Executive extends AppCompatActivity
 //        database=new Database(getApplicationContext());
 //        database.getReadableDatabase();
 
-        db= new BarcodeDbHelper(getApplicationContext());
-        db.getReadableDatabase();
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String currentDateTimeString = df.format(c);
 
-        summaries = new ArrayList<PickupList_Model_For_Executive>();
-
+        summaries = new ArrayList<>();
         recyclerView_exec = (RecyclerView) findViewById(R.id.recycler_view_e);
         layoutManager_exec = new LinearLayoutManager(this);
         recyclerView_exec.setLayoutManager(layoutManager_exec);
-        getData(user, currentDateTimeString);
-        loadRecyclerView(user);
-
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
+        summaries.clear();
+        swipeRefreshLayout.setRefreshing(true);
 
-
-
-        int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
+      /*  int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
         total_assigned= findViewById(R.id.a_count);
         total_assigned.setText(String.valueOf(total));
 
@@ -111,7 +108,7 @@ public class PickupsToday_Executive extends AppCompatActivity
 
         int pm = db.pending_order_for_ex(user, currentDateTimeString);
         pending = findViewById(R.id.pen_count);
-        pending.setText(String.valueOf(pm));
+        pending.setText(String.valueOf(pm));*/
 
         /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -123,6 +120,21 @@ public class PickupsToday_Executive extends AppCompatActivity
             }
         });*/
 
+
+        //If internet connection is available or not
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadRecyclerView(username);
+        }
+        else {
+            getData(username);
+            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+        }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_e);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -136,7 +148,13 @@ public class PickupsToday_Executive extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-   /* private void loadRecyclerView(final String user) {
+
+    private void loadRecyclerView(final String user)
+    {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String currentDateTimeString = df.format(c);
+
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -147,18 +165,61 @@ public class PickupsToday_Executive extends AppCompatActivity
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-               progress.dismiss();
+                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                db.clearPTMListExec(sqLiteDatabase);
+                progress.dismiss();
+
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray array = jsonObject.getJSONArray("summary");
-                    for(int i =0;i<array.length();i++)
-                    {
+                    for (int i = 0; i < array.length(); i++) {
                         JSONObject o = array.getJSONObject(i);
-                        database.insert_pickups_today_executive(o.getString("merchant_name"),o.getString("order_count"),o.getString("picked_qty"),o.getString("scan_count"));
+                        PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(
+                                o.getString("id"),
+                                o.getString("merchant_name"),
+                                o.getString("order_count"),
+                                String.valueOf(o.getInt("scan_count")),
+                                o.getString("executive_name"),
+                                o.getString("created_at"),
+                                o.getString("complete_status"),
+                                String.valueOf(o.getInt("picked_qty")),
+                                o.getString("p_m_name"),
+                                o.getString("product_name"),
+                                o.getString("demo"));
+
+                        db.add_pickups_today_executive(
+                                o.getString("id"),
+                                o.getString("merchant_name"),
+                                Integer.valueOf(o.getString("order_count")),
+                                o.getInt("scan_count"),
+                                o.getString("created_at"),
+                                o.getString("executive_name"),
+                                o.getString("complete_status"),
+                                o.getInt("picked_qty"),
+                                o.getString("p_m_name"),
+                                o.getString("product_name"),
+                                o.getString("demo"));
+                        summaries.add(todaySummary);
                     }
 
-                   getData();
+                    mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());
+                    recyclerView_exec.setAdapter(mListForExecutiveAdapter);
                     swipeRefreshLayout.setRefreshing(false);
+
+
+                    //Master Summary For Today
+                    int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
+                    total_assigned= findViewById(R.id.a_count);
+                    total_assigned.setText(String.valueOf(total));
+
+                    int cm = db.complete_order_for_ex(user, currentDateTimeString);
+                    complete = findViewById(R.id.com_count);
+                    complete.setText(String.valueOf(cm));
+
+                    int pm = db.pending_order_for_ex(user, currentDateTimeString);
+                    pending = findViewById(R.id.pen_count);
+                    pending.setText(String.valueOf(pm));
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -175,27 +236,36 @@ public class PickupsToday_Executive extends AppCompatActivity
                         Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                     }
-                }
-        ) {
+                }){
+
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params1 = new HashMap<String, String>();
                 params1.put("executive_name", user);
                 return params1;
             }
+
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }*/
+    }
+
+
+
+
+
+
+
+
+/*
+
    private void loadRecyclerView(final String user)
    {
        Date c = Calendar.getInstance().getTime();
        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
        final String match_date = df.format(c);
 
-//        boolean check;
-//          list.clear();
        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA,
                new Response.Listener<String>()
                {
@@ -211,6 +281,7 @@ public class PickupsToday_Executive extends AppCompatActivity
 
                                JSONObject o = array.getJSONObject(i);
                                db.insert_my_assigned_pickups(
+                                       o.getString("id"),
                                        o.getString("executive_name"),
                                        o.getString("order_count"),
                                        o.getString("merchant_code"),
@@ -245,7 +316,6 @@ public class PickupsToday_Executive extends AppCompatActivity
                new Response.ErrorListener() {
                    @Override
                    public void onErrorResponse(VolleyError error) {
-                       // progress.dismiss();
                        swipeRefreshLayout.setRefreshing(false);
                        Toast.makeText(getApplicationContext(), "No Internet Connection" ,Toast.LENGTH_SHORT).show();
 
@@ -264,34 +334,62 @@ public class PickupsToday_Executive extends AppCompatActivity
 
        RequestQueue requestQueue = Volley.newRequestQueue(this);
        requestQueue.add(stringRequest);
-   }
+   }*/
 
-   /* private void getData(final String user)
-    {
 
-        new AsyncTask<String, Void, Void>() {
-            @Override
-            protected Void doInBackground(String... params) {
-                summaries.clear();
-                summaries.addAll(db.getAllData(user));
-                return null;
+    private void getData(final String user)
+    {  Date calender = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String currentDateTimeString = df.format(calender);
+
+        try{
+            summaries.clear();
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.getdata_pickups_today_executive(sqLiteDatabase, user);
+            while (c.moveToNext())
+            {
+                String sql_primary_key = c.getString(0);
+                String name = c.getString(1);
+                String code = String.valueOf(c.getString(2));
+                String count = String.valueOf(c.getInt(3));
+                String executive_name = c.getString(4);
+                String created_at = c.getString(5);
+                String complete_status = c.getString(6);
+                String picked_qty = c.getString(7);
+                String p_m_name = c.getString(8);
+                String product_name = c.getString(9);
+                String demo = c.getString(10);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(sql_primary_key, name,code,count,executive_name,created_at, complete_status, picked_qty, p_m_name, product_name,demo);
+                summaries.add(todaySummary);
             }
+            mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());
+            recyclerView_exec.setAdapter(mListForExecutiveAdapter);
+            swipeRefreshLayout.setRefreshing(false);
 
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());
-                recyclerView_exec.setAdapter(mListForExecutiveAdapter);
+            //Master Summary For Today
+            int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
+            total_assigned= findViewById(R.id.a_count);
+            total_assigned.setText(String.valueOf(total));
 
-            }
-        }.execute();
-    }*/
+            int cm = db.complete_order_for_ex(user, currentDateTimeString);
+            complete = findViewById(R.id.com_count);
+            complete.setText(String.valueOf(cm));
+
+            int pm = db.pending_order_for_ex(user, currentDateTimeString);
+            pending = findViewById(R.id.pen_count);
+            pending.setText(String.valueOf(pm));
 
 
-    private void getData(final String user, final String match_date)
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "some error"+e ,Toast.LENGTH_LONG).show();
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+  /*  private void getData(final String user, final String match_date)
     {
         try{
-//            pickupList_model_for_executives.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.getdata_pickups_today_executive(sqLiteDatabase, user, match_date);
             while (c.moveToNext())
@@ -316,9 +414,8 @@ public class PickupsToday_Executive extends AppCompatActivity
         {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    /**/
 
     @Override
     public void onBackPressed() {
@@ -419,6 +516,7 @@ public class PickupsToday_Executive extends AppCompatActivity
                             db.deleteAssignedList(sqLiteDatabase);
                             db.barcode_factory(sqLiteDatabase,match_date);
                             db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
+
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                             //Getting editor
@@ -450,6 +548,7 @@ public class PickupsToday_Executive extends AppCompatActivity
             //Showing the alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_e);
@@ -459,7 +558,8 @@ public class PickupsToday_Executive extends AppCompatActivity
 
     @Override
     public void onRefresh() {
-         //The list for update recycle view
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         String user = username.toString();
@@ -470,8 +570,14 @@ public class PickupsToday_Executive extends AppCompatActivity
 
         summaries.clear();
         mListForExecutiveAdapter.notifyDataSetChanged();
-        loadRecyclerView(user);
-        getData(user, match_date);
+
+        if(nInfo!= null && nInfo.isConnected())
+        {
+            loadRecyclerView(username);
+        }
+        else{
+            getData(username);
+        }
 
     }
 }

@@ -56,6 +56,7 @@ import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.ASSIGNED_
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.CREATED_AT;
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.MERCHANT_ID;
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
+import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.SQL_PRIMARY_ID;
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.SUB_MERCHANT_NAME;
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.PRODUCT_ID;
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.PICKED_QTY;
@@ -185,11 +186,10 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
             final String merchant_id = intentID.getStringExtra(MERCHANT_ID);
             final String sub_merchant_name = intentID.getStringExtra(SUB_MERCHANT_NAME);
             final String merchant_code = intentID.getStringExtra(APIORDERID);
-
             final String order_id = intentID.getStringExtra(PRODUCT_ID);
             final String picked_qty = intentID.getStringExtra(PICKED_QTY);
-
             final String match_date = intentID.getStringExtra(CREATED_AT);
+            final String sql_primary_id = intentID.getStringExtra(SQL_PRIMARY_ID);
 
             barcodeView.setStatusText("Barcode"+result.getText());
 
@@ -251,7 +251,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
                     final String pick_status = "1";
                     boolean state1 = false;
-                    db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
+                    db.update_state(state1, merchant_id, sub_merchant_name, updated_at1,sql_primary_id);
                     // TODO: get the total product quantity
 
 

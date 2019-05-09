@@ -16,10 +16,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder>  implements Filterable {
+class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAdapter.ViewHolder> implements Filterable {
 
     private List<PickupList_Model_For_Executive> summaries;
     private List<PickupList_Model_For_Executive> summariesCopy;
+
     private Context context;
 
     public mListForExecutiveAdapter(List<PickupList_Model_For_Executive> summaries, Context context) {
@@ -38,6 +39,7 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
         public TextView item_rQty;
         public TextView text_rQty;
         public TextView date_of_assign;
+        public TextView comment_text;
         public CardView cardView;
         public RelativeLayout relativeLayout;
         public RelativeLayout relativeLayout2;
@@ -46,12 +48,13 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
         public ViewHolder(View itemView) {
             super(itemView);
             item_mName=itemView.findViewById(R.id.merchant_name_e);
-            item_prodName=itemView.findViewById(R.id.prod_name_ex);
-            item_pName=itemView.findViewById(R.id.prod_name_ex_1);
+            item_prodName=itemView.findViewById(R.id.prod_name_ex_1);
+//            item_pName=itemView.findViewById(R.id.prod_name_ex_1);
             item_aQty=itemView.findViewById(R.id.a_qty_e);
             item_uQty=itemView.findViewById(R.id.u_qty_e);
             item_rQty=itemView.findViewById(R.id.r_qty_e);
             text_rQty=itemView.findViewById(R.id.txt3);
+            comment_text=itemView.findViewById(R.id.comment_field_value);
             date_of_assign = itemView.findViewById(R.id.asgn_date);
             cardView = itemView.findViewById(R.id.card_view_executive);
             relativeLayout = itemView.findViewById(R.id.inside_rl);
@@ -74,39 +77,40 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
 
         viewHolder.item_uQty.setText(summaries.get(i).getExecutive_name());
         viewHolder.item_aQty.setText(summaries.get(i).getAssined_qty());
-
         viewHolder.date_of_assign.setText(summaries.get(i).getCreated_at());
-
+        viewHolder.comment_text.setText(summaries.get(i).getDemo());
         String complete_status = summaries.get(i).getComplete_status();
 
         if(complete_status.equals("p")) {
             viewHolder.item_mName.setText(summaries.get(i).getMerchant_name());
-            viewHolder.item_prodName.setText("Product :");
-            viewHolder.item_pName.setText("Null");
+            viewHolder.item_prodName.setText("Null");
+//            viewHolder.item_pName.setText("Null");
             viewHolder.text_rQty.setText("Scan Count: ");
             viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
         }
+
         if ( complete_status.equals("f")) {
             viewHolder.item_mName.setText(summaries.get(i).getMerchant_name()+"-"+summaries.get(i).getP_m_name());
-            viewHolder.item_prodName.setText("Product :");
-            viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
+            viewHolder.item_prodName.setText(summaries.get(i).getProduct_name());
+//            viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
             viewHolder.text_rQty.setText("Picked: ");
             viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
         }
         if ( complete_status.equals("a")) {
             viewHolder.item_mName.setText("A-deal direct-"+summaries.get(i).getP_m_name());
-            viewHolder.item_prodName.setText("Product :");
-            viewHolder.item_pName.setText(summaries.get(i).getDemo());
+            viewHolder.item_prodName.setText(summaries.get(i).getProduct_name());
+//            viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
             viewHolder.text_rQty.setText("Picked: ");
             viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
         }
         if ( complete_status.equals("r")) {
             viewHolder.item_mName.setText(summaries.get(i).getP_m_name());
-            viewHolder.item_prodName.setText("Product :");
-            viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
+            viewHolder.item_prodName.setText(summaries.get(i).getProduct_name());
+//            viewHolder.item_pName.setText(summaries.get(i).getProduct_name());
             viewHolder.text_rQty.setText("Picked: ");
             viewHolder.item_rQty.setText(summaries.get(i).getPicked_qty());
         }
+
 
         try {
             int count_assigned = Integer.parseInt(summaries.get(i).getAssined_qty());
@@ -189,7 +193,7 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (PickupList_Model_For_Executive item : summariesCopy){
 
-                    if (item.getMerchant_name().toLowerCase().contains(filterPattern)){
+                    if (item.getMerchant_name().toLowerCase().contains(filterPattern) || item.getP_m_name().toLowerCase().contains(filterPattern) || item.getExecutive_name().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
 

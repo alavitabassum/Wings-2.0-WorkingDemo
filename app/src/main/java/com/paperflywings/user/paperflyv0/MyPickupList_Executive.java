@@ -30,7 +30,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +70,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     public static final String PICKED_QTY = "Picked Qty";
     public static final String SCAN_COUNT = "Scan Count";
     public static final String APIORDERID = "Api Order ID";
+    public static final String SQL_PRIMARY_ID = "Sql Primary Id";
     private static final String URL_DATA = "";
     private static final int REQUEST_CAMERA = 1;
     private ProgressDialog progress;
@@ -79,9 +79,9 @@ public class MyPickupList_Executive extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager_pul;
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
-//    private String FULFILLMENT_PICKUP_URL = "http://paperflybd.com/tbl_fulfillment_pickuplist.php";
-public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/showexecutiveassign.php";
-    public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment1.php";
+    //    private String FULFILLMENT_PICKUP_URL = "http://paperflybd.com/tbl_fulfillment_pickuplist.php";
+    public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/showexecutiveassignTest.php";
+    public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment11.php";
 
     private List<PickupList_Model_For_Executive> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -181,7 +181,7 @@ public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/
             final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_mypickups_today(sqLiteDatabase, user, currentDateTimeString);
+            Cursor c = db.get_mypickups_today(sqLiteDatabase, user);
 
             while (c.moveToNext()) {
                 int key_id = c.getInt(0);
@@ -204,7 +204,8 @@ public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/
                 String demo = c.getString(17);
                 String pick_from_merchant_status = c.getString(18);
                 String received_from_HQ_status = c.getString(19);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add, product_name,apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
+                String sql_primary_id = c.getString(20);
+                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(key_id,merchantid,merchant_name,executive_name,assined_qty,picked_qty,scan_count,phone_no,assigned_by, created_at,updated_by,updated_at, complete_status, p_m_name, p_m_add, product_name,apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status,sql_primary_id);
 
                 list.add(todaySummary);
             }
@@ -244,6 +245,7 @@ public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/
                     {
                         JSONObject o = array.getJSONObject(i);
                         PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(
+                                o.getString("id"),
                                 o.getString("executive_name"),
                                 o.getString("product_name"),
                                 o.getString("order_count"),
@@ -265,6 +267,7 @@ public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/
                                 o.getString("received_from_HQ_status"));
 
                         db.insert_my_assigned_pickups(
+                                o.getString("id"),
                                 o.getString("executive_name"),
                                 o.getString("order_count"),
                                 o.getString("merchant_code"),
@@ -318,7 +321,7 @@ public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("executive_name",user);
-                params1.put("created_at",match_date);
+//                params1.put("created_at",match_date);
                 return params1;
             }
         };
@@ -381,8 +384,6 @@ public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/
                 .create()
                 .show();
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -550,7 +551,8 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         scanIntent.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
         scanIntent.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
         scanIntent.putExtra(CREATED_AT, clickedItem.getCreated_at());
-//        scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
+        scanIntent.putExtra(SQL_PRIMARY_ID, clickedItem.getSql_primary_id());
+        // scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
 
         startActivity(scanIntent); }
         else if(clickedItem.getComplete_status().equals("f")) {
@@ -565,6 +567,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             scanIntent1.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
             scanIntent1.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
             scanIntent1.putExtra(APIORDERID, clickedItem.getApiOrderID());
+            scanIntent1.putExtra(SQL_PRIMARY_ID, clickedItem.getSql_primary_id());
             startActivity(scanIntent1);
         }
 
@@ -579,6 +582,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             scanIntent2.putExtra(PRODUCT_NAME, clickedItem.getProduct_name());
             scanIntent2.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
             scanIntent2.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
+            scanIntent2.putExtra(SQL_PRIMARY_ID, clickedItem.getSql_primary_id());
 
             startActivity(scanIntent2);
         }
@@ -594,6 +598,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             scanIntent3.putExtra(PRODUCT_NAME, clickedItem.getProduct_name());
             scanIntent3.putExtra(ASSIGNED_QTY, clickedItem.getAssined_qty());
             scanIntent3.putExtra(PICKED_QTY, clickedItem.getPicked_qty());
+            scanIntent3.putExtra(SQL_PRIMARY_ID, clickedItem.getSql_primary_id());
 
             startActivity(scanIntent3);
         }
@@ -602,10 +607,8 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
     @Override
     public void onItemClick_view(final View view2, int position2) {
-        final Button txtoption;
-        txtoption = findViewById(R.id.txtOption);
 
-        final CharSequence[] values = {"Complete Pick","Pause Pick", "Cancel Pick"};
+        final CharSequence[] values = {"Complete Pick","On-hold Pick","Stock Out","Cancel Pick"};
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -620,11 +623,13 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final String merchant_order_ref = clickedItem.getApiOrderID();
         final String merchant_id = clickedItem.getMerchant_id();
         final String sub_merchant_name = clickedItem.getP_m_name();
+        final String sql_primary_id = clickedItem.getSql_primary_id();
         final String match_date = clickedItem.getCreated_at();
 
-        final String complete = "1";
         final String pause = "2";
         final String cancel = "3";
+        final String complete = "4";
+        final String stock_out = "5";
         final Intent picklistintent = new Intent(MyPickupList_Executive.this,
                 MyPickupList_Executive.class);
 
@@ -633,7 +638,6 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
         final EditText et1 = mView.findViewById(R.id.comments);
         final TextView tv1 = mView.findViewById(R.id.textView3);
-        if (clickedItem.getComplete_status().equals("a")) {
 
             final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
 
@@ -645,7 +649,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                             switch (item) {
                                 case 0:
                                     AlertDialog.Builder spinnerBuilder3 = new AlertDialog.Builder(MyPickupList_Executive.this);
-                                    spinnerBuilder3.setTitle("Write Comment(Optional): ");
+                                    spinnerBuilder3.setTitle("Write Comment: ");
                                     spinnerBuilder3.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -673,12 +677,12 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 tv1.setText("Field can't be empty");
                                             } else {
                                                 // complete
-                                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
 
                                                 String comments = et1.getText().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "0");
-//                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "done", sql_primary_id);
+                                                // updateAjkerDeal(merchant_order_ref,pause,comments);
 
                                                 startActivity(picklistintent);
                                                 dialog5.dismiss();
@@ -691,7 +695,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                 case 1:
                                     AlertDialog.Builder spinnerBuilder1 = new AlertDialog.Builder(MyPickupList_Executive.this);
-                                    spinnerBuilder1.setTitle("Write Pause Reason: ");
+                                    spinnerBuilder1.setTitle("Write On-hold Reason: ");
                                     spinnerBuilder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -719,11 +723,11 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 tv1.setText("Field can't be empty");
                                             } else {
                                                 // pause
-                                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
 
                                                 String comments = et1.getText().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, pause, "0");
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, pause, "pause",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause,comments);
 
                                                 startActivity(picklistintent);
@@ -735,6 +739,52 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                     break;
 
                                 case 2:
+                                    AlertDialog.Builder spinnerBuilder6 = new AlertDialog.Builder(MyPickupList_Executive.this);
+                                    spinnerBuilder6.setTitle("Write Stock Out Reason: ");
+                                    spinnerBuilder6.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+
+                                    spinnerBuilder6.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int i1) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    spinnerBuilder6.setCancelable(false);
+                                    spinnerBuilder6.setView(mView);
+
+                                    final AlertDialog dialog6 = spinnerBuilder6.create();
+                                    dialog6.show();
+
+                                    dialog6.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            if (et1.getText().toString().trim().isEmpty()) {
+                                                tv1.setText("Field can't be empty");
+                                            } else {
+                                                // pause
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+
+                                                String comments = et1.getText().toString();
+                                                //if order is cancelled this will save the status 2
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, stock_out, "stock_out",sql_primary_id);
+//                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+
+                                                startActivity(picklistintent);
+                                                dialog6.dismiss();
+                                            }
+                                        }
+                                    });
+                                    dialog.dismiss();
+                                    break;
+
+
+                                case 3:
                                     AlertDialog.Builder spinnerBuilder2 = new AlertDialog.Builder(MyPickupList_Executive.this);
                                     spinnerBuilder2.setTitle("Write Delete Reason: ");
 
@@ -763,11 +813,11 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 tv1.setText("Field can't be empty");
                                             } else {
                                                 // delete
-                                                final String strI = String.valueOf(db.getRowsCount(merchant_id, sub_merchant_name, match_date));
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
 
                                                 String comments = et1.getText().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "0");
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "cancel",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause, comments);
 
                                                 startActivity(picklistintent);
@@ -792,7 +842,6 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             spinnerBuilder.setCancelable(false);
             final AlertDialog dialog2 = spinnerBuilder.create();
             dialog2.show();
-        }
     }
 
     @Override
@@ -827,7 +876,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     }
 
     // API for updating scan count, picked_product_count, updated by and updated at and comments, pause ,delete
-    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String order_id, final String comments,final String match_date, final String pick_status, final String pause_or_delete) {
+    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String order_id, final String comments,final String match_date, final String pick_status, final String pause_or_delete, final String sql_primary_id) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
 
@@ -840,11 +889,11 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status, pause_or_delete ,NAME_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status, pause_or_delete, sql_primary_id ,NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status,pause_or_delete, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status,pause_or_delete, sql_primary_id,NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -855,7 +904,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status,pause_or_delete, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status,pause_or_delete, sql_primary_id,NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -873,6 +922,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 params.put("received_from_HQ_status", pause_or_delete);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
+                params.put("sql_primary_id", sql_primary_id);
 
                 return params;
             }
