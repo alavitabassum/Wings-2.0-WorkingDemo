@@ -34,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
     EditText username,pass;
     private boolean loggedIn = false;
     private String userRole;
+    private String user_role_id;
+    private String zoneAssigned;
     Button tempButton;
     BarcodeDbHelper barcodedb;
     Database db;
@@ -75,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
         //Fetching the boolean value form sharedpreferences
         loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
         userRole = sharedPreferences.getString(Config.USER_ROLE_SHARED_PREF,"");
+        zoneAssigned = sharedPreferences.getString(Config.USER_ZONE_SHARED_PREF,"");
+        user_role_id = sharedPreferences.getString(Config.USER_ROLE_ID_SHARED_PREF,"");
 
         //If we will get true
         if(loggedIn ){
@@ -97,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         final String user = username.getText().toString().trim();
         final String pas = pass.getText().toString().trim();
 
-        StringRequest request = new StringRequest(Request.Method.POST, "http://paperflybd.com/la.php", new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, "http://paperflybd.com/la1.php", new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -112,6 +116,8 @@ public class LoginActivity extends AppCompatActivity {
                         JSONArray arr = new JSONArray(response);
                         JSONObject jObj = arr.getJSONObject(0);
                         String userRole = jObj.getString("userRole");
+                        String user_role_id = jObj.getString("user_role_id");
+                        String zoneAssigned = jObj.getString("zoneAssigned");
 
                         //Creating a shared preference
                         SharedPreferences sharedPreferences1 = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -121,7 +127,22 @@ public class LoginActivity extends AppCompatActivity {
                         //Saving values to editor
                         editor.commit();
 
-                        if (userRole.contains("1")) {
+
+                        SharedPreferences sharedPreferences2 = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        //Creating editor to store values to shared preferences
+                        SharedPreferences.Editor editor1 = sharedPreferences2.edit();
+                        editor1.putString(Config.USER_ROLE_ID_SHARED_PREF, user_role_id);
+                        //Saving values to editor
+                        editor1.commit();
+
+                        SharedPreferences sharedPreferences3 = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        //Creating editor to store values to shared preferences
+                        SharedPreferences.Editor editor2 = sharedPreferences1.edit();
+                        editor2.putString(Config.USER_ZONE_SHARED_PREF, zoneAssigned);
+                        //Saving values to editor
+                        editor2.commit();
+
+                        if (user_role_id.contains("12")) {
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.clearPTMList(sqLiteDatabase);
                             db.deletemerchantList(sqLiteDatabase);
@@ -137,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                             db.deletecom_fullfillment_product(sqLiteDatabase);
 
                             startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
-                        } else {
+                        } else if(user_role_id.contains("7")) {
 
                             Date c = Calendar.getInstance().getTime();
                             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -149,6 +170,19 @@ public class LoginActivity extends AppCompatActivity {
                             barcodedb.barcode_factory_fulfillment(sqLiteDatabase,match_date);
 
                             startActivity(new Intent(getApplicationContext(),ExecutiveCardMenu.class));
+                        }
+                        else if(user_role_id.contains("26")) {
+
+                            Date c = Calendar.getInstance().getTime();
+                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+                            final String match_date = df.format(c);
+
+                            SQLiteDatabase sqLiteDatabase = barcodedb.getWritableDatabase();
+                            barcodedb.deleteAssignedList(sqLiteDatabase);
+                            barcodedb.barcode_factory(sqLiteDatabase,match_date);
+                            barcodedb.barcode_factory_fulfillment(sqLiteDatabase,match_date);
+
+                            startActivity(new Intent(getApplicationContext(),SupervisorCardMenu.class));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

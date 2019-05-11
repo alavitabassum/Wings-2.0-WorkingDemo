@@ -16,15 +16,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable  {
-    private List<AssignManager_Model> assignManager_modelList;
-    private List<AssignManager_Model> assignManager_modelListFull;
+public class AssignSupervisorAdapter extends RecyclerView.Adapter<AssignSupervisorAdapter.ViewHolder> implements Filterable  {
+    private List<AssignSupervisor_Model> assignSupervisor_modelList;
+    private List<AssignSupervisor_Model> assignSupervisor_modelListFull;
     Database database;
 
     private Context context;
     private OnItemClickListener mListener;
 
-    public AssignExecutiveAdapter() {
+    public AssignSupervisorAdapter() {
 
     }
 
@@ -39,10 +39,10 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         this.mListener = listner;
     }
 
-    public AssignExecutiveAdapter(List<AssignManager_Model> assignManager_modelList, Context context) {
-        this.assignManager_modelList = assignManager_modelList;
+    public AssignSupervisorAdapter(List<AssignSupervisor_Model> assignSupervisor_modelList, Context context) {
+        this.assignSupervisor_modelList = assignSupervisor_modelList;
         this.context = context;
-        assignManager_modelListFull = new ArrayList<>(assignManager_modelList);
+        assignSupervisor_modelListFull = new ArrayList<>(assignSupervisor_modelList);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -60,15 +60,15 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public ViewHolder(View itemView) {
             super(itemView);
             database = new Database(context);
-            itemMerchantName=itemView.findViewById(R.id.merchant_name);
-            itemMerchantAddress=itemView.findViewById(R.id.m_add);
-            itembtnAssign = itemView.findViewById(R.id.btn_assign);
-            item_call = itemView.findViewById(R.id.call_merchant);
-            itemPickupMerchantName = itemView.findViewById(R.id.childMerchantName);
+            itemMerchantName=itemView.findViewById(R.id.merchant_name_supervisor);
+            itemMerchantAddress=itemView.findViewById(R.id.m_add_supervisor);
+            itembtnAssign = itemView.findViewById(R.id.btn_assign_supervisor);
+            item_call = itemView.findViewById(R.id.call_merchant_supervisor);
+            itemPickupMerchantName = itemView.findViewById(R.id.childMerchantName_supervisor);
 
-            itemViewAssign = itemView.findViewById(R.id.view_assign);
-            itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
-            cardview = itemView.findViewById(R.id.card_view_assign);
+            itemViewAssign = itemView.findViewById(R.id.view_assign_supervisor);
+            itemUpdateAssign = itemView.findViewById(R.id.update_assigns_supervisor);
+            cardview = itemView.findViewById(R.id.card_view_assign_supervisor);
 
             itembtnAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,7 +122,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.assign_pickup_layout, viewGroup, false);
+                .inflate(R.layout.assign_pickup_supervisor_layout, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
@@ -130,7 +130,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        AssignManager_Model assignManager_model = assignManager_modelList.get(i);
+        AssignSupervisor_Model assignManager_model = assignSupervisor_modelList.get(i);
 
 
         /*String m_name = database.getMerchant_name(assignManager_model.getM_names());
@@ -166,7 +166,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
 
     @Override
     public int getItemCount() {
-        return assignManager_modelList.size();
+        return assignSupervisor_modelList.size();
     }
 
     //search/filter list
@@ -178,13 +178,13 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     private Filter NamesFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-           List<AssignManager_Model> filteredList = new ArrayList<>();
+           List<AssignSupervisor_Model> filteredList = new ArrayList<>();
 
            if (constraint == null || constraint.length() == 0){
-               filteredList.addAll(assignManager_modelListFull);
+               filteredList.addAll(assignSupervisor_modelListFull);
            }else{
                String filterPattern = constraint.toString().toLowerCase().trim();
-               for (AssignManager_Model item : assignManager_modelListFull){
+               for (AssignSupervisor_Model item : assignSupervisor_modelListFull){
                    if (item.getM_names().toLowerCase().contains(filterPattern)){
                        filteredList.add(item);
                    }
@@ -198,8 +198,8 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            assignManager_modelList.clear();
-            assignManager_modelList.addAll((List) results.values);
+            assignSupervisor_modelList.clear();
+            assignSupervisor_modelList.addAll((List) results.values);
             notifyDataSetChanged();
 
         }

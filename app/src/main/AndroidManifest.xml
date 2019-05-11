@@ -33,9 +33,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".AssignPickup_Supervisor"
+            android:label="@string/title_activity_assign_pickup__supervisor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SupervisorCardMenu"
+            android:label="@string/title_activity_supervisor_card_menu"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".AutoAssignMyPickuplist"
             android:label="@string/title_activity_auto_assign_my_pickuplist"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PendingSummary_Manager"
             android:label="@string/title_activity_pending_summary__manager"

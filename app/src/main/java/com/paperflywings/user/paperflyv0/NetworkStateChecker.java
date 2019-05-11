@@ -57,26 +57,60 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 Cursor cursor1 = database2.getUnsyncedBarcode();
                 if (cursor1.moveToFirst()) {
                     do {
-                        //calling the method to save the unsynced name to MySQL
-                        saveBarcode(cursor1.getInt(0),cursor1.getString(1), cursor1.getString(2),cursor1.getString(3), Boolean.valueOf(cursor1.getString(4)),cursor1.getString(6),cursor1.getString(7));
+                        saveBarcode(cursor1.getInt(0),cursor1.getString(2), cursor1.getString(3),cursor1.getString(4), Boolean.valueOf(cursor1.getString(5)),cursor1.getString(7),cursor1.getString(8),cursor1.getString(1));
                     } while (cursor1.moveToNext());
                 }
 
                 //getting all the unsynced data
                 Cursor cursor2 = database2.getUnsyncedData();
                 if (cursor2.moveToFirst()) {
-                    do {
+                    do {/*  + "id0 INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "sql_primary_id1 TEXT, "
+                + "merchantId2 TEXT, "
+                + "merchant_name3 TEXT, "
+                + "executive_name4 TEXT, "
+                + "assined_qty5 TEXT, "
+                + "picked_qty6 TEXT, "
+                + "scan_count7 TEXT, "
+                + "phone_no8 TEXT, "
+                + "assigned_by9 TEXT, "
+                + "created_at10 TEXT , "
+                + "updated_by11 TEXT, "
+                + "updated_at12 TEXT , "
+                + "status13 INT, "
+                + "complete_status14 TEXT, "
+                + "p_m_name15 TEXT , "
+                + "p_m_add16 TEXT, "
+                + "product_name17 TEXT, "
+                + "apiOrderID18 TEXT, "
+                + "demo19 TEXT, "
+                + "pick_from_merchant_status20 TEXT, "
+                + "received_from_HQ_status21 TEXT, "*/
+                /*final int id,0
+                final String sql_primary_id, 1
+                final String strI,7
+                final String picked_qty,6
+                final String updated_by,11
+                final String updated_at,12
+                final String merchant_id, 2
+                final String sub_merchant_name,15
+                final String match_date,10
+                final String apiOrderID,18
+                final String pick_from_merchant_status20*/
                         //calling the method to save the unsynced name to MySQL
                         saveData(cursor2.getInt(0),
+                                 cursor2.getString(1),
+                                cursor2.getString(7),
                                 cursor2.getString(6),
-                                cursor2.getString(5),
-                                cursor2.getString(10),
                                 cursor2.getString(11),
-                                cursor2.getString(1),
-                                cursor2.getString(14),
-                                cursor2.getString(9),
-                                cursor2.getString(17),
-                                cursor2.getString(19));
+                                cursor2.getString(12),
+                                cursor2.getString(2),
+                                cursor2.getString(15),
+                                cursor2.getString(10),
+                                cursor2.getString(18),
+                                cursor2.getString(20),
+                                cursor2.getString(19),
+                                cursor2.getString(21));
                     } while (cursor2.moveToNext());
                 }
 
@@ -154,8 +188,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
                     } while (cursor7.moveToNext());
                 }
-
-
 
             }
         }
@@ -380,8 +412,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
     // Barcode save to server
-    private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
+    private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String sql_primary_id) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode1.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -412,6 +444,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("state", String.valueOf(state));
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
+                params.put("sql_primary_id", sql_primary_id);
 
                 return params;
             }
@@ -421,7 +454,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
     // Update scan count
-    private void saveData(final int id, final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date,final String apiOrderID, final String pick_from_merchant_status) {
+    private void saveData(final int id, final String sql_primary_id, final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date,final String apiOrderID, final String pick_from_merchant_status, final String demo, final String received_from_HQ_status) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTableInsertassign.php",
                 new Response.Listener<String>() {
                     @Override
@@ -459,6 +492,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("created_at", match_date);
                 params.put("api_order_id", apiOrderID);
                 params.put("pick_from_merchant_status", pick_from_merchant_status);
+                params.put("sql_primary_id", sql_primary_id);
+                params.put("demo", demo);
+                params.put("received_from_HQ_status", received_from_HQ_status);
 
                 return params;
 

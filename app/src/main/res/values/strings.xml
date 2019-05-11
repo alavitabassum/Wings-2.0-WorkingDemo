@@ -72,6 +72,7 @@
     <string name="select_exe">Select Executive</string>
     <string name="title_activity_executive_card_menu">Home</string>
     <string name="pickup_executive">Pickup Executive</string>
+    <string name="pickup_supervisor">Pickup Supervisor</string>
     <string name="exe_name">Tonoy Shaha</string>
     <string name="title_activity_manager_card_menu">Home</string>
     <string name="title_activity_pickups_today__executive">Pickup Summary</string>
@@ -100,5 +101,7 @@
     </string>
     <string name="title_activity_pending_summary__manager">Pending Report</string>
     <string name="title_activity_auto_assign_my_pickuplist">AutoAssignMyPickuplist</string>
+    <string name="title_activity_supervisor_card_menu">SupervisorCardMenu</string>
+    <string name="title_activity_assign_pickup__supervisor">AssignPickup_Supervisor</string>
 
 </resources>
