@@ -163,7 +163,7 @@ public class AssignPickup_Supervisor extends AppCompatActivity
                         .setAction("Action", null).show();*/
 
                 Intent intentorder = new Intent(AssignPickup_Supervisor.this,
-                        NewOrder.class);
+                        NewOrderSupervisor.class);
                 startActivity(intentorder);
             }
         });
@@ -172,7 +172,7 @@ public class AssignPickup_Supervisor extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intentorderupdate = new Intent(AssignPickup_Manager.this,
-                        NewOrder.class);
+                        NewOrderSupervisor.class);
                 startActivity(intentorderupdate);
             }
         });*/
@@ -603,25 +603,25 @@ public class AssignPickup_Supervisor extends AppCompatActivity
                     SupervisorCardMenu.class);
             startActivity(homeIntent);
         } else if (id == R.id.nav_pickDue) {
-           /* Intent pickupIntent = new Intent(AssignPickup_Supervisor.this,
-                    PickupsToday_Manager.class);
-            startActivity(pickupIntent);*/
+            Intent pickupIntent = new Intent(AssignPickup_Supervisor.this,
+                    PickupsToday_Supervisor.class);
+            startActivity(pickupIntent);
         } else if (id == R.id.nav_assign) {
             Intent assignIntent = new Intent(AssignPickup_Supervisor.this,
                     AssignPickup_Supervisor.class);
             startActivity(assignIntent);
         } else if (id == R.id.nav_fulfill) {
-            /*Intent assignFulfillmentIntent = new Intent(AssignPickup_Supervisor.this,
-                    Fulfillment_Assign_pickup_Manager.class);
-            startActivity(assignFulfillmentIntent);*/
+            Intent assignFulfillmentIntent = new Intent(AssignPickup_Supervisor.this,
+                    FulfillmentAssignPickup_Supervisor.class);
+            startActivity(assignFulfillmentIntent);
         }  else if (id == R.id.nav_robishop) {
            /* Intent robishopIntent = new Intent(AssignPickup_Supervisor.this,
                     Robishop_Assign_pickup_manager.class);
             startActivity(robishopIntent);*/
         }  else if (id == R.id.nav_adeal_direct) {
-           /* Intent adealdirectIntent = new Intent(AssignPickup_Supervisor.this,
-                    AjkerDealOther_Assign_Pickup_manager.class);
-            startActivity(adealdirectIntent);*/
+            Intent adealdirectIntent = new Intent(AssignPickup_Supervisor.this,
+                    AjkerDealOther_Assign_Pickup_supervisor.class);
+            startActivity(adealdirectIntent);
         } else if (id == R.id.nav_report) {
             /*Intent reportIntent = new Intent(AssignPickup_Supervisor.this,
                     PendingSummary_Manager.class);
@@ -820,14 +820,10 @@ public class AssignPickup_Supervisor extends AppCompatActivity
 
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
 
-
                         Toast.makeText(AssignPickup_Supervisor.this, mAutoComplete.getText().toString()
                                         + "(" + et1.getText().toString() + ")",
                                 Toast.LENGTH_SHORT).show();
-
                         dialog2.dismiss();
-//                        String n = database.matchtable_value(m_name);
-
                     }
                 }
             }

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_assign_fulfillment_s"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:layout_margin="5dp"
+    android:foreground="?selectableItemBackground"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp"
+    card_view_assign:cardBackgroundColor="#fff"
+    card_view_assign:cardElevation="3dp"
+    card_view_assign:contentPadding="4dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+
+        <TextView
+            android:id="@+id/merchant_name_fulfillment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/childMerchantName_fulfillment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="2dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:textStyle="normal"
+            android:text="child merchnat name"/>
+
+
+        <TextView
+            android:id="@+id/m_add_fulfillment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="2dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:textStyle="normal"
+            android:text="pickup address"/>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="47dp"
+            android:background="?android:attr/listDivider" />
+
+
+        <!-- <TextView
+            android:id="@+id/txt_btn_assign"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/m_add"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="Assign Executives"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />-->
+
+
+        <Button
+            android:id="@+id/btn_assign_fulfillment"
+            android:layout_width="148dp"
+            android:layout_height="59dp"
+            android:layout_alignStart="@+id/m_add"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-1dp"
+            android:layout_marginTop="137dp"
+            android:background="@drawable/buttonstyle_assign"
+            android:text="@string/assign_executives"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/view_assign_fulfillment"
+            android:layout_width="43dp"
+            android:layout_height="40dp"
+            android:layout_alignBaseline="@+id/update_assigns_fulfillment"
+            android:layout_alignTop="@+id/btn_assign_fulfillment"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/btn_assign_fulfillment"
+            android:adjustViewBounds="true"
+            android:background="@drawable/buttonstyle_viewassigns"
+            android:baselineAlignBottom="true"
+            android:cropToPadding="true"
+            android:elevation="5dp"
+            android:padding="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/eye64"
+            android:text="@string/view_assigns"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/m_add_fulfillment"
+            android:layout_alignStart="@+id/m_add_fulfillment"
+            android:layout_marginTop="1dp"
+            android:text="Product_name:"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/calltxt_fulfillment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/product_name"
+            android:layout_alignStart="@+id/product_name"
+            android:layout_marginTop="0dp"
+            android:text="Total Order:"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/call_merchant_fulfillment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/calltxt_fulfillment"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_toEndOf="@+id/calltxt_fulfillment"
+            android:lines="1"
+            android:maxLines="1"
+            android:textAlignment="textStart"
+            android:textColor="@color/blue_link"
+            android:textSize="15sp"
+            android:textStyle="normal" />
+
+        <ImageButton
+            android:id="@+id/update_assigns_fulfillment"
+            android:layout_width="43dp"
+            android:layout_height="40dp"
+            android:layout_alignTop="@+id/btn_assign_fulfillment"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="1dp"
+            android:layout_toEndOf="@id/view_assign_fulfillment"
+            android:adjustViewBounds="true"
+            android:background="@drawable/buttonstyle_update"
+            android:cropToPadding="true"
+            android:elevation="5dp"
+            android:padding="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/pencilwhite64"
+            android:text="Update Assigns"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

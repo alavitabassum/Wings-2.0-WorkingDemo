@@ -1,6 +1,6 @@
 package com.paperflywings.user.paperflyv0;
 
-public class AjkerDealOtherAssignManager_Model {
+public class AjkerDealOtherAssignSupervisor_Model {
     private String merchantName;
     private String apiOrderID;
     private String phone1;
@@ -17,7 +17,7 @@ public class AjkerDealOtherAssignManager_Model {
     private String pickAssignedStatus;
     int key_id;
 
-    public AjkerDealOtherAssignManager_Model(String merchantCode, String pickMerchantName, String pickMerchantAddress, String pickupMerchantPhone, String pickAssignedStatus, String cnt , String merOrderRef) {
+    public AjkerDealOtherAssignSupervisor_Model(String merchantCode, String pickMerchantName, String pickMerchantAddress, String pickupMerchantPhone, String pickAssignedStatus, String cnt , String merOrderRef) {
         this.merchantCode = merchantCode;
         this.pickMerchantAddress = pickMerchantAddress;
         this.pickMerchantName = pickMerchantName;

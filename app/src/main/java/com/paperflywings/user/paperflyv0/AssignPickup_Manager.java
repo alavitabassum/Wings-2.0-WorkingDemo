@@ -128,9 +128,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         //Offline sync
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-
-
-
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {

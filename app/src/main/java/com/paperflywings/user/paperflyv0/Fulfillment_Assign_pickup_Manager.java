@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -40,7 +41,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONArray;
@@ -764,7 +764,6 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest);
     }
 
-
     @Override
     public void onItemClick(View view, int position) {
 
@@ -804,7 +803,6 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
 
-
         //final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
@@ -834,8 +832,6 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                 if(et1.getText().toString().trim().isEmpty()) {
                     tv1.setText("Order count can't be empty");
 //                    dialog.equals("Order count can't be empty");
-
-
                 } else {
                     assignexecutive(empname, empcode, product_name, et1.getText().toString(), product_id, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status,apiOrderID, demo, pick_from_merchant_status,received_from_HQ_status);
 //                    updateFulPickAssigedStatus(Integer.parseInt(product_id), assign_status,et1.getText().toString());
@@ -849,7 +845,6 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
 
                     }
                 }
-
             }
         });
 
@@ -913,7 +908,6 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         String p_m_name = clickeditem2.getSupplier_name();
         String product_name = clickeditem2.getProduct_name();
 
-
         String merchantcode = String.valueOf(clickeditem2.getProduct_id());
         Intent intent = new Intent(Fulfillment_Assign_pickup_Manager.this, ViewAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
@@ -921,7 +915,6 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         intent.putExtra("SUBMERCHANT", p_m_name);
         intent.putExtra("PRODUCTNAME", product_name);
         startActivity(intent);
-
     }
 
 
@@ -961,9 +954,5 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         else{
             getallmerchant();
         }
-
-
     }
-
-
 }

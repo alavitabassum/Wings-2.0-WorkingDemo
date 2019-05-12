@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PickupsToday_Supervisor"
+    android:background="@color/light_grey">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/master_summary_supervisor"
+        android:layout_width="320dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="70dp"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:gravity="center"
+        android:foregroundGravity="center|fill"
+        android:layout_gravity="center_horizontal"
+        android:elevation="4dp"
+        >
+
+
+        <TextView
+            android:id="@+id/master_summary_header_supervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Master Summary"
+            android:textColor="@color/pfColor"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/assignedcounttxt_supervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/master_summary_header_supervisor"
+            android:layout_marginTop="15dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Assigned Pickups: "
+            android:textSize="15sp" />
+        <TextView
+            android:id="@+id/compltcounttxt_supervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/assignedcounttxt_supervisor"
+            android:layout_alignStart="@+id/assignedcounttxt_supervisor"
+            android:layout_marginTop="1dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Completed: "
+            android:textSize="15sp"
+            android:layout_marginStart="0dp"/>
+        <TextView
+            android:id="@+id/pendingcounttxt_supervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/compltcounttxt_supervisor"
+            android:layout_alignStart="@+id/compltcounttxt_supervisor"
+            android:layout_marginTop="1dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Pending: "
+            android:textSize="15sp"
+            android:layout_marginStart="0dp"/>
+
+        <TextView
+            android:id="@+id/a_count_supervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/assignedcounttxt_supervisor"
+            android:layout_toEndOf="@+id/assignedcounttxt_supervisor"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/com_count_supervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/compltcounttxt_supervisor"
+            android:layout_toEndOf="@+id/compltcounttxt_supervisor"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/pen_count_supervisor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/pendingcounttxt_supervisor"
+            android:layout_toEndOf="@+id/pendingcounttxt_supervisor"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+
+    <include layout="@layout/content_pickups_today__supervisor"
+        android:layout_marginTop="220dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

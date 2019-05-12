@@ -1,6 +1,6 @@
 package com.paperflywings.user.paperflyv0;
 
-import android.annotation.SuppressLint;
+        import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -16,17 +16,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutiveAdapter.ViewHolder> implements Filterable  {
-    private List<AssignManager_Model> assignManager_modelList;
-    private List<AssignManager_Model> assignManager_modelListFull;
+public class FullfillmentAssignSupervisorAdapter extends RecyclerView.Adapter<FullfillmentAssignSupervisorAdapter.ViewHolder> implements Filterable {
+    private List<FullfillmentAssignSupervisor_Model> assignFulfillmentManager_modelList;
+    private List<FullfillmentAssignSupervisor_Model> assignFulfillmentManager_modelListFull;
     Database database;
 
     private Context context;
     private OnItemClickListener mListener;
 
-    public AssignExecutiveAdapter() {
+    public FullfillmentAssignSupervisorAdapter() {
 
     }
+    //private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
+
+
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
@@ -39,11 +42,12 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         this.mListener = listner;
     }
 
-    public AssignExecutiveAdapter(List<AssignManager_Model> assignManager_modelList, Context context) {
-        this.assignManager_modelList = assignManager_modelList;
+    public FullfillmentAssignSupervisorAdapter(List<FullfillmentAssignSupervisor_Model> assignFulfillmentManager_modelList, Context context) {
+        this.assignFulfillmentManager_modelList = assignFulfillmentManager_modelList;
         this.context = context;
-        assignManager_modelListFull = new ArrayList<>(assignManager_modelList);
+        assignFulfillmentManager_modelListFull = new ArrayList<>(assignFulfillmentManager_modelList);
     }
+
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -53,6 +57,7 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public Button itembtnAssign;
         public ImageButton itemViewAssign;
         public TextView item_call;
+        public TextView item_product_name;
         public ImageButton itemUpdateAssign;
         public CardView cardview;
 
@@ -60,15 +65,16 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
         public ViewHolder(View itemView) {
             super(itemView);
             database = new Database(context);
-            itemMerchantName=itemView.findViewById(R.id.merchant_name);
-            itemMerchantAddress=itemView.findViewById(R.id.m_add);
-            itembtnAssign = itemView.findViewById(R.id.btn_assign);
-            item_call = itemView.findViewById(R.id.call_merchant);
-            itemPickupMerchantName = itemView.findViewById(R.id.childMerchantName);
+            itemMerchantName=itemView.findViewById(R.id.merchant_name_fulfillment);
+            itemMerchantAddress=itemView.findViewById(R.id.m_add_fulfillment);
+            itembtnAssign = itemView.findViewById(R.id.btn_assign_fulfillment);
+            item_product_name = itemView.findViewById(R.id.product_name);
+            item_call = itemView.findViewById(R.id.call_merchant_fulfillment);
+            itemPickupMerchantName = itemView.findViewById(R.id.childMerchantName_fulfillment);
 
-            itemViewAssign = itemView.findViewById(R.id.view_assign);
-            itemUpdateAssign = itemView.findViewById(R.id.update_assigns);
-            cardview = itemView.findViewById(R.id.card_view_assign);
+            itemViewAssign = itemView.findViewById(R.id.view_assign_fulfillment);
+            itemUpdateAssign = itemView.findViewById(R.id.update_assigns_fulfillment);
+            cardview = itemView.findViewById(R.id.card_view_assign_fulfillment_s);
 
             itembtnAssign.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,8 +87,6 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
                         }
                     }
                 }
-
-
             });
 
             itemViewAssign.setOnClickListener(new View.OnClickListener() {
@@ -122,51 +126,43 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.assign_pickup_layout, viewGroup, false);
+                .inflate(R.layout.assign_fulfillment_pickup_layout_s, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        AssignManager_Model assignManager_model = assignManager_modelList.get(i);
-
-
-        /*String m_name = database.getMerchant_name(assignManager_model.getM_names());
-        String pick_m_name = database.getPick_Merchant_name(assignManager_model.getPick_m_name());
-//        String product_name = database.getProduct_name(assignManager_model.getM_names());
-
-        if( m_name != null && pick_m_name != null && m_name.equals(assignManager_model.getM_names()) && pick_m_name.equals(assignManager_model.getPick_m_name()) ){
-            viewHolder.cardview.setCardBackgroundColor(R.color.light_grey);
-        }*/
-
-        viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
-        final String p_name = assignManager_model.getPick_m_name();
+        FullfillmentAssignSupervisor_Model assignFulfillmentManager_model = assignFulfillmentManager_modelList.get(i);
+        viewHolder.itemMerchantName.setText(assignFulfillmentManager_model.getMain_merchant());
+        final String p_name = assignFulfillmentManager_model.getSupplier_name();
 
         if(p_name.length()==0)
         {
-            viewHolder.itemPickupMerchantName.setText(assignManager_model.getM_names());
+            viewHolder.itemPickupMerchantName.setText("No Pickup Merchant");
         }
         else{
             viewHolder.itemPickupMerchantName.setText(p_name);
         }
-        final String p_address = assignManager_model.getM_address();
+        final String p_address = assignFulfillmentManager_model.getSupplier_address();
         if(p_address.length()==0)
         {
-            viewHolder.itemMerchantAddress.setText(assignManager_model.getAddress());
+            viewHolder.itemMerchantAddress.setText("No Pickup Address");
         }
         else
         {
             viewHolder.itemMerchantAddress.setText(p_address);
         }
-        viewHolder.item_call.setText(String.valueOf(assignManager_model.getTotalcount()));
+
+        viewHolder.item_product_name.setText(String.valueOf(assignFulfillmentManager_model.getProduct_name()));
+        viewHolder.item_call.setText(String.valueOf(assignFulfillmentManager_model.getSum()));
     }
+
 
 
     @Override
     public int getItemCount() {
-        return assignManager_modelList.size();
+        return assignFulfillmentManager_modelList.size();
     }
 
     //search/filter list
@@ -178,28 +174,28 @@ public class AssignExecutiveAdapter extends RecyclerView.Adapter<AssignExecutive
     private Filter NamesFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-           List<AssignManager_Model> filteredList = new ArrayList<>();
+            List<FullfillmentAssignSupervisor_Model> filteredList = new ArrayList<>();
 
-           if (constraint == null || constraint.length() == 0){
-               filteredList.addAll(assignManager_modelListFull);
-           }else{
-               String filterPattern = constraint.toString().toLowerCase().trim();
-               for (AssignManager_Model item : assignManager_modelListFull){
-                   if (item.getM_names().toLowerCase().contains(filterPattern) || item.getPick_m_name().toLowerCase().contains(filterPattern) || item.getM_address().toLowerCase().contains(filterPattern)){
-                       filteredList.add(item);
-                   }
-               }
-           }
+            if (constraint == null || constraint.length() == 0){
+                filteredList.addAll(assignFulfillmentManager_modelListFull);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (FullfillmentAssignSupervisor_Model item : assignFulfillmentManager_modelListFull){
+                    if (item.getSupplier_name().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
             FilterResults results = new FilterResults();
-           results.values = filteredList;
-           return results;
+            results.values = filteredList;
+            return results;
         }
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            assignManager_modelList.clear();
-            assignManager_modelList.addAll((List) results.values);
+            assignFulfillmentManager_modelList.clear();
+            assignFulfillmentManager_modelList.addAll((List) results.values);
             notifyDataSetChanged();
 
         }

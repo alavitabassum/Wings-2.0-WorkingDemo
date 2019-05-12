@@ -33,9 +33,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".FulfillmentAssignPickup_Supervisor"
+            android:label="@string/title_activity_fulfillment_assign_pickup__supervisor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AjkerDealOther_Assign_Pickup_supervisor"
+            android:label="@string/title_activity_ajker_deal_other__assign__pickup_supervisor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PickupsToday_Supervisor"
+            android:label="@string/title_activity_pickups_today__supervisor"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".AssignPickup_Supervisor"
             android:label="@string/title_activity_assign_pickup__supervisor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SupervisorCardMenu"
             android:label="@string/title_activity_supervisor_card_menu"
@@ -135,11 +147,13 @@
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />
         <activity android:name=".ViewAssigns" />
+        <activity android:name=".NewOrderSupervisor" />
         <activity
             android:name=".Fulfillment_Assign_pickup_Manager"
             android:label="@string/title_activity_testing_fulfillment"
             android:theme="@style/AppTheme" />
         <activity android:name=".NewOrderEntry_ful" />
+        <activity android:name=".NewOrderEntry_Supervisor_ful" />
         <activity
             android:name=".AjkerDealOther_Assign_Pickup_manager"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_manager"

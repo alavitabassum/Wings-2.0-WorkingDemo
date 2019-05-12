@@ -197,7 +197,7 @@ public class SupervisorCardMenu extends AppCompatActivity
             startActivity(homeIntentSuper);
         } else if (id == R.id.nav_pickDue) {
             Intent pickupIntent = new Intent(SupervisorCardMenu.this,
-                    PickupsToday_Manager.class);
+                    PickupsToday_Supervisor.class);
             startActivity(pickupIntent);
         } else if (id == R.id.nav_assign) {
             Intent assignIntent = new Intent(SupervisorCardMenu.this,
@@ -205,20 +205,20 @@ public class SupervisorCardMenu extends AppCompatActivity
             startActivity(assignIntent);
         } else if (id == R.id.nav_fulfill) {
             Intent assignFulfillmentIntent = new Intent(SupervisorCardMenu.this,
-                    Fulfillment_Assign_pickup_Manager.class);
+                    FulfillmentAssignPickup_Supervisor.class);
             startActivity(assignFulfillmentIntent);
         }  else if (id == R.id.nav_robishop) {
-            Intent robishopIntent = new Intent(SupervisorCardMenu.this,
+            /*Intent robishopIntent = new Intent(SupervisorCardMenu.this,
                     Robishop_Assign_pickup_manager.class);
-            startActivity(robishopIntent);
+            startActivity(robishopIntent);*/
         }  else if (id == R.id.nav_adeal_direct) {
             Intent adealdirectIntent = new Intent(SupervisorCardMenu.this,
-                    AjkerDealOther_Assign_Pickup_manager.class);
+                    AjkerDealOther_Assign_Pickup_supervisor.class);
             startActivity(adealdirectIntent);
         } else if (id == R.id.nav_report) {
-            Intent reportIntent = new Intent(SupervisorCardMenu.this,
+           /* Intent reportIntent = new Intent(SupervisorCardMenu.this,
                     PendingSummary_Manager.class);
-            startActivity(reportIntent);
+            startActivity(reportIntent);*/
         }
       /*  else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(ManagerCardMenu.this,

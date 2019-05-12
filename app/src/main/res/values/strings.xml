@@ -103,5 +103,12 @@
     <string name="title_activity_auto_assign_my_pickuplist">AutoAssignMyPickuplist</string>
     <string name="title_activity_supervisor_card_menu">SupervisorCardMenu</string>
     <string name="title_activity_assign_pickup__supervisor">AssignPickup_Supervisor</string>
+    <string name="title_activity_pickups_today__supervisor">PickupsToday_Supervisor</string>
+    <string name="title_activity_ajker_deal_other__assign__pickup_supervisor">
+        AjkerDealOther_Assign_Pickup_supervisor
+    </string>
+    <string name="title_activity_fulfillment_assign_pickup__supervisor">
+        FulfillmentAssignPickup_Supervisor
+    </string>
 
 </resources>

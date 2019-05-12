@@ -33,8 +33,8 @@ public class RecyclerAdapterSupervisor extends RecyclerView.Adapter<RecyclerAdap
                        Intent intent_assign = new Intent(v.getContext(), AssignPickup_Supervisor.class);
                         v.getContext().startActivity(intent_assign);
                     } else if (position == 1) {
-                      /*  Intent intent_assign_fulfillment = new Intent(v.getContext(), Fulfillment_Assign_pickup_Manager.class);
-                        v.getContext().startActivity(intent_assign_fulfillment);*/
+                        Intent intent_assign_fulfillment = new Intent(v.getContext(), FulfillmentAssignPickup_Supervisor.class);
+                        v.getContext().startActivity(intent_assign_fulfillment);
                     }
 
                     else if (position == 2) {
@@ -43,13 +43,13 @@ public class RecyclerAdapterSupervisor extends RecyclerView.Adapter<RecyclerAdap
                     }
 
                     else if (position == 3) {
-                        /*Intent intent_assign_ad_direct_delivery = new Intent(v.getContext(), AjkerDealOther_Assign_Pickup_manager.class);
-                        v.getContext().startActivity(intent_assign_ad_direct_delivery);*/
+                        Intent intent_assign_ad_direct_delivery = new Intent(v.getContext(), AjkerDealOther_Assign_Pickup_supervisor.class);
+                        v.getContext().startActivity(intent_assign_ad_direct_delivery);
                     }
 
                     else {
-                      /*  Intent intent = new Intent(v.getContext(), PickupsToday_Manager.class);
-                        v.getContext().startActivity(intent);*/
+                        Intent intent = new Intent(v.getContext(), PickupsToday_Supervisor.class);
+                        v.getContext().startActivity(intent);
                     }
                                /* Snackbar.make(v, "Click detected on item " + position,
                                         Snackbar.LENGTH_LONG)

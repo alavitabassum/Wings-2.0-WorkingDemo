@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -57,8 +56,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AjkerDealOtherAssignExecutiveAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, AjkerDealOtherAssignSupervisorAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     public SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog progress;
     public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
@@ -73,9 +72,9 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
     private String SUPPLIER_NAME_URL = "http://paperflybd.com/fulfillmentSupplierAPI.php";
     private String PRODUCT_LIST_URL = "http://paperflybd.com/fulfillmentProductAPI.php";
 
-    private AjkerDealOtherAssignExecutiveAdapter ajkerDealOtherAssignExecutiveAdapter;
+    private AjkerDealOtherAssignSupervisorAdapter ajkerDealOtherAssignSupervisorAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
-    List<AjkerDealOtherAssignManager_Model> ajkerdealother_modelList;
+    List<AjkerDealOtherAssignSupervisor_Model> ajkerdealother_modelList;
     Database database;
 
     public static final int NAME_SYNCED_WITH_SERVER = 1;
@@ -90,12 +89,12 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     private FloatingActionMenu fabmenu;
-    private FloatingActionButton fab1;
-    private FloatingActionButton fab2;
+    private com.github.clans.fab.FloatingActionButton fab1;
+    private com.github.clans.fab.FloatingActionButton fab2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ajker_deal_other__assign__pickup_manager);
+        setContentView(R.layout.activity_ajker_deal_other__assign__pickup_supervisor);
 
         database = new Database(getApplicationContext());
         database.getWritableDatabase();
@@ -113,7 +112,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
 
 
         //recycler with cardview
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_assign_ajker_deal_other);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_assign_ajker_deal_other_s);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -149,22 +148,6 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-       /* fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
-        fab1 = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.menu_item1);
-        *//*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*//*
-
-        fab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-             *//*   Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*//*
-
-                Intent intentorder = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
-                        NewOrderEntry_ful.class);
-                startActivity(intentorder);
-            }
-        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -273,7 +256,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                             JSONArray array = jsonObject.getJSONArray("summary");
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
-                                AjkerDealOtherAssignManager_Model todaySummary = new AjkerDealOtherAssignManager_Model(
+                                AjkerDealOtherAssignSupervisor_Model todaySummary = new AjkerDealOtherAssignSupervisor_Model(
                                         o.getString("merchantCode"),
                                         o.getString("pickMerchantName"),
                                         o.getString("pickMerchantAddress"),
@@ -293,10 +276,10 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                                 ajkerdealother_modelList.add(todaySummary);
                             }
 
-                            ajkerDealOtherAssignExecutiveAdapter = new AjkerDealOtherAssignExecutiveAdapter(ajkerdealother_modelList, getApplicationContext());
-                            recyclerView.setAdapter(ajkerDealOtherAssignExecutiveAdapter);
+                            ajkerDealOtherAssignSupervisorAdapter = new AjkerDealOtherAssignSupervisorAdapter(ajkerdealother_modelList, getApplicationContext());
+                            recyclerView.setAdapter(ajkerDealOtherAssignSupervisorAdapter);
                             swipeRefreshLayout.setRefreshing(false);
-                            ajkerDealOtherAssignExecutiveAdapter.setOnItemClickListener(AjkerDealOther_Assign_Pickup_manager.this);
+                            ajkerDealOtherAssignSupervisorAdapter.setOnItemClickListener(AjkerDealOther_Assign_Pickup_supervisor.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -335,14 +318,14 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                 String count = c.getString(4); // Inserting apiOrderID
                 String pickAssignedStatus = c.getString(5);
                 String order_id = c.getString(6);
-                AjkerDealOtherAssignManager_Model todaySummary = new AjkerDealOtherAssignManager_Model(main_merchant,pick_supplier_name, supplier_address,supplier_phone,count,pickAssignedStatus,order_id);
+                AjkerDealOtherAssignSupervisor_Model todaySummary = new AjkerDealOtherAssignSupervisor_Model(main_merchant,pick_supplier_name, supplier_address,supplier_phone,count,pickAssignedStatus,order_id);
                 ajkerdealother_modelList.add(todaySummary);
             }
 
-            ajkerDealOtherAssignExecutiveAdapter = new AjkerDealOtherAssignExecutiveAdapter(ajkerdealother_modelList, getApplicationContext());
-            recyclerView.setAdapter(ajkerDealOtherAssignExecutiveAdapter);
+            ajkerDealOtherAssignSupervisorAdapter = new AjkerDealOtherAssignSupervisorAdapter(ajkerdealother_modelList, getApplicationContext());
+            recyclerView.setAdapter(ajkerDealOtherAssignSupervisorAdapter);
             swipeRefreshLayout.setRefreshing(false);
-            ajkerDealOtherAssignExecutiveAdapter.setOnItemClickListener(AjkerDealOther_Assign_Pickup_manager.this);
+            ajkerDealOtherAssignSupervisorAdapter.setOnItemClickListener(AjkerDealOther_Assign_Pickup_supervisor.this);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -377,13 +360,13 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                                 // pickAssignedStatus=0 means order assigned
                                 updatePickAssigedStatus(order_id, "1");
                                 sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
-                                Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Assign successfull", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, "Assign successfull", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
-                                Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessfull,Please try again!" +obj, Toast.LENGTH_LONG).show();
+                                Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, "Unsuccessfull,Please try again!" +obj, Toast.LENGTH_LONG).show();
                                 // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                             }
                         } catch (JSONException e) {
@@ -396,7 +379,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         assignexecutivetosqlite(ex_name, empcode,product_name, sum, String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
-                        Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessfull, Check your internet connection", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, "Unsuccessfull, Check your internet connection", Toast.LENGTH_SHORT).show();
                         // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                     }
                 }
@@ -491,13 +474,13 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Employee information send", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, "Employee information send", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessful sending information" +error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, "Unsuccessful sending information" +error, Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -523,7 +506,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -555,13 +538,13 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    ajkerDealOtherAssignExecutiveAdapter.getFilter().filter(newText);
+                    ajkerDealOtherAssignSupervisorAdapter.getFilter().filter(newText);
                     return false;
                 }
             });
         } catch (Exception e) {
             e.printStackTrace();
-            Intent intent_stay = new Intent(AjkerDealOther_Assign_Pickup_manager.this, AssignPickup_Manager.class);
+            Intent intent_stay = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this, AssignPickup_Manager.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -591,33 +574,33 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
-                    ManagerCardMenu.class);
+            Intent homeIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
+                    SupervisorCardMenu.class);
             startActivity(homeIntent);
         } else if (id == R.id.nav_pickDue) {
-            Intent pickupIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
-                    PickupsToday_Manager.class);
+            Intent pickupIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
+                    PickupsToday_Supervisor.class);
             startActivity(pickupIntent);
         } else if (id == R.id.nav_assign) {
-            Intent assignIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
-                    AssignPickup_Manager.class);
+            Intent assignIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
+                    AssignPickup_Supervisor.class);
             startActivity(assignIntent);
         } else if (id == R.id.nav_fulfill) {
-            Intent assignFulfillmentIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
-                    Fulfillment_Assign_pickup_Manager.class);
+            Intent assignFulfillmentIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
+                    FulfillmentAssignPickup_Supervisor.class);
             startActivity(assignFulfillmentIntent);
         }  else if (id == R.id.nav_robishop) {
-            Intent robishopIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
+            /*Intent robishopIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
                     Robishop_Assign_pickup_manager.class);
-            startActivity(robishopIntent);
+            startActivity(robishopIntent);*/
         }  else if (id == R.id.nav_adeal_direct) {
-            Intent adealdirectIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
-                    AjkerDealOther_Assign_Pickup_manager.class);
+            Intent adealdirectIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
+                    AjkerDealOther_Assign_Pickup_supervisor.class);
             startActivity(adealdirectIntent);
         } else if (id == R.id.nav_report) {
-            Intent reportIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
+            /*Intent reportIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
                     PendingSummary_Manager.class);
-            startActivity(reportIntent);
+            startActivity(reportIntent);*/
         }
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
@@ -656,7 +639,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(AjkerDealOther_Assign_Pickup_manager.this, LoginActivity.class);
+                            Intent intent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -682,9 +665,9 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
     @Override
     public void onItemClick(View view, int position) {
 
-        final AjkerDealOtherAssignManager_Model clickeditem = ajkerdealother_modelList.get(position);
+        final AjkerDealOtherAssignSupervisor_Model clickeditem = ajkerdealother_modelList.get(position);
 
-        AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AjkerDealOther_Assign_Pickup_manager.this);
+        AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(AjkerDealOther_Assign_Pickup_supervisor.this);
         View mView = getLayoutInflater().inflate(R.layout.dialog_spinner_fulfillment, null);
         spinnerBuilder.setTitle("Select executive and assign number.");
 
@@ -733,7 +716,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
             lables.add(executiveLists.get(z).getExecutive_name());
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AjkerDealOther_Assign_Pickup_manager.this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AjkerDealOther_Assign_Pickup_supervisor.this,
                 android.R.layout.simple_list_item_1, lables);
 
         mAutoComplete.setAdapter(adapter);
@@ -773,7 +756,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                     assignexecutive(mAutoComplete.getText().toString(), empcode, product_name, et1.getText().toString(), order_id, user, currentDateTimeString, m_name, contactNumber,pick_merchant_name, pick_merchant_address, complete_status,apiOrderID,demo,pick_from_merchant_status,received_from_HQ_status);
                     dialog2.dismiss();
                   /*  if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-                        Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, mAutoComplete.getText().toString()
+                        Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, mAutoComplete.getText().toString()
                                         + "(" + et1.getText().toString() + ")",
                                 Toast.LENGTH_SHORT).show();
 
@@ -788,7 +771,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
     @Override
     public void onItemClick_view(View view2, int position2) {
 
-        final AjkerDealOtherAssignManager_Model clickeditem2 = ajkerdealother_modelList.get(position2);
+        final AjkerDealOtherAssignSupervisor_Model clickeditem2 = ajkerdealother_modelList.get(position2);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
@@ -797,7 +780,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
         String product_name = "Not available";
         String merchantname = clickeditem2.getMerchantCode();
         String merchantcode = String.valueOf(clickeditem2.getMerOrderRef());
-        Intent intent = new Intent(AjkerDealOther_Assign_Pickup_manager.this, ViewAssigns.class);
+        Intent intent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this, ViewAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE", merchantcode);
         intent.putExtra("SUBMERCHANT", p_m_name);
@@ -809,7 +792,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
 
     @Override
     public void onItemClick_update(View view3, int position3) {
-        final AjkerDealOtherAssignManager_Model clickeditem3 = ajkerdealother_modelList.get(position3);
+        final AjkerDealOtherAssignSupervisor_Model clickeditem3 = ajkerdealother_modelList.get(position3);
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
@@ -820,7 +803,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
 
 
         String merchantcode = String.valueOf(clickeditem3.getMerOrderRef());
-        Intent intent = new Intent(AjkerDealOther_Assign_Pickup_manager.this, UpdateAssigns.class);
+        Intent intent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this, UpdateAssigns.class);
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE", merchantcode);
         intent.putExtra("SUBMERCHANT", p_m_name);
@@ -835,7 +818,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         ajkerdealother_modelList.clear();
-        ajkerDealOtherAssignExecutiveAdapter.notifyDataSetChanged();
+        ajkerDealOtherAssignSupervisorAdapter.notifyDataSetChanged();
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {

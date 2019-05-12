@@ -132,15 +132,6 @@ public class AssignSupervisorAdapter extends RecyclerView.Adapter<AssignSupervis
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         AssignSupervisor_Model assignManager_model = assignSupervisor_modelList.get(i);
 
-
-        /*String m_name = database.getMerchant_name(assignManager_model.getM_names());
-        String pick_m_name = database.getPick_Merchant_name(assignManager_model.getPick_m_name());
-//        String product_name = database.getProduct_name(assignManager_model.getM_names());
-
-        if( m_name != null && pick_m_name != null && m_name.equals(assignManager_model.getM_names()) && pick_m_name.equals(assignManager_model.getPick_m_name()) ){
-            viewHolder.cardview.setCardBackgroundColor(R.color.light_grey);
-        }*/
-
         viewHolder.itemMerchantName.setText(assignManager_model.getM_names());
         final String p_name = assignManager_model.getPick_m_name();
 
@@ -163,7 +154,6 @@ public class AssignSupervisorAdapter extends RecyclerView.Adapter<AssignSupervis
         viewHolder.item_call.setText(String.valueOf(assignManager_model.getTotalcount()));
     }
 
-
     @Override
     public int getItemCount() {
         return assignSupervisor_modelList.size();
@@ -185,7 +175,7 @@ public class AssignSupervisorAdapter extends RecyclerView.Adapter<AssignSupervis
            }else{
                String filterPattern = constraint.toString().toLowerCase().trim();
                for (AssignSupervisor_Model item : assignSupervisor_modelListFull){
-                   if (item.getM_names().toLowerCase().contains(filterPattern)){
+                   if (item.getM_names().toLowerCase().contains(filterPattern) || item.getPick_m_name().toLowerCase().contains(filterPattern) || item.getM_address().toLowerCase().contains(filterPattern)){
                        filteredList.add(item);
                    }
                }
