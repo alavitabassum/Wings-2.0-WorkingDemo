@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapterExecutive.ViewHolder> {
 
-    private String[] titles_exe_list = { "Other Pickups(Ajker deal direct, robishop, fulfillemnt)","Logistic Pickups","Pickups Today"};
+    private String[] titles_exe_list = { "My Pickup List","Pickups Today"};
 
   /*  private String[] details_exe_list = {"View ->","View ->","View ->"};*/
 
-    private int[] images_exe_list = {  R.drawable.assigned,R.drawable.assigned,R.drawable.pickupstoday };
+    private int[] images_exe_list = {  R.drawable.assigned,R.drawable.pickupstoday };
 
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -38,10 +38,10 @@ public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapt
                     if (position == 0) {
                         Intent intent_assign = new Intent(v.getContext(), MyPickupList_Executive.class);
                         v.getContext().startActivity(intent_assign);
-                    } else if (position == 1) {
+                   /* } else if (position == 1) {
                         Intent intent_auto_assign = new Intent(v.getContext(), AutoAssignMyPickuplist.class);
-                        v.getContext().startActivity(intent_auto_assign);
-                    } else if (position == 2) {
+                        v.getContext().startActivity(intent_auto_assign);*/
+                    } else if (position == 1) {
                         Intent intent = new Intent(v.getContext(), PickupsToday_Executive.class);
                         v.getContext().startActivity(intent);
                     }

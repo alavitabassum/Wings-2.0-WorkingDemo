@@ -55,7 +55,7 @@ public class PickupsToday_Executive extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
 
     //private static final String URL_DATA = "http://192.168.0.117/new/merchantListForExecutive.php";
-    private static final String URL_DATA = "http://paperflybd.com/showexecutiveassign.php";
+    private static final String URL_DATA = "http://paperflybd.com/showexecassigntoday.php";
     private ProgressDialog progress;
 //    Database database;
     public TextView total_assigned;
@@ -495,10 +495,10 @@ public class PickupsToday_Executive extends AppCompatActivity
             Intent assignIntent = new Intent(PickupsToday_Executive.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_exe_pickup_log) {
+        /*} else if (id == R.id.nav_exe_pickup_log) {
             Intent assignIntent = new Intent(PickupsToday_Executive.this,
                     AutoAssignMyPickuplist.class);
-            startActivity(assignIntent);
+            startActivity(assignIntent);*/
         }
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout

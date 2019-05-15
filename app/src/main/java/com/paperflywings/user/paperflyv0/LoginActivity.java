@@ -83,11 +83,13 @@ public class LoginActivity extends AppCompatActivity {
         //If we will get true
         if(loggedIn ){
             //We will start the Welcome Activity
-            if(userRole.contains("1")) {
+            if(user_role_id.contains("12")) {
                 Intent intent = new Intent(LoginActivity.this, ManagerCardMenu.class);
                 startActivity(intent);
-            }
-            else{
+            } else if(user_role_id.contains("26")){
+                Intent intent = new Intent(LoginActivity.this, SupervisorCardMenu.class);
+                startActivity(intent);
+            } else {
                 Intent intent = new Intent(LoginActivity.this, ExecutiveCardMenu.class);
                 startActivity(intent);
             }

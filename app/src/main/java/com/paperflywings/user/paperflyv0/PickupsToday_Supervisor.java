@@ -88,11 +88,13 @@ public class PickupsToday_Supervisor extends AppCompatActivity
         pickupList_model_for_executives.clear();
         swipeRefreshLayout.setRefreshing(true);
 
+
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
-        } else {
+        }
+        else {
             getData();
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
@@ -215,9 +217,6 @@ public class PickupsToday_Supervisor extends AppCompatActivity
 
     private void getData()
     {
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String user = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-
         try{
             pickupList_model_for_executives.clear();
             SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
@@ -344,7 +343,7 @@ public class PickupsToday_Supervisor extends AppCompatActivity
             Intent assignFulfillmentIntent = new Intent(PickupsToday_Supervisor.this,
                     FulfillmentAssignPickup_Supervisor.class);
             startActivity(assignFulfillmentIntent);
-        }  else if (id == R.id.nav_robishop) {
+//        }  else if (id == R.id.nav_robishop) {
            /* Intent robishopIntent = new Intent(PickupsToday_Supervisor.this,
                     Robishop_Assign_pickup_manager.class);
             startActivity(robishopIntent);*/
@@ -352,7 +351,7 @@ public class PickupsToday_Supervisor extends AppCompatActivity
             Intent adealdirectIntent = new Intent(PickupsToday_Supervisor.this,
                     AjkerDealOther_Assign_Pickup_supervisor.class);
             startActivity(adealdirectIntent);
-        } else if (id == R.id.nav_report) {
+//        } else if (id == R.id.nav_report) {
             /*Intent reportIntent = new Intent(PickupsToday_Supervisor.this,
                     PendingSummary_Manager.class);
             startActivity(reportIntent);*/

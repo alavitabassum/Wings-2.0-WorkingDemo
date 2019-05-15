@@ -472,10 +472,10 @@ public class AutoAssignMyPickuplist extends AppCompatActivity
             Intent assignIntent = new Intent(AutoAssignMyPickuplist.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-        } else if (id == R.id.nav_exe_pickup_log) {
+       /* } else if (id == R.id.nav_exe_pickup_log) {
             Intent assignIntent = new Intent(AutoAssignMyPickuplist.this,
                     AutoAssignMyPickuplist.class);
-            startActivity(assignIntent);
+            startActivity(assignIntent);*/
         } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

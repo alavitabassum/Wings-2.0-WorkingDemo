@@ -669,10 +669,10 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
             Intent adealdirectIntent = new Intent(Robishop_Assign_pickup_manager.this,
                     AjkerDealOther_Assign_Pickup_manager.class);
             startActivity(adealdirectIntent);
-        } else if (id == R.id.nav_report) {
+        /*} else if (id == R.id.nav_report) {
             Intent reportIntent = new Intent(Robishop_Assign_pickup_manager.this,
                     PendingSummary_Manager.class);
-            startActivity(reportIntent);
+            startActivity(reportIntent);*/
         }
         /*else if (id == R.id.nav_fulfill) {
             Intent assignFulfillmentIntent = new Intent(Robishop_Assign_pickup_manager.this,

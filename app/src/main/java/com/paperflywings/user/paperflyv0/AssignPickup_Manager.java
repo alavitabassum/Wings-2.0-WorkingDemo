@@ -629,10 +629,10 @@ public class AssignPickup_Manager extends AppCompatActivity
             Intent adealdirectIntent = new Intent(AssignPickup_Manager.this,
                     AjkerDealOther_Assign_Pickup_manager.class);
             startActivity(adealdirectIntent);
-        } else if (id == R.id.nav_report) {
+        /*} else if (id == R.id.nav_report) {
             Intent reportIntent = new Intent(AssignPickup_Manager.this,
                     PendingSummary_Manager.class);
-            startActivity(reportIntent);
+            startActivity(reportIntent);*/
         }
         /*  else if (id == R.id.nav_pickCompleted) {
             Intent historyIntent = new Intent(AssignPickup_Manager.this,

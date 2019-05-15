@@ -64,7 +64,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
 //    private String MERCHANT_URL = "http://paperflybd.com/ajkerdeal_sub_merchant_api.php";
 
     private String MERCHANT_URL = "http://paperflybd.com/a_deal_submerchant_api.php";
-    private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNew.php";
     private String UPDATE_ASSIGN_ADEAL = "http://paperflybd.com/updateassignadeal.php";
     private String GET_EMP_INFO = "http://paperflybd.com/getEmpInfo.php";
 
@@ -589,7 +589,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
             Intent assignFulfillmentIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
                     FulfillmentAssignPickup_Supervisor.class);
             startActivity(assignFulfillmentIntent);
-        }  else if (id == R.id.nav_robishop) {
+//        }  else if (id == R.id.nav_robishop) {
             /*Intent robishopIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
                     Robishop_Assign_pickup_manager.class);
             startActivity(robishopIntent);*/
@@ -597,7 +597,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
             Intent adealdirectIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
                     AjkerDealOther_Assign_Pickup_supervisor.class);
             startActivity(adealdirectIntent);
-        } else if (id == R.id.nav_report) {
+//        } else if (id == R.id.nav_report) {
             /*Intent reportIntent = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
                     PendingSummary_Manager.class);
             startActivity(reportIntent);*/

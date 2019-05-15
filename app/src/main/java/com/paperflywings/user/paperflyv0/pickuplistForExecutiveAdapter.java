@@ -62,6 +62,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
+        public TextView item_date_pul;
         public TextView item_m_pul;
         public TextView item_p_m_name_pul;
         public TextView item_p_m_add_pul;
@@ -80,6 +81,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
         public ViewHolder(final View itemView, final int i) {
             super(itemView);
+            item_date_pul=itemView.findViewById(R.id.assigned_date_pul);
             item_m_pul=itemView.findViewById(R.id.m_name_pul);
             item_p_m_name_pul=itemView.findViewById(R.id.childMerchant_name_pul);
             item_p_m_add_pul=itemView.findViewById(R.id.childMerchant_address_pul);
@@ -172,6 +174,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
 
+        viewHolder.item_date_pul.setText(list.get(i).getCreated_at());
         viewHolder.item_p_m_name_pul.setText(list.get(i).getP_m_name());
         viewHolder.item_p_m_add_pul.setText(list.get(i).getP_m_add());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());

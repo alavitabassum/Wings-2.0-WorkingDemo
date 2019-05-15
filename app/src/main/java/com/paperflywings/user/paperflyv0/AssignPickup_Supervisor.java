@@ -62,7 +62,7 @@ public class AssignPickup_Supervisor extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog progress;
     public static final String MERCHANT_NAME = "Merchant Name";
-    private String EXECUTIVE_URL = "http://paperflybd.com/executiveList.php";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNew.php";
     public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
 
 //    public static final String INSERT_URL = "http://paperflybd.com/insertfulfillmentassign.php";
@@ -614,7 +614,7 @@ public class AssignPickup_Supervisor extends AppCompatActivity
             Intent assignFulfillmentIntent = new Intent(AssignPickup_Supervisor.this,
                     FulfillmentAssignPickup_Supervisor.class);
             startActivity(assignFulfillmentIntent);
-        }  else if (id == R.id.nav_robishop) {
+//        }  else if (id == R.id.nav_robishop) {
            /* Intent robishopIntent = new Intent(AssignPickup_Supervisor.this,
                     Robishop_Assign_pickup_manager.class);
             startActivity(robishopIntent);*/
@@ -622,7 +622,7 @@ public class AssignPickup_Supervisor extends AppCompatActivity
             Intent adealdirectIntent = new Intent(AssignPickup_Supervisor.this,
                     AjkerDealOther_Assign_Pickup_supervisor.class);
             startActivity(adealdirectIntent);
-        } else if (id == R.id.nav_report) {
+//        } else if (id == R.id.nav_report) {
             /*Intent reportIntent = new Intent(AssignPickup_Supervisor.this,
                     PendingSummary_Manager.class);
             startActivity(reportIntent);*/

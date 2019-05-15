@@ -39,18 +39,32 @@
             android:background="@drawable/buttonstyle"
 
             android:textSize="14sp"-->
+     <TextView
+         android:id="@+id/assigned_date_pul"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentTop="true"
+         android:layout_alignParentEnd="true"
+         android:layout_marginTop="1dp"
+         android:lines="1"
+         android:maxLines="1"
+         android:textAlignment="textStart"
+         android:textColor="#000"
+         android:textSize="16sp"
+         android:textStyle="bold" />
         <TextView
             android:id="@+id/m_name_pul"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="25dp"
             android:lines="1"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textAlignment="textStart"
+            android:layout_below="@+id/assigned_date_pul"
             android:textColor="#000"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
 
@@ -60,12 +74,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="48dp"
             android:lines="1"
             android:maxLines="2"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="18sp"
+            android:textSize="16sp"
             />
 
         <TextView
@@ -74,7 +88,7 @@
             android:layout_height="51dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="66dp"
+            android:layout_marginTop="72dp"
             android:layout_marginEnd="0dp"
             android:inputType="textMultiLine"
             android:lineSpacingMultiplier="1"

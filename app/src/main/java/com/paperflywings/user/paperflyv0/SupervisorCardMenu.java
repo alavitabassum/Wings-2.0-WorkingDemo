@@ -37,7 +37,6 @@ public class SupervisorCardMenu extends AppCompatActivity
     private BubblesManager bubblesManager;
     private NotificationBadge mBadge;
 
-
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -207,7 +206,7 @@ public class SupervisorCardMenu extends AppCompatActivity
             Intent assignFulfillmentIntent = new Intent(SupervisorCardMenu.this,
                     FulfillmentAssignPickup_Supervisor.class);
             startActivity(assignFulfillmentIntent);
-        }  else if (id == R.id.nav_robishop) {
+//        }  else if (id == R.id.nav_robishop) {
             /*Intent robishopIntent = new Intent(SupervisorCardMenu.this,
                     Robishop_Assign_pickup_manager.class);
             startActivity(robishopIntent);*/
@@ -215,7 +214,7 @@ public class SupervisorCardMenu extends AppCompatActivity
             Intent adealdirectIntent = new Intent(SupervisorCardMenu.this,
                     AjkerDealOther_Assign_Pickup_supervisor.class);
             startActivity(adealdirectIntent);
-        } else if (id == R.id.nav_report) {
+//        } else if (id == R.id.nav_report) {
            /* Intent reportIntent = new Intent(SupervisorCardMenu.this,
                     PendingSummary_Manager.class);
             startActivity(reportIntent);*/

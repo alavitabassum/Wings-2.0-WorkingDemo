@@ -535,6 +535,8 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+
+
         }
     }
 
@@ -614,10 +616,10 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
             Intent adealdirectIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
                     AjkerDealOther_Assign_Pickup_manager.class);
             startActivity(adealdirectIntent);
-        } else if (id == R.id.nav_report) {
+        /*} else if (id == R.id.nav_report) {
             Intent reportIntent = new Intent(AjkerDealOther_Assign_Pickup_manager.this,
                     PendingSummary_Manager.class);
-            startActivity(reportIntent);
+            startActivity(reportIntent);*/
         }
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
