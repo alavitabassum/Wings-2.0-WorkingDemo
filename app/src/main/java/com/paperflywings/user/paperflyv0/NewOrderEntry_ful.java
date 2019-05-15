@@ -47,6 +47,14 @@ public class NewOrderEntry_ful extends AppCompatActivity {
     List<AssignFulfillmentManager_Model> supplierLists;
     List<AssignFulfillmentManager_Model> productLists;
     List<AssignMainMerchant_Model> mainmerchantlists;
+
+    @Override
+    public void onBackPressed() {
+            Intent homeIntentSuper = new Intent(NewOrderEntry_ful.this,
+                    Fulfillment_Assign_pickup_Manager.class);
+            startActivity(homeIntentSuper);
+    }
+
     Database database;
     Button button;
 

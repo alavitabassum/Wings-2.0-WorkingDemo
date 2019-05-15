@@ -268,7 +268,10 @@ public class PickupsToday_Manager extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            Intent homeIntentSuper = new Intent(PickupsToday_Manager.this,
+                    ManagerCardMenu.class);
+            startActivity(homeIntentSuper);
         }
     }
 

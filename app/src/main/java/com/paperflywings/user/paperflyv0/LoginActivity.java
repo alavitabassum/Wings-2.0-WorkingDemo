@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jObj = arr.getJSONObject(0);
                         String userRole = jObj.getString("userRole");
                         String user_role_id = jObj.getString("user_role_id");
-                        String zoneAssigned = jObj.getString("zoneAssigned");
+//                        String zoneAssigned = jObj.getString("zoneAssigned");
 
                         //Creating a shared preference
                         SharedPreferences sharedPreferences1 = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -179,10 +179,20 @@ public class LoginActivity extends AppCompatActivity {
                             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                             final String match_date = df.format(c);
 
-                            SQLiteDatabase sqLiteDatabase = barcodedb.getWritableDatabase();
-                            barcodedb.deleteAssignedList(sqLiteDatabase);
-                            barcodedb.barcode_factory(sqLiteDatabase,match_date);
-                            barcodedb.barcode_factory_fulfillment(sqLiteDatabase,match_date);
+//                            SQLiteDatabase sqLiteDatabase = barcodedb.getWritableDatabase();
+                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                            db.clearPTMList(sqLiteDatabase);
+                            db.deletemerchantList(sqLiteDatabase);
+                            db.deletemerchantList_Fulfillment(sqLiteDatabase);
+                            db.deletemerchantList_ajkerDeal(sqLiteDatabase);
+                            db.deletemerchantList_ajkerDealEkshopList(sqLiteDatabase);
+                            db.deletemerchantList_ajkerDealOtherList(sqLiteDatabase);
+                            db.deletemerchants(sqLiteDatabase);
+                            db.deletemerchantsfor_executives(sqLiteDatabase);
+                            db.deletecom_ex(sqLiteDatabase);
+                            db.delete_fullfillment_merchantList(sqLiteDatabase);
+                            db.deletecom_fulfillment_supplier(sqLiteDatabase);
+                            db.deletecom_fullfillment_product(sqLiteDatabase);
 
                             startActivity(new Intent(getApplicationContext(),SupervisorCardMenu.class));
                         }
@@ -228,8 +238,34 @@ public class LoginActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        finish();
+        Intent homeIntentSuper = new Intent(LoginActivity.this,
+                LoginActivity.class);
+        startActivity(homeIntentSuper);
+//        finish();
     }
+
+/*    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            *//*Intent homeIntentSuper = new Intent(LoginActivity.this,
+                    LoginActivity.class);
+            startActivity(homeIntentSuper);*//*
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
+    }*/
 
 
 }

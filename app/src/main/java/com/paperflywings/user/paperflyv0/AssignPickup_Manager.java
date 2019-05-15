@@ -549,7 +549,10 @@ public class AssignPickup_Manager extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
 
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            Intent homeIntentSuper = new Intent(AssignPickup_Manager.this,
+                    ManagerCardMenu.class);
+            startActivity(homeIntentSuper);
         }
     }
 

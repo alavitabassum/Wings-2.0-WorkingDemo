@@ -517,7 +517,10 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            Intent homeIntentSuper = new Intent(AjkerDealOther_Assign_Pickup_supervisor.this,
+                    SupervisorCardMenu.class);
+            startActivity(homeIntentSuper);
         }
     }
 

@@ -84,8 +84,11 @@ public class ExecutiveCardMenu extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
 //            finish();
+            Intent homeIntentSuper = new Intent(ExecutiveCardMenu.this,
+                    ExecutiveCardMenu.class);
+            startActivity(homeIntentSuper);
         }
     }
 

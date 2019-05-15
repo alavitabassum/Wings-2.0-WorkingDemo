@@ -94,83 +94,6 @@ public class ManagerCardMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-/*
-    private final Runnable m_Runnable = new Runnable()
-    {
-        public void run()
-
-        {
-            Toast.makeText(ManagerCardMenu.this,"in runnable",Toast.LENGTH_SHORT).show();
-
-            ManagerCardMenu.this.mHandler.postDelayed(m_Runnable, 5000);
-        }
-
-    };//runnable*/
-
-   /* private void loadmerchantlist(final String user) {
-
-        StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("unAssignedlist");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
-
-                                database.addmerchantlist(o.getString("merchantName"), o.getString("merchantCode"),o.getInt("cnt"));
-                            }
-
-                            //getallmerchant();
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params1 = new HashMap<String, String>();
-                params1.put("username", user);
-                return params1;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(postRequest1);
-    }*/
-
-   /* private void getallmerchant() {
-        try {
-
-
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_merchantlist(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String merchantName = c.getString(0);
-                String merchantCode = c.getString(1);
-                int totalcount = c.getInt(2);
-
-                AssignManager_Model todaySummary = new AssignManager_Model(merchantName, merchantCode, totalcount);
-                assignManager_modelList.add(todaySummary);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -185,6 +108,7 @@ public class ManagerCardMenu extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            this.finish();
         }
     }
 
@@ -351,7 +275,6 @@ public class ManagerCardMenu extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

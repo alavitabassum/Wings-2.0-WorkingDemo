@@ -94,12 +94,11 @@ public class PendingSummary_Manager extends AppCompatActivity
                datePickerDialog = new DatePickerDialog(PendingSummary_Manager.this, new DatePickerDialog.OnDateSetListener() {
                    @Override
                    public void onDateSet(DatePicker view, int year, int month, int day) {
-//                               dateShow.setText(day + "/" + month + "/" + year);
-                               selectDate.setText(day + "/" + (month+1) + "/" + year);
+                       //  dateShow.setText(day + "/" + month + "/" + year);
+                       selectDate.setText(day + "/" + (month+1) + "/" + year);
                        String yearselected    = Integer.toString(year) ;
                        String monthselected   = Integer.toString(month + 1);
                        String dayselected     = Integer.toString(day);
-
                        String dateTime = dayselected + "-" + monthselected + "-" + yearselected;
                        loadPendingOrders(dateTime);
                        pendingsummary_modelslist.clear();

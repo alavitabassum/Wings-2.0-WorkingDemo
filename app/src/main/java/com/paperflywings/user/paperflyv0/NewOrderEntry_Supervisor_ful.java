@@ -311,4 +311,14 @@ public class NewOrderEntry_Supervisor_ful extends AppCompatActivity {
         requestQueue.add(postRequest);
 
     }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+//        super.onBackPressed();
+        Intent homeIntentSuper = new Intent(NewOrderEntry_Supervisor_ful.this,
+
+                FulfillmentAssignPickup_Supervisor.class);
+        startActivity(homeIntentSuper);
+    }
 }

@@ -45,6 +45,14 @@ public class NewOrder extends AppCompatActivity {
     private AssignExecutiveAdapter assignExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<AssignManager_Model> assignManager_modelList;
+
+    @Override
+    public void onBackPressed() {
+            Intent homeIntentSuper = new Intent(NewOrder.this,
+                    AssignPickup_Manager.class);
+            startActivity(homeIntentSuper);
+    }
+
     Database database;
     Button button;
 
@@ -282,9 +290,5 @@ public class NewOrder extends AppCompatActivity {
         requestQueue.add(postRequest);
 
     }
-
-    //
-
-
 
 }

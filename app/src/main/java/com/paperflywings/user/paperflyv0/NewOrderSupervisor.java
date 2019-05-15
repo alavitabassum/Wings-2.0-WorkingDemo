@@ -286,5 +286,12 @@ public class NewOrderSupervisor extends AppCompatActivity {
     //
 
 
-
+    @Override
+    public void onBackPressed() {
+//
+        super.onBackPressed();
+        Intent homeIntentSuper = new Intent(NewOrderSupervisor.this,
+                AssignPickup_Supervisor.class);
+        startActivity(homeIntentSuper);
+    }
 }

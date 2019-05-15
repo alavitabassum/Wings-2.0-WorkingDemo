@@ -390,11 +390,8 @@ public class MyPickupList_Executive extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-            Intent homeIntent = new Intent(MyPickupList_Executive.this,
-                    ExecutiveCardMenu.class);
-            startActivity(homeIntent);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
             Intent homeIntent = new Intent(MyPickupList_Executive.this,
                     ExecutiveCardMenu.class);
             startActivity(homeIntent);
@@ -608,7 +605,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     @Override
     public void onItemClick_view(final View view2, int position2) {
 
-        final CharSequence[] values = {"Complete Pick","On-hold Pick","Stock Out","Cancel Pick"};
+        final CharSequence[] values = {"Complete","On-hold","Stock Out","Cancel"};
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -786,7 +783,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                 case 3:
                                     AlertDialog.Builder spinnerBuilder2 = new AlertDialog.Builder(MyPickupList_Executive.this);
-                                    spinnerBuilder2.setTitle("Write Delete Reason: ");
+                                    spinnerBuilder2.setTitle("Write Cancel Reason: ");
 
                                     spinnerBuilder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override

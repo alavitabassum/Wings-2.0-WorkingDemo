@@ -573,7 +573,10 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            Intent homeIntentSuper = new Intent(Fulfillment_Assign_pickup_Manager.this,
+                    ManagerCardMenu.class);
+            startActivity(homeIntentSuper);
         }
     }
 

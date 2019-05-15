@@ -542,7 +542,11 @@ public class AssignPickup_Supervisor extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+//            super.onBackPressed();
+            Intent homeIntentSuper = new Intent(AssignPickup_Supervisor.this,
+                    SupervisorCardMenu.class);
+            startActivity(homeIntentSuper);
         }
     }
 
