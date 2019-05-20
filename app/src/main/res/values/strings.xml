@@ -56,6 +56,28 @@
         <item>Sohag</item>
         <item>Saiful</item>
     </string-array>
+
+    <string-array name="onholdreasons">
+       <item>Please select an option...</item>
+       <item>Product not available</item>
+       <item>Merchant is unable to handover  product.</item>
+       <item>Improper Packaging</item>
+       <item>Quality issue</item>
+       <item>Merchant not present at address</item>
+       <item>Merchant is unreachable</item>
+       <item>Unable to pick</item>
+       <item>Other</item>
+    </string-array>
+
+    <string-array name="cancelreason">
+        <item>Please select an option...</item>
+        <item>Customer cancel the order</item>
+        <item>Doesn’t match the criteria</item>
+        <item>On hold several times</item>
+        <item>Stock out</item>
+        <item>Other</item>
+    </string-array>
+
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="section_format2">Hello World from section: %1$d</string>
     <string name="title_activity_baal">Baal</string>

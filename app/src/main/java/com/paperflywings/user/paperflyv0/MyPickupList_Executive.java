@@ -30,7 +30,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -605,7 +607,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     @Override
     public void onItemClick_view(final View view2, int position2) {
 
-        final CharSequence[] values = {"Complete","On-hold","Stock Out","Cancel"};
+        final CharSequence[] values = {"Complete","On-hold","Partial","Cancel"};
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -623,18 +625,20 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final String sql_primary_id = clickedItem.getSql_primary_id();
         final String match_date = clickedItem.getCreated_at();
 
-        final String pause = "2";
+        final String onhold = "2";
         final String cancel = "3";
         final String complete = "4";
-        final String stock_out = "5";
+        final String partial = "5";
         final Intent picklistintent = new Intent(MyPickupList_Executive.this,
                 MyPickupList_Executive.class);
 
         final View mView = getLayoutInflater().inflate(R.layout.insert_adeal_comment, null);
-
-
         final EditText et1 = mView.findViewById(R.id.comments);
         final TextView tv1 = mView.findViewById(R.id.textView3);
+
+       /* final View mViewOnhold = getLayoutInflater().inflate(R.layout.on_hold_comment_layout_for_executive, null);
+        final Button btn = mViewOnhold.findViewById(R.id.onhold_button);
+        final TextView tvValidation = mViewOnhold.findViewById(R.id.textView3);*/
 
             final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
 
@@ -691,8 +695,20 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                     break;
 
                                 case 1:
+
                                     AlertDialog.Builder spinnerBuilder1 = new AlertDialog.Builder(MyPickupList_Executive.this);
-                                    spinnerBuilder1.setTitle("Write On-hold Reason: ");
+                                    spinnerBuilder1.setTitle("Select On-hold Reason: ");
+
+                                            View mViewOnHold = getLayoutInflater().inflate(R.layout.onhold_dialog_spinner, null);
+                                            final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.onhold_spinner);
+                                            final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
+                                            ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(MyPickupList_Executive.this,
+                                                    android.R.layout.simple_spinner_item,
+                                                    getResources().getStringArray(R.array.onholdreasons));
+                                            adapterOnhold.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                            mOnholdSpinner.setAdapter(adapterOnhold);
+
+
                                     spinnerBuilder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -707,7 +723,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                         }
                                     });
                                     spinnerBuilder1.setCancelable(false);
-                                    spinnerBuilder1.setView(mView);
+                                    spinnerBuilder1.setView(mViewOnHold);
 
                                     final AlertDialog dialog3 = spinnerBuilder1.create();
                                     dialog3.show();
@@ -716,15 +732,15 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                         @Override
                                         public void onClick(View v) {
 
-                                            if (et1.getText().toString().trim().isEmpty()) {
-                                                tv1.setText("Field can't be empty");
+                                            if (mOnholdSpinner.getSelectedItem().toString().equalsIgnoreCase("Please select an option...")) {
+                                                error_msg.setText("Please select one return reason");
                                             } else {
                                                 // pause
                                                 final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
 
-                                                String comments = et1.getText().toString();
+                                                String comments = mOnholdSpinner.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, pause, "pause",sql_primary_id);
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "onhold",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause,comments);
 
                                                 startActivity(picklistintent);
@@ -737,7 +753,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                 case 2:
                                     AlertDialog.Builder spinnerBuilder6 = new AlertDialog.Builder(MyPickupList_Executive.this);
-                                    spinnerBuilder6.setTitle("Write Stock Out Reason: ");
+                                    spinnerBuilder6.setTitle("Write Reason for Partial: ");
                                     spinnerBuilder6.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -769,7 +785,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                                 String comments = et1.getText().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, stock_out, "stock_out",sql_primary_id);
+                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause,comments);
 
                                                 startActivity(picklistintent);
@@ -783,7 +799,16 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                 case 3:
                                     AlertDialog.Builder spinnerBuilder2 = new AlertDialog.Builder(MyPickupList_Executive.this);
-                                    spinnerBuilder2.setTitle("Write Cancel Reason: ");
+                                    spinnerBuilder2.setTitle("Select Cancel Reason: ");
+
+                                    View mViewOnHold2 = getLayoutInflater().inflate(R.layout.onhold_dialog_spinner, null);
+                                    final Spinner mOnholdSpinner2 = (Spinner) mViewOnHold2.findViewById(R.id.onhold_spinner);
+                                    final TextView error_msg2 = (TextView) mViewOnHold2.findViewById(R.id.error_msg);
+                                    ArrayAdapter<String> adapterOnhold2 = new ArrayAdapter<String>(MyPickupList_Executive.this,
+                                            android.R.layout.simple_spinner_item,
+                                            getResources().getStringArray(R.array.cancelreason));
+                                    adapterOnhold2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    mOnholdSpinner2.setAdapter(adapterOnhold2);
 
                                     spinnerBuilder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
@@ -798,7 +823,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                         }
                                     });
                                     spinnerBuilder2.setCancelable(false);
-                                    spinnerBuilder2.setView(mView);
+                                    spinnerBuilder2.setView(mViewOnHold2);
 
                                     final AlertDialog dialog4 = spinnerBuilder2.create();
                                     dialog4.show();
@@ -806,16 +831,15 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                     dialog4.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            if (et1.getText().toString().trim().isEmpty()) {
-                                                tv1.setText("Field can't be empty");
+                                            if (mOnholdSpinner2.getSelectedItem().toString().equalsIgnoreCase("Please select an option...")) {
+                                                error_msg2.setText("Please select one cancel reason");
                                             } else {
                                                 // delete
                                                 final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
-
-                                                String comments = et1.getText().toString();
+                                                String comments = mOnholdSpinner2.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
                                                 updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "cancel",sql_primary_id);
-//                                                updateAjkerDeal(merchant_order_ref,pause, comments);
+                                                // updateAjkerDeal(merchant_order_ref,pause, comments);
 
                                                 startActivity(picklistintent);
                                                 dialog4.dismiss();
@@ -933,48 +957,4 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
     }
 
-    // Send Pause or Delete status to ajker deal
-//    public void updateAjkerDeal(final String merchant_order_ref,final String pick_status, final String comm) {
-//
-//        final String m_order_ref = "[" + merchant_order_ref + "]";
-//        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://bridge.ajkerdeal.com/ThirdPartyOrderAction/UpdateStatusByCourier",
-//
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        Toast.makeText(MyPickupList_Executive.this, "Success, status send to ajker deal direct delivery", Toast.LENGTH_SHORT).show();
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(MyPickupList_Executive.this, "Unsuccessful, error sending status", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//        ) {
-//
-//            @Override
-//            public byte[] getBody() throws AuthFailureError {
-//                String httpPostBody = "{\n\t\"OrderIds\" : "+ m_order_ref + ",\n\t\"StatusId\" : "+ pick_status +",\n\t\"Comments\" : \""+comm+"\",\n\t\"ThirdPartyId\" : \"30\"\n\t\n}";
-//                return httpPostBody.getBytes();
-//            }
-//
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                HashMap<String, String> headers = new HashMap<String, String>();
-//
-//                headers.put("Authorization", "Basic UGFwZXJGbHk6SGpGZTVWNWY=");
-//                headers.put("API_KEY", "Ajkerdeal_~La?Rj73FcLm");
-//                headers.put("Content-Type", "application/json");
-//
-//                return headers;
-//            }
-//        };
-//        try {
-//            RequestQueue requestQueue = Volley.newRequestQueue(this);
-//            requestQueue.add(postRequest);
-//        } catch (Exception e) {
-//            Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
-//        }
-//    }
 }
