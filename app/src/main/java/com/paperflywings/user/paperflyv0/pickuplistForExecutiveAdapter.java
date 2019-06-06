@@ -301,7 +301,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             }
 
         if(pick_status.equals("5")) {
-            viewHolder.itemStatus.setText("Stock Out");
+            viewHolder.itemStatus.setText("Partial");
             viewHolder.itemStatus.setBackgroundResource(R.color.red);
             viewHolder.itemStatus.setTextColor(Color.WHITE);
             viewHolder.itemStatus.setEnabled(true);

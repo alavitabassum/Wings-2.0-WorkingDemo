@@ -753,22 +753,31 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                 case 2:
                                     AlertDialog.Builder spinnerBuilder6 = new AlertDialog.Builder(MyPickupList_Executive.this);
-                                    spinnerBuilder6.setTitle("Write Reason for Partial: ");
+                                    spinnerBuilder6.setTitle("Select Partial Reason: ");
+
+                                    View mViewOnHold6 = getLayoutInflater().inflate(R.layout.onhold_dialog_spinner, null);
+                                    final Spinner mOnholdSpinner6 = (Spinner) mViewOnHold6.findViewById(R.id.onhold_spinner);
+                                    final TextView error_msg6 = (TextView) mViewOnHold6.findViewById(R.id.error_msg);
+                                    ArrayAdapter<String> adapterOnhold6 = new ArrayAdapter<String>(MyPickupList_Executive.this,
+                                            android.R.layout.simple_spinner_item,
+                                            getResources().getStringArray(R.array.partialreason));
+                                    adapterOnhold6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    mOnholdSpinner6.setAdapter(adapterOnhold6);
+
                                     spinnerBuilder6.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-
                                         }
                                     });
-
                                     spinnerBuilder6.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int i1) {
                                             dialog.dismiss();
                                         }
                                     });
+
                                     spinnerBuilder6.setCancelable(false);
-                                    spinnerBuilder6.setView(mView);
+                                    spinnerBuilder6.setView(mViewOnHold6);
 
                                     final AlertDialog dialog6 = spinnerBuilder6.create();
                                     dialog6.show();
@@ -777,17 +786,15 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                         @Override
                                         public void onClick(View v) {
 
-                                            if (et1.getText().toString().trim().isEmpty()) {
-                                                tv1.setText("Field can't be empty");
+                                            if (mOnholdSpinner6.getSelectedItem().toString().equalsIgnoreCase("Please select an option...")) {
+                                                error_msg6.setText("Please select one partial reason");
                                             } else {
-                                                // pause
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
 
-                                                String comments = et1.getText().toString();
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                                                String comments = mOnholdSpinner6.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
                                                 updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause,comments);
-
                                                 startActivity(picklistintent);
                                                 dialog6.dismiss();
                                             }

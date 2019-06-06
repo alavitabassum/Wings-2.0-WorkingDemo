@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -41,6 +40,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import org.json.JSONArray;
@@ -127,7 +127,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadmerchantlist();
+            loadmerchantlist(user);
             loadexecutivelist(user);
         }
         else{
@@ -258,7 +258,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
 
 
     //Merchant List API hit
-    private void loadmerchantlist() {
+    private void loadmerchantlist(final String user) {
 
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -336,6 +336,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("username",user);
                 params.put("created_at",match_date);
 
                 return params;
@@ -952,7 +953,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadmerchantlist();
+            loadmerchantlist(username);
         }
         else{
             getallmerchant();

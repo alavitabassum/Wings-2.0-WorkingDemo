@@ -677,11 +677,25 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
-
-
     public Cursor get_executivelist(SQLiteDatabase db) {
         String[] columns = {"empName", "empCode"};
         return db.query("executivelist", columns, null, null, null, null, null);
+    }
+
+    public Cursor get_mainmerchantlist(SQLiteDatabase db) {
+        String[] columns = {"merchantName", "merchant_codeempCode"};
+        return db.query("Fulfillmentmerchantlist", columns, null, null, null, null, null);
+
+    }
+
+    public Cursor get_supplierlist(SQLiteDatabase db) {
+        String[] columns = {"supplierName"};
+        return db.query("Fulfillmentsupplier", columns, null, null, null, null, null);
+    }
+
+    public Cursor get_productlist(SQLiteDatabase db) {
+            String[] columns = {"productName", "productID"};
+        return db.query("Fulfillmentproduct", columns, null, null, null, null, null);
     }
 
     public int getTotalOfAmount() {

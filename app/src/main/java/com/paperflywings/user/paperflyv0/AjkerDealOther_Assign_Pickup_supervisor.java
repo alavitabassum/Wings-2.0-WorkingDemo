@@ -64,7 +64,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
 //    private String MERCHANT_URL = "http://paperflybd.com/ajkerdeal_sub_merchant_api.php";
 
     private String MERCHANT_URL = "http://paperflybd.com/a_deal_submerchant_api.php";
-    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNew.php";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNewZonewise.php";
     private String UPDATE_ASSIGN_ADEAL = "http://paperflybd.com/updateassignadeal.php";
     private String GET_EMP_INFO = "http://paperflybd.com/getEmpInfo.php";
 

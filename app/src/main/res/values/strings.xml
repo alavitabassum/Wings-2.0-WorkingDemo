@@ -59,23 +59,31 @@
 
     <string-array name="onholdreasons">
        <item>Please select an option...</item>
-       <item>Product not available</item>
-       <item>Merchant is unable to handover  product.</item>
-       <item>Improper Packaging</item>
-       <item>Quality issue</item>
-       <item>Merchant not present at address</item>
-       <item>Merchant is unreachable</item>
-       <item>Unable to pick</item>
-       <item>Other</item>
+       <item>স্টকে পণ্য নেই</item>
+       <item>গুণগত মান / প্যাকেজিং সমস্যা</item>
+       <item>মার্চেন্টের সাথে যোগাযোগ করা যাচ্ছে না</item>
+       <item>মার্চেন্ট অনুপস্থিত</item>
+       <item>মার্চেন্ট দেরি করেছে</item>
+       <item>নির্ধারিত সময়ের পর পিক আপ অনুরোধ</item>
     </string-array>
 
     <string-array name="cancelreason">
         <item>Please select an option...</item>
-        <item>Customer cancel the order</item>
-        <item>Doesn’t match the criteria</item>
-        <item>On hold several times</item>
-        <item>Stock out</item>
-        <item>Other</item>
+        <item>মার্চেন্ট অর্ডার বাতিল করেছে</item>
+        <item>পরিবহন ঝুঁকিপূর্ণ পণ্য</item>
+        <item>স্টকে পণ্য নেই</item>
+
+    </string-array>
+
+    <string-array name="completereason">
+        <item>Please select an option...</item>
+        <item>ওকে</item>
+    </string-array>
+
+    <string-array name="partialreason">
+        <item>Please select an option...</item>
+        <item>মার্চেন্ট পণ্য হস্তান্তর করতে পারছে না</item>
+        <item>গুণগত মান / প্যাকেজিং সমস্যা</item>
     </string-array>
 
     <string name="section_format">Hello World from section: %1$d</string>

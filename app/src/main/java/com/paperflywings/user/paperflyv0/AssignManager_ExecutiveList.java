@@ -5,6 +5,11 @@ public class AssignManager_ExecutiveList {
     private String executive_code;
     private String executive_username;
     private String executive_contact;
+    private String supplierName;
+
+    public AssignManager_ExecutiveList(String supplierName) {
+        this.supplierName = supplierName;
+    }
 
     public String getExecutive_username() {
         return executive_username;

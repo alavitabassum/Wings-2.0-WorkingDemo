@@ -30,7 +30,7 @@ import java.util.List;
 
 public class ManagerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
+//    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     List<AssignManager_Model> assignManager_modelList;
     Database database;
 

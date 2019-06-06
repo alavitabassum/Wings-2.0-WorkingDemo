@@ -62,7 +62,7 @@ public class AssignPickup_Supervisor extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog progress;
     public static final String MERCHANT_NAME = "Merchant Name";
-    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNew.php";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNewZonewise.php";
     public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
 
 //    public static final String INSERT_URL = "http://paperflybd.com/insertfulfillmentassign.php";
@@ -261,12 +261,12 @@ public class AssignPickup_Supervisor extends AppCompatActivity
     //Merchant List API hit
     private void loadmerchantlist(final String user) {
 
-       /* progress=new ProgressDialog(this);
+        progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(true);
         progress.setProgress(0);
-        progress.show();*/
+        progress.show();
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_URL,
                 new Response.Listener<String>() {
@@ -274,7 +274,7 @@ public class AssignPickup_Supervisor extends AppCompatActivity
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
                         database.deletemerchantList(sqLiteDatabase);
-//                        progress.dismiss();
+                        progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("unAssignedlist");
@@ -328,6 +328,7 @@ public class AssignPickup_Supervisor extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params1 = new HashMap<String, String>();
                 params1.put("username", user);
+
                 return params1;
             }
         };

@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
             } else if(user_role_id.contains("26")){
                 Intent intent = new Intent(LoginActivity.this, SupervisorCardMenu.class);
                 startActivity(intent);
-            } else {
+            } else if(user_role_id.contains("7")){
                 Intent intent = new Intent(LoginActivity.this, ExecutiveCardMenu.class);
                 startActivity(intent);
             }

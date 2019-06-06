@@ -62,8 +62,8 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog progress;
     public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
-    private String MERCHANT_URL = "http://paperflybd.com/api_fulfillment_pickuplist.php";
-    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNew.php";
+    private String MERCHANT_URL = "http://paperflybd.com/api_fulfillment_pickuplist_zonewise.php";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNewZonewise.php";
     public static final String UPDATE_FUL_ASSIGN_URL = "http://paperflybd.com/updateFulUnassignedAPI.php";
     private String MAIN_MERCHANT_URL = "http://paperflybd.com/fulfillmentMerchantAPI.php";
     private String SUPPLIER_NAME_URL = "http://paperflybd.com/fulfillmentSupplierAPI.php";
@@ -72,6 +72,9 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
     private FullfillmentAssignSupervisorAdapter assignFulfillmentExecutiveAdapter;
     List<AssignManager_ExecutiveList> executiveLists;
     List<FullfillmentAssignSupervisor_Model> assignFulfillmentManager_modelList;
+    List<FullfillmentAssignSupervisor_Model> supplierLists;
+    List<FullfillmentAssignSupervisor_Model> productLists;
+    List<AssignMainMerchant_Model> mainmerchantlists;
     Database database;
 
     public static final int NAME_SYNCED_WITH_SERVER = 1;
@@ -97,6 +100,10 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         database.getWritableDatabase();
         executiveLists = new ArrayList<>();
         assignFulfillmentManager_modelList = new ArrayList<>();
+
+        supplierLists = new ArrayList<>();
+        productLists = new ArrayList<>();
+        mainmerchantlists = new ArrayList<>();
 
 
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -127,18 +134,23 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadmerchantlist();
+            loadmerchantlist(user);
             loadexecutivelist(user);
+            loadmainmerchantlist();
+            loadSuppliermerchantlist();
+            loadProductlist();
+
         }
         else{
             getallmerchant();
             getallexecutives();
+            /*getmainmerchantlist();
+            getSuppliermerchantlist();
+            getProductlist();*/
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-        loadmainmerchantlist();
-        loadSuppliermerchantlist();
-        loadProductlist();
+
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -239,6 +251,126 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
     }
 
 
+    //Merchant List API hit
+    private void loadmainmerchantlist() {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.GET, MAIN_MERCHANT_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+//                        database.deletemerchantList_Fulfillment(sqLiteDatabase);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                AssignMainMerchant_Model mainmerchantList = new AssignMainMerchant_Model(
+                                        o.getString("main_merchant"),
+                                        o.getString("merchant_code")
+                                );
+
+                                mainmerchantlists.add(mainmerchantList);
+                                database.addfulfillmentmerchantlist(
+                                        o.getString("main_merchant"),
+                                        o.getString("merchant_code")
+                                );
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) ;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }
+
+
+    private void loadSuppliermerchantlist() {
+        StringRequest postRequest1 = new StringRequest(Request.Method.GET, SUPPLIER_NAME_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                FullfillmentAssignSupervisor_Model supplierList = new FullfillmentAssignSupervisor_Model(
+                                        o.getString("supplier_name")
+                                );
+
+                                supplierLists.add(supplierList);
+                                database.addsuppliernamelist(o.getString("supplier_name"));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) ;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }
+
+    private void loadProductlist() {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.GET, PRODUCT_LIST_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                FullfillmentAssignSupervisor_Model productList = new FullfillmentAssignSupervisor_Model(
+                                        o.getString("product_name"),
+                                        o.getString("product_id")
+                                );
+
+                                productLists.add(productList);
+                                database.addproductlist(
+                                        o.getString("product_name"),
+                                        String.valueOf(o.getInt("product_id")));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) ;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }
+
+
     //Get Executive List from sqlite
     private void getallexecutives() {
         try {
@@ -257,9 +389,63 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         }
     }
 
+    //Get Executive List from sqlite
+    private void getmainmerchantlist() {
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_mainmerchantlist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String merchantName = c.getString(0);
+                String merchantCode = c.getString(1);
+                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(merchantName, merchantCode);
+                executiveLists.add(assignManager_executiveList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // get supplier list
+    private void getSuppliermerchantlist(){
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_supplierlist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String supplierName = c.getString(0);
+                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(supplierName);
+                executiveLists.add(assignManager_executiveList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // get product List
+    private void getProductlist(){
+        try {
+
+            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
+            Cursor c = database.get_productlist(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String productName = c.getString(0);
+                String productCode = c.getString(1);
+                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(productName,productCode);
+                executiveLists.add(assignManager_executiveList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     //Merchant List API hit
-    private void loadmerchantlist() {
+    private void loadmerchantlist(final String user) {
 
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -337,6 +523,7 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("username",user);
                 params.put("created_at",match_date);
 
                 return params;
@@ -389,107 +576,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         }
     }
 
-
-    //Merchant List API hit
-    private void loadmainmerchantlist() {
-
-        StringRequest postRequest1 = new StringRequest(Request.Method.GET, MAIN_MERCHANT_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-//                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
-//                        database.deletemerchantList_Fulfillment(sqLiteDatabase);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("summary");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
-                                database.addfulfillmentmerchantlist(
-                                        o.getString("main_merchant"),
-                                        o.getString("merchant_code"));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) ;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(postRequest1);
-    }
-
-
-    private void loadSuppliermerchantlist() {
-        StringRequest postRequest1 = new StringRequest(Request.Method.GET, SUPPLIER_NAME_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("summary");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
-                                database.addsuppliernamelist(o.getString("supplier_name"));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) ;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(postRequest1);
-    }
-
-    private void loadProductlist() {
-
-        StringRequest postRequest1 = new StringRequest(Request.Method.GET, PRODUCT_LIST_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("summary");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
-                                database.addproductlist(
-                                        o.getString("product_name"),
-                                        String.valueOf(o.getInt("product_id")));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) ;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(postRequest1);
-    }
 
 
 
@@ -940,7 +1026,7 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadmerchantlist();
+            loadmerchantlist(username);
         }
         else{
             getallmerchant();

@@ -37,7 +37,7 @@ public class NewOrderSupervisor extends AppCompatActivity {
 
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
-    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNew.php";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNewZonewise.php";
     //private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
     //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
     private String MERCHANT_URL = "http://paperflybd.com/merchantAPI1.php";

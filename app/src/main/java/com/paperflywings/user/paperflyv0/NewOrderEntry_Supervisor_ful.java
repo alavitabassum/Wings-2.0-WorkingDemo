@@ -1,10 +1,14 @@
 package com.paperflywings.user.paperflyv0;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -38,10 +42,9 @@ public class NewOrderEntry_Supervisor_ful extends AppCompatActivity {
 
     String[] executive_num_list;
     public static final String MERCHANT_NAME = "Merchant Name";
-    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNew.php";
-    //private String INSERT_URL = "http://192.168.0.117/new/insertassign.php";
-    //private String MERCHANT_URL= "http://192.168.0.117/new/merchantlistt.php";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNewZonewise.php";
     private String MERCHANT_URL = "http://paperflybd.com/merchantAPI.php";
+    private BroadcastReceiver broadcastReceiver;
 
     List<AssignManager_ExecutiveList> executiveLists;
     List<FullfillmentAssignSupervisor_Model> supplierLists;
@@ -64,11 +67,22 @@ public class NewOrderEntry_Supervisor_ful extends AppCompatActivity {
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
+
         final String user = username.toString();
-        getallmerchantlist();
-        getallexecutives();
-        getallsupplier();
-        getallproduct();
+
+        //Offline sync
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+
+            getallmerchantlist();
+            getallexecutives();
+            getallsupplier();
+            getallproduct();
+
+
 
         final AutoCompleteTextView actv_m_name = findViewById(R.id.auto_m_name);
         final AutoCompleteTextView actv_exe_name = findViewById(R.id.auto_exe_name);
@@ -200,6 +214,9 @@ public class NewOrderEntry_Supervisor_ful extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+
 
     private void getallexecutives() {
         try {
