@@ -241,7 +241,7 @@ public class ScanningScreen extends AppCompatActivity {
                     // TODO: Merchant id, scan count, created-by, creation-date, flag
 //                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
                     try{
-                        final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                        final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                         updateScanCount(strI, strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date, pick_status, sql_primary_id);
                     } catch (Exception e) {
                         Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
@@ -322,7 +322,7 @@ public class ScanningScreen extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
                                 db.add(sql_primary_id,merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
-                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                 scan_count1.setText("Scan count: " +strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
                                 Toast toast= Toast.makeText(ScanningScreen.this,
@@ -333,7 +333,7 @@ public class ScanningScreen extends AppCompatActivity {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.add(sql_primary_id,merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
-                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                 scan_count1.setText("Scan count: " +strI);
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
                             }
@@ -347,7 +347,7 @@ public class ScanningScreen extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.add(sql_primary_id,merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER);
-                        final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                        final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                         scan_count1.setText("Scan count: " +strI);
                     }
                 }

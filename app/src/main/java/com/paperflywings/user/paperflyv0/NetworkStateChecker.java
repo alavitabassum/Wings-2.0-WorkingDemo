@@ -189,6 +189,21 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor7.moveToNext());
                 }
 
+                /* + "id INTEGER PRIMARY KEY AUTOINCREMENT, 0"
+                + "sql_primary_id TEXT, 1"
+                + "comment TEXT, 2"
+                + "status_id TEXT, 3"
+                + "status_name TEXT, 4"
+                + "username TEXT, 5"*/
+                //getting all the unsynced data
+                Cursor cursor9 = database2.getUnsyncedActionLog();
+                if (cursor9.moveToFirst()) {
+                    do {
+
+                        insertLog(cursor9.getInt(0),cursor9.getString(1),cursor9.getString(2),cursor9.getString(3),cursor9.getString(4), cursor9.getString(5));
+                    } while (cursor9.moveToNext());
+                }
+
             }
         }
     }
@@ -586,6 +601,49 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("updatedBy", updatedBy);
                 params.put("updatedAt", updatedAt);
                 params.put("pickedStatus", pickedStatus);
+
+                return params;
+
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    private void insertLog(final int id,final String sql_primary_id, final String comments, final String status_id, final String status_name, final String username) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MyPickupList_Executive.INSERT_ACTION_LOG,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+
+                                //updating the status in sqlite
+                                database2.updatePickActionLog(id, NAME_SYNCED_WITH_SERVER);
+
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("sql_primary_id", sql_primary_id);
+                params.put("comment", comments);
+                params.put("status_id", status_id);
+                params.put("status_name", status_name);
+                params.put("status_by", username);
 
                 return params;
 

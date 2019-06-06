@@ -84,6 +84,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     //    private String FULFILLMENT_PICKUP_URL = "http://paperflybd.com/tbl_fulfillment_pickuplist.php";
     public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/showexecutiveassignTest.php";
     public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment11.php";
+    public static final String INSERT_ACTION_LOG = "http://paperflybd.com/insert_pickup_action_log.php";
 
     private List<PickupList_Model_For_Executive> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -610,7 +611,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final CharSequence[] values = {"Complete","On-hold","Partial","Cancel"};
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String updated_by = username.toString();
 
         Date c = Calendar.getInstance().getTime();
@@ -624,6 +625,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final String sub_merchant_name = clickedItem.getP_m_name();
         final String sql_primary_id = clickedItem.getSql_primary_id();
         final String match_date = clickedItem.getCreated_at();
+//        final int id = clickedItem.getKey_id();
 
         final String onhold = "2";
         final String cancel = "3";
@@ -678,13 +680,14 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 tv1.setText("Field can't be empty");
                                             } else {
                                                 // complete
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
 
                                                 String comments = et1.getText().toString();
                                                 //if order is cancelled this will save the status 2
                                                 updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "done", sql_primary_id);
                                                 // updateAjkerDeal(merchant_order_ref,pause,comments);
-
+                                                pickup_action_log(sql_primary_id, comments, complete, "done", username);
+//                                                getData(username);
                                                 startActivity(picklistintent);
                                                 dialog5.dismiss();
                                             }
@@ -736,14 +739,16 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 error_msg.setText("Please select one return reason");
                                             } else {
                                                 // pause
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
 
                                                 String comments = mOnholdSpinner.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
                                                 updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "onhold",sql_primary_id);
-//                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+                                                pickup_action_log(sql_primary_id, comments, onhold, "onhold", username);
+//                                              updateAjkerDeal(merchant_order_ref,pause,comments);
 
                                                 startActivity(picklistintent);
+//                                                getData(username);
                                                 dialog3.dismiss();
                                             }
                                         }
@@ -790,12 +795,14 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 error_msg6.setText("Please select one partial reason");
                                             } else {
 
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                                 String comments = mOnholdSpinner6.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
                                                 updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+                                                pickup_action_log(sql_primary_id, comments, partial, "partial", username);
                                                 startActivity(picklistintent);
+//                                                getData(username);
                                                 dialog6.dismiss();
                                             }
                                         }
@@ -842,12 +849,12 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 error_msg2.setText("Please select one cancel reason");
                                             } else {
                                                 // delete
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name, match_date));
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                                 String comments = mOnholdSpinner2.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
                                                 updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "cancel",sql_primary_id);
                                                 // updateAjkerDeal(merchant_order_ref,pause, comments);
-
+                                                pickup_action_log(sql_primary_id, comments, cancel, "cancel", username);
                                                 startActivity(picklistintent);
                                                 dialog4.dismiss();
                                             }
@@ -962,6 +969,56 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void pickup_action_log (final String sql_primary_id, final String comments, final String status_id, final String status_name, final String username){
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_ACTION_LOG,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                db.insert_action_log(sql_primary_id, comments, status_id, status_name, username,NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                db.insert_action_log(sql_primary_id, comments, status_id, status_name, username,NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.insert_action_log(sql_primary_id, comments, status_id, status_name, username,NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("sql_primary_id", sql_primary_id);
+                params.put("comment", comments);
+                params.put("status_id", status_id);
+                params.put("status_name", status_name);
+                params.put("status_by", username);
+
+
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
     }
 
 }
