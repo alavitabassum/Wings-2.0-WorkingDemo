@@ -565,7 +565,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         String[] whereArgs = new String[] {
                 merchantId,
                 sub_merchant_name,
-                String.valueOf(sql_primary_id),
+                sql_primary_id,
                 match_date
         };
         // insert
