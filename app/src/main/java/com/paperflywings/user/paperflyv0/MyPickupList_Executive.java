@@ -83,7 +83,9 @@ public class MyPickupList_Executive extends AppCompatActivity
     android.widget.RelativeLayout vwParentRow;
     //    private String FULFILLMENT_PICKUP_URL = "http://paperflybd.com/tbl_fulfillment_pickuplist.php";
     public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/showexecutiveassignTest.php";
-    public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment11.php";
+
+    // this API is for updating the insertassign table from Officer's list of assignment
+    public static final String UPDATE_ACTION = "http://paperflybd.com/updateTableForFulfillment11.php";
     public static final String INSERT_ACTION_LOG = "http://paperflybd.com/insert_pickup_action_log.php";
 
     private List<PickupList_Model_For_Executive> list;
@@ -638,7 +640,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final EditText et1 = mView.findViewById(R.id.comments);
         final TextView tv1 = mView.findViewById(R.id.textView3);
 
-       /* final View mViewOnhold = getLayoutInflater().inflate(R.layout.on_hold_comment_layout_for_executive, null);
+        /* final View mViewOnhold = getLayoutInflater().inflate(R.layout.on_hold_comment_layout_for_executive, null);
         final Button btn = mViewOnhold.findViewById(R.id.onhold_button);
         final TextView tvValidation = mViewOnhold.findViewById(R.id.textView3);*/
 
@@ -684,7 +686,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                                 String comments = et1.getText().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "done", sql_primary_id);
+                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "done", sql_primary_id);
                                                 // updateAjkerDeal(merchant_order_ref,pause,comments);
                                                 pickup_action_log(sql_primary_id, comments, complete, "done", username);
 //                                                getData(username);
@@ -743,7 +745,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                                                 String comments = mOnholdSpinner.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "onhold",sql_primary_id);
+                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "onhold",sql_primary_id);
                                                 pickup_action_log(sql_primary_id, comments, onhold, "onhold", username);
 //                                              updateAjkerDeal(merchant_order_ref,pause,comments);
 
@@ -798,7 +800,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                                 String comments = mOnholdSpinner6.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
+                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause,comments);
                                                 pickup_action_log(sql_primary_id, comments, partial, "partial", username);
                                                 startActivity(picklistintent);
@@ -852,7 +854,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                                 String comments = mOnholdSpinner2.getSelectedItem().toString();
                                                 //if order is cancelled this will save the status 2
-                                                updateScanCount(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "cancel",sql_primary_id);
+                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "cancel",sql_primary_id);
                                                 // updateAjkerDeal(merchant_order_ref,pause, comments);
                                                 pickup_action_log(sql_primary_id, comments, cancel, "cancel", username);
                                                 startActivity(picklistintent);
@@ -911,9 +913,9 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     }
 
     // API for updating scan count, picked_product_count, updated by and updated at and comments, pause ,delete
-    public void updateScanCount(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String order_id, final String comments,final String match_date, final String pick_status, final String pause_or_delete, final String sql_primary_id) {
+    public void updateActionStatus(final String strI, final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name,final String order_id, final String comments,final String match_date, final String pick_status, final String pause_or_delete, final String sql_primary_id) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_ACTION,
 
                 new Response.Listener<String>() {
                     @Override

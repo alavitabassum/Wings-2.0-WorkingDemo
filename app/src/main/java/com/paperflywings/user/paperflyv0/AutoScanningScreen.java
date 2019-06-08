@@ -71,7 +71,7 @@ public class AutoScanningScreen extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
-    public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/update_tbl_auto_insertassign_pickup.php";
+//    public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/update_tbl_auto_insertassign_pickup.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -230,7 +230,7 @@ public class AutoScanningScreen extends AppCompatActivity {
 //                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
                     try{
                         final String scanCount = String.valueOf(db.getRowsCountAuto(merchant_id, sub_merchant_name));
-                       updateScanCount(merchant_id, sub_merchant_name,updated_by1,scanCount, scanCount, updated_by1, updated_at1,pickedStatus);
+//                       updateScanCount(merchant_id, sub_merchant_name,updated_by1,scanCount, scanCount, updated_by1, updated_at1,pickedStatus);
                     } catch (Exception e) {
                         Toast.makeText(AutoScanningScreen.this, "AutoScanningScreen" +e, Toast.LENGTH_SHORT).show();
                     }
@@ -358,7 +358,7 @@ public class AutoScanningScreen extends AppCompatActivity {
     // StrI, updated_by1, updated_at1, merchant_id
     // public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/update_tbl_auto_insertassign_pickup.php";
 
-    public void updateScanCount(final String merchantCode, final String pickMerName, final String executiveName, final String scanCount, final String pickedQty, final String updatedBy,final String updatedAt,final String pickedStatus) {
+/*    public void updateScanCount(final String merchantCode, final String pickMerName, final String executiveName, final String scanCount, final String pickedQty, final String updatedBy,final String updatedAt,final String pickedStatus) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
                 new Response.Listener<String>() {
@@ -409,6 +409,6 @@ public class AutoScanningScreen extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(AutoScanningScreen.this, "Request Queue" +e, Toast.LENGTH_SHORT).show();
         }
-    }
+    }*/
 }
 

@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -34,25 +33,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static android.Manifest.permission.CAMERA;
 
@@ -136,10 +121,10 @@ public class AutoAssignMyPickuplist extends AppCompatActivity
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user);
+//            loadRecyclerView(user);
         }
         else{
-            getData(user);
+//            getData(user);
 
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
@@ -172,7 +157,7 @@ public class AutoAssignMyPickuplist extends AppCompatActivity
     }
 
     /* merchant List generation from sqlite*/
-    private void getData(String user) {
+   /* private void getData(String user) {
         try {
             autoAssignList.clear();
 
@@ -223,8 +208,8 @@ public class AutoAssignMyPickuplist extends AppCompatActivity
             e.printStackTrace();
         }
     }
-
-    private void loadRecyclerView(final String user)
+*/
+   /* private void loadRecyclerView(final String user)
     {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AUTO_ASSIGNED_LIST_FOR_EXECUTIVE,
                 new Response.Listener<String>()
@@ -342,7 +327,7 @@ public class AutoAssignMyPickuplist extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-
+*/
     // Function for camera permission
     private boolean checkPermission()
     {
@@ -542,10 +527,10 @@ public class AutoAssignMyPickuplist extends AppCompatActivity
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+//            loadRecyclerView(username);
         }
         else{
-            getData(username);
+//            getData(username);
         }
     }
 

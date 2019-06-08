@@ -77,7 +77,7 @@ public class ScanningScreen extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
-    public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updateTableForFulfillment12.php";
+    public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updatePickScanCount.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -244,7 +244,7 @@ public class ScanningScreen extends AppCompatActivity {
                         final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                         updateScanCount(strI, strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date, pick_status, sql_primary_id);
                     } catch (Exception e) {
-                        Toast.makeText(ScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ScanningScreen.this, "An error occurred", Toast.LENGTH_SHORT).show();
                     }
 //                    getData(username);
 //                    sentOnChannel1();
@@ -362,7 +362,6 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
                 params.put("sql_primary_id", sql_primary_id);
-
                 return params;
             }
         };
@@ -370,8 +369,7 @@ public class ScanningScreen extends AppCompatActivity {
         requestQueue.add(postRequest);
     }
 
-    // API for update
-    // StrI, updated_by1, updated_at1, merchant_id
+    // API for updating scan count, picked_product_count, updated by and updated at and comments, pause ,delete
     public void updateScanCount(final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date, final String pick_status, final String sql_primary_id) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
@@ -393,13 +391,13 @@ public class ScanningScreen extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_row(strI, picked_qty ,updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status,sql_primary_id, NAME_NOT_SYNCED_WITH_SERVER);
+
                     }
                 }
         ) {
@@ -408,22 +406,22 @@ public class ScanningScreen extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("merchant_code", merchant_id);
                 params.put("p_m_name", sub_merchant_name);
-                params.put("created_at", match_date);
                 params.put("scan_count", strI);
                 params.put("picked_qty", picked_qty);
-                params.put("api_order_id", "0");
+                // params.put("api_order_id", "0");
                 params.put("pick_from_merchant_status", pick_status);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
                 params.put("sql_primary_id", sql_primary_id);
+                params.put("created_at", match_date);
                 return params;
             }
         };
-        try { RequestQueue requestQueue = Volley.newRequestQueue(this);
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(ScanningScreen.this, "Request Queue" +e, Toast.LENGTH_SHORT).show();
         }
-
     }
 }

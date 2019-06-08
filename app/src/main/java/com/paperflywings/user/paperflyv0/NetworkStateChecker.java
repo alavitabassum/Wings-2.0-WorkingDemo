@@ -180,14 +180,14 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 + "demo2 26 TEXT,"
                 + "status27 INT,"*/
 
-                Cursor cursor7 = database2.getUnsyncedUpdateLogistic();
+                /*Cursor cursor7 = database2.getUnsyncedUpdateLogistic();
                 if (cursor7.moveToFirst()) {
                     do {
                         //update unsynced value in tbl_update_auto_insertassign_pickup
                         updateUnsyncedData(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(3),cursor7.getString(6),cursor7.getString(10),cursor7.getString(11),cursor7.getString(18),cursor7.getString(19),cursor7.getString(21));
 
                     } while (cursor7.moveToNext());
-                }
+                }*/
 
                 /* + "id INTEGER PRIMARY KEY AUTOINCREMENT, 0"
                 + "sql_primary_id TEXT, 1"
@@ -564,7 +564,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
 //    updateUnsyncedData(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(3),cursor7.getString(6),cursor7.getString(10),cursor7.getString(11),cursor7.getString(18),cursor7.getString(19),cursor7.getString(21))
-    private void updateUnsyncedData(final int id, final String merchantCode, final String pickMerName, final String executiveName, final String scanCount, final String pickedQty ,final String updatedBy, final String updatedAt, final String pickedStatus) {
+    /*private void updateUnsyncedData(final int id, final String merchantCode, final String pickMerName, final String executiveName, final String scanCount, final String pickedQty ,final String updatedBy, final String updatedAt, final String pickedStatus) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, AutoScanningScreen.UPDATE_SCAN_AND_PICKED,
                 new Response.Listener<String>() {
                     @Override
@@ -574,7 +574,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                             if (!obj.getBoolean("error")) {
 
                                 //updating the status in sqlite
-                                database2.updateSyncedDataStatus(id, NAME_SYNCED_WITH_SERVER);
+//                                database2.updateSyncedDataStatus(id, NAME_SYNCED_WITH_SERVER);
 
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
@@ -609,7 +609,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
-
+*/
     private void insertLog(final int id,final String sql_primary_id, final String comments, final String status_id, final String status_name, final String username) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MyPickupList_Executive.INSERT_ACTION_LOG,
                 new Response.Listener<String>() {
