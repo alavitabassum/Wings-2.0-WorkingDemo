@@ -12,7 +12,7 @@
 
     <item android:title="Assign Fulfillment" android:icon="@drawable/attention" android:id="@+id/nav_fulfill"/>
     <!--<item android:title="Assign Robishop" android:icon="@drawable/attention" android:id="@+id/nav_robishop"/>-->
-    <item android:title="Assign Ajker Deal Direct Delivery" android:icon="@drawable/attention" android:id="@+id/nav_adeal_direct"/>
+    <!--<item android:title="Assign Ajker Deal Direct Delivery" android:icon="@drawable/attention" android:id="@+id/nav_adeal_direct"/>-->
     <item android:title="Pickups Today" android:icon="@drawable/box" android:id="@+id/nav_pickDue"/>
     <!--<item android:title="Report" android:icon="@drawable/attention" android:id="@+id/nav_report"/>-->
 

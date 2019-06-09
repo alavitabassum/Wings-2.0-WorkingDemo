@@ -374,7 +374,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, "0");
+//                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, "0");
                                 final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 
                                 // scan_count1.setText("Scan count: " + strI);
@@ -433,7 +433,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0");
+//                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0");
                                 final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreenAjkerDeal.this);
@@ -488,7 +488,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0");
+//                        db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0");
                         final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 //                        scan_count1.setText("Scan count: " +strI);
                         AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreenAjkerDeal.this);

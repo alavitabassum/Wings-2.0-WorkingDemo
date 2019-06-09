@@ -11,8 +11,10 @@ import android.widget.TextView;
 
 public class RecyclerAdapterSupervisor extends RecyclerView.Adapter<RecyclerAdapterSupervisor.ViewHolder> {
 
-    private String[] titles = { "Assign(Logistic)","Assign(Fulfillment)","AjkerDeal(Direct Delivery)","Pickups Today"};
-    private int[] images = { R.drawable.assignpickup,R.drawable.pickupstoday,R.drawable.ajkerdeal , R.drawable.pickupstoday};
+//    private String[] titles = { "Assign(Logistic)","Assign(Fulfillment)","AjkerDeal(Direct Delivery)","Pickups Today"};
+    private String[] titles = { "Assign(Logistic)","Assign(Fulfillment)","Pickups Today"};
+//    private int[] images = { R.drawable.assignpickup,R.drawable.pickupstoday,R.drawable.ajkerdeal , R.drawable.pickupstoday};
+    private int[] images = { R.drawable.assignpickup,R.drawable.pickupstoday,R.drawable.pickupstoday};
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -36,17 +38,10 @@ public class RecyclerAdapterSupervisor extends RecyclerView.Adapter<RecyclerAdap
                         Intent intent_assign_fulfillment = new Intent(v.getContext(), FulfillmentAssignPickup_Supervisor.class);
                         v.getContext().startActivity(intent_assign_fulfillment);
                     }
-
                    /* else if (position == 2) {
-                       *//* Intent intent_assign_robishop = new Intent(v.getContext(), Robishop_Assign_pickup_manager.class);
-                        v.getContext().startActivity(intent_assign_robishop);*//*
-                    }*/
-
-                    else if (position == 2) {
                         Intent intent_assign_ad_direct_delivery = new Intent(v.getContext(), AjkerDealOther_Assign_Pickup_supervisor.class);
                         v.getContext().startActivity(intent_assign_ad_direct_delivery);
-                    }
-
+                    }*/
                     else {
                         Intent intent = new Intent(v.getContext(), PickupsToday_Supervisor.class);
                         v.getContext().startActivity(intent);

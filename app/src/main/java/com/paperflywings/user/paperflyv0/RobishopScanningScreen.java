@@ -86,7 +86,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
-    public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_fulfillment_barcode.php";
+    public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_barcode_fulfillment.php";
     public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment11.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -187,6 +187,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
             Intent intentID = getIntent();
             final String merchant_id = intentID.getStringExtra(MERCHANT_ID);
             final String sub_merchant_name = intentID.getStringExtra(SUB_MERCHANT_NAME);
+            final String sql_primary_id = intentID.getStringExtra(SQL_PRIMARY_ID);
 
             final String order_id = intentID.getStringExtra(PRODUCT_ID);
             final String picked_qty = intentID.getStringExtra(PICKED_QTY);
@@ -212,8 +213,8 @@ public class RobishopScanningScreen extends AppCompatActivity {
                 Toast.makeText(RobishopScanningScreen.this, "garbage", Toast.LENGTH_LONG).show();
 
             } else {
-
-                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, picked_qty);
+                // barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, picked_qty, merchant_code, sql_primary_id);
+                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, picked_qty,sql_primary_id);
 
             }
 //            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
@@ -355,7 +356,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
 
 
     //API HIT
-    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty) {
+    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty, final String sql_primary_id) {
 
         // get created date for match
         Intent intentID = getIntent();
@@ -373,7 +374,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, "0");
+                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, "0", sql_primary_id);
                                 final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
@@ -438,7 +439,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0");
+                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0",sql_primary_id);
                                 final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
@@ -499,7 +500,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0");
+                        db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0",sql_primary_id);
                         final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
 //                        scan_count1.setText("Scan count: " +strI);
 
@@ -564,6 +565,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                 params.put("order_id", order_id);
                 params.put("picked_qty", picked_qty);
                 params.put("merchant_id", merchant_id);
+                params.put("sql_primary_id", sql_primary_id);
 
                 return params;
             }

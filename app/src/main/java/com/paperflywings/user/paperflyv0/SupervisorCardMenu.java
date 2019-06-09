@@ -50,15 +50,10 @@ public class SupervisorCardMenu extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supervisor_card_menu);
-/*
-        this.mHandler = new Handler();
-
-        this.mHandler.postDelayed(m_Runnable,5000);*/
 
         database = new Database(getApplicationContext());
         database.getWritableDatabase();
         assignManager_modelList = new ArrayList<>();
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_s);
         setSupportActionBar(toolbar);
@@ -66,7 +61,7 @@ public class SupervisorCardMenu extends AppCompatActivity
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-     /*   getallmerchant();
+        /*   getallmerchant();
         loadmerchantlist(username);*/
 
 
@@ -106,11 +101,11 @@ public class SupervisorCardMenu extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-//            super.onBackPressed();
+            // super.onBackPressed();
             Intent homeIntentSuper = new Intent(SupervisorCardMenu.this,
                     SupervisorCardMenu.class);
             startActivity(homeIntentSuper);
-//            finish();
+            // finish();
         }
     }
 
@@ -206,24 +201,12 @@ public class SupervisorCardMenu extends AppCompatActivity
             Intent assignFulfillmentIntent = new Intent(SupervisorCardMenu.this,
                     FulfillmentAssignPickup_Supervisor.class);
             startActivity(assignFulfillmentIntent);
-//        }  else if (id == R.id.nav_robishop) {
-            /*Intent robishopIntent = new Intent(SupervisorCardMenu.this,
-                    Robishop_Assign_pickup_manager.class);
-            startActivity(robishopIntent);*/
-        }  else if (id == R.id.nav_adeal_direct) {
+        }
+        /*else if (id == R.id.nav_adeal_direct) {
             Intent adealdirectIntent = new Intent(SupervisorCardMenu.this,
                     AjkerDealOther_Assign_Pickup_supervisor.class);
             startActivity(adealdirectIntent);
-//        } else if (id == R.id.nav_report) {
-           /* Intent reportIntent = new Intent(SupervisorCardMenu.this,
-                    PendingSummary_Manager.class);
-            startActivity(reportIntent);*/
-        }
-      /*  else if (id == R.id.nav_pickCompleted) {
-            Intent historyIntent = new Intent(ManagerCardMenu.this,
-                    PickupHistory_Manager.class);
-            startActivity(historyIntent);
-        } */
+        }*/
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

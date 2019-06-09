@@ -737,24 +737,12 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
             Intent assignFulfillmentIntent = new Intent(FulfillmentAssignPickup_Supervisor.this,
                     FulfillmentAssignPickup_Supervisor.class);
             startActivity(assignFulfillmentIntent);
-//        }  else if (id == R.id.nav_robishop) {
-            /*Intent robishopIntent = new Intent(FulfillmentAssignPickup_Supervisor.this,
-                    Robishop_Assign_pickup_manager.class);
-            startActivity(robishopIntent);*/
-        }  else if (id == R.id.nav_adeal_direct) {
+        }
+       /* else if (id == R.id.nav_adeal_direct) {
             Intent adealdirectIntent = new Intent(FulfillmentAssignPickup_Supervisor.this,
                     AjkerDealOther_Assign_Pickup_supervisor.class);
             startActivity(adealdirectIntent);
-//        } else if (id == R.id.nav_report) {
-            /*Intent reportIntent = new Intent(FulfillmentAssignPickup_Supervisor.this,
-                    PendingSummary_Manager.class);
-            startActivity(reportIntent);*/
-        }
-        /*  else if (id == R.id.nav_pickCompleted) {
-            Intent historyIntent = new Intent(AssignPickup_Manager.this,
-                    PickupHistory_Manager.class);
-            startActivity(historyIntent);
-        } */
+        }*/
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

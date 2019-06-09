@@ -15,7 +15,7 @@ public class Database extends SQLiteOpenHelper {
 
     public Database(Context context)
         {
-            super(context, "MerchantDatabase.db", null, 1);
+            super(context, "MerchantDatabase.db", null, 7);
         }
 
     @Override

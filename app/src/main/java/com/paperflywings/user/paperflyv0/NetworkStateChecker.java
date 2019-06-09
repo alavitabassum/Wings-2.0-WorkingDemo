@@ -118,8 +118,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 Cursor cursor3 = database2.getUnsyncedFulfillmentBarcodeData();
                 if (cursor3.moveToFirst()) {
                     do {
-
-                        saveFulfillmentBarcode(cursor3.getInt(0),cursor3.getString(1),cursor3.getString(2),cursor3.getString(3),Boolean.valueOf(cursor3.getString(4)), cursor3.getString(6), cursor3.getString(7), cursor3.getString(8), cursor3.getString(9), cursor3.getString(10));
+                        saveFulfillmentBarcode(cursor3.getInt(0),cursor3.getString(1),cursor3.getString(2),cursor3.getString(3),Boolean.valueOf(cursor3.getString(4)), cursor3.getString(6), cursor3.getString(7), cursor3.getString(8), cursor3.getString(9), cursor3.getString(10), cursor3.getString(11));
                     } while (cursor3.moveToNext());
                 }
 
@@ -520,7 +519,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
     //Fulfillment Barcode save to server
-    private void saveFulfillmentBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty, final String merchant_code) {
+    private void saveFulfillmentBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty, final String merchant_code, final String sql_primary_id) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, FulfillmentScanningScreen.BARCODE_INSERT_AND_UPDATE_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -546,7 +545,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("merchant_code", merchant_id);
+
+                params.put("merchant_code", merchant_id); // holds the unique product id
                 params.put("sub_merchant_name", sub_merchant_name);
                 params.put("barcodeNumber", lastText);
                 params.put("state", String.valueOf(state));
@@ -554,7 +554,8 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("updated_at", updated_at);
                 params.put("order_id", order_id);
                 params.put("picked_qty", picked_qty);
-                params.put("merchant_id", merchant_code);
+                params.put("merchant_id", merchant_code); // Holds the merchant code
+                params.put("sql_primary_id", sql_primary_id); // Holds the primary key of insertassign
 
                 return params;
             }

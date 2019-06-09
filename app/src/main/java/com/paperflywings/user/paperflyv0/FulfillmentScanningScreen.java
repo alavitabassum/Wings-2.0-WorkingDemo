@@ -85,9 +85,11 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
     private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
-    public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_fulfillment_barcode.php";
+    // TODO add sql_primary_id to fulfillment barcode factory
+    public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_barcode_fulfillment.php";
     public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updateTableForFulfillment.php";
-    public static final String UPDATE_SCAN_AND_PICKED_SHOP= "http://paperflybd.com/updateTableFulShoparu.php";
+
+    public static final String UPDATE_SCAN_AND_PICKED_SHOP= "http://paperflybd.com/updateScanCountFulfillment.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -210,16 +212,11 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                 Toast.makeText(FulfillmentScanningScreen.this, "garbage", Toast.LENGTH_LONG).show();
 
             } else {
-
-                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, picked_qty, merchant_code);
+                // TODO: sql_primary_id add
+                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, picked_qty, merchant_code, sql_primary_id);
 
             }
-//            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
 
-//            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
-//            scan_count1.setText("Scan count: " +strI);
-
-//          builder.setTitle(strI);
             db.close();
 
             beepManager.playBeepSoundAndVibrate();
@@ -242,7 +239,6 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                     // current date and time
                     final String currentDateTimeString1 = DateFormat.getDateTimeInstance().format(new Date());
                     final String updated_by1 = user1;
-//                    final String updated_at1 = currentDateTimeString1;
 
                     Date c = Calendar.getInstance().getTime();
                     System.out.println("Current time => " + c);
@@ -258,7 +254,11 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                     try{
                         final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
                         final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
-                        updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date, pick_status, merchant_code);
+                        // TODO: sql_primary_id add
+                        updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date, pick_status, merchant_code, sql_primary_id);
+//                        updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date, pick_status, sql_primary_id);
+
+
                     } catch (Exception e) {
                         Toast.makeText(FulfillmentScanningScreen.this, "ScanningScreen" +e, Toast.LENGTH_LONG).show();
                     }
@@ -307,7 +307,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
 
     //API HIT
-    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty, final String merchant_code) {
+    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty, final String merchant_code, final String sql_primary_id) {
 
         // get created date for match
         Intent intentID = getIntent();
@@ -325,7 +325,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, merchant_code);
+                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, merchant_code,sql_primary_id);
                                 final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
@@ -405,7 +405,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER,order_id, picked_qty, merchant_code);
+                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER,order_id, picked_qty, merchant_code,sql_primary_id);
                                 final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
@@ -481,7 +481,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.add_fulfillment(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty, merchant_code);
+                        db.add_fulfillment(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty, merchant_code,sql_primary_id);
                         final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id,sub_merchant_name,match_date, order_id));
 //                        scan_count1.setText("Scan count: " +strI);
 
@@ -552,7 +552,7 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("merchant_code", merchant_id);
+                params.put("merchant_code", merchant_id); // holds the unique product id
                 params.put("sub_merchant_name", sub_merchant_name);
                 params.put("barcodeNumber", lastText);
                 params.put("state", String.valueOf(state));
@@ -560,7 +560,8 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                 params.put("updated_at", updated_at);
                 params.put("order_id", order_id);
                 params.put("picked_qty", picked_qty);
-                params.put("merchant_id", merchant_code);
+                params.put("merchant_id", merchant_code); // Holds the merchant code
+                params.put("sql_primary_id", sql_primary_id); // Holds the primary key of insertassign
 
                 return params;
             }
@@ -571,7 +572,6 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
 
     // API for updating scan count, picked_product_count, updated by and updated at
     public void updatePickedQty(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty) {
-
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, BARCODE_INSERT_AND_UPDATE_URL,
                 new Response.Listener<String>() {
@@ -594,13 +594,12 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
+                        // db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date, NAME_NOT_SYNCED_WITH_SERVER);
                         db.updatePickedQty(picked_qty, lastText, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
@@ -625,12 +624,10 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
         } catch (Exception e) {
             Toast.makeText(FulfillmentScanningScreen.this, "Request Queue" +e, Toast.LENGTH_LONG).show();
         }
-
     }
 
-
-    // API for updating scan count, picked_product_count, updated by and updated at
-    public void updateScanCount(final String strI,final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date, final String pick_status,final String merchant_code) {
+//     API for updating scan count, picked_product_count, updated by and updated at
+    public void updateScanCount(final String strI,final String picked_product_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date, final String pick_status,final String merchant_code, final String sql_primary_id) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED_SHOP,
                 new Response.Listener<String>() {
@@ -642,11 +639,11 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
-                                db.update_row_for_fulfillment_shop(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,pick_status, NAME_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment_shop(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,pick_status,sql_primary_id, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_row_for_fulfillment_shop(strI, picked_product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date,pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_row_for_fulfillment_shop(strI, picked_product_qty, updated_by, updated_at, merchant_id,sub_merchant_name, match_date,pick_status,sql_primary_id, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -657,22 +654,23 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_row_for_fulfillment_shop(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,pick_status, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_row_for_fulfillment_shop(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,pick_status,sql_primary_id, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("merchant_code", merchant_id);
+                params.put("merchant_code", merchant_id); // holds the product id which is unique
                 params.put("p_m_name", sub_merchant_name);
                 params.put("created_at", match_date);
                 params.put("scan_count", strI);
                 params.put("picked_qty", picked_product_qty);
-                params.put("api_order_id", merchant_code);
+                params.put("api_order_id", merchant_code); // holds the merchant code
                 params.put("pick_from_merchant_status", pick_status);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
+                params.put("sql_primary_id", sql_primary_id); // holds the proiamry key of insertassign table
 
                 return params;
             }
@@ -684,5 +682,59 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
         }
 
     }
+    // API for updating scan count, picked_product_count, updated by and updated at and comments, pause ,delete
+    /*public void updateScanCount(final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date, final String pick_status, final String merchant_code, final String sql_primary_id) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_SCAN_AND_PICKED,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+//                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
+                                db.update_row(strI, picked_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,pick_status,sql_primary_id, NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.update_row(strI, picked_qty,updated_by, updated_at, merchant_id,sub_merchant_name, match_date,pick_status,sql_primary_id, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.update_row(strI, picked_qty ,updated_by, updated_at, merchant_id, sub_merchant_name, match_date, pick_status,sql_primary_id, NAME_NOT_SYNCED_WITH_SERVER);
 
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("merchant_code", merchant_id);
+                params.put("p_m_name", sub_merchant_name);
+                params.put("scan_count", strI);
+                params.put("picked_qty", picked_qty);
+                // params.put("api_order_id", "0");
+                params.put("pick_from_merchant_status", pick_status);
+                params.put("updated_by", updated_by);
+                params.put("updated_at", updated_at);
+                params.put("sql_primary_id", sql_primary_id);
+                params.put("created_at", match_date);
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(FulfillmentScanningScreen.this, "Request Queue" +e, Toast.LENGTH_SHORT).show();
+        }
+    }*/
 }
