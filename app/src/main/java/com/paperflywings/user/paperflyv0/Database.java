@@ -12,10 +12,28 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Database extends SQLiteOpenHelper {
+    private static final int DATABASE_VERSION = 7;
+    private static final String DATABASE_NAME = "MerchantDatabase.db";
+    private static final String TABLE_NAME = "tableEmp";
+    private static final String TABLE_NAME_1 = "tableEmp1";
+    private static final String TABLE_NAME_2 = "tableEmp2";
+    private static final String TABLE_NAME_3 = "tableEmp3";
+    private static final String TABLE_NAME_4 = "tableEmp4";
+    private static final String TABLE_NAME_5 = "tableEmp5";
+    private static final String TABLE_NAME_6 = "tableEmp6";
+    private static final String TABLE_NAME_7 = "tableEmp7";
+    private static final String TABLE_NAME_8 = "tableEmp8";
+    private static final String TABLE_NAME_9 = "tableEmp9";
+    private static final String TABLE_NAME_10 = "tableEmp10";
+    private static final String TABLE_NAME_11 = "tableEmp11";
+    private static final String TABLE_NAME_12 = "tableEmp12";
+    private static final String TABLE_NAME_13 = "tableEmp13";
+    private static final String TABLE_NAME_14 = "tableEmp14";
+    private static final String TABLE_NAME_15 = "tableEmp15";
 
     public Database(Context context)
         {
-            super(context, "MerchantDatabase.db", null, 7);
+            super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
     @Override
@@ -58,7 +76,23 @@ public class Database extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_1);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_4);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_5);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_6);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_7);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_8);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_9);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_10);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_11);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_12);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_13);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_14);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_15);
+        this.onCreate(sqLiteDatabase);
     }
 
     //Current Date

@@ -1,14 +1,8 @@
 package com.paperflywings.user.paperflyv0;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,7 +28,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     private OnItemClickListener mListner;
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
+//    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
  /*   final CharSequence[] status_options = {"Cancel","Pending"};
     int selection = 1;*/
@@ -43,6 +37,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
         void onItemClick(View view, int position);
         void onItemClick_view (View view2, int position2);
         void onItemClick_view_orderIDs (View view3, int position3);
+        void onItemClick_call (View view4, int position4);
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {
@@ -103,17 +98,14 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
             item_phnNum.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    Intent callIntent =new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel: " +list.get(i).getPhone_no()));
-                    if (ActivityCompat.checkSelfPermission(v.getContext(),
-                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions((Activity) v.getContext(),
-                                new String[]{Manifest.permission.CALL_PHONE},
-                                MY_PERMISSIONS_REQUEST_CALL_PHONE);
-                        return;
+                public void onClick(View view4) {
+                    if(mListner!=null){
+                        int position4 = getAdapterPosition();
+                        if(position4!=RecyclerView.NO_POSITION){
+                            mListner.onItemClick_call(view4, position4);
+
+                        }
                     }
-                    v.getContext().startActivity(callIntent);
                 }
             });
 

@@ -1,5 +1,7 @@
 package com.paperflywings.user.paperflyv0;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -75,6 +78,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     public static final String SQL_PRIMARY_ID = "Sql Primary Id";
     private static final String URL_DATA = "";
     private static final int REQUEST_CAMERA = 1;
+    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
     private ProgressDialog progress;
     private pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
     RecyclerView recyclerView_pul;
@@ -738,7 +742,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                         public void onClick(View v) {
 
                                             if (mOnholdSpinner.getSelectedItem().toString().equalsIgnoreCase("Please select an option...")) {
-                                                error_msg.setText("Please select one return reason");
+                                                error_msg.setText("Please select one Onhold reason");
                                             } else {
                                                 // pause
                                                 final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
@@ -910,6 +914,20 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             final AlertDialog dialog2 = spinnerBuilder.create();
             dialog2.show();
         }
+    }
+
+    @Override
+    public void onItemClick_call(View view4, int position4) {
+        Intent callIntent =new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel: " +list.get(position4).getPhone_no()));
+        if (ActivityCompat.checkSelfPermission(view4.getContext(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) view4.getContext(),
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            return;
+        }
+        view4.getContext().startActivity(callIntent);
     }
 
     // API for updating scan count, picked_product_count, updated by and updated at and comments, pause ,delete

@@ -160,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                             db.deletecom_fullfillment_product(sqLiteDatabase);
 
                             startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
-                        } else if(user_role_id.contains("7")) {
+                        } else if(user_role_id.contains("6")) {
 
                             Date c = Calendar.getInstance().getTime();
                             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
