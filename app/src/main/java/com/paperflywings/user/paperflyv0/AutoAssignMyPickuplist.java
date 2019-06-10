@@ -475,8 +475,8 @@ public class AutoAssignMyPickuplist extends AppCompatActivity
 
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.deleteAssignedList(sqLiteDatabase);
-                            db.barcode_factory(sqLiteDatabase,match_date);
-                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
+//                            db.barcode_factory(sqLiteDatabase,match_date);
+//                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                             //Getting editor

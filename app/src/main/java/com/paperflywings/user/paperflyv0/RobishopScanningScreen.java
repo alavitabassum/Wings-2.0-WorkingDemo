@@ -291,8 +291,8 @@ public class RobishopScanningScreen extends AppCompatActivity {
 
 
                                 try {
-                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
-                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
+                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
+                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id,order_id));
                                     final String pick_status = "processing";
                                     updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, order_id, "updated", match_date, pick_status, "0",sql_primary_id);
 
@@ -375,7 +375,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
                                 db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, "0", sql_primary_id);
-                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
+                                final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
                                 Toast toast = Toast.makeText(RobishopScanningScreen.this,
@@ -440,7 +440,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0",sql_primary_id);
-                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
+                                final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id, merchant_id, sub_merchant_name, order_id));
 //                                scan_count1.setText("Scan count: " + strI);
 //                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
 
@@ -501,7 +501,7 @@ public class RobishopScanningScreen extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0",sql_primary_id);
-                        final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
+                        final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id, merchant_id, sub_merchant_name, order_id));
 //                        scan_count1.setText("Scan count: " +strI);
 
                         AlertDialog.Builder builder = new AlertDialog.Builder(RobishopScanningScreen.this);

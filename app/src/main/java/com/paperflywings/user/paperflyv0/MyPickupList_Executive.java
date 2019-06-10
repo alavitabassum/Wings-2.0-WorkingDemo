@@ -87,6 +87,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     android.widget.RelativeLayout vwParentRow;
     //    private String FULFILLMENT_PICKUP_URL = "http://paperflybd.com/tbl_fulfillment_pickuplist.php";
     public static final String ASSIGNED_LIST_FOR_EXECUTIVE = "http://paperflybd.com/showexecutiveassignTest.php";
+    public static final String UPDATE_SCAN_AND_PICKED_SHOP= "http://paperflybd.com/updateScanCountFulfillment.php";
 
     // this API is for updating the insertassign table from Officer's list of assignment
     public static final String UPDATE_ACTION = "http://paperflybd.com/updateTableForFulfillment11.php";
@@ -488,8 +489,8 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.deleteAssignedList(sqLiteDatabase);
-                            db.barcode_factory(sqLiteDatabase,match_date);
-                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
+//                            db.barcode_factory(sqLiteDatabase,match_date);
+//                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                             //Getting editor
@@ -631,6 +632,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final String sub_merchant_name = clickedItem.getP_m_name();
         final String sql_primary_id = clickedItem.getSql_primary_id();
         final String match_date = clickedItem.getCreated_at();
+        final String order_id = clickedItem.getMerchant_id();
 //        final int id = clickedItem.getKey_id();
 
         final String onhold = "2";
@@ -643,10 +645,6 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         final View mView = getLayoutInflater().inflate(R.layout.insert_adeal_comment, null);
         final EditText et1 = mView.findViewById(R.id.comments);
         final TextView tv1 = mView.findViewById(R.id.textView3);
-
-        /* final View mViewOnhold = getLayoutInflater().inflate(R.layout.on_hold_comment_layout_for_executive, null);
-        final Button btn = mViewOnhold.findViewById(R.id.onhold_button);
-        final TextView tvValidation = mViewOnhold.findViewById(R.id.textView3);*/
 
             final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
 
@@ -685,12 +683,20 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                             if (et1.getText().toString().trim().isEmpty()) {
                                                 tv1.setText("Field can't be empty");
                                             } else {
-                                                // complete
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
 
                                                 String comments = et1.getText().toString();
-                                                //if order is cancelled this will save the status 2
-                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "done", sql_primary_id);
+                                                if(clickedItem.getComplete_status().equals("p")){
+                                                    // complete
+                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
+                                                    //if order is cancelled this will save the status 2
+                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "done", sql_primary_id);
+
+                                                } else if(clickedItem.getComplete_status().equals("f")){
+                                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
+                                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
+                                                    updateActionStatus(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "done",sql_primary_id);
+
+                                                }
                                                 // updateAjkerDeal(merchant_order_ref,pause,comments);
                                                 pickup_action_log(sql_primary_id, comments, complete, "done", username);
 //                                                getData(username);
@@ -744,12 +750,23 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                             if (mOnholdSpinner.getSelectedItem().toString().equalsIgnoreCase("Please select an option...")) {
                                                 error_msg.setText("Please select one Onhold reason");
                                             } else {
-                                                // pause
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
 
                                                 String comments = mOnholdSpinner.getSelectedItem().toString();
-                                                //if order is cancelled this will save the status 2
-                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "onhold",sql_primary_id);
+                                                if(clickedItem.getComplete_status().equals("p")){
+                                                    // pause
+                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
+
+                                                    //if order is cancelled this will save the status 2
+                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "onhold",sql_primary_id);
+
+                                                } else if(clickedItem.getComplete_status().equals("f")){
+                                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
+                                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
+                                                    updateActionStatus(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "onhold",sql_primary_id);
+
+                                                }
+
+
                                                 pickup_action_log(sql_primary_id, comments, onhold, "onhold", username);
 //                                              updateAjkerDeal(merchant_order_ref,pause,comments);
 
@@ -801,11 +818,22 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                                 error_msg6.setText("Please select one partial reason");
                                             } else {
 
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
+
                                                 String comments = mOnholdSpinner6.getSelectedItem().toString();
-                                                //if order is cancelled this will save the status 2
-                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
+
+
+                                                if(clickedItem.getComplete_status().equals("p")){
+                                                    // pause
+                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
+                                                    //if order is cancelled this will save the status 2
+                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+                                                } else if(clickedItem.getComplete_status().equals("f")){
+                                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
+                                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
+                                                    updateActionStatus(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
+
+                                                }
                                                 pickup_action_log(sql_primary_id, comments, partial, "partial", username);
                                                 startActivity(picklistintent);
 //                                                getData(username);
@@ -854,12 +882,23 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                                             if (mOnholdSpinner2.getSelectedItem().toString().equalsIgnoreCase("Please select an option...")) {
                                                 error_msg2.setText("Please select one cancel reason");
                                             } else {
-                                                // delete
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
+
                                                 String comments = mOnholdSpinner2.getSelectedItem().toString();
-                                                //if order is cancelled this will save the status 2
-                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "cancel",sql_primary_id);
-                                                // updateAjkerDeal(merchant_order_ref,pause, comments);
+
+                                                if(clickedItem.getComplete_status().equals("p")){
+                                                    // delete
+                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
+                                                    //if order is cancelled this will save the status 2
+                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "cancel",sql_primary_id);
+                                                    // updateAjkerDeal(merchant_order_ref,pause, comments);
+                                                } else if(clickedItem.getComplete_status().equals("f")){
+                                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
+                                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
+                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "cancel",sql_primary_id);
+
+                                                }
+
+
                                                 pickup_action_log(sql_primary_id, comments, cancel, "cancel", username);
                                                 startActivity(picklistintent);
                                                 dialog4.dismiss();
@@ -990,6 +1029,7 @@ try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
         }
 
     }
+
 
     public void pickup_action_log (final String sql_primary_id, final String comments, final String status_id, final String status_name, final String username){
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());

@@ -59,6 +59,7 @@ import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.MERCHANT_
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.MERCHANT_NAME;
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.PICKED_QTY;
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.PRODUCT_NAME;
+import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.SQL_PRIMARY_ID;
 import static com.paperflywings.user.paperflyv0.MyPickupList_Executive.SUB_MERCHANT_NAME;
 
 public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
@@ -233,6 +234,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
 
         final String order_id = intentID.getStringExtra(APIORDERID);
         final String picked_qty = intentID.getStringExtra(PICKED_QTY);
+        final String sql_primary_id = intentID.getStringExtra(SQL_PRIMARY_ID);
 
         final String match_date = intentID.getStringExtra(CREATED_AT);
         final CharSequence[] values = {"Pick Complete"};
@@ -292,8 +294,8 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                                 //  db.update_state(state1, merchant_id, sub_merchant_name, updated_at1);
                                 // TODO: get the total product quantity
                                 try {
-                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
-                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(match_date, order_id));
+                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id, merchant_id, sub_merchant_name, order_id));
+                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id,order_id));
                                     final String pick_status = "1001";
                                     final String comments = et1.getText().toString();
                                     updateScanCount(strI, picked_product_qty, updated_by1, updated_at1, merchant_id, sub_merchant_name, order_id,comments, match_date, pick_status, "0");
@@ -363,6 +365,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
         final String match_date = intentID.getStringExtra(CREATED_AT);
         final String product_name = intentID.getStringExtra(PRODUCT_NAME);
         final String assigned_qty = intentID.getStringExtra(ASSIGNED_QTY);
+        final String sql_primary_id = intentID.getStringExtra(SQL_PRIMARY_ID);
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, BARCODE_INSERT_AND_UPDATE_URL,
                 new Response.Listener<String>() {
@@ -375,7 +378,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, "0");
-                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
+                                final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id, merchant_id, sub_merchant_name, order_id));
 
                                 // scan_count1.setText("Scan count: " + strI);
                                 // Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
@@ -434,7 +437,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
 //                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0");
-                                final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
+                                final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id, merchant_id, sub_merchant_name, order_id));
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreenAjkerDeal.this);
                                 View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
@@ -489,7 +492,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 //                        db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty,"0");
-                        final String strI = String.valueOf(db.getRowsCountForFulfillment(merchant_id, sub_merchant_name, match_date, order_id));
+                        final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id, merchant_id, sub_merchant_name, order_id));
 //                        scan_count1.setText("Scan count: " +strI);
                         AlertDialog.Builder builder = new AlertDialog.Builder(FulfillmentScanningScreenAjkerDeal.this);
 

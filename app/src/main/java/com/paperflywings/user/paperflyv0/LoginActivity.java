@@ -83,13 +83,13 @@ public class LoginActivity extends AppCompatActivity {
         //If we will get true
         if(loggedIn ){
             //We will start the Welcome Activity
-            if(user_role_id.contains("12")) {
+            if(user_role_id.equals("12")) {
                 Intent intent = new Intent(LoginActivity.this, ManagerCardMenu.class);
                 startActivity(intent);
-            } else if(user_role_id.contains("26")){
+            } else if(user_role_id.equals("26")){
                 Intent intent = new Intent(LoginActivity.this, SupervisorCardMenu.class);
                 startActivity(intent);
-            } else if(user_role_id.contains("7")){
+            } else if(user_role_id.equals("6")){
                 Intent intent = new Intent(LoginActivity.this, ExecutiveCardMenu.class);
                 startActivity(intent);
             }
@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
                         //Saving values to editor
                         editor2.commit();
 
-                        if (user_role_id.contains("12")) {
+                        if (user_role_id.equals("12")) {
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.clearPTMList(sqLiteDatabase);
                             db.deletemerchantList(sqLiteDatabase);
@@ -160,7 +160,8 @@ public class LoginActivity extends AppCompatActivity {
                             db.deletecom_fullfillment_product(sqLiteDatabase);
 
                             startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
-                        } else if(user_role_id.contains("6")) {
+                            Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
+                        } else if(user_role_id.equals("6")) {
 
                             Date c = Calendar.getInstance().getTime();
                             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -168,12 +169,13 @@ public class LoginActivity extends AppCompatActivity {
 
                             SQLiteDatabase sqLiteDatabase = barcodedb.getWritableDatabase();
                             barcodedb.deleteAssignedList(sqLiteDatabase);
-                            barcodedb.barcode_factory(sqLiteDatabase,match_date);
-                            barcodedb.barcode_factory_fulfillment(sqLiteDatabase,match_date);
+                            //barcodedb.barcode_factory(sqLiteDatabase,match_date);
+                            //barcodedb.barcode_factory_fulfillment(sqLiteDatabase,match_date);
 
                             startActivity(new Intent(getApplicationContext(),ExecutiveCardMenu.class));
+                            Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                         }
-                        else if(user_role_id.contains("26")) {
+                        else if(user_role_id.equals("26")) {
 
                             Date c = Calendar.getInstance().getTime();
                             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -195,12 +197,15 @@ public class LoginActivity extends AppCompatActivity {
                             db.deletecom_fullfillment_product(sqLiteDatabase);
 
                             startActivity(new Intent(getApplicationContext(),SupervisorCardMenu.class));
+                            Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Sorry, You are not registered as a pickup member in paperfly", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
+
                     //Creating a shared preference
                     SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 

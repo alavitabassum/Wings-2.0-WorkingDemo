@@ -218,11 +218,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public Cursor get_mypickups_today(SQLiteDatabase db, String user)
     {
         String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD, PRODUCT_NAME, APIORDERID, DEMO, PICKED_STATUS, RECEIVED_STATUS, SQL_PRIMARY_ID};
-        String sortOrder = CREATED_AT + " DESC";
-        String whereClause = EXECUTIVE_NAME + " = ? AND " + RECEIVED_STATUS+ "=?";
+        String sortOrder = CREATED_AT + " ASC";
+        String whereClause = EXECUTIVE_NAME + "=?";
         String[] whereArgs = new String[] {
-                user,
-                "0"
+                user
         };
 
         return (db.query(TABLE_NAME_1,columns,whereClause,whereArgs,null,null,sortOrder));
@@ -323,8 +322,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public int getRowsCountForFulfillment(String merchantId, String sub_merchant_name, String date, String order_id) {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME_2 + " WHERE " + MERCHANT_ID + "='"+ merchantId +"' AND " + SUB_MERCHANT_NAME + " = '"+ sub_merchant_name +"'AND " + UPDATED_AT + " = '"+ date +"'AND " + ORDER_ID + " = '"+ order_id +"'";
+    public int getRowsCountForFulfillment(String sql_primary_id, String merchantId, String sub_merchant_name,String order_id) {
+        String countQuery = "SELECT  * FROM " + TABLE_NAME_2 + " WHERE " + MERCHANT_ID + "='"+ merchantId +"' AND " + SUB_MERCHANT_NAME + " = '"+ sub_merchant_name +"'AND " + SQL_PRIMARY_ID + " = '"+ sql_primary_id +"'AND " + ORDER_ID + " = '"+ order_id +"'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
@@ -333,11 +332,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public int getPickedSumByOrderId(String match_date, String order_id) {
+    public int getPickedSumByOrderId(String sql_primary_id,String order_id) {
 
         int sum=0;
         db = this.getReadableDatabase();
-        String sumQuery=String.format("SELECT SUM(" + PICKED_QTY + ") as Total FROM " + TABLE_NAME_2 + " WHERE " + UPDATED_AT + " = '"+ match_date +"'AND " + ORDER_ID + " = '"+ order_id +"'");
+        String sumQuery=String.format("SELECT SUM(" + PICKED_QTY + ") as Total FROM " + TABLE_NAME_2 + " WHERE " + SQL_PRIMARY_ID + " = '"+ sql_primary_id +"'AND " + ORDER_ID + " = '"+ order_id +"'");
         Cursor cursor= db.rawQuery(sumQuery,null);
         if(cursor.moveToFirst())
             sum= cursor.getInt(cursor.getColumnIndex("Total"));
@@ -505,7 +504,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void update_row_for_fulfillment_shop(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, String pick_status, String sql_primary_id, int status)
+    public void update_row_for_fulfillment_shop(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date,String sql_primary_id, int status)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -513,7 +512,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(PICKED_QTY, picked_qty);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
-        values.put(PICKED_STATUS, pick_status);
         values.put(STATUS, status);
 
         String whereClause = MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + SQL_PRIMARY_ID  + " = ?  AND " + CREATED_AT  + " = ?";
@@ -554,14 +552,14 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "received_from_HQ_status TEXT, "*/
 
     // updateLocalDatabase
-    public void update_row(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, String pick_status,String sql_primary_id, int status) {
+    public void update_row(String scan_count, String picked_qty, String updated_by, String updated_at, String merchantId, String sub_merchant_name, String match_date, String sql_primary_id, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(SCAN_COUNT, scan_count);
         values.put(PICKED_QTY, picked_qty);
         values.put(UPDATED_BY, updated_by);
         values.put(UPDATED_AT, updated_at);
-        values.put(PICKED_STATUS, pick_status);
+//        values.put(PICKED_STATUS, pick_status);
         values.put(STATUS, status);
 
         String whereClause =  MERCHANT_ID + " = ? AND " + PICK_M_NAME  + " = ?  AND " + SQL_PRIMARY_ID  + " = ?  AND "+ CREATED_AT  + " = ?";
