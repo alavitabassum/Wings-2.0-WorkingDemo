@@ -20,6 +20,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Abu Haris</string>
     <string name="nav_header_subtitle">Pickup Manager</string>
+    <string name="nav_header_delivery_officer">Delivery Officer</string>
+
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="create_bulk">Create Bulk</string>
@@ -58,13 +60,13 @@
     </string-array>
 
     <string-array name="onholdreasons">
-       <item>Please select an option...</item>
-       <item>স্টকে পণ্য নেই</item>
-       <item>গুণগত মান / প্যাকেজিং সমস্যা</item>
-       <item>মার্চেন্টের সাথে যোগাযোগ করা যাচ্ছে না</item>
-       <item>মার্চেন্ট অনুপস্থিত</item>
-       <item>মার্চেন্ট দেরি করেছে</item>
-       <item>নির্ধারিত সময়ের পর পিক আপ অনুরোধ</item>
+        <item>Please select an option...</item>
+        <item>স্টকে পণ্য নেই</item>
+        <item>গুণগত মান / প্যাকেজিং সমস্যা</item>
+        <item>মার্চেন্টের সাথে যোগাযোগ করা যাচ্ছে না</item>
+        <item>মার্চেন্ট অনুপস্থিত</item>
+        <item>মার্চেন্ট দেরি করেছে</item>
+        <item>নির্ধারিত সময়ের পর পিক আপ অনুরোধ</item>
     </string-array>
 
     <string-array name="cancelreason">
@@ -104,6 +106,7 @@
     <string name="pickup_executive">Pickup Executive</string>
     <string name="pickup_supervisor">Pickup Supervisor</string>
     <string name="exe_name">Tonoy Shaha</string>
+    <string name="delivery_officer_name">Md. Asad</string>
     <string name="title_activity_manager_card_menu">Home</string>
     <string name="title_activity_pickups_today__executive">Pickup Summary</string>
     <string name="title_activity_pickup_status__executive">Pickup Status</string>
@@ -140,5 +143,13 @@
     <string name="title_activity_fulfillment_assign_pickup__supervisor">
         Assign(Fulfillment)
     </string>
+    <string name="title_activity_delivery_officer_card_menu">DeliveryOfficerCardMenu</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
 
 </resources>

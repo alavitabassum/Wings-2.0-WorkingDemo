@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerCardMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,6 +93,9 @@ public class LoginActivity extends AppCompatActivity {
             } else if(user_role_id.equals("6")){
                 Intent intent = new Intent(LoginActivity.this, ExecutiveCardMenu.class);
                 startActivity(intent);
+            }else if(user_role_id.equals("7")) {
+                Intent intent = new Intent(LoginActivity.this, DeliveryOfficerCardMenu.class);
+                startActivity(intent);
             }
         }
     }
@@ -143,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor2.putString(Config.USER_ZONE_SHARED_PREF, zoneAssigned);
                         //Saving values to editor
                         editor2.commit();
-
+                        //pickup manager
                         if (user_role_id.equals("12")) {
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.clearPTMList(sqLiteDatabase);
@@ -161,7 +165,9 @@ public class LoginActivity extends AppCompatActivity {
 
                             startActivity(new Intent(getApplicationContext(),ManagerCardMenu.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
-                        } else if(user_role_id.equals("6")) {
+                        }
+                        //pick up officer
+                        else if(user_role_id.equals("6")) {
 
                             Date c = Calendar.getInstance().getTime();
                             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -175,6 +181,8 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(),ExecutiveCardMenu.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                         }
+
+                        //pick up supervisor
                         else if(user_role_id.equals("26")) {
 
                             Date c = Calendar.getInstance().getTime();
@@ -198,13 +206,19 @@ public class LoginActivity extends AppCompatActivity {
 
                             startActivity(new Intent(getApplicationContext(),SupervisorCardMenu.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
-                        } else {
+                        }
+                        //delivery officer
+                        else if(user_role_id.equals("7")) {
+
+                            startActivity(new Intent(getApplicationContext(),DeliveryOfficerCardMenu.class));
+                            Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
+                        }
+                        else {
                             Toast.makeText(LoginActivity.this, "Sorry, You are not registered as a pickup member in paperfly", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
 
                     //Creating a shared preference
                     SharedPreferences sharedPreferences = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);

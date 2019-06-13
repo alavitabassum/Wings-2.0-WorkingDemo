@@ -33,9 +33,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".DeliveryApp.DeliveryOfficerCardMenu"
+            android:label="@string/title_activity_delivery_officer_card_menu"
+            android:theme="@style/AppTheme"></activity>
+        <activity
             android:name=".FulfillmentAssignPickup_Supervisor"
             android:label="@string/title_activity_fulfillment_assign_pickup__supervisor"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AjkerDealOther_Assign_Pickup_supervisor"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_supervisor"
@@ -91,23 +95,19 @@
             android:name=".ExecutiveCardMenu"
             android:label="@string/title_activity_executive_card_menu"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".ManagerCardMenu"
             android:label="@string/title_activity_manager_card_menu"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".PickupsToday_Executive"
             android:label="@string/title_activity_pickups_today__executive"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
             android:supportsRtl="true"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".ScanningScreen"
             android:parentActivityName=".MyPickupList_Executive"
@@ -116,7 +116,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
         </activity>
-
         <activity
             android:name=".AutoScanningScreen"
             android:parentActivityName=".AutoAssignMyPickuplist"
@@ -125,7 +124,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
         </activity>
-
         <activity
             android:name=".FulfillmentScanningScreen"
             android:parentActivityName=".MyPickupList_Executive"
@@ -134,7 +132,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
         </activity>
-
         <activity
             android:name=".FulfillmentScanningScreenAjkerDeal"
             android:parentActivityName=".MyPickupList_Executive"
@@ -143,7 +140,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
         </activity>
-
         <activity
             android:name=".RobishopScanningScreen"
             android:parentActivityName=".MyPickupList_Executive"
@@ -152,33 +148,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
         </activity>
-
         <activity android:name=".UpdateAssigns" />
-
         <activity android:name=".NewOrder" />
-
         <activity android:name=".ViewAssigns" />
-
         <activity android:name=".NewOrderSupervisor" />
         <activity
             android:name=".Fulfillment_Assign_pickup_Manager"
             android:label="@string/title_activity_testing_fulfillment"
             android:theme="@style/AppTheme" />
-
         <activity android:name=".NewOrderEntry_ful" />
-
         <activity android:name=".NewOrderEntry_Supervisor_ful" />
-
         <activity
             android:name=".AjkerDealOther_Assign_Pickup_manager"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_manager"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Robishop_Assign_pickup_manager"
             android:label="@string/title_activity_robishop__assign_pickup_manager"
             android:theme="@style/AppTheme" />
-
     </application>
 
 </manifest>
