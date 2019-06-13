@@ -251,92 +251,7 @@ public class PickupsToday_Executive extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-
-
-
-
-
-
-
-/*
-
-   private void loadRecyclerView(final String user)
-   {
-       Date c = Calendar.getInstance().getTime();
-       SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-       final String match_date = df.format(c);
-
-       StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DATA,
-               new Response.Listener<String>()
-               {
-                   @Override
-                   public void onResponse(String response) {
-                       //                progress.dismiss();
-                       try {
-                           JSONObject jsonObject = new JSONObject(response);
-                           JSONArray array = jsonObject.getJSONArray("summary");
-
-                           for(int i =0;i<array.length();i++)
-                           {
-
-                               JSONObject o = array.getJSONObject(i);
-                               db.insert_my_assigned_pickups(
-                                       o.getString("id"),
-                                       o.getString("executive_name"),
-                                       o.getString("order_count"),
-                                       o.getString("merchant_code"),
-                                       o.getString("assigned_by"),
-                                       o.getString("created_at"),
-                                       o.getString("updated_by"),
-                                       o.getString("updated_at"),
-                                       o.getString("scan_count"),
-                                       o.getString("phone_no"),
-                                       o.getString("picked_qty"),
-                                       o.getString("merchant_name"),
-                                       o.getString("complete_status"),
-                                       o.getString("p_m_name"),
-                                       o.getString("p_m_add"),
-                                       o.getString("product_name"),
-                                       o.getString("apiOrderID"),
-                                       o.getString("demo"),
-                                       o.getString("pick_from_merchant_status"),
-                                       o.getString("received_from_HQ_status"),
-                                       NAME_NOT_SYNCED_WITH_SERVER );
-
-                           }
-                           getData(user, match_date);
-                           swipeRefreshLayout.setRefreshing(false);
-
-                       } catch (JSONException e) {
-                           e.printStackTrace();
-                           swipeRefreshLayout.setRefreshing(false);
-                       }
-                   }
-               },
-               new Response.ErrorListener() {
-                   @Override
-                   public void onErrorResponse(VolleyError error) {
-                       swipeRefreshLayout.setRefreshing(false);
-                       Toast.makeText(getApplicationContext(), "No Internet Connection" ,Toast.LENGTH_SHORT).show();
-
-                   }
-               })
-       {
-           @Override
-           protected Map<String, String> getParams()
-           {
-               Map<String,String> params1 = new HashMap<String,String>();
-               params1.put("executive_name",user);
-               params1.put("created_at",match_date);
-               return params1;
-           }
-       };
-
-       RequestQueue requestQueue = Volley.newRequestQueue(this);
-       requestQueue.add(stringRequest);
-   }*/
-
-
+    //
     private void getData(final String user)
     {  Date calender = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
@@ -387,43 +302,13 @@ public class PickupsToday_Executive extends AppCompatActivity
         }
     }
 
-  /*  private void getData(final String user, final String match_date)
-    {
-        try{
-            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.getdata_pickups_today_executive(sqLiteDatabase, user, match_date);
-            while (c.moveToNext())
-            {
-                String name = c.getString(0);
-                String executive_name = c.getString(1);
-                String code = String.valueOf(c.getString(2));
-                String count = String.valueOf(c.getString(3));
-                String created_at = c.getString(4);
-                String complete_status= c.getString(5);
-                String picked_qty= String.valueOf(c.getString(6));
-                String p_m_name= c.getString(7);
-                String product_name= c.getString(8);
-                PickupList_Model_For_Executive todaySummary = new PickupList_Model_For_Executive(name,code,count,executive_name,created_at,complete_status,picked_qty, p_m_name, product_name);
-                summaries.add(todaySummary);
-            }
-            mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());
-            recyclerView_exec.setAdapter(mListForExecutiveAdapter);
-            swipeRefreshLayout.setRefreshing(false);
-
-        }catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }*/
-
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_e);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-//            super.onBackPressed();
+            // super.onBackPressed();
             Intent homeIntentSuper = new Intent(PickupsToday_Executive.this,
                     ExecutiveCardMenu.class);
             startActivity(homeIntentSuper);
@@ -489,8 +374,7 @@ public class PickupsToday_Executive extends AppCompatActivity
             Intent homeIntent = new Intent(PickupsToday_Executive.this,
                     ExecutiveCardMenu.class);
             startActivity(homeIntent);
-        }
-        else if (id == R.id.nav_pickup_sum) {
+        } else if (id == R.id.nav_pickup_sum) {
             Intent pickupIntent = new Intent(PickupsToday_Executive.this,
                     PickupsToday_Executive.class);
             startActivity(pickupIntent);
@@ -498,12 +382,7 @@ public class PickupsToday_Executive extends AppCompatActivity
             Intent assignIntent = new Intent(PickupsToday_Executive.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-        /*} else if (id == R.id.nav_exe_pickup_log) {
-            Intent assignIntent = new Intent(PickupsToday_Executive.this,
-                    AutoAssignMyPickuplist.class);
-            startActivity(assignIntent);*/
-        }
-        else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -544,14 +423,12 @@ public class PickupsToday_Executive extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-
                         }
                     });
 
             //Showing the alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_e);
@@ -581,6 +458,5 @@ public class PickupsToday_Executive extends AppCompatActivity
         else{
             getData(username);
         }
-
     }
 }

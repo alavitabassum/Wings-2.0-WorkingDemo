@@ -4,46 +4,29 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.paperflywings.user.paperflyv0.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.ExecutiveCardMenu;
 import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.MyPickupList_Executive;
-import com.paperflywings.user.paperflyv0.PickupsToday_Executive;
 import com.paperflywings.user.paperflyv0.R;
-import com.paperflywings.user.paperflyv0.RecyclerAdapterExecutive;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class DeliveryOfficerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    RecyclerView recyclerView_delivery_officer;
-    RecyclerView.LayoutManager layoutManager_delivery_officer;
-    RecyclerView.Adapter adapter_delivery_officer;
-   // BarcodeDbHelper db;
+    BarcodeDbHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,27 +38,9 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-      //  db = new BarcodeDbHelper(getApplicationContext());
-      //  db.getWritableDatabase();
+        db = new BarcodeDbHelper(getApplicationContext());
+        db.getWritableDatabase();
 
-        recyclerView_delivery_officer =
-                (RecyclerView) findViewById(R.id.recycler_view_delivery_officer);
-
-        layoutManager_delivery_officer = new LinearLayoutManager(this);
-        recyclerView_delivery_officer.setLayoutManager(layoutManager_delivery_officer);
-
-        adapter_delivery_officer = new RecyclerViewAdapterDeliveryOfficer();
-        recyclerView_delivery_officer.setAdapter(adapter_delivery_officer);
-
-
-      /*  FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
