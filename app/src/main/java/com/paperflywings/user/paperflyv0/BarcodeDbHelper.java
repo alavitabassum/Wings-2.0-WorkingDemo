@@ -15,6 +15,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     // private static final String TABLE_NAME_3 = "My_pickups_auto";
     private static final String TABLE_NAME_4 = "Insert_Pickup_Action";
     private static final String TABLE_NAME_6 = "pickups_today_executive";
+    private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
@@ -48,6 +49,16 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String STATUS_NAME = "status_name";
     private static final String USERNAME = "username";
     private static final String COMMENT = "comment";
+
+
+    //delivery
+    private static final String UNPICKED = "unpicked";
+    private static final String WITHOUTSTATUS = "without_status";
+    private static final String ONHOLD = "onhold";
+    private static final String CASH = "cash";
+    private static final String RETURNREQUEST = "return_request";
+    private static final String RETURNLIST = "return_list";
+
 
 
 
@@ -156,12 +167,26 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE6 = "create table pickups_today_executive(id integer primary key AUTOINCREMENT,sql_primary_id,merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text,demo text, unique(sql_primary_id, merchantName, p_m_name, product_name))";
 
+        String CREATION_TABLE7 = "CREATE TABLE Insert_Delivery_Summary( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "username TEXT, "
+                + "unpicked TEXT, "
+                + "without_status TEXT, "
+                + "onhold TEXT, "
+                + "cash TEXT, "
+                + "return_request TEXT, "
+                + "return_list TEXT, "
+                + "status INT, "
+                + "unique(id))" ;
+
+
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
         db.execSQL(CREATION_TABLE2);
         // db.execSQL(CREATION_TABLE3);
         db.execSQL(CREATION_TABLE5);
         db.execSQL(CREATION_TABLE6);
+        db.execSQL(CREATION_TABLE7);
 
     }
 
@@ -172,6 +197,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
 //         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_4);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_6);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_6);
         this.onCreate(db);
     }
@@ -681,6 +707,35 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     //////// Delivery Officer Database functionalities ///////
 
+    // insert counts in delivery summary
+    public void insert_delivery_summary_count(String username, String unpicked, String without_status, String onhold, String cash, String return_request,String return_list, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(USERNAME, username);
+        values.put(UNPICKED, unpicked);
+        values.put(WITHOUTSTATUS, without_status);
+        values.put(ONHOLD, onhold);
+        values.put(CASH, cash);
+        values.put(RETURNREQUEST, return_request);
+        values.put(RETURNLIST, return_list);
+        values.put(STATUS,status);
+
+        db.insert(TABLE_NAME_7,null, values);
+        db.close();
+    }
+
+    // get the delivery summary
+    public Cursor get_delivery_summary(SQLiteDatabase db, String user)
+    {
+        String[] columns = {USERNAME, UNPICKED, WITHOUTSTATUS, ONHOLD, CASH, RETURNREQUEST, RETURNLIST};
+
+        String whereClause = USERNAME + "=?";
+        String[] whereArgs = new String[] {
+                user
+        };
+        return (db.query(TABLE_NAME_7,columns,whereClause,whereArgs,null,null,null));
+    }
 
 }
 
