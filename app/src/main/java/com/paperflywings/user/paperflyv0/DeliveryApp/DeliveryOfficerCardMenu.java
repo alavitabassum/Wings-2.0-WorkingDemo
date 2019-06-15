@@ -64,7 +64,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         layoutManager_delivery_officer = new LinearLayoutManager(this);
         recyclerView_delivery_officer.setLayoutManager(layoutManager_delivery_officer);
 
-        adapter_delivery_officer = new RecyclerViewAdapterDeliveryOfficer();
+       // adapter_delivery_officer = new RecyclerViewAdapterDeliveryOfficer();
         recyclerView_delivery_officer.setAdapter(adapter_delivery_officer);
 
 
