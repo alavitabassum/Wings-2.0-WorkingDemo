@@ -34,7 +34,10 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-        <!--android:text="@string/nav_header_delivery_officer" />-->
+        android:layout_height="wrap_content"
+        android:layout_below="@id/delivery_officer_name"
+        android:paddingStart="10dp"
+        android:layout_toEndOf="@+id/imageView"
+        android:text="@string/nav_header_delivery_officer" />
 
 </RelativeLayout>
