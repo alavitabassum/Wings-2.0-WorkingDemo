@@ -62,7 +62,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         } else {
             //super.onBackPressed();
             Intent homeIntentSuper = new Intent(DeliveryOfficerCardMenu.this,
-                    ExecutiveCardMenu.class);
+                    DeliveryOfficerCardMenu.class);
             startActivity(homeIntentSuper);
         }
     }
