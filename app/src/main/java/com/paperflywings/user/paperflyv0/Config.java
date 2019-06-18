@@ -12,6 +12,7 @@ public class Config {
     public static final String USER_ROLE_SHARED_PREF = "userRole";
 
     public static final String USER_ROLE_ID_SHARED_PREF = "user_role_id";
+    public static final String EMP_CODE_SHARED_PREF = "emp_code";
 
     public static final String USER_ZONE_SHARED_PREF = "zoneAssigned";
     //We will use this to store the boolean in sharedpreference to track user is loggedin or not

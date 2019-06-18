@@ -17,6 +17,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_6 = "pickups_today_executive";
     private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
     private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
+    private static final String TABLE_NAME_9 = "unpicked_order_picked";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
@@ -74,9 +75,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String PACKAGE_PRICE = "packagePrice";
     public static final String PRODUCT_BRIEF= "productBrief";
     public static final String DELIVERY_TIME= "deliveryTime";
-
-
-
+    public static final String EMPLOYEE_CODE= "empCode";
 
 
     private static final String[] COLUMNS = { KEY_ID, MERCHANT_ID, KEY_NAME };
@@ -210,8 +209,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "packagePrice TEXT, "
                 + "productBrief TEXT, "
                 + "deliveryTime TEXT, "
+                + "username TEXT, "
+                + "empCode TEXT, "
                 + "status INT, "
-                + "unique(id))" ;
+                + "unique(id, barcode))" ;
+
+
 
 
         db.execSQL(CREATION_TABLE);
@@ -808,5 +811,20 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_8,columns,whereClause,whereArgs,null,null,null));
     }
 
+    public void getUnpickedOrderData(String barcode, String username, String empcode, int status){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USERNAME, username);
+        values.put(EMPLOYEE_CODE, empcode);
+        values.put(STATUS, status);
+
+        String whereClause = BARCODE_NO + " = ?";
+        String[] whereArgs = new String[] {
+                barcode
+        };
+        // insert
+        db.update(TABLE_NAME_8,values,whereClause,whereArgs );
+        db.close();
+    }
 }
 

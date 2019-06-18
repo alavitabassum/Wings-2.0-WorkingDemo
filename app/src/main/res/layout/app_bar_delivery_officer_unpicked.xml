@@ -21,7 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
     <RelativeLayout
-        android:id="@+id/delivery_quick_pick"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginTop="70dp"
@@ -31,7 +30,8 @@
         android:elevation="4dp"
         android:background="@color/light_grey"
         >
-    <Button
+        <Button
+            android:id="@+id/delivery_quick_pick"
             android:layout_width="320dp"
             android:layout_height="50dp"
             android:background="@color/put_hd_color_green"

@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private String userRole;
     private String user_role_id;
     private String zoneAssigned;
+    private String empCode;
     Button tempButton;
     BarcodeDbHelper barcodedb;
     Database db;
@@ -80,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         userRole = sharedPreferences.getString(Config.USER_ROLE_SHARED_PREF,"");
         zoneAssigned = sharedPreferences.getString(Config.USER_ZONE_SHARED_PREF,"");
         user_role_id = sharedPreferences.getString(Config.USER_ROLE_ID_SHARED_PREF,"");
+        empCode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"");
 
         //If we will get true
         if(loggedIn ){
@@ -123,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jObj = arr.getJSONObject(0);
                         String userRole = jObj.getString("userRole");
                         String user_role_id = jObj.getString("user_role_id");
+                        String emp_code = jObj.getString("empCode");
 //                        String zoneAssigned = jObj.getString("zoneAssigned");
 
                         //Creating a shared preference
@@ -130,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                         //Creating editor to store values to shared preferences
                         SharedPreferences.Editor editor = sharedPreferences1.edit();
                         editor.putString(Config.USER_ROLE_SHARED_PREF, userRole);
+                        editor.putString(Config.EMP_CODE_SHARED_PREF, emp_code);
                         //Saving values to editor
                         editor.commit();
 
@@ -138,13 +142,15 @@ public class LoginActivity extends AppCompatActivity {
                         //Creating editor to store values to shared preferences
                         SharedPreferences.Editor editor1 = sharedPreferences2.edit();
                         editor1.putString(Config.USER_ROLE_ID_SHARED_PREF, user_role_id);
+                        editor1.putString(Config.EMP_CODE_SHARED_PREF, emp_code);
                         //Saving values to editor
                         editor1.commit();
 
                         SharedPreferences sharedPreferences3 = LoginActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                         //Creating editor to store values to shared preferences
                         SharedPreferences.Editor editor2 = sharedPreferences1.edit();
-                        editor2.putString(Config.USER_ZONE_SHARED_PREF, zoneAssigned);
+                        editor.putString(Config.USER_ZONE_SHARED_PREF, zoneAssigned);
+                        editor.putString(Config.EMP_CODE_SHARED_PREF, emp_code);
                         //Saving values to editor
                         editor2.commit();
                         //pickup manager

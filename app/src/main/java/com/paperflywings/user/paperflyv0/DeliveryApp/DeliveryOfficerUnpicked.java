@@ -12,23 +12,22 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,10 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.MyPickupList_Executive;
-import com.paperflywings.user.paperflyv0.PickupList_Model_For_Executive;
 import com.paperflywings.user.paperflyv0.R;
-import com.paperflywings.user.paperflyv0.pickuplistForExecutiveAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +61,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
+    private Button delivery_quick_pick;
 
     public static final String BARCODE_NO= "barcode";
     public static final String ORDERID = "orderid";
@@ -72,7 +69,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     public static final String MERCHANTS_NAME = "merchantName";
     public static final String PICK_MERCHANTS_NAME = "pickMerchantName";
     public static final String CUSTOMER_NAME = "custname";
-    public static final String Phone = "custphone";
+    public static final String PHONE = "custphone";
     public static final String CUSTOMER_ADDRESS = "custaddress";
     public static final String PACKAGE_PRICE = "packagePrice";
     public static final String PRODUCT_BRIEF= "productBrief";
@@ -104,20 +101,22 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         setContentView(R.layout.activity_delivery_officer_unpicked);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        list = new ArrayList<Delivery_unpicked_model>();
-
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        final String user = username.toString();
-
-        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
-        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
-
         recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_myunpickup_list);
         recyclerView_pul.setAdapter(Delivery_unpicked_adapter);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+        list = new ArrayList<Delivery_unpicked_model>();
+
+        // get the logged in username by shared preference
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+
+        // check internet connectivity
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
+        delivery_quick_pick = (Button) findViewById(R.id.delivery_quick_pick);
+
+        /*new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -129,7 +128,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                 Toast.makeText(DeliveryOfficerUnpicked.this,"Item Removed"+ viewHolder.getAdapterPosition(),Toast.LENGTH_SHORT).show();
                 Delivery_unpicked_adapter.notifyDataSetChanged();
             }
-        }).attachToRecyclerView(recyclerView_pul);
+        }).attachToRecyclerView(recyclerView_pul);*/
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
@@ -143,13 +142,25 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user);
+            loadRecyclerView(username);
         }
         else{
-            getData(user);
+            getData(username);
 
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
+
+        // Redirect for quick pick by scanning barcode
+        delivery_quick_pick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DeliveryOfficerUnpicked.this,
+                        Delivery_quick_pick_scan.class);
+
+
+                startActivity(intent);
+            }
+        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer_unpicked);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -272,7 +283,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                 list.add(unpickedmodel);
 
                             }
-//                     getData(user);
+
 //                    swipeRefreshLayout.setRefreshing(false);
 
                             Delivery_unpicked_adapter = new Delivery_unpicked_adapter(list,getApplicationContext());
@@ -433,22 +444,13 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-                            Date c = Calendar.getInstance().getTime();
-                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                            final String match_date = df.format(c);
 
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.deleteAssignedList(sqLiteDatabase);
-                       /* Date c = Calendar.getInstance().getTime();
-                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                            final String match_date = df.format(c);
 
-                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);*/
-//                            db.barcode_factory(sqLiteDatabase,match_date);
-//                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
                             //Getting editor
                             SharedPreferences.Editor editor = preferences.edit();
 
@@ -460,6 +462,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
                             //Saving the sharedpreferences
                             editor.commit();
+
                             //Starting login activity
                             Intent intent = new Intent(DeliveryOfficerUnpicked.this, LoginActivity.class);
                             startActivity(intent);

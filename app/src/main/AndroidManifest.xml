@@ -35,7 +35,7 @@
         <activity
             android:name=".DeliveryApp.DeliveryOfficerUnpicked"
             android:label="@string/title_activity_delivery_officer_unpicked"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".DeliveryApp.DeliveryOfficerCardMenu"
             android:label="@string/title_activity_delivery_officer_card_menu"
@@ -151,6 +151,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+        </activity>
+        <activity
+            android:name=".DeliveryApp.Delivery_quick_pick_scan"
+            android:parentActivityName=".DeliveryApp.DeliveryOfficerUnpicked"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked" />
         </activity>
         <activity android:name=".UpdateAssigns" />
         <activity android:name=".NewOrder" />
