@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:weightSum="12"
+    android:background="@color/light_grey"
     tools:context=".DeliveryApp.DeliveryOfficerCardMenu">
 
     <LinearLayout

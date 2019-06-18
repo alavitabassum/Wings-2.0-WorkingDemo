@@ -35,12 +35,13 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-        void onItemClick_view (View view2, int position2);
-        void onItemClick_view_orderIDs (View view3, int position3);
+     /*   void onItemClick_view (View view2, int position2);
+        void onItemClick_view_orderIDs (View view3, int position3);*/
         void onItemClick_call (View view4, int position4);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
+
         this.mListner = listener;
     }
 
@@ -99,7 +100,7 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
                     }
                 }
             });
-            itemStatus.setOnClickListener(new View.OnClickListener() {
+        /*    itemStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
                     if(mListner!=null){
@@ -127,7 +128,7 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
                 }
 
 
-            });
+            });*/
         }
     }
 
@@ -145,13 +146,13 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
 
         viewHolder.item_ordId.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef.setText(list.get(i).getMerOrderRef());
-        viewHolder.item_merchantName.setText(list.get(i).getMerchantName());
-        viewHolder.item_pickMerchantName.setText(list.get(i).getPickMerchantName());
-        viewHolder.item_custname.setText(list.get(i).getCustname());
+        viewHolder.item_merchantName.setText("Merchant Name: "+list.get(i).getMerchantName());
+        viewHolder.item_pickMerchantName.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+        viewHolder.item_custname.setText("Customer Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress.setText("Customer Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice());
-        viewHolder.item_productBrief.setText(list.get(i).getProductBrief());
+        viewHolder.item_productBrief.setText("Product Brief: "+list.get(i).getProductBrief());
 
     }
 

@@ -75,6 +75,8 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     public static final String PRODUCT_BRIEF= "productBrief";
     public static final String DELIVERY_TIME= "deliveryTime";
 
+    TextView unpicked_text;
+
     //public static final String SQL_PRIMARY_ID = "Sql Primary Id";
     private static final String URL_DATA = "";
     private ProgressDialog progress;
@@ -116,6 +118,12 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
         delivery_quick_pick = (Button) findViewById(R.id.delivery_quick_pick);
 
+
+        unpicked_text = (TextView)findViewById(R.id.unpicks_);
+
+        Intent intent = getIntent();
+        String str = intent.getStringExtra("message");
+        unpicked_text.setText(str);
         /*new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -511,7 +519,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
     }
 
-    @Override
+   /* @Override
     public void onItemClick_view(View view2, int position2) {
 
     }
@@ -520,7 +528,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     public void onItemClick_view_orderIDs(View view3, int position3) {
 
     }
-
+*/
     @Override
     public void onItemClick_call(View view4, int position4) {
 

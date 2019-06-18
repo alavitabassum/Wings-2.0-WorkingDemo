@@ -55,8 +55,10 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     BarcodeDbHelper db;
-    private CardView unpicked,withoutStatus,onHold,returnReqst,returnList,cashCollection,quickDelivery;
+    private CardView unpicked_item,withoutStatus,onHold,returnReqst,returnList,cashCollection,quickDelivery;
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
+
+    private static final String UNPICKED = "unpicked";
 
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -79,7 +81,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer);
 
-        unpicked = (CardView)findViewById(R.id.Unpicked_id);
+
         withoutStatus = (CardView)findViewById(R.id.WithoutStatus_id);
         onHold = (CardView)findViewById(R.id.OnHold_id);
         returnReqst = (CardView)findViewById(R.id.ReturnRequest_id);
@@ -106,14 +108,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
 
         //unpicked.OnClickListener(new View.OnClickListener())
-        unpicked.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DeliveryOfficerCardMenu.this,
-                       DeliveryOfficerUnpicked.class);
-                startActivity(intent);
-            }
-        });
 
 
 
@@ -232,6 +226,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 DeliverySummary_Model todaySummary = new DeliverySummary_Model(username, unpicked,withoutStatus,onHold,cash,returnRequest, returnList);
 //                summaries.add(todaySummary);
 
+                unpicked_item = (CardView)findViewById(R.id.Unpicked_id);
                 unpicked_count = (TextView)findViewById(R.id.UnpickedCount);
                 withoutStatus_count = (TextView)findViewById(R.id.WithoutStatusCount);
                 onHold_count = (TextView)findViewById(R.id.OnHoldCount);
@@ -245,6 +240,18 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 returnReqst_count.setText(String.valueOf(cash));
                 cashCollection_count.setText(String.valueOf(returnRequest));
                 returnList_count.setText(String.valueOf(returnList));
+
+
+                unpicked_item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String str = unpicked_count.getText().toString();
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this, DeliveryOfficerUnpicked.class);
+                        intent.putExtra("message", str);
+                        startActivity(intent);
+                    }
+                });
+
 
             }
 

@@ -48,12 +48,12 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
-            android:text="Order ID: "
-            android:textStyle="bold"
-            android:maxLines="2"
             android:lines="2"
+            android:maxLines="2"
+            android:text="Order ID: "
+            android:textColor="#000"
             android:textSize="15sp"
-            android:textColor="#000" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/orderId"
@@ -112,7 +112,7 @@
             android:background="?android:attr/listDivider" />
 
 
-        <TextView
+      <!--  <TextView
             android:id="@+id/merchant_name_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,41 +122,42 @@
             android:text="Merchant Name: "
             android:textColor="#000"
             android:textSize="15sp" />
-
+-->
         <TextView
             android:id="@+id/m_name"
-            android:layout_width="245dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/merchant_name_txt"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="0dp"
-            android:layout_toEndOf="@+id/merchant_name_txt"
             android:textAlignment="textStart"
+            android:layout_marginStart="0dp"
             android:textColor="#000"
             android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/pick_merchant_name_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="90dp"
-            android:text="Pick Merchant Name: "
-            android:textColor="#000"
-            android:textSize="15sp" />
+
+
+
+        <!--  <TextView
+              android:id="@+id/pick_merchant_name_txt"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentTop="true"
+              android:layout_marginStart="0dp"
+              android:layout_marginTop="90dp"
+              android:text="Pick Merchant Name: "
+              android:textColor="#000"
+              android:textSize="15sp" />-->
 
         <TextView
             android:id="@+id/pick_m_name"
-            android:layout_width="202dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/pick_merchant_name_txt"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="85dp"
             android:layout_marginEnd="0dp"
-            android:layout_toEndOf="@+id/pick_merchant_name_txt"
             android:textAlignment="textStart"
+            android:layout_marginStart="0dp"
             android:textColor="#000"
             android:textSize="15sp" />
 
@@ -172,7 +173,7 @@
 
 
 
-        <TextView
+    <!--    <TextView
             android:id="@+id/customer_name_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -181,22 +182,24 @@
             android:layout_marginTop="120dp"
             android:text="Customer Name: "
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="15sp" />-->
+
 
         <TextView
             android:id="@+id/customer_name"
-            android:layout_width="250dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/customer_name_txt"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="130dp"
             android:layout_marginEnd="4dp"
-            android:textColor="#000"
-            android:layout_toEndOf="@+id/customer_name_txt"
+            android:drawableLeft="@drawable/ic_person_black_24dp"
             android:textAlignment="textStart"
+            android:textColor="#000"
             android:textSize="15sp" />
 
-        <TextView
+
+     <!--   <TextView
             android:id="@+id/customer_Address_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -205,23 +208,22 @@
             android:layout_marginTop="140dp"
             android:text="Customer Address:  "
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="15sp" />-->
 
 
         <TextView
             android:id="@+id/customer_Address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/customer_Address_txt"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:lines="4"
-            android:maxLines="4"
+            android:layout_marginTop="200dp"
+
             android:textAlignment="textStart"
             android:textColor="#000"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
             android:textSize="15sp" />
 
-        <View
+       <!-- <View
             android:id="@+id/divider3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -229,9 +231,9 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
             android:layout_marginTop="255dp"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider" />-->
 
-        <TextView
+    <!--    <TextView
             android:id="@+id/package_brief_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -244,22 +246,19 @@
             android:textColor="#000"
             android:textSize="15sp" />
 
-
+-->
         <TextView
             android:id="@+id/package_brief"
-            android:layout_width="248dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/package_brief_txt"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="320dp"
             android:layout_marginEnd="6dp"
-            android:layout_toEndOf="@+id/package_brief_txt"
             android:lines="2"
             android:maxLines="2"
             android:textColor="#000"
             android:textAlignment="textStart"
             android:textSize="15sp" />
-
 
         <View
             android:id="@+id/divider4"
@@ -267,7 +266,7 @@
             android:layout_height="1dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="290dp"
             android:background="?android:attr/listDivider" />
 
@@ -286,9 +285,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="265dp"
-            android:text="Call: "
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="175dp"
+            android:drawableLeft="@drawable/ic_local_phone_black_24dp"
             android:textColor="#000" />
 
         <TextView
