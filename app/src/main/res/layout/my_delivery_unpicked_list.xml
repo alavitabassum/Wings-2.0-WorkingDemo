@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_delivery_unpicked_list"
+    android:layout_width="match_parent"
+    android:layout_height="290dp"
+    android:layout_margin="5dp"
+    android:foreground="?selectableItemBackground"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp"
+    card_view_assign:cardBackgroundColor="#fff"
+    card_view_assign:cardElevation="3dp"
+    card_view_assign:contentPadding="4dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <!-- <Button
+             android:id="@+id/txtOption"
+             android:layout_width="105dp"
+             android:layout_height="35dp"
+             android:layout_alignParentRight="true"
+             android:layout_marginRight="5dp"
+             android:background="#eee"
+             android:padding="10dp"
+             android:text="Action" />-->
+
+        <!-- android:id="@+id/btn_status"
+
+            android:layout_alignBottom="@id/btn_scan"
+            android:layout_marginRight="5dp"
+
+            android:layout_marginBottom="-1dp"
+            android:layout_toLeftOf="@id/btn_scan"
+            android:background="@drawable/buttonstyle"
+            android:textSize="14sp"-->
+
+        <TextView
+            android:id="@+id/orderId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="1dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:text="OrderId:"
+           />
+
+        <TextView
+            android:id="@+id/m_order_ref"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="25dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:textAlignment="textStart"
+            android:layout_below="@+id/assigned_date_pul"
+            android:textColor="#000"
+            android:textSize="17sp"
+            android:text="Merchant Order ref:"
+          />
+
+
+        <TextView
+            android:id="@+id/customer_name"
+            android:layout_width="349dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="47dp"
+            android:layout_marginEnd="28dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:text="Customer:"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/customer_Address"
+            android:layout_width="377dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/m_order_ref"
+            android:layout_alignBottom="@+id/customer_name"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="-41dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:text="Address:"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/statustxt"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignBaseline="@id/btn_status"
+            android:layout_alignStart="@+id/m_name_pul"
+            android:layout_alignTop="@+id/btn_status"
+            android:layout_alignEnd="@+id/scantxt"
+            android:layout_alignBottom="@id/btn_status"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="62dp"
+            android:layout_marginBottom="-14dp"
+            android:text="Status:"
+            android:textAlignment="textStart"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="80dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Package Price:"
+            android:textColor="@color/pfColor"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <!--
+
+                <TextView
+                    android:id="@+id/scan_qty_pul"
+                    android:layout_width="153dp"
+                    android:layout_height="0dp"
+                    android:layout_alignBaseline="@+id/scantxt"
+                    android:layout_alignEnd="@+id/a_qty_pul"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="-64dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_toEndOf="@+id/assignedtxt"
+                    android:text=""
+                    android:textAlignment="textStart"
+                    android:textColor="@color/pfColor"
+                    android:textSize="15sp" />
+        -->
+
+
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="150dp"
+            android:background="?android:attr/listDivider" />
+
+        <View
+            android:id="@+id/divider5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="-17dp"
+            android:layout_marginTop="241dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/calltxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/orderId"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="127dp"
+            android:text="Call:"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/m_phn_num"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/calltxt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="55dp"
+            android:layout_toEndOf="@+id/calltxt"
+            android:textAlignment="textStart"
+            android:textColor="@color/blue_link"
+            android:textSize="15sp" />
+        <!--android:onClick="callMerchant"-->
+
+        <Button
+            android:id="@+id/btn_status"
+            android:layout_width="105dp"
+            android:layout_height="35dp"
+
+            android:layout_marginLeft="180dp"
+            android:layout_marginBottom="-1dp"
+            android:layout_marginTop="190dp"
+            android:textColor="@color/white"
+            android:background="@drawable/buttonstyle"
+            android:padding="10dp"
+            android:text="Action"
+            android:textSize="14sp" />
+
+        <!--<Button-->
+            <!--android:id="@+id/btn_scan"-->
+            <!--android:layout_width="106dp"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:layout_below="@id/divider4"-->
+            <!--android:layout_alignEnd="@+id/m_name_pul"-->
+            <!--android:layout_marginTop="64dp"-->
+            <!--android:background="@drawable/buttonstyle_scan"-->
+            <!--android:text="SCAN"-->
+            <!--android:textColor="@color/white" />
+            android:layout_toLeftOf="@id/btn_scan"
+            -->
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

@@ -13,7 +13,6 @@
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,16 +27,12 @@
             android:background="#eee"
             android:padding="10dp"
             android:text="Action" />-->
-
         <!-- android:id="@+id/btn_status"
-
             android:layout_alignBottom="@id/btn_scan"
             android:layout_marginRight="5dp"
-
             android:layout_marginBottom="-1dp"
             android:layout_toLeftOf="@id/btn_scan"
             android:background="@drawable/buttonstyle"
-
             android:textSize="14sp"-->
      <TextView
          android:id="@+id/assigned_date_pul"
@@ -293,10 +288,9 @@
             android:layout_height="35dp"
             android:layout_alignBottom="@id/btn_scan"
             android:layout_marginRight="5dp"
-
             android:layout_marginBottom="-1dp"
             android:layout_toLeftOf="@id/btn_scan"
-            android:background="@drawable/buttonstyle"
+            android:background="@drawable/buttonstyle2"
             android:padding="10dp"
             android:text="Action"
             android:textSize="14sp" />

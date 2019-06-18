@@ -55,7 +55,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     }
 
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView item_date_pul;
         public TextView item_m_pul;

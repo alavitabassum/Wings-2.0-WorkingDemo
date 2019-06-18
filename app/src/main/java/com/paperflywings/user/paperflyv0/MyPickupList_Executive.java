@@ -107,6 +107,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         setContentView(R.layout.activity_my_pickups__executive);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         list = new ArrayList<>();
 
 
@@ -415,7 +416,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;

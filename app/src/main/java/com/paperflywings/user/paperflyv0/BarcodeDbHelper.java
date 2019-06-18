@@ -16,6 +16,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_4 = "Insert_Pickup_Action";
     private static final String TABLE_NAME_6 = "pickups_today_executive";
     private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
+    private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
@@ -51,13 +52,24 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String COMMENT = "comment";
 
 
-    //delivery
+    //delivery landing
     private static final String UNPICKED = "unpicked";
     private static final String WITHOUTSTATUS = "without_status";
     private static final String ONHOLD = "onhold";
     private static final String CASH = "cash";
     private static final String RETURNREQUEST = "return_request";
     private static final String RETURNLIST = "return_list";
+
+
+    //delivery unpicked
+
+    public static final String ORDERID = "orderid";
+    public static final String MERCHANT_ORDER_REF = "merOrderRef";
+    public static final String CUSTOMER_NAME = "custname";
+    public static final String CUSTOMER_ADDRESS = "custaddress";
+    public static final String PACKAGE_PRICE = "packagePrice";
+    public static final String Phone = "pickupMerchantPhone";
+
 
 
 
@@ -180,6 +192,18 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "unique(id))" ;
 
 
+        String CREATION_TABLE8 = "CREATE TABLE Insert_Delivery_Unpicked( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "orderid TEXT, "
+                + "merOrderRef TEXT, "
+                + "custname TEXT, "
+                + "custaddress TEXT, "
+                + "packagePrice TEXT, "
+                + "pickupMerchantPhone TEXT, "
+                + "status INT, "
+                + "unique(id))" ;
+
+
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
         db.execSQL(CREATION_TABLE2);
@@ -187,6 +211,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE5);
         db.execSQL(CREATION_TABLE6);
         db.execSQL(CREATION_TABLE7);
+        db.execSQL(CREATION_TABLE8);
 
     }
 
@@ -198,7 +223,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 //         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_4);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_6);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_6);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_7);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_8);
         this.onCreate(db);
     }
 
@@ -735,6 +761,36 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 user
         };
         return (db.query(TABLE_NAME_7,columns,whereClause,whereArgs,null,null,null));
+    }
+
+
+    // insert counts in delivery unpicked
+    public void insert_delivery_unpicked_count(String orderId, String merOrderRef, String custname, String custaddress, String packagePrice, String pickupMerchantPhone, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ORDERID, orderId);
+        values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(CUSTOMER_NAME, custname);
+        values.put(CUSTOMER_ADDRESS, custaddress);
+        values.put(PACKAGE_PRICE, packagePrice);
+        values.put(Phone, pickupMerchantPhone);
+        values.put(STATUS,status);
+
+        db.insert(TABLE_NAME_8,null, values);
+        db.close();
+    }
+
+    // get the delivery unpicked
+    public Cursor get_delivery_unpicked(SQLiteDatabase db, String user)
+    {
+        String[] columns = {ORDERID, MERCHANT_ORDER_REF, CUSTOMER_NAME, CUSTOMER_ADDRESS, PACKAGE_PRICE, Phone};
+
+        String whereClause = USERNAME + "=?";
+        String[] whereArgs = new String[] {
+                user
+        };
+        return (db.query(TABLE_NAME_8,columns,whereClause,whereArgs,null,null,null));
     }
 
 }

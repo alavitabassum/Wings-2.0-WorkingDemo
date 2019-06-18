@@ -56,7 +56,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
 
     BarcodeDbHelper db;
     private CardView unpicked,withoutStatus,onHold,returnReqst,returnList,cashCollection,quickDelivery;
-    private TextView unpicked_countwer,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
+    private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
 
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -110,7 +110,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DeliveryOfficerCardMenu.this,
-                        ExecutiveCardMenu.class);
+                       DeliveryOfficerUnpicked.class);
                 startActivity(intent);
             }
         });
@@ -231,8 +231,21 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 String returnList = c.getString(6);
                 DeliverySummary_Model todaySummary = new DeliverySummary_Model(username, unpicked,withoutStatus,onHold,cash,returnRequest, returnList);
 //                summaries.add(todaySummary);
-                unpicked_countwer = (TextView)findViewById(R.id.UnpickedCount);
-                unpicked_countwer.setText(String.valueOf(unpicked));
+
+                unpicked_count = (TextView)findViewById(R.id.UnpickedCount);
+                withoutStatus_count = (TextView)findViewById(R.id.WithoutStatusCount);
+                onHold_count = (TextView)findViewById(R.id.OnHoldCount);
+                returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
+                cashCollection_count = (TextView)findViewById(R.id.CashCount);
+                returnList_count = (TextView)findViewById(R.id.ReturnListCount);
+
+                unpicked_count.setText(String.valueOf(unpicked));
+                withoutStatus_count.setText(String.valueOf(withoutStatus));
+                onHold_count.setText(String.valueOf(onHold));
+                returnReqst_count.setText(String.valueOf(cash));
+                cashCollection_count.setText(String.valueOf(returnRequest));
+                returnList_count.setText(String.valueOf(returnList));
+
             }
 
             /*unpicked_countwer = (TextView)findViewById(R.id.UnpickedCount);
