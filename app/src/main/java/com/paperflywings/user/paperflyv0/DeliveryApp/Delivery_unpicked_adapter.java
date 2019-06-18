@@ -55,29 +55,39 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        public TextView item_barcode;
         public TextView item_ordId;
         public TextView item_merOrderRef;
+        public TextView item_merchantName;
+        public TextView item_pickMerchantName;
         public TextView item_custname;
         public TextView item_custaddress;
+        public TextView item_custphone;
         public TextView item_packagePrice;
-        public TextView item_pickupMerchantPhone;
+        public TextView item_productBrief;
+        public TextView item_deliveryTime;
         public Button itemStatus;
         public CardView card_view;
 
         public ViewHolder(View itemView, int i) {
             super(itemView);
+
+           // item_ordId=itemView.findViewById(R.id.orderId);
             item_ordId=itemView.findViewById(R.id.orderId);
             item_merOrderRef=itemView.findViewById(R.id.m_order_ref);
+            item_merchantName=itemView.findViewById(R.id.m_name);
+            item_pickMerchantName=itemView.findViewById(R.id.pick_m_name);
             item_custname=itemView.findViewById(R.id.customer_name);
             item_custaddress=itemView.findViewById(R.id.customer_Address);
+            item_custphone=itemView.findViewById(R.id.m_phn_num);
             item_packagePrice=itemView.findViewById(R.id.price);
-            item_pickupMerchantPhone=itemView.findViewById(R.id.m_phn_num);
+            item_productBrief=itemView.findViewById(R.id.package_brief);
             itemStatus=itemView.findViewById(R.id.btn_status);
             card_view=itemView.findViewById(R.id.card_view_delivery_unpicked_list);
 
-            item_pickupMerchantPhone.setPaintFlags(item_pickupMerchantPhone.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            item_custphone.setPaintFlags(item_custphone.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-            item_pickupMerchantPhone.setOnClickListener(new View.OnClickListener() {
+            item_custphone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view4) {
                     if(mListner!=null){
@@ -133,12 +143,16 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
-        viewHolder.item_ordId.setText(list.get(i).getOrdId());
+        viewHolder.item_ordId.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef.setText(list.get(i).getMerOrderRef());
+        viewHolder.item_merchantName.setText(list.get(i).getMerchantName());
+        viewHolder.item_pickMerchantName.setText(list.get(i).getPickMerchantName());
         viewHolder.item_custname.setText(list.get(i).getCustname());
-        viewHolder.item_custaddress.setText(list.get(i).getCustaddress());
+        viewHolder.item_custaddress.setText("Customer Address: "+list.get(i).getCustaddress());
+        viewHolder.item_custphone.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice());
-        viewHolder.item_pickupMerchantPhone.setText(list.get(i).getPickupMerchantPhone());
+        viewHolder.item_productBrief.setText(list.get(i).getProductBrief());
+
     }
 
     @Override

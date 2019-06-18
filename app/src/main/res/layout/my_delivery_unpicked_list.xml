@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_delivery_unpicked_list"
     android:layout_width="match_parent"
-    android:layout_height="290dp"
+    android:layout_height="450dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -34,128 +34,231 @@
             android:layout_alignBottom="@id/btn_scan"
             android:layout_marginRight="5dp"
 
+
+
             android:layout_marginBottom="-1dp"
             android:layout_toLeftOf="@id/btn_scan"
             android:background="@drawable/buttonstyle"
             android:textSize="14sp"-->
 
         <TextView
-            android:id="@+id/orderId"
-            android:layout_width="match_parent"
+            android:id="@+id/ordertxt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
-            android:lines="1"
-            android:maxLines="1"
+            android:text="Order ID: "
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:lines="2"
+            android:textSize="15sp"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/orderId"
+            android:layout_width="279dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/ordertxt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="6dp"
+            android:layout_toEndOf="@+id/ordertxt"
+            android:lines="2"
+            android:maxLines="2"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="16sp"
-            android:text="OrderId:"
-           />
+            android:textSize="15sp"
+            />
+
+        <TextView
+            android:id="@+id/merchant_ref_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="25dp"
+            android:text="Merchant Referance: "
+            android:maxLines="2"
+            android:lines="2"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/m_order_ref"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/merchant_ref_txt"
+            android:layout_alignEnd="@+id/divider"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toEndOf="@+id/merchant_ref_txt"
+            android:lines="2"
+            android:maxLines="2"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="55dp"
+            android:background="?android:attr/listDivider" />
+
+
+        <TextView
+            android:id="@+id/merchant_name_txt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="25dp"
-            android:lines="1"
-            android:maxLines="1"
-            android:textAlignment="textStart"
-            android:layout_below="@+id/assigned_date_pul"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="68dp"
+            android:text="Merchant Name: "
             android:textColor="#000"
-            android:textSize="17sp"
-            android:text="Merchant Order ref:"
-          />
+            android:textSize="15sp" />
 
+        <TextView
+            android:id="@+id/m_name"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/merchant_name_txt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toEndOf="@+id/merchant_name_txt"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/pick_merchant_name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="90dp"
+            android:text="Pick Merchant Name: "
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/pick_m_name"
+            android:layout_width="202dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/pick_merchant_name_txt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toEndOf="@+id/pick_merchant_name_txt"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="112dp"
+            android:background="?android:attr/listDivider" />
+
+
+
+        <TextView
+            android:id="@+id/customer_name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="120dp"
+            android:text="Customer Name: "
+            android:textColor="#000"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/customer_name"
-            android:layout_width="349dp"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/customer_name_txt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:textColor="#000"
+            android:layout_toEndOf="@+id/customer_name_txt"
+            android:textAlignment="textStart"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/customer_Address_txt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="47dp"
-            android:layout_marginEnd="28dp"
-            android:lines="1"
-            android:maxLines="2"
-            android:text="Customer:"
-            android:textAlignment="textStart"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="140dp"
+            android:text="Customer Address:  "
             android:textColor="#000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
+
 
         <TextView
             android:id="@+id/customer_Address"
-            android:layout_width="377dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/m_order_ref"
-            android:layout_alignBottom="@+id/customer_name"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="34dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="-41dp"
-            android:lines="1"
-            android:maxLines="2"
-            android:text="Address:"
+            android:layout_below="@+id/customer_Address_txt"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:lines="4"
+            android:maxLines="4"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="255dp"
+            android:background="?android:attr/listDivider" />
 
         <TextView
-            android:id="@+id/statustxt"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_alignBaseline="@id/btn_status"
-            android:layout_alignStart="@+id/m_name_pul"
-            android:layout_alignTop="@+id/btn_status"
-            android:layout_alignEnd="@+id/scantxt"
-            android:layout_alignBottom="@id/btn_status"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="62dp"
-            android:layout_marginBottom="-14dp"
-            android:text="Status:"
-            android:textAlignment="textStart"
-            android:textAllCaps="true"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/price"
+            android:id="@+id/package_brief_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="80dp"
-            android:lines="1"
-            android:maxLines="1"
-            android:text="Package Price:"
-            android:textColor="@color/pfColor"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="310dp"
+            android:text="Package brief: "
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="#000"
+            android:textSize="15sp" />
 
-        <!--
 
-                <TextView
-                    android:id="@+id/scan_qty_pul"
-                    android:layout_width="153dp"
-                    android:layout_height="0dp"
-                    android:layout_alignBaseline="@+id/scantxt"
-                    android:layout_alignEnd="@+id/a_qty_pul"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginEnd="-64dp"
-                    android:layout_marginBottom="7dp"
-                    android:layout_toEndOf="@+id/assignedtxt"
-                    android:text=""
-                    android:textAlignment="textStart"
-                    android:textColor="@color/pfColor"
-                    android:textSize="15sp" />
-        -->
-
+        <TextView
+            android:id="@+id/package_brief"
+            android:layout_width="248dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/package_brief_txt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="6dp"
+            android:layout_toEndOf="@+id/package_brief_txt"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="#000"
+            android:textAlignment="textStart"
+            android:textSize="15sp" />
 
 
         <View
@@ -164,7 +267,8 @@
             android:layout_height="1dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="150dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="290dp"
             android:background="?android:attr/listDivider" />
 
         <View
@@ -173,47 +277,71 @@
             android:layout_height="1dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="-17dp"
-            android:layout_marginTop="241dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="365dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
             android:id="@+id/calltxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/orderId"
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="127dp"
-            android:text="Call:"
+            android:layout_marginTop="265dp"
+            android:text="Call: "
             android:textColor="#000" />
 
         <TextView
             android:id="@+id/m_phn_num"
-            android:layout_width="150dp"
+            android:layout_width="333dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/calltxt"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="55dp"
+            android:layout_marginEnd="0dp"
             android:layout_toEndOf="@+id/calltxt"
             android:textAlignment="textStart"
             android:textColor="@color/blue_link"
             android:textSize="15sp" />
         <!--android:onClick="callMerchant"-->
 
+
+        <TextView
+            android:id="@+id/price_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="290dp"
+            android:text="Package Price: "
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/price_txt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_toEndOf="@+id/price_txt"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+
         <Button
             android:id="@+id/btn_status"
             android:layout_width="105dp"
             android:layout_height="35dp"
-
+            android:layout_below="@+id/price_txt"
             android:layout_marginLeft="180dp"
-            android:layout_marginBottom="-1dp"
-            android:layout_marginTop="190dp"
-            android:textColor="@color/white"
+            android:layout_marginTop="63dp"
             android:background="@drawable/buttonstyle"
             android:padding="10dp"
-            android:text="Action"
+            android:text="Pick"
+            android:textColor="@color/white"
             android:textSize="14sp" />
 
         <!--<Button-->

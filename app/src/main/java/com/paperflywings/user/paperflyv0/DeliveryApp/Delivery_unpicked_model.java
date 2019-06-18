@@ -2,29 +2,47 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 public class Delivery_unpicked_model {
 
+    private String barcode;
     private String orderid;
     private String merOrderRef;
+    private String merchantName;
+    private String pickMerchantName;
     private String custname;
     private String custaddress;
+    private String custphone;
     private String packagePrice;
-    private String pickupMerchantPhone;
+    private String productBrief;
+    private String deliveryTime;
 
 
-    public Delivery_unpicked_model(String orderid, String merOrderRef, String custname, String custaddress, String packagePrice, String pickupMerchantPhone) {
+    public Delivery_unpicked_model(String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime) {
+        this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
         this.custname = custname;
         this.custaddress = custaddress;
+        this.custphone = custphone;
         this.packagePrice = packagePrice;
-        this.pickupMerchantPhone = pickupMerchantPhone;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
 
     }
 
-    public String getOrdId() {
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public String getOrderid() {
         return orderid;
     }
 
-    public void setOrdId(String orderid) {
+    public void setOrderid(String orderid) {
         this.orderid = orderid;
     }
 
@@ -34,6 +52,22 @@ public class Delivery_unpicked_model {
 
     public void setMerOrderRef(String merOrderRef) {
         this.merOrderRef = merOrderRef;
+    }
+
+    public String getMerchantName() {
+        return merchantName;
+    }
+
+    public void setMerchantName(String merchantName) {
+        this.merchantName = merchantName;
+    }
+
+    public String getPickMerchantName() {
+        return pickMerchantName;
+    }
+
+    public void setPickMerchantName(String pickMerchantName) {
+        this.pickMerchantName = pickMerchantName;
     }
 
     public String getCustname() {
@@ -52,6 +86,14 @@ public class Delivery_unpicked_model {
         this.custaddress = custaddress;
     }
 
+    public String getCustphone() {
+        return custphone;
+    }
+
+    public void setCustphone(String custphone) {
+        this.custphone = custphone;
+    }
+
     public String getPackagePrice() {
         return packagePrice;
     }
@@ -60,12 +102,20 @@ public class Delivery_unpicked_model {
         this.packagePrice = packagePrice;
     }
 
-    public String getPickupMerchantPhone() {
-        return pickupMerchantPhone;
+    public String getProductBrief() {
+        return productBrief;
     }
 
-    public void setPickupMerchantPhone(String pickupMerchantPhone) {
-        this.pickupMerchantPhone = pickupMerchantPhone;
+    public void setProductBrief(String productBrief) {
+        this.productBrief = productBrief;
+    }
+
+    public String getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(String deliveryTime) {
+        this.deliveryTime = deliveryTime;
     }
 
     public int getKey_id() {

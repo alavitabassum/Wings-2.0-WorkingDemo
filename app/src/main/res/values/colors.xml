@@ -23,7 +23,7 @@
     <color name="put_bg_color">#A2D9CE</color>
     <color name="pending_bg_color">#FCF3CF</color>
     <color name="put_hd_color">#0B5345</color>
-
+    <color name="put_hd_color_green">#32A85D</color>
 
     <color name="backgroundcolor">#fcfcfc</color>
     <color name="lightgray">#ededed</color>

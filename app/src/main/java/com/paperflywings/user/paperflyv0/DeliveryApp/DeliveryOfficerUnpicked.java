@@ -65,12 +65,19 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
+
+    public static final String BARCODE_NO= "barcode";
     public static final String ORDERID = "orderid";
     public static final String MERCHANT_ORDER_REF = "merOrderRef";
+    public static final String MERCHANTS_NAME = "merchantName";
+    public static final String PICK_MERCHANTS_NAME = "pickMerchantName";
     public static final String CUSTOMER_NAME = "custname";
+    public static final String Phone = "custphone";
     public static final String CUSTOMER_ADDRESS = "custaddress";
     public static final String PACKAGE_PRICE = "packagePrice";
-    public static final String Phone = "pickupMerchantPhone";
+    public static final String PRODUCT_BRIEF= "productBrief";
+    public static final String DELIVERY_TIME= "deliveryTime";
+
     //public static final String SQL_PRIMARY_ID = "Sql Primary Id";
     private static final String URL_DATA = "";
     private ProgressDialog progress;
@@ -184,14 +191,20 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             Cursor c = db.get_delivery_unpicked(sqLiteDatabase,user);
 
             while (c.moveToNext()){
-                String orderid = c.getString(0);
-                String merOrderRef = c.getString(1);
-                String custname = c.getString(2);
-                String custaddress = c.getString(3);
-                String packagePrice = c.getString(4);
-                String pickupMerchantPhone = c.getString(5);
 
-                Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(orderid,merOrderRef,custname,custaddress,packagePrice,pickupMerchantPhone);
+                String barcode = c.getString(0);
+                String orderid = c.getString(1);
+                String merOrderRef = c.getString(2);
+                String merchantName = c.getString(3);
+                String pickMerchantName = c.getString(4);
+                String custname = c.getString(5);
+                String custaddress = c.getString(6);
+                String custphone = c.getString(7);
+                String packagePrice = c.getString(8);
+                String productBrief = c.getString(9);
+                String deliveryTime = c.getString(10);
+
+                Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime);
 
                 list.add(unpickedmodel);
             }
@@ -201,6 +214,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             Delivery_unpicked_adapter.notifyDataSetChanged();
             Delivery_unpicked_adapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
             swipeRefreshLayout.setRefreshing(false);
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -227,20 +241,32 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 Delivery_unpicked_model unpickedmodel = new  Delivery_unpicked_model(
+
+                                        o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
                                         o.getString("custname"),
                                         o.getString("custaddress"),
+                                        o.getString("custphone"),
                                         o.getString("packagePrice"),
-                                        o.getString("pickupMerchantPhone"));
+                                        o.getString("productBrief"),
+                                        o.getString("deliveryTime"));
 
                                 db.insert_delivery_unpicked_count(
+
+                                        o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
                                         o.getString("custname"),
                                         o.getString("custaddress"),
+                                        o.getString("custphone"),
                                         o.getString("packagePrice"),
-                                        o.getString("pickupMerchantPhone")
+                                        o.getString("productBrief"),
+                                        o.getString("deliveryTime")
                                         , NAME_NOT_SYNCED_WITH_SERVER );
 
                                 list.add(unpickedmodel);

@@ -63,12 +63,17 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     //delivery unpicked
 
+    public static final String BARCODE_NO= "barcode";
     public static final String ORDERID = "orderid";
     public static final String MERCHANT_ORDER_REF = "merOrderRef";
+    public static final String MERCHANTS_NAME = "merchantName";
+    public static final String PICK_MERCHANTS_NAME = "pickMerchantName";
     public static final String CUSTOMER_NAME = "custname";
+    public static final String Phone = "custphone";
     public static final String CUSTOMER_ADDRESS = "custaddress";
     public static final String PACKAGE_PRICE = "packagePrice";
-    public static final String Phone = "pickupMerchantPhone";
+    public static final String PRODUCT_BRIEF= "productBrief";
+    public static final String DELIVERY_TIME= "deliveryTime";
 
 
 
@@ -194,12 +199,17 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE8 = "CREATE TABLE Insert_Delivery_Unpicked( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "barcode TEXT, "
                 + "orderid TEXT, "
                 + "merOrderRef TEXT, "
+                + "merchantName TEXT, "
+                + "pickMerchantName TEXT, "
                 + "custname TEXT, "
                 + "custaddress TEXT, "
+                + "custphone TEXT, "
                 + "packagePrice TEXT, "
-                + "pickupMerchantPhone TEXT, "
+                + "productBrief TEXT, "
+                + "deliveryTime TEXT, "
                 + "status INT, "
                 + "unique(id))" ;
 
@@ -765,16 +775,21 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
 
     // insert counts in delivery unpicked
-    public void insert_delivery_unpicked_count(String orderId, String merOrderRef, String custname, String custaddress, String packagePrice, String pickupMerchantPhone, int status) {
+    public void insert_delivery_unpicked_count(String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(ORDERID, orderId);
+        values.put(BARCODE_NO, barcode);
+        values.put(ORDERID, orderid);
         values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(MERCHANTS_NAME, merchantName);
+        values.put(PICK_MERCHANTS_NAME, pickMerchantName);
         values.put(CUSTOMER_NAME, custname);
         values.put(CUSTOMER_ADDRESS, custaddress);
+        values.put(Phone, custphone);
         values.put(PACKAGE_PRICE, packagePrice);
-        values.put(Phone, pickupMerchantPhone);
+        values.put(PRODUCT_BRIEF, productBrief);
+        values.put(DELIVERY_TIME, deliveryTime);
         values.put(STATUS,status);
 
         db.insert(TABLE_NAME_8,null, values);
@@ -784,7 +799,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     // get the delivery unpicked
     public Cursor get_delivery_unpicked(SQLiteDatabase db, String user)
     {
-        String[] columns = {ORDERID, MERCHANT_ORDER_REF, CUSTOMER_NAME, CUSTOMER_ADDRESS, PACKAGE_PRICE, Phone};
+        String[] columns = { BARCODE_NO,ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME,PICK_MERCHANTS_NAME,CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone,PACKAGE_PRICE,PRODUCT_BRIEF,DELIVERY_TIME };
 
         String whereClause = USERNAME + "=?";
         String[] whereArgs = new String[] {
