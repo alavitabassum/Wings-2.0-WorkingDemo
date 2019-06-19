@@ -41,7 +41,6 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
-
         this.mListner = listener;
     }
 

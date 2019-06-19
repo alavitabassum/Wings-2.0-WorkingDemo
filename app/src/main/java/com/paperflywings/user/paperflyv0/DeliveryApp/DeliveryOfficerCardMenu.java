@@ -55,7 +55,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     BarcodeDbHelper db;
-    private CardView unpicked_item,withoutStatus,onHold,returnReqst,returnList,cashCollection,quickDelivery;
+    private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery;
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
 
     private static final String UNPICKED = "unpicked";
@@ -82,12 +82,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer);
 
 
-        withoutStatus = (CardView)findViewById(R.id.WithoutStatus_id);
-        onHold = (CardView)findViewById(R.id.OnHold_id);
-        returnReqst = (CardView)findViewById(R.id.ReturnRequest_id);
-        returnList = (CardView)findViewById(R.id.ReturnList_id);
-        cashCollection = (CardView)findViewById(R.id.Cash_id);
-        quickDelivery = (CardView)findViewById(R.id.QuickDelivery_id);
+
 
 
         withoutStatus_count = (TextView)findViewById(R.id.WithoutStatusCount);
@@ -226,7 +221,17 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 DeliverySummary_Model todaySummary = new DeliverySummary_Model(username, unpicked,withoutStatus,onHold,cash,returnRequest, returnList);
 //                summaries.add(todaySummary);
 
+
                 unpicked_item = (CardView)findViewById(R.id.Unpicked_id);
+                without_Status = (CardView)findViewById(R.id.WithoutStatus_id);
+                on_Hold = (CardView)findViewById(R.id.OnHold_id);
+                returnReqst = (CardView)findViewById(R.id.ReturnRequest_id);
+                return_List = (CardView)findViewById(R.id.ReturnList_id);
+                cashCollection = (CardView)findViewById(R.id.Cash_id);
+                quickDelivery = (CardView)findViewById(R.id.QuickDelivery_id);
+
+
+
                 unpicked_count = (TextView)findViewById(R.id.UnpickedCount);
                 withoutStatus_count = (TextView)findViewById(R.id.WithoutStatusCount);
                 onHold_count = (TextView)findViewById(R.id.OnHoldCount);
@@ -245,13 +250,21 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 unpicked_item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String str = unpicked_count.getText().toString();
+                        String str_unpicked = unpicked_count.getText().toString();
                         Intent intent = new Intent(DeliveryOfficerCardMenu.this, DeliveryOfficerUnpicked.class);
-                        intent.putExtra("message", str);
+                        intent.putExtra("message", str_unpicked);
                         startActivity(intent);
                     }
                 });
-
+                withoutStatus_count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String str_without_status = withoutStatus_count.getText().toString();
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this, DeliveryWithoutStatus.class);
+                        intent.putExtra("message", str_without_status);
+                        startActivity(intent);
+                    }
+                });
 
             }
 

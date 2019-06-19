@@ -17,7 +17,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_6 = "pickups_today_executive";
     private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
     private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
-    private static final String TABLE_NAME_9 = "unpicked_order_picked";
+    private static final String TABLE_NAME_9 = "Insert_Delivery_without_status";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
@@ -76,6 +76,38 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String PRODUCT_BRIEF= "productBrief";
     public static final String DELIVERY_TIME= "deliveryTime";
     public static final String EMPLOYEE_CODE= "empCode";
+
+
+    //delivery without status
+    public static final String CUSTOMER_DISTRICT_WITHOUT_STATUS= "customerDistrict";
+    public static final String BARCODE_NO_WITHOUT_STATUS= "barcode";
+    public static final String ORDERID_WITHOUT_STATUS = "orderid";
+    public static final String MERCHANT_REF_WITHOUT_STATUS = "merOrderRef";
+    public static final String MERCHANTS_NAME_WITHOUT_STATUS = "merchantName";
+    public static final String PICK_MERCHANTS_NAME_WITHOUT_STATUS = "pickMerchantName";
+    public static final String CUSTOMER_NAME_WITHOUT_STATUS = "custname";
+    public static final String Phone_WITHOUT_STATUS = "custphone";
+    public static final String CUSTOMER_ADDRESS_WITHOUT_STATUS = "custaddress";
+    public static final String PACKAGE_PRICE_WITHOUT_STATUS = "packagePrice";
+    public static final String PRODUCT_BRIEF_WITHOUT_STATUS= "productBrief";
+    public static final String DELIVERY_TIME_WITHOUT_STATUS= "deliveryTime";
+
+    //delivery without status actions
+    public static final String CASH_WITHOUT_STATUS = "Cash";
+    public static final String CASHTYPE_WITHOUT_STATUS= "cashType";
+    public static final String CASHTIME_WITHOUT_STATUS= "CashTime";
+    public static final String CASHBY_WITHOUT_STATUS= "CashBy";
+    public static final String CASHAMT_WITHOUT_STATUS= "CashAmt";
+    public static final String CASHCOMMENT_WITHOUT_STATUS= "CashComment";
+    public static final String PARTIAL_WITHOUT_STATUS= "partial";
+    public static final String PARTIAL_TIME_WITHOUT_STATUS= "partialTime";
+    public static final String PARTIAL_BY_WITHOUT_STATUS= "partialBy";
+    public static final String PARTIAL_RECEIVE_BY_WITHOUT_STATUS= "partialReceive";
+    public static final String PARTIAL_RETURN_BY_WITHOUT_STATUS= "partialReturn";
+    public static final String PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS= "partialReason";
+    public static final String ONHOLDSCHEDULE_WITHOUT_STATUS= "onHoldSchedule";
+    public static final String ONHOLDREASON_WITHOUT_STATUS= "onHoldReason";
+
 
 
     private static final String[] COLUMNS = { KEY_ID, MERCHANT_ID, KEY_NAME };
@@ -215,6 +247,39 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "unique(id, barcode))" ;
 
 
+        String CREATION_TABLE9 = "CREATE TABLE Insert_Delivery_Without_status( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "customerDistrict TEXT, "
+                + "barcode TEXT, "
+                + "orderid TEXT, "
+                + "merOrderRef TEXT, "
+                + "merchantName TEXT, "
+                + "pickMerchantName TEXT, "
+                + "custname TEXT, "
+                + "custaddress TEXT, "
+                + "custphone TEXT, "
+                + "packagePrice TEXT, "
+                + "productBrief TEXT, "
+                + "deliveryTime TEXT, "
+                + "username TEXT, "
+                + "empCode TEXT, "
+                + "Cash TEXT, "
+                + "cashType TEXT, "
+                + "CashTime TEXT, "
+                + "CashBy TEXT, "
+                + "CashAmt TEXT, "
+                + "CashComment TEXT, "
+                + "partial TEXT, "
+                + "partialTime TEXT, "
+                + "partialBy TEXT, "
+                + "partialReceive TEXT, "
+                + "partialReturn TEXT, "
+                + "partialReason TEXT, "
+                + "onHoldSchedule TEXT, "
+                + "onHoldReason TEXT, "
+                + "status INT, "
+                + "unique(id, barcode))" ;
+
 
 
         db.execSQL(CREATION_TABLE);
@@ -225,6 +290,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE6);
         db.execSQL(CREATION_TABLE7);
         db.execSQL(CREATION_TABLE8);
+        db.execSQL(CREATION_TABLE9);
 
     }
 
@@ -238,6 +304,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_6);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_7);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_8);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_9);
         this.onCreate(db);
     }
 
@@ -826,5 +893,57 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_8,values,whereClause,whereArgs );
         db.close();
     }
+
+    //insert counts in without status
+
+    public void insert_delivery_without_status(String customerDistrict,String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash,String cashType,String CashTime,String CashBy,String CashAmt,String CashComment,String partial,String partialTime,String partialBy,String partialReceive,String partialReturn,String partialReason,String onHoldSchedule,String onHoldReason,int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(CUSTOMER_DISTRICT_WITHOUT_STATUS, customerDistrict);
+        values.put(BARCODE_NO_WITHOUT_STATUS, barcode);
+        values.put(ORDERID_WITHOUT_STATUS, orderid);
+        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
+        values.put(MERCHANTS_NAME_WITHOUT_STATUS, merchantName);
+        values.put(PICK_MERCHANTS_NAME_WITHOUT_STATUS, pickMerchantName);
+        values.put(CUSTOMER_NAME_WITHOUT_STATUS, custname);
+        values.put(CUSTOMER_ADDRESS_WITHOUT_STATUS, custaddress);
+        values.put(Phone_WITHOUT_STATUS, custphone);
+        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
+        values.put(PRODUCT_BRIEF_WITHOUT_STATUS, productBrief);
+        values.put(DELIVERY_TIME_WITHOUT_STATUS, deliveryTime);
+        values.put(CASH_WITHOUT_STATUS, Cash);
+        values.put(CASHTYPE_WITHOUT_STATUS, cashType);
+        values.put(CASHTIME_WITHOUT_STATUS, CashTime);
+        values.put(CASHBY_WITHOUT_STATUS, CashBy);
+        values.put(CASHAMT_WITHOUT_STATUS, CashAmt);
+        values.put(CASHCOMMENT_WITHOUT_STATUS, CashComment);
+        values.put(PARTIAL_WITHOUT_STATUS, partial);
+        values.put(PARTIAL_TIME_WITHOUT_STATUS, partialTime);
+        values.put(PARTIAL_BY_WITHOUT_STATUS, partialBy);
+        values.put(PARTIAL_RECEIVE_BY_WITHOUT_STATUS, partialReceive);
+        values.put(PARTIAL_RETURN_BY_WITHOUT_STATUS, partialReturn);
+        values.put(PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, partialReason);
+        values.put(ONHOLDSCHEDULE_WITHOUT_STATUS, onHoldSchedule);
+        values.put(ONHOLDREASON_WITHOUT_STATUS, onHoldReason);
+        values.put(STATUS,status);
+
+        db.insert(TABLE_NAME_9,null, values);
+        db.close();
+    }
+
+    // get without status
+
+    public Cursor get_delivery_without_status(SQLiteDatabase db, String user)
+    {
+        String[] columns = { CUSTOMER_DISTRICT_WITHOUT_STATUS,BARCODE_NO_WITHOUT_STATUS,ORDERID_WITHOUT_STATUS, MERCHANT_REF_WITHOUT_STATUS, MERCHANTS_NAME_WITHOUT_STATUS,PICK_MERCHANTS_NAME_WITHOUT_STATUS,CUSTOMER_NAME_WITHOUT_STATUS, CUSTOMER_ADDRESS_WITHOUT_STATUS , Phone_WITHOUT_STATUS,PACKAGE_PRICE_WITHOUT_STATUS,PRODUCT_BRIEF_WITHOUT_STATUS,DELIVERY_TIME_WITHOUT_STATUS,CASH_WITHOUT_STATUS,CASHTYPE_WITHOUT_STATUS,CASHTIME_WITHOUT_STATUS,CASHBY_WITHOUT_STATUS,CASHAMT_WITHOUT_STATUS,CASHCOMMENT_WITHOUT_STATUS,PARTIAL_WITHOUT_STATUS,PARTIAL_TIME_WITHOUT_STATUS,PARTIAL_BY_WITHOUT_STATUS,PARTIAL_RECEIVE_BY_WITHOUT_STATUS,PARTIAL_RETURN_BY_WITHOUT_STATUS,PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS,ONHOLDSCHEDULE_WITHOUT_STATUS,ONHOLDREASON_WITHOUT_STATUS };
+        String whereClause = USERNAME + "=?";
+        String[] whereArgs = new String[] {
+                user
+        };
+        return (db.query(TABLE_NAME_9,columns,whereClause,whereArgs,null,null,null));
+    }
+
+
 }
 

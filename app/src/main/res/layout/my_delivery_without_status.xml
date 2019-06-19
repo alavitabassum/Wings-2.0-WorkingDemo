@@ -2,9 +2,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_delivery_unpicked_list"
+    android:id="@+id/card_view_delivery_without_status_list"
     android:layout_width="match_parent"
-    android:layout_height="450dp"
+    android:layout_height="480dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:padding="20dp">
 
         <!-- <Button
              android:id="@+id/txtOption"
@@ -33,13 +33,27 @@
 
             android:layout_alignBottom="@id/btn_scan"
             android:layout_marginRight="5dp"
-
-
-
             android:layout_marginBottom="-1dp"
             android:layout_toLeftOf="@id/btn_scan"
             android:background="@drawable/buttonstyle"
             android:textSize="14sp"-->
+
+
+        <TextView
+            android:id="@+id/deliverytime"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="0dp"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_cercleshape"
+            android:textSize="15sp"
+            android:elevation="4dp"/>
+
+
 
         <TextView
             android:id="@+id/ordertxt"
@@ -47,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="1dp"
+            android:layout_marginTop="15dp"
             android:lines="2"
             android:maxLines="2"
             android:text="Order ID: "
@@ -56,12 +70,12 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/orderId"
+            android:id="@+id/orderId_without_status"
             android:layout_width="279dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/ordertxt"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="6dp"
             android:layout_toEndOf="@+id/ordertxt"
             android:lines="2"
@@ -77,22 +91,23 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="40dp"
             android:text="Merchant Referance: "
             android:maxLines="2"
             android:lines="2"
             android:textColor="#000"
             android:textStyle="bold"
+
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/m_order_ref"
+            android:id="@+id/m_order_ref_without_status"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/merchant_ref_txt"
             android:layout_alignEnd="@+id/divider"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="0dp"
             android:layout_toEndOf="@+id/merchant_ref_txt"
             android:lines="2"
@@ -108,27 +123,27 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="65dp"
             android:background="?android:attr/listDivider" />
 
 
-      <!--  <TextView
-            android:id="@+id/merchant_name_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="68dp"
-            android:text="Merchant Name: "
-            android:textColor="#000"
-            android:textSize="15sp" />
--->
+        <!--  <TextView
+              android:id="@+id/merchant_name_txt"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentTop="true"
+              android:layout_marginStart="0dp"
+              android:layout_marginTop="68dp"
+              android:text="Merchant Name: "
+              android:textColor="#000"
+              android:textSize="15sp" />
+  -->
         <TextView
-            android:id="@+id/m_name"
+            android:id="@+id/m_name_without_status"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="70dp"
             android:layout_marginEnd="0dp"
             android:textAlignment="textStart"
             android:layout_marginStart="0dp"
@@ -150,11 +165,11 @@
               android:textSize="15sp" />-->
 
         <TextView
-            android:id="@+id/pick_m_name"
+            android:id="@+id/pick_m_name_without_status"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="85dp"
+            android:layout_marginTop="90dp"
             android:layout_marginEnd="0dp"
             android:textAlignment="textStart"
             android:layout_marginStart="0dp"
@@ -168,87 +183,90 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="112dp"
+            android:layout_marginTop="120dp"
             android:background="?android:attr/listDivider" />
 
 
 
-    <!--    <TextView
-            android:id="@+id/customer_name_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="120dp"
-            android:text="Customer Name: "
-            android:textColor="#000"
-            android:textSize="15sp" />-->
+        <!--    <TextView
+                android:id="@+id/customer_name_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="120dp"
+                android:text="Customer Name: "
+                android:textColor="#000"
+                android:textSize="15sp" />-->
 
 
         <TextView
-            android:id="@+id/customer_name"
+            android:id="@+id/customer_name_without_status"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="140dp"
             android:layout_marginEnd="4dp"
+            android:padding="3dp"
             android:drawableLeft="@drawable/ic_person_black_24dp"
             android:textAlignment="textStart"
-            android:textColor="#000"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
             android:textSize="15sp" />
 
 
-     <!--   <TextView
-            android:id="@+id/customer_Address_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="140dp"
-            android:text="Customer Address:  "
-            android:textColor="#000"
-            android:textSize="15sp" />-->
+        <!--   <TextView
+               android:id="@+id/customer_Address_txt"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_alignParentTop="true"
+               android:layout_marginStart="0dp"
+               android:layout_marginTop="140dp"
+               android:text="Customer Address:  "
+               android:textColor="#000"
+               android:textSize="15sp" />-->
 
 
         <TextView
-            android:id="@+id/customer_Address"
+            android:id="@+id/customer_Address_without_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="200dp"
-
-            android:textAlignment="textStart"
-            android:textColor="#000"
+            android:padding="3dp"
             android:drawableLeft="@drawable/ic_location_on_black_24dp"
-            android:textSize="15sp" />
+            android:textAlignment="textStart"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
-       <!-- <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="255dp"
-            android:background="?android:attr/listDivider" />-->
+        <!-- <View
+             android:id="@+id/divider3"
+             android:layout_width="match_parent"
+             android:layout_height="1dp"
+             android:layout_alignParentStart="true"
+             android:layout_alignParentTop="true"
+             android:layout_marginStart="2dp"
+             android:layout_marginTop="255dp"
+             android:background="?android:attr/listDivider" />-->
 
-    <!--    <TextView
-            android:id="@+id/package_brief_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="310dp"
-            android:text="Package brief: "
-            android:lines="2"
-            android:maxLines="2"
-            android:textColor="#000"
-            android:textSize="15sp" />
+        <!--    <TextView
+                android:id="@+id/package_brief_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="310dp"
+                android:text="Package brief: "
+                android:lines="2"
+                android:maxLines="2"
+                android:textColor="#000"
+                android:textSize="15sp" />
 
--->
+    -->
         <TextView
-            android:id="@+id/package_brief"
+            android:id="@+id/package_brief_without_status"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -267,7 +285,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="290dp"
+            android:layout_marginTop="295dp"
             android:background="?android:attr/listDivider" />
 
         <View
@@ -286,12 +304,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="175dp"
+            android:layout_marginTop="170dp"
+            android:padding="3dp"
             android:drawableLeft="@drawable/ic_local_phone_black_24dp"
             android:textColor="#000" />
 
         <TextView
-            android:id="@+id/m_phn_num"
+            android:id="@+id/m_phn_num_without_status"
             android:layout_width="333dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/calltxt"
@@ -311,13 +330,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="290dp"
+            android:layout_marginTop="300dp"
             android:text="Package Price: "
             android:textColor="#000"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/price"
+            android:id="@+id/price_without_status"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/price_txt"
@@ -329,32 +348,31 @@
             android:textColor="#000"
             android:textSize="15sp" />
 
-
         <Button
-            android:id="@+id/btn_status"
+            android:id="@+id/btn_status_without_status"
             android:layout_width="105dp"
             android:layout_height="35dp"
             android:layout_below="@+id/price_txt"
             android:layout_marginLeft="180dp"
             android:layout_marginTop="63dp"
-            android:background="@drawable/buttonstyle"
+            android:background="@drawable/buttonstyle2"
             android:padding="10dp"
-            android:text="Pick"
-            android:textColor="@color/white"
+            android:text="Action"
+            android:textColor="@color/black"
             android:textSize="14sp" />
 
         <!--<Button-->
-            <!--android:id="@+id/btn_scan"-->
-            <!--android:layout_width="106dp"-->
-            <!--android:layout_height="35dp"-->
-            <!--android:layout_below="@id/divider4"-->
-            <!--android:layout_alignEnd="@+id/m_name_pul"-->
-            <!--android:layout_marginTop="64dp"-->
-            <!--android:background="@drawable/buttonstyle_scan"-->
-            <!--android:text="SCAN"-->
-            <!--android:textColor="@color/white" />
-            android:layout_toLeftOf="@id/btn_scan"
-            -->
+        <!--android:id="@+id/btn_scan"-->
+        <!--android:layout_width="106dp"-->
+        <!--android:layout_height="35dp"-->
+        <!--android:layout_below="@id/divider4"-->
+        <!--android:layout_alignEnd="@+id/m_name_pul"-->
+        <!--android:layout_marginTop="64dp"-->
+        <!--android:background="@drawable/buttonstyle_scan"-->
+        <!--android:text="SCAN"-->
+        <!--android:textColor="@color/white" />
+        android:layout_toLeftOf="@id/btn_scan"
+        -->
 
 
     </RelativeLayout>

@@ -33,9 +33,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".DeliveryApp.DeliveryWithoutStatus"
+            android:label="@string/title_activity_delivery_without_status"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".DeliveryApp.DeliveryOfficerUnpicked"
             android:label="@string/title_activity_delivery_officer_unpicked"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryOfficerCardMenu"
             android:label="@string/title_activity_delivery_officer_card_menu"
