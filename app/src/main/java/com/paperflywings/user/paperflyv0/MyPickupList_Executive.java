@@ -648,9 +648,7 @@ public class MyPickupList_Executive extends AppCompatActivity
         final TextView tv1 = mView.findViewById(R.id.textView3);
 
             final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(MyPickupList_Executive.this);
-
             spinnerBuilder.setTitle("Select Action: ");
-
             spinnerBuilder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int item) {

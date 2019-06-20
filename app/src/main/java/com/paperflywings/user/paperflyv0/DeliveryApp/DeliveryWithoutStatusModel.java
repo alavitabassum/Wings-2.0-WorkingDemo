@@ -25,15 +25,58 @@ public class DeliveryWithoutStatusModel {
     private String partialTime;
     private String partialBy;
     private String partialReceive;
+    private String slaMiss;
+
+    public DeliveryWithoutStatusModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
+        this.dropPointCode = dropPointCode;
+//        this.customerDistrict = customerDistrict;
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+        this.Cash = cash;
+        this.cashType = cashType;
+        this.CashTime = cashTime;
+        this.CashBy = cashBy;
+        this.CashAmt = cashAmt;
+        this.CashComment = cashComment;
+        this.partial = partial;
+        this.partialTime = partialTime;
+        this.partialBy = partialBy;
+        this.partialReceive = partialReceive;
+        this.partialReturn = partialReturn;
+        this.partialReason = partialReason;
+        this.onHoldReason = onHoldReason;
+        this.onHoldSchedule = onHoldSchedule;
+        this.slaMiss = slaMiss;
+    }
+
+    public String getDropPointCode() {
+        return dropPointCode;
+    }
+
+    public void setDropPointCode(String dropPointCode) {
+        this.dropPointCode = dropPointCode;
+    }
+
     private String partialReturn;
     private String partialReason;
     private String onHoldReason;
     private String onHoldSchedule;
+    private String dropPointCode;
 
 
 
-    public DeliveryWithoutStatusModel(String customerDistrict, String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash,String cashType,String CashTime,String CashBy,String CashAmt,String CashComment,String partial,String partialTime,String partialBy,String partialReceive,String partialReturn,String partialReason,String onHoldReason,String onHoldSchedule) {
-        this.customerDistrict = customerDistrict;
+    public DeliveryWithoutStatusModel(String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime,String Cash,String cashType,String CashTime,String CashBy,String CashAmt,String CashComment,String partial,String partialTime,String partialBy,String partialReceive,String partialReturn,String partialReason,String onHoldReason,String onHoldSchedule) {
+
+
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;

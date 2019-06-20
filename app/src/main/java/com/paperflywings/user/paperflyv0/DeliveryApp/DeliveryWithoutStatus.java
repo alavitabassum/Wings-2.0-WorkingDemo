@@ -28,6 +28,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,6 +80,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     public static final String DELIVERY_TIME_WITHOUT_STATUS= "deliveryTime";
 
     //delivery without status actions
+
     public static final String CASH_WITHOUT_STATUS = "Cash";
     public static final String CASHTYPE_WITHOUT_STATUS= "cashType";
     public static final String CASHTIME_WITHOUT_STATUS= "CashTime";
@@ -107,6 +111,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     private static final int REQUEST_CAMERA = 1;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
+    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
 
     private List<DeliveryWithoutStatusModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -194,36 +199,36 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
             while (c.moveToNext()){
 
-                String customerDistrict = c.getString(0);
-                String barcode = c.getString(1);
-                String orderid = c.getString(2);
-                String merOrderRef = c.getString(3);
-                String merchantName = c.getString(4);
-                String pickMerchantName = c.getString(5);
-                String custname = c.getString(6);
-                String custaddress = c.getString(7);
-                String custphone = c.getString(8);
-                String packagePrice = c.getString(9);
-                String productBrief = c.getString(10);
-                String deliveryTime = c.getString(11);
+//                String customerDistrict = c.getString(0);
+                String barcode = c.getString(0);
+                String orderid = c.getString(1);
+                String merOrderRef = c.getString(2);
+                String merchantName = c.getString(3);
+                String pickMerchantName = c.getString(4);
+                String custname = c.getString(5);
+                String custaddress = c.getString(6);
+                String custphone = c.getString(7);
+                String packagePrice = c.getString(8);
+                String productBrief = c.getString(9);
+                String deliveryTime = c.getString(10);
 
-                String Cash = c.getString(12);
-                String cashType = c.getString(13);
-                String CashTime = c.getString(14);
-                String CashBy = c.getString(15);
-                String CashAmt = c.getString(16);
-                String CashComment = c.getString(17);
-                String partial = c.getString(18);
-                String partialTime = c.getString(19);
-                String partialBy = c.getString(20);
-                String partialReceive = c.getString(21);
-                String partialReturn = c.getString(22);
-                String partialReason = c.getString(23);
-                String onHoldSchedule = c.getString(24);
-                String onHoldReason = c.getString(25);
+                String Cash = c.getString(11);
+                String cashType = c.getString(12);
+                String CashTime = c.getString(13);
+                String CashBy = c.getString(14);
+                String CashAmt = c.getString(15);
+                String CashComment = c.getString(16);
+                String partial = c.getString(17);
+                String partialTime = c.getString(18);
+                String partialBy = c.getString(19);
+                String partialReceive = c.getString(20);
+                String partialReturn = c.getString(21);
+                String partialReason = c.getString(22);
+                String onHoldSchedule = c.getString(23);
+                String onHoldReason = c.getString(24);
 
 
-                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(customerDistrict,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule);
+                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule);
 
                 list.add(withoutStatus_model);
             }
@@ -261,7 +266,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryWithoutStatusModel withoutStatus_model = new  DeliveryWithoutStatusModel(
 
-                                        o.getString("barcode"),
+                                        o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -286,11 +291,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("partialReturn"),
                                         o.getString("partialReason"),
                                         o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"));
+                                        o.getString("onHoldReason"),
+                                        o.getString("slaMiss"));
 
 
                                 db.insert_delivery_without_status(
-                                        o.getString("customerDistrict"),
+                                        o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -315,7 +321,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("partialReturn"),
                                         o.getString("partialReason"),
                                         o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason")
+                                        o.getString("onHoldReason"),
+                                        o.getString("slaMiss")
                                         , NAME_NOT_SYNCED_WITH_SERVER );
 
                                 list.add(withoutStatus_model);
@@ -530,7 +537,111 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemClick_view(View view2, int position2) {
+
+        final CharSequence [] values = {"Cash","Partial","Return-request","On-hold"};
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        final String currentDateTime = df.format(c);
+
+        final DeliveryWithoutStatusModel clickedITem = list.get(position2);
+
+        // CASH
+        final String Cash = "Y";
+        final String CashBy = username;
+        final String cashType = "CoD";
+        final String CashTime = currentDateTime;
+
+        final String orderid = clickedITem.getOrderid();
+        final String barcode = clickedITem.getBarcode();
+
+
+        final Intent DeliveryListIntent = new Intent(DeliveryWithoutStatus.this,
+                DeliveryWithoutStatus.class);
+
+
+        final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
+        spinnerBuilder.setTitle("Select Action: ");
+
+        spinnerBuilder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+
+                        final View mViewCash = getLayoutInflater().inflate(R.layout.insert_cash_without_status, null);
+                        final EditText et1 = mViewCash.findViewById(R.id.editTextCollection);
+                        final EditText et2 = mViewCash.findViewById(R.id.Remarks_without_status);
+                        final TextView tv1 = mViewCash.findViewById(R.id.package_price_text);
+
+                        switch (item) {
+                            case 0:
+                                AlertDialog.Builder cashSpinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
+                                //cashSpinnerBuilder.setTitle("Write Comment: ");
+
+                                cashSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                cashSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int i1) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                
+                                cashSpinnerBuilder.setCancelable(false);
+                                cashSpinnerBuilder.setView(mViewCash);
+
+                                final AlertDialog dialogCash = cashSpinnerBuilder.create();
+                                dialogCash.show();
+
+                                dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
+                                            tv1.setText("Field can't be empty");
+                                        } else {
+
+                                            String CashAmt = et1.getText().toString();
+                                            String cashComment = et2.getText().toString();
+
+                                            update_cash_status(Cash, cashType, CashTime, CashBy, CashAmt ,cashComment,orderid, barcode);
+
+
+                                            startActivity(DeliveryListIntent);
+                                            dialogCash.dismiss();
+                                        }
+                                    }
+                                });
+                                dialog.dismiss();
+
+                                break;
+                            case 1:
+                            case 2:
+                            case 3:
+                            default:
+                                break;
+                        }
+                    }
+                }
+        );
+        spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i1) {
+                dialog.dismiss();
+            }
+        });
+
+        spinnerBuilder.setCancelable(false);
+        final AlertDialog dialog2 = spinnerBuilder.create();
+        dialog2.show();
 
     }
 
@@ -538,4 +649,60 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     public void onItemClick_call(View view4, int position4) {
 
     }
+
+    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Cash", cash);
+                params.put("cashType", cashType);
+                params.put("CashTime", cash);
+                params.put("CashAmt", cashAmt);
+                params.put("CashComment", cashComment);
+                params.put("CashBy", cashBy);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                params.put("flagReq", "cash");
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+
+
 }

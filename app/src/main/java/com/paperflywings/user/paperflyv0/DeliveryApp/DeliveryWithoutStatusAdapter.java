@@ -34,10 +34,11 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
-        /*   void onItemClick_view (View view2, int position2);
+
+           void onItemClick_view (View view2, int position2);
+        /*   void onItemClick(View view, int position);
            void onItemClick_view_orderIDs (View view3, int position3);*/
-        void onItemClick_call (View view4, int position4);
+           void onItemClick_call (View view4, int position4);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -102,6 +103,20 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
                     }
                 }
             });
+
+            itemStatus_without_status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view2) {
+                    if(mListner!=null){
+                        int position2 = getAdapterPosition();
+                        if(position2!=RecyclerView.NO_POSITION){
+                            mListner.onItemClick_view(view2, position2);
+                        }
+                    }
+                }
+
+            });
+
         }
 
     }
@@ -128,7 +143,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 
         viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
 
-        String CustomerDistrict = list.get(i).getCustomerDistrict();
+     /*   String CustomerDistrict = list.get(i).getCustomerDistrict();
         int DeliveryTime = Integer.parseInt(list.get(i).getDeliveryTime());
 
 
@@ -150,7 +165,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
+        }*/
     }
 
     @Override
