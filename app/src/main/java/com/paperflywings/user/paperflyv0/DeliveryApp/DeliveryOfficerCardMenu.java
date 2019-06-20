@@ -82,9 +82,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer);
 
 
-
-
-
         withoutStatus_count = (TextView)findViewById(R.id.WithoutStatusCount);
         onHold_count = (TextView)findViewById(R.id.OnHoldCount);
         returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
@@ -242,8 +239,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 unpicked_count.setText(String.valueOf(unpicked));
                 withoutStatus_count.setText(String.valueOf(withoutStatus));
                 onHold_count.setText(String.valueOf(onHold));
-                returnReqst_count.setText(String.valueOf(cash));
-                cashCollection_count.setText(String.valueOf(returnRequest));
+                returnReqst_count.setText(String.valueOf(returnRequest));
+                cashCollection_count.setText(String.valueOf(cash));
                 returnList_count.setText(String.valueOf(returnList));
 
 
