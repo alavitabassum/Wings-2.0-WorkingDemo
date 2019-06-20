@@ -188,8 +188,10 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
                 filteredList.addAll(listFull);
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for(DeliveryWithoutStatusModel items: listFull){
-
+                for(DeliveryWithoutStatusModel item: listFull){
+                    if (item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
                 }
             }
             FilterResults results = new FilterResults();

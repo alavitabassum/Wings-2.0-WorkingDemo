@@ -957,5 +957,23 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
+
+    public void update_onhold_status(String onHoldSchedule, String onHoldReason, String orderid, String barcode, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ONHOLDSCHEDULE_WITHOUT_STATUS, onHoldSchedule);
+        values.put(ONHOLDREASON_WITHOUT_STATUS, onHoldReason);
+        values.put(STATUS, status);
+
+        String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
+        String[] whereArgs = new String[]{
+                orderid,
+                barcode
+        };
+        // insert
+        db.update(TABLE_NAME_9, values, whereClause, whereArgs);
+        db.close();
+    }
+
 }
 

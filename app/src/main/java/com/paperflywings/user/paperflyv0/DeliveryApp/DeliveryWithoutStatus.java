@@ -1,5 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,7 +30,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -427,7 +432,30 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.delivery_without_status, menu);
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                DeliveryWithoutStatusAdapter.getFilter().filter(newText);
+                return false;
+            }
+            });
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            Intent intent_stay = new Intent(DeliveryWithoutStatus.this,DeliveryWithoutStatus.class);
+            Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
+            startActivity(intent_stay);
+        }
         return true;
     }
 
@@ -439,7 +467,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
         }
 
@@ -551,10 +579,13 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         final DeliveryWithoutStatusModel clickedITem = list.get(position2);
 
         // CASH
-        final String Cash = "Y";
-        final String CashBy = username;
+        final String cash = "Y";
+        final String cashBy = username;
         final String cashType = "CoD";
-        final String CashTime = currentDateTime;
+        final String cashTime = currentDateTime;
+
+        //onhold
+
 
         final String orderid = clickedITem.getOrderid();
         final String barcode = clickedITem.getBarcode();
@@ -609,10 +640,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             tv1.setText("Field can't be empty");
                                         } else {
 
-                                            String CashAmt = et1.getText().toString();
+                                            String cashAmt = et1.getText().toString();
                                             String cashComment = et2.getText().toString();
 
-                                            update_cash_status(Cash, cashType, CashTime, CashBy, CashAmt ,cashComment,orderid, barcode);
+                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, barcode);
 
 
                                             startActivity(DeliveryListIntent);
@@ -623,7 +654,74 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 dialog.dismiss();
 
                                 break;
+
                             case 1:
+
+                                AlertDialog.Builder spinnerBuilder6 = new AlertDialog.Builder(DeliveryWithoutStatus.this);
+                                spinnerBuilder6.setTitle("Select Partial Reason: ");
+
+                                View mViewOnHold6 = getLayoutInflater().inflate(R.layout.onhold_dialog_spinner, null);
+                                final Spinner mOnholdSpinner6 = (Spinner) mViewOnHold6.findViewById(R.id.onhold_spinner);
+                                final TextView error_msg6 = (TextView) mViewOnHold6.findViewById(R.id.error_msg);
+                                ArrayAdapter<String> adapterOnhold6 = new ArrayAdapter<String>(DeliveryWithoutStatus.this,
+                                        android.R.layout.simple_spinner_item,
+                                        getResources().getStringArray(R.array.partialreason));
+                                adapterOnhold6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mOnholdSpinner6.setAdapter(adapterOnhold6);
+
+                                spinnerBuilder6.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                                spinnerBuilder6.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int i1) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                spinnerBuilder6.setCancelable(false);
+                                spinnerBuilder6.setView(mViewOnHold6);
+
+                                final AlertDialog dialog6 = spinnerBuilder6.create();
+                                dialog6.show();
+
+                                dialog6.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        if (mOnholdSpinner6.getSelectedItem().toString().equalsIgnoreCase("Please select an option...")) {
+                                            error_msg6.setText("Please select one partial reason");
+                                        } else {
+
+
+                                     /*       String comments = mOnholdSpinner6.getSelectedItem().toString();
+
+
+                                            if(clickedItem.getComplete_status().equals("p")){
+                                                // pause
+                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
+                                                //if order is cancelled this will save the status 2
+                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
+//                                                updateAjkerDeal(merchant_order_ref,pause,comments);
+                                            } else if(clickedItem.getComplete_status().equals("f")){
+                                                final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
+                                                final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
+                                                updateActionStatus(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
+
+                                            }
+                                            pickup_action_log(sql_primary_id, comments, partial, "partial", username);
+                                            startActivity(picklistintent);
+//                                                getData(username);
+                                            dialog6.dismiss();*/
+                                        }
+                                    }
+                                });
+                                dialog.dismiss();
+                                break;
+
+
                             case 2:
                             case 3:
                             default:
@@ -684,13 +782,62 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Cash", cash);
                 params.put("cashType", cashType);
-                params.put("CashTime", cash);
+                params.put("CashTime", cashTime);
                 params.put("CashAmt", cashAmt);
                 params.put("CashComment", cashComment);
                 params.put("CashBy", cashBy);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
                 params.put("flagReq", "cash");
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void update_onhold_status (final String onHoldSchedules,final String onHoldReason,final String orderid,final String barcode) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                db.update_onhold_status(onHoldSchedules,onHoldReason,orderid,barcode, NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.update_onhold_status(onHoldSchedules,onHoldReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.update_onhold_status(onHoldSchedules,onHoldReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("onHoldSchedule", onHoldSchedules);
+                params.put("onHoldReason", onHoldReason);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                params.put("flagReq", "onHold");
                 return params;
             }
         };

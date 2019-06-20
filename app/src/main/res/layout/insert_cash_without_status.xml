@@ -54,7 +54,7 @@
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/Remarks_without_status_text"
-            android:layout_marginStart="0dp"
+            android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/Remarks_without_status_text"
             android:autofillHints=""
             android:ems="10"
