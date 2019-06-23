@@ -143,11 +143,16 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 
         viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
 
-     /*   String CustomerDistrict = list.get(i).getCustomerDistrict();
-        int DeliveryTime = Integer.parseInt(list.get(i).getDeliveryTime());
+       // String CustomerDistrict = list.get(i).getCustomerDistrict();
+        int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
 
+        if(DeliveryTime<0) {
+            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
+            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
+        }
 
-        if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
+      /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
@@ -160,12 +165,19 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         else if (!(CustomerDistrict.equals("1")) && DeliveryTime < 5){
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (CustomerDistrict.equals("1") && DeliveryTime <2){
+
+             else if (CustomerDistrict.equals("1") && DeliveryTime <2){
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
+        }
+
         }*/
+        else if (DeliveryTime>=0){
+            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
+            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
+        }
     }
 
     @Override

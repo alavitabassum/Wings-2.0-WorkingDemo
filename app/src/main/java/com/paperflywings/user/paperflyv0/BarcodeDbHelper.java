@@ -937,7 +937,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     //Update Cash Status
-    public void update_cash_status(String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String cashComment, String orderid, String barcode, int status) {
+    public void update_cash_status(String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String cashComment, String orderid, String barcode,String merOrderRef,String packagePrice, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(CASH_WITHOUT_STATUS, Cash);
@@ -946,6 +946,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CASHBY_WITHOUT_STATUS, CashBy);
         values.put(CASHAMT_WITHOUT_STATUS, CashAmt);
         values.put(CASHCOMMENT_WITHOUT_STATUS, cashComment);
+        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
+        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
         values.put(STATUS, status);
 
         String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
@@ -974,7 +976,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
-    public void update_partial_status(String partialsCash,String partial, String partialTime, String partialBy,String partialReceive,String partialReturn,String partialReason, String orderid, String barcode, int status) {
+    public void update_partial_status(String partialsCash,String partial, String partialTime, String partialBy,String partialReceive,String partialReturn,String partialReason, String orderid, String barcode,String merOrderRef,String packagePrice, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(CASHAMT_WITHOUT_STATUS, partialsCash);
@@ -984,7 +986,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(PARTIAL_RECEIVE_BY_WITHOUT_STATUS, partialReceive);
         values.put(PARTIAL_RETURN_BY_WITHOUT_STATUS, partialReturn);
         values.put(PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, partialReason);
-
+        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
+        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
         values.put(STATUS, status);
 
         String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
@@ -996,6 +999,30 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
+
+
+   /* public String get_withoutstatus_count(SQLiteDatabase sqLiteDatabase, String user) {
+
+        String countQuery = "SELECT without_status FROM " + TABLE_NAME_7 + " WHERE " + "username" + " = '" + user + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+*/
+
+   /*  public String get_withoutstatus_count(String user){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT without_status FROM " + TABLE_NAME_7 + " WHERE " + "username" + " = '" + user + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("without_status"));
+            return selection;
+        }
+        return null;
+    }*/
 
 }
 

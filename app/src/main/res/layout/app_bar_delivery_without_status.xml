@@ -22,7 +22,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/sithout_status_id"
+        android:id="@+id/without_Status_id"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginTop="65dp"
@@ -36,11 +36,9 @@
         android:layout_height="match_parent"
         >
         <TextView
-            android:id="@+id/unpickcounttxt"
+            android:id="@+id/withoutStatusText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/compltcounttxt"
-            android:layout_alignStart="@+id/compltcounttxt"
             android:layout_marginTop="15dp"
             android:layout_centerHorizontal="true"
             android:lines="1"
@@ -54,8 +52,8 @@
             android:id="@+id/WithoutStatus_id_"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/unpickcounttxt"
-            android:layout_toEndOf="@+id/unpickcounttxt"
+            android:layout_alignBaseline="@+id/withoutStatusText"
+            android:layout_toEndOf="@+id/withoutStatusText"
             android:text="0"
             android:textAlignment="center"
             android:textColor="#000"

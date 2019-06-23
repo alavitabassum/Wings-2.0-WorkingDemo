@@ -134,7 +134,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                   JSONArray array = jsonObject.getJSONArray("summary");
                   for (int i = 0; i < array.length(); i++) {
                       JSONObject o = array.getJSONObject(i);
-                      DeliverySummary_Model todaySummary = new DeliverySummary_Model(
+                      DeliverySummary_Model DeliverySummary = new DeliverySummary_Model(
                               o.getString("username"),
                               o.getString("unpicked"),
                               o.getString("withoutStatus"),
@@ -254,9 +254,9 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 withoutStatus_count.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String str_without_status = withoutStatus_count.getText().toString();
+                        //String str_without_status = withoutStatus_count.getText().toString();
                         Intent intent = new Intent(DeliveryOfficerCardMenu.this, DeliveryWithoutStatus.class);
-                        intent.putExtra("message", str_without_status);
+                        //intent.putExtra("message", str_without_status);
                         startActivity(intent);
                     }
                 });

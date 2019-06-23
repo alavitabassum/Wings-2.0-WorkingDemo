@@ -26,6 +26,10 @@ public class DeliveryWithoutStatusModel {
     private String partialBy;
     private String partialReceive;
     private String slaMiss;
+    private String withoutStatus;
+
+    public DeliveryWithoutStatusModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String withoutStatus) {
+    }
 
     public DeliveryWithoutStatusModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
         this.dropPointCode = dropPointCode;
@@ -56,6 +60,19 @@ public class DeliveryWithoutStatusModel {
         this.onHoldReason = onHoldReason;
         this.onHoldSchedule = onHoldSchedule;
         this.slaMiss = slaMiss;
+        //this.withoutStatus = withoutStatus;
+        }
+
+    public String getWithoutStatus() {
+        return withoutStatus;
+    }
+
+    public void setWithoutStatus(String withoutStatus) {
+        this.withoutStatus = withoutStatus;
+    }
+
+    public DeliveryWithoutStatusModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss, String withoutStatus) {
+
     }
 
     public String getDropPointCode() {
@@ -72,9 +89,15 @@ public class DeliveryWithoutStatusModel {
     private String onHoldSchedule;
     private String dropPointCode;
 
+    public String getSlaMiss() {
+        return slaMiss;
+    }
 
+    public void setSlaMiss(String slaMiss) {
+        this.slaMiss = slaMiss;
+    }
 
-    public DeliveryWithoutStatusModel(String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime,String Cash,String cashType,String CashTime,String CashBy,String CashAmt,String CashComment,String partial,String partialTime,String partialBy,String partialReceive,String partialReturn,String partialReason,String onHoldReason,String onHoldSchedule) {
+    public DeliveryWithoutStatusModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule) {
 
 
         this.barcode = barcode;
