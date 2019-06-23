@@ -974,6 +974,28 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
+    public void update_partial_status(String partialsCash,String partial, String partialTime, String partialBy,String partialReceive,String partialReturn,String partialReason, String orderid, String barcode, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(CASHAMT_WITHOUT_STATUS, partialsCash);
+        values.put(PARTIAL_WITHOUT_STATUS, partial);
+        values.put(PARTIAL_TIME_WITHOUT_STATUS, partialTime);
+        values.put(PARTIAL_BY_WITHOUT_STATUS, partialBy);
+        values.put(PARTIAL_RECEIVE_BY_WITHOUT_STATUS, partialReceive);
+        values.put(PARTIAL_RETURN_BY_WITHOUT_STATUS, partialReturn);
+        values.put(PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, partialReason);
+
+        values.put(STATUS, status);
+
+        String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
+        String[] whereArgs = new String[]{
+                orderid,
+                barcode
+        };
+        // insert
+        db.update(TABLE_NAME_9, values, whereClause, whereArgs);
+        db.close();
+    }
 
 }
 

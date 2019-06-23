@@ -215,7 +215,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 String cash = c.getString(4);
                 String returnRequest = c.getString(5);
                 String returnList = c.getString(6);
-                DeliverySummary_Model todaySummary = new DeliverySummary_Model(username, unpicked,withoutStatus,onHold,cash,returnRequest, returnList);
+             //   DeliverySummary_Model todaySummary = new DeliverySummary_Model(username, unpicked,withoutStatus,onHold,cash,returnRequest, returnList);
 //                summaries.add(todaySummary);
 
 
@@ -226,8 +226,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 return_List = (CardView)findViewById(R.id.ReturnList_id);
                 cashCollection = (CardView)findViewById(R.id.Cash_id);
                 quickDelivery = (CardView)findViewById(R.id.QuickDelivery_id);
-
-
 
                 unpicked_count = (TextView)findViewById(R.id.UnpickedCount);
                 withoutStatus_count = (TextView)findViewById(R.id.WithoutStatusCount);

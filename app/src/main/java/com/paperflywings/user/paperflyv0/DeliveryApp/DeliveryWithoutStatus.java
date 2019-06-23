@@ -586,6 +586,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
         //onhold
 
+        //partial
+        final String partial = "Y";
+        final String partialBy = username;
+        final String partialTime = currentDateTime;
 
         final String orderid = clickedITem.getOrderid();
         final String barcode = clickedITem.getBarcode();
@@ -602,13 +606,13 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
 
-                        final View mViewCash = getLayoutInflater().inflate(R.layout.insert_cash_without_status, null);
-                        final EditText et1 = mViewCash.findViewById(R.id.editTextCollection);
-                        final EditText et2 = mViewCash.findViewById(R.id.Remarks_without_status);
-                        final TextView tv1 = mViewCash.findViewById(R.id.package_price_text);
-
                         switch (item) {
                             case 0:
+                                final View mViewCash = getLayoutInflater().inflate(R.layout.insert_cash_without_status, null);
+                                final EditText et1 = mViewCash.findViewById(R.id.editTextCollection);
+                                final EditText et2 = mViewCash.findViewById(R.id.Remarks_without_status);
+                                final TextView tv1 = mViewCash.findViewById(R.id.package_price_text);
+
                                 AlertDialog.Builder cashSpinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
                                 //cashSpinnerBuilder.setTitle("Write Comment: ");
 
@@ -625,7 +629,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         dialog.dismiss();
                                     }
                                 });
-                                
+
                                 cashSpinnerBuilder.setCancelable(false);
                                 cashSpinnerBuilder.setView(mViewCash);
 
@@ -644,86 +648,141 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String cashComment = et2.getText().toString();
 
                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, barcode);
-
-
-                                            startActivity(DeliveryListIntent);
                                             dialogCash.dismiss();
+                                            startActivity(DeliveryListIntent);
+
                                         }
                                     }
                                 });
                                 dialog.dismiss();
 
                                 break;
-
                             case 1:
+                                final View mViewPartial = getLayoutInflater().inflate(R.layout.insert_partial_without_status, null);
+                                final EditText partialReceive = mViewPartial.findViewById(R.id.deliveredQuantity);
+                                final EditText partialReturned1qty = mViewPartial.findViewById(R.id.returnedQuantity);
+                                final EditText partialcash = mViewPartial.findViewById(R.id.editTextPartialCollection);
+                                final EditText partialremarks = mViewPartial.findViewById(R.id.remarks_partial);
+                                //final TextView tv1 = mViewPartial.findViewById(R.id.package_price_text);
 
-                                AlertDialog.Builder spinnerBuilder6 = new AlertDialog.Builder(DeliveryWithoutStatus.this);
-                                spinnerBuilder6.setTitle("Select Partial Reason: ");
+                                AlertDialog.Builder partialSpinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
+                                //cashSpinnerBuilder.setTitle("Write Comment: ");
 
-                                View mViewOnHold6 = getLayoutInflater().inflate(R.layout.onhold_dialog_spinner, null);
-                                final Spinner mOnholdSpinner6 = (Spinner) mViewOnHold6.findViewById(R.id.onhold_spinner);
-                                final TextView error_msg6 = (TextView) mViewOnHold6.findViewById(R.id.error_msg);
-                                ArrayAdapter<String> adapterOnhold6 = new ArrayAdapter<String>(DeliveryWithoutStatus.this,
-                                        android.R.layout.simple_spinner_item,
-                                        getResources().getStringArray(R.array.partialreason));
-                                adapterOnhold6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                mOnholdSpinner6.setAdapter(adapterOnhold6);
-
-                                spinnerBuilder6.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                partialSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
                                     }
                                 });
-                                spinnerBuilder6.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                                partialSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int i1) {
                                         dialog.dismiss();
                                     }
                                 });
 
-                                spinnerBuilder6.setCancelable(false);
-                                spinnerBuilder6.setView(mViewOnHold6);
+                                partialSpinnerBuilder.setCancelable(false);
+                                partialSpinnerBuilder.setView(mViewPartial);
 
-                                final AlertDialog dialog6 = spinnerBuilder6.create();
-                                dialog6.show();
+                                final AlertDialog dialogPartial = partialSpinnerBuilder.create();
+                                dialogPartial.show();
 
-                                dialog6.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                dialogPartial.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
 
-                                        if (mOnholdSpinner6.getSelectedItem().toString().equalsIgnoreCase("Please select an option...")) {
-                                            error_msg6.setText("Please select one partial reason");
-                                        } else {
+                                     /*   if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
+                                            tv1.setText("Field can't be empty");
+                                        } else {*/
 
+                                            String partialsCash = partialcash.getText().toString();
+                                            String partialReturn = partialReturned1qty.getText().toString();
+                                            String partialReason = partialremarks.getText().toString();
+                                            String partialsReceive = partialReceive.getText().toString();
 
-                                     /*       String comments = mOnholdSpinner6.getSelectedItem().toString();
+                                            update_partial_status(partialsCash,partial,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,barcode);
+                                            dialogPartial.dismiss();
+                                            startActivity(DeliveryListIntent);
 
-
-                                            if(clickedItem.getComplete_status().equals("p")){
-                                                // pause
-                                                final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
-                                                //if order is cancelled this will save the status 2
-                                                updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
-//                                                updateAjkerDeal(merchant_order_ref,pause,comments);
-                                            } else if(clickedItem.getComplete_status().equals("f")){
-                                                final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
-                                                final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
-                                                updateActionStatus(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "partial",sql_primary_id);
-
-                                            }
-                                            pickup_action_log(sql_primary_id, comments, partial, "partial", username);
-                                            startActivity(picklistintent);
-//                                                getData(username);
-                                            dialog6.dismiss();*/
                                         }
+                                    //}
+                                });
+                                dialog.dismiss();
+
+                                break;
+                            case 2:
+                                break;
+                            case 3:
+
+                                final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
+                                final EditText et3 = mViewOnHold.findViewById(R.id.Remarks_onhold_status);
+                                final TextView tv2 = mViewOnHold.findViewById(R.id.datepickerText);
+                                final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
+
+
+                                bt1.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Calendar c1;
+                                        DatePickerDialog datePickerDialog;
+                                        c1 = Calendar.getInstance();
+
+                                        int day = c1.get(Calendar.DAY_OF_MONTH);
+                                        int month = c1.get(Calendar.MONTH);
+                                        int year = c1.get(Calendar.YEAR);
+
+                                        datePickerDialog = new DatePickerDialog(DeliveryWithoutStatus.this, new DatePickerDialog.OnDateSetListener() {
+                                            @Override
+                                            public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDate) {
+                                                tv2.setText(mYear+"/"+(mMonth+1)+"/"+mDate);
+                                            }
+                                        },year,month,day);
+
+                                        datePickerDialog.show();
+                                    }
+                                });
+
+                                AlertDialog.Builder onHoldeSpinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
+                                //cashSpinnerBuilder.setTitle("Write Comment: ");
+
+                                onHoldeSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                onHoldeSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int i1) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                onHoldeSpinnerBuilder.setCancelable(false);
+                                onHoldeSpinnerBuilder.setView(mViewOnHold);
+
+                                final AlertDialog dialogonHold = onHoldeSpinnerBuilder.create();
+                                dialogonHold.show();
+
+                                dialogonHold.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                            String onHoldReason = et3.getText().toString();
+                                            String onHoldSchedule = tv2.getText().toString();
+
+                                            update_onhold_status(onHoldSchedule ,onHoldReason,orderid, barcode);
+
+                                            dialogonHold.dismiss();
+                                            startActivity(DeliveryListIntent);
+
+
                                     }
                                 });
                                 dialog.dismiss();
                                 break;
-
-
-                            case 2:
-                            case 3:
                             default:
                                 break;
                         }
@@ -801,21 +860,21 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
     }
 
-    public void update_onhold_status (final String onHoldSchedules,final String onHoldReason,final String orderid,final String barcode) {
-        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
+    public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String orderid,final String barcode) {
+        final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(String response1) {
                         try {
-                            JSONObject obj = new JSONObject(response);
+                            JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db.update_onhold_status(onHoldSchedules,onHoldReason,orderid,barcode, NAME_SYNCED_WITH_SERVER);
+                                db1.update_onhold_status(onHoldSchedule,onHoldReason,orderid,barcode, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_onhold_status(onHoldSchedules,onHoldReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                                db1.update_onhold_status(onHoldSchedule,onHoldReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -826,18 +885,72 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_onhold_status(onHoldSchedules,onHoldReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                        db1.update_onhold_status(onHoldSchedule,onHoldReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("onHoldSchedule", onHoldSchedules);
+                params.put("onHoldSchedule", onHoldSchedule);
                 params.put("onHoldReason", onHoldReason);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
                 params.put("flagReq", "onHold");
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest1);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void update_partial_status (final String partialsCash,final String partial,final String partialTime, final String partialBy,final String partialReceive,final String partialReturn ,final String partialReason,final String orderid,final String barcode) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode, NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("CashAmt", partialsCash);
+                params.put("partial", partial);
+                params.put("partialTime", partialTime);
+                params.put("partialBy", partialBy);
+                params.put("partialReceive", partialReceive);
+                params.put("partialReturn", partialReturn);
+                params.put("partialReason", partialReason);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                params.put("flagReq", "partial");
                 return params;
             }
         };
@@ -849,7 +962,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
 
     }
-
 
 
 }

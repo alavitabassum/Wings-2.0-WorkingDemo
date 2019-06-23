@@ -50,7 +50,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/Remarks_without_status"
+            android:id="@+id/Remarks_onhold_status"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/Remarks_without_status_text"

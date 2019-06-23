@@ -9,8 +9,8 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="330dp"
-        android:layout_height="150dp"
+        android:layout_width="348dp"
+        android:layout_height="235dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -49,18 +49,59 @@
             android:textSize="17sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/product_qty"
-            android:layout_width="201dp"
+        <TextView
+            android:id="@+id/deliveredQuantitytext"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView13"
-            android:layout_marginStart="31dp"
-            android:layout_toEndOf="@+id/textView13"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="66dp"
+            android:padding="5dp"
+            android:text="Delivered qty"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/deliveredQuantity"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/deliveredQuantitytext"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/deliveredQuantitytext"
             android:autofillHints=""
             android:ems="10"
             android:inputType="number"
             android:textSize="15sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/returnedQuantityText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="96dp"
+            android:padding="5dp"
+            android:text="Returned Qty"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/returnedQuantity"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/returnedQuantityText"
+            android:layout_marginStart="7dp"
+            android:layout_toEndOf="@+id/returnedQuantityText"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="number"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
 
         <TextView
             android:id="@+id/textViewCollection"
@@ -68,8 +109,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="128dp"
             android:padding="5dp"
             android:text="Collection"
             android:textAlignment="textStart"
@@ -77,11 +118,11 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editTextCollection"
-            android:layout_width="200dp"
+            android:id="@+id/editTextPartialCollection"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textViewCollection"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="25dp"
             android:layout_toEndOf="@+id/textViewCollection"
             android:autofillHints=""
             android:ems="10"
@@ -90,16 +131,29 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/remarksTextPartial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginStart="23dp"
+            android:layout_marginTop="157dp"
             android:padding="5dp"
             android:text="Remarks"
             android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/remarks_partial"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/remarksTextPartial"
+            android:layout_marginStart="40dp"
+            android:layout_toEndOf="@+id/remarksTextPartial"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="text"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -117,19 +171,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="132dp"
             android:textColor="@color/red"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:id="@+id/assigned_picked_qty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textViewCollection"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="34dp"
-            android:layout_marginStart="0dp"
-            android:padding="5dp"
-            android:text="TextView" />
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
