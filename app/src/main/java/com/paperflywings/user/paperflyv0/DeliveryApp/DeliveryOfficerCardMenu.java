@@ -260,6 +260,13 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                         startActivity(intent);
                     }
                 });
+                onHold_count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,DeliveryOnHold.class);
+                        startActivity(intent);
+                    }
+                });
 
             }
 

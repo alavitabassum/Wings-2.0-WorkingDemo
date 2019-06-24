@@ -153,5 +153,6 @@
     <string name="menu_send">Send</string>
     <string name="title_activity_delivery_officer_unpicked">Unpicked</string>
     <string name="title_activity_delivery_without_status">Without Status</string>
+    <string name="title_activity_delivery_on_hold">DeliveryOnHold</string>
 
 </resources>

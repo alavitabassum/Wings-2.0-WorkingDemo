@@ -170,10 +170,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
 
 
-     /*   final String withoutstatus_count = db.get_withoutstatus_count(username);
+        final String withoutstatus_count = db.get_withoutstatus_count(username);
         without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
         without_status_text.setText(String.valueOf(withoutstatus_count));
-*/
+
         // Redirect for quick pick by scanning barcode
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_without_status);
