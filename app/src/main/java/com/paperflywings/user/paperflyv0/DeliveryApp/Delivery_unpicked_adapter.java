@@ -13,7 +13,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.paperflywings.user.paperflyv0.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.R;
 
 

@@ -1,6 +1,5 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,9 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,18 +29,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.paperflywings.user.paperflyv0.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
-import com.paperflywings.user.paperflyv0.ExecutiveCardMenu;
 import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.MyPickupList_Executive;
-import com.paperflywings.user.paperflyv0.PickupList_Model_For_Executive;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

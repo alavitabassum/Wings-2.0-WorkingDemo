@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.paperflywings.user.paperflyv0.PickupSupervisor.FulfillmentAssignSupervisor.FulfillmentAssignPickup_Supervisor;
+import com.paperflywings.user.paperflyv0.PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor;
+import com.paperflywings.user.paperflyv0.PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor;
+
 
 public class RecyclerAdapterSupervisor extends RecyclerView.Adapter<RecyclerAdapterSupervisor.ViewHolder> {
 
