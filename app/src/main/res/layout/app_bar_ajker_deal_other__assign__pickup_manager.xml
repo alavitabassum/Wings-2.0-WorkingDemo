@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
-    tools:context=".AjkerDealOther_Assign_Pickup_manager">
+    tools:context=".PickupManager.AjkerdealdirectdeliveryManager.AjkerDealOther_Assign_Pickup_manager">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

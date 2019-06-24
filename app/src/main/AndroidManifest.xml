@@ -45,19 +45,19 @@
             android:label="@string/title_activity_delivery_officer_card_menu"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".FulfillmentAssignPickup_Supervisor"
+            android:name=".PickupSupervisor.FulfillmentAssignSupervisor.FulfillmentAssignPickup_Supervisor"
             android:label="@string/title_activity_fulfillment_assign_pickup__supervisor"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".AjkerDealOther_Assign_Pickup_supervisor"
+            android:name=".PickupSupervisor.AjkerdealdirectdeliverySupervisor.AjkerDealOther_Assign_Pickup_supervisor"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_supervisor"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupsToday_Supervisor"
+            android:name=".PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor"
             android:label="@string/title_activity_pickups_today__supervisor"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".AssignPickup_Supervisor"
+            android:name=".PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor"
             android:label="@string/title_activity_assign_pickup__supervisor"
             android:theme="@style/AppTheme" />
         <activity
@@ -65,11 +65,11 @@
             android:label="@string/title_activity_supervisor_card_menu"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".AutoAssignMyPickuplist"
+            android:name=".PickupAutoAssignManager.AutoAssignMyPickuplist"
             android:label="@string/title_activity_auto_assign_my_pickuplist"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PendingSummary_Manager"
+            android:name=".PickupPendingReportManager.PendingSummary_Manager"
             android:label="@string/title_activity_pending_summary__manager"
             android:theme="@style/AppTheme" />
         <activity
@@ -89,7 +89,7 @@
             android:label="@string/title_activity_pickups_today__manager"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".AssignPickup_Manager"
+            android:name=".PickupManager.LogisticAssignManager.AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
             android:theme="@style/AppTheme" />
 
@@ -112,49 +112,49 @@
             android:label="@string/title_activity_pickups_today__executive"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".MyPickupList_Executive"
+            android:name=".PickupOfficer.MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
             android:supportsRtl="true"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ScanningScreen"
-            android:parentActivityName=".MyPickupList_Executive"
+            android:name=".PickupOfficer.ScanningScreen"
+            android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
-            android:name=".AutoScanningScreen"
-            android:parentActivityName=".AutoAssignMyPickuplist"
+            android:name=".PickupAutoAssignManager.AutoScanningScreen"
+            android:parentActivityName=".PickupAutoAssignManager.AutoAssignMyPickuplist"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
-            android:name=".FulfillmentScanningScreen"
-            android:parentActivityName=".MyPickupList_Executive"
+            android:name=".PickupOfficer.FulfillmentScanningScreen"
+            android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
-            android:name=".FulfillmentScanningScreenAjkerDeal"
-            android:parentActivityName=".MyPickupList_Executive"
+            android:name=".PickupOfficer.FulfillmentScanningScreenAjkerDeal"
+            android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
-            android:name=".RobishopScanningScreen"
-            android:parentActivityName=".MyPickupList_Executive"
+            android:name=".PickupManager.Robishop.RobishopScanningScreen"
+            android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
             android:name=".DeliveryApp.Delivery_quick_pick_scan"
@@ -164,22 +164,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked" />
         </activity>
-        <activity android:name=".UpdateAssigns" />
-        <activity android:name=".NewOrder" />
-        <activity android:name=".ViewAssigns" />
-        <activity android:name=".NewOrderSupervisor" />
+        <activity android:name=".PickupManager.LogisticAssignManager.NewOrder" />
+        <activity android:name=".PickupSupervisor.LogisticAssignSupervisor.NewOrderSupervisor" />
         <activity
-            android:name=".Fulfillment_Assign_pickup_Manager"
+            android:name=".PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager"
             android:label="@string/title_activity_testing_fulfillment"
             android:theme="@style/AppTheme" />
-        <activity android:name=".NewOrderEntry_ful" />
-        <activity android:name=".NewOrderEntry_Supervisor_ful" />
+        <activity android:name=".PickupManager.FulfillmentAssignManager.NewOrderEntry_ful" />
+        <activity android:name=".PickupSupervisor.FulfillmentAssignSupervisor.NewOrderEntry_Supervisor_ful" />
         <activity
-            android:name=".AjkerDealOther_Assign_Pickup_manager"
+            android:name=".PickupManager.AjkerdealdirectdeliveryManager.AjkerDealOther_Assign_Pickup_manager"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_manager"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Robishop_Assign_pickup_manager"
+            android:name=".PickupManager.Robishop.Robishop_Assign_pickup_manager"
             android:label="@string/title_activity_robishop__assign_pickup_manager"
             android:theme="@style/AppTheme" />
     </application>
