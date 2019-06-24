@@ -75,9 +75,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer);
 
 
-
-
-
         withoutStatus_count = (TextView)findViewById(R.id.WithoutStatusCount);
         onHold_count = (TextView)findViewById(R.id.OnHoldCount);
         returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
@@ -130,7 +127,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                   JSONArray array = jsonObject.getJSONArray("summary");
                   for (int i = 0; i < array.length(); i++) {
                       JSONObject o = array.getJSONObject(i);
-                      DeliverySummary_Model todaySummary = new DeliverySummary_Model(
+                      DeliverySummary_Model DeliverySummary = new DeliverySummary_Model(
                               o.getString("username"),
                               o.getString("unpicked"),
                               o.getString("withoutStatus"),
@@ -211,7 +208,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 String cash = c.getString(4);
                 String returnRequest = c.getString(5);
                 String returnList = c.getString(6);
-                DeliverySummary_Model todaySummary = new DeliverySummary_Model(username, unpicked,withoutStatus,onHold,cash,returnRequest, returnList);
+             //   DeliverySummary_Model todaySummary = new DeliverySummary_Model(username, unpicked,withoutStatus,onHold,cash,returnRequest, returnList);
 //                summaries.add(todaySummary);
 
 
@@ -223,8 +220,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 cashCollection = (CardView)findViewById(R.id.Cash_id);
                 quickDelivery = (CardView)findViewById(R.id.QuickDelivery_id);
 
-
-
                 unpicked_count = (TextView)findViewById(R.id.UnpickedCount);
                 withoutStatus_count = (TextView)findViewById(R.id.WithoutStatusCount);
                 onHold_count = (TextView)findViewById(R.id.OnHoldCount);
@@ -235,8 +230,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 unpicked_count.setText(String.valueOf(unpicked));
                 withoutStatus_count.setText(String.valueOf(withoutStatus));
                 onHold_count.setText(String.valueOf(onHold));
-                returnReqst_count.setText(String.valueOf(cash));
-                cashCollection_count.setText(String.valueOf(returnRequest));
+                returnReqst_count.setText(String.valueOf(returnRequest));
+                cashCollection_count.setText(String.valueOf(cash));
                 returnList_count.setText(String.valueOf(returnList));
 
 
@@ -252,9 +247,16 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 withoutStatus_count.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String str_without_status = withoutStatus_count.getText().toString();
+                        //String str_without_status = withoutStatus_count.getText().toString();
                         Intent intent = new Intent(DeliveryOfficerCardMenu.this, DeliveryWithoutStatus.class);
-                        intent.putExtra("message", str_without_status);
+                        //intent.putExtra("message", str_without_status);
+                        startActivity(intent);
+                    }
+                });
+                onHold_count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,DeliveryOnHold.class);
                         startActivity(intent);
                     }
                 });

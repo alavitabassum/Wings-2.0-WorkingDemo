@@ -14,49 +14,48 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryWithoutStatusAdapter.ViewHolder> implements Filterable {
+public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAdapter.ViewHolder>implements Filterable {
+    private List<DeliveryOnHoldModel> listFull;
+    private List<DeliveryOnHoldModel> list;
 
-    private List<DeliveryWithoutStatusModel> listFull;
-    private List<DeliveryWithoutStatusModel> list;
-
-    private int currentPostion = -1;
+    private int currentPosition = -1;
 
     private Context context;
     private OnItemClickListener mListner;
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
 
-
-    public interface OnItemClickListener {
-
-           void onItemClick_view (View view2, int position2);
-        /*   void onItemClick(View view, int position);
-           void onItemClick_view_orderIDs (View view3, int position3);*/
-           void onItemClick_call (View view4, int position4);
-    }
-
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.mListner = listener;
-    }
-
-    public void setOnItemTouchListener(RecyclerView.OnItemTouchListener t_listener){
-        this.touchListener = t_listener;
-    }
-
-    public DeliveryWithoutStatusAdapter(java.util.List<DeliveryWithoutStatusModel> list, Context context) {
+    public DeliveryOnHoldAdapter(java.util.List<DeliveryOnHoldModel> list, Context context) {
         this.list = list;
         this.context = context;
         this.listFull = new ArrayList<>(list);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public interface OnItemClickListener {
 
+        void onItemClick_view (View view2, int position2);
+        /*   void onItemClick(View view, int position);
+           void onItemClick_view_orderIDs (View view3, int position3);*/
+        void onItemClick_call (View view4, int position4);
+    }
+
+
+    public  void setOnItemClickListener(OnItemClickListener listener){
+        this.mListner = listener;
+    }
+    public void setOnItemTouchListener(RecyclerView.OnItemTouchListener t_listener){
+        this.touchListener = t_listener;
+    }
+   /* public DeliveryOnHoldAdapter(ArrayList<DeliveryOnHoldModel> list, Context context){
+
+    }*/
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView item_customerDistrict_without_status;
         public TextView item_barcode_without_status;
         public TextView item_ordId_without_status;
@@ -70,24 +69,23 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         public TextView item_productBrief_without_status;
         public TextView item_deliveryTime_without_status;
         public Button itemStatus_without_status;
-        public CardView card_view_without_status;
-
+        public CardView card_view_onHold;
 
         public ViewHolder(View itemView, int i) {
             super(itemView);
 
-            item_ordId_without_status=itemView.findViewById(R.id.orderId_without_status);
-            item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
-            item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
-            item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
-            item_custname_without_status=itemView.findViewById(R.id.customer_name_without_status);
-            item_custaddress_without_status=itemView.findViewById(R.id.customer_Address_without_status);
-            item_custphone_without_status=itemView.findViewById(R.id.m_phn_num_without_status);
-            item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
-            item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
-            item_deliveryTime_without_status=itemView.findViewById(R.id.deliverytime);
-            itemStatus_without_status=itemView.findViewById(R.id.btn_status_without_status);
-            card_view_without_status=itemView.findViewById(R.id.card_view_delivery_without_status_list);
+            item_ordId_without_status=itemView.findViewById(R.id.orderId_on_hold);
+            item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_on_hold);
+            item_merchantName_without_status=itemView.findViewById(R.id.m_name_on_hold);
+            item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_on_hold);
+            item_custname_without_status=itemView.findViewById(R.id.customer_name_on_hold);
+            item_custaddress_without_status=itemView.findViewById(R.id.customer_Address_on_hold);
+            item_custphone_without_status=itemView.findViewById(R.id.m_phn_num_on_hold);
+            item_packagePrice_without_status=itemView.findViewById(R.id.price_on_hold);
+            item_productBrief_without_status=itemView.findViewById(R.id.package_brief_on_hold);
+            item_deliveryTime_without_status=itemView.findViewById(R.id.deliverytime_onhold);
+            itemStatus_without_status=itemView.findViewById(R.id.btn_status_on_hold);
+            card_view_onHold=itemView.findViewById(R.id.card_view_delivery_onHold);
 
             item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -116,16 +114,15 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
                 }
 
             });
-
         }
-
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_delivery_without_status,viewGroup,false);
-        ViewHolder viewHolder = new ViewHolder(v,i);
-        return viewHolder;
+      View V = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_delivery_onhold,viewGroup,false);
+      ViewHolder viewHolder = new ViewHolder(V,i);
+      return viewHolder;
     }
 
     @Override
@@ -139,11 +136,11 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice());
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
-       // viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
+        // viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
 
         viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
 
-       // String CustomerDistrict = list.get(i).getCustomerDistrict();
+        // String CustomerDistrict = list.get(i).getCustomerDistrict();
         int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
 
         if(DeliveryTime<0) {
@@ -180,9 +177,10 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         }
     }
 
+
     @Override
     public int getItemCount() {
-        return list.size();
+        return 0;
     }
 
     @Override
@@ -195,12 +193,12 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<DeliveryWithoutStatusModel>filteredList = new ArrayList<>();
+            List<DeliveryOnHoldModel>filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0){
                 filteredList.addAll(listFull);
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for(DeliveryWithoutStatusModel item: listFull){
+                for(DeliveryOnHoldModel item: listFull){
                     if (item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
@@ -220,5 +218,6 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 
 
     };
+
 
 }

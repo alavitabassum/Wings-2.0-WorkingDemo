@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_delivery_without_status_list"
+    android:id="@+id/card_view_delivery_onHold"
     android:layout_width="match_parent"
     android:layout_height="480dp"
     android:layout_margin="5dp"
@@ -40,7 +40,7 @@
 
 
         <TextView
-            android:id="@+id/deliverytime"
+            android:id="@+id/deliverytime_onhold"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
@@ -70,7 +70,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/orderId_without_status"
+            android:id="@+id/orderId_on_hold"
             android:layout_width="279dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/ordertxt"
@@ -101,7 +101,7 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/m_order_ref_without_status"
+            android:id="@+id/m_order_ref_on_hold"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/merchant_ref_txt"
@@ -139,7 +139,7 @@
               android:textSize="15sp" />
   -->
         <TextView
-            android:id="@+id/m_name_without_status"
+            android:id="@+id/m_name_on_hold"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -165,7 +165,7 @@
               android:textSize="15sp" />-->
 
         <TextView
-            android:id="@+id/pick_m_name_without_status"
+            android:id="@+id/pick_m_name_on_hold"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -201,7 +201,7 @@
 
 
         <TextView
-            android:id="@+id/customer_name_without_status"
+            android:id="@+id/customer_name_on_hold"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -229,7 +229,7 @@
 
 
         <TextView
-            android:id="@+id/customer_Address_without_status"
+            android:id="@+id/customer_Address_on_hold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
@@ -266,7 +266,7 @@
 
     -->
         <TextView
-            android:id="@+id/package_brief_without_status"
+            android:id="@+id/package_brief_on_hold"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -310,7 +310,7 @@
             android:textColor="#000" />
 
         <TextView
-            android:id="@+id/m_phn_num_without_status"
+            android:id="@+id/m_phn_num_on_hold"
             android:layout_width="333dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/calltxt"
@@ -336,7 +336,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/price_without_status"
+            android:id="@+id/price_on_hold"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/price_txt"
@@ -349,7 +349,7 @@
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/btn_status_without_status"
+            android:id="@+id/btn_status_on_hold"
             android:layout_width="105dp"
             android:layout_height="35dp"
             android:layout_below="@+id/price_txt"
@@ -357,7 +357,7 @@
             android:layout_marginTop="63dp"
             android:background="@drawable/buttonstyle2"
             android:padding="10dp"
-            android:text="Action"
+            android:text="on hold"
             android:textColor="@color/white"
             android:textSize="14sp" />
 

@@ -9,8 +9,8 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="330dp"
-        android:layout_height="150dp"
+        android:layout_width="350dp"
+        android:layout_height="251dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -36,7 +36,6 @@
                android:textStyle="bold"
                tools:layout_editor_absoluteX="163dp"
                tools:layout_editor_absoluteY="6dp" />-->
-
         <TextView
             android:id="@+id/CashCollection"
             android:layout_width="wrap_content"
@@ -49,16 +48,83 @@
             android:textSize="17sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/Remarks_without_status"
-            android:layout_width="240dp"
+        <TextView
+            android:id="@+id/textOrderId2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/Remarks_without_status_text"
-            android:layout_marginStart="0dp"
-            android:layout_toEndOf="@+id/Remarks_without_status_text"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="69dp"
+            android:text="Order Id"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/OrderIdCollection"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textOrderId2"
+            android:layout_marginStart="52dp"
+            android:layout_toEndOf="@+id/textOrderId2"
             android:autofillHints=""
             android:ems="10"
-            android:inputType="text"
+            android:inputType="number"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+
+        <TextView
+            android:id="@+id/textMerchantRef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="100dp"
+            android:text="Merchant Ref"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/MechantRefCollection"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textMerchantRef"
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@+id/textMerchantRef"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="number"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/PackagePriceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="134dp"
+            android:text="Price"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/packagePrice"
+            android:layout_width="211dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/PackagePriceText"
+            android:layout_marginStart="72dp"
+            android:layout_toEndOf="@+id/PackagePriceText"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="number"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -68,9 +134,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="60dp"
-
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="172dp"
             android:text="Collection"
             android:textAlignment="textStart"
             android:textSize="15sp"
@@ -78,10 +143,10 @@
 
         <EditText
             android:id="@+id/editTextCollection"
-            android:layout_width="210dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textViewCollection"
-            android:layout_marginStart="0dp"
+            android:layout_marginStart="52dp"
             android:layout_toEndOf="@+id/textViewCollection"
             android:autofillHints=""
             android:ems="10"
@@ -95,10 +160,25 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="204dp"
             android:text="Remarks"
             android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+
+        <EditText
+            android:id="@+id/Remarks_without_status"
+            android:layout_width="193dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/Remarks_without_status_text"
+            android:layout_marginStart="61dp"
+            android:layout_toEndOf="@+id/Remarks_without_status_text"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="text"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -113,16 +193,14 @@
             android:background="?android:attr/listDivider" />
 
 
-
         <TextView
             android:id="@+id/package_price_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textViewCollection"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="35dp"
             android:layout_marginStart="15dp"
-            />
+            android:layout_marginTop="35dp" />
 
     </RelativeLayout>
 

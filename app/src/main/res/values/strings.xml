@@ -143,7 +143,7 @@
     <string name="title_activity_fulfillment_assign_pickup__supervisor">
         Assign(Fulfillment)
     </string>
-    <string name="title_activity_delivery_officer_card_menu">DeliveryOfficerCardMenu</string>
+    <string name="title_activity_delivery_officer_card_menu">Delivery</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
@@ -151,7 +151,8 @@
     <string name="menu_tools">Tools</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
-    <string name="title_activity_delivery_officer_unpicked">DeliveryOfficerUnpicked</string>
-    <string name="title_activity_delivery_without_status">DeliveryWithoutStatus</string>
+    <string name="title_activity_delivery_officer_unpicked">Unpicked</string>
+    <string name="title_activity_delivery_without_status">Without Status</string>
+    <string name="title_activity_delivery_on_hold">DeliveryOnHold</string>
 
 </resources>
