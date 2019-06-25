@@ -85,29 +85,18 @@
             android:layout_marginTop="33dp"
             android:background="?android:attr/listDivider" />
 
-        <TextView
-            android:id="@+id/datepickerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
-            android:text="date"
-            android:layout_marginStart="25dp"
-            android:textAlignment="textStart"
-            android:textSize="15sp"
-            android:textStyle="bold" />
 
         <Button
             android:id="@+id/datepicker"
-            android:layout_width="70dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/datepickerText"
             android:layout_marginStart="50dp"
-            android:layout_toEndOf="@+id/datepickerText"
+            android:layout_centerHorizontal="true"
             android:autofillHints=""
             android:ems="10"
             android:inputType="text"
             android:textSize="15sp"
-            android:text="Date"
+            android:text="0000-00-00"
             android:textStyle="bold" />
 
 

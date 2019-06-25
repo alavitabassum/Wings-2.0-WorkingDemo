@@ -1,5 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -46,7 +49,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.paperflywings.user.paperflyv0.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
@@ -116,6 +119,8 @@ public class DeliveryOnHold extends AppCompatActivity
     RecyclerView.Adapter adapter_pul;
     android.widget.RelativeLayout vwParentRow;
     private static final int REQUEST_CAMERA = 1;
+    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
+
 
 
     public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
@@ -354,6 +359,9 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("partialReason"),
                                         o.getString("onHoldSchedule"),
                                         o.getString("onHoldReason"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
                                         o.getString("slaMiss")
 
                                         , NAME_NOT_SYNCED_WITH_SERVER );
@@ -613,12 +621,18 @@ public class DeliveryOnHold extends AppCompatActivity
         final String cashType = "CoD";
         final String cashTime = currentDateTime;
 
-        //onhold
+
 
         //partial
         final String partial = "Y";
         final String partialBy = username;
         final String partialTime = currentDateTime;
+
+        //onhold
+        final String Rea = "Y";
+        final String ReaBy = username;
+        final String ReaTime = currentDateTime;
+
 
         final String orderid = clickedITem.getOrderid();
         final String barcode = clickedITem.getBarcode();
@@ -771,7 +785,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
                                 final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
                                 final EditText et3 = mViewOnHold.findViewById(R.id.Remarks_onhold_status);
-                                final TextView tv2 = mViewOnHold.findViewById(R.id.datepickerText);
+                               // final TextView tv2 = mViewOnHold.findViewById(R.id.datepickerText);
                                 final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
 
 
@@ -789,7 +803,12 @@ public class DeliveryOnHold extends AppCompatActivity
                                         datePickerDialog = new DatePickerDialog(DeliveryOnHold.this, new DatePickerDialog.OnDateSetListener() {
                                             @Override
                                             public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDate) {
-                                                tv2.setText(mYear+"/"+(mMonth+1)+"/"+mDate);
+                                               // bt1.setText(mYear+"/"+(mMonth+1)+"/"+mDate);
+                                                String yearselected    = Integer.toString(mYear) ;
+                                                String monthselected   = Integer.toString(mMonth + 1);
+                                                String dayselected     = Integer.toString(mDate);
+                                                String dateTime = yearselected + "-" + monthselected + "-" +  dayselected;
+                                                bt1.setText(dateTime);
                                             }
                                         },year,month,day);
 
@@ -825,9 +844,9 @@ public class DeliveryOnHold extends AppCompatActivity
                                     public void onClick(View v) {
 
                                         String onHoldReason = et3.getText().toString();
-                                        String onHoldSchedule = tv2.getText().toString();
+                                        String onHoldSchedule = bt1.getText().toString();
 
-                                        update_onhold_status(onHoldSchedule ,onHoldReason,orderid, barcode);
+                                        update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode);
 
                                         dialogonHold.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -858,6 +877,19 @@ public class DeliveryOnHold extends AppCompatActivity
 
     @Override
     public void onItemClick_call(View view4, int position4) {
+        Intent callIntent =new Intent(Intent.ACTION_CALL);
+        String phoneNumber = list.get(position4).getCustphone();
+        String lastFourDigits = phoneNumber.substring(phoneNumber.length() - 10);
+        callIntent.setData(Uri.parse("tel: +880" +lastFourDigits));
+        if (ActivityCompat.checkSelfPermission(view4.getContext(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) view4.getContext(),
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            return;
+        }
+        view4.getContext().startActivity(callIntent);
+
 
     }
 
@@ -914,7 +946,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
     }
 
-    public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String orderid,final String barcode) {
+    public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode) {
         final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -924,11 +956,11 @@ public class DeliveryOnHold extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db1.update_onhold_status(onHoldSchedule,onHoldReason,orderid,barcode, NAME_SYNCED_WITH_SERVER);
+                                db1.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db1.update_onhold_status(onHoldSchedule,onHoldReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                                db1.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -939,7 +971,7 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db1.update_onhold_status(onHoldSchedule,onHoldReason,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                        db1.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -948,6 +980,9 @@ public class DeliveryOnHold extends AppCompatActivity
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("onHoldSchedule", onHoldSchedule);
                 params.put("onHoldReason", onHoldReason);
+                params.put("Rea", Rea);
+                params.put("ReaTime", ReaTime);
+                params.put("ReaBy", ReaBy);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
                 params.put("flagReq", "onHold");

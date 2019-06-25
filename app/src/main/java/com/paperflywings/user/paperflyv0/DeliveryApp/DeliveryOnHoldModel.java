@@ -27,10 +27,20 @@ public class DeliveryOnHoldModel{
     private String partialReceive;
     private String slaMiss;
     private String withoutStatus;
+
+    public String getPhone_no() {
+        return phone_no;
+    }
+
+    public void setPhone_no(String phone_no) {
+        this.phone_no = phone_no;
+    }
+
     private String partialReturn;
     private String partialReason;
     private String onHoldReason;
     private String onHoldSchedule;
+    private String phone_no;
 
     public DeliveryOnHoldModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule) {
         this.barcode = barcode;

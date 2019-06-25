@@ -98,7 +98,6 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
                         int position4 = getAdapterPosition();
                         if(position4!=RecyclerView.NO_POSITION){
                             mListner.onItemClick_call(view4, position4);
-
                         }
                     }
                 }

@@ -1,5 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -93,6 +96,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
 
+    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -515,8 +519,10 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(View view, int position) {
-
+    public void onItemClick_view(View view, int position) {
+        Intent intent = new Intent(DeliveryOfficerUnpicked.this,
+                Delivery_quick_pick_scan.class);
+        startActivity(intent);
     }
 
    /* @Override
@@ -531,6 +537,17 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 */
     @Override
     public void onItemClick_call(View view4, int position4) {
-
+        Intent callIntent =new Intent(Intent.ACTION_CALL);
+        String phoneNumber = list.get(position4).getCustphone();
+        String lastFourDigits = phoneNumber.substring(phoneNumber.length() - 10);
+        callIntent.setData(Uri.parse("tel: +880" +lastFourDigits));
+        if (ActivityCompat.checkSelfPermission(view4.getContext(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) view4.getContext(),
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            return;
+        }
+        view4.getContext().startActivity(callIntent);
     }
 }
