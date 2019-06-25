@@ -228,7 +228,7 @@ public class PickupsToday_Supervisor_Adapter extends RecyclerView.Adapter<Pickup
            }else{
                String filterPattern = constraint.toString().toLowerCase().trim();
                for (PickupsToday_Supervisor_Model item : pickupsToday_SupervisorFull){
-                   if (item.getMerchant_name().toLowerCase().contains(filterPattern) || item.getExecutive_name().toLowerCase().contains(filterPattern) || item.getP_m_name().toLowerCase().contains(filterPattern) || item.getCreated_at().toLowerCase().contains(filterPattern)){
+                   if (item.getProduct_name().toLowerCase().contains(filterPattern) || item.getMerchant_name().toLowerCase().contains(filterPattern) || item.getExecutive_name().toLowerCase().contains(filterPattern) || item.getP_m_name().toLowerCase().contains(filterPattern) || item.getCreated_at().toLowerCase().contains(filterPattern)){
                        filteredList.add(item);
                    }
                }
