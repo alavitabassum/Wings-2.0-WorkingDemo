@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0;
+package com.paperflywings.user.paperflyv0.PickupOfficer;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive;
+import com.paperflywings.user.paperflyv0.PickupsToday_Executive;
+import com.paperflywings.user.paperflyv0.R;
 
 public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapterExecutive.ViewHolder> {
 

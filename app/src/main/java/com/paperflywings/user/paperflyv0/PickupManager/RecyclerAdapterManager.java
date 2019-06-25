@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0;
+package com.paperflywings.user.paperflyv0.PickupManager;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +12,8 @@ import com.paperflywings.user.paperflyv0.PickupManager.AjkerdealdirectdeliveryMa
 import com.paperflywings.user.paperflyv0.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.Robishop.Robishop_Assign_pickup_manager;
+import com.paperflywings.user.paperflyv0.PickupsToday_Manager;
+import com.paperflywings.user.paperflyv0.R;
 
 public class RecyclerAdapterManager extends RecyclerView.Adapter<RecyclerAdapterManager.ViewHolder> {
 

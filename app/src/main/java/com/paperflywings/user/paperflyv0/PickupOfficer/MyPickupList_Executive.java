@@ -47,7 +47,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.ExecutiveCardMenu;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.PickupList_Model_For_Executive;
 import com.paperflywings.user.paperflyv0.PickupsToday_Executive;
@@ -961,10 +960,13 @@ public class MyPickupList_Executive extends AppCompatActivity
         }
     }
 
+
     @Override
     public void onItemClick_call(View view4, int position4) {
         Intent callIntent =new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel: " +list.get(position4).getPhone_no()));
+        String phoneNumber = list.get(position4).getPhone_no();
+        String lastFourDigits = phoneNumber.substring(phoneNumber.length() - 10);
+        callIntent.setData(Uri.parse("tel: +880" +lastFourDigits));
         if (ActivityCompat.checkSelfPermission(view4.getContext(),
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((Activity) view4.getContext(),

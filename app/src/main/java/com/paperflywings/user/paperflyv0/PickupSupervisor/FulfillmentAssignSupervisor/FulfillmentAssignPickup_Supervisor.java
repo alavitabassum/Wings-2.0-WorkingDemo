@@ -52,7 +52,7 @@ import com.paperflywings.user.paperflyv0.PickupSupervisor.LogisticAssignSupervis
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor;
 import com.paperflywings.user.paperflyv0.R;
-import com.paperflywings.user.paperflyv0.SupervisorCardMenu;
+import com.paperflywings.user.paperflyv0.PickupSupervisor.SupervisorCardMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
