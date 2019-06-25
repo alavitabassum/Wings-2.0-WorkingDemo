@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -27,10 +28,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.zxing.ResultPoint;
+import com.journeyapps.barcodescanner.BarcodeCallback;
+import com.journeyapps.barcodescanner.BarcodeResult;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.LoginActivity;
@@ -65,6 +71,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private Button delivery_quick_pick;
+    private String lastText;
 
     public static final String BARCODE_NO= "barcode";
     public static final String ORDERID = "orderid";
@@ -518,11 +525,20 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         }
     }
 
+
+
     @Override
-    public void onItemClick_view(View view, int position) {
-        Intent intent = new Intent(DeliveryOfficerUnpicked.this,
-                Delivery_quick_pick_scan.class);
-        startActivity(intent);
+    public void onItemClick_view(View view2, int position2) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
+
+        final Delivery_unpicked_model clickedITem = list.get(position2);
+
+        lastText = clickedITem.getBarcode();
+
+        pickedfordelivery(lastText,username,empcode);
     }
 
    /* @Override
@@ -549,5 +565,54 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             return;
         }
         view4.getContext().startActivity(callIntent);
+    }
+
+    private void pickedfordelivery(final String barcode, final String username, final String empcode) {
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryPick.php",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                //storing the name to sqlite with status synced
+                                db.getUnpickedOrderData(barcode,username,empcode,NAME_SYNCED_WITH_SERVER);
+                                Toast toast= Toast.makeText(DeliveryOfficerUnpicked.this,
+                                        "Product Picked Successful", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                                toast.show();
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
+                                Toast.makeText(DeliveryOfficerUnpicked.this, "Unsuccessful" ,  Toast.LENGTH_LONG).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("barcode", barcode);
+                params.put("username", username);
+                params.put("empcode", empcode);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest);
     }
 }
