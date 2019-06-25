@@ -3,9 +3,11 @@ package com.paperflywings.user.paperflyv0.PickupOfficer;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -48,10 +50,11 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
+import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.PickupList_Model_For_Executive;
+import com.paperflywings.user.paperflyv0.PickupManager.Robishop.RobishopScanningScreen;
 import com.paperflywings.user.paperflyv0.PickupsToday_Executive;
 import com.paperflywings.user.paperflyv0.R;
-import com.paperflywings.user.paperflyv0.PickupManager.Robishop.RobishopScanningScreen;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,6 +106,11 @@ public class MyPickupList_Executive extends AppCompatActivity
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
 
+    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
+
+    //Broadcast receiver to know the sync status
+    private BroadcastReceiver broadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +158,9 @@ public class MyPickupList_Executive extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
+        //Offline sync
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
@@ -159,6 +170,12 @@ public class MyPickupList_Executive extends AppCompatActivity
             getData(user);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+            }
+        };
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

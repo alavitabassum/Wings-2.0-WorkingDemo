@@ -282,7 +282,7 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             }else{
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (PickupList_Model_For_Executive item : listFull){
-                    if (item.getMerchant_name().toLowerCase().contains(filterPattern) || item.getP_m_name().toLowerCase().contains(filterPattern) || item.getPhone_no().toLowerCase().contains(filterPattern)){
+                    if (item.getMerchant_name().toLowerCase().contains(filterPattern) || item.getP_m_name().toLowerCase().contains(filterPattern) || item.getP_m_add().toLowerCase().contains(filterPattern) || item.getProduct_name().toLowerCase().contains(filterPattern) || item.getCreated_at().toLowerCase().contains(filterPattern) || item.getPhone_no().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }
