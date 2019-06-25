@@ -20,7 +20,6 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
     private List<PickupList_Model_For_Executive> pickupList_model_for_executives;
     private List<PickupList_Model_For_Executive> PickupList_Model_For_ExecutiveFull;
 
-   // private List<TodaySummary> listItems;
     private  Context context;
 
     public MerchantListAdapter(List<PickupList_Model_For_Executive> pickupList_model_for_executives, Context context) {

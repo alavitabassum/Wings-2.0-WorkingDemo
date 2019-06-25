@@ -8,7 +8,7 @@
     android:foreground="?selectableItemBackground"
     android:padding="50dp"
     app:cardBackgroundColor="#fff"
-    tools:context=".NewOrderEntry_Supervisor_ful"
+    tools:context=".PickupSupervisor.FulfillmentAssignSupervisor.NewOrderEntry_Supervisor_ful"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <AutoCompleteTextView

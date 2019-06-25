@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive;
+
 public class RecyclerAdapterExecutive extends RecyclerView.Adapter<RecyclerAdapterExecutive.ViewHolder> {
 
     private String[] titles_exe_list = { "My Pickup List","Pickups Today"};
