@@ -374,14 +374,18 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         db.close();
     }
-
+/*MERCHANT_ID + " = ? AND " + SUB_MERCHANT_NAME + " = ?  AND " + SQL_PRIMARY_ID + " = ?  AND " + UPDATED_AT + " = ?";
+ */
     // get the pickup list from My_pickups table
     public Cursor get_mypickups_today(SQLiteDatabase db, String user) {
         String[] columns = {KEY_ID, MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD, PRODUCT_NAME, APIORDERID, DEMO, PICKED_STATUS, RECEIVED_STATUS, SQL_PRIMARY_ID};
         String sortOrder = CREATED_AT + " ASC";
-        String whereClause = EXECUTIVE_NAME + "=?";
+        String whereClause = EXECUTIVE_NAME + "=? AND (" + PICKED_STATUS + " = ?  OR " + PICKED_STATUS + " = ?  OR " + PICKED_STATUS + " = ?)";
         String[] whereArgs = new String[]{
-                user
+                user,
+                "0",
+                "2",
+                "5"
         };
         return (db.query(TABLE_NAME_1, columns, whereClause, whereArgs, null, null, sortOrder));
     }

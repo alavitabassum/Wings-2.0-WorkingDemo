@@ -157,7 +157,6 @@ public class MyPickupList_Executive extends AppCompatActivity
         }
         else{
             getData(user);
-
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
