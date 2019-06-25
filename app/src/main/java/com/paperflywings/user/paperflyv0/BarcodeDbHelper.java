@@ -1112,6 +1112,5 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_10, columns, whereClause, whereArgs, null, null, null));
     }
 
-
 }
 

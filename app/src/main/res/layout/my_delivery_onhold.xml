@@ -9,7 +9,7 @@
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
     android:paddingBottom="50dp"
-    card_view_assign:cardBackgroundColor="#FDFDF7"
+    card_view_assign:cardBackgroundColor="#FFF0E6"
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
 
@@ -56,7 +56,7 @@
 
 
         <TextView
-            android:id="@+id/ordertxt"
+            android:id="@+id/ordertxt_onhold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -73,11 +73,11 @@
             android:id="@+id/orderId_on_hold"
             android:layout_width="279dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/ordertxt"
+            android:layout_alignBaseline="@+id/ordertxt_onhold"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="6dp"
-            android:layout_toEndOf="@+id/ordertxt"
+            android:layout_toEndOf="@+id/ordertxt_onhold"
             android:lines="2"
             android:maxLines="2"
             android:textAlignment="textStart"

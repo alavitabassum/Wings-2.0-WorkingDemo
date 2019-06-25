@@ -20,22 +20,24 @@ import com.paperflywings.user.paperflyv0.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAdapter.ViewHolder>implements Filterable {
+public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAdapter.ViewHolder> implements Filterable {
+
     private List<DeliveryOnHoldModel> listFull;
     private List<DeliveryOnHoldModel> list;
 
-    private int currentPosition = -1;
+    private int currentPostion = -1;
 
     private Context context;
     private OnItemClickListener mListner;
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
 
-    public DeliveryOnHoldAdapter(java.util.List<DeliveryOnHoldModel> list, Context context) {
+    public DeliveryOnHoldAdapter(List<DeliveryOnHoldModel> list, Context context) {
         this.list = list;
         this.context = context;
         this.listFull = new ArrayList<>(list);
     }
+
 
     public interface OnItemClickListener {
 
@@ -45,17 +47,22 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         void onItemClick_call (View view4, int position4);
     }
 
-
-    public  void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener){
         this.mListner = listener;
     }
+
     public void setOnItemTouchListener(RecyclerView.OnItemTouchListener t_listener){
         this.touchListener = t_listener;
     }
-   /* public DeliveryOnHoldAdapter(ArrayList<DeliveryOnHoldModel> list, Context context){
 
+    /*public DeliveryOnHoldAdapter(java.util.List<DeliveryOnHoldAdapter> list, Context context) {
+        this.list = list;
+        this.context = context;
+        this.listFull = new ArrayList<>(list);
     }*/
+
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         public TextView item_customerDistrict_without_status;
         public TextView item_barcode_without_status;
         public TextView item_ordId_without_status;
@@ -69,7 +76,8 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         public TextView item_productBrief_without_status;
         public TextView item_deliveryTime_without_status;
         public Button itemStatus_without_status;
-        public CardView card_view_onHold;
+        public CardView card_view_without_status;
+
 
         public ViewHolder(View itemView, int i) {
             super(itemView);
@@ -85,7 +93,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
             item_productBrief_without_status=itemView.findViewById(R.id.package_brief_on_hold);
             item_deliveryTime_without_status=itemView.findViewById(R.id.deliverytime_onhold);
             itemStatus_without_status=itemView.findViewById(R.id.btn_status_on_hold);
-            card_view_onHold=itemView.findViewById(R.id.card_view_delivery_onHold);
+            card_view_without_status=itemView.findViewById(R.id.card_view_delivery_onHold);
 
             item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -114,15 +122,16 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
                 }
 
             });
-        }
-    }
 
+        }
+
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-      View V = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_delivery_onhold,viewGroup,false);
-      ViewHolder viewHolder = new ViewHolder(V,i);
-      return viewHolder;
+        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_delivery_onhold,viewGroup,false);
+        ViewHolder viewHolder = new ViewHolder(v,i);
+        return viewHolder;
     }
 
     @Override
@@ -177,10 +186,9 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         }
     }
 
-
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 
     @Override
@@ -218,6 +226,5 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
 
 
     };
-
 
 }
