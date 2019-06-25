@@ -25,7 +25,6 @@ public class PickupList_Model_For_Executive {
 
     }
 
-
     public String getSql_primary_id() {
         return sql_primary_id;
     }
@@ -33,13 +32,11 @@ public class PickupList_Model_For_Executive {
     public void setSql_primary_id(String sql_primary_id) {
         this.sql_primary_id = sql_primary_id;
     }
-
     private String apiOrderID;
     private Button txtOption;
     private String demo;
     private String pick_from_merchant_status;
     private String received_from_HQ_status;
-
 
 
     public Button getTxtOption() {

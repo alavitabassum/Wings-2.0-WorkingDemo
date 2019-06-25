@@ -171,21 +171,17 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
     public void onBindViewHolder(final ViewHolder viewHolder, int i) {
 
         viewHolder.item_date_pul.setText(list.get(i).getCreated_at());
-        viewHolder.item_p_m_name_pul.setText(list.get(i).getP_m_name());
-        viewHolder.item_p_m_add_pul.setText(list.get(i).getP_m_add());
+        //viewHolder.item_p_m_name_pul.setText(list.get(i).getP_m_name());
+        //viewHolder.item_p_m_add_pul.setText(list.get(i).getP_m_add());
         viewHolder.itme_a_pul.setText(list.get(i).getAssined_qty());
         viewHolder.item_phnNum.setText(list.get(i).getPhone_no());
 
         String complete_status = list.get(i).getComplete_status();
         String product_name = list.get(i).getProduct_name();
         String pick_status = list.get(i).getPick_from_merchant_status();
-        // String pause_or_delete = list.get(i).getReceived_from_HQ_status();
-
-
 
         if(complete_status.equals("p") && product_name.equals("0")) {
             viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
-//            viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Scan Count: ");
             viewHolder.item_productName.setText(list.get(i).getScan_count());
             viewHolder.text_pickedCount.setText("Picked: ");
@@ -193,7 +189,6 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
 
         } if ( complete_status.equals("f") && product_name != "0") {
             viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
-//            viewHolder.itemStatus.setEnabled(false);
             viewHolder.text_scanCount.setText("Product: ");
             viewHolder.item_productName.setText(list.get(i).getProduct_name());
             viewHolder.text_pickedCount.setText("Picked: ");
@@ -211,114 +206,58 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             viewHolder.item_productName.setText(list.get(i).getProduct_name());
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getPicked_qty());
-
         }
 
-        /*try {
-            int count_assigned = Integer.parseInt(list.get(i).getAssined_qty());
-            int count_picked = Integer.parseInt(list.get(i).getPicked_qty());
-            int count = Integer.parseInt(list.get(i).getScan_count());*/
+        // Status 0 means cno action taken
+        if(pick_status.equals("0")) {
+            viewHolder.itemStatus.setText("Action");
+            viewHolder.itemStatus.setBackgroundResource(R.color.colorPrimary);
+            viewHolder.itemStatus.setTextColor(Color.WHITE);
+            viewHolder.itemStatus.setEnabled(true);
+        }
 
-         /*   if (count == count_assigned || count > count_assigned && complete_status.equals("p")){
-                viewHolder.itemStatus.setText("Complete");
-                viewHolder.itemStatus.setBackgroundResource(R.color.green);
-                viewHolder.itemStatus.setTextColor(Color.WHITE);
-                viewHolder.itemStatus.setEnabled(false);
-            }*/
-        /*    if (count < count_assigned && complete_status.equals("p")){
-                viewHolder.itemStatus.setText("Pending");
-                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
-                viewHolder.itemStatus.setTextColor(Color.BLACK);
-                viewHolder.itemStatus.setEnabled(true);
-            }*/
-          /*  if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("f")){
-                viewHolder.itemStatus.setText("Complete");
-                viewHolder.itemStatus.setBackgroundResource(R.color.green);
-                viewHolder.itemStatus.setTextColor(Color.WHITE);
-                viewHolder.itemStatus.setEnabled(false);
-            }*/
-           /* if(count_picked < count_assigned && complete_status.equals("f")) {
-                viewHolder.itemStatus.setText("Pending");
-                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
-                viewHolder.itemStatus.setTextColor(Color.BLACK);
-//                viewHolder.itemStatus.setEnabled(true);
-            }*/
-          /*  if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("a")){
-                viewHolder.itemStatus.setText("Complete");
-                viewHolder.itemStatus.setBackgroundResource(R.color.green);
-                viewHolder.itemStatus.setTextColor(Color.WHITE);
-                viewHolder.itemStatus.setEnabled(false);
-//                viewHolder.scan_button.setBackgroundResource(R.color.material_grey_100);
-//                viewHolder.scan_button.setEnabled(false);
+        // Status 2 means order on hold
+        if(pick_status.equals("2")) {
+            viewHolder.itemStatus.setText("On hold");
+            viewHolder.itemStatus.setBackgroundResource(R.color.yello);
+            viewHolder.itemStatus.setTextColor(Color.BLACK);
+            viewHolder.itemStatus.setEnabled(true);
+        }
 
-            }*/
-          /*  if(count_picked < count_assigned && complete_status.equals("a")) {
-                viewHolder.itemStatus.setText("Pending");
-                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
-                viewHolder.itemStatus.setTextColor(Color.BLACK);
-                viewHolder.itemStatus.setEnabled(true);
-            }*/
+        // Status 3 means order on hold
+        if(pick_status.equals("3")) {
+            viewHolder.itemStatus.setText("Cancel");
+            viewHolder.itemStatus.setBackgroundResource(R.color.red);
+            viewHolder.itemStatus.setTextColor(Color.WHITE);
+            viewHolder.itemStatus.setEnabled(true);
+        }
 
-           /* if (count_picked ==  count_assigned || count_picked > count_assigned && complete_status.equals("r")){
-                viewHolder.itemStatus.setText("Complete");
-                viewHolder.itemStatus.setBackgroundResource(R.color.green);
-                viewHolder.itemStatus.setTextColor(Color.WHITE);
-                viewHolder.itemStatus.setEnabled(false);
-            }*/
+        // Status 4 means complete
+        if(pick_status.equals("4")) {
+            viewHolder.itemStatus.setText("Complete");
+            viewHolder.itemStatus.setBackgroundResource(R.color.green);
+            viewHolder.itemStatus.setTextColor(Color.BLACK);
+            viewHolder.itemStatus.setEnabled(true);
+        }
 
-            /*if(count_picked < count_assigned && complete_status.equals("r")) {
-                viewHolder.itemStatus.setText("Pending");
-                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
-                viewHolder.itemStatus.setTextColor(Color.BLACK);
-                viewHolder.itemStatus.setEnabled(true);
-            }*/
-
-            if(pick_status.equals("0")) {
-                viewHolder.itemStatus.setText("Action");
-                viewHolder.itemStatus.setBackgroundResource(R.color.blue_link);
-                viewHolder.itemStatus.setTextColor(Color.WHITE);
-                viewHolder.itemStatus.setEnabled(true);
-            }
-
-            if(pick_status.equals("4")) {
-                viewHolder.itemStatus.setText("Picked");
-                viewHolder.itemStatus.setBackgroundResource(R.color.green);
-                viewHolder.itemStatus.setTextColor(Color.BLACK);
-                viewHolder.itemStatus.setEnabled(true);
-            }
-
-            if(pick_status.equals("2")) {
-                viewHolder.itemStatus.setText("On hold");
-                viewHolder.itemStatus.setBackgroundResource(R.color.yellow);
-                viewHolder.itemStatus.setTextColor(Color.BLACK);
-                viewHolder.itemStatus.setEnabled(true);
-            }
-
-            if(pick_status.equals("3")) {
-                viewHolder.itemStatus.setText("Cancel");
-                viewHolder.itemStatus.setBackgroundResource(R.color.red);
-                viewHolder.itemStatus.setTextColor(Color.WHITE);
-                viewHolder.itemStatus.setEnabled(true);
-            }
-
-            if(pick_status.equals("5")) {
-                viewHolder.itemStatus.setText("Partial");
-                viewHolder.itemStatus.setBackgroundResource(R.color.red);
-                viewHolder.itemStatus.setTextColor(Color.WHITE);
-                viewHolder.itemStatus.setEnabled(true);
-            }
-
-       /* } catch(Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
-        }*/
+        // Status 5 means order on hold
+        if(pick_status.equals("5")) {
+            viewHolder.itemStatus.setText("Partial");
+            viewHolder.itemStatus.setBackgroundResource(R.color.red);
+            viewHolder.itemStatus.setTextColor(Color.WHITE);
+            viewHolder.itemStatus.setEnabled(true);
+        }
 
         if(list.get(i).getP_m_name().equals("")) {
             viewHolder.item_p_m_name_pul.setText("No Submerchant");
+        } else {
+            viewHolder.item_p_m_name_pul.setText(list.get(i).getP_m_name());
         }
 
         if(list.get(i).getP_m_add().equals("")) {
             viewHolder.item_p_m_add_pul.setText("No Address");
+        } else {
+            viewHolder.item_p_m_add_pul.setText(list.get(i).getP_m_add());
         }
 
     }

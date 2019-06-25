@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -62,9 +62,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String RETURNREQUEST = "return_request";
     private static final String RETURNLIST = "return_list";
 
-
     //delivery unpicked
-
     public static final String BARCODE_NO = "barcode";
     public static final String ORDERID = "orderid";
     public static final String MERCHANT_ORDER_REF = "merOrderRef";
@@ -78,9 +76,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String DELIVERY_TIME = "deliveryTime";
     public static final String EMPLOYEE_CODE = "empCode";
 
-
     //delivery without status
-   // public static final String CUSTOMER_DISTRICT_WITHOUT_STATUS = "customerDistrict";
+    // public static final String CUSTOMER_DISTRICT_WITHOUT_STATUS = "customerDistrict";
     public static final String BARCODE_NO_WITHOUT_STATUS = "barcode";
     public static final String ORDERID_WITHOUT_STATUS = "orderid";
     public static final String MERCHANT_REF_WITHOUT_STATUS = "merOrderRef";
@@ -110,7 +107,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String ONHOLDSCHEDULE_WITHOUT_STATUS = "onHoldSchedule";
     public static final String ONHOLDREASON_WITHOUT_STATUS = "onHoldReason";
     public static final String SLAMISS = "slaMiss";
-
 
     private static final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
@@ -337,7 +333,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_1);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
-//         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
+        // db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_4);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_6);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_7);
@@ -483,8 +479,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         String[] whereArgs = new String[]{
                 barcodeNumber
         };
-        // insert
-        // db.update(TABLE_NAME,values,"merchantId='" + merchantId + "'" + "&&" + "sub_merchant_name='" + sub_merchant_name + "'",null);
+
         db.update(TABLE_NAME_2, values, whereClause, whereArgs);
         db.close();
     }

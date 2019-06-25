@@ -72,53 +72,21 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 //getting all the unsynced data
                 Cursor cursor2 = database2.getUnsyncedData();
                 if (cursor2.moveToFirst()) {
-                    do {/*  + "id0 INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "sql_primary_id1 TEXT, "
-                + "merchantId2 TEXT, "
-                + "merchant_name3 TEXT, "
-                + "executive_name4 TEXT, "
-                + "assined_qty5 TEXT, "
-                + "picked_qty6 TEXT, "
-                + "scan_count7 TEXT, "
-                + "phone_no8 TEXT, "
-                + "assigned_by9 TEXT, "
-                + "created_at10 TEXT , "
-                + "updated_by11 TEXT, "
-                + "updated_at12 TEXT , "
-                + "status13 INT, "
-                + "complete_status14 TEXT, "
-                + "p_m_name15 TEXT , "
-                + "p_m_add16 TEXT, "
-                + "product_name17 TEXT, "
-                + "apiOrderID18 TEXT, "
-                + "demo19 TEXT, "
-                + "pick_from_merchant_status20 TEXT, "
-                + "received_from_HQ_status21 TEXT, "*/
-                /*final int id,0
-                final String sql_primary_id, 1
-                final String strI,7
-                final String picked_qty,6
-                final String updated_by,11
-                final String updated_at,12
-                final String merchant_id, 2
-                final String sub_merchant_name,15
-                final String match_date,10
-                final String apiOrderID,18
-                final String pick_from_merchant_status20*/
+                    do {
                         //calling the method to save the unsynced name to MySQL
-                        saveData(cursor2.getInt(0),
-                                 cursor2.getString(1),
-                                cursor2.getString(7),
-                                cursor2.getString(6),
-                                cursor2.getString(11),
-                                cursor2.getString(12),
-                                cursor2.getString(2),
-                                cursor2.getString(15),
-                                cursor2.getString(10),
-                                cursor2.getString(18),
-                                cursor2.getString(20),
-                                cursor2.getString(19),
-                                cursor2.getString(21));
+                        saveData(cursor2.getInt(0), // id
+                                cursor2.getString(1), // sql_primary_id
+                                cursor2.getString(7), // scan_count
+                                cursor2.getString(6), // picked_qty
+                                cursor2.getString(11), // updated_by
+                                cursor2.getString(12), // updated_at
+                                cursor2.getString(2),  // merchantId
+                                cursor2.getString(15),  // p_m_name
+                                cursor2.getString(10),  // created_at
+                                cursor2.getString(18),  // apiOrderID
+                                cursor2.getString(20),  // pick_from_merchant_status
+                                cursor2.getString(19),  // demo
+                                cursor2.getString(21)); // received_from_HQ_status
                     } while (cursor2.moveToNext());
                 }
 
@@ -157,51 +125,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor6.moveToNext());
                 }
 
-
-                /* + "id0 INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "merchantName1 TEXT, "
-                + "merchantCode2 TEXT, "
-                + "pickMerName3 TEXT, "
-                + "pickMerAddress4 TEXT, "
-                + "pickPhoneNo5 TEXT, "
-                + "executiveName6 TEXT, "
-                + "executiveCode7 TEXT, "
-                + "manualCountManager8 TEXT, "
-                + "autoCountMerchant9 TEXT, "
-                + "scanCount TEXT10 , "
-                + "pickedQty TEXT,11 "
-                + "productName12 TEXT , "
-                + "productId13 TEXT, "
-                + "productQty14 TEXT, "
-                + "merOrderRef15 TEXT , "
-                + "assignedBy16 TEXT, "
-                + "assignedAt17 TEXT, "
-                + "updatedBy18 TEXT, "
-                + "updatedAt19 TEXT, "
-                + "pickTypeStatus20 TEXT, "
-                + "pickedStatus21 TEXT, "
-                + "receivedStatus22 TEXT, "
-                + "updateSatus23 TEXT,"
-                + "deleteStatus24 TEXT,"
-                + "demo1 25 TEXT,"
-                + "demo2 26 TEXT,"
-                + "status27 INT,"*/
-
-                /*Cursor cursor7 = database2.getUnsyncedUpdateLogistic();
-                if (cursor7.moveToFirst()) {
-                    do {
-                        //update unsynced value in tbl_update_auto_insertassign_pickup
-                        updateUnsyncedData(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(3),cursor7.getString(6),cursor7.getString(10),cursor7.getString(11),cursor7.getString(18),cursor7.getString(19),cursor7.getString(21));
-
-                    } while (cursor7.moveToNext());
-                }*/
-
-                /* + "id INTEGER PRIMARY KEY AUTOINCREMENT, 0"
-                + "sql_primary_id TEXT, 1"
-                + "comment TEXT, 2"
-                + "status_id TEXT, 3"
-                + "status_name TEXT, 4"
-                + "username TEXT, 5"*/
                 //getting all the unsynced data
                 Cursor cursor9 = database2.getUnsyncedActionLog();
                 if (cursor9.moveToFirst()) {
@@ -314,46 +237,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-   /* private void updateUnAssignedAPIAdeal(final int id, final String order_id, final String pickAssignedStatus){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateassignadeal.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                //updating the status in sqlite
-                                database.updateUnassignStatusAdeal(id, NAME_SYNCED_WITH_SERVER);
-
-                                //sending the broadcast to refresh the list
-                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Voly" +error, Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("merchantCode", order_id);
-                params.put("pickAssignedStatus", pickAssignedStatus);
-
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-    }
-*/
-
     private void updateUnAssignedAPIRobi(final int id, final String merchant_code, final String pickAssignedStatus, final String demo){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Robishop_Assign_pickup_manager.UPDATE_ASSIGN_URL,
                 new Response.Listener<String>() {
@@ -433,7 +316,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-    // Barcode save to server
+    // Logistic Barcode Sync to Mysql Server
     private void saveBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String sql_primary_id) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode1.php",
                 new Response.Listener<String>() {
@@ -477,7 +360,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     // Update scan count
     private void saveData(final int id, final String sql_primary_id, final String strI, final String picked_qty, final String updated_by, final String updated_at, final String merchant_id, final String sub_merchant_name, final String match_date,final String apiOrderID, final String pick_from_merchant_status, final String demo, final String received_from_HQ_status) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/updateTableInsertassign.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MyPickupList_Executive.UPDATE_ACTION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -505,28 +388,27 @@ public class NetworkStateChecker extends BroadcastReceiver {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("scan_count", strI);
-                params.put("picked_qty", picked_qty);
-                params.put("updated_by", updated_by);
-                params.put("updated_at", updated_at);
                 params.put("merchant_code", merchant_id);
                 params.put("p_m_name", sub_merchant_name);
                 params.put("created_at", match_date);
+                params.put("scan_count", strI);
+                params.put("picked_qty", picked_qty);
                 params.put("api_order_id", apiOrderID);
-                params.put("pick_from_merchant_status", pick_from_merchant_status);
-                params.put("sql_primary_id", sql_primary_id);
                 params.put("demo", demo);
+                params.put("pick_from_merchant_status", pick_from_merchant_status);
                 params.put("received_from_HQ_status", received_from_HQ_status);
+                params.put("updated_by", updated_by);
+                params.put("updated_at", updated_at);
+                params.put("sql_primary_id", sql_primary_id);
 
                 return params;
-
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
     }
 
-    //Fulfillment Barcode save to server
+    //Fulfillment Barcode Save Sync to Server Database from local storage
     private void saveFulfillmentBarcode(final int id,final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty, final String merchant_code, final String sql_primary_id) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, FulfillmentScanningScreen.BARCODE_INSERT_AND_UPDATE_URL,
                 new Response.Listener<String>() {
@@ -572,53 +454,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-//    updateUnsyncedData(cursor7.getInt(0),cursor7.getString(2),cursor7.getString(3),cursor7.getString(6),cursor7.getString(10),cursor7.getString(11),cursor7.getString(18),cursor7.getString(19),cursor7.getString(21))
-    /*private void updateUnsyncedData(final int id, final String merchantCode, final String pickMerName, final String executiveName, final String scanCount, final String pickedQty ,final String updatedBy, final String updatedAt, final String pickedStatus) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, AutoScanningScreen.UPDATE_SCAN_AND_PICKED,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-
-                                //updating the status in sqlite
-//                                database2.updateSyncedDataStatus(id, NAME_SYNCED_WITH_SERVER);
-
-                                //sending the broadcast to refresh the list
-                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
-
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("merchantCode", merchantCode);
-                params.put("pickMerName", pickMerName);
-                params.put("executiveName", executiveName);
-                params.put("scanCount", scanCount);
-                params.put("pickedQty", pickedQty);
-                params.put("updatedBy", updatedBy);
-                params.put("updatedAt", updatedAt);
-                params.put("pickedStatus", pickedStatus);
-
-                return params;
-
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-    }
-*/
+    // Action Log Sync
     private void insertLog(final int id,final String sql_primary_id, final String comments, final String status_id, final String status_name, final String username) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MyPickupList_Executive.INSERT_ACTION_LOG,
                 new Response.Listener<String>() {
