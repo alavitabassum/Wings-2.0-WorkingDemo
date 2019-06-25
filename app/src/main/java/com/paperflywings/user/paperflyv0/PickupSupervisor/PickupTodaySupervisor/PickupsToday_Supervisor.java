@@ -42,7 +42,7 @@ import com.paperflywings.user.paperflyv0.PickupSupervisor.FulfillmentAssignSuper
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor;
 import com.paperflywings.user.paperflyv0.R;
-import com.paperflywings.user.paperflyv0.SupervisorCardMenu;
+import com.paperflywings.user.paperflyv0.PickupSupervisor.SupervisorCardMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;

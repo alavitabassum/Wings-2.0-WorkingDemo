@@ -65,7 +65,7 @@
             android:label="@string/title_activity_assign_pickup__supervisor"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".SupervisorCardMenu"
+            android:name=".PickupSupervisor.SupervisorCardMenu"
             android:label="@string/title_activity_supervisor_card_menu"
             android:theme="@style/AppTheme" />
         <activity
@@ -104,11 +104,11 @@
         </receiver>
 
         <activity
-            android:name=".ExecutiveCardMenu"
+            android:name=".PickupOfficer.ExecutiveCardMenu"
             android:label="@string/title_activity_executive_card_menu"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".ManagerCardMenu"
+            android:name=".PickupManager.ManagerCardMenu"
             android:label="@string/title_activity_manager_card_menu"
             android:theme="@style/AppTheme" />
         <activity
