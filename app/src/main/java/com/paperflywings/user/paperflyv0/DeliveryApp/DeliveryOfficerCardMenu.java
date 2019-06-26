@@ -52,7 +52,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     BarcodeDbHelper db;
     private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery;
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
-    private Delivery_unpicked_adapter Delivery_unpicked_adapter;
+
 
     private static final String UNPICKED = "unpicked";
 
@@ -312,30 +312,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_item, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+        getMenuInflater().inflate(R.menu.delivery_officer_card_menu, menu);
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                Delivery_unpicked_adapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            Intent intent_stay = new Intent(DeliveryOfficerCardMenu.this,DeliveryWithoutStatus.class);
-            Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
-            startActivity(intent_stay);
-        }
         return true;
     }
 

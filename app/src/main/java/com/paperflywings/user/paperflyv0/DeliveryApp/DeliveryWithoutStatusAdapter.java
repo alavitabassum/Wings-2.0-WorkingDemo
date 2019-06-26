@@ -145,6 +145,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
        // String CustomerDistrict = list.get(i).getCustomerDistrict();
         int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
 
+
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
