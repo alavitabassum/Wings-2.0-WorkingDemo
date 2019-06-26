@@ -112,8 +112,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
     private static final String URL_DATA = "";
     private ProgressDialog progress;
-
     private DeliveryWithoutStatusAdapter DeliveryWithoutStatusAdapter;
+
+
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     RecyclerView.Adapter adapter_pul;
