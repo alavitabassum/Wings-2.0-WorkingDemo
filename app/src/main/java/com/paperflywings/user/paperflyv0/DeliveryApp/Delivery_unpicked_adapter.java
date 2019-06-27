@@ -34,7 +34,7 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
     BarcodeDbHelper db;
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick_view(View view, int position);
      /*   void onItemClick_view (View view2, int position2);
         void onItemClick_view_orderIDs (View view3, int position3);*/
         void onItemClick_call (View view4, int position4);
@@ -99,7 +99,7 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
                     }
                 }
             });
-        /*    itemStatus.setOnClickListener(new View.OnClickListener() {
+            itemStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
                     if(mListner!=null){
@@ -114,7 +114,7 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
 
             });
 
-            card_view.setOnClickListener(new View.OnClickListener() {
+           /* card_view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view3) {
                     if(mListner!=null){
@@ -166,6 +166,8 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
     }
 
     private Filter NamesFilter = new Filter() {
+
+
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Delivery_unpicked_model>filteredList = new ArrayList<>();
@@ -173,8 +175,10 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
                 filteredList.addAll(listFull);
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for(Delivery_unpicked_model items: listFull){
-
+                for(Delivery_unpicked_model item: listFull){
+                    if (item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
+                        filteredList.add(item);
+                    }
                 }
             }
             FilterResults results = new FilterResults();
@@ -188,5 +192,7 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
             list.addAll((List) results.values);
             notifyDataSetChanged();
         }
+
+
     };
 }

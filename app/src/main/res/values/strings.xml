@@ -60,7 +60,7 @@
     </string-array>
 
     <string-array name="onholdreasons">
-        <item>Please select an option...</item>
+        <item>Please select an option..</item>
         <item>স্টকে পণ্য নেই</item>
         <item>গুণগত মান / প্যাকেজিং সমস্যা</item>
         <item>মার্চেন্টের সাথে যোগাযোগ করা যাচ্ছে না</item>
@@ -153,6 +153,6 @@
     <string name="menu_send">Send</string>
     <string name="title_activity_delivery_officer_unpicked">Unpicked</string>
     <string name="title_activity_delivery_without_status">Without Status</string>
-    <string name="title_activity_delivery_on_hold">DeliveryOnHold</string>
+    <string name="title_activity_delivery_on_hold">Delivery On Hold</string>
 
 </resources>

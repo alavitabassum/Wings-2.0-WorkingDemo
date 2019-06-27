@@ -32,8 +32,7 @@
         android:background="@color/light_grey"
         >
        <!--
-        <TextView
-            android:id="@+id/pendingcounttxt"
+        <TextView            android:id="@+id/pendingcounttxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/compltcounttxt"

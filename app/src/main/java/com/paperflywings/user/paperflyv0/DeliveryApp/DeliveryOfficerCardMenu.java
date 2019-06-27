@@ -16,10 +16,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     BarcodeDbHelper db;
     private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery;
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
+
 
     private static final String UNPICKED = "unpicked";
 
@@ -310,6 +313,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.delivery_officer_card_menu, menu);
+
         return true;
     }
 
@@ -321,13 +325,12 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

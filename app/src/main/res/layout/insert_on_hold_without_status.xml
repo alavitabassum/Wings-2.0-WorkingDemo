@@ -49,7 +49,7 @@
             android:textSize="17sp"
             android:textStyle="bold" />
 
-        <EditText
+      <!--  <EditText
             android:id="@+id/Remarks_onhold_status"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
@@ -60,7 +60,15 @@
             android:ems="10"
             android:inputType="text"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" />-->
+
+        <Spinner
+            android:id="@+id/Remarks_onhold_status"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/Remarks_without_status_text"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/Remarks_without_status_text"/>
 
         <TextView
             android:id="@+id/Remarks_without_status_text"
@@ -85,29 +93,18 @@
             android:layout_marginTop="33dp"
             android:background="?android:attr/listDivider" />
 
-        <TextView
-            android:id="@+id/datepickerText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
-            android:text="date"
-            android:layout_marginStart="25dp"
-            android:textAlignment="textStart"
-            android:textSize="15sp"
-            android:textStyle="bold" />
 
         <Button
             android:id="@+id/datepicker"
-            android:layout_width="70dp"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/datepickerText"
             android:layout_marginStart="50dp"
-            android:layout_toEndOf="@+id/datepickerText"
+            android:layout_centerHorizontal="true"
             android:autofillHints=""
             android:ems="10"
             android:inputType="text"
             android:textSize="15sp"
-            android:text="Date"
+            android:text="Select date"
             android:textStyle="bold" />
 
 
