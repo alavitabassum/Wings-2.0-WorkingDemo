@@ -784,8 +784,16 @@ public class DeliveryOnHold extends AppCompatActivity
                             case 3:
 
                                 final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
-                                final EditText et3 = mViewOnHold.findViewById(R.id.Remarks_onhold_status);
+                               // final EditText et3 = mViewOnHold.findViewById(R.id.Remarks_onhold_status);
                                // final TextView tv2 = mViewOnHold.findViewById(R.id.datepickerText);
+                                final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.Remarks_onhold_status);
+                                //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
+                                ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(DeliveryOnHold.this,
+                                        android.R.layout.simple_spinner_item,
+                                        getResources().getStringArray(R.array.onholdreasons));
+                                adapterOnhold.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mOnholdSpinner.setAdapter(adapterOnhold);
+
                                 final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
 
 
@@ -843,8 +851,10 @@ public class DeliveryOnHold extends AppCompatActivity
                                     @Override
                                     public void onClick(View v) {
 
-                                        String onHoldReason = et3.getText().toString();
+                                        //String onHoldReason = et3.getText().toString();
                                         String onHoldSchedule = bt1.getText().toString();
+                                        String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
+
 
                                         update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode);
 

@@ -79,6 +79,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             item_ordId_without_status=itemView.findViewById(R.id.orderId_without_status);
             item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
+
             item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
             item_custname_without_status=itemView.findViewById(R.id.customer_name_without_status);
             item_custaddress_without_status=itemView.findViewById(R.id.customer_Address_without_status);
@@ -131,8 +132,8 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef_without_status.setText(list.get(i).getMerOrderRef());
-        viewHolder.item_merchantName_without_status.setText("Merchant Name: "+list.get(i).getMerchantName());
-        viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+        //viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+        //viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress_without_status.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
@@ -143,13 +144,30 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
 
        // String CustomerDistrict = list.get(i).getCustomerDistrict();
-        int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
 
+        String Merchant_name = list.get(i).getMerchantName();
+        String Pick_merchantName = list.get(i).getPickMerchantName();
+
+        int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
 
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
+        }
+
+        else if (DeliveryTime>=0){
+            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
+            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
+        }
+
+        if (Pick_merchantName.isEmpty()) {
+            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+        }
+        else if(!Pick_merchantName.isEmpty()){
+            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+            viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         }
 
       /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
@@ -173,11 +191,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         }
 
         }*/
-        else if (DeliveryTime>=0){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
+
     }
 
     @Override

@@ -555,13 +555,14 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     @Override
     public void onItemClick_view(View view2, int position2) {
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
-
         final Delivery_unpicked_model clickedITem = list.get(position2);
 
-        lastText = clickedITem.getBarcode();
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        final String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
+
+
+        String lastText = clickedITem.getBarcode();
 
         pickedfordelivery(lastText,username,empcode);
     }
@@ -613,7 +614,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
-                                Toast.makeText(DeliveryOfficerUnpicked.this, "Unsuccessful" ,  Toast.LENGTH_LONG).show();
+                                Toast.makeText(DeliveryOfficerUnpicked.this, "Unsuccessful" +response,  Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

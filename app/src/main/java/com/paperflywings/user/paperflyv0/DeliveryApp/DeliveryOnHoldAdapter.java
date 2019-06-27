@@ -140,8 +140,9 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
 
         viewHolder.item_ordId_onHold.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef_onHold.setText(list.get(i).getMerOrderRef());
-        viewHolder.item_merchantName_onHold.setText("Merchant Name: "+list.get(i).getMerchantName());
-        viewHolder.item_pickMerchantName_onHold.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+
+      /*  viewHolder.item_merchantName_onHold.setText(list.get(i).getMerchantName());
+        viewHolder.item_pickMerchantName_onHold.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());*/
         viewHolder.item_custname_onHold.setText("Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress_onHold.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone_onHold.setText(list.get(i).getCustphone());
@@ -152,12 +153,22 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
 
         // String CustomerDistrict = list.get(i).getCustomerDistrict();
+        String Merchant_name = list.get(i).getMerchantName();
+        String Pick_merchantName = list.get(i).getPickMerchantName();
+
         int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
 
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_onHold.setText(list.get(i).getSlaMiss());
             viewHolder.item_deliveryTime_onHold.setBackgroundResource(R.color.red);
             viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
+        }
+        if (Pick_merchantName.isEmpty()) {
+            viewHolder.item_merchantName_onHold.setText(list.get(i).getMerchantName());
+        }
+        else if(!Pick_merchantName.isEmpty()){
+            viewHolder.item_merchantName_onHold.setText(list.get(i).getMerchantName());
+            viewHolder.item_pickMerchantName_onHold.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         }
 
       /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
