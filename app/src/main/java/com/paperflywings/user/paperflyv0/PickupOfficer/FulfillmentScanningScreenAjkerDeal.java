@@ -90,7 +90,7 @@ public class FulfillmentScanningScreenAjkerDeal extends AppCompatActivity {
     private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
-    public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_fulfillment_barcode.php";
+    public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_barcode_fulfillment.php";
     public static final String UPDATE_SCAN_AND_PICKED = "http://paperflybd.com/updateTableForFulfillment1.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 

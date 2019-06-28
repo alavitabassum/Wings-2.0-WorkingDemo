@@ -154,5 +154,6 @@
     <string name="title_activity_delivery_officer_unpicked">Unpicked</string>
     <string name="title_activity_delivery_without_status">Without Status</string>
     <string name="title_activity_delivery_on_hold">Delivery On Hold</string>
+    <string name="title_activity_delivery_quick_scan">Quick Delivery</string>
 
 </resources>

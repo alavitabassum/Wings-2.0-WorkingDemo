@@ -16,12 +16,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +29,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -52,7 +50,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     BarcodeDbHelper db;
     private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery;
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
-
 
     private static final String UNPICKED = "unpicked";
 
@@ -237,6 +234,14 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 cashCollection_count.setText(String.valueOf(cash));
                 returnList_count.setText(String.valueOf(returnList));
 
+
+                quickDelivery.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intentQuickDelivery = new Intent(DeliveryOfficerCardMenu.this, DeliveryQuickScan.class);
+                        startActivity(intentQuickDelivery);
+                    }
+                });
 
                 unpicked_item.setOnClickListener(new View.OnClickListener() {
                     @Override

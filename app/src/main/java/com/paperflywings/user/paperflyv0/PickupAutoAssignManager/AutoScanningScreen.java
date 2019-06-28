@@ -299,7 +299,7 @@ public class AutoScanningScreen extends AppCompatActivity {
     private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
         Intent intentID = getIntent();
         final String sql_primary_id = intentID.getStringExtra(SQL_PRIMARY_ID);
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode1.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

@@ -33,6 +33,7 @@ public class DeliverySummary_Model {
         this.returnList = returnList;
     }
 
+
     public String getUsername() {
         return username;
     }

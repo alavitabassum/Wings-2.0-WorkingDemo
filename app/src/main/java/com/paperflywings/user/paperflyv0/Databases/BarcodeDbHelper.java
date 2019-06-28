@@ -19,6 +19,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
     private static final String TABLE_NAME_9 = "Insert_Delivery_without_status";
     private static final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
+    private static final String TABLE_NAME_TEMPORARY = "Insert_Delivery_Quick_Scan_Data";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
@@ -320,6 +321,23 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "status INT, "
                 + "unique(id, barcode))";
 
+        String CREATION_TABLE_TEMPORARY = "CREATE TABLE Insert_Delivery_Quick_Scan_Data( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "dropPointCode TEXT,"
+                + "barcode TEXT, "
+                + "orderid TEXT, "
+                + "merOrderRef TEXT, "
+                + "merchantName TEXT, "
+                + "pickMerchantName TEXT, "
+                + "custname TEXT, "
+                + "custaddress TEXT, "
+                + "custphone TEXT, "
+                + "packagePrice TEXT, "
+                + "productBrief TEXT, "
+                + "status INT, "
+                + "unique(id, barcode))";
+
+
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -331,6 +349,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE8);
         db.execSQL(CREATION_TABLE9);
         db.execSQL(CREATION_TABLE10);
+        db.execSQL(CREATION_TABLE_TEMPORARY);
 
     }
 
@@ -346,6 +365,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_8);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_9);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_10);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_TEMPORARY);
         this.onCreate(db);
     }
 
@@ -1121,6 +1141,45 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 user
         };
         return (db.query(TABLE_NAME_10, columns, whereClause, whereArgs, null, null, null));
+    }
+
+    public void insert_quick_delivery_scan_info(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(BARCODE_NO_WITHOUT_STATUS, barcode);
+        values.put(ORDERID_WITHOUT_STATUS, orderid);
+        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
+        values.put(MERCHANTS_NAME_WITHOUT_STATUS, merchantName);
+        values.put(PICK_MERCHANTS_NAME_WITHOUT_STATUS, pickMerchantName);
+        values.put(CUSTOMER_NAME_WITHOUT_STATUS, custname);
+        values.put(CUSTOMER_ADDRESS_WITHOUT_STATUS, custaddress);
+        values.put(Phone_WITHOUT_STATUS, custphone);
+        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
+        values.put(PRODUCT_BRIEF_WITHOUT_STATUS, productBrief);
+        values.put(STATUS, status);
+
+        db.insert(TABLE_NAME_TEMPORARY, null, values);
+        db.close();
+    }
+
+    public Cursor get_quick_delivery_scan_info(SQLiteDatabase db, String barcodeNumber) {
+        String[] columns = {ORDERID_WITHOUT_STATUS,
+                MERCHANT_REF_WITHOUT_STATUS,
+                MERCHANTS_NAME_WITHOUT_STATUS,
+                PICK_MERCHANTS_NAME_WITHOUT_STATUS,
+                CUSTOMER_NAME_WITHOUT_STATUS,
+                CUSTOMER_ADDRESS_WITHOUT_STATUS,
+                Phone_WITHOUT_STATUS,
+                PACKAGE_PRICE_WITHOUT_STATUS,
+                PRODUCT_BRIEF_WITHOUT_STATUS
+        };
+
+        String whereClause = BARCODE_NO_WITHOUT_STATUS + "=?";
+        String[] whereArgs = new String[]{
+                barcodeNumber
+        };
+        return (db.query(TABLE_NAME_TEMPORARY, columns, whereClause, whereArgs, null, null, null));
     }
 
 }
