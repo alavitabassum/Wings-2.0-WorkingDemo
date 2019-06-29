@@ -123,8 +123,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
-    private List<DeliveryWithoutStatusModel> list;
+
+    private List<Delivery_unpicked_model> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
@@ -140,7 +142,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         setSupportActionBar(toolbar);
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_without_status_list);
         recyclerView_pul.setAdapter(DeliveryWithoutStatusAdapter);
-        list = new ArrayList<DeliveryWithoutStatusModel>();
+        list = new ArrayList<Delivery_unpicked_model>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -212,7 +214,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user);
+            Cursor c = db.get_delivery_All_status_without_status_onhold(sqLiteDatabase,user);
 
             while (c.moveToNext()){
 
@@ -250,7 +252,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 //String withoutStatus = c.getString(25);
 
 
-                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
+                Delivery_unpicked_model withoutStatus_model = new Delivery_unpicked_model(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
 
                 list.add(withoutStatus_model);
             }
@@ -286,7 +288,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ALL_STATUS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -301,9 +303,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliveryWithoutStatusModel withoutStatus_model = new  DeliveryWithoutStatusModel(
+                                Delivery_unpicked_model withoutStatus_model = new  Delivery_unpicked_model(
 
-                                        o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -315,63 +316,72 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
                                         o.getString("deliveryTime"),
-                                        o.getString("Cash"),
-                                        o.getString("cashType"),
-                                        o.getString("CashTime"),
-                                        o.getString("CashBy"),
-                                        o.getString("CashAmt"),
-                                        o.getString("CashComment"),
-                                        o.getString("partial"),
-                                        o.getString("partialTime"),
-                                        o.getString("partialBy"),
-                                        o.getString("partialReceive"),
-                                        o.getString("partialReturn"),
-                                        o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
-                                        o.getString("slaMiss")
-                                );
-
-
-                                db.insert_delivery_without_status(
-
-                                        o.getString("dropPointCode"),
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief"),
-                                        o.getString("deliveryTime"),
-                                        o.getString("Cash"),
-                                        o.getString("cashType"),
-                                        o.getString("CashTime"),
-                                        o.getString("CashBy"),
-                                        o.getString("CashAmt"),
-                                        o.getString("CashComment"),
-                                        o.getString("partial"),
-                                        o.getString("partialTime"),
-                                        o.getString("partialBy"),
-                                        o.getString("partialReceive"),
-                                        o.getString("partialReturn"),
-                                        o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
                                         o.getString("Rea"),
                                         o.getString("ReaTime"),
                                         o.getString("ReaBy"),
+                                        o.getString("PickDrop"),
+                                        o.getString("PickDropTime"),
+                                        o.getString("PickDropBy"),
+                                        o.getString("dropAssignTime"),
+                                        o.getString("dropAssignBy"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
+                                        o.getString("slaMiss"));
+
+                                db.Insert_Delivery_All_Status(
+
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief"),
+                                        o.getString("deliveryTime"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("PickDrop"),
+                                        o.getString("PickDropTime"),
+                                        o.getString("PickDropBy"),
+                                        o.getString("dropAssignTime"),
+                                        o.getString("dropAssignBy"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
                                         o.getString("slaMiss")
 
                                         , NAME_NOT_SYNCED_WITH_SERVER );
-
                                 list.add(withoutStatus_model);
-
                             }
-
 //                    swipeRefreshLayout.setRefreshing(false);
 
 
@@ -615,7 +625,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         final String currentDateTime = df.format(c);
 
-        final DeliveryWithoutStatusModel clickedITem = list.get(position2);
+        final Delivery_unpicked_model clickedITem = list.get(position2);
 
         // CASH
         final String cash = "Y";

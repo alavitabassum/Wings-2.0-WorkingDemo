@@ -22,8 +22,8 @@ import java.util.List;
 
 public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAdapter.ViewHolder> implements Filterable {
 
-    private List<DeliveryOnHoldModel> listFull;
-    private List<DeliveryOnHoldModel> list;
+    private List<Delivery_unpicked_model> listFull;
+    private List<Delivery_unpicked_model> list;
 
     private int currentPostion = -1;
 
@@ -32,7 +32,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
 
-    public DeliveryOnHoldAdapter(List<DeliveryOnHoldModel> list, Context context) {
+    public DeliveryOnHoldAdapter(List<Delivery_unpicked_model> list, Context context) {
         this.list = list;
         this.context = context;
         this.listFull = new ArrayList<>(list);
@@ -214,12 +214,12 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<DeliveryOnHoldModel>filteredList = new ArrayList<>();
+            List<Delivery_unpicked_model>filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0){
                 filteredList.addAll(listFull);
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for(DeliveryOnHoldModel item: listFull){
+                for(Delivery_unpicked_model item: listFull){
                     if (item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }

@@ -57,6 +57,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private static final String UNPICKED = "unpicked";
 
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
+    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
+
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     @Override
@@ -89,6 +91,9 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             loadDeliverySummary(username);
+       /*     DeliveryOfficerUnpicked obj = new DeliveryOfficerUnpicked();
+            obj.loadRecyclerView(username);*/
+            //loadRecyclerView(username);
         }
         else {
             getData(username);
@@ -96,8 +101,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
 
         //unpicked.OnClickListener(new View.OnClickListener())
-
-
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -109,9 +112,15 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
     }
+/*
+
+    private void loadRecyclerView(String username) {
+
+    }
+*/
 
 
-  // Load data from api
+    // Load data from api
   private void loadDeliverySummary(final String user)
   {
       Date c = Calendar.getInstance().getTime();

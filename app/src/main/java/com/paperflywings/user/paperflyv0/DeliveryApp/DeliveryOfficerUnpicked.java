@@ -99,7 +99,8 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     android.widget.RelativeLayout vwParentRow;
     private static final int REQUEST_CAMERA = 1;
 
-    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryUnpickedApis.php";
+    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
+    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
     private List<Delivery_unpicked_model> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -164,6 +165,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
+
         }
         else{
             getData(username);
@@ -177,8 +179,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(DeliveryOfficerUnpicked.this,
                         Delivery_quick_pick_scan.class);
-
-
                 startActivity(intent);
             }
         });
@@ -209,7 +209,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             }
         }
 
-
     }
 
     private void getData(String user){
@@ -220,7 +219,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_unpicked(sqLiteDatabase,user);
+            Cursor c = db.get_delivery_All_status_unpicked(sqLiteDatabase,user);
 
             while (c.moveToNext()){
 
@@ -237,7 +236,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                 String deliveryTime = c.getString(10);
 
                 Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime);
-
                 list.add(unpickedmodel);
             }
 
@@ -252,12 +250,12 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         }
     }
 
-    private void loadRecyclerView (final String user){
+    public void loadRecyclerView(final String user){
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ALL_STATUS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -284,9 +282,33 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                         o.getString("custphone"),
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
-                                        o.getString("deliveryTime"));
+                                        o.getString("deliveryTime"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("PickDrop"),
+                                        o.getString("PickDropTime"),
+                                        o.getString("PickDropBy"),
+                                        o.getString("dropAssignTime"),
+                                        o.getString("dropAssignBy"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
+                                        o.getString("slaMiss"));
 
-                                db.insert_delivery_unpicked_count(
+                                db.Insert_Delivery_All_Status(
 
                                         o.getString("barcode"),
                                         o.getString("orderid"),
@@ -298,7 +320,32 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                         o.getString("custphone"),
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
-                                        o.getString("deliveryTime")
+                                        o.getString("deliveryTime"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("PickDrop"),
+                                        o.getString("PickDropTime"),
+                                        o.getString("PickDropBy"),
+                                        o.getString("dropAssignTime"),
+                                        o.getString("dropAssignBy"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
+                                        o.getString("slaMiss")
+
                                         , NAME_NOT_SYNCED_WITH_SERVER );
 
                                 list.add(unpickedmodel);

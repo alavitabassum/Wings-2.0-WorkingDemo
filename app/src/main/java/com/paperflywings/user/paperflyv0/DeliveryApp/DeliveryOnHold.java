@@ -130,10 +130,12 @@ public class DeliveryOnHold extends AppCompatActivity
 
 
     public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
+    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
+
     //public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
 
-    private List<DeliveryOnHoldModel> list;
+    private List<Delivery_unpicked_model> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
 
@@ -148,7 +150,7 @@ public class DeliveryOnHold extends AppCompatActivity
         setSupportActionBar(toolbar);
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_on_hold_list);
         recyclerView_pul.setAdapter(DeliveryOnHoldAdapter);
-        list = new ArrayList<DeliveryOnHoldModel>();
+        list = new ArrayList<Delivery_unpicked_model>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -180,7 +182,6 @@ public class DeliveryOnHold extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
-
 
     /*    final String withoutstatus_count = db.get_withoutstatus_count(username);
         without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
@@ -220,7 +221,7 @@ public class DeliveryOnHold extends AppCompatActivity
             final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user);
+            Cursor c = db.get_delivery_All_status_without_status_onhold(sqLiteDatabase,user);
 
             while (c.moveToNext()){
 
@@ -254,11 +255,9 @@ public class DeliveryOnHold extends AppCompatActivity
                 //String withoutStatus = c.getString(25);
 
 
-                DeliveryOnHoldModel onhold_model = new DeliveryOnHoldModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule);
-
+                Delivery_unpicked_model onhold_model = new Delivery_unpicked_model(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule);
                 list.add(onhold_model);
             }
-
 
        /*     Cursor c1 = db.get_delivery_summary(sqLiteDatabase,user);
 
@@ -271,7 +270,6 @@ public class DeliveryOnHold extends AppCompatActivity
                 without_status_text.setText(String.valueOf(without_Status));
 
             }*/
-
 
             DeliveryOnHoldAdapter = new DeliveryOnHoldAdapter(list,getApplicationContext());
             recyclerView_pul.setAdapter(DeliveryOnHoldAdapter);
@@ -290,7 +288,7 @@ public class DeliveryOnHold extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ONHOLD_LIST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ALL_STATUS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -305,9 +303,8 @@ public class DeliveryOnHold extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliveryOnHoldModel onhold_model = new  DeliveryOnHoldModel(
+                                Delivery_unpicked_model onhold_model = new  Delivery_unpicked_model(
 
-                                        o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -319,61 +316,72 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
                                         o.getString("deliveryTime"),
-                                        o.getString("Cash"),
-                                        o.getString("cashType"),
-                                        o.getString("CashTime"),
-                                        o.getString("CashBy"),
-                                        o.getString("CashAmt"),
-                                        o.getString("CashComment"),
-                                        o.getString("partial"),
-                                        o.getString("partialTime"),
-                                        o.getString("partialBy"),
-                                        o.getString("partialReceive"),
-                                        o.getString("partialReturn"),
-                                        o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
-                                        o.getString("slaMiss")
-                                );
-
-
-                                db.insert_delivery_without_status(
-
-                                        o.getString("dropPointCode"),
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief"),
-                                        o.getString("deliveryTime"),
-                                        o.getString("Cash"),
-                                        o.getString("cashType"),
-                                        o.getString("CashTime"),
-                                        o.getString("CashBy"),
-                                        o.getString("CashAmt"),
-                                        o.getString("CashComment"),
-                                        o.getString("partial"),
-                                        o.getString("partialTime"),
-                                        o.getString("partialBy"),
-                                        o.getString("partialReceive"),
-                                        o.getString("partialReturn"),
-                                        o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
                                         o.getString("Rea"),
                                         o.getString("ReaTime"),
                                         o.getString("ReaBy"),
+                                        o.getString("PickDrop"),
+                                        o.getString("PickDropTime"),
+                                        o.getString("PickDropBy"),
+                                        o.getString("dropAssignTime"),
+                                        o.getString("dropAssignBy"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
+                                        o.getString("slaMiss"));
+
+                                db.Insert_Delivery_All_Status(
+
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief"),
+                                        o.getString("deliveryTime"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("PickDrop"),
+                                        o.getString("PickDropTime"),
+                                        o.getString("PickDropBy"),
+                                        o.getString("dropAssignTime"),
+                                        o.getString("dropAssignBy"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
                                         o.getString("slaMiss")
 
                                         , NAME_NOT_SYNCED_WITH_SERVER );
 
                                 list.add(onhold_model);
-
                             }
 
 //                    swipeRefreshLayout.setRefreshing(false);
@@ -619,7 +627,7 @@ public class DeliveryOnHold extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         final String currentDateTime = df.format(c);
 
-        final DeliveryOnHoldModel clickedITem = list.get(position2);
+        final Delivery_unpicked_model clickedITem = list.get(position2);
 
         // CASH
         final String cash = "Y";

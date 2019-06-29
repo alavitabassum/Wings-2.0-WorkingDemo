@@ -14,6 +14,288 @@ public class Delivery_unpicked_model {
     private String productBrief;
     private String deliveryTime;
 
+    private String Rea;
+    private String ReaTime;
+    private String ReaBy;
+    private String PickDrop;
+    private String PickDropTime;
+    private String PickDropBy;
+    private String dropAssignTime;
+    private String dropAssignBy;
+    private String dropPointCode;
+    private String Cash;
+    private String cashType;
+
+    private String CashTime;
+    private String CashBy;
+    private String CashAmt;
+
+    private String CashComment;
+    private String partial;
+    private String partialTime;
+    private String partialBy;
+    private String partialReceive;
+    private String partialReturn;
+    private String partialReason;
+    private String onHoldSchedule;
+    private String onHoldReason;
+    private String slaMiss;
+
+    public Delivery_unpicked_model(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String Rea, String ReaTime, String ReaBy) {
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+        this.Cash = Cash;
+        this.cashType = cashType;
+        this.CashTime = CashTime;
+        this.CashBy = CashBy;
+        this.CashAmt = CashAmt;
+        this.CashComment = CashComment;
+        this.partial = partial;
+        this.partialTime = partialTime;
+        this.partialBy = partialBy;
+        this.partialReceive = partialReceive;
+        this.partialReturn = partialReturn;
+        this.partialReason = partialReason;
+        this.onHoldReason = onHoldReason;
+        this.onHoldSchedule = onHoldSchedule;
+        this.Rea = Rea;
+        this.ReaTime = ReaTime;
+        this.ReaBy = ReaBy;
+    }
+
+    public Delivery_unpicked_model(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule) {
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+        this.Cash = cash;
+        this.cashType = cashType;
+        this.CashTime = cashTime;
+        this.CashBy = cashBy;
+        this.CashAmt = cashAmt;
+        this.CashComment = cashComment;
+        this.partial = partial;
+        this.partialTime = partialTime;
+        this.partialBy = partialBy;
+        this.partialReceive = partialReceive;
+        this.partialReturn = partialReturn;
+        this.partialReason = partialReason;
+        this.onHoldReason = onHoldReason;
+        this.onHoldSchedule = onHoldSchedule;
+
+
+    }
+
+
+    public String getRea() {
+        return Rea;
+    }
+
+    public void setRea(String rea) {
+        Rea = rea;
+    }
+
+    public String getReaTime() {
+        return ReaTime;
+    }
+
+    public void setReaTime(String reaTime) {
+        ReaTime = reaTime;
+    }
+
+    public String getReaBy() {
+        return ReaBy;
+    }
+
+    public void setReaBy(String reaBy) {
+        ReaBy = reaBy;
+    }
+
+    public String getPickDrop() {
+        return PickDrop;
+    }
+
+    public void setPickDrop(String pickDrop) {
+        PickDrop = pickDrop;
+    }
+
+    public String getPickDropTime() {
+        return PickDropTime;
+    }
+
+    public void setPickDropTime(String pickDropTime) {
+        PickDropTime = pickDropTime;
+    }
+
+    public String getPickDropBy() {
+        return PickDropBy;
+    }
+
+    public void setPickDropBy(String pickDropBy) {
+        PickDropBy = pickDropBy;
+    }
+
+    public String getDropAssignTime() {
+        return dropAssignTime;
+    }
+
+    public void setDropAssignTime(String dropAssignTime) {
+        this.dropAssignTime = dropAssignTime;
+    }
+
+    public String getDropAssignBy() {
+        return dropAssignBy;
+    }
+
+    public void setDropAssignBy(String dropAssignBy) {
+        this.dropAssignBy = dropAssignBy;
+    }
+
+    public String getDropPointCode() {
+        return dropPointCode;
+    }
+
+    public void setDropPointCode(String dropPointCode) {
+        this.dropPointCode = dropPointCode;
+    }
+
+    public String getCash() {
+        return Cash;
+    }
+
+    public void setCash(String cash) {
+        Cash = cash;
+    }
+
+    public String getCashType() {
+        return cashType;
+    }
+
+    public void setCashType(String cashType) {
+        this.cashType = cashType;
+    }
+
+    public String getCashTime() {
+        return CashTime;
+    }
+
+    public void setCashTime(String cashTime) {
+        CashTime = cashTime;
+    }
+
+    public String getCashBy() {
+        return CashBy;
+    }
+
+    public void setCashBy(String cashBy) {
+        CashBy = cashBy;
+    }
+
+    public String getCashAmt() {
+        return CashAmt;
+    }
+
+    public void setCashAmt(String cashAmt) {
+        CashAmt = cashAmt;
+    }
+
+    public String getCashComment() {
+        return CashComment;
+    }
+
+    public void setCashComment(String cashComment) {
+        CashComment = cashComment;
+    }
+
+    public String getPartial() {
+        return partial;
+    }
+
+    public void setPartial(String partial) {
+        this.partial = partial;
+    }
+
+    public String getPartialTime() {
+        return partialTime;
+    }
+
+    public void setPartialTime(String partialTime) {
+        this.partialTime = partialTime;
+    }
+
+    public String getPartialBy() {
+        return partialBy;
+    }
+
+    public void setPartialBy(String partialBy) {
+        this.partialBy = partialBy;
+    }
+
+    public String getPartialReceive() {
+        return partialReceive;
+    }
+
+    public void setPartialReceive(String partialReceive) {
+        this.partialReceive = partialReceive;
+    }
+
+    public String getPartialReturn() {
+        return partialReturn;
+    }
+
+    public void setPartialReturn(String partialReturn) {
+        this.partialReturn = partialReturn;
+    }
+
+    public String getPartialReason() {
+        return partialReason;
+    }
+
+    public void setPartialReason(String partialReason) {
+        this.partialReason = partialReason;
+    }
+
+    public String getOnHoldSchedule() {
+        return onHoldSchedule;
+    }
+
+    public void setOnHoldSchedule(String onHoldSchedule) {
+        this.onHoldSchedule = onHoldSchedule;
+    }
+
+    public String getOnHoldReason() {
+        return onHoldReason;
+    }
+
+    public void setOnHoldReason(String onHoldReason) {
+        this.onHoldReason = onHoldReason;
+    }
+
+    public String getSlaMiss() {
+        return slaMiss;
+    }
+
+    public void setSlaMiss(String slaMiss) {
+        this.slaMiss = slaMiss;
+    }
+
+
 
     public Delivery_unpicked_model(String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime) {
         this.barcode = barcode;
@@ -27,6 +309,49 @@ public class Delivery_unpicked_model {
         this.packagePrice = packagePrice;
         this.productBrief = productBrief;
         this.deliveryTime = deliveryTime;
+
+    }
+
+    public Delivery_unpicked_model(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Rea, String ReaTime, String ReaBy, String PickDrop, String PickDropTime, String PickDropBy, String dropAssignTime, String dropAssignBy, String dropPointCode, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+
+        this.Rea = Rea;
+        this.ReaTime = ReaTime;
+        this.ReaBy = ReaBy;
+        this.PickDrop = PickDrop;
+        this.pickMerchantName = pickMerchantName;
+        this.PickDropTime = PickDropTime;
+        this.PickDropBy = PickDropBy;
+        this.dropAssignTime = dropAssignTime;
+        this.dropAssignBy = dropAssignBy;
+        this.dropPointCode = dropPointCode;
+        this.Cash = Cash;
+
+        this.cashType = cashType;
+        this.CashTime = CashTime;
+        this.CashBy = CashBy;
+        this.CashAmt = CashAmt;
+        this.CashComment = CashComment;
+        this.partial = partial;
+        this.partialTime = partialTime;
+        this.partialBy = partialBy;
+        this.partialReceive = partialReceive;
+        this.partialReturn = partialReturn;
+        this.partialReason = partialReason;
+
+        this.onHoldSchedule = onHoldSchedule;
+        this.onHoldReason = onHoldReason;
+        this.slaMiss = slaMiss;
 
     }
 
