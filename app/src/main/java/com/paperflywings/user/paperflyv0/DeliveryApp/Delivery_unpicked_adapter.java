@@ -24,7 +24,6 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
 
     private List<Delivery_unpicked_model> listFull;
     private List<Delivery_unpicked_model> list;
-   // private List<Delivery_unpicked_model> listfull;
 
     private int currentPostion = -1;
 
@@ -114,20 +113,6 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
 
             });
 
-           /* card_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view3) {
-                    if(mListner!=null){
-                        int position3 = getAdapterPosition();
-                        if(position3!=RecyclerView.NO_POSITION){
-                            mListner.onItemClick_view_orderIDs(view3, position3);
-
-                        }
-                    }
-                }
-
-
-            });*/
         }
     }
 

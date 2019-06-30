@@ -79,35 +79,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     private CardView without_Status_card;
     private TextView without_status_text;
 
-    public static final String CUSTOMER_DISTRICT_WITHOUT_STATUS= "customerDistrict";
-    public static final String BARCODE_NO_WITHOUT_STATUS= "barcode";
-    public static final String ORDERID_WITHOUT_STATUS = "orderid";
-    public static final String MERCHANT_REF_WITHOUT_STATUS = "merOrderRef";
-    public static final String MERCHANTS_NAME_WITHOUT_STATUS = "merchantName";
-    public static final String PICK_MERCHANTS_NAME_WITHOUT_STATUS = "pickMerchantName";
-    public static final String CUSTOMER_NAME_WITHOUT_STATUS = "custname";
-    public static final String Phone_WITHOUT_STATUS = "custphone";
-    public static final String CUSTOMER_ADDRESS_WITHOUT_STATUS = "custaddress";
-    public static final String PACKAGE_PRICE_WITHOUT_STATUS = "packagePrice";
-    public static final String PRODUCT_BRIEF_WITHOUT_STATUS= "productBrief";
-    public static final String DELIVERY_TIME_WITHOUT_STATUS= "deliveryTime";
 
     //delivery without status actions
 
-    public static final String CASH_WITHOUT_STATUS = "Cash";
-    public static final String CASHTYPE_WITHOUT_STATUS= "cashType";
-    public static final String CASHTIME_WITHOUT_STATUS= "CashTime";
-    public static final String CASHBY_WITHOUT_STATUS= "CashBy";
-    public static final String CASHAMT_WITHOUT_STATUS= "CashAmt";
-    public static final String CASHCOMMENT_WITHOUT_STATUS= "CashComment";
-    public static final String PARTIAL_WITHOUT_STATUS= "partial";
-    public static final String PARTIAL_TIME_WITHOUT_STATUS= "partialTime";
-    public static final String PARTIAL_BY_WITHOUT_STATUS= "partialBy";
-    public static final String PARTIAL_RECEIVE_BY_WITHOUT_STATUS= "partialReceive";
-    public static final String PARTIAL_RETURN_BY_WITHOUT_STATUS= "partialReturn";
-    public static final String PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS= "partialReason";
-    public static final String ONHOLDSCHEDULE_WITHOUT_STATUS= "onHoldSchedule";
-    public static final String ONHOLDREASON_WITHOUT_STATUS= "onHoldReason";
 
 
     private static final String URL_DATA = "";
@@ -126,7 +100,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
 
-    private List<Delivery_unpicked_model> list;
+    private List<DeliveryWithoutStatusModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
@@ -142,7 +116,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         setSupportActionBar(toolbar);
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_without_status_list);
         recyclerView_pul.setAdapter(DeliveryWithoutStatusAdapter);
-        list = new ArrayList<Delivery_unpicked_model>();
+        list = new ArrayList<DeliveryWithoutStatusModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -214,7 +188,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_All_status_without_status_onhold(sqLiteDatabase,user);
+            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user);
 
             while (c.moveToNext()){
 
@@ -252,7 +226,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 //String withoutStatus = c.getString(25);
 
 
-                Delivery_unpicked_model withoutStatus_model = new Delivery_unpicked_model(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
+                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
 
                 list.add(withoutStatus_model);
             }
@@ -288,7 +262,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ALL_STATUS_LIST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -303,8 +277,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                Delivery_unpicked_model withoutStatus_model = new  Delivery_unpicked_model(
+                                DeliveryWithoutStatusModel withoutStatus_model = new  DeliveryWithoutStatusModel(
 
+                                        o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -316,15 +291,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
                                         o.getString("deliveryTime"),
-                                        o.getString("Rea"),
-                                        o.getString("ReaTime"),
-                                        o.getString("ReaBy"),
-                                        o.getString("PickDrop"),
-                                        o.getString("PickDropTime"),
-                                        o.getString("PickDropBy"),
-                                        o.getString("dropAssignTime"),
-                                        o.getString("dropAssignBy"),
-                                        o.getString("dropPointCode"),
                                         o.getString("Cash"),
                                         o.getString("cashType"),
                                         o.getString("CashTime"),
@@ -337,11 +303,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("partialReceive"),
                                         o.getString("partialReturn"),
                                         o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
                                         o.getString("onHoldReason"),
+                                        o.getString("onHoldSchedule"),
                                         o.getString("slaMiss"));
 
-                                db.Insert_Delivery_All_Status(
+                                db.insert_delivery_without_status(
 
                                         o.getString("barcode"),
                                         o.getString("orderid"),
@@ -354,14 +320,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
                                         o.getString("deliveryTime"),
-                                        o.getString("Rea"),
-                                        o.getString("ReaTime"),
-                                        o.getString("ReaBy"),
-                                        o.getString("PickDrop"),
-                                        o.getString("PickDropTime"),
-                                        o.getString("PickDropBy"),
-                                        o.getString("dropAssignTime"),
-                                        o.getString("dropAssignBy"),
                                         o.getString("dropPointCode"),
                                         o.getString("Cash"),
                                         o.getString("cashType"),
@@ -377,6 +335,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("partialReason"),
                                         o.getString("onHoldSchedule"),
                                         o.getString("onHoldReason"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
                                         o.getString("slaMiss")
 
                                         , NAME_NOT_SYNCED_WITH_SERVER );
@@ -534,17 +495,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
             // Handle the camera action
-        } /*else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_tools) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
+        }
 
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
@@ -625,7 +576,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         final String currentDateTime = df.format(c);
 
-        final Delivery_unpicked_model clickedITem = list.get(position2);
+        final DeliveryWithoutStatusModel clickedITem = list.get(position2);
 
         // CASH
         final String cash = "Y";

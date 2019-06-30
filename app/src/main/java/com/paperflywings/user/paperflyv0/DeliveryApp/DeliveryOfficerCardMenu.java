@@ -91,16 +91,12 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             loadDeliverySummary(username);
-       /*     DeliveryOfficerUnpicked obj = new DeliveryOfficerUnpicked();
-            obj.loadRecyclerView(username);*/
-            //loadRecyclerView(username);
         }
         else {
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-        //unpicked.OnClickListener(new View.OnClickListener())
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -112,13 +108,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
     }
-/*
-
-    private void loadRecyclerView(String username) {
-
-    }
-*/
-
 
     // Load data from api
   private void loadDeliverySummary(final String user)
@@ -164,19 +153,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                   }
 
                   getData(user);
-
-                  //Master Summary For Today
-
-//                  unpicked_count.setText(String.valueOf(total));
-
-                  /*int cm = db.complete_order_for_ex(user, currentDateTimeString);
-                  complete = findViewById(R.id.com_count);
-                  complete.setText(String.valueOf(cm));
-
-                  int pm = db.pending_order_for_ex(user, currentDateTimeString);
-                  pending = findViewById(R.id.pen_count);
-                  pending.setText(String.valueOf(pm));*/
-
 
               } catch (JSONException e) {
                   e.printStackTrace();
@@ -275,25 +251,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
 
             }
 
-            /*unpicked_countwer = (TextView)findViewById(R.id.UnpickedCount);
-            unpicked_countwer.setText("12");*/
-//            Toast.makeText(this, ""+ unpicked, Toast.LENGTH_SHORT).show();
-            /*mListForExecutiveAdapter = new mListForExecutiveAdapter(summaries,getApplicationContext());
-            recyclerView_exec.setAdapter(mListForExecutiveAdapter);
-            swipeRefreshLayout.setRefreshing(false);
-
-            //Master Summary For Today
-            int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
-            total_assigned= findViewById(R.id.a_count);
-            total_assigned.setText(String.valueOf(total));
-
-            int cm = db.complete_order_for_ex(user, currentDateTimeString);
-            complete = findViewById(R.id.com_count);
-            complete.setText(String.valueOf(cm));
-
-            int pm = db.pending_order_for_ex(user, currentDateTimeString);
-            pending = findViewById(R.id.pen_count);
-            pending.setText(String.valueOf(pm));*/
 
 
         }catch (Exception e)
@@ -351,20 +308,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
         }
-      /*  else if (id == R.id.nav_pickup_sum) {
-            Intent pickupIntent = new Intent(DeliveryOfficerCardMenu.this,
-                    PickupsToday_Executive.class);
-            startActivity(pickupIntent);
-        } else if (id == R.id.nav_exe_pickup) {
-            Intent assignIntent = new Intent(DeliveryOfficerCardMenu.this,
-                    MyPickupList_Executive.class);
-            startActivity(assignIntent);
-        }*/
-//        else if (id == R.id.nav_pickStatus) {
-//            Intent historyIntent = new Intent(ExecutiveCardMenu.this,
-//                    PickupStatus_Executive.class);
-//            startActivity(historyIntent);
-//        }
+
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -373,14 +317,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-                       /* Date c = Calendar.getInstance().getTime();
-                            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-                            final String match_date = df.format(c);
 
-                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);*/
-//                            db.barcode_factory(sqLiteDatabase,match_date);
-//                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                             //Getting editor

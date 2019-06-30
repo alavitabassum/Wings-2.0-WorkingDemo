@@ -22,8 +22,8 @@ import java.util.List;
 
 public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAdapter.ViewHolder> implements Filterable {
 
-    private List<Delivery_unpicked_model> listFull;
-    private List<Delivery_unpicked_model> list;
+    private List<DeliveryOnHoldModel> listFull;
+    private List<DeliveryOnHoldModel> list;
 
     private int currentPostion = -1;
 
@@ -32,7 +32,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
 
-    public DeliveryOnHoldAdapter(List<Delivery_unpicked_model> list, Context context) {
+    public DeliveryOnHoldAdapter(List<DeliveryOnHoldModel> list, Context context) {
         this.list = list;
         this.context = context;
         this.listFull = new ArrayList<>(list);
@@ -55,11 +55,6 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         this.touchListener = t_listener;
     }
 
-    /*public DeliveryOnHoldAdapter(java.util.List<DeliveryOnHoldAdapter> list, Context context) {
-        this.list = list;
-        this.context = context;
-        this.listFull = new ArrayList<>(list);
-    }*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -122,7 +117,6 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
                 }
 
             });
-
         }
 
     }
@@ -214,12 +208,12 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Delivery_unpicked_model>filteredList = new ArrayList<>();
+            List<DeliveryOnHoldModel>filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0){
                 filteredList.addAll(listFull);
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for(Delivery_unpicked_model item: listFull){
+                for(DeliveryOnHoldModel item: listFull){
                     if (item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }

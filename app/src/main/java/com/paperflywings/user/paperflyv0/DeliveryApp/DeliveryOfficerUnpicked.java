@@ -75,17 +75,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private Button delivery_quick_pick;
     private String lastText;
 
-    public static final String BARCODE_NO= "barcode";
-    public static final String ORDERID = "orderid";
-    public static final String MERCHANT_ORDER_REF = "merOrderRef";
-    public static final String MERCHANTS_NAME = "merchantName";
-    public static final String PICK_MERCHANTS_NAME = "pickMerchantName";
-    public static final String CUSTOMER_NAME = "custname";
-    public static final String PHONE = "custphone";
-    public static final String CUSTOMER_ADDRESS = "custaddress";
-    public static final String PACKAGE_PRICE = "packagePrice";
-    public static final String PRODUCT_BRIEF= "productBrief";
-    public static final String DELIVERY_TIME= "deliveryTime";
 
     TextView unpicked_text;
 
@@ -99,7 +88,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     android.widget.RelativeLayout vwParentRow;
     private static final int REQUEST_CAMERA = 1;
 
-    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
+    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryUnpickedApis.php";
     public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
     private List<Delivery_unpicked_model> list;
@@ -138,19 +127,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         Intent intent = getIntent();
         String str = intent.getStringExtra("message");
         unpicked_text.setText(str);
-        /*new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                list.remove(viewHolder.getAdapterPosition());
-                Toast.makeText(DeliveryOfficerUnpicked.this,"Item Removed"+ viewHolder.getAdapterPosition(),Toast.LENGTH_SHORT).show();
-                Delivery_unpicked_adapter.notifyDataSetChanged();
-            }
-        }).attachToRecyclerView(recyclerView_pul);*/
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
@@ -201,7 +177,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         {
             if(checkPermission())
             {
-//                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
             }
             else
             {
@@ -219,7 +195,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_All_status_unpicked(sqLiteDatabase,user);
+            Cursor c = db.get_delivery_unpicked(sqLiteDatabase,user);
 
             while (c.moveToNext()){
 
@@ -255,7 +231,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ALL_STATUS_LIST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -282,33 +258,10 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                         o.getString("custphone"),
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
-                                        o.getString("deliveryTime"),
-                                        o.getString("Rea"),
-                                        o.getString("ReaTime"),
-                                        o.getString("ReaBy"),
-                                        o.getString("PickDrop"),
-                                        o.getString("PickDropTime"),
-                                        o.getString("PickDropBy"),
-                                        o.getString("dropAssignTime"),
-                                        o.getString("dropAssignBy"),
-                                        o.getString("dropPointCode"),
-                                        o.getString("Cash"),
-                                        o.getString("cashType"),
-                                        o.getString("CashTime"),
-                                        o.getString("CashBy"),
-                                        o.getString("CashAmt"),
-                                        o.getString("CashComment"),
-                                        o.getString("partial"),
-                                        o.getString("partialTime"),
-                                        o.getString("partialBy"),
-                                        o.getString("partialReceive"),
-                                        o.getString("partialReturn"),
-                                        o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
-                                        o.getString("slaMiss"));
+                                        o.getString("deliveryTime")
+                                       );
 
-                                db.Insert_Delivery_All_Status(
+                                db.insert_delivery_unpicked_count(
 
                                         o.getString("barcode"),
                                         o.getString("orderid"),
@@ -320,31 +273,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                         o.getString("custphone"),
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
-                                        o.getString("deliveryTime"),
-                                        o.getString("Rea"),
-                                        o.getString("ReaTime"),
-                                        o.getString("ReaBy"),
-                                        o.getString("PickDrop"),
-                                        o.getString("PickDropTime"),
-                                        o.getString("PickDropBy"),
-                                        o.getString("dropAssignTime"),
-                                        o.getString("dropAssignBy"),
-                                        o.getString("dropPointCode"),
-                                        o.getString("Cash"),
-                                        o.getString("cashType"),
-                                        o.getString("CashTime"),
-                                        o.getString("CashBy"),
-                                        o.getString("CashAmt"),
-                                        o.getString("CashComment"),
-                                        o.getString("partial"),
-                                        o.getString("partialTime"),
-                                        o.getString("partialBy"),
-                                        o.getString("partialReceive"),
-                                        o.getString("partialReturn"),
-                                        o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
-                                        o.getString("slaMiss")
+                                        o.getString("deliveryTime")
 
                                         , NAME_NOT_SYNCED_WITH_SERVER );
 
@@ -513,20 +442,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
         }
-      /*  else if (id == R.id.nav_pickup_sum) {
-            Intent pickupIntent = new Intent(DeliveryOfficerCardMenu.this,
-                    PickupsToday_Executive.class);
-            startActivity(pickupIntent);
-        } else if (id == R.id.nav_exe_pickup) {
-            Intent assignIntent = new Intent(DeliveryOfficerCardMenu.this,
-                    MyPickupList_Executive.class);
-            startActivity(assignIntent);
-        }*/
-//        else if (id == R.id.nav_pickStatus) {
-//            Intent historyIntent = new Intent(ExecutiveCardMenu.this,
-//                    PickupStatus_Executive.class);
-//            startActivity(historyIntent);
-//        }
+
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -614,16 +530,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         pickedfordelivery(lastText,username,empcode);
     }
 
-   /* @Override
-    public void onItemClick_view(View view2, int position2) {
 
-    }
-
-    @Override
-    public void onItemClick_view_orderIDs(View view3, int position3) {
-
-    }
-*/
     @Override
     public void onItemClick_call(View view4, int position4) {
         Intent callIntent =new Intent(Intent.ACTION_CALL);
