@@ -157,7 +157,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         insertLog(cursor9.getInt(0),cursor9.getString(1),cursor9.getString(2),cursor9.getString(3),cursor9.getString(4), cursor9.getString(5));
                     } while (cursor9.moveToNext());
                 }
-
             }
         }
     }

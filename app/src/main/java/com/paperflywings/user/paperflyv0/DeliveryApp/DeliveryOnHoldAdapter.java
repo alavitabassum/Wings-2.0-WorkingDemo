@@ -55,11 +55,6 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         this.touchListener = t_listener;
     }
 
-    /*public DeliveryOnHoldAdapter(java.util.List<DeliveryOnHoldAdapter> list, Context context) {
-        this.list = list;
-        this.context = context;
-        this.listFull = new ArrayList<>(list);
-    }*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -122,7 +117,6 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
                 }
 
             });
-
         }
 
     }

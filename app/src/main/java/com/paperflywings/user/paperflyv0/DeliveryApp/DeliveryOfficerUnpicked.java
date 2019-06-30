@@ -75,17 +75,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private Button delivery_quick_pick;
     private String lastText;
 
-    public static final String BARCODE_NO= "barcode";
-    public static final String ORDERID = "orderid";
-    public static final String MERCHANT_ORDER_REF = "merOrderRef";
-    public static final String MERCHANTS_NAME = "merchantName";
-    public static final String PICK_MERCHANTS_NAME = "pickMerchantName";
-    public static final String CUSTOMER_NAME = "custname";
-    public static final String PHONE = "custphone";
-    public static final String CUSTOMER_ADDRESS = "custaddress";
-    public static final String PACKAGE_PRICE = "packagePrice";
-    public static final String PRODUCT_BRIEF= "productBrief";
-    public static final String DELIVERY_TIME= "deliveryTime";
 
     TextView unpicked_text;
 
@@ -100,6 +89,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private static final int REQUEST_CAMERA = 1;
 
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryUnpickedApis.php";
+    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
     private List<Delivery_unpicked_model> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -137,19 +127,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         Intent intent = getIntent();
         String str = intent.getStringExtra("message");
         unpicked_text.setText(str);
-        /*new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                list.remove(viewHolder.getAdapterPosition());
-                Toast.makeText(DeliveryOfficerUnpicked.this,"Item Removed"+ viewHolder.getAdapterPosition(),Toast.LENGTH_SHORT).show();
-                Delivery_unpicked_adapter.notifyDataSetChanged();
-            }
-        }).attachToRecyclerView(recyclerView_pul);*/
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
@@ -164,6 +141,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
+
         }
         else{
             getData(username);
@@ -177,8 +155,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(DeliveryOfficerUnpicked.this,
                         Delivery_quick_pick_scan.class);
-
-
                 startActivity(intent);
             }
         });
@@ -201,14 +177,13 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         {
             if(checkPermission())
             {
-//                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
             }
             else
             {
                 requestPermission();
             }
         }
-
 
     }
 
@@ -237,7 +212,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                 String deliveryTime = c.getString(10);
 
                 Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime);
-
                 list.add(unpickedmodel);
             }
 
@@ -252,7 +226,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         }
     }
 
-    private void loadRecyclerView (final String user){
+    public void loadRecyclerView(final String user){
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
@@ -284,7 +258,8 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                         o.getString("custphone"),
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
-                                        o.getString("deliveryTime"));
+                                        o.getString("deliveryTime")
+                                       );
 
                                 db.insert_delivery_unpicked_count(
 
@@ -299,6 +274,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
                                         o.getString("deliveryTime")
+
                                         , NAME_NOT_SYNCED_WITH_SERVER );
 
                                 list.add(unpickedmodel);
@@ -466,20 +442,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
         }
-      /*  else if (id == R.id.nav_pickup_sum) {
-            Intent pickupIntent = new Intent(DeliveryOfficerCardMenu.this,
-                    PickupsToday_Executive.class);
-            startActivity(pickupIntent);
-        } else if (id == R.id.nav_exe_pickup) {
-            Intent assignIntent = new Intent(DeliveryOfficerCardMenu.this,
-                    MyPickupList_Executive.class);
-            startActivity(assignIntent);
-        }*/
-//        else if (id == R.id.nav_pickStatus) {
-//            Intent historyIntent = new Intent(ExecutiveCardMenu.this,
-//                    PickupStatus_Executive.class);
-//            startActivity(historyIntent);
-//        }
+
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -567,16 +530,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         pickedfordelivery(lastText,username,empcode);
     }
 
-   /* @Override
-    public void onItemClick_view(View view2, int position2) {
 
-    }
-
-    @Override
-    public void onItemClick_view_orderIDs(View view3, int position3) {
-
-    }
-*/
     @Override
     public void onItemClick_call(View view4, int position4) {
         Intent callIntent =new Intent(Intent.ACTION_CALL);
