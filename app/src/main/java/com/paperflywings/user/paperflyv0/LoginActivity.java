@@ -186,8 +186,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             SQLiteDatabase sqLiteDatabase = barcodedb.getWritableDatabase();
                             barcodedb.deleteAssignedList(sqLiteDatabase);
-                            //barcodedb.barcode_factory(sqLiteDatabase,match_date);
-                            //barcodedb.barcode_factory_fulfillment(sqLiteDatabase,match_date);
+                            barcodedb.barcode_factory(sqLiteDatabase,match_date);
+                            barcodedb.barcode_factory_fulfillment(sqLiteDatabase,match_date);
 
                             startActivity(new Intent(getApplicationContext(),ExecutiveCardMenu.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
@@ -237,16 +237,12 @@ public class LoginActivity extends AppCompatActivity {
                     //Creating editor to store values to shared preferences
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
-
                     //Adding values to editor
                     editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
                     editor.putString(Config.EMAIL_SHARED_PREF, user);
 
-
                     //Saving values to editor
                     editor.commit();
-
-
                 }
             }
         }, new Response.ErrorListener() {

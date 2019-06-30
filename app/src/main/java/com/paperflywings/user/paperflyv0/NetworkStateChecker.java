@@ -22,6 +22,7 @@ import com.paperflywings.user.paperflyv0.PickupManager.Robishop.Robishop_Assign_
 import com.paperflywings.user.paperflyv0.PickupOfficer.FulfillmentScanningScreen;
 import com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive;
 import com.paperflywings.user.paperflyv0.PickupOfficer.ScanningScreen;
+import com.paperflywings.user.paperflyv0.PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +57,23 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 if (cursor.moveToFirst()) {
                     do {
                         //calling the method to save the unsynced name to MySQL
-                        saveName(cursor.getInt(8),cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(9),cursor.getString(10),cursor.getString(11), cursor.getString(12),cursor.getString(13), cursor.getString(14), cursor.getString(15), cursor.getString(16), cursor.getString(17));
+                        saveName(cursor.getInt(8),
+                                cursor.getString(0),
+                                cursor.getString(1),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getString(4),
+                                cursor.getString(5),
+                                cursor.getString(6),
+                                cursor.getString(9),
+                                cursor.getString(10),
+                                cursor.getString(11),
+                                cursor.getString(12),
+                                cursor.getString(13),
+                                cursor.getString(14),
+                                cursor.getString(15),
+                                cursor.getString(16),
+                                cursor.getString(17));
 
                         } while (cursor.moveToNext());
                 }
@@ -65,7 +82,14 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 Cursor cursor1 = database2.getUnsyncedBarcode();
                 if (cursor1.moveToFirst()) {
                     do {
-                        saveBarcode(cursor1.getInt(0),cursor1.getString(2), cursor1.getString(3),cursor1.getString(4), Boolean.valueOf(cursor1.getString(5)),cursor1.getString(7),cursor1.getString(8),cursor1.getString(1));
+                        saveBarcode(cursor1.getInt(0),
+                                cursor1.getString(2),
+                                cursor1.getString(3),
+                                cursor1.getString(4),
+                                Boolean.valueOf(cursor1.getString(5)),
+                                cursor1.getString(7),
+                                cursor1.getString(8),
+                                cursor1.getString(1));
                     } while (cursor1.moveToNext());
                 }
 
@@ -145,7 +169,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
      * we will update the status as synced in SQLite
      * */
     private void saveName(final int id, final String executive_name,final String executive_code,final String product_name,final String order_count,final String merchant_code,final String assigned_by,final String created_at,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo , final String pick_from_merchant_status, final String received_from_HQ_status) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, AssignPickup_Manager.INSERT_URL,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, AssignPickup_Supervisor.INSERT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

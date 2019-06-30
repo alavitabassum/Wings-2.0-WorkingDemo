@@ -361,9 +361,9 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
     }
 
 
-    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String sum, final String order_id, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String apiOrderID, final String demo, final String pick_from_merchant_status, final  String received_from_HQ_status) {
+   /* private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String sum, final String order_id, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String apiOrderID, final String demo, final String pick_from_merchant_status, final  String received_from_HQ_status) {
         database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(order_id), user, currentDateTimeString, status,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
-    }
+    }*/
 
     private void updateAssignedStatus(final String order_id, final int status, final String pickAssignedStatus) {
         database.updateAssignedStatusDBAdeal(order_id, status, pickAssignedStatus);
@@ -381,7 +381,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address,complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address,complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
 
                                 // Update status if order is assigned to the executive successfully and change the status to 1
                                 // pickAssignedStatus=1 means order assigned
@@ -393,7 +393,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
                                 Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessfull,Please try again!" +obj, Toast.LENGTH_LONG).show();
                                 // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                             }
@@ -406,7 +406,7 @@ public class AjkerDealOther_Assign_Pickup_manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        assignexecutivetosqlite(ex_name, empcode,product_name, sum, String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+//                        assignexecutivetosqlite(ex_name, empcode,product_name, sum, String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
                         Toast.makeText(AjkerDealOther_Assign_Pickup_manager.this, "Unsuccessfull, Check your internet connection", Toast.LENGTH_SHORT).show();
                         // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                     }

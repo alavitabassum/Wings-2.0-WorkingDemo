@@ -431,18 +431,18 @@ public class AssignPickup_Manager extends AppCompatActivity
         requestQueue.add(postRequest1);
     }
 
-    private void assignexecutivetosqlite(final String ex_name, final String empcode,final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo,final String pick_from_merchant_status, final String received_from_HQ_status) {
+    /*private void assignexecutivetosqlite(final String ex_name, final String empcode,final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo,final String pick_from_merchant_status, final String received_from_HQ_status) {
 
         database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, status,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo,  pick_from_merchant_status, received_from_HQ_status);
         //final int total_assign = database.getTotalOfAmount(merchant_code);
         //final String strI = String.valueOf(total_assign);
         //database.update_row(strI, merchant_code);
 
-    }
+    }*/
 
-    private void updateAssignedStatus(final String merchant_code, final int status, final String pickAssignedStatus) {
+    /*private void updateAssignedStatus(final String merchant_code, final int status, final String pickAssignedStatus) {
         database.updateAssignedStatusDB(merchant_code, status, pickAssignedStatus);
-    }
+    }*/
 
     //For assigning executive API into mysql
     private void assignexecutive(final String ex_name, final String empcode, final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo, final String pick_from_merchant_status, final String received_from_HQ_status) {
@@ -457,11 +457,15 @@ public class AssignPickup_Manager extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
+                                database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo,  pick_from_merchant_status, received_from_HQ_status, NAME_SYNCED_WITH_SERVER);
+
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                assignexecutivetosqlite(ex_name, empcode,product_name,order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+                                database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo,  pick_from_merchant_status, received_from_HQ_status, NAME_NOT_SYNCED_WITH_SERVER);
+
+//                                assignexecutivetosqlite(ex_name, empcode,product_name,order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -472,7 +476,9 @@ public class AssignPickup_Manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
+                        database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo,  pick_from_merchant_status, received_from_HQ_status, NAME_NOT_SYNCED_WITH_SERVER);
+
+//                        assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
                     }
                 }
         ) {
@@ -508,7 +514,7 @@ public class AssignPickup_Manager extends AppCompatActivity
 
     }
 
-    private void updatePickAssigedStatus(final String merchant_code, final String pickAssidnedStatus){
+    private void updatePickAssigedStatus(final String merchant_code, final String pickAssignedStatus){
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_ASSIGN_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -518,12 +524,16 @@ public class AssignPickup_Manager extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
+                                database.updateAssignedStatusDB(merchant_code, pickAssignedStatus, NAME_SYNCED_WITH_SERVER);
+
 //                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
-                                updateAssignedStatus(merchant_code, NAME_SYNCED_WITH_SERVER, pickAssidnedStatus);
+//                                updateAssignedStatus(merchant_code, NAME_SYNCED_WITH_SERVER, pickAssidnedStatus);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                updateAssignedStatus( merchant_code, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
+                                database.updateAssignedStatusDB(merchant_code, pickAssignedStatus, NAME_NOT_SYNCED_WITH_SERVER);
+
+//                                updateAssignedStatus( merchant_code, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -534,7 +544,9 @@ public class AssignPickup_Manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        updateAssignedStatus( merchant_code, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
+                        database.updateAssignedStatusDB(merchant_code, pickAssignedStatus, NAME_NOT_SYNCED_WITH_SERVER);
+
+//                        updateAssignedStatus( merchant_code, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
                     }
                 }
         ) {
@@ -542,7 +554,7 @@ public class AssignPickup_Manager extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("merchantCode", merchant_code);
-                params.put("pickAssignedStatus", pickAssidnedStatus);
+                params.put("pickAssignedStatus", pickAssignedStatus);
 //                params.put("order_count", order_count);
                 return params;
             }

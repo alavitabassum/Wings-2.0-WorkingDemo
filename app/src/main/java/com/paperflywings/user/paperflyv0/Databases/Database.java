@@ -540,7 +540,7 @@ public class Database extends SQLiteOpenHelper {
         return db.query("merchantList", columns, "pick_assigned_status= 0", null, null, null, null);
     }
 
-    public void updateAssignedStatusDB(String merchant_code, int status, String pickAssidnedStatus){
+    public void updateAssignedStatusDB(String merchant_code, String pickAssidnedStatus ,int status){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("pick_assigned_status",pickAssidnedStatus);
@@ -581,7 +581,7 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void assignexecutive(String executive_name, String empcode,String product_name, String ordercount, String merchantCode, String user, String created_date,int status,String m_name,String contactNumber,String pick_m_name,String pick_m_address, String complete_status,String apiOrderID, String demo, String pick_from_merchant_status, String received_from_HQ_status) {
+    public void assignexecutive(String executive_name, String empcode,String product_name, String ordercount, String merchantCode, String user, String created_date,String m_name,String contactNumber,String pick_m_name,String pick_m_address, String complete_status,String apiOrderID, String demo, String pick_from_merchant_status, String received_from_HQ_status,int status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();

@@ -271,17 +271,17 @@ public class NewOrderEntry_Supervisor_ful extends AppCompatActivity {
         }
     }
 
-    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String p_m_name,final String p_m_address, final String complete_status,final String apiOrderID,final String demo,final String pick_from_merchant_status, final String received_from_HQ_status) {
+  /*  private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String p_m_name,final String p_m_address, final String complete_status,final String apiOrderID,final String demo,final String pick_from_merchant_status, final String received_from_HQ_status) {
         database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, status,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
         //final int total_assign = database.getTotalOfAmount(merchant_code);
         //final String strI = String.valueOf(total_assign);
         //database.update_row(strI, merchant_code);
-    }
+    }*/
 
     //For assigning executive API into mysql
     private void assignexecutive(final String ex_name, final String empcode, final String product_name, final String order_count, final String merchant_code, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String p_m_name,final String p_m_address, final String complete_status,final String apiOrderID,final String demo, final String pick_from_merchant_status, final String received_from_HQ_status) {
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, Fulfillment_Assign_pickup_Manager.INSERT_URL,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, FulfillmentAssignPickup_Supervisor.INSERT_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -290,11 +290,15 @@ public class NewOrderEntry_Supervisor_ful extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, Fulfillment_Assign_pickup_Manager.NAME_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
+                                database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status, FulfillmentAssignPickup_Supervisor.NAME_SYNCED_WITH_SERVER);
+
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, Fulfillment_Assign_pickup_Manager.NAME_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, Fulfillment_Assign_pickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+                                database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status, FulfillmentAssignPickup_Supervisor.NAME_NOT_SYNCED_WITH_SERVER);
+
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, Fulfillment_Assign_pickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -305,7 +309,9 @@ public class NewOrderEntry_Supervisor_ful extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, Fulfillment_Assign_pickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
+                        database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status, FulfillmentAssignPickup_Supervisor.NAME_NOT_SYNCED_WITH_SERVER);
+
+//                        assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, Fulfillment_Assign_pickup_Manager.NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,p_m_name,p_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
                     }
                 }
         ) {

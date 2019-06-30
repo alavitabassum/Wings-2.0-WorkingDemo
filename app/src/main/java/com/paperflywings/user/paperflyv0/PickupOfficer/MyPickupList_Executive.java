@@ -177,6 +177,9 @@ public class MyPickupList_Executive extends AppCompatActivity
             }
         };
 
+        //registering the broadcast receiver to update sync status
+        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -435,6 +438,7 @@ public class MyPickupList_Executive extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_item, menu);
+
         MenuItem searchItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -512,8 +516,8 @@ public class MyPickupList_Executive extends AppCompatActivity
 
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.deleteAssignedList(sqLiteDatabase);
-//                            db.barcode_factory(sqLiteDatabase,match_date);
-//                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
+                            db.barcode_factory(sqLiteDatabase,match_date);
+                            db.barcode_factory_fulfillment(sqLiteDatabase,match_date);
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME,Context.MODE_PRIVATE);
                             //Getting editor

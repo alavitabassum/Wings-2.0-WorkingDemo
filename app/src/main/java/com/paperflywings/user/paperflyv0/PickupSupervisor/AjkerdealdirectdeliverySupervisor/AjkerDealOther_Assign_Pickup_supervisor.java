@@ -338,13 +338,13 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
     }
 
 
-    private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String sum, final String order_id, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String apiOrderID, final String demo, final String pick_from_merchant_status, final  String received_from_HQ_status) {
+   /* private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String sum, final String order_id, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String apiOrderID, final String demo, final String pick_from_merchant_status, final  String received_from_HQ_status) {
         database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(order_id), user, currentDateTimeString, status,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
     }
 
     private void updateAssignedStatus(final String order_id, final int status, final String pickAssignedStatus) {
         database.updateAssignedStatusDBAdeal(order_id, status, pickAssignedStatus);
-    }
+    }*/
 
     //Pick assign to executive API
     private void assignexecutive(final String ex_name, final String empcode,final String product_name, final String sum, final String order_id, final String user, final String currentDateTimeString, final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status, final String apiOrderID, final String demo,final String pick_from_merchant_status,final String received_from_HQ_status) {
@@ -358,7 +358,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address,complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address,complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
 
                                 // Update status if order is assigned to the executive successfully and change the status to 1
                                 // pickAssignedStatus=1 means order assigned
@@ -370,7 +370,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
+//                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
                                 Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, "Unsuccessfull,Please try again!" +obj, Toast.LENGTH_LONG).show();
                                 // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                             }
@@ -383,7 +383,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        assignexecutivetosqlite(ex_name, empcode,product_name, sum, String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
+//                        assignexecutivetosqlite(ex_name, empcode,product_name, sum, String.valueOf(order_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
                         Toast.makeText(AjkerDealOther_Assign_Pickup_supervisor.this, "Unsuccessfull, Check your internet connection", Toast.LENGTH_SHORT).show();
                         // sendEmpInfoToAjkerDeal(order_id,emp_username,emp_contactnumber );
                     }
@@ -430,11 +430,11 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
                                 //if there is a success
                                 //storing the name to sqlite with status synced
 //                                assignexecutivetosqlite(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID,demo,pick_from_merchant_status, received_from_HQ_status);
-                                updateAssignedStatus(order_id, NAME_SYNCED_WITH_SERVER, pickAssidnedStatus);
+//                                updateAssignedStatus(order_id, NAME_SYNCED_WITH_SERVER, pickAssidnedStatus);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                updateAssignedStatus( order_id, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
+//                                updateAssignedStatus( order_id, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -445,7 +445,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        updateAssignedStatus( order_id, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
+//                        updateAssignedStatus( order_id, NAME_NOT_SYNCED_WITH_SERVER, pickAssidnedStatus);
                     }
                 }
         ) {
