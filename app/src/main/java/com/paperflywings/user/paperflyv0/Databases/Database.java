@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Database extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
     private static final String DATABASE_NAME = "MerchantDatabase.db";
     private static final String TABLE_NAME = "merchants";
     private static final String TABLE_NAME_1 = "merchantsfor_executives";
