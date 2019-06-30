@@ -46,7 +46,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.PickupAutoAssignManager.AssignManager_ExecutiveList;
+import com.paperflywings.user.paperflyv0.AssignManager_ExecutiveList;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.FulfillmentAssignSupervisor.FulfillmentAssignPickup_Supervisor;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.SupervisorCardMenu;
@@ -305,7 +305,8 @@ public class AssignPickup_Supervisor extends AppCompatActivity
                                         o.getString("pickMerchantName"),
                                         o.getString("pickMerchantAddress"),
                                         o.getString("pickAssignedStatus"),
-                                        o.getString("address"));
+                                        o.getString("address")
+                                        , NAME_SYNCED_WITH_SERVER );
                                 assignSupervisor_modelList.add(todaySummary);
 
                             }

@@ -44,7 +44,7 @@ import com.android.volley.toolbox.Volley;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.paperflywings.user.paperflyv0.PickupManager.AjkerdealdirectdeliveryManager.AjkerDealOther_Assign_Pickup_manager;
-import com.paperflywings.user.paperflyv0.PickupAutoAssignManager.AssignManager_ExecutiveList;
+import com.paperflywings.user.paperflyv0.AssignManager_ExecutiveList;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager;
@@ -122,7 +122,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         String user = username.toString();
 
-
         //recycler with cardview
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_assign);
         layoutManager = new LinearLayoutManager(this);
@@ -134,7 +133,6 @@ public class AssignPickup_Manager extends AppCompatActivity
         swipeRefreshLayout.setRefreshing(true);
         assignManager_modelList.clear();
         swipeRefreshLayout.setRefreshing(true);
-
 
         //Offline sync
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -151,48 +149,28 @@ public class AssignPickup_Manager extends AppCompatActivity
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-
-
-
         loadallmerchantlist(user);
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
-                //loading the names again
-
             }
         };
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
         fab1 = (FloatingActionButton) findViewById(R.id.menu_item1);
-        /*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*/
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             /*   Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-
                 Intent intentorder = new Intent(AssignPickup_Manager.this,
                         NewOrder.class);
                 startActivity(intentorder);
             }
         });
-
-       /* fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentorderupdate = new Intent(AssignPickup_Manager.this,
-                        NewOrder.class);
-                startActivity(intentorderupdate);
-            }
-        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -315,7 +293,8 @@ public class AssignPickup_Manager extends AppCompatActivity
                                         o.getString("pickMerchantName"),
                                         o.getString("pickMerchantAddress"),
                                         o.getString("pickAssignedStatus"),
-                                        o.getString("address"));
+                                        o.getString("address")
+                                        , NAME_SYNCED_WITH_SERVER );
                                 assignManager_modelList.add(todaySummary);
 
                             }

@@ -39,12 +39,13 @@ public class NetworkStateChecker extends BroadcastReceiver {
     public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
-
+    private RequestQueue requestQueue;
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         database = new Database(context);
         database2 = new BarcodeDbHelper(context);
+
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         //if there is a network
@@ -216,7 +217,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -256,7 +259,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -296,7 +301,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -335,7 +342,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -377,7 +386,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -428,6 +439,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -473,7 +487,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -517,7 +533,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
 

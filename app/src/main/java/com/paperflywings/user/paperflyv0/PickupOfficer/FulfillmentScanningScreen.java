@@ -92,8 +92,6 @@ public class FulfillmentScanningScreen extends AppCompatActivity{
     //a broadcast to know weather the data is synced or not
     // TODO add sql_primary_id to fulfillment barcode factory
     public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_barcode_fulfillment.php";
-    public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updateTableForFulfillment.php";
-
     public static final String UPDATE_SCAN_AND_PICKED_SHOP= "http://paperflybd.com/updateScanCountFulfillment.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 

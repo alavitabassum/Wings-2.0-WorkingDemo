@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.PickupAutoAssignManager;
+package com.paperflywings.user.paperflyv0;
 
 public class AssignManager_ExecutiveList {
     private String executive_name;

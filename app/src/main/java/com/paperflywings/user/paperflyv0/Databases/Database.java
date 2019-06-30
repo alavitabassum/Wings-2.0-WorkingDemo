@@ -191,7 +191,7 @@ public class Database extends SQLiteOpenHelper {
         return db.query("com_ex", columns, null, null, null, null, null);
     }
 
-    public void addmerchantlist(String merchantName, String merchantCode,int cnt,String contactNumber,String pick_merchant_name,String pick_merchant_address, String pick_assigned_status, String address) {
+    public void addmerchantlist(String merchantName, String merchantCode,int cnt,String contactNumber,String pick_merchant_name,String pick_merchant_address, String pick_assigned_status, String address, int status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -204,6 +204,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("pick_m_address",pick_merchant_address);
         values.put("pick_assigned_status",pick_assigned_status);
         values.put("address",address);
+        values.put("status",status);
 
         sqLiteDatabase.insertWithOnConflict("merchantList", null, values,SQLiteDatabase.CONFLICT_IGNORE);
         sqLiteDatabase.close();
@@ -211,7 +212,7 @@ public class Database extends SQLiteOpenHelper {
 
     //Add Merchant list for Fulfillment
 
-    public void addfulfillmentmerchantlist(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String currentDateTimeString, String assign_status, String merchant_code) {
+    public void addfulfillmentmerchantlist(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String currentDateTimeString, String assign_status, String merchant_code,int status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -226,6 +227,7 @@ public class Database extends SQLiteOpenHelper {
         values.put("created_at",currentDateTimeString);
         values.put("assign_status",assign_status);
         values.put("merchant_code",merchant_code);
+        values.put("status",status);
 
         sqLiteDatabase.insertWithOnConflict("merchantListFulfillment", null, values,SQLiteDatabase.CONFLICT_IGNORE);
         sqLiteDatabase.close();

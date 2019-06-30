@@ -43,7 +43,7 @@ import com.android.volley.toolbox.Volley;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.paperflywings.user.paperflyv0.AssignMainMerchant_Model;
-import com.paperflywings.user.paperflyv0.PickupAutoAssignManager.AssignManager_ExecutiveList;
+import com.paperflywings.user.paperflyv0.AssignManager_ExecutiveList;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.LoginActivity;
@@ -503,7 +503,8 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
                                         o.getInt("sum"),
                                         o.getString("created_at"),
                                         o.getString("assign_status"),
-                                        o.getString("merchant_code"));
+                                        o.getString("merchant_code")
+                                        , NAME_SYNCED_WITH_SERVER );
                                 assignFulfillmentManager_modelList.add(todaySummary);
                             }
 
@@ -585,9 +586,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
             e.printStackTrace();
         }
     }
-
-
-
 
 //    String status = "0";
    /* private void assignexecutivetosqlite(final String ex_name, final String empcode, final String product_name, final String sum, final String product_id, final String user, final String currentDateTimeString, final int status,final String m_name,final String contactNumber,final String pick_m_name,final String pick_m_address, final String complete_status,final String apiOrderID, final String demo, final String pick_from_merchant_status, final  String received_from_HQ_status) {

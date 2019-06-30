@@ -9,10 +9,8 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,13 +35,11 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
-import com.paperflywings.user.paperflyv0.PickupList_Model_For_Executive;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -70,16 +66,9 @@ public class ScanningScreen extends AppCompatActivity {
     private TextView merchant_name_textview;
     private TextView sub_merchant_name_textview;
     private TextView scan_count1 ;
-    private com.paperflywings.user.paperflyv0.PickupOfficer.pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
-    RecyclerView recyclerView_pul;
-    RecyclerView.LayoutManager layoutManager_pul;
-    RecyclerView.Adapter adapter_pul;
-    android.widget.RelativeLayout vwParentRow;
-    private List<PickupList_Model_For_Executive> list;
     //1 means data is synced and 0 means data is not synced
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
     public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updatePickScanCount.php";
@@ -88,14 +77,11 @@ public class ScanningScreen extends AppCompatActivity {
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.continuous_scan);
-
-        notificationManager = NotificationManagerCompat.from(this);
 
         // Pass value through intent
         Intent intent = getIntent();
@@ -131,8 +117,6 @@ public class ScanningScreen extends AppCompatActivity {
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
     }
 
-
-
     private BarcodeCallback callback = new BarcodeCallback()  {
 
         @Override
@@ -140,13 +124,8 @@ public class ScanningScreen extends AppCompatActivity {
             //Fetching email from shared preferences
             SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
             String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-            final String user = username.toString();
-
-            // current date and time
-            final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
             db = new BarcodeDbHelper(ScanningScreen.this);
-            // if(result.getText() == null || result.getText().equals(lastText)) {
             if(result.getText().equals(lastText) || result.getText().trim().length() != 12) {
 
                 // Set the toast and duration
@@ -186,7 +165,7 @@ public class ScanningScreen extends AppCompatActivity {
 
             // TODO: add added-by, current-date , vaiia says to add flag in this table
             final boolean state = true;
-            final String updated_by = user;
+            final String updated_by = username;
 //            final String updated_at = currentDateTimeString;
 
             Date c = Calendar.getInstance().getTime();
@@ -194,23 +173,11 @@ public class ScanningScreen extends AppCompatActivity {
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
             final String updated_at = df.format(c);
 
-            // db.add(merchant_id, lastText, state, updated_by, updated_at);
-
             if ( lastText.trim().length() != 12 ) {
-
                 Toast.makeText(ScanningScreen.this, "garbage", Toast.LENGTH_LONG).show();
-
             } else {
-
                 barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at);
-
             }
-//            final int barcode_per_merchant_counts = db.getRowsCount(merchant_id, sub_merchant_name, updated_at);
-
-//            Toast.makeText(ScanningScreen.this, "Merchant Id" +merchant_id + " Count:" + strI + " Successfull",  Toast.LENGTH_LONG).show();
-//            scan_count1.setText("Scan count: " +strI);
-
-//          builder.setTitle(strI);
             db.close();
 
             beepManager.playBeepSoundAndVibrate();
@@ -228,31 +195,20 @@ public class ScanningScreen extends AppCompatActivity {
                 public void onClick(View view) {
                     SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                     String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-                    String user1 = username.toString();
-
-                    // current date and time
-                    final String currentDateTimeString1 = DateFormat.getDateTimeInstance().format(new Date());
-                    final String updated_by1 = user1;
-//                    final String updated_at1 = currentDateTimeString1;
 
                     Date c = Calendar.getInstance().getTime();
                     System.out.println("Current time => " + c);
                     SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
                     final String updated_at1 = df.format(c);
 
-                    final String pick_status = "1";
                     boolean state1 = false;
                     db.update_state(state1, merchant_id, sub_merchant_name, updated_at1,sql_primary_id);
-                    // TODO: Merchant id, scan count, created-by, creation-date, flag
-//                    db.update_row(strI, updated_by1, updated_at1, merchant_id);
                     try{
                         final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
-                        updateScanCount(strI, strI, updated_by1, updated_at1, merchant_id, sub_merchant_name, match_date, sql_primary_id);
+                        updateScanCount(strI, strI, username, updated_at1, merchant_id, sub_merchant_name, match_date, sql_primary_id);
                     } catch (Exception e) {
                         Toast.makeText(ScanningScreen.this, "An error occurred", Toast.LENGTH_SHORT).show();
                     }
-//                    getData(username);
-//                    sentOnChannel1();
                     Intent intent = new Intent(view.getContext(), MyPickupList_Executive.class);
                     startActivity(intent);
 
@@ -264,17 +220,6 @@ public class ScanningScreen extends AppCompatActivity {
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
-
-   /* public void sentOnChannel1(){
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
-                .setSmallIcon(R.drawable.ic_notifucation)
-                .setContentTitle("Title")
-                .setContentText("Notification message")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .build();
-        notificationManager.notify(1, notification);
-    }*/
 
     @Override
     protected void onResume() {
@@ -307,13 +252,10 @@ public class ScanningScreen extends AppCompatActivity {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-
     //API HIT
     private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at) {
-
         // get created date for match
         Intent intentID = getIntent();
-        final String match_date = intentID.getStringExtra(CREATED_AT);
         final String sql_primary_id = intentID.getStringExtra(SQL_PRIMARY_ID);
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/insert_barcode1.php",
@@ -329,7 +271,6 @@ public class ScanningScreen extends AppCompatActivity {
                                 db.add(sql_primary_id,merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at,NAME_SYNCED_WITH_SERVER);
                                 final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                 scan_count1.setText("Scan count: " +strI);
-//                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
                                 Toast toast= Toast.makeText(ScanningScreen.this,
                                         "Barcode Number Added", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -386,7 +327,6 @@ public class ScanningScreen extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-//                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
                                 db.update_row(strI, picked_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date,sql_primary_id, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
@@ -402,7 +342,6 @@ public class ScanningScreen extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_row(strI, picked_qty ,updated_by, updated_at, merchant_id, sub_merchant_name, match_date,sql_primary_id, NAME_NOT_SYNCED_WITH_SERVER);
-
                     }
                 }
         ) {
@@ -413,8 +352,6 @@ public class ScanningScreen extends AppCompatActivity {
                 params.put("p_m_name", sub_merchant_name);
                 params.put("scan_count", strI);
                 params.put("picked_qty", picked_qty);
-                // params.put("api_order_id", "0");
-//                params.put("pick_from_merchant_status", pick_status);
                 params.put("updated_by", updated_by);
                 params.put("updated_at", updated_at);
                 params.put("sql_primary_id", sql_primary_id);

@@ -43,7 +43,7 @@ import com.android.volley.toolbox.Volley;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.paperflywings.user.paperflyv0.PickupManager.AjkerdealdirectdeliveryManager.AjkerDealOther_Assign_Pickup_manager;
-import com.paperflywings.user.paperflyv0.PickupAutoAssignManager.AssignManager_ExecutiveList;
+import com.paperflywings.user.paperflyv0.AssignManager_ExecutiveList;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.LoginActivity;
@@ -317,7 +317,8 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                                         o.getInt("sum"),
                                         o.getString("created_at"),
                                         o.getString("assign_status"),
-                                        o.getString("merchant_code"));
+                                        o.getString("merchant_code")
+                                        , NAME_SYNCED_WITH_SERVER );
                                 assignFulfillmentManager_modelList.add(todaySummary);
                             }
 

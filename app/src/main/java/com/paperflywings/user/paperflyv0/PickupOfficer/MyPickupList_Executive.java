@@ -211,10 +211,6 @@ public class MyPickupList_Executive extends AppCompatActivity
     private void getData(String user) {
         try {
             list.clear();
-            Date date = Calendar.getInstance().getTime();
-//            System.out.println("Current time => " + c);
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_mypickups_today(sqLiteDatabase, user);
@@ -259,12 +255,6 @@ public class MyPickupList_Executive extends AppCompatActivity
 
     private void loadRecyclerView(final String user)
     {
-//        boolean check;
-//          list.clear();
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String match_date = df.format(c);
-
           StringRequest stringRequest = new StringRequest(Request.Method.POST, ASSIGNED_LIST_FOR_EXECUTIVE,
            new Response.Listener<String>()
            {
@@ -323,13 +313,11 @@ public class MyPickupList_Executive extends AppCompatActivity
                                 o.getString("demo"),
                                 o.getString("pick_from_merchant_status"),
                                 o.getString("received_from_HQ_status")
-                                , NAME_NOT_SYNCED_WITH_SERVER );
+                                , NAME_SYNCED_WITH_SERVER );
 
                         list.add(todaySummary);
 
                     }
-//                     getData(user);
-//                    swipeRefreshLayout.setRefreshing(false);
 
                     pickuplistForExecutiveAdapter = new pickuplistForExecutiveAdapter(list,getApplicationContext());
                     recyclerView_pul.setAdapter(pickuplistForExecutiveAdapter);
@@ -345,7 +333,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
 
@@ -357,7 +344,6 @@ public class MyPickupList_Executive extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("executive_name",user);
-//                params1.put("created_at",match_date);
                 return params1;
             }
         };
@@ -498,10 +484,6 @@ public class MyPickupList_Executive extends AppCompatActivity
             Intent assignIntent = new Intent(MyPickupList_Executive.this,
                     MyPickupList_Executive.class);
             startActivity(assignIntent);
-       /* } else if (id == R.id.nav_exe_pickup_log) {
-            Intent assignIntent = new Intent(MyPickupList_Executive.this,
-                    AutoAssignMyPickuplist.class);
-            startActivity(assignIntent);*/
         } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -646,7 +628,6 @@ public class MyPickupList_Executive extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        final String updated_by = username.toString();
 
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
@@ -660,11 +641,13 @@ public class MyPickupList_Executive extends AppCompatActivity
         final String sql_primary_id = clickedItem.getSql_primary_id();
         final String match_date = clickedItem.getCreated_at();
         final String order_id = clickedItem.getMerchant_id();
+        final String strI = clickedItem.getScan_count();
+        final String pick_qty = clickedItem.getPicked_qty();
 
-        final String onhold = "2";
+        /*final String onhold = "2";
         final String cancel = "3";
         final String complete = "4";
-        final String partial = "5";
+        final String partial = "5";*/
         final Intent picklistintent = new Intent(MyPickupList_Executive.this,
                 MyPickupList_Executive.class);
 
@@ -707,17 +690,15 @@ public class MyPickupList_Executive extends AppCompatActivity
                                                 String comments = et1.getText().toString();
                                                 if(clickedItem.getComplete_status().equals("p")){
                                                     // complete
-                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
+//                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                                     //if order is cancelled this will save the status 2
-                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "Complete", sql_primary_id);
+                                                    updateActionStatus(strI, strI, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "4", "Complete", sql_primary_id);
 
                                                 } else if(clickedItem.getComplete_status().equals("f")){
-                                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
-                                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
-                                                    updateActionStatus(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, complete, "Complete",sql_primary_id);
+                                                   updateActionStatus(strI, pick_qty, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "4", "Complete",sql_primary_id);
                                                 }
                                                 // updateAjkerDeal(merchant_order_ref,pause,comments);
-                                                pickup_action_log(sql_primary_id, comments, complete, "Complete", username);
+                                                pickup_action_log(sql_primary_id, comments, "4", "Complete", username);
 //                                                getData(username);
                                                 startActivity(picklistintent);
                                                 dialog5.dismiss();
@@ -774,14 +755,12 @@ public class MyPickupList_Executive extends AppCompatActivity
                                                     final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
 
                                                     //if order is cancelled this will save the status 2
-                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "On-hold",sql_primary_id);
+                                                    updateActionStatus(strI, strI, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "2", "On-hold",sql_primary_id);
 
                                                 } else if(clickedItem.getComplete_status().equals("f")){
-                                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
-                                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
-                                                    updateActionStatus(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, onhold, "On-hold",sql_primary_id);
+                                                   updateActionStatus(strI, pick_qty, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "2", "On-hold",sql_primary_id);
                                                 }
-                                                pickup_action_log(sql_primary_id, comments, onhold, "On-hold", username);
+                                                pickup_action_log(sql_primary_id, comments, "2", "On-hold", username);
 //                                              updateAjkerDeal(merchant_order_ref,pause,comments);
 
                                                 startActivity(picklistintent);
@@ -834,17 +813,14 @@ public class MyPickupList_Executive extends AppCompatActivity
                                                 String comments = mOnholdSpinner6.getSelectedItem().toString();
                                                 if(clickedItem.getComplete_status().equals("p")){
                                                     // pause
-                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                                     //if order is cancelled this will save the status 2
-                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "Partial",sql_primary_id);
+                                                    updateActionStatus(strI, strI, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "5", "Partial",sql_primary_id);
 //                                                updateAjkerDeal(merchant_order_ref,pause,comments);
                                                 } else if(clickedItem.getComplete_status().equals("f")){
-                                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
-                                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
-                                                    updateActionStatus(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, partial, "Partial",sql_primary_id);
+                                                    updateActionStatus(strI, pick_qty, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "5", "Partial",sql_primary_id);
 
                                                 }
-                                                pickup_action_log(sql_primary_id, comments, partial, "Partial", username);
+                                                pickup_action_log(sql_primary_id, comments, "5", "Partial", username);
                                                 startActivity(picklistintent);
                                                 dialog6.dismiss();
                                             }
@@ -894,17 +870,14 @@ public class MyPickupList_Executive extends AppCompatActivity
                                                 String comments = mOnholdSpinner2.getSelectedItem().toString();
                                                 if(clickedItem.getComplete_status().equals("p")){
                                                     // delete
-                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
-                                                    //if order is cancelled this will save the status 2
-                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "Cancel",sql_primary_id);
+                                                   //if order is cancelled this will save the status 2
+                                                    updateActionStatus(strI, strI, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "3", "Cancel",sql_primary_id);
                                                     // updateAjkerDeal(merchant_order_ref,pause, comments);
                                                 } else if(clickedItem.getComplete_status().equals("f")){
-                                                    final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id, sub_merchant_name, order_id));
-                                                    final String picked_product_qty = String.valueOf(db.getPickedSumByOrderId(sql_primary_id, order_id));
-                                                    updateActionStatus(strI, strI, updated_by, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, cancel, "Cancel",sql_primary_id);
+                                                    updateActionStatus(strI, pick_qty, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "3", "Cancel",sql_primary_id);
                                                 }
 
-                                                pickup_action_log(sql_primary_id, comments, cancel, "Cancel", username);
+                                                pickup_action_log(sql_primary_id, comments, "3", "Cancel", username);
                                                 startActivity(picklistintent);
                                                 dialog4.dismiss();
                                             }
@@ -989,7 +962,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-//                                db.add(merchant_id, lastText, state, updated_by, updated_at,);
                                 db.update_row_for_fulfillment(strI, picked_product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, order_id, comments, match_date, pick_status, pause_or_delete, sql_primary_id ,NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
@@ -1034,7 +1006,6 @@ public class MyPickupList_Executive extends AppCompatActivity
         }
     }
 
-
     public void pickup_action_log (final String sql_primary_id, final String comments, final String status_id, final String status_name, final String username){
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_ACTION_LOG,
@@ -1054,7 +1025,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -1073,7 +1043,6 @@ public class MyPickupList_Executive extends AppCompatActivity
                 params.put("status_name", status_name);
                 params.put("status_by", username);
 
-
                 return params;
             }
         };
@@ -1084,5 +1053,4 @@ public class MyPickupList_Executive extends AppCompatActivity
             Toast.makeText(MyPickupList_Executive.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
-
 }
