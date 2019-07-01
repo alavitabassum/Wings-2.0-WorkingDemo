@@ -59,7 +59,7 @@
         <item>Saiful</item>
     </string-array>
 
-    <string-array name="onholdreasons">
+ <!--   <string-array name="onholdreasons">
         <item>Please select an option..</item>
         <item>স্টকে পণ্য নেই</item>
         <item>গুণগত মান / প্যাকেজিং সমস্যা</item>
@@ -67,6 +67,12 @@
         <item>মার্চেন্ট অনুপস্থিত</item>
         <item>মার্চেন্ট দেরি করেছে</item>
         <item>নির্ধারিত সময়ের পর পিক আপ অনুরোধ</item>
+    -->
+
+    <string-array name="onholdreasons">
+    <item>Please select an option..</item>
+    <item>Customer unreachable</item>
+    <item>Customer request</item>
     </string-array>
 
     <string-array name="cancelreason">

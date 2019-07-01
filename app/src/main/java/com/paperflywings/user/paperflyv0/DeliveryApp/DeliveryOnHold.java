@@ -191,7 +191,7 @@ public class DeliveryOnHold extends AppCompatActivity
             final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_All_status_without_status_onhold(sqLiteDatabase,user);
+            Cursor c = db.get_delivery_OnHold(sqLiteDatabase,user);
 
             while (c.moveToNext()){
 
@@ -222,10 +222,11 @@ public class DeliveryOnHold extends AppCompatActivity
                 String partialReason = c.getString(22);
                 String onHoldSchedule = c.getString(23);
                 String onHoldReason = c.getString(24);
+                String slaMiss = c.getString(25);
                 //String withoutStatus = c.getString(25);
 
 
-                DeliveryOnHoldModel onhold_model = new DeliveryOnHoldModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule);
+                DeliveryOnHoldModel onhold_model = new DeliveryOnHoldModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,slaMiss);
                 list.add(onhold_model);
             }
 
@@ -264,7 +265,7 @@ public class DeliveryOnHold extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteAssignedList(sqLiteDatabase);
+                        db.deleteOnHoldList(sqLiteDatabase);
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);

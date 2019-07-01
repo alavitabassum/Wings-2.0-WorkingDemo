@@ -272,6 +272,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE8 = "CREATE TABLE Insert_Delivery_Unpicked( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "username TEXT, "
+                + "empCode TEXT, "
                 + "barcode TEXT, "
                 + "orderid TEXT, "
                 + "merOrderRef TEXT, "
@@ -283,8 +285,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "packagePrice TEXT, "
                 + "productBrief TEXT, "
                 + "deliveryTime TEXT, "
-                + "username TEXT, "
-                + "empCode TEXT, "
                 + "status INT, "
                 + "unique(id, barcode))";
 
@@ -294,13 +294,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "dropPointCode TEXT,"
                 + "barcode TEXT, "
                 + "orderid TEXT, "
-                + "merOrderRef TEXT, "
+                + "merOrderRef TEXT, " //4
                 + "merchantName TEXT, "
                 + "pickMerchantName TEXT, "
                 + "custname TEXT, "
                 + "custaddress TEXT, "
                 + "custphone TEXT, "
-                + "packagePrice TEXT, "
+                + "packagePrice TEXT, "//10
                 + "productBrief TEXT, "
                 + "deliveryTime TEXT, "
                 + "username TEXT, "
@@ -649,6 +649,36 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
+    public Cursor getUnsyncedunpicked() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_8 + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateunpickedStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME_8, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
+    }
+    public Cursor getUnsyncedWithoutStatus() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_9 + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateWithoutStatus(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME_9, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
+    }
 
 
     public boolean updateBarcodeStatus(int id, int status) {
@@ -853,6 +883,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
+
+
+
+
+
     //////// Delivery Officer Database functionalities ///////
 
     // insert counts in delivery summary
@@ -957,10 +992,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
 
     // insert counts in delivery unpicked
-    public void insert_delivery_unpicked_count(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, int status) {
+    public void insert_delivery_unpicked_count(String username,String empCode,String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put(USERNAME, username);
+        values.put(EMPLOYEE_CODE, empCode);
+        values.put(BARCODE_NO, barcode);
         values.put(BARCODE_NO, barcode);
         values.put(ORDERID, orderid);
         values.put(MERCHANT_ORDER_REF, merOrderRef);
@@ -980,7 +1018,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     // get the delivery unpicked
     public Cursor get_delivery_unpicked(SQLiteDatabase db, String user) {
-        String[] columns = {BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME};
+        String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME,};
 
         String whereClause = USERNAME + "=?";
         String[] whereArgs = new String[]{
@@ -1238,6 +1276,19 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         };
         return (db.query(TABLE_NAME_TEMPORARY, columns, whereClause, whereArgs, null, null, null));
     }
+
+
+    public void deleteUnpickedList(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_8);
+    }
+
+    public void deleteWithoutStatusList(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9);
+    }
+    public void deleteOnHoldList(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_10);
+    }
+
 
 }
 

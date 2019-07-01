@@ -4,9 +4,11 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -52,6 +54,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.LoginActivity;
+import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
@@ -105,6 +108,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
 
+    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
+
+    //Broadcast receiver to know the sync status
+    private BroadcastReceiver broadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,6 +148,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -148,7 +159,14 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+            }
+        };
 
+        //registering the broadcast receiver to update sync status
+        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
         final String withoutstatus_count = db.get_withoutstatus_count(username);
         without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
@@ -268,7 +286,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteAssignedList(sqLiteDatabase);
+                        db.deleteWithoutStatusList(sqLiteDatabase);
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -935,7 +953,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 db1.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, NAME_SYNCED_WITH_SERVER);
                             } else {
-                                //if there is some error
+                                //if there is some error+12
                                 //saving the name to sqlite with status unsynced
                                 db1.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
                             }

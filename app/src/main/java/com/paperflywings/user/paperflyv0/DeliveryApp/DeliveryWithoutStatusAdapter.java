@@ -139,9 +139,9 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice());
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
-       // viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
+        //viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
 
-        viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
+       // viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
 
        // String CustomerDistrict = list.get(i).getCustomerDistrict();
 

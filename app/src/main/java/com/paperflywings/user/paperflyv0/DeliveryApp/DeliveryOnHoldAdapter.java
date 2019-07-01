@@ -142,9 +142,9 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         viewHolder.item_custphone_onHold.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice_onHold.setText(list.get(i).getPackagePrice());
         viewHolder.item_productBrief_onHold.setText("Product Brief: "+list.get(i).getProductBrief());
-        // viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
+        //viewHolder.item_deliveryTime_onHold.setText(list.get(i).getDeliveryTime());
 
-        viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
+        //viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
 
         // String CustomerDistrict = list.get(i).getCustomerDistrict();
         String Merchant_name = list.get(i).getMerchantName();
@@ -155,6 +155,11 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_onHold.setText(list.get(i).getSlaMiss());
             viewHolder.item_deliveryTime_onHold.setBackgroundResource(R.color.red);
+            viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
+        }
+        else if (DeliveryTime>=0){
+            viewHolder.item_deliveryTime_onHold.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_onHold.setBackgroundResource(R.color.green);
             viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
         }
         if (Pick_merchantName.isEmpty()) {
@@ -186,11 +191,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         }
 
         }*/
-        else if (DeliveryTime>=0){
-            viewHolder.item_deliveryTime_onHold.setText(list.get(i).getSlaMiss());
-            viewHolder.item_deliveryTime_onHold.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
-        }
+
     }
 
     @Override
