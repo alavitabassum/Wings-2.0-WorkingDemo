@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -783,105 +783,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_1, values, whereClause, whereArgs);
         db.close();
     }
-
-
-/*    public List<PickupList_Model_For_Executive> getAllData(String user) {
-        // array of columns to fetch
-        String[] columns = {KEY_ID,
-                            MERCHANT_ID,
-                            MERCHANT_NAME,
-                            EXECUTIVE_NAME,
-                            ASSIGNED_QTY,
-                            PICKED_QTY,
-                            SCAN_COUNT,
-                            PHONE_NO,
-                            ASSIGNED_BY,
-                            CREATED_AT,
-                            UPDATED_BY,
-                            UPDATED_AT,
-                            COMPLETE_STATUS };
-
-        // sorting orders
-        String sortOrder = CREATED_AT + " DESC";
-        List<PickupList_Model_For_Executive> list = new ArrayList<PickupList_Model_For_Executive>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_NAME_1, //Table to query
-                columns,    //columns to return
-                "executive_name='" + user + "'",        //columns for the WHERE clause
-                null,        //The values for the WHERE clause
-                null,       //group the rows
-                null,       //filter by row groups
-                sortOrder); //The sort order
-
-        // Traversing through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                PickupList_Model_For_Executive beneficiary = new PickupList_Model_For_Executive();
-
-//                Beneficiary beneficiary = new Beneficiary();
-                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ID))));
-                beneficiary.setMerchant_id(cursor.getString(cursor.getColumnIndex(MERCHANT_ID)));
-                beneficiary.setMerchant_name(cursor.getString(cursor.getColumnIndex(MERCHANT_NAME)));
-                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex(EXECUTIVE_NAME)));
-                beneficiary.setAssined_qty(cursor.getString(cursor.getColumnIndex(ASSIGNED_QTY)));
-                beneficiary.setPicked_qty(cursor.getString(cursor.getColumnIndex(PICKED_QTY)));
-                beneficiary.setScan_count(cursor.getString(cursor.getColumnIndex(SCAN_COUNT)));
-                beneficiary.setPhone_no(cursor.getString(cursor.getColumnIndex(PHONE_NO)));
-                beneficiary.setAssigned_by(cursor.getString(cursor.getColumnIndex(ASSIGNED_BY)));
-                beneficiary.setCreated_at(cursor.getString(cursor.getColumnIndex(CREATED_AT)));
-                beneficiary.setUpdated_by(cursor.getString(cursor.getColumnIndex(UPDATED_BY)));
-                beneficiary.setUpdated_at(cursor.getString(cursor.getColumnIndex(UPDATED_AT)));
-                beneficiary.setComplete_status(cursor.getString(cursor.getColumnIndex(COMPLETE_STATUS)));
-                // Adding user record to list
-                list.add(beneficiary);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        // return user list
-        return list;
-    }
-
-    // Get all executives
-    public List<PickupList_Model_For_Executive> getPending(String user) {
-        // array of columns to fetch
-//        String[] columns = {"id", "empName", "empCode"};
-        String[] columns = {KEY_ID,
-                MERCHANT_NAME,
-                EXECUTIVE_NAME,
-                ASSIGNED_QTY,
-                PICKED_QTY,
-                SCAN_COUNT };
-        // sorting orders
-        String sortOrder = KEY_ID + " ASC";
-        List<PickupList_Model_For_Executive> list = new ArrayList<PickupList_Model_For_Executive>();
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME_1, columns,  "executive_name='" + user + "'", null, null, null,sortOrder);
-        // Traversing through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                PickupList_Model_For_Executive beneficiary = new PickupList_Model_For_Executive();
-
-//                Beneficiary beneficiary = new Beneficiary();
-                beneficiary.setKey_id(Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ID))));
-                beneficiary.setMerchant_name(cursor.getString(cursor.getColumnIndex(MERCHANT_NAME)));
-                beneficiary.setExecutive_name(cursor.getString(cursor.getColumnIndex(EXECUTIVE_NAME)));
-                beneficiary.setAssined_qty(cursor.getString(cursor.getColumnIndex(ASSIGNED_QTY)));
-                beneficiary.setPicked_qty(cursor.getString(cursor.getColumnIndex(PICKED_QTY)));
-                beneficiary.setScan_count(cursor.getString(cursor.getColumnIndex(SCAN_COUNT)));
-
-                // Adding user record to list
-                list.add(beneficiary);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        db.close();
-        // return user list
-        return list;
-    }*/
 
     // Delete data from Sqlite Barcode table upon login
     public void barcode_factory(SQLiteDatabase sqLiteDatabase, String match_date) {
