@@ -12,7 +12,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
     private static final String TABLE_NAME_2 = "Barcode_Fulfillment";
-    // private static final String TABLE_NAME_3 = "My_pickups_auto";
     private static final String TABLE_NAME_4 = "Insert_Pickup_Action";
     private static final String TABLE_NAME_6 = "pickups_today_executive";
     private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
@@ -102,7 +101,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String ONHOLDREASON_ALLSTATUS = "onHoldReason";
     private static final String SLAMISS_ALLSTATUS = "slaMiss";
 
-
     //delivery unpicked
     public static final String BARCODE_NO = "barcode";
     public static final String ORDERID = "orderid";
@@ -117,7 +115,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String DELIVERY_TIME = "deliveryTime";
     public static final String EMPLOYEE_CODE = "empCode";
 
-    //delivery without status
+    // delivery without status
     // public static final String CUSTOMER_DISTRICT_WITHOUT_STATUS = "customerDistrict";
     public static final String BARCODE_NO_WITHOUT_STATUS = "barcode";
     public static final String ORDERID_WITHOUT_STATUS = "orderid";
@@ -131,7 +129,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String PRODUCT_BRIEF_WITHOUT_STATUS = "productBrief";
     public static final String DELIVERY_TIME_WITHOUT_STATUS = "deliveryTime";
 
-    //delivery without status actions
+    // delivery without status actions
     public static final String DROPPOINTCODE = "dropPointCode";
     public static final String CASH_WITHOUT_STATUS = "Cash";
     public static final String CASHTYPE_WITHOUT_STATUS = "cashType";
@@ -151,6 +149,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String REATIME_WITHOUT_STATUS = "ReaTime";
     public static final String REABY_WITHOUT_STATUS = "ReaBy";
     public static final String SLAMISS = "slaMiss";
+
+    public static final String DROP_POINT_EMP = "dropPointEmp";
+    public static final String DROP_ASSIGN_TIME = "dropAssignTime";
+    public static final String DROP_ASSIGN_BY = "dropAssignBy";
+    public static final String PICK_DROP = "pickDrop";
+    public static final String PICK_DROP_TIME = "pickDropTime";
+    public static final String PICK_DROP_BY = "pickDropBy";
 
     private static final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
@@ -197,38 +202,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "pick_from_merchant_status TEXT, "
                 + "received_from_HQ_status TEXT, "
                 + "unique(sql_primary_id,merchantId, p_m_name, product_name, apiOrderID, created_at))";
-
-        /*String CREATION_TABLE3 = "CREATE TABLE My_pickups_auto ( "
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "merchantName TEXT, "
-                + "merchantCode TEXT, "
-                + "pickMerName TEXT, "
-                + "pickMerAddress TEXT, "
-                + "pickPhoneNo TEXT, "
-                + "executiveName TEXT, "
-                + "executiveCode TEXT, "
-                + "manualCountManager TEXT, "
-                + "autoCountMerchant TEXT, "
-                + "scanCount TEXT , "
-                + "pickedQty TEXT, "
-                + "productName TEXT , "
-                + "productId TEXT, "
-                + "productQty TEXT, "
-                + "merOrderRef TEXT , "
-                + "assignedBy TEXT, "
-                + "assignedAt TEXT, "
-                + "updatedBy TEXT, "
-                + "updatedAt TEXT, "
-                + "pickTypeStatus TEXT, "
-                + "pickedStatus TEXT, "
-                + "receivedStatus TEXT, "
-                + "updateSatus TEXT,"
-                + "deleteStatus TEXT,"
-                + "demo1 TEXT,"
-                + "demo2 TEXT,"
-                + "status INT,"
-                + "unique(merchantCode,pickMerName,executiveName))";*/
-
 
         String CREATION_TABLE2 = "CREATE TABLE Barcode_Fulfillment ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -285,9 +258,14 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "packagePrice TEXT, "
                 + "productBrief TEXT, "
                 + "deliveryTime TEXT, "
+                + "dropPointEmp TEXT, "
+                + "dropAssignTime TEXT, "
+                + "dropAssignBy TEXT, "
+                + "pickDrop TEXT, "
+                + "pickDropTime TEXT, "
+                + "pickDropBy TEXT, "
                 + "status INT, "
                 + "unique(id, barcode))";
-
 
         String CREATION_TABLE9 = "CREATE TABLE Insert_Delivery_Without_status( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -531,17 +509,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     // get scan count
     public int getRowsCount(String sql_primary_id, String merchantId, String sub_merchant_name) {
         String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='" + merchantId + "' AND " + SUB_MERCHANT_NAME + " = '" + sub_merchant_name + "' AND " + SQL_PRIMARY_ID + " = '" + sql_primary_id + "'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        db.close();
-        return count;
-    }
-
-    // get scan count in auto pickup list
-    public int getRowsCountAuto(String merchantId, String sub_merchant_name) {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME + " WHERE " + MERCHANT_ID + "='" + merchantId + "' AND " + SUB_MERCHANT_NAME + " = '" + sub_merchant_name + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
@@ -990,9 +957,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_11, columns, whereClause, whereArgs, null, null, null));
     }
 
-
-    // insert counts in delivery unpicked
-    public void insert_delivery_unpicked_count(String username,String empCode,String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, int status) {
+ // insert counts in delivery unpicked
+    public void insert_delivery_unpicked_count(String username,String empCode,String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime,String dropPointEmp, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -1010,6 +976,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(PACKAGE_PRICE, packagePrice);
         values.put(PRODUCT_BRIEF, productBrief);
         values.put(DELIVERY_TIME, deliveryTime);
+        values.put(DROP_POINT_EMP, dropPointEmp);
+        values.put(DROP_ASSIGN_TIME, dropAssignTime);
+        values.put(DROP_ASSIGN_BY, dropAssignBy);
+        values.put(PICK_DROP, pickDrop);
+        values.put(PICK_DROP_TIME, pickDropTime);
+        values.put(PICK_DROP_BY, pickDropBy);
         values.put(STATUS, status);
 
         db.insert(TABLE_NAME_8, null, values);
@@ -1018,8 +990,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     // get the delivery unpicked
     public Cursor get_delivery_unpicked(SQLiteDatabase db, String user) {
-        String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME,};
-
+        String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME,DROP_POINT_EMP,DROP_ASSIGN_TIME,DROP_ASSIGN_BY,PICK_DROP, PICK_DROP_TIME,PICK_DROP_BY};
         String whereClause = USERNAME + "=?";
         String[] whereArgs = new String[]{
                 user
@@ -1027,11 +998,14 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_8, columns, whereClause, whereArgs, null, null, null));
     }
 
-    public void getUnpickedOrderData(String barcode, String username, String empcode, int status) {
+    public void getUnpickedOrderData(String barcode, String username, String empcode, String pickDrop, String pickDropTime, String pickDropBy, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USERNAME, username);
         values.put(EMPLOYEE_CODE, empcode);
+        values.put(PICK_DROP, pickDrop);
+        values.put(PICK_DROP_TIME, pickDropTime);
+        values.put(PICK_DROP_BY, pickDropBy);
         values.put(STATUS, status);
 
         String whereClause = BARCODE_NO + " = ?";
@@ -1287,6 +1261,17 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
     public void deleteOnHoldList(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_10);
+    }
+
+    // get scan count
+    public int getUnpickedCount(String pickDrop) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_8 + " WHERE " + PICK_DROP + " != '" + pickDrop + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
     }
 
 

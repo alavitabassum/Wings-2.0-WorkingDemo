@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -38,7 +37,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,14 +46,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.zxing.ResultPoint;
-import com.journeyapps.barcodescanner.BarcodeCallback;
-import com.journeyapps.barcodescanner.BarcodeResult;
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
-import com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
@@ -79,7 +73,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
     private Button delivery_quick_pick;
     private String lastText;
-
 
     TextView unpicked_text;
 
@@ -151,8 +144,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         delivery_quick_pick = (Button) findViewById(R.id.delivery_quick_pick);
         unpicked_text = (TextView)findViewById(R.id.unpicks_);
 
-        Intent intent = getIntent();
-        String str = intent.getStringExtra("message");
+        String str = String.valueOf(db.getUnpickedCount("Y"));
         unpicked_text.setText(str);
 
 
@@ -227,9 +219,9 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private void getData(String user){
         try{
             list.clear();
-            Date date = Calendar.getInstance().getTime();
+            /*Date date = Calendar.getInstance().getTime();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            final String currentDateTimeString = df.format(date);
+            final String currentDateTimeString = df.format(date);*/
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_delivery_unpicked(sqLiteDatabase,user);
@@ -249,7 +241,14 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                 String productBrief = c.getString(11);
                 String deliveryTime = c.getString(12);
 
-                Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(username,empCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime);
+                String dropPointEmp = c.getString(13);
+                String dropAssignTime = c.getString(14);
+                String dropAssignBy = c.getString(15);
+                String pickDrop = c.getString(16);
+                String pickDropTime = c.getString(17);
+                String pickDropBy = c.getString(18);
+
+                Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(username,empCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,dropPointEmp,dropAssignTime,dropAssignBy,pickDrop,pickDropTime,pickDropBy);
                 list.add(unpickedmodel);
             }
 
@@ -295,7 +294,13 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                         o.getString("custphone"),
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
-                                        o.getString("deliveryTime")
+                                        o.getString("deliveryTime"),
+                                        o.getString("dropPointEmp"),
+                                        o.getString("dropAssignTime"),
+                                        o.getString("dropAssignBy"),
+                                        o.getString("PickDrop"),
+                                        o.getString("PickDropTime"),
+                                        o.getString("PickDropBy")
                                        );
 
                                 db.insert_delivery_unpicked_count(
@@ -312,7 +317,13 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                         o.getString("custphone"),
                                         o.getString("packagePrice"),
                                         o.getString("productBrief"),
-                                        o.getString("deliveryTime")
+                                        o.getString("deliveryTime"),
+                                        o.getString("dropPointEmp"),
+                                        o.getString("dropAssignTime"),
+                                        o.getString("dropAssignBy"),
+                                        o.getString("PickDrop"),
+                                        o.getString("PickDropTime"),
+                                        o.getString("PickDropBy")
                                         , NAME_SYNCED_WITH_SERVER );
 
                                 list.add(unpickedmodel);
@@ -585,6 +596,12 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     }
 
     private void pickedfordelivery(final String barcode, final String username, final String empcode) {
+        String str1 = String.valueOf(db.getUnpickedCount("Y"));
+        unpicked_text.setText(str1);
+
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
+        final String currentDateTimeString = df.format(date);
 
         StringRequest postRequest = new StringRequest(Request.Method.POST,DELIVERY_PICK_LIST,
                 new Response.Listener<String>() {
@@ -596,7 +613,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.getUnpickedOrderData(barcode,username,empcode,NAME_SYNCED_WITH_SERVER);
+                                db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_SYNCED_WITH_SERVER);
                                 Toast toast= Toast.makeText(DeliveryOfficerUnpicked.this,
                                         "Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -604,7 +621,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
                                 Toast.makeText(DeliveryOfficerUnpicked.this, "Unsuccessful" +response,  Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -615,7 +632,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {

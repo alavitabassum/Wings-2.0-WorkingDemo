@@ -38,8 +38,11 @@ import com.paperflywings.user.paperflyv0.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -205,7 +208,11 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
     //API HIT
     private void pickedfordelivery(final String barcode, final String username, final String empcode) {
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryPick.php",
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
+        final String currentDateTimeString = df.format(date);
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryQuickPickScan.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -215,7 +222,9 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                db.getUnpickedOrderData(barcode,username,empcode,NAME_SYNCED_WITH_SERVER);
+                                db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_SYNCED_WITH_SERVER);
+
+//                                db.getUnpickedOrderData(barcode,username,empcode,NAME_SYNCED_WITH_SERVER);
                                 Toast toast= Toast.makeText(Delivery_quick_pick_scan.this,
                                         "Product Picked Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -223,7 +232,9 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
+
+//                                db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
                                                   Toast.makeText(Delivery_quick_pick_scan.this, "Unsuccessful" ,  Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -235,7 +246,9 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
+
+//                        db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
