@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,6 +15,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.Robishop.Robishop_Assign_pickup_manager;
@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class NetworkStateChecker extends BroadcastReceiver {
 
     //context and database helper object
@@ -40,6 +41,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
@@ -47,6 +49,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         database2 = new BarcodeDbHelper(context);
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
         //if there is a network
         if (activeNetwork != null) {
             //if connected to wifi or mobile data plan
@@ -153,13 +156,132 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 Cursor cursor9 = database2.getUnsyncedActionLog();
                 if (cursor9.moveToFirst()) {
                     do {
-
                         insertLog(cursor9.getInt(0),cursor9.getString(1),cursor9.getString(2),cursor9.getString(3),cursor9.getString(4), cursor9.getString(5));
                     } while (cursor9.moveToNext());
                 }
+
+                Cursor cursor10 = database2.getUnsyncedunpicked();
+                if (cursor10.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateUnpicked_Data
+                                (cursor10.getInt(0), // id
+                                cursor10.getString(1), // username
+                                cursor10.getString(2), // empcode
+                                cursor10.getString(3)); // barcode
+                    } while (cursor10.moveToNext());
+                }
+
+             /*   Cursor cursor11 = database2.getUnsyncedWithoutStatus();
+                if (cursor11.moveToFirst()) {
+                    do {
+                        //calling the method to save the unsynced name to MySQL
+                        updateWithoutStatusData(cursor11.getInt(0), // id
+                                cursor11.getString(15), // Cash
+                                cursor11.getString(16), // cashType
+                                cursor11.getString(17),//cashTime
+                                cursor11.getString(18), // cashBy
+                                cursor11.getString(19), // CashAmt
+                                cursor11.getString(20),// CashComment
+                                cursor11.getString(4),//merOrderRef
+                                cursor11.getString(10),//packagePrice
+                                cursor11.getString(3),//orderid
+                                cursor11.getString(2)); //barcode
+                    } while (cursor11.moveToNext());
+                }*/
             }
         }
     }
+
+/*
+    private void updateWithoutStatusData(final int id, final String cash, final String cashType, final String cashTime, final String cashBy, final String cashAmt, final String cashComment, final String merOrderRef, final String packagePrice, final String orderid, final String barcode) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //updating the status in sqlite
+                                database2.updateWithoutStatus(id, NAME_SYNCED_WITH_SERVER);
+                                 Toast.makeText(context, "Product Picked Successful " , Toast.LENGTH_SHORT).show();
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Cash", cash);
+                params.put("cashType", cashType);
+                params.put("CashTime", cashTime);
+                params.put("CashAmt", cashAmt);
+                params.put("CashComment", cashComment);
+                params.put("CashBy", cashBy);
+                params.put("merOrderRef", merOrderRef);
+                params.put("packagePrice", packagePrice);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+              //  params.put("flagReq", "cash");
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+*/
+
+    private void updateUnpicked_Data(final int id, final String username, final String empCode, final String barcode){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryOfficerUnpicked.DELIVERY_PICK_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //updating the status in sqlite
+                                database2.updateunpickedStatus(id, NAME_SYNCED_WITH_SERVER);
+                                Toast.makeText(context, "Network state cheaker" , Toast.LENGTH_SHORT).show();
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", username);
+                params.put("empcode", empCode);
+                params.put("barcode", barcode);
+
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
 
     /*
      * method taking two arguments
@@ -231,7 +353,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
                             if (!obj.getBoolean("error")) {
                                 //updating the status in sqlite
                                 database.updateUnassignFulStatus(id, NAME_SYNCED_WITH_SERVER);
-
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
                             }
