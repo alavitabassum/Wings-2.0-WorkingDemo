@@ -987,16 +987,42 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME_8, null, values);
         db.close();
     }
-
+/*,DROP_POINT_EMP,DROP_ASSIGN_TIME,DROP_ASSIGN_BY,PICK_DROP, PICK_DROP_TIME,PICK_DROP_BY*/
     // get the delivery unpicked
-    public Cursor get_delivery_unpicked(SQLiteDatabase db, String user) {
-        String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME,DROP_POINT_EMP,DROP_ASSIGN_TIME,DROP_ASSIGN_BY,PICK_DROP, PICK_DROP_TIME,PICK_DROP_BY};
+
+    /*  public Cursor get_mypickups_today(SQLiteDatabase db, String user) {
+        String[] columns = {KEY_ID, MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD, PRODUCT_NAME, APIORDERID, DEMO, PICKED_STATUS, RECEIVED_STATUS, SQL_PRIMARY_ID};
+        String sortOrder = CREATED_AT + " ASC";
+        String whereClause = EXECUTIVE_NAME + "=? AND (" + PICKED_STATUS + " = ?  OR " + PICKED_STATUS + " = ?  OR " + PICKED_STATUS + " = ?)";
+        String[] whereArgs = new String[]{
+                user,
+                "0",
+                "2",
+                "5"
+        };
+        return (db.query(TABLE_NAME_1, columns, whereClause, whereArgs, null, null, sortOrder));
+    }*/
+
+
+  /*  public Cursor get_delivery_unpicked(SQLiteDatabase db, String user) {
+        String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME};
         String whereClause = USERNAME + "=?";
         String[] whereArgs = new String[]{
                 user
         };
         return (db.query(TABLE_NAME_8, columns, whereClause, whereArgs, null, null, null));
-    }
+    }*/
+  // get the delivery unpicked
+  public Cursor get_delivery_unpicked(SQLiteDatabase db, String user, String pickDrop) {
+      String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME,};
+
+      String whereClause = USERNAME + "=? AND " + PICK_DROP+ "<> ?";
+      String[] whereArgs = new String[]{
+              user,
+              pickDrop
+      };
+      return (db.query(TABLE_NAME_8, columns, whereClause, whereArgs, null, null, null));
+  }
 
     public void getUnpickedOrderData(String barcode, String username, String empcode, String pickDrop, String pickDropTime, String pickDropBy, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1263,6 +1289,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_10);
     }
 
+    public void deleteunpickedOrderData(String barcode) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from " + TABLE_NAME_8 + " WHERE " + BARCODE_NO_WITHOUT_STATUS + " != '" + barcode + "'");
+    }
     // get scan count
     public int getUnpickedCount(String pickDrop) {
         String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_8 + " WHERE " + PICK_DROP + " != '" + pickDrop + "'";

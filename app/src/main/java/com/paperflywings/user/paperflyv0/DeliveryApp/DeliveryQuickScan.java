@@ -49,6 +49,7 @@ import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.PickupList_Model_For_Executive;
 import com.paperflywings.user.paperflyv0.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -176,6 +177,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
             barcode = result.getText();
             lastText = barcode.substring(0,11);
 
+            barcodeView.setStatusText("Barcode"+result.getText());
+
             // get merchant id
             Intent intentID = getIntent();
             final String merchant_id = intentID.getStringExtra(MERCHANT_ID);
@@ -201,7 +204,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                 // TODO: sql_primary_id add
 //                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, picked_qty, merchant_code, sql_primary_id);
-             getData(lastText);
+            getDataMatchingBarcode(lastText);
 
             db.close();
 
@@ -247,6 +250,85 @@ public class DeliveryQuickScan extends AppCompatActivity{
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
+
+
+    // Load data from api
+    private void getDataMatchingBarcode (final String barcodeNumber)
+    {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String currentDateTimeString = df.format(c);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA_FOR_BARCODE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+//                db.clearPTMListExec(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("details");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                DeliveryWithoutStatusModel DeliveryQuickScan = new DeliveryWithoutStatusModel(
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief")
+                                );
+
+                                db.insert_quick_delivery_scan_info(
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief"),
+                                        NAME_NOT_SYNCED_WITH_SERVER
+                                );
+                            }
+
+                            getData(barcodeNumber);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
+
+                    }
+                }){
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("barcodeNumber", barcodeNumber);
+                return params1;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+
 
     private void getData(final String barcodeNumber)
     {

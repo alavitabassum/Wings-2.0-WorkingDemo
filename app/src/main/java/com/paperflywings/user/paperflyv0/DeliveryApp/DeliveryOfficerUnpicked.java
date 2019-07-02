@@ -2,7 +2,6 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,7 +29,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,18 +70,11 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private Button delivery_quick_pick;
-    private String lastText;
+    private TextView unpicked_text;
 
-    TextView unpicked_text;
-
-    //public static final String SQL_PRIMARY_ID = "Sql Primary Id";
-    private static final String URL_DATA = "";
-    private ProgressDialog progress;
     private Delivery_unpicked_adapter Delivery_unpicked_adapter;
-    RecyclerView recyclerView_pul;
-    RecyclerView.LayoutManager layoutManager_pul;
-    RecyclerView.Adapter adapter_pul;
-    android.widget.RelativeLayout vwParentRow;
+    private RecyclerView recyclerView_pul;
+    private RecyclerView.LayoutManager layoutManager_pul;
     private static final int REQUEST_CAMERA = 1;
 
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryUnpickedApis.php";
@@ -116,14 +107,14 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         // get the logged in username by shared preference
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-
+        final String user = username.toString();
         // check internet connectivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
         recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_myunpickup_list);
         recyclerView_pul.setAdapter(Delivery_unpicked_adapter);
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
+       /* new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -135,7 +126,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                 Toast.makeText(DeliveryOfficerUnpicked.this, "Item Removed" + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 Delivery_unpicked_adapter.notifyDataSetChanged();
             }
-        }).attachToRecyclerView(recyclerView_pul);
+        }).attachToRecyclerView(recyclerView_pul);*/
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
@@ -143,11 +134,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
         delivery_quick_pick = (Button) findViewById(R.id.delivery_quick_pick);
         unpicked_text = (TextView)findViewById(R.id.unpicks_);
-
-        String str = String.valueOf(db.getUnpickedCount("Y"));
-        unpicked_text.setText(str);
-
-
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -161,11 +147,10 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
-
+            loadRecyclerView(user);
         }
         else{
-            getData(username);
+            getData(user);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
@@ -216,15 +201,21 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         }
     }
 
-    private void getData(String user){
+ /*   private void getData(String user){
         try{
             list.clear();
-            /*Date date = Calendar.getInstance().getTime();
+            *//*Date date = Calendar.getInstance().getTime();
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            final String currentDateTimeString = df.format(date);*/
+            final String currentDateTimeString = df.format(date);*//*
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_delivery_unpicked(sqLiteDatabase,user);
+            String str = String.valueOf(db.getUnpickedCount("Y"));
+            unpicked_text.setText(str);
+          *//*  String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME,
+                    PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS,
+                    Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME,
+                    DROP_POINT_EMP,DROP_ASSIGN_TIME,DROP_ASSIGN_BY,PICK_DROP, PICK_DROP_TIME,PICK_DROP_BY};*//*
 
             while (c.moveToNext()){
                 String username = c.getString(0);
@@ -241,14 +232,14 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                 String productBrief = c.getString(11);
                 String deliveryTime = c.getString(12);
 
-                String dropPointEmp = c.getString(13);
+                *//*String dropPointEmp = c.getString(13);
                 String dropAssignTime = c.getString(14);
                 String dropAssignBy = c.getString(15);
                 String pickDrop = c.getString(16);
                 String pickDropTime = c.getString(17);
-                String pickDropBy = c.getString(18);
+                String pickDropBy = c.getString(18);*//*
 
-                Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(username,empCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,dropPointEmp,dropAssignTime,dropAssignBy,pickDrop,pickDropTime,pickDropBy);
+                Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(username,empCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime);
                 list.add(unpickedmodel);
             }
 
@@ -256,6 +247,95 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             recyclerView_pul.setAdapter(Delivery_unpicked_adapter);
             Delivery_unpicked_adapter.notifyDataSetChanged();
             Delivery_unpicked_adapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
+            swipeRefreshLayout.setRefreshing(false);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }*/
+
+
+//    private void getData(String user) {
+//        try {
+//           /* list.clear();
+//
+//            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+//            Cursor c = db.get_mypickups_today(sqLiteDatabase, user);*/
+//            list.clear();
+//
+//            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+//            Cursor c = db.get_delivery_unpicked(sqLiteDatabase,user);
+//            String str = String.valueOf(db.getUnpickedCount("Y"));
+//            unpicked_text.setText(str);
+//
+//            while (c.moveToNext()){
+//                String username = c.getString(0);
+//                String empCode = c.getString(1);
+//                String barcode = c.getString(2);
+//                String orderid = c.getString(3);
+//                String merOrderRef = c.getString(4);
+//                String merchantName = c.getString(5);
+//                String pickMerchantName = c.getString(6);
+//                String custname = c.getString(7);
+//                String custaddress = c.getString(8);
+//                String custphone = c.getString(9);
+//                String packagePrice = c.getString(10);
+//                String productBrief = c.getString(11);
+//                String deliveryTime = c.getString(12);
+//
+//
+//                Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(username,empCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime);
+//                list.add(unpickedmodel);
+//            }
+//
+//
+//            Delivery_unpicked_adapter = new Delivery_unpicked_adapter(list,getApplicationContext());
+//            recyclerView_pul.setAdapter(Delivery_unpicked_adapter);
+//            Delivery_unpicked_adapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
+//            Delivery_unpicked_adapter.notifyDataSetChanged();
+//            swipeRefreshLayout.setRefreshing(false);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    private void getData(String user){
+        try{
+            list.clear();
+            Date date = Calendar.getInstance().getTime();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+            final String currentDateTimeString = df.format(date);
+
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_delivery_unpicked(sqLiteDatabase,user, "Y");
+
+            while (c.moveToNext()){
+                String username = c.getString(0);
+                String empCode = c.getString(1);
+                String barcode = c.getString(2);
+                String orderid = c.getString(3);
+                String merOrderRef = c.getString(4);
+                String merchantName = c.getString(5);
+                String pickMerchantName = c.getString(6);
+                String custname = c.getString(7);
+                String custaddress = c.getString(8);
+                String custphone = c.getString(9);
+                String packagePrice = c.getString(10);
+                String productBrief = c.getString(11);
+                String deliveryTime = c.getString(12);
+
+                Delivery_unpicked_model unpickedmodel = new Delivery_unpicked_model(username,empCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime);
+                list.add(unpickedmodel);
+            }
+
+            Delivery_unpicked_adapter = new Delivery_unpicked_adapter(list,getApplicationContext());
+            recyclerView_pul.setAdapter(Delivery_unpicked_adapter);
+            Delivery_unpicked_adapter.notifyDataSetChanged();
+            Delivery_unpicked_adapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
+
+            String str = String.valueOf(db.getUnpickedCount("Y"));
+            unpicked_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 
         }catch (Exception e){
@@ -336,6 +416,8 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                             recyclerView_pul.setAdapter(Delivery_unpicked_adapter);
                             swipeRefreshLayout.setRefreshing(false);
                             Delivery_unpicked_adapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
+                            String str = String.valueOf(db.getUnpickedCount("Y"));
+                            unpicked_text.setText(str);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -538,7 +620,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             alertDialog.show();
         }
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer_unpicked);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -552,8 +633,8 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-
         list.clear();
+
         Delivery_unpicked_adapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
@@ -573,9 +654,8 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         String empcode = clickedITem.getEmpCode();
         String lastText = clickedITem.getBarcode();
 
-//        Toast.makeText(this, "username"+username+"empcode"+empcode+"Barcode"+lastText, Toast.LENGTH_LONG).show();
-
         pickedfordelivery(lastText,username,empcode);
+
     }
 
 
@@ -598,6 +678,9 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private void pickedfordelivery(final String barcode, final String username, final String empcode) {
         String str1 = String.valueOf(db.getUnpickedCount("Y"));
         unpicked_text.setText(str1);
+        final Intent unpick = new Intent(DeliveryOfficerUnpicked.this,
+                DeliveryOfficerUnpicked.class);
+
 
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
@@ -614,6 +697,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                 //if there is a success
                                 //storing the name to sqlite with status synced
                                 db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_SYNCED_WITH_SERVER);
+                                startActivity(unpick);
                                 Toast toast= Toast.makeText(DeliveryOfficerUnpicked.this,
                                         "Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -622,6 +706,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(unpick);
                                 Toast.makeText(DeliveryOfficerUnpicked.this, "Unsuccessful" +response,  Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
@@ -633,6 +718,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(unpick);
                     }
                 }
         ) {

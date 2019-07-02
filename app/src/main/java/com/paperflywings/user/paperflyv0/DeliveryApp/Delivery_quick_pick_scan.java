@@ -2,19 +2,24 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -30,11 +35,12 @@ import com.journeyapps.barcodescanner.BarcodeCallback;
 import com.journeyapps.barcodescanner.BarcodeResult;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,6 +60,7 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
     private String lastText;
+    private String barcode;
     private Button done;
 
     public static final int NAME_SYNCED_WITH_SERVER = 1;
@@ -107,43 +114,11 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
 
             db = new BarcodeDbHelper(Delivery_quick_pick_scan.this);
 
-            if(result.getText().equals(lastText)) {
-                Toast.makeText(Delivery_quick_pick_scan.this, "bleh", Toast.LENGTH_SHORT).show();
-              /*  // Set the toast and duration
-                int toastDurationInMilliSeconds = 1000;
-                final Toast mToastToShow = Toast.makeText(Delivery_quick_pick_scan.this,
-                        result + " already scanned.", Toast.LENGTH_SHORT);
-                mToastToShow.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-                mToastToShow.show();
+            barcode = result.getText();
+            lastText = barcode.substring(0,11);
 
-                // Set the countdown to display the toast
-                CountDownTimer toastCountDown;
-                toastCountDown = new CountDownTimer(toastDurationInMilliSeconds, 1000 *//*Tick duration*//*) {
-                    public void onTick(long millisUntilFinished) {
-                        mToastToShow.show();
-                    }
-                    public void onFinish() {
-                        mToastToShow.cancel();
-                    }
-                };
-
-                // Show the toast and starts the countdown
-                mToastToShow.show();
-                toastCountDown.start();
-                return;*/
-            }
-
-            lastText = result.getText();
-            barcodeView.setStatusText("Barcode "+result.getText());
-
-            if ( lastText.trim().length() > 12 ) {
-                Toast.makeText(Delivery_quick_pick_scan.this, "garbage", Toast.LENGTH_LONG).show();
-            } else {
-
-              pickedfordelivery(lastText,username,empcode);
-
-
-            }
+            barcodeView.setStatusText("Barcode"+result.getText());
+            getDataMatchingBarcode(lastText, username, empcode);
 
             db.close();
 
@@ -154,15 +129,12 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
             imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
 
             done = (Button) findViewById(R.id.done);
+
             done.setOnClickListener(new View.OnClickListener(){
-
                 @Override
-                //On click function
                 public void onClick(View view) {
-
-                    Intent intent = new Intent(view.getContext(), DeliveryOfficerUnpicked.class);
+                    Intent intent = new Intent(view.getContext(), DeliveryOfficerCardMenu.class);
                     startActivity(intent);
-
                 }
             });
         }
@@ -204,6 +176,158 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
+    // Load data from api
+    private void getDataMatchingBarcode (final String barcodeNumber, final String username, final String empcode)
+    {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryQuickScan.GET_DATA_FOR_BARCODE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+//                db.clearPTMListExec(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("details");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                             /*   DeliveryWithoutStatusModel DeliveryQuickScan = new DeliveryWithoutStatusModel(
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief")
+                                );*/
+
+                               /* db.insert_quick_delivery_scan_info(
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief"),
+                                        NAME_NOT_SYNCED_WITH_SERVER
+                                );*/
+
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+                            View mView = getLayoutInflater().inflate(R.layout.delivery_quick_scan, null);
+                            builder.setTitle("Order Details");
+                            final TextView orderID = mView.findViewById(R.id.orderId);
+                            final TextView merOrderRef = mView.findViewById(R.id.m_order_ref);
+                            final TextView merchantName = mView.findViewById(R.id.m_name);
+                            final TextView custName = mView.findViewById(R.id.customer_name);
+                            final TextView custAddress = mView.findViewById(R.id.customer_Address);
+                            final TextView price = mView.findViewById(R.id.price);
+                            final TextView brief = mView.findViewById(R.id.package_brief);
+
+                            orderID.setText(o.getString("orderid"));
+                            merOrderRef.setText(o.getString("merOrderRef"));
+                            merchantName.setText(o.getString("merchantName"));
+                            custName.setText(o.getString("custname"));
+                            custAddress.setText(o.getString("custaddress"));
+                            price.setText(o.getString("packagePrice"));
+                            brief.setText(o.getString("productBrief"));
+
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int i1) {
+                                    dialog.dismiss();
+                                    onResume();
+                                }
+                            });
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    pickedfordelivery(lastText,username,empcode);
+                                    dialog.dismiss();
+                                }
+                            });
+
+                            builder.setCancelable(false);
+                            builder.setView(mView);
+
+                            final AlertDialog alert1 = builder.create();
+                            alert1.show();
+
+//                            alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    pickedfordelivery(lastText,username,empcode);
+//                                    alert1.dismiss();
+//                                }
+//                            });
+
+                            onPause();
+
+                            }
+//                            getData(barcodeNumber, username, empcode);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
+
+                    }
+                }){
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("barcodeNumber", barcodeNumber);
+                return params1;
+            }
+
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+
+    private void getData(final String barcodeNumber, final String username, final String empcode)
+    {
+        try{
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_quick_delivery_scan_info(sqLiteDatabase, barcodeNumber);
+            while (c.moveToNext())
+            {
+                final String orderId = c.getString(0);
+                final String merorderref = c.getString(1);
+                final String merchantname = c.getString(2);
+                // final String pickmerchantname = c.getString(3);
+                final String custname = c.getString(4);
+                final String custaddress = c.getString(5);
+                // final String custphone = c.getString(6);
+                final String packageprice = c.getString(7);
+                final String packagebrief = c.getString(8);
+            }
+
+
+
+        }catch (Exception e)
+        {
+            Toast.makeText(getApplicationContext(), "some error"+e ,Toast.LENGTH_LONG).show();
+        }
+    }
+
+
 
     //API HIT
     private void pickedfordelivery(final String barcode, final String username, final String empcode) {
@@ -223,8 +347,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
                                 db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_SYNCED_WITH_SERVER);
-
-//                                db.getUnpickedOrderData(barcode,username,empcode,NAME_SYNCED_WITH_SERVER);
                                 Toast toast= Toast.makeText(Delivery_quick_pick_scan.this,
                                         "Product Picked Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -233,9 +355,7 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
-
-//                                db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
-                                                  Toast.makeText(Delivery_quick_pick_scan.this, "Unsuccessful" ,  Toast.LENGTH_LONG).show();
+                                Toast.makeText(Delivery_quick_pick_scan.this, "Already Picked Order" ,  Toast.LENGTH_LONG).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -247,8 +367,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
-
-//                        db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
