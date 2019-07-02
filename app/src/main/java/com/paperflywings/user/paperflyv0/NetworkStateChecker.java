@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.Robishop.Robishop_Assign_pickup_manager;
@@ -171,29 +172,32 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor10.moveToNext());
                 }
 
-             /*   Cursor cursor11 = database2.getUnsyncedWithoutStatus();
+                Cursor cursor11 = database2.getUnsyncedWithoutStatus();
                 if (cursor11.moveToFirst()) {
                     do {
                         //calling the method to save the unsynced name to MySQL
                         updateWithoutStatusData(cursor11.getInt(0), // id
-                                cursor11.getString(15), // Cash
-                                cursor11.getString(16), // cashType
-                                cursor11.getString(17),//cashTime
-                                cursor11.getString(18), // cashBy
-                                cursor11.getString(19), // CashAmt
-                                cursor11.getString(20),// CashComment
-                                cursor11.getString(4),//merOrderRef
-                                cursor11.getString(10),//packagePrice
-                                cursor11.getString(3),//orderid
-                                cursor11.getString(2)); //barcode
+                                cursor11.getString(15), // Cash cash
+                                cursor11.getString(16), // cashType cashType
+                                cursor11.getString(17),//cashTime cashTime
+                                cursor11.getString(18), // cashBy cashBy
+                                cursor11.getString(19), // CashAmt cashAmt
+                                cursor11.getString(20),// CashComment cashComment
+                                cursor11.getString(3),//orderid orderid
+                                cursor11.getString(4),//barcode barcode
+                                cursor11.getString(4),
+                                cursor11.getString(10)
+                                );
+                                                            //merOrderRef
+                        //packagePrice
+                        //flagReq
                     } while (cursor11.moveToNext());
-                }*/
+                }
             }
         }
     }
 
-/*
-    private void updateWithoutStatusData(final int id, final String cash, final String cashType, final String cashTime, final String cashBy, final String cashAmt, final String cashComment, final String merOrderRef, final String packagePrice, final String orderid, final String barcode) {
+    private void updateWithoutStatusData(final int id, final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
                     @Override
@@ -203,7 +207,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                             if (!obj.getBoolean("error")) {
                                 //updating the status in sqlite
                                 database2.updateWithoutStatus(id, NAME_SYNCED_WITH_SERVER);
-                                 Toast.makeText(context, "Product Picked Successful " , Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(context, "Product Picked Successful " , Toast.LENGTH_SHORT).show();
                                 //sending the broadcast to refresh the list
                                 context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
                             }
@@ -222,23 +226,30 @@ public class NetworkStateChecker extends BroadcastReceiver {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Cash", cash);
+                params.put("Cash", cash);
                 params.put("cashType", cashType);
                 params.put("CashTime", cashTime);
                 params.put("CashAmt", cashAmt);
                 params.put("CashComment", cashComment);
                 params.put("CashBy", cashBy);
-                params.put("merOrderRef", merOrderRef);
-                params.put("packagePrice", packagePrice);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
-              //  params.put("flagReq", "cash");
+                params.put("flagReq", "cash");
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
         requestQueue.add(stringRequest);
     }
-*/
+
+
+ /*   private void updateWithoutStatusData(final int id, final String cash, final String cashType, final String cashTime, final String cashBy, final String cashAmt, final String cashComment, final String merOrderRef, final String packagePrice, final String orderid, final String barcode) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }*/
+
 
     private void updateUnpicked_Data(final int id, final String username, final String empCode, final String barcode){
 

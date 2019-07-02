@@ -59,7 +59,7 @@
         <item>Saiful</item>
     </string-array>
 
- <!--   <string-array name="onholdreasons">
+    <!--   <string-array name="onholdreasons">
         <item>Please select an option..</item>
         <item>স্টকে পণ্য নেই</item>
         <item>গুণগত মান / প্যাকেজিং সমস্যা</item>
@@ -70,9 +70,9 @@
     -->
 
     <string-array name="onholdreasons">
-    <item>Please select an option..</item>
-    <item>Customer unreachable</item>
-    <item>Customer request</item>
+        <item>Please select an option..</item>
+        <item>Customer unreachable</item>
+        <item>Customer request</item>
     </string-array>
 
     <string-array name="cancelreason">
@@ -161,5 +161,7 @@
     <string name="title_activity_delivery_without_status">Without Status</string>
     <string name="title_activity_delivery_on_hold">Delivery On Hold</string>
     <string name="title_activity_delivery_quick_scan">Quick Delivery</string>
+    <string name="title_activity_delivery__return_to_supervisor">Delivery_ReturnToSupervisor
+    </string>
 
 </resources>

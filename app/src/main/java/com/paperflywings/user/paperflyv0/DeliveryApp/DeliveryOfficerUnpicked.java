@@ -616,6 +616,8 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.getUnpickedOrderData(barcode,username,empcode,NAME_NOT_SYNCED_WITH_SERVER);
+                        Toast.makeText(DeliveryOfficerUnpicked.this, "No net",  Toast.LENGTH_LONG).show();
+
                     }
                 }
         ) {
