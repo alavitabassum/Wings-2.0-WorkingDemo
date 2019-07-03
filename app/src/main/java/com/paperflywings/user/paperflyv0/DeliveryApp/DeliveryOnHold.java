@@ -689,7 +689,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                             String merOrderRefs = MerchantReftv.getText().toString();
                                             String pakagePrices = PackagePriceTexttv.getText().toString();
 
-                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices);
+                                            update_cash_status(cash,partial, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices);
                                             dialogCash.dismiss();
                                             startActivity(DeliveryListIntent);
 
@@ -815,7 +815,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
                                         //String onHoldSchedule = bt1.getText().toString();
 
-                                        update_retR_status(cash,partial,Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode);
+                                        update_retR_status(Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode);
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -947,7 +947,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
     }
 
-    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice) {
+    public void update_cash_status (final String cash,final String partial,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -957,11 +957,11 @@ public class DeliveryOnHold extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, NAME_SYNCED_WITH_SERVER);
+                                db.update_cash_status(cash,partial,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_cash_status(cash,partial,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -972,7 +972,7 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, merOrderRef,packagePrice,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_cash_status(cash,partial,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, merOrderRef,packagePrice,NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -980,6 +980,7 @@ public class DeliveryOnHold extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Cash", cash);
+                params.put("partial", partial);
                 params.put("cashType", cashType);
                 params.put("CashTime", cashTime);
                 params.put("CashAmt", cashAmt);
@@ -1051,7 +1052,7 @@ public class DeliveryOnHold extends AppCompatActivity
         }
 
     }
-    private void update_retR_status(final String cash,final String partial,final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode) {
+    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode) {
         final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -1061,11 +1062,11 @@ public class DeliveryOnHold extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_SYNCED_WITH_SERVER);
+                                db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                                db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1076,7 +1077,7 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                        db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -1084,8 +1085,8 @@ public class DeliveryOnHold extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("Cash", cash);
-                params.put("partial", partial);
+
+
                 params.put("Ret", ret);
                 params.put("RetTime", retTime);
                 params.put("RetBy", retBy);

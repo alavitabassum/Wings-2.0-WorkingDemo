@@ -495,7 +495,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                             String merOrderRefs = MerchantReftv.getText().toString();
                                                             String pakagePrices = PackagePriceTexttv.getText().toString();
 
-                                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices);
+                                                            update_cash_status(cash,partial,cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices);
                                                             dialogCash.dismiss();
                                                             startActivity(DeliveryListIntent);
 
@@ -691,7 +691,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
     }
 
 
-    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice) {
+    public void update_cash_status (final String cash,final String partial,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -701,11 +701,11 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, NAME_SYNCED_WITH_SERVER);
+                                db.update_cash_status(cash,partial,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_cash_status(cash,partial,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -716,7 +716,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, merOrderRef,packagePrice,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_cash_status(cash,partial,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, merOrderRef,packagePrice,NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -724,6 +724,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Cash", cash);
+                params.put("partial", partial);
                 params.put("cashType", cashType);
                 params.put("CashTime", cashTime);
                 params.put("CashAmt", cashAmt);

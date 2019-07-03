@@ -1,5 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,7 +20,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,8 +64,8 @@ import java.util.Map;
 
 import static android.Manifest.permission.CAMERA;
 
-public class Delivery_ReturnToSupervisor extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,DeliveryReturnToSuperVisorAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class DeliveryCashToSupervisor extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,DeliveryCashToSuperVisorAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -81,7 +81,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     private static final String URL_DATA = "";
     private ProgressDialog progress;
-    private DeliveryReturnToSuperVisorAdapter DeliveryReturnToSuperVisorAdapter;
 
 
     RecyclerView recyclerView_pul;
@@ -90,13 +89,12 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     android.widget.RelativeLayout vwParentRow;
     private static final int REQUEST_CAMERA = 1;
 
-    //public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
-    public static final String RETURN_REQUEST = "http://paperflybd.com/DeliveryReturnRequestApi.php";
+    public static final String CASH_TO_SUPER = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
     public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
 
-    private List<DeliveryReturnToSuperVisorModel> list;
+    private List<DeliveryCashToSuperVisorModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
@@ -105,7 +103,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
-
+    private DeliveryCashToSuperVisorAdapter DeliveryCashToSuperVisorAdapter;
 
 
     @Override
@@ -114,13 +112,13 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        setContentView(R.layout.activity_delivery__return_to_supervisor);
+        setContentView(R.layout.activity_delivery_cash_to_supervisor);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_return_list);
-        recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
-        list = new ArrayList<DeliveryReturnToSuperVisorModel>();
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cash_list);
+        recyclerView_pul.setAdapter(DeliveryCashToSuperVisorAdapter);
+        list = new ArrayList<DeliveryCashToSuperVisorModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -157,7 +155,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliveryreturn_to_supervisor);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_to_supervisor);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -225,7 +223,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
                 //String withoutStatus = c.getString(25);
 
-                DeliveryReturnToSuperVisorModel withoutStatus_model = new DeliveryReturnToSuperVisorModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
+                DeliveryCashToSuperVisorModel withoutStatus_model = new DeliveryCashToSuperVisorModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
 
                 list.add(withoutStatus_model);
             }
@@ -244,10 +242,10 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             }*/
 
 
-            DeliveryReturnToSuperVisorAdapter = new DeliveryReturnToSuperVisorAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
-            DeliveryReturnToSuperVisorAdapter.notifyDataSetChanged();
-            DeliveryReturnToSuperVisorAdapter.setOnItemClickListener(Delivery_ReturnToSupervisor.this);
+            DeliveryCashToSuperVisorAdapter = new DeliveryCashToSuperVisorAdapter(list,getApplicationContext());
+            recyclerView_pul.setAdapter(DeliveryCashToSuperVisorAdapter);
+            DeliveryCashToSuperVisorAdapter.notifyDataSetChanged();
+            DeliveryCashToSuperVisorAdapter.setOnItemClickListener(DeliveryCashToSupervisor.this);
             swipeRefreshLayout.setRefreshing(false);
 
 
@@ -261,7 +259,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, RETURN_REQUEST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CASH_TO_SUPER,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -276,7 +274,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliveryReturnToSuperVisorModel withoutStatus_model = new  DeliveryReturnToSuperVisorModel(
+                                DeliveryCashToSuperVisorModel withoutStatus_model = new  DeliveryCashToSuperVisorModel(
 
                                         o.getString("dropPointCode"),
                                         o.getString("barcode"),
@@ -355,10 +353,10 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 //                    swipeRefreshLayout.setRefreshing(false);
 
 
-                            DeliveryReturnToSuperVisorAdapter = new DeliveryReturnToSuperVisorAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
+                            DeliveryCashToSuperVisorAdapter = new DeliveryCashToSuperVisorAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(DeliveryCashToSuperVisorAdapter);
                             swipeRefreshLayout.setRefreshing(false);
-                            DeliveryReturnToSuperVisorAdapter.setOnItemClickListener(Delivery_ReturnToSupervisor.this);
+                            DeliveryCashToSuperVisorAdapter.setOnItemClickListener(DeliveryCashToSupervisor.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -428,7 +426,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         }
     }
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new android.support.v7.app.AlertDialog.Builder(Delivery_ReturnToSupervisor.this)
+        new android.support.v7.app.AlertDialog.Builder(DeliveryCashToSupervisor.this)
                 .setMessage(message)
                 .setPositiveButton("OK", okListener)
                 .setNegativeButton("Cancel", null)
@@ -438,11 +436,11 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliveryreturn_to_supervisor);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_to_supervisor);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Intent homeIntent = new Intent(Delivery_ReturnToSupervisor.this,
+            Intent homeIntent = new Intent(DeliveryCashToSupervisor.this,
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
         }
@@ -462,7 +460,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                DeliveryReturnToSuperVisorAdapter.getFilter().filter(newText);
+                DeliveryCashToSuperVisorAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -470,7 +468,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(Delivery_ReturnToSupervisor.this,DeliveryWithoutStatus.class);
+            Intent intent_stay = new Intent(DeliveryCashToSupervisor.this,DeliveryWithoutStatus.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -499,7 +497,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(Delivery_ReturnToSupervisor.this,
+            Intent homeIntent = new Intent(DeliveryCashToSupervisor.this,
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
             // Handle the camera action
@@ -533,7 +531,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(Delivery_ReturnToSupervisor.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliveryCashToSupervisor.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -549,7 +547,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             alertDialog.show();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_without_status);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_to_supervisor);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -561,7 +559,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         list.clear();
-        DeliveryReturnToSuperVisorAdapter.notifyDataSetChanged();
+        DeliveryCashToSuperVisorAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);

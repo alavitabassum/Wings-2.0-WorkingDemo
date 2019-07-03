@@ -33,9 +33,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".DeliveryApp.DeliveryCashToSupervisor"
+            android:label="@string/title_activity_delivery_cash_to_supervisor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".DeliveryApp.Delivery_ReturnToSupervisor"
             android:label="@string/title_activity_delivery__return_to_supervisor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DeliveryApp.DeliveryQuickScan"
             android:label="@string/title_activity_delivery_quick_scan"
