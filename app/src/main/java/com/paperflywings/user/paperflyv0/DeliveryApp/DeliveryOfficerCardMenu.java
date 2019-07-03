@@ -193,9 +193,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 String cash = c.getString(4);
                 String returnRequest = c.getString(5);
                 String returnList = c.getString(6);
-             //   DeliverySummary_Model todaySummary = new DeliverySummary_Model(username, unpicked,withoutStatus,onHold,cash,returnRequest, returnList);
-//                summaries.add(todaySummary);
-
 
                 unpicked_item = (CardView)findViewById(R.id.Unpicked_id);
                 without_Status = (CardView)findViewById(R.id.WithoutStatus_id);

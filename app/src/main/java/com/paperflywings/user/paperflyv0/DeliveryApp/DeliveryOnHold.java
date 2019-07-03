@@ -3,7 +3,6 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,18 +23,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,8 +47,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -80,14 +72,9 @@ public class DeliveryOnHold extends AppCompatActivity
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-
     private CardView without_Status_card;
     private TextView without_status_text;
-
-
-
-    private static final String URL_DATA = "";
-    private ProgressDialog progress;
+    private RequestQueue requestQueue;
 
     private DeliveryOnHoldAdapter DeliveryOnHoldAdapter;
     RecyclerView recyclerView_pul;
@@ -907,7 +894,9 @@ public class DeliveryOnHold extends AppCompatActivity
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryOnHold.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
@@ -959,7 +948,9 @@ public class DeliveryOnHold extends AppCompatActivity
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest1);
         } catch (Exception e) {
             Toast.makeText(DeliveryOnHold.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
@@ -1013,7 +1004,9 @@ public class DeliveryOnHold extends AppCompatActivity
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryOnHold.this, "Request Queue" + e, Toast.LENGTH_LONG).show();

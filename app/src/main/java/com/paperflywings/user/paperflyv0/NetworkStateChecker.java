@@ -244,13 +244,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-
- /*   private void updateWithoutStatusData(final int id, final String cash, final String cashType, final String cashTime, final String cashBy, final String cashAmt, final String cashComment, final String merOrderRef, final String packagePrice, final String orderid, final String barcode) {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-    }*/
-
-
     private void updateUnpicked_Data(final int id, final String username, final String empCode, final String barcode){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryOfficerUnpicked.DELIVERY_PICK_LIST,

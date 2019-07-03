@@ -79,6 +79,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
     private String lastText;
     private String barcode;
     private Button done;
+    private RequestQueue requestQueue;
 
     //    private TextView scan_count1 ;
     private com.paperflywings.user.paperflyv0.PickupOfficer.pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
@@ -324,7 +325,9 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -736,7 +739,9 @@ public class DeliveryQuickScan extends AppCompatActivity{
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
@@ -788,7 +793,9 @@ public class DeliveryQuickScan extends AppCompatActivity{
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest1);
         } catch (Exception e) {
             Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
@@ -842,277 +849,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
 
     }
-
-//    private void barcodesave(final String merchant_id, final String sub_merchant_name, final String lastText, final Boolean state, final String updated_by, final String updated_at, final String order_id, final String picked_qty, final String merchant_code, final String sql_primary_id) {
-//
-//        // get created date for match
-//        Intent intentID = getIntent();
-//        final String match_date = intentID.getStringExtra(CREATED_AT);
-//        final String product_name = intentID.getStringExtra(PRODUCT_NAME);
-//        final String assigned_qty = intentID.getStringExtra(ASSIGNED_QTY);
-//
-//        StringRequest postRequest = new StringRequest(Request.Method.POST, BARCODE_INSERT_AND_UPDATE_URL,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//
-//                        try {
-//                            JSONObject obj = new JSONObject(response);
-//                            if (!obj.getBoolean("error")) {
-//                                //if there is a success
-//                                //storing the name to sqlite with status synced
-//                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_SYNCED_WITH_SERVER, order_id, picked_qty, merchant_code,sql_primary_id);
-//                                final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id,sub_merchant_name,order_id));
-////                                scan_count1.setText("Scan count: " + strI);
-////                                Toast.makeText(ScanningScreen.this, "Barcode Number Added" ,  Toast.LENGTH_LONG).show();
-////                                Toast toast = Toast.makeText(FulfillmentScanningScreen.this,
-////                                        "Barcode Number Added", Toast.LENGTH_LONG);
-////                                toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
-////                                toast.show();
-//
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(DeliveryQuickScan.this);
-//                                View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
-//                                builder.setTitle("Enter product quantity...");
-//
-//                                final EditText et1 = mView.findViewById(R.id.product_qty);
-//                                final TextView tv1 = mView.findViewById(R.id.textView3);
-//                                final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
-//
-//                                final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
-//                                et1.setText(assigned_qty);
-//                                Product_Name.setText("Product Name: " +product_name);
-//                                Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
-//
-//                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-////                                        scannerView.resumeCameraPreview(MainActivity.this);
-//                                        // update quantity
-//
-//                                    }
-//                                });
-//
-//
-//                                builder.setCancelable(false);
-//                                builder.setView(mView);
-//
-//                                final AlertDialog alert1 = builder.create();
-//                                alert1.show();
-//
-//
-//                                alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//
-//                                        if (et1.getText().toString().trim().isEmpty()) {
-//                                            tv1.setText("Field can't be empty");
-//                                            //  dialog.equals("Order count can't be empty");
-//
-//                                        } else {
-//
-//                                            final String product_qty = et1.getText().toString().trim();
-//                                            ///////ekhane update hobe barcode er picked quantity field
-////                                            updatePickedQty(product_qty, lastText);
-////                                            updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
-//
-////                                            db.updatePickedQty(product_qty, merchant_id, sub_merchant_name, match_date, order_id);
-////                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
-//                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
-//
-//                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-//                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
-//                                                                + "(" + et1.getText().toString() + ")",
-//                                                        Toast.LENGTH_LONG).show();
-//                                                alert1.dismiss();
-//
-//                                            }*/
-//
-//                                            /// update the product quantity
-//
-//                                            alert1.dismiss();
-//                                        }
-//                                        onResume();
-//                                    }
-//                                });
-//
-//                                onPause();
-//
-//
-//                            } else {
-//                                //if there is some error
-//                                //saving the name to sqlite with status unsynced
-//                                db.add_fulfillment(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, NAME_NOT_SYNCED_WITH_SERVER,order_id, picked_qty, merchant_code,sql_primary_id);
-//                                final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id,sub_merchant_name,order_id));
-////                                scan_count1.setText("Scan count: " + strI);
-////                                Toast.makeText(ScanningScreen.this, "barcode save with error" +obj.getBoolean("error"),  Toast.LENGTH_LONG).show();
-//
-//
-//                                AlertDialog.Builder builder = new AlertDialog.Builder(DeliveryQuickScan.this);
-//                                View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
-//                                builder.setTitle("Enter product quantity...");
-//
-//                                final EditText et1 = mView.findViewById(R.id.product_qty);
-//                                final TextView tv1 = mView.findViewById(R.id.textView3);
-//                                final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
-//
-//                                final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
-//
-//                                Product_Name.setText("Product Name: " +product_name);
-//                                Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
-//                                et1.setText(assigned_qty);
-//                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-////                                        scannerView.resumeCameraPreview(MainActivity.this);
-//                                        // update quantity
-////                                        onResume();
-//                                    }
-//                                });
-//                                builder.setCancelable(false);
-//                                builder.setView(mView);
-//                                final AlertDialog alert1 = builder.create();
-//                                alert1.show();
-//
-//                                alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//
-//                                        if (et1.getText().toString().trim().isEmpty()) {
-//                                            tv1.setText("Field can't be empty");
-//                                            //  dialog.equals("Order count can't be empty");
-//
-//                                        } else {
-//                                            final String product_qty = et1.getText().toString().trim();
-//                                            ///////ekhane update hobe barcode er picked quantity field
-////                                            updatePickedQty(product_qty, lastText);
-////                                            updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
-////                                            updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
-//                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
-//
-//                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-//                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
-//                                                                + "(" + et1.getText().toString() + ")",
-//                                                        Toast.LENGTH_LONG).show();
-//                                                alert1.dismiss();
-//
-//                                            }*/
-//
-//                                            /// update the product quantity
-//
-//                                            alert1.dismiss();
-//                                        }
-//                                        onResume();
-//                                    }
-//                                });
-//
-//                                onPause();
-//
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        db.add_fulfillment(merchant_id,sub_merchant_name, lastText, state, updated_by, updated_at,NAME_NOT_SYNCED_WITH_SERVER, order_id, picked_qty, merchant_code,sql_primary_id);
-//                        final String strI = String.valueOf(db.getRowsCountForFulfillment(sql_primary_id,merchant_id,sub_merchant_name, order_id));
-////                        scan_count1.setText("Scan count: " +strI);
-//
-//                        AlertDialog.Builder builder = new AlertDialog.Builder(DeliveryQuickScan.this);
-//
-//                        View mView = getLayoutInflater().inflate(R.layout.insert_fulfilment_quantity, null);
-//                        builder.setTitle("Enter product quantity...");
-//
-//                        final EditText et1 = mView.findViewById(R.id.product_qty);
-//                        final TextView tv1 = mView.findViewById(R.id.textView3);
-//                        final TextView Product_Name = mView.findViewById(R.id.product_name_dialog);
-//                        final TextView Assigned_qty = mView.findViewById(R.id.assigned_picked_qty);
-//
-//                        Product_Name.setText("Product Name: " +product_name);
-//                        Assigned_qty.setText("Assigned Quantity: " +assigned_qty);
-//                        et1.setText(assigned_qty);
-//
-//                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-////                                        scannerView.resumeCameraPreview(MainActivity.this);
-//                                // update quantity
-////                                onResume();
-//                            }
-//                        });
-//
-//                        builder.setCancelable(false);
-//                        builder.setView(mView);
-//                        final AlertDialog alert1 = builder.create();
-//                        alert1.show();
-//
-//                        alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//
-//                                if (et1.getText().toString().trim().isEmpty()) {
-//                                    tv1.setText("Field can't be empty");
-//                                    //  dialog.equals("Order count can't be empty");
-//
-//                                } else {
-//                                    final String product_qty = et1.getText().toString().trim();
-//                                    ///////ekhane update hobe barcode er picked quantity field
-////                                        updatePickedQty(product_qty, lastText);
-////                                    updatePickedQty(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, product_qty);
-////                                        updateScanCount(strI, product_qty, updated_by, updated_at, merchant_id, sub_merchant_name, match_date);
-//                                            /*assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
-//
-//                                            if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-//                                                Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
-//                                                                + "(" + et1.getText().toString() + ")",
-//                                                        Toast.LENGTH_LONG).show();
-//                                                alert1.dismiss();
-//
-//                                            }*/
-//
-//                                    /// update the product quantity
-//
-//                                    alert1.dismiss();
-//                                }
-//                                onResume();
-//                            }
-//                        });
-//
-//                        onPause();
-//                    }
-//                }
-//        ) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("merchant_code", merchant_id); // holds the unique product id
-//                params.put("sub_merchant_name", sub_merchant_name);
-//                params.put("barcodeNumber", lastText);
-//                params.put("state", String.valueOf(state));
-//                params.put("updated_by", updated_by);
-//                params.put("updated_at", updated_at);
-//                params.put("order_id", order_id);
-//                params.put("picked_qty", picked_qty);
-//                params.put("merchant_id", merchant_code); // Holds the merchant code
-//                params.put("sql_primary_id", sql_primary_id); // Holds the primary key of insertassign
-//
-//                return params;
-//            }
-//        };
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(postRequest);
-//    }
-
-
-
 }

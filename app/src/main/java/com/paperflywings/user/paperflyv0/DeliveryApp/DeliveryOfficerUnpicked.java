@@ -2,7 +2,6 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -45,10 +44,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.zxing.ResultPoint;
-import com.journeyapps.barcodescanner.BarcodeCallback;
-import com.journeyapps.barcodescanner.BarcodeResult;
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
@@ -80,6 +75,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private Delivery_unpicked_adapter Delivery_unpicked_adapter;
     private RecyclerView recyclerView_pul;
     private RecyclerView.LayoutManager layoutManager_pul;
+    private RequestQueue requestQueue;
     private static final int REQUEST_CAMERA = 1;
 
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryUnpickedApis.php";
@@ -450,7 +446,9 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
         requestQueue.add(stringRequest);
     }
 
@@ -737,7 +735,9 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryOfficerUnpicked.this, "Request Queue" + e, Toast.LENGTH_LONG).show();

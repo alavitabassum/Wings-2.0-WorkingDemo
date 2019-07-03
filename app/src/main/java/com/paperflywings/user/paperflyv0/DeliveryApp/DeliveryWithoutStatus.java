@@ -3,7 +3,6 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,26 +15,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -51,8 +46,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
@@ -69,39 +64,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.Manifest.permission.CAMERA;
-
 public class DeliveryWithoutStatus extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,DeliveryWithoutStatusAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    String dateTime;
-
-    private CardView without_Status_card;
     private TextView without_status_text;
-
-
-    //delivery without status actions
-
-
-
-    private static final String URL_DATA = "";
-    private ProgressDialog progress;
     private DeliveryWithoutStatusAdapter DeliveryWithoutStatusAdapter;
-
-
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
-    RecyclerView.Adapter adapter_pul;
-    android.widget.RelativeLayout vwParentRow;
+    private RequestQueue requestQueue;
     private static final int REQUEST_CAMERA = 1;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
     public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
-
 
     private List<DeliveryWithoutStatusModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -133,12 +111,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
-
-       /* Intent intent = getIntent();
-        String str = intent.getStringExtra("message");
-
-        without_status_text.setText(str);
-*/
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
@@ -150,7 +122,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -159,6 +130,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -182,36 +154,15 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
 
-        int currentApiVersion = Build.VERSION.SDK_INT;
-
-        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
-        {
-            if(checkPermission())
-            {
-//                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                requestPermission();
-            }
-        }
-
     }
 
     private void getData(String user){
         try{
             list.clear();
-            Date date = Calendar.getInstance().getTime();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            final String currentDateTimeString = df.format(date);
-
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_delivery_without_status(sqLiteDatabase,user);
 
             while (c.moveToNext()){
-
-//                String customerDistrict = c.getString(0);
-                //String dropPointCode = c.getString(0);
                 String barcode = c.getString(0);
                 String orderid = c.getString(1);
                 String merOrderRef = c.getString(2);
@@ -241,26 +192,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 String ReaTime = c.getString(26);
                 String ReaBy = c.getString(27);
 
-                //String withoutStatus = c.getString(25);
-
-
                 DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
 
                 list.add(withoutStatus_model);
             }
-
-
-       /*     Cursor c1 = db.get_delivery_summary(sqLiteDatabase,user);
-
-            while (c1.moveToNext()){
-
-                String without_Status = c1.getString(2);
-
-                without_Status_card = (CardView)findViewById(R.id.without_Status_id);
-                without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
-                without_status_text.setText(String.valueOf(without_Status));
-
-            }*/
 
 
             DeliveryWithoutStatusAdapter = new DeliveryWithoutStatusAdapter(list,getApplicationContext());
@@ -357,12 +292,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("ReaTime"),
                                         o.getString("ReaBy"),
                                         o.getString("slaMiss")
-
-                                        , NAME_NOT_SYNCED_WITH_SERVER );
+                                        , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);
                             }
 //                    swipeRefreshLayout.setRefreshing(false);
-
 
                             DeliveryWithoutStatusAdapter = new DeliveryWithoutStatusAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(DeliveryWithoutStatusAdapter);
@@ -390,60 +323,16 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",user);
-//                params1.put("created_at",match_date);
                 return params1;
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
         requestQueue.add(stringRequest);
     }
-    private boolean checkPermission()
-    {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
-    }
-    private void requestPermission()
-    {
-        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
-    }
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CAMERA:
-                if (grantResults.length > 0) {
 
-                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted){
-                        Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access camera", Toast.LENGTH_LONG).show();
-                    }else {
-                        Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera", Toast.LENGTH_LONG).show();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(CAMERA)) {
-                                showMessageOKCancel("You need to allow access to both the permissions",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{CAMERA},
-                                                            REQUEST_CAMERA);
-                                                }
-                                            }
-                                        });
-                                return;
-                            }
-                        }
-                    }
-                }
-                break;
-        }
-    }
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new android.support.v7.app.AlertDialog.Builder(DeliveryWithoutStatus.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
-    }
 
     @Override
     public void onBackPressed() {
@@ -890,7 +779,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice) {
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
                     @Override
@@ -933,8 +822,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(postRequest);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(stringRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
@@ -943,7 +834,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
     public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode) {
         final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
-        StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
                     @Override
@@ -985,12 +876,13 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(postRequest1);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(stringRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void update_partial_status (final String partialsCash,final String partial,final String partialTime, final String partialBy,final String partialReceive,final String partialReturn ,final String partialReason,final String orderid,final String merOrderRef,final String packagePrice,final String barcode) {
@@ -1039,13 +931,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
-
     }
-
-
 }
