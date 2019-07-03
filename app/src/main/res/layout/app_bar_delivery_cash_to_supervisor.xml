@@ -22,7 +22,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.CardView
-        android:id="@+id/return_to_supervisor_id"
+        android:id="@+id/cash_to_supervisor_id"
         android:layout_width="320dp"
         android:layout_height="50dp"
         android:layout_marginTop="65dp"
@@ -36,24 +36,24 @@
             android:layout_height="match_parent"
             >
             <TextView
-                android:id="@+id/ReturnText"
+                android:id="@+id/CashText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_centerHorizontal="true"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="Return : "
+                android:text="Cash : "
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_marginStart="0dp"/>
 
             <TextView
-                android:id="@+id/Return_id_"
+                android:id="@+id/Cash_id_"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/ReturnText"
-                android:layout_toEndOf="@+id/ReturnText"
+                android:layout_alignBaseline="@+id/CashText"
+                android:layout_toEndOf="@+id/CashText"
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="#000"
@@ -61,7 +61,7 @@
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
-    <include layout="@layout/content_delivery__return_to_supervisor"
+    <include layout="@layout/content_delivery_cash_to_supervisor"
         android:layout_marginTop="110dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

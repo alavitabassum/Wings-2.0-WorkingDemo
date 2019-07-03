@@ -81,7 +81,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         onHold_count = (TextView)findViewById(R.id.OnHoldCount);
         returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
         cashCollection_count = (TextView)findViewById(R.id.CashCount);
-        returnList_count = (TextView)findViewById(R.id.ReturnListCount);
+        returnList_count = (TextView)findViewById(R.id.ReturntoSuperVisorCount);
 
 
 
@@ -207,7 +207,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 onHold_count = (TextView)findViewById(R.id.OnHoldCount);
                 returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
                 cashCollection_count = (TextView)findViewById(R.id.CashCount);
-                returnList_count = (TextView)findViewById(R.id.ReturnListCount);
+                returnList_count = (TextView)findViewById(R.id.ReturntoSuperVisorCount);
 
                 unpicked_count.setText(String.valueOf(unpicked));
                 withoutStatus_count.setText(String.valueOf(withoutStatus));
@@ -247,6 +247,29 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(DeliveryOfficerCardMenu.this,DeliveryOnHold.class);
+                        startActivity(intent);
+                    }
+                });
+
+                returnList_count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,Delivery_ReturnToSupervisor.class);
+                        startActivity(intent);
+                    }
+                });
+
+                returnReqst_count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,Delivery_ReturnToSupervisor.class);
+                        startActivity(intent);
+                    }
+                });
+                cashCollection_count.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,DeliveryCashToSupervisor.class);
                         startActivity(intent);
                     }
                 });

@@ -163,5 +163,6 @@
     <string name="title_activity_delivery_quick_scan">Quick Delivery</string>
     <string name="title_activity_delivery__return_to_supervisor">Delivery_ReturnToSupervisor
     </string>
+    <string name="title_activity_delivery_cash_to_supervisor">DeliveryCashToSupervisor</string>
 
 </resources>

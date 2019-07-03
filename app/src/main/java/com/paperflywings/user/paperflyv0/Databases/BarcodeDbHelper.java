@@ -1159,12 +1159,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void update_retR_status(String cash,String partial,String Ret, String RetTime,String RetBy,String retReason, String PreRet, String PreRetTime, String PreRetBy,  String orderid,String barcode,String flagReq ,int status) {
+    public void update_retR_status(String Ret, String RetTime,String RetBy,String retReason, String PreRet, String PreRetTime, String PreRetBy,  String orderid,String barcode,String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(CASH_WITHOUT_STATUS, cash);
-        values.put(PARTIAL_WITHOUT_STATUS, partial);
         values.put(RET_WITHOUT_STATUS, Ret);
         values.put(RET_WITHOUT_STATUS, Ret);
         values.put(RETTIME_WITHOUT_STATUS, RetTime);

@@ -71,6 +71,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private TextView without_status_text;
+    String dateTime;
+
+    private CardView without_Status_card;
+    private TextView without_status_text;
     private DeliveryWithoutStatusAdapter DeliveryWithoutStatusAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
@@ -714,8 +718,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         String retReason = mReturnRSpinner.getSelectedItem().toString();
 
                                         //String onHoldSchedule = bt1.getText().toString();
-
-                                        update_retR_status(cash,partial,Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode,"returnReq");
+                                        update_retR_status(Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode,"returnReq");
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -907,7 +910,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
 
     }
-    private void update_retR_status(final String cash, final String partial, final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
+    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
         final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -917,11 +920,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, flagReq,NAME_SYNCED_WITH_SERVER);
+                                db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -932,7 +935,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+                        db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -940,8 +943,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("Cash", cash);
-                params.put("partial", partial);
                 params.put("Ret", ret);
                 params.put("RetTime", retTime);
                 params.put("RetBy", retBy);
