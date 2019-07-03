@@ -71,19 +71,13 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private TextView without_status_text;
-    String dateTime;
-
-    private CardView without_Status_card;
-    private TextView without_status_text;
     private DeliveryWithoutStatusAdapter DeliveryWithoutStatusAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
-    private static final int REQUEST_CAMERA = 1;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
-    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
     private List<DeliveryWithoutStatusModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
