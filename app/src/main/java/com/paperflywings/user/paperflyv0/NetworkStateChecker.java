@@ -245,7 +245,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
     }
 
     private void updateUnpicked_Data(final int id, final String username, final String empCode, final String barcode){
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryOfficerUnpicked.DELIVERY_PICK_LIST,
                 new Response.Listener<String>() {
                     @Override

@@ -501,8 +501,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         final String cashType = "CoD";
         final String cashTime = currentDateTime;
 
-
-
         //partial
         final String partial = "Y";
         final String partialBy = username;
@@ -518,7 +516,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         final String PreRet = "Y";
         final String PreRetBy = username;
         final String PreRetTime = currentDateTime;
-
 
         //onhold
         final String Rea = "Y";
@@ -595,6 +592,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String pakagePrices = PackagePriceTexttv.getText().toString();
 
                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices);
+
                                             dialogCash.dismiss();
                                             startActivity(DeliveryListIntent);
 
