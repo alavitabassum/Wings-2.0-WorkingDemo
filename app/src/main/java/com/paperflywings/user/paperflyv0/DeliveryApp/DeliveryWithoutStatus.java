@@ -356,6 +356,16 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("Rea"),
                                         o.getString("ReaTime"),
                                         o.getString("ReaBy"),
+                                        o.getString("Ret"),
+                                        o.getString("RetTime"),
+                                        o.getString("RetBy"),
+                                        o.getString("retReason"),
+                                        o.getString("RTS"),
+                                        o.getString("RTSTime"),
+                                        o.getString("RTSBy"),
+                                        o.getString("PreRet"),
+                                        o.getString("PreRetTime"),
+                                        o.getString("PreRetBy"),
                                         o.getString("slaMiss")
 
                                         , NAME_NOT_SYNCED_WITH_SERVER );
@@ -609,6 +619,18 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         final String partialBy = username;
         final String partialTime = currentDateTime;
 
+        //Return Request
+        final String Ret = "Y";
+        final String RetBy = username;
+        final String RetTime = currentDateTime;
+        final String RTS = "Y";
+        final String RTSBy = username;
+        final String RTSTime = currentDateTime;
+        final String PreRet = "Y";
+        final String PreRetBy = username;
+        final String PreRetTime = currentDateTime;
+
+
         //onhold
         final String Rea = "Y";
         final String ReaBy = username;
@@ -761,6 +783,63 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
                                 break;
                             case 2:
+                                final View mViewReturnR = getLayoutInflater().inflate(R.layout.insert_returnr_without_status, null);
+
+                                final Spinner mReturnRSpinner = (Spinner) mViewReturnR.findViewById(R.id.Remarks_Retr_status);
+                                //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
+                                ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryWithoutStatus.this,
+                                        android.R.layout.simple_spinner_item,
+                                        getResources().getStringArray(R.array.onholdreasons));
+                                adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                mReturnRSpinner.setAdapter(adapterReturnR);
+
+                                final EditText et4 = mViewReturnR.findViewById(R.id.remarks_RetR);
+                                final TextView tv4 = mViewReturnR.findViewById(R.id.remarksTextRetR);
+                                //final Button bt1 = mViewReturnR.findViewById(R.id.datepicker);
+
+
+                                AlertDialog.Builder ReturnRSpinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
+                                //cashSpinnerBuilder.setTitle("Write Comment: ");
+
+                                ReturnRSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                ReturnRSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int i1) {
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                ReturnRSpinnerBuilder.setCancelable(false);
+                                ReturnRSpinnerBuilder.setView(mViewReturnR);
+
+                                final AlertDialog dialogReturnR = ReturnRSpinnerBuilder.create();
+                                dialogReturnR.show();
+
+                                dialogReturnR.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        //String retReason = et4.getText().toString();
+
+                                        String retReason = mReturnRSpinner.getSelectedItem().toString();
+
+                                        //String onHoldSchedule = bt1.getText().toString();
+
+                                        update_retR_status(cash,partial,Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode);
+
+                                        dialogReturnR.dismiss();
+                                        startActivity(DeliveryListIntent);
+
+
+                                    }
+                                });
+                                dialog.dismiss();
                                 break;
                             case 3:
 
@@ -871,6 +950,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
     }
 
+
+
     @Override
     public void onItemClick_call(View view4, int position4) {
         Intent callIntent =new Intent(Intent.ACTION_CALL);
@@ -940,7 +1021,61 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
 
     }
+    private void update_retR_status(final String cash,final String partial,final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode) {
+        final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response1) {
+                        try {
+                            JSONObject obj = new JSONObject(response1);
+                            if (!obj.getBoolean("error")) {
+                                db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error+12
+                                //saving the name to sqlite with status unsynced
+                                db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db1.update_retR_status(cash,partial,ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode, NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("Cash", cash);
+                params.put("partial", partial);
+                params.put("Ret", ret);
+                params.put("RetTime", retTime);
+                params.put("RetBy", retBy);
+                params.put("retReason", retReason);
+                params.put("PreRet", preRet);
+                params.put("PreRetTime", preRetTime);
+                params.put("PreRetBy", preRetBy);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                params.put("flagReq", "returnReq");
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(postRequest1);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+    }
     public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode) {
         final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
