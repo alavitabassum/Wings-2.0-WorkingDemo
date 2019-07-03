@@ -164,5 +164,6 @@
     <string name="title_activity_delivery__return_to_supervisor">Delivery_ReturnToSupervisor
     </string>
     <string name="title_activity_delivery_cash_to_supervisor">DeliveryCashToSupervisor</string>
+    <string name="title_activity_delivery_cts">DeliveryCTS</string>
 
 </resources>

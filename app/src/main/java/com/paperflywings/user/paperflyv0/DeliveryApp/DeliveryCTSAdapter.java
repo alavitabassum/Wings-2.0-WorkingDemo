@@ -20,38 +20,41 @@ import com.paperflywings.user.paperflyv0.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeliveryCashToSuperVisorAdapter extends RecyclerView.Adapter<DeliveryCashToSuperVisorAdapter.ViewHolder> implements Filterable {
-    private List<DeliveryCashToSuperVisorModel>listFull;
-    private List<DeliveryCashToSuperVisorModel>list;
-
+public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.ViewHolder> implements Filterable {
+    private List<DeliveryCTSModel> listFull;
+    private List<DeliveryCTSModel> list;
 
     private int currentPostion = -1;
+
     private Context context;
-    private DeliveryCashToSuperVisorAdapter.OnItemClickListener mListner;
+    private OnItemClickListtener mListner;
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
 
 
 
-    public interface OnItemClickListener {
-
+    public interface OnItemClickListtener {
         void onItemClick_view (View view2, int position2);
         /*   void onItemClick(View view, int position);
            void onItemClick_view_orderIDs (View view3, int position3);*/
         void onItemClick_call (View view4, int position4);
     }
-    public void setOnItemClickListener(OnItemClickListener listener){
+
+
+    public void setOnItemClickListener(DeliveryCTS listener) {
         this.mListner = listener;
     }
 
     public void setOnItemTouchListener(RecyclerView.OnItemTouchListener t_listener){
         this.touchListener = t_listener;
     }
-    public DeliveryCashToSuperVisorAdapter(List<DeliveryCashToSuperVisorModel> list, Context context) {
+
+    public DeliveryCTSAdapter(java.util.List<DeliveryCTSModel> list, Context context) {
         this.list = list;
         this.context = context;
         this.listFull = new ArrayList<>(list);
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -67,7 +70,7 @@ public class DeliveryCashToSuperVisorAdapter extends RecyclerView.Adapter<Delive
         public TextView item_packagePrice_without_status;
         public TextView item_productBrief_without_status;
         public TextView item_deliveryTime_without_status;
-        public Button itemStatus_returnr_status;
+        public Button itemStatus_without_status;
         public CardView card_view_without_status;
 
 
@@ -85,8 +88,8 @@ public class DeliveryCashToSuperVisorAdapter extends RecyclerView.Adapter<Delive
             item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
             item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
             item_deliveryTime_without_status=itemView.findViewById(R.id.deliverytime);
-            itemStatus_returnr_status=itemView.findViewById(R.id.btn_status_returnr_status);
-            card_view_without_status=itemView.findViewById(R.id.card_view_delivery_returnr_list);
+            itemStatus_without_status=itemView.findViewById(R.id.btn_status_without_status);
+            card_view_without_status=itemView.findViewById(R.id.card_view_delivery_without_status_list);
 
             item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -102,7 +105,7 @@ public class DeliveryCashToSuperVisorAdapter extends RecyclerView.Adapter<Delive
                 }
             });
 
-            itemStatus_returnr_status.setOnClickListener(new View.OnClickListener() {
+            itemStatus_without_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
                     if(mListner!=null){
@@ -121,11 +124,10 @@ public class DeliveryCashToSuperVisorAdapter extends RecyclerView.Adapter<Delive
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_delivery_return_to_supervisor,viewGroup,false);
+        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_delivery_without_status,viewGroup,false);
         ViewHolder viewHolder = new ViewHolder(v,i);
         return viewHolder;
     }
-
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
@@ -189,6 +191,7 @@ public class DeliveryCashToSuperVisorAdapter extends RecyclerView.Adapter<Delive
         }
 
         }*/
+
     }
 
     @Override
@@ -206,12 +209,12 @@ public class DeliveryCashToSuperVisorAdapter extends RecyclerView.Adapter<Delive
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<DeliveryCashToSuperVisorModel>filteredList = new ArrayList<>();
+            List<DeliveryCTSModel>filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0){
                 filteredList.addAll(listFull);
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for(DeliveryCashToSuperVisorModel item: listFull){
+                for(DeliveryCTSModel item: listFull){
                     if (item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
@@ -233,3 +236,5 @@ public class DeliveryCashToSuperVisorAdapter extends RecyclerView.Adapter<Delive
     };
 
 }
+
+

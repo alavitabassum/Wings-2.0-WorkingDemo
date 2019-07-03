@@ -158,12 +158,17 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliveryreturn_to_supervisor);
-        NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
+        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+
         int currentApiVersion = Build.VERSION.SDK_INT;
 
         if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
