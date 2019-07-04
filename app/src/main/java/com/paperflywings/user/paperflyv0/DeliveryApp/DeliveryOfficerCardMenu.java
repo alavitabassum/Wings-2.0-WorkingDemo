@@ -126,7 +126,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 db.insert_delivery_without_status(
-
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -166,6 +165,9 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                                         o.getString("PreRet"),
                                         o.getString("PreRetTime"),
                                         o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
                                         o.getString("slaMiss"),
                                         "NULL"
                                         ,NAME_SYNCED_WITH_SERVER);
