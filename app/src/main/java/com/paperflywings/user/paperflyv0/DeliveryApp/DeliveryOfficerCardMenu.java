@@ -52,8 +52,9 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
 
     private static final String UNPICKED = "unpicked";
-
+    private RequestQueue requestQueue;
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
+    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -88,6 +89,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             loadDeliverySummary(username);
+            loadWithoutStatusData(username);
         }
         else {
             getData(username);
@@ -106,77 +108,171 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    public void loadWithoutStatusData(final String user){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteWithoutStatusList(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.insert_delivery_without_status(
+
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief"),
+                                        o.getString("deliveryTime"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("Ret"),
+                                        o.getString("RetTime"),
+                                        o.getString("RetBy"),
+                                        o.getString("retReason"),
+                                        o.getString("RTS"),
+                                        o.getString("RTSTime"),
+                                        o.getString("RTSBy"),
+                                        o.getString("PreRet"),
+                                        o.getString("PreRetTime"),
+                                        o.getString("PreRetBy"),
+                                        o.getString("slaMiss"),
+                                        "NULL"
+                                        ,NAME_SYNCED_WITH_SERVER);
+
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",user);
+                return params1;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        requestQueue.add(stringRequest);
+    }
+
     // Load data from api
-  private void loadDeliverySummary(final String user)
-  {
-      Date c = Calendar.getInstance().getTime();
-      SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-      final String currentDateTimeString = df.format(c);
+    private void loadDeliverySummary(final String user)
+    {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        final String currentDateTimeString = df.format(c);
 
 
-      StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DELIVERY_SUMMARY, new Response.Listener<String>() {
-          @Override
-          public void onResponse(String response) {
-              SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-              db.clearPTMListExec(sqLiteDatabase);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DELIVERY_SUMMARY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                db.clearPTMListExec(sqLiteDatabase);
 
-              try {
-                  JSONObject jsonObject = new JSONObject(response);
-                  JSONArray array = jsonObject.getJSONArray("summary");
-                  for (int i = 0; i < array.length(); i++) {
-                      JSONObject o = array.getJSONObject(i);
-                      DeliverySummary_Model DeliverySummary = new DeliverySummary_Model(
-                              o.getString("username"),
-                              o.getString("unpicked"),
-                              o.getString("withoutStatus"),
-                              o.getString("onHold"),
-                              o.getString("cash"),
-                              o.getString("returnRequest"),
-                              o.getString("returnList"),
-                              NAME_NOT_SYNCED_WITH_SERVER
-                              );
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray array = jsonObject.getJSONArray("summary");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject o = array.getJSONObject(i);
+                        DeliverySummary_Model DeliverySummary = new DeliverySummary_Model(
+                                o.getString("username"),
+                                o.getString("unpicked"),
+                                o.getString("withoutStatus"),
+                                o.getString("onHold"),
+                                o.getString("cash"),
+                                o.getString("returnRequest"),
+                                o.getString("returnList"),
+                                NAME_NOT_SYNCED_WITH_SERVER
+                        );
 
-                      db.insert_delivery_summary_count(
-                              o.getString("username"),
-                              o.getString("unpicked"),
-                              o.getString("withoutStatus"),
-                              o.getString("onHold"),
-                              o.getString("cash"),
-                              o.getString("returnRequest"),
-                              o.getString("returnList"),
-                              NAME_NOT_SYNCED_WITH_SERVER
-                              );
+                        db.insert_delivery_summary_count(
+                                o.getString("username"),
+                                o.getString("unpicked"),
+                                o.getString("withoutStatus"),
+                                o.getString("onHold"),
+                                o.getString("cash"),
+                                o.getString("returnRequest"),
+                                o.getString("returnList"),
+                                NAME_NOT_SYNCED_WITH_SERVER
+                        );
 //                            summaries.add(todaySummary);
-                  }
+                    }
 
-                  getData(user);
+                    getData(user);
 
-              } catch (JSONException e) {
-                  e.printStackTrace();
-              }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-          }
-      },
-              new Response.ErrorListener() {
-                  @Override
-                  public void onErrorResponse(VolleyError error) {
-                      Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
-                  }
-              }){
+                    }
+                }){
 
-          @Override
-          protected Map<String, String> getParams() {
-              Map<String, String> params1 = new HashMap<String, String>();
-              params1.put("username", user);
-              return params1;
-          }
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
 
-      };
+        };
 
-      RequestQueue requestQueue = Volley.newRequestQueue(this);
-      requestQueue.add(stringRequest);
-  }
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        requestQueue.add(stringRequest);
+    }
 
     //
     private void getData(final String user)

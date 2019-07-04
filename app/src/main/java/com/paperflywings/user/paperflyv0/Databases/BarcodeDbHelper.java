@@ -1347,7 +1347,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         String[] whereArgs = new String[]{
                 barcodeNumber
         };
-        return (db.query(TABLE_NAME_TEMPORARY, columns, whereClause, whereArgs, null, null, null));
+        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
     }
 
 
@@ -1378,6 +1378,16 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     public int getWithoutStatusCount(String flagReq) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
+    public int getOnholdCount(String flagReq) {
         String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);

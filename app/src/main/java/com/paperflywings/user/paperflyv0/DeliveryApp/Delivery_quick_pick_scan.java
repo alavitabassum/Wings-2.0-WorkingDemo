@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -40,7 +37,6 @@ import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,7 +52,6 @@ import java.util.Map;
 public class Delivery_quick_pick_scan  extends AppCompatActivity {
 
     BarcodeDbHelper db;
-
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
     private String lastText;
@@ -109,16 +104,31 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
         public void barcodeResult(BarcodeResult result)  {
             //Fetching email from shared preferences
             SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-            String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-            String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
+            final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+            final String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
 
             db = new BarcodeDbHelper(Delivery_quick_pick_scan.this);
 
             barcode = result.getText();
             lastText = barcode.substring(0,11);
 
-            barcodeView.setStatusText("Barcode"+result.getText());
-            getDataMatchingBarcode(lastText, username, empcode);
+            AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+
+            builder.setTitle("Scanned for Barcode number: "+result.getText());
+            onPause();
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    pickedfordelivery(lastText, username, empcode);
+                    dialog.dismiss();
+                    onResume();
+                }
+            });
+
+            builder.setCancelable(false);
+            final AlertDialog alert1 = builder.create();
+            alert1.show();
 
             db.close();
 
@@ -129,7 +139,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
             imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
 
             done = (Button) findViewById(R.id.done);
-
             done.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
@@ -176,159 +185,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-    // Load data from api
-    private void getDataMatchingBarcode (final String barcodeNumber, final String username, final String empcode)
-    {
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryQuickScan.GET_DATA_FOR_BARCODE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-//                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                db.clearPTMListExec(sqLiteDatabase);
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("details");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
-                             /*   DeliveryWithoutStatusModel DeliveryQuickScan = new DeliveryWithoutStatusModel(
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief")
-                                );*/
-
-                               /* db.insert_quick_delivery_scan_info(
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief"),
-                                        NAME_NOT_SYNCED_WITH_SERVER
-                                );*/
-
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
-                            View mView = getLayoutInflater().inflate(R.layout.delivery_quick_scan, null);
-                            builder.setTitle("Order Details");
-                            final TextView orderID = mView.findViewById(R.id.orderId);
-                            final TextView merOrderRef = mView.findViewById(R.id.m_order_ref);
-                            final TextView merchantName = mView.findViewById(R.id.m_name);
-                            final TextView custName = mView.findViewById(R.id.customer_name);
-                            final TextView custAddress = mView.findViewById(R.id.customer_Address);
-                            final TextView price = mView.findViewById(R.id.price);
-                            final TextView brief = mView.findViewById(R.id.package_brief);
-
-                            orderID.setText(o.getString("orderid"));
-                            merOrderRef.setText(o.getString("merOrderRef"));
-                            merchantName.setText(o.getString("merchantName"));
-                            custName.setText(o.getString("custname"));
-                            custAddress.setText(o.getString("custaddress"));
-                            price.setText(o.getString("packagePrice"));
-                            brief.setText(o.getString("productBrief"));
-
-                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int i1) {
-                                    dialog.dismiss();
-                                    onResume();
-                                }
-                            });
-                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    pickedfordelivery(lastText,username,empcode);
-                                    dialog.dismiss();
-                                }
-                            });
-
-                            builder.setCancelable(false);
-                            builder.setView(mView);
-
-                            final AlertDialog alert1 = builder.create();
-                            alert1.show();
-
-//                            alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    pickedfordelivery(lastText,username,empcode);
-//                                    alert1.dismiss();
-//                                }
-//                            });
-
-                            onPause();
-
-                            }
-//                            getData(barcodeNumber, username, empcode);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
-
-                    }
-                }){
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params1 = new HashMap<String, String>();
-                params1.put("barcodeNumber", barcodeNumber);
-                return params1;
-            }
-
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
-
-    private void getData(final String barcodeNumber, final String username, final String empcode)
-    {
-        try{
-            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_quick_delivery_scan_info(sqLiteDatabase, barcodeNumber);
-            while (c.moveToNext())
-            {
-                final String orderId = c.getString(0);
-                final String merorderref = c.getString(1);
-                final String merchantname = c.getString(2);
-                // final String pickmerchantname = c.getString(3);
-                final String custname = c.getString(4);
-                final String custaddress = c.getString(5);
-                // final String custphone = c.getString(6);
-                final String packageprice = c.getString(7);
-                final String packagebrief = c.getString(8);
-            }
-
-
-
-        }catch (Exception e)
-        {
-            Toast.makeText(getApplicationContext(), "some error"+e ,Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-
     //API HIT
     private void pickedfordelivery(final String barcode, final String username, final String empcode) {
 
@@ -360,7 +216,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {

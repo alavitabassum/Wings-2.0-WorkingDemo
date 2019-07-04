@@ -35,8 +35,6 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
     public interface OnItemClickListtener {
         void onItemClick_view (View view2, int position2);
-        /*   void onItemClick(View view, int position);
-           void onItemClick_view_orderIDs (View view3, int position3);*/
         void onItemClick_call (View view4, int position4);
     }
 
@@ -124,7 +122,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.my_delivery_without_status,viewGroup,false);
+        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.delivery_cash_to_supervisor,viewGroup,false);
         ViewHolder viewHolder = new ViewHolder(v,i);
         return viewHolder;
     }

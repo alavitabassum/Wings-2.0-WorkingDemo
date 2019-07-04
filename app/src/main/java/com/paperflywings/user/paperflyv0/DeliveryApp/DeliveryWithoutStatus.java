@@ -139,13 +139,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
-        /*final String withoutstatus_count = db.get_withoutstatus_count(username);
-        without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
-        without_status_text.setText(String.valueOf(withoutstatus_count));*/
-
-
         // Redirect for quick pick by scanning barcode
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_without_status);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -201,7 +195,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
     }
 
-    private void loadRecyclerView (final String user){
+    public void loadRecyclerView(final String user){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
                 new Response.Listener<String>()
@@ -826,8 +820,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
     }
 
-
-
     @Override
     public void onItemClick_call(View view4, int position4) {
         Intent callIntent =new Intent(Intent.ACTION_CALL);
@@ -1027,7 +1019,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
-
     public void update_partial_status (final String partialsCash,final String partial,final String partialTime, final String partialBy,final String partialReceive,final String partialReturn ,final String partialReason,final String orderid,final String merOrderRef,final String packagePrice,final String barcode, final String flagReq) {
 
         String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
