@@ -33,8 +33,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".DeliveryApp.DeliveryCashToSupervisor"
-            android:label="@string/title_activity_delivery_cash_to_supervisor"
+            android:name=".DeliveryApp.DeliveryCTS"
+            android:label="@string/title_activity_delivery_cts"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".DeliveryApp.Delivery_ReturnToSupervisor"

@@ -1,7 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.Manifest;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +13,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +24,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -59,39 +60,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.Manifest.permission.CAMERA;
-
-public class DeliveryCashToSupervisor extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,DeliveryCashToSuperVisorAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class DeliveryCTS extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,DeliveryCTSAdapter.OnItemClickListtener, SwipeRefreshLayout.OnRefreshListener {
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    String dateTime;
-
-    private CardView without_Status_card;
     private TextView without_status_text;
-
-
-    //delivery without status actions
-
-
-
-    private static final String URL_DATA = "";
-    private ProgressDialog progress;
-
-
+    private DeliveryCTSAdapter DeliveryCTSAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
-    RecyclerView.Adapter adapter_pul;
-    android.widget.RelativeLayout vwParentRow;
-    private static final int REQUEST_CAMERA = 1;
+    private RequestQueue requestQueue;
 
-    public static final String CASH_TO_SUPER = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
+    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
-    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
-
-    private List<DeliveryCashToSuperVisorModel> list;
+    private List<DeliveryCTSModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
@@ -100,8 +83,6 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
 
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
-    private DeliveryCashToSuperVisorAdapter DeliveryCashToSuperVisorAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,18 +90,17 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        setContentView(R.layout.activity_delivery_cash_to_supervisor);
+        setContentView(R.layout.activity_delivery_cts);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cash_list);
-        recyclerView_pul.setAdapter(DeliveryCashToSuperVisorAdapter);
-        list = new ArrayList<DeliveryCashToSuperVisorModel>();
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_without_status_list);
+        recyclerView_pul.setAdapter(DeliveryCTSAdapter);
+        list = new ArrayList<DeliveryCTSModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-        // check internet connectivity
+
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
@@ -143,52 +123,38 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
             }
         };
 
+        //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_to_supervisor);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_CTS);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-        int currentApiVersion = Build.VERSION.SDK_INT;
 
-        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
-        {
-            if(checkPermission())
-            {
-//                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                requestPermission();
-            }
-        }
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
+        navUsername.setText(username);
+        navigationView.setNavigationItemSelectedListener(this);
 
     }
-
     private void getData(String user){
         try{
             list.clear();
-            Date date = Calendar.getInstance().getTime();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            final String currentDateTimeString = df.format(date);
-
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "NULL");
 
             while (c.moveToNext()){
-
-//                String customerDistrict = c.getString(0);
-                //String dropPointCode = c.getString(0);
                 String barcode = c.getString(0);
                 String orderid = c.getString(1);
                 String merOrderRef = c.getString(2);
@@ -218,45 +184,27 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
                 String ReaTime = c.getString(26);
                 String ReaBy = c.getString(27);
 
-                //String withoutStatus = c.getString(25);
-
-                DeliveryCashToSuperVisorModel withoutStatus_model = new DeliveryCashToSuperVisorModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
+                DeliveryCTSModel withoutStatus_model = new DeliveryCTSModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
 
                 list.add(withoutStatus_model);
             }
 
-
-       /*     Cursor c1 = db.get_delivery_summary(sqLiteDatabase,user);
-
-            while (c1.moveToNext()){
-
-                String without_Status = c1.getString(2);
-
-                without_Status_card = (CardView)findViewById(R.id.without_Status_id);
-                without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
-                without_status_text.setText(String.valueOf(without_Status));
-
-            }*/
-
-
-            DeliveryCashToSuperVisorAdapter = new DeliveryCashToSuperVisorAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(DeliveryCashToSuperVisorAdapter);
-            DeliveryCashToSuperVisorAdapter.notifyDataSetChanged();
-            DeliveryCashToSuperVisorAdapter.setOnItemClickListener(DeliveryCashToSupervisor.this);
+            DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
+            recyclerView_pul.setAdapter(DeliveryCTSAdapter);
+            DeliveryCTSAdapter.notifyDataSetChanged();
+            DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
             swipeRefreshLayout.setRefreshing(false);
-
 
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-
     private void loadRecyclerView (final String user){
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
         final String match_date = df.format(c);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, CASH_TO_SUPER,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -271,7 +219,7 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliveryCashToSuperVisorModel withoutStatus_model = new  DeliveryCashToSuperVisorModel(
+                                DeliveryCTSModel withoutStatus_model = new  DeliveryCTSModel(
 
                                         o.getString("dropPointCode"),
                                         o.getString("barcode"),
@@ -347,13 +295,11 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
                                         , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);
                             }
-//                    swipeRefreshLayout.setRefreshing(false);
 
-
-                            DeliveryCashToSuperVisorAdapter = new DeliveryCashToSuperVisorAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(DeliveryCashToSuperVisorAdapter);
+                            DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(DeliveryCTSAdapter);
                             swipeRefreshLayout.setRefreshing(false);
-                            DeliveryCashToSuperVisorAdapter.setOnItemClickListener(DeliveryCashToSupervisor.this);
+                            DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -364,10 +310,9 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        progress.dismiss();
+                        // progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
-
                     }
                 })
         {
@@ -376,72 +321,30 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",user);
-//                params1.put("created_at",match_date);
                 return params1;
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-    private boolean checkPermission()
-    {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
-    }
-    private void requestPermission()
-    {
-        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
-    }
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CAMERA:
-                if (grantResults.length > 0) {
-
-                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted){
-                        Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access camera", Toast.LENGTH_LONG).show();
-                    }else {
-                        Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera", Toast.LENGTH_LONG).show();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(CAMERA)) {
-                                showMessageOKCancel("You need to allow access to both the permissions",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{CAMERA},
-                                                            REQUEST_CAMERA);
-                                                }
-                                            }
-                                        });
-                                return;
-                            }
-                        }
-                    }
-                }
-                break;
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
         }
-    }
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new android.support.v7.app.AlertDialog.Builder(DeliveryCashToSupervisor.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
+        requestQueue.add(stringRequest);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_to_supervisor);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_CTS);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Intent homeIntent = new Intent(DeliveryCashToSupervisor.this,
+            Intent homeIntent = new Intent(DeliveryCTS.this,
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
         }
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -457,7 +360,7 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                DeliveryCashToSuperVisorAdapter.getFilter().filter(newText);
+                DeliveryCTSAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -465,7 +368,7 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(DeliveryCashToSupervisor.this,DeliveryWithoutStatus.class);
+            Intent intent_stay = new Intent(DeliveryCTS.this,DeliveryWithoutStatus.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -494,13 +397,11 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(DeliveryCashToSupervisor.this,
+            Intent homeIntent = new Intent(DeliveryCTS.this,
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }
-
-        else if (id == R.id.nav_logout) {
+        }   else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -528,7 +429,7 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliveryCashToSupervisor.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliveryCTS.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -544,10 +445,11 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
             alertDialog.show();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_to_supervisor);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_CTS);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -556,7 +458,7 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         list.clear();
-        DeliveryCashToSuperVisorAdapter.notifyDataSetChanged();
+        DeliveryCTSAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -573,6 +475,17 @@ public class DeliveryCashToSupervisor extends AppCompatActivity
 
     @Override
     public void onItemClick_call(View view4, int position4) {
-
+        Intent callIntent =new Intent(Intent.ACTION_CALL);
+        String phoneNumber = list.get(position4).getCustphone();
+        String lastFourDigits = phoneNumber.substring(phoneNumber.length() - 10);
+        callIntent.setData(Uri.parse("tel: +880" +lastFourDigits));
+        if (ActivityCompat.checkSelfPermission(view4.getContext(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) view4.getContext(),
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            return;
+        }
+        view4.getContext().startActivity(callIntent);
     }
 }

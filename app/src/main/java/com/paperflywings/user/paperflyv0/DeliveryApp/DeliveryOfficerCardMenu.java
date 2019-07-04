@@ -269,14 +269,12 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 cashCollection_count.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,DeliveryCashToSupervisor.class);
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,DeliveryCTS.class);
                         startActivity(intent);
                     }
                 });
 
             }
-
-
 
         }catch (Exception e)
         {

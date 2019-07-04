@@ -1,6 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
-public class DeliveryCashToSuperVisorModel {
+public class DeliveryCTSModel {
     private String customerDistrict;
     private String barcode;
     private String orderid;
@@ -15,7 +15,7 @@ public class DeliveryCashToSuperVisorModel {
     private String deliveryTime;
     private String phone_no;
 
-    public DeliveryCashToSuperVisorModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief) {
+    public DeliveryCTSModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief) {
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
@@ -79,7 +79,7 @@ public class DeliveryCashToSuperVisorModel {
 
 
 
-    public DeliveryCashToSuperVisorModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
+    public DeliveryCTSModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
         this.dropPointCode = dropPointCode;
 //        this.customerDistrict = customerDistrict;
         this.barcode = barcode;
@@ -146,7 +146,7 @@ public class DeliveryCashToSuperVisorModel {
         this.slaMiss = slaMiss;
     }
 
-    public DeliveryCashToSuperVisorModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule,String Rea,String ReaTime,String ReaBy) {
+    public DeliveryCTSModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule,String Rea,String ReaTime,String ReaBy) {
 
 
         this.barcode = barcode;
