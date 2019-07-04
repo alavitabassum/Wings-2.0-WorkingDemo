@@ -1,5 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -344,6 +347,9 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         o.getString("PreRet"),
                                         o.getString("PreRetTime"),
                                         o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
                                         o.getString("slaMiss"),
                                         "NULL"
                                         , NAME_SYNCED_WITH_SERVER );
@@ -570,11 +576,28 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     @Override
     public void onItemClick_view(View view2, int position2) {
+      /*  final Delivery_unpicked_model clickedITem = list.get(position2);
 
+        String username = clickedITem.getUsername();
+        String empcode = clickedITem.getEmpCode();
+        String lastText = clickedITem.getBarcode();
+
+        pickedfordelivery(lastText,username,empcode);*/
     }
 
     @Override
     public void onItemClick_call(View view4, int position4) {
-
+        Intent callIntent =new Intent(Intent.ACTION_CALL);
+        String phoneNumber = list.get(position4).getCustphone();
+        String lastFourDigits = phoneNumber.substring(phoneNumber.length() - 10);
+        callIntent.setData(Uri.parse("tel: +880" +lastFourDigits));
+        if (ActivityCompat.checkSelfPermission(view4.getContext(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) view4.getContext(),
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            return;
+        }
+        view4.getContext().startActivity(callIntent);
     }
 }

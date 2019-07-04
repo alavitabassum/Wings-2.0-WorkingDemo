@@ -13,10 +13,12 @@ public class DeliveryWithoutStatusModel {
     private String custphone;
     private String packagePrice;
     private String productBrief;
-    private String deliveryTime;
-    private String phone_no;
 
-    public DeliveryWithoutStatusModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief) {
+    public DeliveryWithoutStatusModel(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String slaMiss) {
+
+
+        this.username = username;
+        this.empCode = empCode;
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
@@ -27,10 +29,32 @@ public class DeliveryWithoutStatusModel {
         this.custphone = custphone;
         this.packagePrice = packagePrice;
         this.productBrief = productBrief;
+        this.slaMiss = slaMiss;}
+
+    public String getUsername() {
+        return username;
     }
 
-    public DeliveryWithoutStatusModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief,String deliveryTime, String slaMiss) {
-        this.barcode = barcode;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmpCode() {
+        return empCode;
+    }
+
+    public void setEmpCode(String empCode) {
+        this.empCode = empCode;
+    }
+
+    private String deliveryTime;
+    private String phone_no;
+    private String username;
+    private String empCode;
+
+
+    public DeliveryWithoutStatusModel(String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief,String slaMiss) {
+
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
         this.merchantName = merchantName;
@@ -40,7 +64,22 @@ public class DeliveryWithoutStatusModel {
         this.custphone = custphone;
         this.packagePrice = packagePrice;
         this.productBrief = productBrief;
-        this.deliveryTime = deliveryTime;
+        this.slaMiss = slaMiss;
+    }
+
+    public DeliveryWithoutStatusModel(String username,String empCode,String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String slaMiss) {
+
+        this.username = username;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.empCode = empCode;
         this.slaMiss = slaMiss;
     }
 

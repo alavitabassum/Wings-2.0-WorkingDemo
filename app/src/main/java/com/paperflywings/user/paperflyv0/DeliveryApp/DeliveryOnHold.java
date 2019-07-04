@@ -155,21 +155,21 @@ public class DeliveryOnHold extends AppCompatActivity
                 String packagePrice = c.getString(8);
                 String productBrief = c.getString(9);
                 String deliveryTime = c.getString(10);
-                String Cash = c.getString(11);
-                String cashType = c.getString(12);
-                String CashTime = c.getString(13);
-                String CashBy = c.getString(14);
-                String CashAmt = c.getString(15);
-                String CashComment = c.getString(16);
-                String partial = c.getString(17);
-                String partialTime = c.getString(18);
-                String partialBy = c.getString(19);
-                String partialReceive = c.getString(20);
-                String partialReturn = c.getString(21);
-                String partialReason = c.getString(22);
-                String onHoldSchedule = c.getString(23);
-                String onHoldReason = c.getString(24);
-                String slaMiss = c.getString(25);
+                String Cash = c.getString(12);
+                String cashType = c.getString(13);
+                String CashTime = c.getString(14);
+                String CashBy = c.getString(15);
+                String CashAmt = c.getString(16);
+                String CashComment = c.getString(17);
+                String partial = c.getString(18);
+                String partialTime = c.getString(19);
+                String partialBy = c.getString(20);
+                String partialReceive = c.getString(21);
+                String partialReturn = c.getString(22);
+                String partialReason = c.getString(23);
+                String onHoldSchedule = c.getString(24);
+                String onHoldReason = c.getString(25);
+                String slaMiss = c.getString(26);
                 //String withoutStatus = c.getString(25);
 
 
@@ -240,7 +240,8 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("onHoldSchedule"),
                                         o.getString("slaMiss"));
 
-                                db.insert_delivery_without_status(
+                                db.insert_delivery_OnHold(
+
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -464,362 +465,6 @@ public class DeliveryOnHold extends AppCompatActivity
         }
     }
 
-//    @Override
-//   /* public void onItemClick_view(View view2, int position2) {
-//
-//        final CharSequence [] values = {"Cash","Partial","Return-request","On-hold"};
-//
-//        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-//        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-//
-//        Date c = Calendar.getInstance().getTime();
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//        final String currentDateTime = df.format(c);
-//
-//        final DeliveryOnHoldModel clickedITem = list.get(position2);
-//
-//        // CASH
-//        final String cash = "Y";
-//        final String cashBy = username;
-//        final String cashType = "CoD";
-//        final String cashTime = currentDateTime;
-//
-//
-//
-//
-//        //partial
-//        final String partial = "Y";
-//        final String partialBy = username;
-//        final String partialTime = currentDateTime;
-//
-//        //return Request
-//
-//
-//        final String Ret = "Y";
-//        final String RetBy = username;
-//        final String RetTime = currentDateTime;
-//        final String RTS = "Y";
-//        final String RTSBy = username;
-//        final String RTSTime = currentDateTime;
-//        final String PreRet = "Y";
-//        final String PreRetBy = username;
-//        final String PreRetTime = currentDateTime;
-//
-//
-//        //onhold
-//        final String Rea = "Y";
-//        final String ReaBy = username;
-//        final String ReaTime = currentDateTime;
-//
-//
-//        final String orderid = clickedITem.getOrderid();
-//        final String barcode = clickedITem.getBarcode();
-//        final String merchantRef = clickedITem.getMerOrderRef();
-//        final String packagePrice = clickedITem.getPackagePrice();
-//
-//
-//        final Intent DeliveryListIntent = new Intent(DeliveryOnHold.this,
-//                DeliveryOnHold.class);
-//
-//
-//        final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-//        spinnerBuilder.setTitle("Select Action: ");
-//
-//        spinnerBuilder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int item) {
-//
-//                        switch (item) {
-//                            case 0:
-//                                final View mViewCash = getLayoutInflater().inflate(R.layout.insert_cash_without_status, null);
-//                                final EditText et1 = mViewCash.findViewById(R.id.editTextCollection);
-//                                final EditText et2 = mViewCash.findViewById(R.id.Remarks_without_status);
-//                                final TextView tv1 = mViewCash.findViewById(R.id.package_price_text);
-//                                final TextView  OrderIdCollectiontv = mViewCash.findViewById(R.id.OrderIdCollection);
-//                                final TextView  MerchantReftv = mViewCash.findViewById(R.id.MechantRefCollection);
-//                                final TextView  PackagePriceTexttv = mViewCash.findViewById(R.id.packagePrice);
-//
-//                                OrderIdCollectiontv.setText(orderid);
-//                                MerchantReftv.setText(merchantRef);
-//                                PackagePriceTexttv.setText(packagePrice);
-//
-//                                AlertDialog.Builder cashSpinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-//                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-//
-//                                cashSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                cashSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int i1) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                cashSpinnerBuilder.setCancelable(false);
-//                                cashSpinnerBuilder.setView(mViewCash);
-//
-//                                final AlertDialog dialogCash = cashSpinnerBuilder.create();
-//                                dialogCash.show();
-//
-//                                dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//
-//                                        if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
-//                                            tv1.setText("Field can't be empty");
-//                                        } else {
-//
-//                                            String cashAmt = et1.getText().toString();
-//                                            String cashComment = et2.getText().toString();
-//                                            String ordID = OrderIdCollectiontv.getText().toString();
-//                                            String merOrderRefs = MerchantReftv.getText().toString();
-//                                            String pakagePrices = PackagePriceTexttv.getText().toString();
-//
-//                                            update_cash_status(cash,cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices, "cash");
-//                                            dialogCash.dismiss();
-//                                            startActivity(DeliveryListIntent);
-//
-//                                        }
-//                                    }
-//                                });
-//                                dialog.dismiss();
-//
-//                                break;
-//                            case 1:
-//                                final View mViewPartial = getLayoutInflater().inflate(R.layout.insert_partial_without_status, null);
-//                                final EditText partialReceive = mViewPartial.findViewById(R.id.deliveredQuantity);
-//                                final EditText partialReturned1qty = mViewPartial.findViewById(R.id.returnedQuantity);
-//                                final EditText partialcash = mViewPartial.findViewById(R.id.editTextPartialCollection);
-//                                final EditText partialremarks = mViewPartial.findViewById(R.id.remarks_partial);
-//
-//                                final TextView  OrderIdCollectionPartialtv = mViewPartial.findViewById(R.id.OrderIdCollectionPartial);
-//                                final TextView  MerchantRefPartialtv = mViewPartial.findViewById(R.id.MechantRefCollectionPartial);
-//                                final TextView  PackagePriceTextPartialtv = mViewPartial.findViewById(R.id.packagePricePartial);
-//
-//                                OrderIdCollectionPartialtv.setText(orderid);
-//                                MerchantRefPartialtv.setText(merchantRef);
-//                                PackagePriceTextPartialtv.setText(packagePrice);
-//
-//                                //final TextView tv1 = mViewPartial.findViewById(R.id.package_price_text);
-//
-//                                AlertDialog.Builder partialSpinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-//                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-//
-//                                partialSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                partialSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int i1) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                partialSpinnerBuilder.setCancelable(false);
-//                                partialSpinnerBuilder.setView(mViewPartial);
-//
-//                                final AlertDialog dialogPartial = partialSpinnerBuilder.create();
-//                                dialogPartial.show();
-//
-//                                dialogPartial.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//
-//                                     *//*   if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
-//                                            tv1.setText("Field can't be empty");
-//                                        } else {*//*
-//
-//                                        String partialsCash = partialcash.getText().toString();
-//                                        String partialReturn = partialReturned1qty.getText().toString();
-//                                        String partialReason = partialremarks.getText().toString();
-//                                        String partialsReceive = partialReceive.getText().toString();
-//
-//                                        String ordIdPartial = OrderIdCollectionPartialtv.getText().toString();
-//                                        String merOrderRefsPartial = MerchantRefPartialtv.getText().toString();
-//                                        String pakagePricesPartial = PackagePriceTextPartialtv.getText().toString();
-//
-//                                        update_partial_status(partialsCash,partial,partialTime,partialBy,partialsReceive,partialReturn,partialReason,ordIdPartial,barcode,merOrderRefsPartial,pakagePricesPartial, "partial");
-//                                        dialogPartial.dismiss();
-//                                        startActivity(DeliveryListIntent);
-//
-//                                    }
-//                                    //}
-//                                });
-//                                dialog.dismiss();
-//
-//                                break;
-//                            case 2:
-//                                final View mViewReturnR = getLayoutInflater().inflate(R.layout.insert_returnr_without_status, null);
-//
-//                                final Spinner mReturnRSpinner = (Spinner) mViewReturnR.findViewById(R.id.Remarks_Retr_status);
-//                                //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
-//                                ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryOnHold.this,
-//                                        android.R.layout.simple_spinner_item,
-//                                        getResources().getStringArray(R.array.onholdreasons));
-//                                adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                                mReturnRSpinner.setAdapter(adapterReturnR);
-//
-//                                final EditText et4 = mViewReturnR.findViewById(R.id.remarks_RetR);
-//                                final TextView tv4 = mViewReturnR.findViewById(R.id.remarksTextRetR);
-//                                //final Button bt1 = mViewReturnR.findViewById(R.id.datepicker);
-//
-//
-//                                AlertDialog.Builder ReturnRSpinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-//                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-//
-//                                ReturnRSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                ReturnRSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int i1) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                ReturnRSpinnerBuilder.setCancelable(false);
-//                                ReturnRSpinnerBuilder.setView(mViewReturnR);
-//
-//                                final AlertDialog dialogReturnR = ReturnRSpinnerBuilder.create();
-//                                dialogReturnR.show();
-//
-//                                dialogReturnR.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//
-//                                        //String retReason = et4.getText().toString();
-//
-//                                        String retReason = mReturnRSpinner.getSelectedItem().toString();
-//
-//                                        //String onHoldSchedule = bt1.getText().toString();
-//
-//                                        update_retR_status(Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode, "returnReq");
-//
-//                                        dialogReturnR.dismiss();
-//                                        startActivity(DeliveryListIntent);
-//
-//
-//                                    }
-//                                });
-//                                dialog.dismiss();
-//                                break;
-//                            case 3:
-//
-//                                final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
-//                               // final EditText et3 = mViewOnHold.findViewById(R.id.Remarks_onhold_status);
-//                               // final TextView tv2 = mViewOnHold.findViewById(R.id.datepickerText);
-//                                final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.Remarks_onhold_status);
-//                                //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
-//                                ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(DeliveryOnHold.this,
-//                                        android.R.layout.simple_spinner_item,
-//                                        getResources().getStringArray(R.array.onholdreasons));
-//                                adapterOnhold.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                                mOnholdSpinner.setAdapter(adapterOnhold);
-//
-//                                final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
-//
-//
-//                                bt1.setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        Calendar c1;
-//                                        DatePickerDialog datePickerDialog;
-//                                        c1 = Calendar.getInstance();
-//
-//                                        int day = c1.get(Calendar.DAY_OF_MONTH);
-//                                        int month = c1.get(Calendar.MONTH);
-//                                        int year = c1.get(Calendar.YEAR);
-//
-//                                        datePickerDialog = new DatePickerDialog(DeliveryOnHold.this, new DatePickerDialog.OnDateSetListener() {
-//                                            @Override
-//                                            public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDate) {
-//                                               // bt1.setText(mYear+"/"+(mMonth+1)+"/"+mDate);
-//                                                String yearselected    = Integer.toString(mYear) ;
-//                                                String monthselected   = Integer.toString(mMonth + 1);
-//                                                String dayselected     = Integer.toString(mDate);
-//                                                String dateTime = yearselected + "-" + monthselected + "-" +  dayselected;
-//                                                bt1.setText(dateTime);
-//                                            }
-//                                        },year,month,day);
-//
-//                                        datePickerDialog.show();
-//                                    }
-//                                });
-//
-//                                AlertDialog.Builder onHoldeSpinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-//                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-//
-//                                onHoldeSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                onHoldeSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int i1) {
-//                                        dialog.dismiss();
-//                                    }
-//                                });
-//
-//                                onHoldeSpinnerBuilder.setCancelable(false);
-//                                onHoldeSpinnerBuilder.setView(mViewOnHold);
-//
-//                                final AlertDialog dialogonHold = onHoldeSpinnerBuilder.create();
-//                                dialogonHold.show();
-//
-//                                dialogonHold.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View v) {
-//
-//                                        //String onHoldReason = et3.getText().toString();
-//                                        String onHoldSchedule = bt1.getText().toString();
-//                                        String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
-//
-//
-//                                        update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode, "onHold");
-//
-//                                        dialogonHold.dismiss();
-//                                        startActivity(DeliveryListIntent);
-//
-//
-//                                    }
-//                                });
-//                                dialog.dismiss();
-//                                break;
-//                            default:
-//                                break;
-//                        }
-//                    }
-//                }
-//        );
-//        spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int i1) {
-//                dialog.dismiss();
-//            }
-//        });
-//
-//        spinnerBuilder.setCancelable(false);
-//        final AlertDialog dialog2 = spinnerBuilder.create();
-//        dialog2.show();
-//
-//    }*/
-//
     @Override
     public void onItemClick_view(View view2, int position2) {
 
@@ -1059,7 +704,6 @@ public class DeliveryOnHold extends AppCompatActivity
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
-
 
                                     }
                                 });
@@ -1309,7 +953,9 @@ public class DeliveryOnHold extends AppCompatActivity
             }
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
             requestQueue.add(postRequest1);
         } catch (Exception e) {
             Toast.makeText(DeliveryOnHold.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
