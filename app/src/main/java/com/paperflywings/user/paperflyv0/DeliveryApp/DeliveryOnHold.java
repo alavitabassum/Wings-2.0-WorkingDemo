@@ -199,21 +199,21 @@ public class DeliveryOnHold extends AppCompatActivity
                 String packagePrice = c.getString(8);
                 String productBrief = c.getString(9);
                 String deliveryTime = c.getString(10);
-                String Cash = c.getString(11);
-                String cashType = c.getString(12);
-                String CashTime = c.getString(13);
-                String CashBy = c.getString(14);
-                String CashAmt = c.getString(15);
-                String CashComment = c.getString(16);
-                String partial = c.getString(17);
-                String partialTime = c.getString(18);
-                String partialBy = c.getString(19);
-                String partialReceive = c.getString(20);
-                String partialReturn = c.getString(21);
-                String partialReason = c.getString(22);
-                String onHoldSchedule = c.getString(23);
-                String onHoldReason = c.getString(24);
-                String slaMiss = c.getString(25);
+                String Cash = c.getString(12);
+                String cashType = c.getString(13);
+                String CashTime = c.getString(14);
+                String CashBy = c.getString(15);
+                String CashAmt = c.getString(16);
+                String CashComment = c.getString(17);
+                String partial = c.getString(18);
+                String partialTime = c.getString(19);
+                String partialBy = c.getString(20);
+                String partialReceive = c.getString(21);
+                String partialReturn = c.getString(22);
+                String partialReason = c.getString(23);
+                String onHoldSchedule = c.getString(24);
+                String onHoldReason = c.getString(25);
+                String slaMiss = c.getString(26);
                 //String withoutStatus = c.getString(25);
 
 
@@ -295,7 +295,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("onHoldSchedule"),
                                         o.getString("slaMiss"));
 
-                                db.insert_delivery_without_status(
+                                db.insert_delivery_OnHold(
 
                                         o.getString("barcode"),
                                         o.getString("orderid"),
@@ -805,12 +805,10 @@ public class DeliveryOnHold extends AppCompatActivity
                                         String retReason = mReturnRSpinner.getSelectedItem().toString();
 
                                         //String onHoldSchedule = bt1.getText().toString();
-
                                         update_retR_status(Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode, "returnReq");
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
-
 
                                     }
                                 });

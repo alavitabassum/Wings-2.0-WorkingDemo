@@ -11,9 +11,20 @@ public class DeliveryCTSModel {
     private String custaddress;
     private String custphone;
     private String packagePrice;
+
+
+    public String getCTS() {
+        return CTS;
+    }
+
+    public void setCTS(String CTS) {
+        this.CTS = CTS;
+    }
+
     private String productBrief;
     private String deliveryTime;
     private String phone_no;
+    private String CTS;
 
     public DeliveryCTSModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief) {
         this.barcode = barcode;

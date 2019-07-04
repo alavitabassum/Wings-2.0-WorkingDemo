@@ -92,6 +92,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
@@ -104,7 +105,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-
+        final String user = username.toString();
         // check internet connectivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -123,10 +124,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+            loadRecyclerView(user);
         }
         else{
-            getData(username);
+            getData(user);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
@@ -163,25 +164,28 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     private void getData(String user){
         try{
             list.clear();
+
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "NULL");
 
             while (c.moveToNext()){
-                String barcode = c.getString(0);
-                String orderid = c.getString(1);
-                String merOrderRef = c.getString(2);
-                String merchantName = c.getString(3);
-                String pickMerchantName = c.getString(4);
-                String custname = c.getString(5);
-                String custaddress = c.getString(6);
-                String custphone = c.getString(7);
-                String packagePrice = c.getString(8);
-                String productBrief = c.getString(9);
-                String deliveryTime = c.getString(10);
-                String slaMiss = c.getString(11);
+
+                //String barcode = c.getString(0);
+                String orderid = c.getString(0);
+                String merOrderRef = c.getString(1);
+                String merchantName = c.getString(2);
+                String pickMerchantName = c.getString(3);
+                String custname = c.getString(4);
+                String custaddress = c.getString(5);
+                String custphone = c.getString(6);
+                String packagePrice = c.getString(7);
+                String productBrief = c.getString(8);
+                //String deliveryTime = c.getString(10);
+                String slaMiss = c.getString(9);
 
 
-                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,slaMiss);
+
+                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,slaMiss);
 
                 list.add(withoutStatus_model);
             }
@@ -289,6 +293,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("PreRet"),
                                         o.getString("PreRetTime"),
                                         o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
                                         o.getString("slaMiss"),
                                         "NULL"
                                         ,NAME_SYNCED_WITH_SERVER);

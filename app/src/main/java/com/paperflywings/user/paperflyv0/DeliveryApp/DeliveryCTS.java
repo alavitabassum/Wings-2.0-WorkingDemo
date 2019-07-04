@@ -72,7 +72,7 @@ public class DeliveryCTS extends AppCompatActivity
     private RequestQueue requestQueue;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
-    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+    public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
 
     private List<DeliveryCTSModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -290,6 +290,9 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("PreRet"),
                                         o.getString("PreRetTime"),
                                         o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
                                         o.getString("slaMiss"),
                                         "NULL"
                                         , NAME_SYNCED_WITH_SERVER );
@@ -471,6 +474,82 @@ public class DeliveryCTS extends AppCompatActivity
     @Override
     public void onItemClick_view(View view2, int position2) {
 
+        final DeliveryCTSModel clickedITem = list.get(position2);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        final String currentDateTime = df.format(c);
+
+        final String cash = "Y";
+        final String cashBy = username;
+        final String cashType = "CoD";
+        final String cashTime = currentDateTime;
+        final String CTS = "Y";
+        final String CTSTime = currentDateTime;
+        final String CTSBy = username;
+
+
+        String barcode = clickedITem.getBarcode();
+        String orderid = clickedITem.getOrderid();
+
+        CashToS(CTS,CTSTime,CTSBy,empcode,barcode,orderid);
+        //pickedfordelivery(lastText,username,empcode,BarCode,OrderId);
+
+    }
+
+    private void CashToS(final String CTS,final String CTSTime, final String CTSBy,final String empcode, final String barcode, final String orderid) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_SYNCED_WITH_SERVER);
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("CTS", CTS);
+                params.put("CTSTime", CTSTime);
+                params.put("CTSBy", CTSBy);
+                params.put("empcode", empcode);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                return params;
+            }
+        };
+        try {
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryCTS.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -488,4 +567,5 @@ public class DeliveryCTS extends AppCompatActivity
         }
         view4.getContext().startActivity(callIntent);
     }
+
 }
