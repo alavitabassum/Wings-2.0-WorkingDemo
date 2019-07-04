@@ -111,6 +111,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
+        without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -138,9 +139,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
-        final String withoutstatus_count = db.get_withoutstatus_count(username);
+        /*final String withoutstatus_count = db.get_withoutstatus_count(username);
         without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
-        without_status_text.setText(String.valueOf(withoutstatus_count));
+        without_status_text.setText(String.valueOf(withoutstatus_count));*/
+
 
         // Redirect for quick pick by scanning barcode
 
@@ -162,7 +164,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user);
+            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "NULL");
 
             while (c.moveToNext()){
                 String barcode = c.getString(0);
@@ -176,25 +178,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 String packagePrice = c.getString(8);
                 String productBrief = c.getString(9);
                 String deliveryTime = c.getString(10);
-                String Cash = c.getString(11);
-                String cashType = c.getString(12);
-                String CashTime = c.getString(13);
-                String CashBy = c.getString(14);
-                String CashAmt = c.getString(15);
-                String CashComment = c.getString(16);
-                String partial = c.getString(17);
-                String partialTime = c.getString(18);
-                String partialBy = c.getString(19);
-                String partialReceive = c.getString(20);
-                String partialReturn = c.getString(21);
-                String partialReason = c.getString(22);
-                String onHoldSchedule = c.getString(23);
-                String onHoldReason = c.getString(24);
-                String Rea = c.getString(25);
-                String ReaTime = c.getString(26);
-                String ReaBy = c.getString(27);
+                String slaMiss = c.getString(11);
 
-                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
+
+                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,slaMiss);
 
                 list.add(withoutStatus_model);
             }
@@ -204,8 +191,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             recyclerView_pul.setAdapter(DeliveryWithoutStatusAdapter);
             DeliveryWithoutStatusAdapter.notifyDataSetChanged();
             DeliveryWithoutStatusAdapter.setOnItemClickListener(DeliveryWithoutStatus.this);
-            swipeRefreshLayout.setRefreshing(false);
 
+            String str = String.valueOf(db.getWithoutStatusCount("NULL"));
+            without_status_text.setText(str);
+            swipeRefreshLayout.setRefreshing(false);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -213,9 +202,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     }
 
     private void loadRecyclerView (final String user){
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String match_date = df.format(c);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
                 new Response.Listener<String>()
@@ -303,7 +289,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("PreRet"),
                                         o.getString("PreRetTime"),
                                         o.getString("PreRetBy"),
-                                        o.getString("slaMiss")
+                                        o.getString("slaMiss"),
+                                        "NULL"
                                         ,NAME_SYNCED_WITH_SERVER);
                                 list.add(withoutStatus_model);
                             }
@@ -312,6 +299,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             recyclerView_pul.setAdapter(DeliveryWithoutStatusAdapter);
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryWithoutStatusAdapter.setOnItemClickListener(DeliveryWithoutStatus.this);
+
+                            String str = String.valueOf(db.getWithoutStatusCount("NULL"));
+                            without_status_text.setText(str);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -472,6 +462,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         list.clear();
         DeliveryWithoutStatusAdapter.notifyDataSetChanged();
+
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -855,7 +846,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     }
 
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice, final String flagReq) {
-        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+
+        String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
+        without_status_text.setText(str1);
+        final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
+                DeliveryWithoutStatus.class);
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -865,10 +861,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
                                 db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, flagReq, NAME_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -880,6 +878,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, merOrderRef,packagePrice, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(withoutstatuscount);
                     }
                 }
         ) {
@@ -909,7 +908,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
     }
     private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
-        final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
+
+        String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
+        without_status_text.setText(str1);
+        final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
+                DeliveryWithoutStatus.class);
+
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -918,11 +922,13 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_SYNCED_WITH_SERVER);
+                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -933,7 +939,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db1.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(withoutstatuscount);
                     }
                 }
         ) {
@@ -962,7 +969,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
     }
     public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode, final String flagReq) {
-        final BarcodeDbHelper db1 = new BarcodeDbHelper(getApplicationContext());
+
+        String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
+        without_status_text.setText(str1);
+        final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
+                DeliveryWithoutStatus.class);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -971,11 +982,13 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db1.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode,flagReq ,NAME_SYNCED_WITH_SERVER);
+                                db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode,flagReq ,NAME_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db1.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -986,7 +999,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db1.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(withoutstatuscount);
                     }
                 }
         ) {
@@ -1015,7 +1029,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     }
 
     public void update_partial_status (final String partialsCash,final String partial,final String partialTime, final String partialBy,final String partialReceive,final String partialReturn ,final String partialReason,final String orderid,final String merOrderRef,final String packagePrice,final String barcode, final String flagReq) {
-        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+
+        String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
+        without_status_text.setText(str1);
+        final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
+                DeliveryWithoutStatus.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -1025,10 +1043,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
                                 db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode,merOrderRef,packagePrice,flagReq, NAME_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode,merOrderRef,packagePrice,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1040,7 +1060,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode,merOrderRef,packagePrice,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                    }
+                        startActivity(withoutstatuscount);}
                 }
         ) {
             @Override

@@ -1069,7 +1069,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     //insert counts in without status
 
-    public void insert_delivery_without_status(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String RTS,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String slaMiss, int status) {
+    public void insert_delivery_without_status(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String RTS,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -1117,6 +1117,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
 
         values.put(SLAMISS,slaMiss);
+        values.put(FLAG_REQ,flagReq);
         values.put(STATUS, status);
 
         db.insert(TABLE_NAME_9, null, values);
@@ -1125,11 +1126,17 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     // get without status
 
-    public Cursor get_delivery_without_status(SQLiteDatabase db, String user) {
-        String[] columns = {BARCODE_NO_WITHOUT_STATUS, ORDERID_WITHOUT_STATUS, MERCHANT_REF_WITHOUT_STATUS, MERCHANTS_NAME_WITHOUT_STATUS, PICK_MERCHANTS_NAME_WITHOUT_STATUS, CUSTOMER_NAME_WITHOUT_STATUS, CUSTOMER_ADDRESS_WITHOUT_STATUS, Phone_WITHOUT_STATUS, PACKAGE_PRICE_WITHOUT_STATUS, PRODUCT_BRIEF_WITHOUT_STATUS, DELIVERY_TIME_WITHOUT_STATUS,DROPPOINTCODE, CASH_WITHOUT_STATUS, CASHTYPE_WITHOUT_STATUS, CASHTIME_WITHOUT_STATUS, CASHBY_WITHOUT_STATUS, CASHAMT_WITHOUT_STATUS, CASHCOMMENT_WITHOUT_STATUS, PARTIAL_WITHOUT_STATUS, PARTIAL_TIME_WITHOUT_STATUS, PARTIAL_BY_WITHOUT_STATUS, PARTIAL_RECEIVE_BY_WITHOUT_STATUS, PARTIAL_RETURN_BY_WITHOUT_STATUS, PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, ONHOLDSCHEDULE_WITHOUT_STATUS, ONHOLDREASON_WITHOUT_STATUS,REA_WITHOUT_STATUS,REATIME_WITHOUT_STATUS,REABY_WITHOUT_STATUS,RET_WITHOUT_STATUS,RETTIME_WITHOUT_STATUS,RETBY_WITHOUT_STATUS,RETREASON_WITHOUT_STATUS,RTS_WITHOUT_STATUS,RTSTIME_WITHOUT_STATUS,RTSBY_WITHOUT_STATUS,PRERET_WITHOUT_STATUS,PRERETIME_WITHOUT_STATUS,PRERETBY_WITHOUT_STATUS,SLAMISS};
-        String whereClause = USERNAME + "=?";
+    public Cursor get_delivery_without_status(SQLiteDatabase db, String user, String flagReq) {
+        String[] columns = {BARCODE_NO_WITHOUT_STATUS, ORDERID_WITHOUT_STATUS, MERCHANT_REF_WITHOUT_STATUS,
+                MERCHANTS_NAME_WITHOUT_STATUS, PICK_MERCHANTS_NAME_WITHOUT_STATUS, CUSTOMER_NAME_WITHOUT_STATUS,
+                CUSTOMER_ADDRESS_WITHOUT_STATUS, Phone_WITHOUT_STATUS, PACKAGE_PRICE_WITHOUT_STATUS,
+                PRODUCT_BRIEF_WITHOUT_STATUS, DELIVERY_TIME_WITHOUT_STATUS,SLAMISS};
+
+
+        String whereClause = USERNAME + "=? AND " +FLAG_REQ+ "=?" ;
         String[] whereArgs = new String[]{
-                user
+                user,
+                flagReq
         };
         return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
     }
@@ -1392,6 +1399,16 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    public int getWithoutStatusCount(String flagReq) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+//    Cash, partial,onHoldSchedule, Rea,Ret, RTS, PreRet
 
 }
 

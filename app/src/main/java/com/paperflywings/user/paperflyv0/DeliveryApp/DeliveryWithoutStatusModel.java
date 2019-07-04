@@ -29,6 +29,21 @@ public class DeliveryWithoutStatusModel {
         this.productBrief = productBrief;
     }
 
+    public DeliveryWithoutStatusModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief,String deliveryTime, String slaMiss) {
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+        this.slaMiss = slaMiss;
+    }
+
     public String getPhone_no() {
         return phone_no;
     }

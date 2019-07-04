@@ -304,9 +304,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private void getData(String user){
         try{
             list.clear();
-            Date date = Calendar.getInstance().getTime();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            final String currentDateTimeString = df.format(date);
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_delivery_unpicked(sqLiteDatabase,user, "Y");
@@ -417,6 +414,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                             recyclerView_pul.setAdapter(Delivery_unpicked_adapter);
                             swipeRefreshLayout.setRefreshing(false);
                             Delivery_unpicked_adapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
+
                             String str = String.valueOf(db.getUnpickedCount("Y"));
                             unpicked_text.setText(str);
 
