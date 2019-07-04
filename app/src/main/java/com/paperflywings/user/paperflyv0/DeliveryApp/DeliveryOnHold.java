@@ -332,9 +332,9 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("PreRet"),
                                         o.getString("PreRetTime"),
                                         o.getString("PreRetBy"),
-                                        o.getString("slaMiss")
-
-                                        , NAME_NOT_SYNCED_WITH_SERVER );
+                                        o.getString("slaMiss"),
+                                        "NULL"
+                                        , NAME_SYNCED_WITH_SERVER );
 
                                 list.add(onhold_model);
                             }
