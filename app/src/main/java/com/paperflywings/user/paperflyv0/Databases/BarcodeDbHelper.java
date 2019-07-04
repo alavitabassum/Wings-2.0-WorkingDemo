@@ -1185,6 +1185,28 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    //
+
+  /*  public void getReturnRqstData(String Ret, String RetTime,String RetBy,String retReason,String RTS, String PreRet, String PreRetTime, String PreRetBy,  String orderid,String barcode,String flagReq, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USERNAME, username);
+        values.put(EMPLOYEE_CODE, empcode);
+        values.put(PICK_DROP, pickDrop);
+        values.put(PICK_DROP_TIME, pickDropTime);
+        values.put(PICK_DROP_BY, pickDropBy);
+        values.put(STATUS, status);
+
+        String whereClause = BARCODE_NO + " = ?";
+        String[] whereArgs = new String[]{
+                barcode
+        };
+        // insert
+        db.update(TABLE_NAME_8, values, whereClause, whereArgs);
+        db.close();
+    }*/
+
+
     public void update_onhold_status(String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String orderid, String barcode, String flagReq,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
