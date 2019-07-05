@@ -9,7 +9,7 @@
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
     android:paddingBottom="50dp"
-    card_view_assign:cardBackgroundColor="#FDFDF7"
+    card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
 
