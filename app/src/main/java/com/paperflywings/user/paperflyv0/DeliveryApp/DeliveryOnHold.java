@@ -293,7 +293,7 @@ public class DeliveryOnHold extends AppCompatActivity
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryOnHoldAdapter.setOnItemClickListener(DeliveryOnHold.this);
 
-                            String str = String.valueOf(db.getOnholdCount("NULL"));
+                            String str = String.valueOf(db.getOnholdCount("onHold"));
                             onhold_text.setText(str);
 
                         } catch (JSONException e) {
@@ -659,7 +659,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                 //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
                                 ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryOnHold.this,
                                         android.R.layout.simple_spinner_item,
-                                        getResources().getStringArray(R.array.returnreasons));
+                                        getResources().getStringArray(R.array.onholdreasons));
                                 adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 mReturnRSpinner.setAdapter(adapterReturnR);
 
@@ -838,7 +838,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice, final String flagReq) {
 
-        String str = String.valueOf(db.getOnholdCount("NULL"));
+        String str = String.valueOf(db.getOnholdCount("onHold"));
         onhold_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
                 DeliveryOnHold.class);
@@ -900,7 +900,7 @@ public class DeliveryOnHold extends AppCompatActivity
     }
     private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
 
-        String str = String.valueOf(db.getOnholdCount("NULL"));
+        String str = String.valueOf(db.getOnholdCount("onHold"));
         onhold_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
                 DeliveryWithoutStatus.class);
@@ -963,7 +963,7 @@ public class DeliveryOnHold extends AppCompatActivity
     }
     public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode, final String flagReq) {
 
-        String str = String.valueOf(db.getOnholdCount("NULL"));
+        String str = String.valueOf(db.getOnholdCount("onHold"));
         onhold_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
                 DeliveryWithoutStatus.class);
@@ -1022,7 +1022,7 @@ public class DeliveryOnHold extends AppCompatActivity
     }
     public void update_partial_status (final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String flagReq) {
 
-        String str = String.valueOf(db.getOnholdCount("NULL"));
+        String str = String.valueOf(db.getOnholdCount("onHold"));
         onhold_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
                 DeliveryWithoutStatus.class);

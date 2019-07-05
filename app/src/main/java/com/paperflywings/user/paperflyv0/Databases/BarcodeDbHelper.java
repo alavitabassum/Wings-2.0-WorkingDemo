@@ -1390,7 +1390,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9);
     }
     public void deleteOnHoldList(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_10);
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9);
     }
 
     public void deleteunpickedOrderData(String barcode) {
