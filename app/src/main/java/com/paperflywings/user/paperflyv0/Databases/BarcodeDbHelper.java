@@ -1473,6 +1473,25 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void update_rts_status(String RTS,String RTSTime,String RTSBy, String empcode,String barcode,String orderid, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(RTS_WITHOUT_STATUS, RTS);
+        values.put(RTSTIME_WITHOUT_STATUS, RTSTime);
+        values.put(RTSBY_WITHOUT_STATUS, RTSBy);
+        values.put(EMPLOYEE_CODE, empcode);
+        values.put(STATUS, status);
+
+        String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
+        String[] whereArgs = new String[]{
+                orderid,
+                barcode
+        };
+        // insert
+        db.update(TABLE_NAME_9, values, whereClause, whereArgs);
+        db.close();
+    }
+
 //    Cash, partial,onHoldSchedule, Rea,Ret, RTS, PreRet
 
 }

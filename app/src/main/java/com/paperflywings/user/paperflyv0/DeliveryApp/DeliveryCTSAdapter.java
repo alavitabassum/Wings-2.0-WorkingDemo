@@ -86,7 +86,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
             item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
             item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
             item_deliveryTime_without_status=itemView.findViewById(R.id.deliverytime);
-            itemStatus_without_status=itemView.findViewById(R.id.btn_status_without_status);
+            itemStatus_without_status=itemView.findViewById(R.id.btn_status_cash_status);
             card_view_without_status=itemView.findViewById(R.id.card_view_delivery_without_status_list);
 
             item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

@@ -31,6 +31,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,10 +74,9 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     private CardView without_Status_card;
     private TextView without_status_text;
-
+    private RequestQueue requestQueue;
 
     //delivery without status actions
-
 
 
     private static final String URL_DATA = "";
@@ -92,7 +92,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     //public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String RETURN_REQUEST = "http://paperflybd.com/DeliveryReturnRequestApi.php";
-    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+    public static final String DELIVERY_RETURNR_UPDATE = "http://paperflybd.com/DeliveryReturnRequestUpdate.php";
     public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
 
@@ -576,13 +576,84 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     @Override
     public void onItemClick_view(View view2, int position2) {
-      /*  final Delivery_unpicked_model clickedITem = list.get(position2);
 
-        String username = clickedITem.getUsername();
-        String empcode = clickedITem.getEmpCode();
-        String lastText = clickedITem.getBarcode();
+        final DeliveryReturnToSuperVisorModel clickedITem = list.get(position2);
 
-        pickedfordelivery(lastText,username,empcode);*/
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        final String currentDateTime = df.format(c);
+
+
+        final String RTS = "Y";
+        final String RTSTime = currentDateTime;
+        final String RTSBy = username;
+
+
+        String barcode = clickedITem.getBarcode();
+        String orderid = clickedITem.getOrderid();
+
+        ReturnToS(RTS,RTSTime,RTSBy,empcode,barcode,orderid);
+        //pickedfordelivery(lastText,username,empcode,BarCode,OrderId);
+
+    }
+
+    private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy,final String empcode, final String barcode, final String orderid) {
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RETURNR_UPDATE,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                db.update_rts_status(RTS,RTSTime,RTSBy,empcode,barcode,orderid,NAME_SYNCED_WITH_SERVER);
+                                Toast toast= Toast.makeText(Delivery_ReturnToSupervisor.this,
+                                        "Successful", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                                toast.show();
+                            } else {
+                                //if there is some error
+                                //saving the name to sqlite with status unsynced
+                                db.update_rts_status(RTS,RTSTime,RTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.update_rts_status(RTS,RTSTime,RTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("RTS", RTS);
+                params.put("RTSTime", RTSTime);
+                params.put("RTSBy", RTSBy);
+                params.put("empcode", empcode);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                return params;
+            }
+        };
+        try {
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(Delivery_ReturnToSupervisor.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
