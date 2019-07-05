@@ -114,7 +114,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String SLAMISS = "slaMiss";
     public static final String FLAG_REQ = "flagReq";
 
-
+    private static final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
 
     public BarcodeDbHelper(Context context) {
@@ -1245,18 +1245,20 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
-    public void update_partial_status(String partialsCash,String partial, String partialTime, String partialBy,String partialReceive,String partialReturn,String partialReason, String orderid, String barcode,String merOrderRef,String packagePrice, String flagReq,int status) {
+
+    public void update_partial_status (String cash,String Ret, String partialsCash, String partial, String partialTime, String partialBy , String partialsReceive, String partialReason, String partialReturn, String orderid, String barcode, String flagReq,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+
+        values.put(CASH_ACTION, cash);
+        values.put(RET, Ret);
         values.put(CASH_AMT, partialsCash);
         values.put(PARTIAL, partial);
         values.put(PARTIAL_TIME, partialTime);
         values.put(PARTIAL_BY, partialBy);
-        values.put(PARTIAL_RECEIVE, partialReceive);
+        values.put(PARTIAL_RECEIVE, partialsReceive);
         values.put(PARTIAL_RETURN, partialReturn);
         values.put(PARTIAL_RETURN_REASON, partialReason);
-        values.put(MERCHANT_ORDER_REF, merOrderRef);
-        values.put(PACKAGE_PRICE, packagePrice);
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
@@ -1432,6 +1434,25 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CTS_CASH, CTS);
         values.put(CTSTIME_CASH, CTSTime);
         values.put(CTSBY_CASH, CTSBy);
+        values.put(EMPLOYEE_CODE, empcode);
+        values.put(STATUS, status);
+
+        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
+        String[] whereArgs = new String[]{
+                orderid,
+                barcode
+        };
+        // insert
+        db.update(TABLE_NAME_9, values, whereClause, whereArgs);
+        db.close();
+    }
+
+    public void update_rts_status(String Rts,String RTSTime,String RTSBy, String empcode,String barcode,String orderid, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(RTS, Rts);
+        values.put(RTS_TIME, RTSTime);
+        values.put(RTS_BY, RTSBy);
         values.put(EMPLOYEE_CODE, empcode);
         values.put(STATUS, status);
 

@@ -686,7 +686,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String merOrderRefsPartial = MerchantRefPartialtv.getText().toString();
                                             String pakagePricesPartial = PackagePriceTextPartialtv.getText().toString();
 
-                                            update_partial_status(partialsCash,partial,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,barcode,merOrderRefsPartial,pakagePricesPartial,"partial");
+                                            update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,"partial");
                                             dialogPartial.dismiss();
                                             startActivity(DeliveryListIntent);
 
@@ -703,6 +703,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
                                 ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryWithoutStatus.this,
                                         android.R.layout.simple_spinner_item,
+//                                        getResources().getStringArray(R.array.returnreasons));
                                         getResources().getStringArray(R.array.onholdreasons));
                                 adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 mReturnRSpinner.setAdapter(adapterReturnR);
@@ -1062,7 +1063,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
-    public void update_partial_status (final String partialsCash,final String partial,final String partialTime, final String partialBy,final String partialReceive,final String partialReturn ,final String partialReason,final String orderid,final String merOrderRef,final String packagePrice,final String barcode, final String flagReq) {
+
+    public void update_partial_status (final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String flagReq) {
 
         String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
         without_status_text.setText(str1);
@@ -1076,12 +1078,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode,merOrderRef,packagePrice,flagReq, NAME_SYNCED_WITH_SERVER);
+                                db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode,merOrderRef,packagePrice,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
@@ -1093,20 +1095,22 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_partial_status(partialsCash,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,orderid,barcode,merOrderRef,packagePrice,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);}
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("Cash", cash);
+                params.put("Ret", Ret);
                 params.put("CashAmt", partialsCash);
                 params.put("partial", partial);
                 params.put("partialTime", partialTime);
                 params.put("partialBy", partialBy);
-                params.put("partialReceive", partialReceive);
-                params.put("partialReturn", partialReturn);
+                params.put("partialReceive", partialsReceive);
                 params.put("partialReason", partialReason);
+                params.put("partialReturn", partialReturn);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
                 params.put("flagReq", flagReq);

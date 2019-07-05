@@ -27,6 +27,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -507,6 +508,10 @@ public class DeliveryCTS extends AppCompatActivity
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
                                 db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_SYNCED_WITH_SERVER);
+                                Toast toast= Toast.makeText(DeliveryCTS.this,
+                                        "Successful", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+                                toast.show();
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
