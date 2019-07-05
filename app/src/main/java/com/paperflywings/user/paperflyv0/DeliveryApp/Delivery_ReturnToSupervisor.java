@@ -270,7 +270,8 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryReturnToSuperVisorModel withoutStatus_model = new  DeliveryReturnToSuperVisorModel(
-
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
@@ -301,6 +302,8 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
                                 db.insert_delivery_without_status(
 
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),

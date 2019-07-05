@@ -251,7 +251,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryWithoutStatusModel withoutStatus_model = new  DeliveryWithoutStatusModel(
-
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
@@ -281,7 +282,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("slaMiss"));
 
                                 db.insert_delivery_without_status(
-
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -680,7 +682,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String partialReason = partialremarks.getText().toString();
                                             String partialsReceive = partialReceive.getText().toString();
 
-//                                            String ordIdPartial = OrderIdCollectionPartialtv.getText().toString();
+                                            String ordIdPartial = OrderIdCollectionPartialtv.getText().toString();
                                             String merOrderRefsPartial = MerchantRefPartialtv.getText().toString();
                                             String pakagePricesPartial = PackagePriceTextPartialtv.getText().toString();
 

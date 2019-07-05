@@ -14,6 +14,8 @@ public class DeliveryReturnToSuperVisorModel {
     private String productBrief;
     private String deliveryTime;
     private String phone_no;
+    private String username;
+    private String empCode;
 
     public DeliveryReturnToSuperVisorModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief) {
         this.barcode = barcode;
@@ -79,9 +81,10 @@ public class DeliveryReturnToSuperVisorModel {
 
 
 
-    public DeliveryReturnToSuperVisorModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
+    public DeliveryReturnToSuperVisorModel(String username, String empCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
+        this.username  = username;
+        this.empCode= empCode;
         this.dropPointCode = dropPointCode;
-//        this.customerDistrict = customerDistrict;
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;

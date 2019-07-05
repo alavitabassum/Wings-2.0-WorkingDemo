@@ -183,7 +183,7 @@ public class DeliveryOnHold extends AppCompatActivity
             DeliveryOnHoldAdapter.notifyDataSetChanged();
             DeliveryOnHoldAdapter.setOnItemClickListener(DeliveryOnHold.this);
 
-            String str = String.valueOf(db.getOnholdCount("NULL"));
+            String str = String.valueOf(db.getOnholdCount("onHold"));
             onhold_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 

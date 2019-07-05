@@ -81,7 +81,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         onHold_count = (TextView)findViewById(R.id.OnHoldCount);
         returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
         cashCollection_count = (TextView)findViewById(R.id.CashCount);
-        returnList_count = (TextView)findViewById(R.id.ReturntoSuperVisorCount);
+        returnList_count = (TextView)findViewById(R.id.RTS);
 
 
 
@@ -125,6 +125,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 db.insert_delivery_without_status(
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -304,7 +306,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 onHold_count = (TextView)findViewById(R.id.OnHoldCount);
                 returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
                 cashCollection_count = (TextView)findViewById(R.id.CashCount);
-                returnList_count = (TextView)findViewById(R.id.ReturntoSuperVisorCount);
+                returnList_count = (TextView)findViewById(R.id.RTS);
 
                 unpicked_count.setText(String.valueOf(unpicked));
                 withoutStatus_count.setText(String.valueOf(withoutStatus));
@@ -331,7 +333,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                         startActivity(intent);
                     }
                 });
-                withoutStatus_count.setOnClickListener(new View.OnClickListener() {
+                without_Status.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //String str_without_status = withoutStatus_count.getText().toString();

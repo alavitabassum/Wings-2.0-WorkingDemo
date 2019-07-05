@@ -106,7 +106,9 @@ public class DeliveryWithoutStatusModel {
         this.status = status;
     }
 
-    public DeliveryWithoutStatusModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
+    public DeliveryWithoutStatusModel(String username, String empCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
+        this.username = username;
+        this.empCode = empCode;
         this.dropPointCode = dropPointCode;
         this.barcode = barcode;
         this.orderid = orderid;
@@ -135,6 +137,56 @@ public class DeliveryWithoutStatusModel {
         this.onHoldSchedule = onHoldSchedule;
         this.slaMiss = slaMiss;
         }
+
+    public DeliveryWithoutStatusModel(int id, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String username, String empCode, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String Rea, String ReaTime, String ReaBy, String Ret, String RetTime, String RetBy, String RetReason, String Rts, String RtsTime, String RtsBy, String PreRet, String PreRetTime, String PreRetBy, String CTS, String CTSTime, String CTSBy, String slaMiss, String flagReq) {
+        this.id = id;
+        this.dropPointCode = dropPointCode;
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+        this.username = username;
+        this.empCode = empCode;
+        this.Cash = cash;
+        this.cashType = cashType;
+        this.CashTime = cashTime;
+        this.CashBy = cashBy;
+        this.CashAmt = cashAmt;
+        this.CashComment = cashComment;
+        this.partial = partial;
+        this.partialTime = partialTime;
+        this.partialBy = partialBy;
+        this.partialReceive = partialReceive;
+        this.partialReturn = partialReturn;
+        this.partialReason = partialReason;
+        this.onHoldReason = onHoldReason;
+        this.onHoldSchedule = onHoldSchedule;
+        this.Rea = Rea;
+        this.ReaTime = ReaTime;
+        this.ReaBy = ReaBy;
+        this.Ret = Ret;
+        this.RetTime = RetTime;
+        this.RetBy = RetBy;
+        this.RetReason = RetReason;
+        this.Rts = Rts;
+        this.RtsTime = RtsTime;
+        this.RtsBy = RtsBy;
+        this.PreRet= PreRet;
+        this.PreRetTime = PreRetTime;
+        this.PreRetBy = PreRetBy;
+        this.CTS = CTS;
+        this.CTSTime = CTSTime;
+        this.CTSBy = CTSBy;
+        this.slaMiss = slaMiss;
+        this.flagReq = flagReq;
+    }
 
     public String getPhone_no() {
         return phone_no;

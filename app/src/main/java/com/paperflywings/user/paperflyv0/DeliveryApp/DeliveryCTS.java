@@ -150,7 +150,7 @@ public class DeliveryCTS extends AppCompatActivity
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "NULL");
+            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "cash");
 
             while (c.moveToNext()){
                 String barcode = c.getString(0);
@@ -244,7 +244,8 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("slaMiss"));
 
                                 db.insert_delivery_without_status(
-
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),

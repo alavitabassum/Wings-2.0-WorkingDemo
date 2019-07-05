@@ -16,7 +16,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_6 = "pickups_today_executive";
     private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
     private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
-    private static final String TABLE_NAME_9 = "Insert_Delivery_Without_Status";
+    private static final String TABLE_NAME_9 = "All_delivery_data";
     private static final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
     private static final String TABLE_NAME_11 = "Insert_Delivery_All_Status";
     private static final String KEY_ID = "id";
@@ -225,7 +225,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "status INT, "
                 + "unique(id, barcode))";
 
-        String CREATION_TABLE9 = "CREATE TABLE Insert_Delivery_Without_Status( "
+        String CREATION_TABLE9 = "CREATE TABLE All_delivery_data( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, " //0
                 + "dropPointCode TEXT," //1
                 + "barcode TEXT, " //2
@@ -277,7 +277,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "unique(id, barcode))";
 
 
-       /* String CREATION_TABLE10 = "CREATE TABLE Insert_Delivery_OnHold( "
+        String CREATION_TABLE10 = "CREATE TABLE Insert_Delivery_OnHold( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "dropPointCode TEXT,"
                 + "barcode TEXT, "
@@ -309,7 +309,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "onHoldReason TEXT, "
                 + "slaMiss TEXT,"
                 + "status INT, "
-                + "unique(id, barcode))";*/
+                + "unique(id, barcode))";
 
         /*String CREATION_TABLE_TEMPORARY = "CREATE TABLE Insert_Delivery_Quick_Scan_Data( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -381,7 +381,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE7);
         db.execSQL(CREATION_TABLE8);
         db.execSQL(CREATION_TABLE9);
-        /*db.execSQL(CREATION_TABLE10);
+        db.execSQL(CREATION_TABLE10);
+        /*
         db.execSQL(CREATION_TABLE_TEMPORARY);
         db.execSQL(CREATION_TABLE11);*/
 
@@ -928,11 +929,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     //insert counts in without status
 
-    public void insert_delivery_without_status(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,String slaMiss, String flagReq, int status) {
+    public void insert_delivery_without_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,String slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-      //  values.put(CUSTOMER_DISTRICT_WITHOUT_STATUS, customerDistrict);
+        values.put(USERNAME, username);
+        values.put(EMPLOYEE_CODE, empCode);
         values.put(BARCODE_NO, barcode);
         values.put(ORDERID, orderid);
         values.put(MERCHANT_ORDER_REF, merOrderRef);
@@ -1087,6 +1089,61 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 STATUS};
 
         String whereClause = USERNAME + "=? AND " +FLAG_REQ+ "=?" ;
+        String[] whereArgs = new String[]{
+                user,
+                flagReq
+        };
+        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
+    }
+
+    public Cursor get_my_delivery_list(SQLiteDatabase db, String user, String flagReq) {
+        String[] columns = {
+                BARCODE_NO,
+                ORDERID,
+                MERCHANT_ORDER_REF,
+                MERCHANTS_NAME,
+                PICK_MERCHANTS_NAME,
+                CUSTOMER_NAME,
+                CUSTOMER_PHONE,
+                CUSTOMER_ADDRESS,
+                PACKAGE_PRICE,
+                PRODUCT_BRIEF,
+                USERNAME,
+                EMPLOYEE_CODE,
+                CASH_ACTION,
+                CASH_TYPE,
+                CASH_TIME,
+                CASH_BY,
+                CASH_AMT,
+                CASH_COMMENT,
+                PARTIAL,
+                PARTIAL_TIME,
+                PARTIAL_BY,
+                PARTIAL_RECEIVE,
+                PARTIAL_RETURN,
+                PARTIAL_RETURN_REASON ,
+                ONHOLD_SCHEDULE,
+                ONHOLD_REASON,
+                REA,
+                REA_TIME,
+                REA_BY,
+                RET,
+                RET_TIME,
+                RET_BY,
+                RET_REASON,
+                RTS,
+                RTS_TIME,
+                RTS_BY,
+                PRERET,
+                PRERET_TIME,
+                PRERET_BY,
+                CTS_CASH,
+                CTSTIME_CASH,
+                CTSBY_CASH,
+                SLAMISS,
+                FLAG_REQ};
+
+        String whereClause = USERNAME + "=? AND " + FLAG_REQ + " = ?";
         String[] whereArgs = new String[]{
                 user,
                 flagReq
