@@ -67,7 +67,6 @@ import java.util.Map;
 public class DeliveryWithoutStatus extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,DeliveryWithoutStatusAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private TextView without_status_text;
@@ -160,26 +159,61 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             list.clear();
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "NULL");
+            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "withoutStatus");
 
             while (c.moveToNext()){
+                int id = c.getInt(0);
+                String dropPointCode = c.getString(1);
+                String barcode = c.getString(2);
+                String orderid = c.getString(3);
+                String merOrderRef = c.getString(4);
+                String merchantName = c.getString(5);
+                String pickMerchantName = c.getString(6);
+                String custname = c.getString(7);
+                String custphone = c.getString(8);
+                String custaddress = c.getString(9);
+                String packagePrice = c.getString(10);
+                String productBrief = c.getString(11);
+                String deliveryTime = c.getString(12);
+                String username = c.getString(13);
+                String empCode = c.getString(14);
 
-                //String barcode = c.getString(0);
-                String orderid = c.getString(0);
-                String merOrderRef = c.getString(1);
-                String merchantName = c.getString(2);
-                String pickMerchantName = c.getString(3);
-                String custname = c.getString(4);
-                String custaddress = c.getString(5);
-                String custphone = c.getString(6);
-                String packagePrice = c.getString(7);
-                String productBrief = c.getString(8);
-                //String deliveryTime = c.getString(10);
-                String slaMiss = c.getString(9);
+                String cash = c.getString(15);
+                String cashType = c.getString(16);
+                String cashTime = c.getString(17);
+                String cashBy = c.getString(18);
+                String cashAmt = c.getString(19);
+                String cashComment = c.getString(20);
 
+                String partial = c.getString(21);
+                String partialTime = c.getString(22);
+                String partialBy = c.getString(23);
+                String partialReceive = c.getString(24);
+                String partialReturn = c.getString(25);
+                String partialReason = c.getString(26);
+                String onHoldSchedule = c.getString(27);
+                String onHoldReason = c.getString(28);
+                String rea = c.getString(29);
+                String reaTime = c.getString(30);
+                String reaBy = c.getString(31);
+                String ret = c.getString(32);
+                String retTime = c.getString(33);
+                String retBy = c.getString(34);
+                String retReason = c.getString(35);
+                String rts = c.getString(36);
+                String rtsTime = c.getString(37);
+                String rtsBy = c.getString(38);
+                String preRet = c.getString(39);
+                String preRetTime = c.getString(40);
+                String preRetBy = c.getString(41);
+                String cts = c.getString(42);
+                String ctsTime = c.getString(43);
+                String ctsBy = c.getString(44);
+                String slaMiss = c.getString(45);
+                String flagReq = c.getString(46);
+                int status = c.getInt(47);
 
-
-                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,slaMiss);
+                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
 
                 list.add(withoutStatus_model);
             }
@@ -190,7 +224,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             DeliveryWithoutStatusAdapter.notifyDataSetChanged();
             DeliveryWithoutStatusAdapter.setOnItemClickListener(DeliveryWithoutStatus.this);
 
-            String str = String.valueOf(db.getWithoutStatusCount("NULL"));
+            String str = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
             without_status_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 
@@ -291,7 +325,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"),
-                                        "NULL"
+                                        "withoutStatus"
                                         ,NAME_SYNCED_WITH_SERVER);
                                 list.add(withoutStatus_model);
                             }
@@ -301,7 +335,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryWithoutStatusAdapter.setOnItemClickListener(DeliveryWithoutStatus.this);
 
-                            String str = String.valueOf(db.getWithoutStatusCount("NULL"));
+                            String str = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
                             without_status_text.setText(str);
 
                         } catch (JSONException e) {
@@ -646,11 +680,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String partialReason = partialremarks.getText().toString();
                                             String partialsReceive = partialReceive.getText().toString();
 
-                                            String ordIdPartial = OrderIdCollectionPartialtv.getText().toString();
+//                                            String ordIdPartial = OrderIdCollectionPartialtv.getText().toString();
                                             String merOrderRefsPartial = MerchantRefPartialtv.getText().toString();
                                             String pakagePricesPartial = PackagePriceTextPartialtv.getText().toString();
 
-                                            update_partial_status(partialsCash,partial,partialTime,partialBy,partialsReceive,partialReturn,partialReason,ordIdPartial,barcode,merOrderRefsPartial,pakagePricesPartial,"partial");
+                                            update_partial_status(partialsCash,partial,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,barcode,merOrderRefsPartial,pakagePricesPartial,"partial");
                                             dialogPartial.dismiss();
                                             startActivity(DeliveryListIntent);
 
@@ -1028,7 +1062,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     }
     public void update_partial_status (final String partialsCash,final String partial,final String partialTime, final String partialBy,final String partialReceive,final String partialReturn ,final String partialReason,final String orderid,final String merOrderRef,final String packagePrice,final String barcode, final String flagReq) {
 
-        String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
+        String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
         without_status_text.setText(str1);
         final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
                 DeliveryWithoutStatus.class);

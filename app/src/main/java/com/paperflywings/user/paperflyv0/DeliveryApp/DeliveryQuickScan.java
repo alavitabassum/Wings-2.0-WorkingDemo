@@ -47,11 +47,9 @@ import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.PickupList_Model_For_Executive;
 import com.paperflywings.user.paperflyv0.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -89,7 +87,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
     public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_barcode_fulfillment.php";
 
     public static final String GET_DATA_FOR_BARCODE= "http://paperflybd.com/DeliveryQuickScan.php";
-    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -132,70 +129,15 @@ public class DeliveryQuickScan extends AppCompatActivity{
             //Fetching email from shared preferences
             SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
             String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-            final String user = username.toString();
-
-            // current date and time
-            final String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
             db = new BarcodeDbHelper(DeliveryQuickScan.this);
-//            if(result.getText() == null || result.getText().equals(lastText)) {
-           /* if(result.getText().equals(lastText) || result.getText().trim().length() != 12) {
-
-                // Set the toast and duration
-                int toastDurationInMilliSeconds = 1000;
-                final Toast mToastToShow = Toast.makeText(DeliveryQuickScan.this,
-                        result + " already scanned.", Toast.LENGTH_LONG);
-                mToastToShow.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-                mToastToShow.show();
-
-                // Set the countdown to display the toast
-                CountDownTimer toastCountDown;
-                toastCountDown = new CountDownTimer(toastDurationInMilliSeconds, 1000 *//*Tick duration*//*) {
-                    public void onTick(long millisUntilFinished) {
-                        mToastToShow.show();
-                    }
-                    public void onFinish() {
-                        mToastToShow.cancel();
-                    }
-                };
-
-                // Show the toast and starts the countdown
-                mToastToShow.show();
-                toastCountDown.start();
-                return;
-            }*/
 
             barcode = result.getText();
             lastText = barcode.substring(0,11);
 
             barcodeView.setStatusText("Barcode"+result.getText());
 
-            // get merchant id
-          /*  Intent intentID = getIntent();
-            final String merchant_id = intentID.getStringExtra(MERCHANT_ID);
-            final String sub_merchant_name = intentID.getStringExtra(SUB_MERCHANT_NAME);
-            final String merchant_code = intentID.getStringExtra(APIORDERID);
-            final String order_id = intentID.getStringExtra(PRODUCT_ID);
-            final String picked_qty = intentID.getStringExtra(PICKED_QTY);
-            final String match_date = intentID.getStringExtra(CREATED_AT);
-            final String sql_primary_id = intentID.getStringExtra(SQL_PRIMARY_ID);
-
-            barcodeView.setStatusText("Barcode"+result.getText());
-
-            // TODO: add added-by, current-date , vaiia says to add flag in this table
-            final boolean state = true;
-            final String updated_by = user;*/
-//            final String updated_at = currentDateTimeString;
-
-            /*Date c = Calendar.getInstance().getTime();
-            System.out.println("Current time => " + c);
-            SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-            final String updated_at = df.format(c);*/
-
-
-            // TODO: sql_primary_id add
-//                barcodesave(merchant_id, sub_merchant_name, lastText, state, updated_by, updated_at, order_id, picked_qty, merchant_code, sql_primary_id);
-            getData(lastText);
+          getData(lastText);
 
             db.close();
 
@@ -243,7 +185,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
     }
 
 
-    // Load data from api
+   /* // Load data from api
     private void getDataMatchingBarcode (final String barcodeNumber)
     {
         Date c = Calendar.getInstance().getTime();
@@ -319,7 +261,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             requestQueue = Volley.newRequestQueue(this);
         }
         requestQueue.add(stringRequest);
-    }
+    }*/
 
 
 
@@ -434,10 +376,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         final String merchantRef = merorderref;
                         final String packagePrice = packageprice;
 
-
                         final Intent DeliveryListIntent = new Intent(DeliveryQuickScan.this,
                                 DeliveryWithoutStatus.class);
-
 
                         final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
                         spinnerBuilder.setTitle("Select Action: ");

@@ -198,10 +198,6 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
     private void loadRecyclerView (final String user){
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String match_date = df.format(c);
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
                 new Response.Listener<String>()
                 {
@@ -292,7 +288,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"),
-                                        "NULL"
+                                        "cash"
                                         , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);
                             }

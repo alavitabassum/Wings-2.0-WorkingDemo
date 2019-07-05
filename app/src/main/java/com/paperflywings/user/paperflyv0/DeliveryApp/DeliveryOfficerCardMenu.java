@@ -55,7 +55,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private RequestQueue requestQueue;
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
-    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
 
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
@@ -169,7 +168,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"),
-                                        "NULL"
+                                        "withoutStatus"
                                         ,NAME_SYNCED_WITH_SERVER);
 
                             }
@@ -470,7 +469,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer);
         drawer.closeDrawer(GravityCompat.START);

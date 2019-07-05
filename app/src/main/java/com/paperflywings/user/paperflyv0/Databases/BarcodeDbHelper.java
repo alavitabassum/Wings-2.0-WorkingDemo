@@ -18,7 +18,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
     private static final String TABLE_NAME_9 = "Insert_Delivery_Without_Status";
     private static final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
-    private static final String TABLE_NAME_TEMPORARY = "Insert_Delivery_Quick_Scan_Data";
     private static final String TABLE_NAME_11 = "Insert_Delivery_All_Status";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
@@ -48,7 +47,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String MERCHANT_CODE = "merchant_code";
     private static final String PICKED_STATUS = "pick_from_merchant_status";
     private static final String RECEIVED_STATUS = "received_from_HQ_status";
-
     private static final String STATUS_ID = "status_id";
     private static final String STATUS_NAME = "status_name";
     private static final String USERNAME = "username";
@@ -62,107 +60,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String CASH = "cash";
     private static final String RETURNREQUEST = "return_request";
     private static final String RETURNLIST = "return_list";
-
-
-    //delivery All Status
-    private static final String BARCODE_ALLSTATUS = "barcode";
-    private static final String ORDERID_ALLSTATUS = "orderid";
-    private static final String MERCHANT_ORDER_REF_ALLSTATUS = "merOrderRef";
-    private static final String MERCHANTS_NAME_ALLSTATUS = "merchantName";
-    private static final String PICK_MERCHANTS_NAME_ALLSTATUS = "pickMerchantName";
-    private static final String CUSTOMER_NAME_ALLSTATUS = "custname";
-    private static final String CUSTOMER_ADDRESS_ALLSTATUS = "custaddress";
-    private static final String PHONE_ALLSTATUS = "custphone";
-    private static final String PACKAGE_PRICE_ALLSTATUS= "packagePrice";
-    private static final String PRODUCT_BRIEF_ALLSTATUS = "productBrief";
-    private static final String DELIVERY_TIME_ALLSTATUS= "deliveryTime";
-    private static final String REA_ALLSTATUS = "Rea";
-    private static final String REATIME_ALLSTATUS = "ReaTime";
-    private static final String REABY_ALLSTATUS = "ReaBy";
-    private static final String PICKDROP_ALLSTATUS = "PickDrop";
-    private static final String PICKDROPTIME_ALLSTATUS = "PickDropTime";
-    private static final String PICKDROPBY_ALLSTATUS = "PickDropBy";
-    private static final String DROPASSIGNTIME_ALLSTATUS = "dropAssignTime";
-    private static final String DROPASSIGNTBY_ALLSTATUS = "dropAssignBy";
-    private static final String DROPPOINTCODE_ALLSTATUS = "dropPointCode";
-    private static final String CASH_ALLSTATUS = "Cash";
-    private static final String CASHTYPE_ALLSTATUS = "cashType";
-    private static final String CASHTIME_ALLSTATUS = "CashTime";
-    private static final String CASHBY_ALLSTATUS = "CashBy";
-    private static final String CASHAMT_ALLSTATUS = "CashAmt";
-    private static final String CASHCOMMENT_ALLSTATUS = "CashComment";
-    private static final String PARTIAL_ALLSTATUS = "partial";
-    private static final String PARTIALTIME_ALLSTATUS = "partialTime";
-    private static final String PARTIALBY_ALLSTATUS = "partialBy";
-    private static final String PARTIALRECEIVE_ALLSTATUS = "partialReceive";
-    private static final String PARTIALRETURN_ALLSTATUS = "partialReturn";
-    private static final String PARTIALREASON_ALLSTATUS = "partialReason";
-    private static final String ONHOLDSCHEDULE_ALLSTATUS = "onHoldSchedule";
-    private static final String ONHOLDREASON_ALLSTATUS = "onHoldReason";
-    private static final String SLAMISS_ALLSTATUS = "slaMiss";
-
-    //delivery unpicked
-    public static final String BARCODE_NO = "barcode";
-    public static final String ORDERID = "orderid";
-    public static final String MERCHANT_ORDER_REF = "merOrderRef";
-    public static final String MERCHANTS_NAME = "merchantName";
-    public static final String PICK_MERCHANTS_NAME = "pickMerchantName";
-    public static final String CUSTOMER_NAME = "custname";
-    public static final String Phone = "custphone";
-    public static final String CUSTOMER_ADDRESS = "custaddress";
-    public static final String PACKAGE_PRICE = "packagePrice";
-    public static final String PRODUCT_BRIEF = "productBrief";
-    public static final String DELIVERY_TIME = "deliveryTime";
-    public static final String EMPLOYEE_CODE = "empCode";
-
-    // delivery without status
-    // public static final String CUSTOMER_DISTRICT_WITHOUT_STATUS = "customerDistrict";
-    public static final String BARCODE_NO_WITHOUT_STATUS = "barcode";
-    public static final String ORDERID_WITHOUT_STATUS = "orderid";
-    public static final String MERCHANT_REF_WITHOUT_STATUS = "merOrderRef";
-    public static final String MERCHANTS_NAME_WITHOUT_STATUS = "merchantName";
-    public static final String PICK_MERCHANTS_NAME_WITHOUT_STATUS = "pickMerchantName";
-    public static final String CUSTOMER_NAME_WITHOUT_STATUS = "custname";
-    public static final String Phone_WITHOUT_STATUS = "custphone";
-    public static final String CUSTOMER_ADDRESS_WITHOUT_STATUS = "custaddress";
-    public static final String PACKAGE_PRICE_WITHOUT_STATUS = "packagePrice";
-    public static final String PRODUCT_BRIEF_WITHOUT_STATUS = "productBrief";
-    public static final String DELIVERY_TIME_WITHOUT_STATUS = "deliveryTime";
-
-    // delivery without status actions
-    public static final String DROPPOINTCODE = "dropPointCode";
-    public static final String CASH_WITHOUT_STATUS = "Cash";
-    public static final String CASHTYPE_WITHOUT_STATUS = "cashType";
-    public static final String CASHTIME_WITHOUT_STATUS = "CashTime";
-    public static final String CASHBY_WITHOUT_STATUS = "CashBy";
-    public static final String CASHAMT_WITHOUT_STATUS = "CashAmt";
-    public static final String CASHCOMMENT_WITHOUT_STATUS = "CashComment";
-    public static final String PARTIAL_WITHOUT_STATUS = "partial";
-    public static final String PARTIAL_TIME_WITHOUT_STATUS = "partialTime";
-    public static final String PARTIAL_BY_WITHOUT_STATUS = "partialBy";
-    public static final String PARTIAL_RECEIVE_BY_WITHOUT_STATUS = "partialReceive";
-    public static final String PARTIAL_RETURN_BY_WITHOUT_STATUS = "partialReturn";
-    public static final String PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS = "partialReason";
-    public static final String ONHOLDSCHEDULE_WITHOUT_STATUS = "onHoldSchedule";
-    public static final String ONHOLDREASON_WITHOUT_STATUS = "onHoldReason";
-    public static final String REA_WITHOUT_STATUS = "Rea";
-    public static final String REATIME_WITHOUT_STATUS = "ReaTime";
-    public static final String REABY_WITHOUT_STATUS = "ReaBy";
-    public static final String FLAG_REQ = "flagReq";
-    public static final String SLAMISS = "slaMiss";
-
-    public static final String RET_WITHOUT_STATUS = "Ret";
-    public static final String RETTIME_WITHOUT_STATUS = "RetTime";
-    public static final String RETBY_WITHOUT_STATUS = "RetBy";
-    public static final String RETREASON_WITHOUT_STATUS = "retReason";
-    public static final String RTS_WITHOUT_STATUS = "RTS";
-    public static final String RTSTIME_WITHOUT_STATUS = "RTSTime";
-    public static final String RTSBY_WITHOUT_STATUS = "RTSBy";
-    public static final String PRERET_WITHOUT_STATUS = "PreRet";
-    public static final String PRERETIME_WITHOUT_STATUS = "PreRetTime";
-    public static final String PRERETBY_WITHOUT_STATUS = "PreRetBy";
-
-
     public static final String DROP_POINT_EMP = "dropPointEmp";
     public static final String DROP_ASSIGN_TIME = "dropAssignTime";
     public static final String DROP_ASSIGN_BY = "dropAssignBy";
@@ -170,11 +67,54 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String PICK_DROP_TIME = "pickDropTime";
     public static final String PICK_DROP_BY = "pickDropBy";
 
+    // delivery actions
+    public static final String DROPPOINTCODE = "dropPointCode";
+    public static final String BARCODE_NO = "barcode";
+    public static final String ORDERID = "orderid";
+    public static final String MERCHANT_ORDER_REF = "merOrderRef";
+    public static final String MERCHANTS_NAME = "merchantName";
+    public static final String PICK_MERCHANTS_NAME = "pickMerchantName";
+    public static final String CUSTOMER_NAME = "custname";
+    public static final String CUSTOMER_PHONE = "custphone";
+    public static final String CUSTOMER_ADDRESS = "custaddress";
+    public static final String PACKAGE_PRICE = "packagePrice";
+    public static final String PRODUCT_BRIEF = "productBrief";
+    public static final String DELIVERY_TIME = "deliveryTime";
+    public static final String EMPLOYEE_CODE = "empCode";
+    public static final String CASH_ACTION = "Cash";
+    public static final String CASH_TYPE= "cashType";
+    public static final String CASH_TIME = "CashTime";
+    public static final String CASH_BY = "CashBy";
+    public static final String CASH_AMT= "CashAmt";
+    public static final String CASH_COMMENT = "CashComment";
+    public static final String PARTIAL = "partial";
+    public static final String PARTIAL_TIME = "partialTime";
+    public static final String PARTIAL_BY = "partialBy";
+    public static final String PARTIAL_RECEIVE = "partialReceive";
+    public static final String PARTIAL_RETURN = "partialReturn";
+    public static final String PARTIAL_RETURN_REASON = "partialReason";
+    public static final String ONHOLD_SCHEDULE = "onHoldSchedule";
+    public static final String ONHOLD_REASON = "onHoldReason";
+    public static final String REA = "Rea";
+    public static final String REA_TIME = "ReaTime";
+    public static final String REA_BY = "ReaBy";
+    public static final String RET = "Ret";
+    public static final String RET_TIME = "RetTime";
+    public static final String RET_BY = "RetBy";
+    public static final String RET_REASON = "retReason";
+    public static final String RTS = "RTS";
+    public static final String RTS_TIME = "RTSTime";
+    public static final String RTS_BY = "RTSBy";
+    public static final String PRERET = "PreRet";
+    public static final String PRERET_TIME = "PreRetTime";
+    public static final String PRERET_BY = "PreRetBy";
     public static final String CTS_CASH = "CTS";
     public static final String CTSTIME_CASH = "CTSTime";
     public static final String CTSBY_CASH = "CTSBy";
+    public static final String SLAMISS = "slaMiss";
+    public static final String FLAG_REQ = "flagReq";
 
-    private static final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
+
     private SQLiteDatabase db;
 
     public BarcodeDbHelper(Context context) {
@@ -286,7 +226,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "unique(id, barcode))";
 
         String CREATION_TABLE9 = "CREATE TABLE Insert_Delivery_Without_Status( "
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, " //0
                 + "dropPointCode TEXT," //1
                 + "barcode TEXT, " //2
                 + "orderid TEXT, " //3
@@ -337,7 +277,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "unique(id, barcode))";
 
 
-        String CREATION_TABLE10 = "CREATE TABLE Insert_Delivery_OnHold( "
+       /* String CREATION_TABLE10 = "CREATE TABLE Insert_Delivery_OnHold( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "dropPointCode TEXT,"
                 + "barcode TEXT, "
@@ -369,9 +309,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "onHoldReason TEXT, "
                 + "slaMiss TEXT,"
                 + "status INT, "
-                + "unique(id, barcode))";
+                + "unique(id, barcode))";*/
 
-        String CREATION_TABLE_TEMPORARY = "CREATE TABLE Insert_Delivery_Quick_Scan_Data( "
+        /*String CREATION_TABLE_TEMPORARY = "CREATE TABLE Insert_Delivery_Quick_Scan_Data( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "dropPointCode TEXT,"
                 + "barcode TEXT, "
@@ -385,13 +325,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "packagePrice TEXT, "
                 + "productBrief TEXT, "
                 + "status INT, "
-                + "unique(id, barcode))";
+                + "unique(id, barcode))";*/
 
 
 
 
 
-        String CREATION_TABLE11 = "CREATE TABLE Insert_Delivery_All_Status( "
+        /*String CREATION_TABLE11 = "CREATE TABLE Insert_Delivery_All_Status( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "barcode TEXT,"
                 + "orderid TEXT, "
@@ -430,7 +370,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "slaMiss TEXT,"
                 + "status INT, "
                 + "unique(id, barcode))";
-
+*/
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -441,9 +381,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE7);
         db.execSQL(CREATION_TABLE8);
         db.execSQL(CREATION_TABLE9);
-        db.execSQL(CREATION_TABLE10);
+        /*db.execSQL(CREATION_TABLE10);
         db.execSQL(CREATION_TABLE_TEMPORARY);
-        db.execSQL(CREATION_TABLE11);
+        db.execSQL(CREATION_TABLE11);*/
 
     }
 
@@ -459,7 +399,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_8);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_9);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_10);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_TEMPORARY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_11);
         this.onCreate(db);
     }
@@ -648,6 +587,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(sql, null);
         return c;
     }
+
     public Cursor getUnsyncedunpicked() {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM " + TABLE_NAME_8 + " WHERE " + STATUS + " = 0;";
@@ -882,11 +822,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
-
-
-
-
-
     //////// Delivery Officer Database functionalities ///////
 
     // insert counts in delivery summary
@@ -918,77 +853,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_7, columns, whereClause, whereArgs, null, null, null));
     }
 
-    //insert All Status
-    public void Insert_Delivery_All_Status(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Rea,String ReaTime,String ReaBy,String PickDrop,String PickDropTime,String PickDropBy,String dropAssignTime,String dropAssignBy, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss, int status){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put(BARCODE_ALLSTATUS, barcode);
-        values.put(ORDERID_ALLSTATUS, orderid);
-        values.put(MERCHANT_ORDER_REF_ALLSTATUS, merOrderRef);
-        values.put(MERCHANTS_NAME_ALLSTATUS, merchantName);
-        values.put(PICK_MERCHANTS_NAME_ALLSTATUS, pickMerchantName);
-        values.put(CUSTOMER_NAME_ALLSTATUS, custname);
-        values.put(CUSTOMER_ADDRESS_ALLSTATUS, custaddress);
-        values.put(PHONE_ALLSTATUS, custphone);
-        values.put(PACKAGE_PRICE_ALLSTATUS, packagePrice);
-        values.put(PRODUCT_BRIEF_ALLSTATUS, productBrief);
-        values.put(DELIVERY_TIME_ALLSTATUS, deliveryTime);
-        values.put(REA_ALLSTATUS, Rea);
-        values.put(REATIME_ALLSTATUS, ReaTime);
-        values.put(REABY_ALLSTATUS, ReaBy);
-        values.put(PICKDROP_ALLSTATUS, PickDrop);
-        values.put(PICKDROPTIME_ALLSTATUS, PickDropTime);
-        values.put(PICKDROPBY_ALLSTATUS, PickDropBy);
-        values.put(DROPASSIGNTIME_ALLSTATUS, dropAssignTime);
-        values.put(DROPASSIGNTBY_ALLSTATUS, dropAssignBy);
-        values.put(DROPPOINTCODE_ALLSTATUS, dropPointCode);
-        values.put(CASH_ALLSTATUS, Cash);
-        values.put(CASHTYPE_ALLSTATUS, cashType);
-        values.put(CASHTIME_ALLSTATUS, CashTime);
-        values.put(CASHBY_ALLSTATUS, CashBy);
-        values.put(CASHAMT_ALLSTATUS, CashAmt);
-        values.put(CASHCOMMENT_ALLSTATUS, CashComment);
-        values.put(PARTIAL_ALLSTATUS, partial);
-        values.put(PARTIALTIME_ALLSTATUS, partialTime);
-        values.put(PARTIALBY_ALLSTATUS, partialBy);
-        values.put(PARTIALRECEIVE_ALLSTATUS, partialReceive);
-        values.put(PARTIALRETURN_ALLSTATUS, partialReturn);
-        values.put(PARTIALREASON_ALLSTATUS, partialReason);
-        values.put(ONHOLDSCHEDULE_ALLSTATUS, onHoldSchedule);
-        values.put(ONHOLDREASON_ALLSTATUS, onHoldReason);
-        values.put(SLAMISS_ALLSTATUS, slaMiss);
-        values.put(STATUS, status);
-
-        db.insert(TABLE_NAME_11, null, values);
-        db.close();
-
-    }
-    //get ALl Status Unpicked
-
-    public Cursor get_delivery_All_status_unpicked(SQLiteDatabase db, String user) {
-        String[] columns = {BARCODE_ALLSTATUS, ORDERID_ALLSTATUS, MERCHANT_ORDER_REF_ALLSTATUS, MERCHANTS_NAME_ALLSTATUS, PICK_MERCHANTS_NAME_ALLSTATUS, CUSTOMER_NAME_ALLSTATUS, CUSTOMER_ADDRESS_ALLSTATUS, PHONE_ALLSTATUS, PACKAGE_PRICE_ALLSTATUS, PRODUCT_BRIEF_ALLSTATUS, DELIVERY_TIME_ALLSTATUS};
-
-        String rquery = "select columns from TABLE_NAME_11 where USERNAME = ? and PICKDROP_ALLSTATUS =?" ;
-        Cursor c = db.rawQuery(rquery,new String[]{user,null});
-        return c;
-      /*  String whereClause = USERNAME + "=? AND "+PICKDROP_ALLSTATUS+ "=?";
-        String[] whereArgs = new String[]{
-                user,
-                null
-        };*/
-        //return (db.query(TABLE_NAME_11, columns,whereClause, whereArgs, null, null, null));
-    }
-
-    public Cursor get_delivery_All_status_without_status_onhold(SQLiteDatabase db, String user) {
-        String[] columns = {BARCODE_ALLSTATUS, ORDERID_ALLSTATUS, MERCHANT_ORDER_REF_ALLSTATUS, MERCHANTS_NAME_ALLSTATUS, PICK_MERCHANTS_NAME_ALLSTATUS, CUSTOMER_NAME_ALLSTATUS, CUSTOMER_ADDRESS_ALLSTATUS, PHONE_ALLSTATUS, PACKAGE_PRICE_ALLSTATUS, PRODUCT_BRIEF_ALLSTATUS, DELIVERY_TIME_ALLSTATUS,DROPPOINTCODE_ALLSTATUS, CASH_ALLSTATUS, CASHTYPE_ALLSTATUS, CASHTIME_ALLSTATUS, CASHBY_ALLSTATUS, CASHAMT_ALLSTATUS, CASHCOMMENT_ALLSTATUS, PARTIAL_ALLSTATUS, PARTIALTIME_ALLSTATUS, PARTIALBY_ALLSTATUS, PARTIALRECEIVE_ALLSTATUS, PARTIALREASON_ALLSTATUS, PARTIALRETURN_ALLSTATUS, ONHOLDSCHEDULE_ALLSTATUS, ONHOLDREASON_ALLSTATUS,REA_ALLSTATUS,REATIME_ALLSTATUS,REABY_ALLSTATUS,SLAMISS_ALLSTATUS};
-        String whereClause = USERNAME + "=?";
-        String[] whereArgs = new String[]{
-                user
-        };
-        return (db.query(TABLE_NAME_11, columns, whereClause, whereArgs, null, null, null));
-    }
-
  // insert counts in delivery unpicked
     public void insert_delivery_unpicked_count(String username,String empCode,String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime,String dropPointEmp, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -997,14 +861,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(USERNAME, username);
         values.put(EMPLOYEE_CODE, empCode);
         values.put(BARCODE_NO, barcode);
-        values.put(BARCODE_NO, barcode);
         values.put(ORDERID, orderid);
         values.put(MERCHANT_ORDER_REF, merOrderRef);
         values.put(MERCHANTS_NAME, merchantName);
         values.put(PICK_MERCHANTS_NAME, pickMerchantName);
         values.put(CUSTOMER_NAME, custname);
         values.put(CUSTOMER_ADDRESS, custaddress);
-        values.put(Phone, custphone);
+        values.put(CUSTOMER_PHONE, custphone);
         values.put(PACKAGE_PRICE, packagePrice);
         values.put(PRODUCT_BRIEF, productBrief);
         values.put(DELIVERY_TIME, deliveryTime);
@@ -1019,34 +882,22 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME_8, null, values);
         db.close();
     }
-/*,DROP_POINT_EMP,DROP_ASSIGN_TIME,DROP_ASSIGN_BY,PICK_DROP, PICK_DROP_TIME,PICK_DROP_BY*/
-    // get the delivery unpicked
 
-    /*  public Cursor get_mypickups_today(SQLiteDatabase db, String user) {
-        String[] columns = {KEY_ID, MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD, PRODUCT_NAME, APIORDERID, DEMO, PICKED_STATUS, RECEIVED_STATUS, SQL_PRIMARY_ID};
-        String sortOrder = CREATED_AT + " ASC";
-        String whereClause = EXECUTIVE_NAME + "=? AND (" + PICKED_STATUS + " = ?  OR " + PICKED_STATUS + " = ?  OR " + PICKED_STATUS + " = ?)";
-        String[] whereArgs = new String[]{
-                user,
-                "0",
-                "2",
-                "5"
-        };
-        return (db.query(TABLE_NAME_1, columns, whereClause, whereArgs, null, null, sortOrder));
-    }*/
-
-
-  /*  public Cursor get_delivery_unpicked(SQLiteDatabase db, String user) {
-        String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME};
-        String whereClause = USERNAME + "=?";
-        String[] whereArgs = new String[]{
-                user
-        };
-        return (db.query(TABLE_NAME_8, columns, whereClause, whereArgs, null, null, null));
-    }*/
   // get the delivery unpicked
   public Cursor get_delivery_unpicked(SQLiteDatabase db, String user, String pickDrop) {
-      String[] columns = {USERNAME,EMPLOYEE_CODE,BARCODE_NO, ORDERID, MERCHANT_ORDER_REF, MERCHANTS_NAME, PICK_MERCHANTS_NAME, CUSTOMER_NAME, CUSTOMER_ADDRESS, Phone, PACKAGE_PRICE, PRODUCT_BRIEF, DELIVERY_TIME,};
+      String[] columns = {USERNAME,
+              EMPLOYEE_CODE,
+              BARCODE_NO,
+              ORDERID,
+              MERCHANT_ORDER_REF,
+              MERCHANTS_NAME,
+              PICK_MERCHANTS_NAME,
+              CUSTOMER_NAME,
+              CUSTOMER_ADDRESS,
+              CUSTOMER_PHONE,
+              PACKAGE_PRICE,
+              PRODUCT_BRIEF,
+              DELIVERY_TIME,};
 
       String whereClause = USERNAME + "=? AND " + PICK_DROP+ "<> ?";
       String[] whereArgs = new String[]{
@@ -1077,57 +928,54 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     //insert counts in without status
 
-    public void insert_delivery_without_status(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String RTS,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,String slaMiss, String flagReq, int status) {
+    public void insert_delivery_without_status(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,String slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
       //  values.put(CUSTOMER_DISTRICT_WITHOUT_STATUS, customerDistrict);
-        values.put(BARCODE_NO_WITHOUT_STATUS, barcode);
-        values.put(ORDERID_WITHOUT_STATUS, orderid);
-        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
-        values.put(MERCHANTS_NAME_WITHOUT_STATUS, merchantName);
-        values.put(PICK_MERCHANTS_NAME_WITHOUT_STATUS, pickMerchantName);
-        values.put(CUSTOMER_NAME_WITHOUT_STATUS, custname);
-        values.put(CUSTOMER_ADDRESS_WITHOUT_STATUS, custaddress);
-        values.put(Phone_WITHOUT_STATUS, custphone);
-        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
-        values.put(PRODUCT_BRIEF_WITHOUT_STATUS, productBrief);
-        values.put(DELIVERY_TIME_WITHOUT_STATUS, deliveryTime);
+        values.put(BARCODE_NO, barcode);
+        values.put(ORDERID, orderid);
+        values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(MERCHANTS_NAME, merchantName);
+        values.put(PICK_MERCHANTS_NAME, pickMerchantName);
+        values.put(CUSTOMER_NAME, custname);
+        values.put(CUSTOMER_ADDRESS, custaddress);
+        values.put(CUSTOMER_PHONE, custphone);
+        values.put(PACKAGE_PRICE, packagePrice);
+        values.put(PRODUCT_BRIEF, productBrief);
+        values.put(DELIVERY_TIME, deliveryTime);
         values.put(DROPPOINTCODE, dropPointCode);
-        values.put(CASH_WITHOUT_STATUS, Cash);
-        values.put(CASHTYPE_WITHOUT_STATUS, cashType);
-        values.put(CASHTIME_WITHOUT_STATUS, CashTime);
-        values.put(CASHBY_WITHOUT_STATUS, CashBy);
-        values.put(CASHAMT_WITHOUT_STATUS, CashAmt);
-        values.put(CASHCOMMENT_WITHOUT_STATUS, CashComment);
-        values.put(PARTIAL_WITHOUT_STATUS, partial);
-        values.put(PARTIAL_TIME_WITHOUT_STATUS, partialTime);
-        values.put(PARTIAL_BY_WITHOUT_STATUS, partialBy);
-        values.put(PARTIAL_RECEIVE_BY_WITHOUT_STATUS, partialReceive);
-        values.put(PARTIAL_RETURN_BY_WITHOUT_STATUS, partialReturn);
-        values.put(PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, partialReason);
-        values.put(ONHOLDSCHEDULE_WITHOUT_STATUS, onHoldSchedule);
-        values.put(ONHOLDREASON_WITHOUT_STATUS, onHoldReason);
-        values.put(REA_WITHOUT_STATUS, Rea);
-        values.put(REATIME_WITHOUT_STATUS, ReaTime);
-        values.put(REABY_WITHOUT_STATUS, ReaBy);
-
-        values.put(RET_WITHOUT_STATUS, Ret);
-        values.put(RETTIME_WITHOUT_STATUS, RetTime);
-        values.put(RETBY_WITHOUT_STATUS, RetBy);
-        values.put(REABY_WITHOUT_STATUS, RetBy);
-        values.put(RETREASON_WITHOUT_STATUS, retReason);
-        values.put(RTS_WITHOUT_STATUS, RTS);
-        values.put(RTSTIME_WITHOUT_STATUS, RTSTime);
-        values.put(RTSBY_WITHOUT_STATUS, RTSBy);
-        values.put(PRERET_WITHOUT_STATUS, PreRet);
-        values.put(PRERETIME_WITHOUT_STATUS, PreRetTime);
-        values.put(PRERETBY_WITHOUT_STATUS, PreRetBy);
+        values.put(CASH_ACTION, Cash);
+        values.put(CASH_TYPE, cashType);
+        values.put(CASH_TIME, CashTime);
+        values.put(CASH_BY, CashBy);
+        values.put(CASH_AMT, CashAmt);
+        values.put(CASH_COMMENT, CashComment);
+        values.put(PARTIAL, partial);
+        values.put(PARTIAL_TIME, partialTime);
+        values.put(PARTIAL_BY, partialBy);
+        values.put(PARTIAL_RECEIVE, partialReceive);
+        values.put(PARTIAL_RETURN, partialReturn);
+        values.put(PARTIAL_RETURN_REASON, partialReason);
+        values.put(ONHOLD_SCHEDULE, onHoldSchedule);
+        values.put(ONHOLD_REASON, onHoldReason);
+        values.put(REA, Rea);
+        values.put(REA_TIME, ReaTime);
+        values.put(REA_BY, ReaBy);
+        values.put(RET, Ret);
+        values.put(RET_TIME, RetTime);
+        values.put(RET_BY, RetBy);
+        values.put(REA_BY, RetBy);
+        values.put(RET_REASON, retReason);
+        values.put(RTS, rts);
+        values.put(RTS_TIME, RTSTime);
+        values.put(RTS_BY, RTSBy);
+        values.put(PRERET, PreRet);
+        values.put(PRERET_TIME, PreRetTime);
+        values.put(PRERET_BY, PreRetBy);
         values.put(CTS_CASH,CTS);
         values.put(CTSTIME_CASH,CTSTime);
         values.put(CTSBY_CASH,CTSBy);
-
-
         values.put(SLAMISS,slaMiss);
         values.put(FLAG_REQ,flagReq);
         values.put(STATUS, status);
@@ -1137,14 +985,106 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     // get without status
+    /*+ "id INTEGER PRIMARY KEY AUTOINCREMENT, " //0
+                + "dropPointCode TEXT," //1
+                + "barcode TEXT, " //2
+                + "orderid TEXT, " //3
+                + "merOrderRef TEXT, " //4
+                + "merchantName TEXT, " //5
+                + "pickMerchantName TEXT, " //6
+                + "custname TEXT, " //7
+                + "custphone TEXT, " //8
+                + "custaddress TEXT, " //9
+
+                + "packagePrice TEXT, "//10
+                + "productBrief TEXT, " //11
+                + "deliveryTime TEXT, " //12
+                + "username TEXT, " //13
+                + "empCode TEXT, " //14
+                + "Cash TEXT, " //15
+                + "cashType TEXT, " //16
+                + "CashTime TEXT, " //17
+                + "CashBy TEXT, " //18
+                + "CashAmt TEXT, " //19
+                + "CashComment TEXT, " //20
+                + "partial TEXT, " //21
+                + "partialTime TEXT, " //23
+                + "partialBy TEXT, " //24
+                + "partialReceive TEXT, " //25
+                + "partialReturn TEXT, " //26
+                + "partialReason TEXT, " //27
+                + "onHoldSchedule TEXT, " //28
+                + "onHoldReason TEXT, " //29
+                + "Rea TEXT," //30
+                + "ReaTime TEXT," //31
+                + "ReaBy TEXT," //32
+                + "Ret TEXT," //33
+                + "RetTime TEXT," //34
+                + "RetBy TEXT," //35
+                + "retReason TEXT," //36
+                + "RTS TEXT," //37
+                + "RTSTime TEXT," //38
+                + "RTSBy TEXT," //39
+                + "PreRet TEXT," //40
+                + "PreRetTime TEXT," //41
+                + "PreRetBy TEXT,"
+                + "CTS TEXT,"//42
+                + "CTSTime TEXT,"//42
+                + "CTSBy TEXT,"//42
+                + "slaMiss TEXT," //43
+                + "flagReq TEXT," //44
+                + "status INT, " //45*/
 
     public Cursor get_delivery_without_status(SQLiteDatabase db, String user, String flagReq) {
-        String[] columns = {ORDERID_WITHOUT_STATUS, MERCHANT_REF_WITHOUT_STATUS,
-                MERCHANTS_NAME_WITHOUT_STATUS, PICK_MERCHANTS_NAME_WITHOUT_STATUS, CUSTOMER_NAME_WITHOUT_STATUS,
-                CUSTOMER_ADDRESS_WITHOUT_STATUS, Phone_WITHOUT_STATUS, PACKAGE_PRICE_WITHOUT_STATUS,
-                PRODUCT_BRIEF_WITHOUT_STATUS,SLAMISS};
-
-        db = this.getReadableDatabase();
+        String[] columns = {
+                KEY_ID,
+                DROPPOINTCODE,
+                BARCODE_NO,
+                ORDERID,
+                MERCHANT_ORDER_REF,
+                MERCHANTS_NAME,
+                PICK_MERCHANTS_NAME,
+                CUSTOMER_NAME,
+                CUSTOMER_PHONE,
+                CUSTOMER_ADDRESS,
+                PACKAGE_PRICE,
+                PRODUCT_BRIEF,
+                DELIVERY_TIME,
+                USERNAME,
+                EMPLOYEE_CODE,
+                CASH_ACTION,
+                CASH_TYPE,
+                CASH_TIME,
+                CASH_BY,
+                CASH_AMT,
+                CASH_COMMENT,
+                PARTIAL,
+                PARTIAL_TIME,
+                PARTIAL_BY,
+                PARTIAL_RECEIVE,
+                PARTIAL_RETURN,
+                PARTIAL_RETURN_REASON ,
+                ONHOLD_SCHEDULE,
+                ONHOLD_REASON,
+                REA,
+                REA_TIME,
+                REA_BY,
+                RET,
+                RET_TIME,
+                RET_BY,
+                RET_REASON,
+                RTS,
+                RTS_TIME,
+                RTS_BY,
+                PRERET,
+                PRERET_TIME,
+                PRERET_BY,
+                CTS_CASH,
+                CTSTIME_CASH,
+                CTSBY_CASH,
+                SLAMISS,
+                FLAG_REQ,
+                STATUS};
 
         String whereClause = USERNAME + "=? AND " +FLAG_REQ+ "=?" ;
         String[] whereArgs = new String[]{
@@ -1160,18 +1100,18 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public void update_cash_status(String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String cashComment, String orderid, String barcode,String merOrderRef,String packagePrice,String flagReq ,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(CASH_WITHOUT_STATUS, Cash);
-        values.put(CASHTYPE_WITHOUT_STATUS, cashType);
-        values.put(CASHTIME_WITHOUT_STATUS, CashTime);
-        values.put(CASHBY_WITHOUT_STATUS, CashBy);
-        values.put(CASHAMT_WITHOUT_STATUS, CashAmt);
-        values.put(CASHCOMMENT_WITHOUT_STATUS, cashComment);
-        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
-        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
+        values.put(CASH_COMMENT, Cash);
+        values.put(CASH_TYPE, cashType);
+        values.put(CASH_TIME, CashTime);
+        values.put(CASH_BY, CashBy);
+        values.put(CASH_AMT, CashAmt);
+        values.put(CASH_COMMENT, cashComment);
+        values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(PACKAGE_PRICE, packagePrice);
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
-        String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
+        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
         String[] whereArgs = new String[]{
                 orderid,
                 barcode
@@ -1185,19 +1125,18 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(RET_WITHOUT_STATUS, Ret);
-        values.put(RET_WITHOUT_STATUS, Ret);
-        values.put(RETTIME_WITHOUT_STATUS, RetTime);
-        values.put(REABY_WITHOUT_STATUS, RetBy);
-        values.put(RETREASON_WITHOUT_STATUS, retReason);
+        values.put(RET, Ret);
+        values.put(RET_TIME, RetTime);
+        values.put(REA_BY, RetBy);
+        values.put(RET_REASON, retReason);
 
-        values.put(PRERET_WITHOUT_STATUS, PreRet);
-        values.put(PRERETIME_WITHOUT_STATUS, PreRetTime);
-        values.put(PRERETBY_WITHOUT_STATUS, PreRetBy);
+        values.put(PRERET, PreRet);
+        values.put(PRERET_TIME, PreRetTime);
+        values.put(PRERET_BY, PreRetBy);
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
-        String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
+        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
         String[] whereArgs = new String[]{
                 orderid,
                 barcode
@@ -1232,15 +1171,15 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public void update_onhold_status(String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String orderid, String barcode, String flagReq,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(ONHOLDSCHEDULE_WITHOUT_STATUS, onHoldSchedule);
-        values.put(ONHOLDREASON_WITHOUT_STATUS, onHoldReason);
-        values.put(REA_WITHOUT_STATUS, Rea);
-        values.put(REATIME_WITHOUT_STATUS, ReaTime);
-        values.put(REABY_WITHOUT_STATUS, ReaBy);
+        values.put(ONHOLD_SCHEDULE, onHoldSchedule);
+        values.put(ONHOLD_REASON, onHoldReason);
+        values.put(REA, Rea);
+        values.put(REA_TIME, ReaTime);
+        values.put(REA_BY, ReaBy);
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
-        String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
+        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
         String[] whereArgs = new String[]{
                 orderid,
                 barcode
@@ -1252,19 +1191,19 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public void update_partial_status(String partialsCash,String partial, String partialTime, String partialBy,String partialReceive,String partialReturn,String partialReason, String orderid, String barcode,String merOrderRef,String packagePrice, String flagReq,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(CASHAMT_WITHOUT_STATUS, partialsCash);
-        values.put(PARTIAL_WITHOUT_STATUS, partial);
-        values.put(PARTIAL_TIME_WITHOUT_STATUS, partialTime);
-        values.put(PARTIAL_BY_WITHOUT_STATUS, partialBy);
-        values.put(PARTIAL_RECEIVE_BY_WITHOUT_STATUS, partialReceive);
-        values.put(PARTIAL_RETURN_BY_WITHOUT_STATUS, partialReturn);
-        values.put(PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, partialReason);
-        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
-        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
+        values.put(CASH_AMT, partialsCash);
+        values.put(PARTIAL, partial);
+        values.put(PARTIAL_TIME, partialTime);
+        values.put(PARTIAL_BY, partialBy);
+        values.put(PARTIAL_RECEIVE, partialReceive);
+        values.put(PARTIAL_RETURN, partialReturn);
+        values.put(PARTIAL_RETURN_REASON, partialReason);
+        values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(PACKAGE_PRICE, packagePrice);
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
-        String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
+        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
         String[] whereArgs = new String[]{
                 orderid,
                 barcode
@@ -1274,81 +1213,51 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
-   /* public String get_withoutstatus_count(SQLiteDatabase sqLiteDatabase, String user) {
-
-        String countQuery = "SELECT without_status FROM " + TABLE_NAME_7 + " WHERE " + "username" + " = '" + user + "'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        db.close();
-        return count;
-    }
-*/
-
-    public String get_withoutstatus_count(String user){
-        String selection = "Error";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT without_status FROM " + TABLE_NAME_7 + " WHERE " + "username" + " = '" + user + "'", null);
-        if(c.moveToFirst()){
-            selection = c.getString(c.getColumnIndex("without_status"));
-            return selection;
-        }
-        return null;
-    }
-
-
-
     //insert on hold
-    public void insert_delivery_OnHold(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String RTS,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String slaMiss, String flagReq, int status) {
+    public void insert_delivery_OnHold(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        //  values.put(CUSTOMER_DISTRICT_WITHOUT_STATUS, customerDistrict);
-        values.put(BARCODE_NO_WITHOUT_STATUS, barcode);
-        values.put(ORDERID_WITHOUT_STATUS, orderid);
-        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
-        values.put(MERCHANTS_NAME_WITHOUT_STATUS, merchantName);
-        values.put(PICK_MERCHANTS_NAME_WITHOUT_STATUS, pickMerchantName);
-        values.put(CUSTOMER_NAME_WITHOUT_STATUS, custname);
-        values.put(CUSTOMER_ADDRESS_WITHOUT_STATUS, custaddress);
-        values.put(Phone_WITHOUT_STATUS, custphone);
-        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
-        values.put(PRODUCT_BRIEF_WITHOUT_STATUS, productBrief);
-        values.put(DELIVERY_TIME_WITHOUT_STATUS, deliveryTime);
+        values.put(BARCODE_NO, barcode);
+        values.put(ORDERID, orderid);
+        values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(MERCHANTS_NAME, merchantName);
+        values.put(PICK_MERCHANTS_NAME, pickMerchantName);
+        values.put(CUSTOMER_NAME, custname);
+        values.put(CUSTOMER_ADDRESS, custaddress);
+        values.put(CUSTOMER_PHONE, custphone);
+        values.put(PACKAGE_PRICE, packagePrice);
+        values.put(PRODUCT_BRIEF, productBrief);
+        values.put(DELIVERY_TIME, deliveryTime);
         values.put(DROPPOINTCODE, dropPointCode);
-        values.put(CASH_WITHOUT_STATUS, Cash);
-        values.put(CASHTYPE_WITHOUT_STATUS, cashType);
-        values.put(CASHTIME_WITHOUT_STATUS, CashTime);
-        values.put(CASHBY_WITHOUT_STATUS, CashBy);
-        values.put(CASHAMT_WITHOUT_STATUS, CashAmt);
-        values.put(CASHCOMMENT_WITHOUT_STATUS, CashComment);
-        values.put(PARTIAL_WITHOUT_STATUS, partial);
-        values.put(PARTIAL_TIME_WITHOUT_STATUS, partialTime);
-        values.put(PARTIAL_BY_WITHOUT_STATUS, partialBy);
-        values.put(PARTIAL_RECEIVE_BY_WITHOUT_STATUS, partialReceive);
-        values.put(PARTIAL_RETURN_BY_WITHOUT_STATUS, partialReturn);
-        values.put(PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, partialReason);
-        values.put(ONHOLDSCHEDULE_WITHOUT_STATUS, onHoldSchedule);
-        values.put(ONHOLDREASON_WITHOUT_STATUS, onHoldReason);
-        values.put(REA_WITHOUT_STATUS, Rea);
-        values.put(REATIME_WITHOUT_STATUS, ReaTime);
-        values.put(REABY_WITHOUT_STATUS, ReaBy);
+        values.put(CASH_ACTION, Cash);
+        values.put(CASH_TYPE, cashType);
+        values.put(CASH_TIME, CashTime);
+        values.put(CASH_BY, CashBy);
+        values.put(CASH_AMT, CashAmt);
+        values.put(CASH_COMMENT, CashComment);
+        values.put(PARTIAL, partial);
+        values.put(PARTIAL_TIME, partialTime);
+        values.put(PARTIAL_BY, partialBy);
+        values.put(PARTIAL_RECEIVE, partialReceive);
+        values.put(PARTIAL_RETURN, partialReturn);
+        values.put(PARTIAL_RETURN_REASON, partialReason);
+        values.put(ONHOLD_SCHEDULE, onHoldSchedule);
+        values.put(ONHOLD_REASON, onHoldReason);
+        values.put(REA, Rea);
+        values.put(REA_TIME, ReaTime);
+        values.put(REA_BY, ReaBy);
 
-        values.put(RET_WITHOUT_STATUS, Ret);
-        values.put(RETTIME_WITHOUT_STATUS, RetTime);
-        values.put(RETBY_WITHOUT_STATUS, RetBy);
-        values.put(REABY_WITHOUT_STATUS, RetBy);
-        values.put(RETREASON_WITHOUT_STATUS, retReason);
-        values.put(RTS_WITHOUT_STATUS, RTS);
-        values.put(RTSTIME_WITHOUT_STATUS, RTSTime);
-        values.put(RTSBY_WITHOUT_STATUS, RTSBy);
-        values.put(PRERET_WITHOUT_STATUS, PreRet);
-        values.put(PRERETIME_WITHOUT_STATUS, PreRetTime);
-        values.put(PRERETBY_WITHOUT_STATUS, PreRetBy);
-
-
+        values.put(RET, Ret);
+        values.put(RET_TIME, RetTime);
+        values.put(RET_BY, RetBy);
+        values.put(RET_REASON, retReason);
+        values.put(RTS, rts);
+        values.put(RTS_TIME, RTSTime);
+        values.put(RTS_BY, RTSBy);
+        values.put(PRERET, PreRet);
+        values.put(PRERET_TIME, PreRetTime);
+        values.put(PRERET_BY, PreRetBy);
         values.put(SLAMISS,slaMiss);
         values.put(FLAG_REQ,flagReq);
         values.put(STATUS, status);
@@ -1358,49 +1267,55 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     // get on hold
-
     public Cursor get_delivery_OnHold(SQLiteDatabase db, String user) {
-        String[] columns = {BARCODE_NO_WITHOUT_STATUS, ORDERID_WITHOUT_STATUS, MERCHANT_REF_WITHOUT_STATUS, MERCHANTS_NAME_WITHOUT_STATUS, PICK_MERCHANTS_NAME_WITHOUT_STATUS, CUSTOMER_NAME_WITHOUT_STATUS, CUSTOMER_ADDRESS_WITHOUT_STATUS, Phone_WITHOUT_STATUS, PACKAGE_PRICE_WITHOUT_STATUS, PRODUCT_BRIEF_WITHOUT_STATUS, DELIVERY_TIME_WITHOUT_STATUS,DROPPOINTCODE, CASH_WITHOUT_STATUS, CASHTYPE_WITHOUT_STATUS, CASHTIME_WITHOUT_STATUS, CASHBY_WITHOUT_STATUS, CASHAMT_WITHOUT_STATUS, CASHCOMMENT_WITHOUT_STATUS, PARTIAL_WITHOUT_STATUS, PARTIAL_TIME_WITHOUT_STATUS, PARTIAL_BY_WITHOUT_STATUS, PARTIAL_RECEIVE_BY_WITHOUT_STATUS, PARTIAL_RETURN_BY_WITHOUT_STATUS, PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, ONHOLDSCHEDULE_WITHOUT_STATUS, ONHOLDREASON_WITHOUT_STATUS,SLAMISS};
+        String[] columns = {BARCODE_NO,
+                ORDERID,
+                MERCHANT_ORDER_REF,
+                MERCHANTS_NAME,
+                PICK_MERCHANTS_NAME,
+                CUSTOMER_NAME,
+                CUSTOMER_ADDRESS,
+                CUSTOMER_PHONE,
+                PACKAGE_PRICE,
+                PRODUCT_BRIEF,
+                DELIVERY_TIME ,
+                DROPPOINTCODE,
+                CASH_ACTION,
+                CASH_TYPE,
+                CASH_TIME,
+                CASH_BY,
+                CASH_AMT,
+                CASH_COMMENT,
+                PARTIAL,
+                PARTIAL_TIME,
+                PARTIAL_BY,
+                PARTIAL_RECEIVE,
+                PARTIAL_RETURN,
+                PARTIAL_RETURN_REASON,
+                ONHOLD_SCHEDULE,
+                ONHOLD_REASON,
+                SLAMISS};
         String whereClause = USERNAME + "=?";
         String[] whereArgs = new String[]{
                 user
         };
-        return (db.query(TABLE_NAME_10, columns, whereClause, whereArgs, null, null, null));
+        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
     }
 
-    public void insert_quick_delivery_scan_info(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, int status) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put(BARCODE_NO_WITHOUT_STATUS, barcode);
-        values.put(ORDERID_WITHOUT_STATUS, orderid);
-        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
-        values.put(MERCHANTS_NAME_WITHOUT_STATUS, merchantName);
-        values.put(PICK_MERCHANTS_NAME_WITHOUT_STATUS, pickMerchantName);
-        values.put(CUSTOMER_NAME_WITHOUT_STATUS, custname);
-        values.put(CUSTOMER_ADDRESS_WITHOUT_STATUS, custaddress);
-        values.put(Phone_WITHOUT_STATUS, custphone);
-        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
-        values.put(PRODUCT_BRIEF_WITHOUT_STATUS, productBrief);
-        values.put(STATUS, status);
-
-        db.insert(TABLE_NAME_TEMPORARY, null, values);
-        db.close();
-    }
 
     public Cursor get_quick_delivery_scan_info(SQLiteDatabase db, String barcodeNumber) {
-        String[] columns = {ORDERID_WITHOUT_STATUS,
-                MERCHANT_REF_WITHOUT_STATUS,
-                MERCHANTS_NAME_WITHOUT_STATUS,
-                PICK_MERCHANTS_NAME_WITHOUT_STATUS,
-                CUSTOMER_NAME_WITHOUT_STATUS,
-                CUSTOMER_ADDRESS_WITHOUT_STATUS,
-                Phone_WITHOUT_STATUS,
-                PACKAGE_PRICE_WITHOUT_STATUS,
-                PRODUCT_BRIEF_WITHOUT_STATUS
+        String[] columns = {ORDERID,
+                MERCHANT_ORDER_REF,
+                MERCHANTS_NAME,
+                PICK_MERCHANTS_NAME,
+                CUSTOMER_NAME,
+                CUSTOMER_ADDRESS,
+                CUSTOMER_PHONE,
+                PACKAGE_PRICE,
+                PRODUCT_BRIEF
         };
 
-        String whereClause = BARCODE_NO_WITHOUT_STATUS + "=?";
+        String whereClause = BARCODE_NO + "=?";
         String[] whereArgs = new String[]{
                 barcodeNumber
         };
@@ -1421,7 +1336,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     public void deleteunpickedOrderData(String barcode) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from " + TABLE_NAME_8 + " WHERE " + BARCODE_NO_WITHOUT_STATUS + " != '" + barcode + "'");
+        db.execSQL("delete from " + TABLE_NAME_8 + " WHERE " + BARCODE_NO + " != '" + barcode + "'");
     }
     // get scan count
     public int getUnpickedCount(String pickDrop) {
@@ -1463,7 +1378,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(EMPLOYEE_CODE, empcode);
         values.put(STATUS, status);
 
-        String whereClause = ORDERID_WITHOUT_STATUS + " = ? AND " + BARCODE_NO_WITHOUT_STATUS + " = ?";
+        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
         String[] whereArgs = new String[]{
                 orderid,
                 barcode
@@ -1472,8 +1387,5 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
-
-//    Cash, partial,onHoldSchedule, Rea,Ret, RTS, PreRet
-
 }
 

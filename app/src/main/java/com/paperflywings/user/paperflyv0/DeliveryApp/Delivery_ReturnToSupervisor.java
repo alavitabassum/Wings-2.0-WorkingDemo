@@ -54,10 +54,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -257,10 +254,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     }
 
     private void loadRecyclerView (final String user){
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String match_date = df.format(c);
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, RETURN_REQUEST,
                 new Response.Listener<String>()
                 {
@@ -351,7 +344,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"),
-                                        "NULL"
+                                        "returnReq"
                                         , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);
                             }
