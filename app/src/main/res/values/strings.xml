@@ -75,6 +75,42 @@
         <item>Customer request</item>
     </string-array>
 
+    <string-array name="returnreasons">
+        <item>Please select an option..</item>
+        <item>গ্রাহকের কাছে টাকা নেই</item>
+        <item>গ্রাহক ঠিকানায় নেই</item>
+        <item>গ্রাহকের সাথে সংযোগ করা সম্ভব হয়নি</item>
+        <item>গ্রাহক পণ্য পরবর্তী দিন নিতে চান</item>
+        <item>গ্রাহক মন পরিবর্তন করেছেন</item>
+        <item>পণ্য ডেলিভারি হবার পূর্বে  ক্রেতা বাতিল করেছে</item>
+        <item>গ্রাহক নির্ধারিত  ঠিকানায় থাকেন না</item>
+        <item>ঠিকানা অকার্যকর</item>
+        <item>সন্দেহভাজন জাল অডার</item>
+        <item>ভুল কোনো নাম্বার</item>
+        <item>পণ্যর মুল্য ভুল দেয়া</item>
+        <item>ডুপ্লিকেট অডার</item>
+        <item>পণ্য ডেলিভারি হবার পুর্বে ক্রেতা বাতিল করেছেন</item>
+        <item>অর্ডারটি অসম্পূর্ণ বা পণ্যটি অনুপস্থিত</item>
+        <item>ভুল পণ্য ছিল</item>
+        <item>ভুল সাইজ বা রং</item>
+        <item>পণ্যটির মেয়াদোত্তীর্ণ  হয়েছে</item>
+        <item>পণ্যটির আগে বেবহ্রিত হয়েছে</item>
+        <item>অনুপস্থিত অংশ</item>
+        <item>ক্যুরিয়ার দুর্ঘটনা কবলিত হয়েছিল</item>
+        <item>ড্রাইভার এর কাছে অতিরিক্ত পণ্য ছিল</item>
+        <item>লাযাদা থেকে নিশেধাজ্ঞা দেয়া হয়েছিল ডেলিভারি করার সময়</item>
+        <item>প্রাকৃতিক দুর্যোগ</item>
+        <item>ডেলিভারি করার বাহন নষ্ট হয়ে গিয়েছিল</item>
+        <item>রাস্তা বধও বা অতিরিক্ত যানজট</item>
+        <item>পণ্যটি নষ্ট হয়ে গিয়েছিল</item>
+        <item>আইন প্রয়গকারি সংস্থা পণ্য বাজেয়াপ্ত করেছিল</item>
+        <item>Out of coverage</item>
+        <item>Open Packet Issue</item>
+    </string-array>
+
+
+
+
     <string-array name="cancelreason">
         <item>Please select an option...</item>
         <item>মার্চেন্ট অর্ডার বাতিল করেছে</item>

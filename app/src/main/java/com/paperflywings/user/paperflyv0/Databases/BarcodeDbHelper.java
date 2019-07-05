@@ -1249,18 +1249,20 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
-    public void update_partial_status(String partialsCash,String partial, String partialTime, String partialBy,String partialReceive,String partialReturn,String partialReason, String orderid, String barcode,String merOrderRef,String packagePrice, String flagReq,int status) {
+
+    public void update_partial_status (String cash,String Ret, String partialsCash, String partial, String partialTime, String partialBy , String partialsReceive, String partialReason, String partialReturn, String orderid, String barcode, String flagReq,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+
+        values.put(CASH_WITHOUT_STATUS, cash);
+        values.put(RET_WITHOUT_STATUS, Ret);
         values.put(CASHAMT_WITHOUT_STATUS, partialsCash);
         values.put(PARTIAL_WITHOUT_STATUS, partial);
         values.put(PARTIAL_TIME_WITHOUT_STATUS, partialTime);
         values.put(PARTIAL_BY_WITHOUT_STATUS, partialBy);
-        values.put(PARTIAL_RECEIVE_BY_WITHOUT_STATUS, partialReceive);
+        values.put(PARTIAL_RECEIVE_BY_WITHOUT_STATUS, partialsReceive);
         values.put(PARTIAL_RETURN_BY_WITHOUT_STATUS, partialReturn);
         values.put(PARTIAL_RETURN_REASON_BY_WITHOUT_STATUS, partialReason);
-        values.put(MERCHANT_REF_WITHOUT_STATUS, merOrderRef);
-        values.put(PACKAGE_PRICE_WITHOUT_STATUS, packagePrice);
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 

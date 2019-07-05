@@ -31,21 +31,23 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
     BarcodeDbHelper db;
 
 
-
     public interface OnItemClickListener {
 
-        void onItemClick_view (View view2, int position2);
+        void onItemClick_view(View view2, int position2);
+
         /*   void onItemClick(View view, int position);
            void onItemClick_view_orderIDs (View view3, int position3);*/
-        void onItemClick_call (View view4, int position4);
+        void onItemClick_call(View view4, int position4);
     }
-    public void setOnItemClickListener(OnItemClickListener listener){
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.mListner = listener;
     }
 
-    public void setOnItemTouchListener(RecyclerView.OnItemTouchListener t_listener){
+    public void setOnItemTouchListener(RecyclerView.OnItemTouchListener t_listener) {
         this.touchListener = t_listener;
     }
+
     public DeliveryReturnToSuperVisorAdapter(List<DeliveryReturnToSuperVisorModel> list, Context context) {
         this.list = list;
         this.context = context;
@@ -73,28 +75,28 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
         public ViewHolder(View itemView, int i) {
             super(itemView);
 
-            item_ordId_without_status=itemView.findViewById(R.id.orderId_without_status);
-            item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
-            item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
+            item_ordId_without_status = itemView.findViewById(R.id.orderId_without_status);
+            item_merOrderRef_without_status = itemView.findViewById(R.id.m_order_ref_without_status);
+            item_merchantName_without_status = itemView.findViewById(R.id.m_name_without_status);
 
-            item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
-            item_custname_without_status=itemView.findViewById(R.id.customer_name_without_status);
-            item_custaddress_without_status=itemView.findViewById(R.id.customer_Address_without_status);
-            item_custphone_without_status=itemView.findViewById(R.id.m_phn_num_without_status);
-            item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
-            item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
-            item_deliveryTime_without_status=itemView.findViewById(R.id.deliverytime);
-            itemStatus_returnr_status=itemView.findViewById(R.id.btn_status_returnr_status);
-            card_view_without_status=itemView.findViewById(R.id.card_view_delivery_returnr_list);
+            item_pickMerchantName_without_status = itemView.findViewById(R.id.pick_m_name_without_status);
+            item_custname_without_status = itemView.findViewById(R.id.customer_name_without_status);
+            item_custaddress_without_status = itemView.findViewById(R.id.customer_Address_without_status);
+            item_custphone_without_status = itemView.findViewById(R.id.m_phn_num_without_status);
+            item_packagePrice_without_status = itemView.findViewById(R.id.price_without_status);
+            item_productBrief_without_status = itemView.findViewById(R.id.package_brief_without_status);
+            item_deliveryTime_without_status = itemView.findViewById(R.id.deliverytime);
+            itemStatus_returnr_status = itemView.findViewById(R.id.btn_status_returnr_status);
+            card_view_without_status = itemView.findViewById(R.id.card_view_delivery_returnr_list);
 
             item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
             item_custphone_without_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view4) {
-                    if(mListner!=null){
+                    if (mListner != null) {
                         int position4 = getAdapterPosition();
-                        if(position4!=RecyclerView.NO_POSITION){
+                        if (position4 != RecyclerView.NO_POSITION) {
                             mListner.onItemClick_call(view4, position4);
                         }
                     }
@@ -104,9 +106,9 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
             itemStatus_returnr_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
-                    if(mListner!=null){
+                    if (mListner != null) {
                         int position2 = getAdapterPosition();
-                        if(position2!=RecyclerView.NO_POSITION){
+                        if (position2 != RecyclerView.NO_POSITION) {
                             mListner.onItemClick_view(view2, position2);
                         }
                     }
@@ -117,6 +119,7 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
         }
 
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
