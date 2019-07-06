@@ -704,7 +704,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryWithoutStatus.this,
                                         android.R.layout.simple_spinner_item,
 //                                        getResources().getStringArray(R.array.returnreasons));
-                                        getResources().getStringArray(R.array.onholdreasons));
+                                        getResources().getStringArray(R.array.returnreasons));
                                 adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 mReturnRSpinner.setAdapter(adapterReturnR);
 

@@ -1302,6 +1302,26 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
         return count;
     }
+    public int getCashCount(String flagReq) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
+    public int getReturnRequestCount(String flagReq) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
 
     public void update_cts_status(String CTS,String CTSTime,String CTSBy, String empcode,String barcode,String orderid, int status) {
         SQLiteDatabase db = this.getWritableDatabase();

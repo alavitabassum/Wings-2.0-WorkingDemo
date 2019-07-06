@@ -89,7 +89,7 @@ public class DeliveryOnHold extends AppCompatActivity
         db.getWritableDatabase();
 
         setContentView(R.layout.activity_delivery_on_hold);
-        onhold_text = (TextView)findViewById(R.id.OnHold_id_);;
+        onhold_text = (TextView)findViewById(R.id.OnHold_id_);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -266,8 +266,8 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("partialReceive"),
                                         o.getString("partialReturn"),
                                         o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
                                         o.getString("onHoldReason"),
+                                        o.getString("onHoldSchedule"),
                                         o.getString("Rea"),
                                         o.getString("ReaTime"),
                                         o.getString("ReaBy"),
@@ -339,6 +339,8 @@ public class DeliveryOnHold extends AppCompatActivity
             startActivity(homeIntent);
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -725,7 +727,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
 
                                 // final EditText et3 = mViewOnHold.findViewById(R.id.Remarks_onhold_status);
-                                // final TextView tv2 = mViewOnHold.findViewById(R.id.datepickerText);
+                                //final TextView tv2 = mViewOnHold.findViewById(R.id.date_on_hold);
                                 final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
 
 
@@ -788,6 +790,9 @@ public class DeliveryOnHold extends AppCompatActivity
                                         String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
 
                                         String onHoldSchedule = bt1.getText().toString();
+
+                                        //String onHoldSchedule= tv2.getText().toString();
+
 
                                         update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode, "onHold");
 
@@ -903,7 +908,7 @@ public class DeliveryOnHold extends AppCompatActivity
         String str = String.valueOf(db.getOnholdCount("onHold"));
         onhold_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
-                DeliveryWithoutStatus.class);
+                DeliveryOnHold.class);
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -966,7 +971,7 @@ public class DeliveryOnHold extends AppCompatActivity
         String str = String.valueOf(db.getOnholdCount("onHold"));
         onhold_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
-                DeliveryWithoutStatus.class);
+                DeliveryOnHold.class);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -1025,7 +1030,7 @@ public class DeliveryOnHold extends AppCompatActivity
         String str = String.valueOf(db.getOnholdCount("onHold"));
         onhold_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
-                DeliveryWithoutStatus.class);
+                DeliveryOnHold.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -1052,7 +1057,8 @@ public class DeliveryOnHold extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);}
+                        startActivity(withoutstatuscount);
+                    }
                 }
         ) {
             @Override

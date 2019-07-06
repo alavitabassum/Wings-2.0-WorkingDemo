@@ -147,9 +147,9 @@ public class DeliveryOnHoldModel{
         this.slaMiss = slaMiss;
         //this.withoutStatus = withoutStatus;
     }
-    public DeliveryOnHoldModel(String dropPointCode,String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule) {
+    public DeliveryOnHoldModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule,String slaMiss) {
 
-        this.dropPointCode = dropPointCode;
+
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
@@ -175,7 +175,7 @@ public class DeliveryOnHoldModel{
         this.partialReason = partialReason;
         this.onHoldReason = onHoldReason;
         this.onHoldSchedule = onHoldSchedule;
-
+        this.slaMiss = slaMiss;
 
     }
 

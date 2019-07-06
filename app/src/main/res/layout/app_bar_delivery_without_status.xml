@@ -24,7 +24,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/without_Status_id"
         android:layout_width="320dp"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
         android:layout_marginTop="65dp"
         android:gravity="center"
         android:foregroundGravity="center|fill"
@@ -39,7 +39,7 @@
             android:id="@+id/withoutStatusText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_centerHorizontal="true"
             android:lines="1"
             android:maxLines="1"
@@ -58,11 +58,48 @@
             android:textAlignment="center"
             android:textColor="#000"
             android:textSize="15sp" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="32dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/slamMissText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_centerHorizontal="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Number of Sla Miss: "
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="0dp"/>
+
+        <TextView
+            android:id="@+id/slamMiss_id_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/slamMissText"
+            android:layout_toEndOf="@+id/slamMissText"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
     </RelativeLayout>
     </android.support.v7.widget.CardView>
 
+
+
+
     <include layout="@layout/content_delivery_without_status"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="120dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

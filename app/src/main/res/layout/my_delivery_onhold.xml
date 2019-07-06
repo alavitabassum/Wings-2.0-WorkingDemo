@@ -9,7 +9,7 @@
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
     android:paddingBottom="50dp"
-    card_view_assign:cardBackgroundColor="#FFF0E6"
+    card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
 
@@ -47,7 +47,7 @@
             android:layout_marginStart="0dp"
             android:textColor="#000"
             android:textStyle="bold"
-            android:textSize="11sp" />
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/deliverytime_onhold"
@@ -60,7 +60,7 @@
             android:layout_marginStart="0dp"
             android:textColor="@color/white"
             android:background="@drawable/rounded_cercleshape"
-            android:textSize="15sp"
+            android:textSize="11sp"
             android:elevation="4dp"/>
 
 
@@ -71,12 +71,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="15dp"
-            android:lines="2"
-            android:maxLines="2"
+            android:layout_marginTop="22dp"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Order ID: "
             android:textColor="#000"
-            android:textSize="15sp"
+            android:textSize="11sp"
             android:textStyle="bold" />
 
         <TextView
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/ordertxt_onhold"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="18dp"
             android:layout_marginEnd="6dp"
             android:layout_toEndOf="@+id/ordertxt_onhold"
             android:lines="2"
