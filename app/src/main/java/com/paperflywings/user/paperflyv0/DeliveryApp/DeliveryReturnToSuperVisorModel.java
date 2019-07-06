@@ -41,6 +41,151 @@ public class DeliveryReturnToSuperVisorModel {
     private String RetReason;
     private String Rts;
     private String RtsTime;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmpCode() {
+        return empCode;
+    }
+
+    public void setEmpCode(String empCode) {
+        this.empCode = empCode;
+    }
+
+    public String getCTS() {
+        return CTS;
+    }
+
+    public void setCTS(String CTS) {
+        this.CTS = CTS;
+    }
+
+    public String getCTSTime() {
+        return CTSTime;
+    }
+
+    public void setCTSTime(String CTSTime) {
+        this.CTSTime = CTSTime;
+    }
+
+    public String getCTSBy() {
+        return CTSBy;
+    }
+
+    public void setCTSBy(String CTSBy) {
+        this.CTSBy = CTSBy;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getRet() {
+        return Ret;
+    }
+
+    public void setRet(String ret) {
+        Ret = ret;
+    }
+
+    public String getRetTime() {
+        return RetTime;
+    }
+
+    public void setRetTime(String retTime) {
+        RetTime = retTime;
+    }
+
+    public String getRetBy() {
+        return RetBy;
+    }
+
+    public void setRetBy(String retBy) {
+        RetBy = retBy;
+    }
+
+    public String getRetReason() {
+        return RetReason;
+    }
+
+    public void setRetReason(String retReason) {
+        RetReason = retReason;
+    }
+
+    public String getRts() {
+        return Rts;
+    }
+
+    public void setRts(String rts) {
+        Rts = rts;
+    }
+
+    public String getRtsTime() {
+        return RtsTime;
+    }
+
+    public void setRtsTime(String rtsTime) {
+        RtsTime = rtsTime;
+    }
+
+    public String getRtsBy() {
+        return RtsBy;
+    }
+
+    public void setRtsBy(String rtsBy) {
+        RtsBy = rtsBy;
+    }
+
+    public String getPreRet() {
+        return PreRet;
+    }
+
+    public void setPreRet(String preRet) {
+        PreRet = preRet;
+    }
+
+    public String getPreRetTime() {
+        return PreRetTime;
+    }
+
+    public void setPreRetTime(String preRetTime) {
+        PreRetTime = preRetTime;
+    }
+
+    public String getPreRetBy() {
+        return PreRetBy;
+    }
+
+    public void setPreRetBy(String preRetBy) {
+        PreRetBy = preRetBy;
+    }
+
+    public String getFlagReq() {
+        return flagReq;
+    }
+
+    public void setFlagReq(String flagReq) {
+        this.flagReq = flagReq;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String RtsBy;
     private String PreRet;
     private String PreRetTime;

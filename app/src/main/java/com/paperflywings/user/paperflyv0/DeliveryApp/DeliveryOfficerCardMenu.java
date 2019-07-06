@@ -89,7 +89,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
         else {
             getData(username);
-            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
 
 
