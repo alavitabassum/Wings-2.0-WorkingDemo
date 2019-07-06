@@ -154,36 +154,56 @@ public class DeliveryCTS extends AppCompatActivity
             Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "cash");
 
             while (c.moveToNext()){
-                String barcode = c.getString(0);
-                String orderid = c.getString(1);
-                String merOrderRef = c.getString(2);
-                String merchantName = c.getString(3);
-                String pickMerchantName = c.getString(4);
-                String custname = c.getString(5);
-                String custaddress = c.getString(6);
-                String custphone = c.getString(7);
-                String packagePrice = c.getString(8);
-                String productBrief = c.getString(9);
-                String deliveryTime = c.getString(10);
-                String Cash = c.getString(11);
-                String cashType = c.getString(12);
-                String CashTime = c.getString(13);
-                String CashBy = c.getString(14);
-                String CashAmt = c.getString(15);
-                String CashComment = c.getString(16);
-                String partial = c.getString(17);
-                String partialTime = c.getString(18);
-                String partialBy = c.getString(19);
-                String partialReceive = c.getString(20);
-                String partialReturn = c.getString(21);
-                String partialReason = c.getString(22);
-                String onHoldSchedule = c.getString(23);
-                String onHoldReason = c.getString(24);
-                String Rea = c.getString(25);
-                String ReaTime = c.getString(26);
-                String ReaBy = c.getString(27);
+                int id = c.getInt(0);
+                String dropPointCode = c.getString(1);
+                String barcode = c.getString(2);
+                String orderid = c.getString(3);
+                String merOrderRef = c.getString(4);
+                String merchantName = c.getString(5);
+                String pickMerchantName = c.getString(6);
+                String custname = c.getString(7);
+                String custphone = c.getString(8);
+                String custaddress = c.getString(9);
+                String packagePrice = c.getString(10);
+                String productBrief = c.getString(11);
+                String deliveryTime = c.getString(12);
+                String username = c.getString(13);
+                String empCode = c.getString(14);
+                String cash = c.getString(15);
+                String cashType = c.getString(16);
+                String cashTime = c.getString(17);
+                String cashBy = c.getString(18);
+                String cashAmt = c.getString(19);
+                String cashComment = c.getString(20);
+                String partial = c.getString(21);
+                String partialTime = c.getString(22);
+                String partialBy = c.getString(23);
+                String partialReceive = c.getString(24);
+                String partialReturn = c.getString(25);
+                String partialReason = c.getString(26);
+                String onHoldSchedule = c.getString(27);
+                String onHoldReason = c.getString(28);
+                String rea = c.getString(29);
+                String reaTime = c.getString(30);
+                String reaBy = c.getString(31);
+                String ret = c.getString(32);
+                String retTime = c.getString(33);
+                String retBy = c.getString(34);
+                String retReason = c.getString(35);
+                String rts = c.getString(36);
+                String rtsTime = c.getString(37);
+                String rtsBy = c.getString(38);
+                String preRet = c.getString(39);
+                String preRetTime = c.getString(40);
+                String preRetBy = c.getString(41);
+                String cts = c.getString(42);
+                String ctsTime = c.getString(43);
+                String ctsBy = c.getString(44);
+                String slaMiss = c.getString(45);
+                String flagReq = c.getString(46);
+                int status = c.getInt(47);
 
-                DeliveryCTSModel withoutStatus_model = new DeliveryCTSModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,Rea,ReaTime,ReaBy);
+                DeliveryCTSModel withoutStatus_model = new DeliveryCTSModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
 
                 list.add(withoutStatus_model);
             }
@@ -205,8 +225,7 @@ public class DeliveryCTS extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteWithoutStatusList(sqLiteDatabase);
-
+                        db.deleteList(sqLiteDatabase, "cash");
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
@@ -215,7 +234,8 @@ public class DeliveryCTS extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryCTSModel withoutStatus_model = new  DeliveryCTSModel(
-
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
@@ -242,6 +262,22 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("partialReason"),
                                         o.getString("onHoldReason"),
                                         o.getString("onHoldSchedule"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("Ret"),
+                                        o.getString("RetTime"),
+                                        o.getString("RetBy"),
+                                        o.getString("retReason"),
+                                        o.getString("RTS"),
+                                        o.getString("RTSTime"),
+                                        o.getString("RTSBy"),
+                                        o.getString("PreRet"),
+                                        o.getString("PreRetTime"),
+                                        o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
                                         o.getString("slaMiss"));
 
                                 db.insert_delivery_without_status(
@@ -480,21 +516,18 @@ public class DeliveryCTS extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         final String currentDateTime = df.format(c);
 
-        final String cash = "Y";
-        final String cashBy = username;
-        final String cashType = "CoD";
-        final String cashTime = currentDateTime;
+        final String cash = clickedITem.getCash();
+        final String cashBy = clickedITem.getCashBy();
+        final String cashType = clickedITem.getCashType();
+        final String cashTime = clickedITem.getCashTime();
         final String CTS = "Y";
         final String CTSTime = currentDateTime;
         final String CTSBy = username;
-
 
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
 
         CashToS(CTS,CTSTime,CTSBy,empcode,barcode,orderid);
-        //pickedfordelivery(lastText,username,empcode,BarCode,OrderId);
-
     }
 
     private void CashToS(final String CTS,final String CTSTime, final String CTSBy,final String empcode, final String barcode, final String orderid) {

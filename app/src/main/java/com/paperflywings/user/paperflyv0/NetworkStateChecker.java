@@ -172,11 +172,26 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursor10.moveToNext());
                 }
 
+               //getting all the unsynced data
+                Cursor cursorOnhold = database2.getUnsyncedOnholdLog();
+                if (cursorOnhold.moveToFirst()) {
+                    do {
+                        insertOnholdLog(cursorOnhold.getInt(0), // id
+                                cursorOnhold.getString(1), // orderid
+                                cursorOnhold.getString(2), // barcode
+                                cursorOnhold.getString(3), // merchant name
+                                cursorOnhold.getString(4), // pick merchant name
+                                cursorOnhold.getString(5), // onHoldSchedule
+                                cursorOnhold.getString(6), // onHoldReason
+                                cursorOnhold.getString(7), // username
+                                cursorOnhold.getString(8)); // currentDateTime
+                    } while (cursorOnhold.moveToNext());
+                }
 
                 Cursor cursorStatus = database2.getUnsyncedWithoutStatus();
                 if (cursorStatus.moveToFirst()) {
                     do {
-                        String statusFlag = cursorStatus.getString(43);
+                        String statusFlag = cursorStatus.getString(46);
                         if(statusFlag == "cash") {
                             sync_cash_status(
                                     cursorStatus.getInt(0), // id
@@ -190,23 +205,23 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                     cursorStatus.getString(2),//barcode barcode
                                     cursorStatus.getString(4), // merorderref
                                     cursorStatus.getString(10), // package price
-                                    cursorStatus.getString(43) // flag request
+                                    cursorStatus.getString(46) // flag request
                             );
                         } else if(statusFlag == "partial"){
-                        sync_partial_status(
+                            sync_partial_status(
                                 cursorStatus.getInt(0), // id
+                                cursorStatus.getString(15), // cash
+                                cursorStatus.getString(32), // ret
                                 cursorStatus.getString(19), // partial cash
                                 cursorStatus.getString(21), // partial
                                 cursorStatus.getString(22),// partial time
                                 cursorStatus.getString(23), // partialBy
                                 cursorStatus.getString(24), // partialReceive
-                                cursorStatus.getString(25),// partialReturn
                                 cursorStatus.getString(26),//partialReason
+                                cursorStatus.getString(25),// partialReturn
                                 cursorStatus.getString(3),//orderid
-                                cursorStatus.getString(4), // merorderref
-                                cursorStatus.getString(10), // package price
                                 cursorStatus.getString(2), //  barcode
-                                cursorStatus.getString(43) // flag request
+                                cursorStatus.getString(46) // flag request
                             );
                         } else if(statusFlag == "onHold") {
                             sync_onhold_status(
@@ -218,10 +233,10 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                     cursorStatus.getString(31), // rea by
                                     cursorStatus.getString(3),//orderid orderid
                                     cursorStatus.getString(2),//barcode barcode
-                                    cursorStatus.getString(43) // flag request
+                                    cursorStatus.getString(46) // flag request
                             );
                         } else if(statusFlag == "returnReq"){
-                        sync_return_status(
+                            sync_return_status(
                                 cursorStatus.getInt(0), // id
                                 cursorStatus.getString(32), // ret
                                 cursorStatus.getString(33), // ret time
@@ -232,61 +247,17 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                 cursorStatus.getString(41),// pre ret by
                                 cursorStatus.getString(3),//orderid orderid
                                 cursorStatus.getString(2),//barcode barcode
-                                cursorStatus.getString(43) // flag request
+                                cursorStatus.getString(46) // flag request
                         ); }
                     } while (cursorStatus.moveToNext());
                 }
             }
         }
     }
-    /*    + "id INTEGER PRIMARY KEY AUTOINCREMENT, " 0
-            + "dropPointCode TEXT," 1
-            + "barcode TEXT, " 2
-            + "orderid TEXT, " 3
-            + "merOrderRef TEXT, "  4
-            + "merchantName TEXT, " 5
-            + "pickMerchantName TEXT, " 6
-            + "custname TEXT, " 7
-            + "custaddress TEXT, " 8
-            + "custphone TEXT, " 9
-            + "packagePrice TEXT, " 10
-            + "productBrief TEXT, " 11
-            + "deliveryTime TEXT, " 12
-            + "username TEXT, " 13
-            + "empCode TEXT, " 14
-            + "Cash TEXT, " 15
-            + "cashType TEXT, " 16
-            + "CashTime TEXT, " 17
-            + "CashBy TEXT, " 18
-            + "CashAmt TEXT, " 19
-            + "CashComment TEXT, " 20
-            + "partial TEXT, " 21
-            + "partialTime TEXT, " 22
-            + "partialBy TEXT, " 23
-            + "partialReceive TEXT, " 24
-            + "partialReturn TEXT, " 25
-            + "partialReason TEXT, " 26
-            + "onHoldSchedule TEXT, " 27
-            + "onHoldReason TEXT, " 28
-            + "Rea TEXT," 29
-            + "ReaTime TEXT," 30
-            + "ReaBy TEXT," 31
-            + "Ret TEXT," 32
-            + "RetTime TEXT," 33
-            + "RetBy TEXT," 34
-            + "retReason TEXT," 35
-            + "RTS TEXT," 36
-            + "RTSTime TEXT," 37
-            + "RTSBy TEXT," 38
-            + "PreRet TEXT," 39
-            + "PreRetTime TEXT," 40
-            + "PreRetBy TEXT," 41
-            + "slaMiss TEXT," 42
-            + "flagReq TEXT," 43
-            + "status INT, " 44*/
 
-    private void sync_return_status(final int id, final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
+
+ private void sync_return_status(final int id, final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
+       StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -329,8 +300,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-    private void sync_onhold_status(final int id, final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode, final String flagReq) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
+    public void sync_onhold_status (final int id,final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode, final String flagReq) {
+
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -371,7 +343,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-    private void sync_partial_status(final int id,final String partialsCash,final String partial,final String partialTime, final String partialBy,final String partialReceive,final String partialReturn ,final String partialReason,final String orderid,final String merOrderRef,final String packagePrice,final String barcode, final String flagReq) {
+    public void sync_partial_status (final int id, final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String flagReq) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
                     @Override
@@ -396,13 +368,15 @@ public class NetworkStateChecker extends BroadcastReceiver {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+                params.put("Cash", cash);
+                params.put("Ret", Ret);
                 params.put("CashAmt", partialsCash);
                 params.put("partial", partial);
                 params.put("partialTime", partialTime);
                 params.put("partialBy", partialBy);
-                params.put("partialReceive", partialReceive);
-                params.put("partialReturn", partialReturn);
+                params.put("partialReceive", partialsReceive);
                 params.put("partialReason", partialReason);
+                params.put("partialReturn", partialReturn);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
                 params.put("flagReq", flagReq);
@@ -440,6 +414,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
+
                 params.put("Cash", cash);
                 params.put("cashType", cashType);
                 params.put("CashTime", cashTime);
@@ -500,7 +475,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
         }
         requestQueue.add(stringRequest);
     }
-
 
     /*
      * method taking two arguments
@@ -867,6 +841,56 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 params.put("status_id", status_id);
                 params.put("status_name", status_name);
                 params.put("status_by", username);
+
+                return params;
+
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
+        requestQueue.add(stringRequest);
+    }
+
+
+    // Action Log Sync
+    private void insertOnholdLog(final int id, final String orderid, final String barcode, final String merchantName, final String pickMerchantName, final String onHoldSchedule, final String onHoldReason, final String username, final String currentDateTime){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.INSERT_ONHOLD_LOG,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+
+                                //updating the status in sqlite
+                                database2.updateOnholdLog(id, NAME_SYNCED_WITH_SERVER);
+
+                                //sending the broadcast to refresh the list
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                params.put("merchantName", merchantName);
+                params.put("pickMerchantName", pickMerchantName);
+                params.put("onHoldSchedule", onHoldSchedule);
+                params.put("onHoldReason", onHoldReason);
+                params.put("username", username);
+                params.put("currentDateTime", currentDateTime);
 
                 return params;
 

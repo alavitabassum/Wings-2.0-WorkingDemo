@@ -75,7 +75,7 @@
         <item>Customer request</item>
     </string-array>
 
-    <string-array name="returnreasons">
+    <string-array name="returnreasonsAll">
         <item>Please select an option..</item>
         <item>গ্রাহকের কাছে টাকা নেই</item>
         <item>গ্রাহক ঠিকানায় নেই</item>

@@ -18,7 +18,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
     private static final String TABLE_NAME_9 = "All_delivery_data";
     private static final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
-    private static final String TABLE_NAME_11 = "Insert_Delivery_All_Status";
+    private static final String TABLE_NAME_ONHOLD_LOG = "Insert_Onhold_Log";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
@@ -113,6 +113,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String CTSBY_CASH = "CTSBy";
     public static final String SLAMISS = "slaMiss";
     public static final String FLAG_REQ = "flagReq";
+    public static final String CURRENT_DATE = "currentDateTime";
 
     private static final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
@@ -311,6 +312,19 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "status INT, "
                 + "unique(id, barcode))";
 
+        String CREATION_TABLE_ONHOLD_LOG = "CREATE TABLE Insert_Onhold_Log ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, " // 0
+                + "orderid TEXT, " //1
+                + "barcode TEXT, " // 2
+                + "merchantName TEXT, " // 3
+                + "pickMerchantName TEXT, " // 4
+                + "onHoldSchedule TEXT, " // 5
+                + "onHoldReason TEXT, " // 6
+                + "username TEXT, " // 7
+                + "currentDateTime TEXT, " // 8
+                + "status INT, " // 9
+                + " unique(id))";
+
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
         db.execSQL(CREATION_TABLE2);
@@ -320,6 +334,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE8);
         db.execSQL(CREATION_TABLE9);
         db.execSQL(CREATION_TABLE10);
+        db.execSQL(CREATION_TABLE_ONHOLD_LOG);
 
     }
 
@@ -334,6 +349,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_8);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_9);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_10);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_ONHOLD_LOG);
         this.onCreate(db);
     }
 
@@ -450,6 +466,24 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    // insert action log in Insert_Onhold_LOG table
+    public void insert_Onhold_Log(String orderid, String barcode, String merchantName, String pickMerchantName, String onHoldSchedule, String onHoldReason, String username, String currentDateTime, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(ORDERID, orderid);
+        values.put(BARCODE_NO, barcode);
+        values.put(MERCHANTS_NAME, merchantName);
+        values.put(PICK_MERCHANTS_NAME, pickMerchantName);
+        values.put(ONHOLD_SCHEDULE, onHoldSchedule);
+        values.put(ONHOLD_REASON, onHoldReason);
+        values.put(USERNAME, username);
+        values.put(CURRENT_DATE, currentDateTime);
+        values.put(STATUS, status);
+        // insert
+        db.insert(TABLE_NAME_ONHOLD_LOG, null, values);
+        db.close();
+    }
+
     public void updatePickedQty(String product_qty, String barcodeNumber, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -506,6 +540,22 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         String sql = "SELECT * FROM " + TABLE_NAME_4 + " WHERE " + STATUS + " = 0;";
         Cursor c = db.rawQuery(sql, null);
         return c;
+    }
+
+    public Cursor getUnsyncedOnholdLog() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_ONHOLD_LOG + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateOnholdLog(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME_ONHOLD_LOG, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
     }
 
     public Cursor getUnsyncedPickedQtyData() {
@@ -1261,12 +1311,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_8);
     }
 
-    public void deleteWithoutStatusList(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9);
+    public void deleteList(SQLiteDatabase sqLiteDatabase, String flagReq) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
     }
-    public void deleteOnHoldList(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9);
-    }
+
 
     public void deleteunpickedOrderData(String barcode) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1283,6 +1331,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    // get the count of without status list
     public int getWithoutStatusCount(String flagReq) {
         String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
         SQLiteDatabase db = this.getReadableDatabase();

@@ -38,9 +38,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -115,7 +112,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteWithoutStatusList(sqLiteDatabase);
+                        db.deleteList(sqLiteDatabase, "withoutStatus");
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -172,10 +169,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                                         o.getString("slaMiss"),
                                         "withoutStatus"
                                         ,NAME_SYNCED_WITH_SERVER);
-
                             }
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -204,13 +198,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     }
 
     // Load data from api
-    private void loadDeliverySummary(final String user)
-    {
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String currentDateTimeString = df.format(c);
-
-
+    private void loadDeliverySummary(final String user){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DELIVERY_SUMMARY, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -268,7 +256,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 params1.put("username", user);
                 return params1;
             }
-
         };
 
         if (requestQueue == null) {
@@ -277,7 +264,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-    //
     private void getData(final String user)
     {
         try{
@@ -378,7 +364,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }catch (Exception e)
         {
             Toast.makeText(getApplicationContext(), "some error"+e ,Toast.LENGTH_LONG).show();
-//            swipeRefreshLayout.setRefreshing(false);
         }
     }
 

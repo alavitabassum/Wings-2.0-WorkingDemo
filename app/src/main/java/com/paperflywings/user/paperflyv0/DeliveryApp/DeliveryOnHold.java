@@ -77,6 +77,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
     public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+    public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
 
     private List<DeliveryOnHoldModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -141,40 +142,61 @@ public class DeliveryOnHold extends AppCompatActivity
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_OnHold(sqLiteDatabase,user);
+            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "onHold");
 
             while (c.moveToNext()){
-                String barcode = c.getString(0);
-                String orderid = c.getString(1);
-                String merOrderRef = c.getString(2);
-                String merchantName = c.getString(3);
-                String pickMerchantName = c.getString(4);
-                String custname = c.getString(5);
-                String custaddress = c.getString(6);
-                String custphone = c.getString(7);
-                String packagePrice = c.getString(8);
-                String productBrief = c.getString(9);
-                String deliveryTime = c.getString(10);
-                String Cash = c.getString(12);
-                String cashType = c.getString(13);
-                String CashTime = c.getString(14);
-                String CashBy = c.getString(15);
-                String CashAmt = c.getString(16);
-                String CashComment = c.getString(17);
-                String partial = c.getString(18);
-                String partialTime = c.getString(19);
-                String partialBy = c.getString(20);
-                String partialReceive = c.getString(21);
-                String partialReturn = c.getString(22);
-                String partialReason = c.getString(23);
-                String onHoldSchedule = c.getString(24);
-                String onHoldReason = c.getString(25);
-                String slaMiss = c.getString(26);
-                //String withoutStatus = c.getString(25);
+                int id = c.getInt(0);
+                String dropPointCode = c.getString(1);
+                String barcode = c.getString(2);
+                String orderid = c.getString(3);
+                String merOrderRef = c.getString(4);
+                String merchantName = c.getString(5);
+                String pickMerchantName = c.getString(6);
+                String custname = c.getString(7);
+                String custphone = c.getString(8);
+                String custaddress = c.getString(9);
+                String packagePrice = c.getString(10);
+                String productBrief = c.getString(11);
+                String deliveryTime = c.getString(12);
+                String username = c.getString(13);
+                String empCode = c.getString(14);
+                String cash = c.getString(15);
+                String cashType = c.getString(16);
+                String cashTime = c.getString(17);
+                String cashBy = c.getString(18);
+                String cashAmt = c.getString(19);
+                String cashComment = c.getString(20);
+                String partial = c.getString(21);
+                String partialTime = c.getString(22);
+                String partialBy = c.getString(23);
+                String partialReceive = c.getString(24);
+                String partialReturn = c.getString(25);
+                String partialReason = c.getString(26);
+                String onHoldSchedule = c.getString(27);
+                String onHoldReason = c.getString(28);
+                String rea = c.getString(29);
+                String reaTime = c.getString(30);
+                String reaBy = c.getString(31);
+                String ret = c.getString(32);
+                String retTime = c.getString(33);
+                String retBy = c.getString(34);
+                String retReason = c.getString(35);
+                String rts = c.getString(36);
+                String rtsTime = c.getString(37);
+                String rtsBy = c.getString(38);
+                String preRet = c.getString(39);
+                String preRetTime = c.getString(40);
+                String preRetBy = c.getString(41);
+                String cts = c.getString(42);
+                String ctsTime = c.getString(43);
+                String ctsBy = c.getString(44);
+                String slaMiss = c.getString(45);
+                String flagReq = c.getString(46);
+                int status = c.getInt(47);
 
+                DeliveryOnHoldModel onhold_model = new DeliveryOnHoldModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
 
-                DeliveryOnHoldModel onhold_model = new DeliveryOnHoldModel(barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime ,Cash,cashType,CashTime,CashBy,CashAmt,CashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldReason,onHoldSchedule,slaMiss);
-                list.add(onhold_model);
+               list.add(onhold_model);
             }
 
 
@@ -201,7 +223,7 @@ public class DeliveryOnHold extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteOnHoldList(sqLiteDatabase);
+                        db.deleteList(sqLiteDatabase, "onHold");
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -211,7 +233,8 @@ public class DeliveryOnHold extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryOnHoldModel onhold_model = new  DeliveryOnHoldModel(
-
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
@@ -238,10 +261,27 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("partialReason"),
                                         o.getString("onHoldReason"),
                                         o.getString("onHoldSchedule"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("Ret"),
+                                        o.getString("RetTime"),
+                                        o.getString("RetBy"),
+                                        o.getString("retReason"),
+                                        o.getString("RTS"),
+                                        o.getString("RTSTime"),
+                                        o.getString("RTSBy"),
+                                        o.getString("PreRet"),
+                                        o.getString("PreRetTime"),
+                                        o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
                                         o.getString("slaMiss"));
 
-                                db.insert_delivery_OnHold(
-
+                                db.insert_delivery_without_status(
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
                                         o.getString("barcode"),
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
@@ -281,9 +321,12 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("PreRet"),
                                         o.getString("PreRetTime"),
                                         o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
                                         o.getString("slaMiss"),
                                         "onHold"
-                                        , NAME_SYNCED_WITH_SERVER );
+                                        ,NAME_SYNCED_WITH_SERVER);
 
                                 list.add(onhold_model);
                             }
@@ -512,6 +555,8 @@ public class DeliveryOnHold extends AppCompatActivity
         final String merchantRef = clickedITem.getMerOrderRef();
         final String packagePrice = clickedITem.getPackagePrice();
 
+        final String merchantName = clickedITem.getMerchantName();
+        final String pickMerchantName = clickedITem.getPickMerchantName();
 
         final Intent DeliveryListIntent = new Intent(DeliveryOnHold.this,
                 DeliveryOnHold.class);
@@ -539,8 +584,6 @@ public class DeliveryOnHold extends AppCompatActivity
                                 PackagePriceTexttv.setText(packagePrice);
 
                                 AlertDialog.Builder cashSpinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-
                                 cashSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -568,7 +611,6 @@ public class DeliveryOnHold extends AppCompatActivity
                                         if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
                                             tv1.setText("Field can't be empty");
                                         } else {
-
                                             String cashAmt = et1.getText().toString();
                                             String cashComment = et2.getText().toString();
                                             String ordID = OrderIdCollectiontv.getText().toString();
@@ -578,7 +620,6 @@ public class DeliveryOnHold extends AppCompatActivity
                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices, "cash");
                                             dialogCash.dismiss();
                                             startActivity(DeliveryListIntent);
-
                                         }
                                     }
                                 });
@@ -600,11 +641,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                 MerchantRefPartialtv.setText(merchantRef);
                                 PackagePriceTextPartialtv.setText(packagePrice);
 
-                                //final TextView tv1 = mViewPartial.findViewById(R.id.package_price_text);
-
                                 AlertDialog.Builder partialSpinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-
                                 partialSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -628,26 +665,15 @@ public class DeliveryOnHold extends AppCompatActivity
                                 dialogPartial.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-
-                                     /*   if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
-                                            tv1.setText("Field can't be empty");
-                                        } else {*/
-
                                         String partialsCash = partialcash.getText().toString();
                                         String partialReturn = partialReturned1qty.getText().toString();
                                         String partialReason = partialremarks.getText().toString();
                                         String partialsReceive = partialReceive.getText().toString();
 
-                                        String ordIdPartial = OrderIdCollectionPartialtv.getText().toString();
-                                        String merOrderRefsPartial = MerchantRefPartialtv.getText().toString();
-                                        String pakagePricesPartial = PackagePriceTextPartialtv.getText().toString();
-
                                         update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,"partial");
                                         dialogPartial.dismiss();
                                         startActivity(DeliveryListIntent);
-
                                     }
-                                    //}
                                 });
                                 dialog.dismiss();
 
@@ -656,21 +682,17 @@ public class DeliveryOnHold extends AppCompatActivity
                                 final View mViewReturnR = getLayoutInflater().inflate(R.layout.insert_returnr_without_status, null);
 
                                 final Spinner mReturnRSpinner = (Spinner) mViewReturnR.findViewById(R.id.Remarks_Retr_status);
-                                //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
                                 ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryOnHold.this,
                                         android.R.layout.simple_spinner_item,
-                                        getResources().getStringArray(R.array.onholdreasons));
+                                        getResources().getStringArray(R.array.returnreasonsAll));
                                 adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 mReturnRSpinner.setAdapter(adapterReturnR);
 
                                 final EditText et4 = mViewReturnR.findViewById(R.id.remarks_RetR);
                                 final TextView tv4 = mViewReturnR.findViewById(R.id.remarksTextRetR);
-                                //final Button bt1 = mViewReturnR.findViewById(R.id.datepicker);
 
 
                                 AlertDialog.Builder ReturnRSpinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-
                                 ReturnRSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -694,40 +716,26 @@ public class DeliveryOnHold extends AppCompatActivity
                                 dialogReturnR.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-
-                                        //String retReason = et4.getText().toString();
-
                                         String retReason = mReturnRSpinner.getSelectedItem().toString();
-
-                                        //String onHoldSchedule = bt1.getText().toString();
                                         update_retR_status(Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode,"returnReq");
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
-
                                     }
                                 });
                                 dialog.dismiss();
                                 break;
                             case 3:
 
-
                                 final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
-
                                 final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.Remarks_onhold_status);
-                                //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
                                 ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(DeliveryOnHold.this,
                                         android.R.layout.simple_spinner_item,
                                         getResources().getStringArray(R.array.onholdreasons));
                                 adapterOnhold.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 mOnholdSpinner.setAdapter(adapterOnhold);
 
-
-
-                                // final EditText et3 = mViewOnHold.findViewById(R.id.Remarks_onhold_status);
-                                // final TextView tv2 = mViewOnHold.findViewById(R.id.datepickerText);
                                 final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
-
 
                                 bt1.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -743,7 +751,6 @@ public class DeliveryOnHold extends AppCompatActivity
                                         datePickerDialog = new DatePickerDialog(DeliveryOnHold.this, new DatePickerDialog.OnDateSetListener() {
                                             @Override
                                             public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDate) {
-                                                //bt1.setText(mYear+"/"+(mMonth+1)+"/"+mDate);
                                                 String yearselected    = Integer.toString(mYear) ;
                                                 String monthselected   = Integer.toString(mMonth + 1);
                                                 String dayselected     = Integer.toString(mDate);
@@ -757,8 +764,6 @@ public class DeliveryOnHold extends AppCompatActivity
                                 });
 
                                 AlertDialog.Builder onHoldeSpinnerBuilder = new AlertDialog.Builder(DeliveryOnHold.this);
-                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-
                                 onHoldeSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -782,19 +787,13 @@ public class DeliveryOnHold extends AppCompatActivity
                                 dialogonHold.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-
-                                        //String onHoldReason = et3.getText().toString();
-
                                         String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
-
                                         String onHoldSchedule = bt1.getText().toString();
 
                                         update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode, "onHold");
-
+                                        insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                         dialogonHold.dismiss();
                                         startActivity(DeliveryListIntent);
-
-
                                     }
                                 });
                                 dialog.dismiss();
@@ -838,10 +837,10 @@ public class DeliveryOnHold extends AppCompatActivity
 
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice, final String flagReq) {
 
-        String str = String.valueOf(db.getOnholdCount("onHold"));
-        onhold_text.setText(str);
+        String str1 = String.valueOf(db.getWithoutStatusCount("onHold"));
+        onhold_text.setText(str1);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
-                DeliveryOnHold.class);
+                DeliveryWithoutStatus.class);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -899,14 +898,12 @@ public class DeliveryOnHold extends AppCompatActivity
 
     }
     private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
-
-        String str = String.valueOf(db.getOnholdCount("onHold"));
-        onhold_text.setText(str);
+        String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
+        onhold_text.setText(str1);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
                 DeliveryWithoutStatus.class);
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
-
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response1) {
@@ -953,9 +950,7 @@ public class DeliveryOnHold extends AppCompatActivity
             }
         };
         try {
-            if (requestQueue == null) {
-                requestQueue = Volley.newRequestQueue(this);
-            }
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest1);
         } catch (Exception e) {
             Toast.makeText(DeliveryOnHold.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
@@ -963,8 +958,8 @@ public class DeliveryOnHold extends AppCompatActivity
     }
     public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode, final String flagReq) {
 
-        String str = String.valueOf(db.getOnholdCount("onHold"));
-        onhold_text.setText(str);
+        String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
+        onhold_text.setText(str1);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
                 DeliveryWithoutStatus.class);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
@@ -1021,9 +1016,8 @@ public class DeliveryOnHold extends AppCompatActivity
         }
     }
     public void update_partial_status (final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String flagReq) {
-
-        String str = String.valueOf(db.getOnholdCount("onHold"));
-        onhold_text.setText(str);
+        String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
+        onhold_text.setText(str1);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
                 DeliveryWithoutStatus.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
@@ -1057,7 +1051,6 @@ public class DeliveryOnHold extends AppCompatActivity
         ) {
             @Override
             protected Map<String, String> getParams() {
-
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Cash", cash);
                 params.put("Ret", Ret);
@@ -1078,6 +1071,56 @@ public class DeliveryOnHold extends AppCompatActivity
             if (requestQueue == null) {
                 requestQueue = Volley.newRequestQueue(this);
             }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryOnHold.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+    }
+    public void insertOnholdLog(final String orderid, final String barcode, final String merchantName, final String pickMerchantName, final String onHoldSchedule, final String onHoldReason, final String username, final String currentDateTime){
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_ONHOLD_LOG,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_SYNCED_WITH_SERVER );
+
+                            } else {
+                                //if there is some error
+                                db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_NOT_SYNCED_WITH_SERVER );
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_NOT_SYNCED_WITH_SERVER );}
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                params.put("merchantName", merchantName);
+                params.put("pickMerchantName", pickMerchantName);
+                params.put("onHoldSchedule", onHoldSchedule);
+                params.put("onHoldReason", onHoldReason);
+                params.put("username", username);
+                params.put("currentDateTime", currentDateTime);
+
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryOnHold.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
