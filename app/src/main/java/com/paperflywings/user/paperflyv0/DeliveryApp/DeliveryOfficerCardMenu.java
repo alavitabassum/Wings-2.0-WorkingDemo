@@ -328,7 +328,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                         startActivity(intent);
                     }
                 });
-                onHold_count.setOnClickListener(new View.OnClickListener() {
+                on_Hold.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(DeliveryOfficerCardMenu.this,DeliveryOnHold.class);
@@ -336,7 +336,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     }
                 });
 
-                returnList_count.setOnClickListener(new View.OnClickListener() {
+                return_List.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(DeliveryOfficerCardMenu.this,Delivery_ReturnToSupervisor.class);
@@ -344,14 +344,14 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     }
                 });
 
-                returnReqst_count.setOnClickListener(new View.OnClickListener() {
+                returnReqst.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(DeliveryOfficerCardMenu.this,Delivery_ReturnToSupervisor.class);
                         startActivity(intent);
                     }
                 });
-                cashCollection_count.setOnClickListener(new View.OnClickListener() {
+                cashCollection.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(DeliveryOfficerCardMenu.this,DeliveryCTS.class);

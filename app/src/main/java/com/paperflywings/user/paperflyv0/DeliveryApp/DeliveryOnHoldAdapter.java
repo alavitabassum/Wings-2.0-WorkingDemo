@@ -1,6 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
@@ -24,6 +25,8 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
 
     private List<DeliveryOnHoldModel> listFull;
     private List<DeliveryOnHoldModel> list;
+
+
 
     private int currentPostion = -1;
 
@@ -61,6 +64,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         public TextView item_customerDistrict_onHold;
         public TextView item_barcode_onHold;
         public TextView item_ordId_onHold;
+        public TextView item_date_on_hold_onHold;//date_on_hold
         public TextView item_merOrderRef_onHold;
         public TextView item_merchantName_onHold;
         public TextView item_pickMerchantName_onHold;
@@ -77,6 +81,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         public ViewHolder(View itemView, int i) {
             super(itemView);
 
+            item_date_on_hold_onHold=itemView.findViewById(R.id.date_on_hold);
             item_ordId_onHold=itemView.findViewById(R.id.orderId_on_hold);
             item_merOrderRef_onHold=itemView.findViewById(R.id.m_order_ref_on_hold);
             item_merchantName_onHold=itemView.findViewById(R.id.m_name_on_hold);
@@ -120,6 +125,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         }
 
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -131,7 +137,8 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
-
+       // lastText = barcode.substring(0,11);
+        viewHolder.item_date_on_hold_onHold.setText("OnHold Schedule: "+list.get(i).getOnHoldReason().substring(0,11));
         viewHolder.item_ordId_onHold.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef_onHold.setText(list.get(i).getMerOrderRef());
 
@@ -147,6 +154,9 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         //viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
 
         // String CustomerDistrict = list.get(i).getCustomerDistrict();
+
+
+
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
 

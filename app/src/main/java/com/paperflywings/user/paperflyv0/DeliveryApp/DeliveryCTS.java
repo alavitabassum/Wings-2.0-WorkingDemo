@@ -64,7 +64,7 @@ public class DeliveryCTS extends AppCompatActivity
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private TextView without_status_text;
+    private TextView CashCount_text;
     private DeliveryCTSAdapter DeliveryCTSAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
@@ -90,6 +90,7 @@ public class DeliveryCTS extends AppCompatActivity
         db.getWritableDatabase();
 
         setContentView(R.layout.activity_delivery_cts);
+        CashCount_text = (TextView)findViewById(R.id.CTS_id_);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_without_status_list);
@@ -214,6 +215,11 @@ public class DeliveryCTS extends AppCompatActivity
             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
             swipeRefreshLayout.setRefreshing(false);
 
+            String str = String.valueOf(db.getCashCount("cash"));
+            CashCount_text.setText(str);
+            swipeRefreshLayout.setRefreshing(false);
+
+
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -335,6 +341,10 @@ public class DeliveryCTS extends AppCompatActivity
                             recyclerView_pul.setAdapter(DeliveryCTSAdapter);
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
+
+                            String str = String.valueOf(db.getOnholdCount("cash"));
+                            CashCount_text.setText(str);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -531,9 +541,11 @@ public class DeliveryCTS extends AppCompatActivity
     }
 
     private void CashToS(final String CTS,final String CTSTime, final String CTSBy,final String empcode, final String barcode, final String orderid) {
-        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        String str = String.valueOf(db.getOnholdCount("onHold"));
+        CashCount_text.setText(str);
+        final Intent withoutstatuscount = new Intent(DeliveryCTS.this,
+                DeliveryCTS.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE,
-
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -545,10 +557,12 @@ public class DeliveryCTS extends AppCompatActivity
                                         "Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
                                 toast.show();
+                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -560,6 +574,7 @@ public class DeliveryCTS extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(withoutstatuscount);
                     }
                 }
         ) {

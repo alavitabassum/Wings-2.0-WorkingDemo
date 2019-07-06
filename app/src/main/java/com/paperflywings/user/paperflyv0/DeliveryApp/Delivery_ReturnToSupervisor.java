@@ -73,7 +73,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     String dateTime;
 
     private CardView without_Status_card;
-    private TextView without_status_text;
+    private TextView ReturnRqst_text;
     private RequestQueue requestQueue;
 
     //delivery without status actions
@@ -115,6 +115,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         db.getWritableDatabase();
 
         setContentView(R.layout.activity_delivery__return_to_supervisor);
+        ReturnRqst_text = (TextView)findViewById(R.id.Return_id_);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -265,6 +266,9 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
             DeliveryReturnToSuperVisorAdapter.notifyDataSetChanged();
             DeliveryReturnToSuperVisorAdapter.setOnItemClickListener(Delivery_ReturnToSupervisor.this);
+
+            String str = String.valueOf(db.getCashCount("returnReq"));
+            ReturnRqst_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 
 
@@ -393,7 +397,8 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                             recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryReturnToSuperVisorAdapter.setOnItemClickListener(Delivery_ReturnToSupervisor.this);
-
+                            String str = String.valueOf(db.getCashCount("returnReq"));
+                            ReturnRqst_text.setText(str);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             swipeRefreshLayout.setRefreshing(false);
@@ -633,7 +638,10 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     }
 
     private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy,final String empcode, final String barcode, final String orderid) {
-        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        String str = String.valueOf(db.getOnholdCount("onHold"));
+        ReturnRqst_text.setText(str);
+        final Intent withoutstatuscount = new Intent(Delivery_ReturnToSupervisor.this,
+                Delivery_ReturnToSupervisor.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RETURNR_UPDATE,
 
                 new Response.Listener<String>() {
@@ -647,10 +655,12 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         "Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
                                 toast.show();
+                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.update_rts_status(RTS,RTSTime,RTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -662,6 +672,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_rts_status(RTS,RTSTime,RTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(withoutstatuscount);
                     }
                 }
         ) {

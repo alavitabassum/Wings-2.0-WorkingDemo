@@ -197,9 +197,8 @@
     <string name="title_activity_delivery_without_status">Without Status</string>
     <string name="title_activity_delivery_on_hold">Delivery On Hold</string>
     <string name="title_activity_delivery_quick_scan">Quick Delivery</string>
-    <string name="title_activity_delivery__return_to_supervisor">Delivery_ReturnToSupervisor
+    <string name="title_activity_delivery__return_to_supervisor">Return To Supervisor
     </string>
-    <string name="title_activity_delivery_cash_to_supervisor">DeliveryCashToSupervisor</string>
-    <string name="title_activity_delivery_cts">DeliveryCTS</string>
+    <string name="title_activity_delivery_cts">Cash To Supervisor</string>
 
 </resources>
