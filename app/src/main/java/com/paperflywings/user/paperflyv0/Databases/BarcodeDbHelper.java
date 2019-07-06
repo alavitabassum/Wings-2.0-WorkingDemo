@@ -248,32 +248,32 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "CashAmt TEXT, " //19
                 + "CashComment TEXT, " //20
                 + "partial TEXT, " //21
-                + "partialTime TEXT, " //23
-                + "partialBy TEXT, " //24
-                + "partialReceive TEXT, " //25
-                + "partialReturn TEXT, " //26
-                + "partialReason TEXT, " //27
-                + "onHoldSchedule TEXT, " //28
-                + "onHoldReason TEXT, " //29
-                + "Rea TEXT," //30
-                + "ReaTime TEXT," //31
-                + "ReaBy TEXT," //32
-                + "Ret TEXT," //33
-                + "RetTime TEXT," //34
-                + "RetBy TEXT," //35
-                + "retReason TEXT," //36
-                + "RTS TEXT," //37
-                + "RTSTime TEXT," //38
-                + "RTSBy TEXT," //39
-                + "PreRet TEXT," //40
-                + "PreRetTime TEXT," //41
-                + "PreRetBy TEXT,"
+                + "partialTime TEXT, " //22
+                + "partialBy TEXT, " //23
+                + "partialReceive TEXT, " //24
+                + "partialReturn TEXT, " //25
+                + "partialReason TEXT, " //26
+                + "onHoldSchedule TEXT, " //27
+                + "onHoldReason TEXT, " //28
+                + "Rea TEXT," //29
+                + "ReaTime TEXT," //30
+                + "ReaBy TEXT," //31
+                + "Ret TEXT," //32
+                + "RetTime TEXT," //33
+                + "RetBy TEXT," //34
+                + "retReason TEXT," //35
+                + "RTS TEXT," //36
+                + "RTSTime TEXT," //37
+                + "RTSBy TEXT," //38
+                + "PreRet TEXT," //39
+                + "PreRetTime TEXT," //40
+                + "PreRetBy TEXT," //41
                 + "CTS TEXT,"//42
-                + "CTSTime TEXT,"//42
-                + "CTSBy TEXT,"//42
-                + "slaMiss TEXT," //43
-                + "flagReq TEXT," //44
-                + "status INT, " //45
+                + "CTSTime TEXT,"//43
+                + "CTSBy TEXT,"//44
+                + "slaMiss TEXT," //45
+                + "flagReq TEXT," //46
+                + "status INT, " //47
                 + "unique(id, barcode))";
 
 
@@ -311,80 +311,15 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "status INT, "
                 + "unique(id, barcode))";
 
-        /*String CREATION_TABLE_TEMPORARY = "CREATE TABLE Insert_Delivery_Quick_Scan_Data( "
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "dropPointCode TEXT,"
-                + "barcode TEXT, "
-                + "orderid TEXT, "
-                + "merOrderRef TEXT, "
-                + "merchantName TEXT, "
-                + "pickMerchantName TEXT, "
-                + "custname TEXT, "
-                + "custaddress TEXT, "
-                + "custphone TEXT, "
-                + "packagePrice TEXT, "
-                + "productBrief TEXT, "
-                + "status INT, "
-                + "unique(id, barcode))";*/
-
-
-
-
-
-        /*String CREATION_TABLE11 = "CREATE TABLE Insert_Delivery_All_Status( "
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "barcode TEXT,"
-                + "orderid TEXT, "
-                + "merOrderRef TEXT, "
-                + "merchantName TEXT, "
-                + "pickMerchantName TEXT, "
-                + "custname TEXT, "
-                + "custaddress TEXT, "
-                + "custphone TEXT, "
-                + "packagePrice TEXT, "
-                + "productBrief TEXT, "
-                + "deliveryTime TEXT, "
-                + "Rea TEXT, "
-                + "ReaTime TEXT, "
-                + "ReaBy TEXT, "
-                + "PickDrop TEXT, "
-                + "PickDropTime TEXT, "
-                + "PickDropBy TEXT, "
-                + "dropAssignTime TEXT, "
-                + "dropAssignBy TEXT, "
-                + "dropPointCode TEXT, "
-                + "Cash TEXT, "
-                + "cashType TEXT, "
-                + "CashTime TEXT, "
-                + "CashBy TEXT, "
-                + "CashAmt TEXT, "
-                + "CashComment TEXT, "
-                + "partial TEXT, "
-                + "partialTime TEXT, "
-                + "partialBy TEXT,"
-                + "partialReceive TEXT,"
-                + "partialReturn TEXT,"
-                + "partialReason TEXT,"
-                + "onHoldSchedule TEXT,"
-                + "onHoldReason TEXT,"
-                + "slaMiss TEXT,"
-                + "status INT, "
-                + "unique(id, barcode))";
-*/
-
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
         db.execSQL(CREATION_TABLE2);
-        // db.execSQL(CREATION_TABLE3);
         db.execSQL(CREATION_TABLE5);
         db.execSQL(CREATION_TABLE6);
         db.execSQL(CREATION_TABLE7);
         db.execSQL(CREATION_TABLE8);
         db.execSQL(CREATION_TABLE9);
         db.execSQL(CREATION_TABLE10);
-        /*
-        db.execSQL(CREATION_TABLE_TEMPORARY);
-        db.execSQL(CREATION_TABLE11);*/
 
     }
 
@@ -393,14 +328,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_1);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_2);
-        // db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_3);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_4);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_6);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_7);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_8);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_9);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_10);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_11);
         this.onCreate(db);
     }
 
@@ -435,8 +368,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         db.close();
     }
-/*MERCHANT_ID + " = ? AND " + SUB_MERCHANT_NAME + " = ?  AND " + SQL_PRIMARY_ID + " = ?  AND " + UPDATED_AT + " = ?";
- */
     // get the pickup list from My_pickups table
     public Cursor get_mypickups_today(SQLiteDatabase db, String user) {
         String[] columns = {KEY_ID, MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT, COMPLETE_STATUS, PICK_M_NAME, PICK_M_ADD, PRODUCT_NAME, APIORDERID, DEMO, PICKED_STATUS, RECEIVED_STATUS, SQL_PRIMARY_ID};
@@ -450,11 +381,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         };
         return (db.query(TABLE_NAME_1, columns, whereClause, whereArgs, null, null, sortOrder));
     }
-
-    /*public Cursor get_mypickups_today(SQLiteDatabase sqLiteDatabase) {
-        String[] columns = {KEY_ID,MERCHANT_ID, MERCHANT_NAME, EXECUTIVE_NAME, ASSIGNED_QTY, PICKED_QTY, SCAN_COUNT, PHONE_NO, ASSIGNED_BY, CREATED_AT, UPDATED_BY, UPDATED_AT};
-        return (db.query(TABLE_NAME_1,columns,"executive_name='" + "'",null,null,null,null));
-    }*/
 
     // clear data from My_pickups table
     public void deleteAssignedList(SQLiteDatabase sqLiteDatabase) {
@@ -985,57 +911,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.insert(TABLE_NAME_9, null, values);
         db.close();
     }
-
-    // get without status
-    /*+ "id INTEGER PRIMARY KEY AUTOINCREMENT, " //0
-                + "dropPointCode TEXT," //1
-                + "barcode TEXT, " //2
-                + "orderid TEXT, " //3
-                + "merOrderRef TEXT, " //4
-                + "merchantName TEXT, " //5
-                + "pickMerchantName TEXT, " //6
-                + "custname TEXT, " //7
-                + "custphone TEXT, " //8
-                + "custaddress TEXT, " //9
-
-                + "packagePrice TEXT, "//10
-                + "productBrief TEXT, " //11
-                + "deliveryTime TEXT, " //12
-                + "username TEXT, " //13
-                + "empCode TEXT, " //14
-                + "Cash TEXT, " //15
-                + "cashType TEXT, " //16
-                + "CashTime TEXT, " //17
-                + "CashBy TEXT, " //18
-                + "CashAmt TEXT, " //19
-                + "CashComment TEXT, " //20
-                + "partial TEXT, " //21
-                + "partialTime TEXT, " //23
-                + "partialBy TEXT, " //24
-                + "partialReceive TEXT, " //25
-                + "partialReturn TEXT, " //26
-                + "partialReason TEXT, " //27
-                + "onHoldSchedule TEXT, " //28
-                + "onHoldReason TEXT, " //29
-                + "Rea TEXT," //30
-                + "ReaTime TEXT," //31
-                + "ReaBy TEXT," //32
-                + "Ret TEXT," //33
-                + "RetTime TEXT," //34
-                + "RetBy TEXT," //35
-                + "retReason TEXT," //36
-                + "RTS TEXT," //37
-                + "RTSTime TEXT," //38
-                + "RTSBy TEXT," //39
-                + "PreRet TEXT," //40
-                + "PreRetTime TEXT," //41
-                + "PreRetBy TEXT,"
-                + "CTS TEXT,"//42
-                + "CTSTime TEXT,"//42
-                + "CTSBy TEXT,"//42
-                + "slaMiss TEXT," //43
-                + "flagReq TEXT," //44
-                + "status INT, " //45*/
 
     public Cursor get_delivery_without_status(SQLiteDatabase db, String user, String flagReq) {
         String[] columns = {
