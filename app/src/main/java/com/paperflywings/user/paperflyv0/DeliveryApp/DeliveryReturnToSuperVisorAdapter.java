@@ -178,13 +178,11 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
         }
 
 
-
         if(partialReason != "NULL") {
             viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
         }else {
             viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getRetReason());
         }
-
 
       /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());

@@ -97,6 +97,7 @@
             android:text="Merchant:"
             android:textSize="13sp" />
 
+
         <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"
@@ -179,7 +180,6 @@
             android:layout_marginEnd="6dp"
             android:lines="4"
             android:maxLines="4"
-            android:text="package brief"
             android:textColor="#000"
             android:textAlignment="textStart"
             android:textSize="17sp" />

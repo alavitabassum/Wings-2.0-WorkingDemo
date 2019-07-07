@@ -347,7 +347,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 returnReqst.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,Delivery_ReturnToSupervisor.class);
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,ReturnRequest.class);
                         startActivity(intent);
                     }
                 });
