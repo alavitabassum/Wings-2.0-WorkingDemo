@@ -161,7 +161,7 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for(Delivery_unpicked_model item: listFull){
-                    if (item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
+                    if (item.getOrderid().toLowerCase().contains(filterPattern) || item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }

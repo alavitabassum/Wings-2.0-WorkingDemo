@@ -94,7 +94,6 @@
             android:textAlignment="textStart"
             android:layout_marginStart="0dp"
             android:textColor="#000"
-            android:text="Merchant:"
             android:textSize="13sp" />
 
 
