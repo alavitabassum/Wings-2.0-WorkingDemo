@@ -296,7 +296,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                 orderID.setText(orderId);
                 merOrderRef.setText(merorderref);
-                merchantName.setText(merchantname);
+                merchantName.setText("Merchant Name: "+merchantname);
                 custName.setText(custname);
                 custAddress.setText(custaddress);
                 price.setText(packageprice);
