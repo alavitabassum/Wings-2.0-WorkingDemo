@@ -63,10 +63,12 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         public TextView item_merchantName_without_status;
         public TextView item_pickMerchantName_without_status;
         public TextView item_custname_without_status;
-        public TextView item_custaddress_without_status;
+        public TextView item_cashAmt_without_status;
+        public TextView item_cashComment_without_status;
         public TextView item_custphone_without_status;
         public TextView item_packagePrice_without_status;
         public TextView item_productBrief_without_status;
+        public TextView item_partialreason_without_status;
         public TextView item_deliveryTime_without_status;
         public Button itemStatus_without_status;
         public CardView card_view_without_status;
@@ -78,16 +80,19 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
             item_ordId_without_status=itemView.findViewById(R.id.orderId_without_status);
             item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
-
+            item_partialreason_without_status = itemView.findViewById(R.id.partialReasonText);
             item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
             item_custname_without_status=itemView.findViewById(R.id.customer_name_without_status);
-            item_custaddress_without_status=itemView.findViewById(R.id.customer_Address_without_status);
+            item_cashAmt_without_status=itemView.findViewById(R.id.cashAmnt_without_status);
+            item_cashComment_without_status=itemView.findViewById(R.id.cashComment_without_status);
             item_custphone_without_status=itemView.findViewById(R.id.m_phn_num_without_status);
             item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
             item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
+
             item_deliveryTime_without_status=itemView.findViewById(R.id.deliverytime);
             itemStatus_without_status=itemView.findViewById(R.id.btn_status_cash_status);
             card_view_without_status=itemView.findViewById(R.id.card_view_delivery_without_status_list);
+
 
             item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
@@ -102,7 +107,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
                     }
                 }
             });
-
+            
             itemStatus_without_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
@@ -133,7 +138,8 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         //viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
         //viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
-        viewHolder.item_custaddress_without_status.setText("Address: "+list.get(i).getCustaddress());
+
+        viewHolder.item_cashAmt_without_status.setText("Cash Amount: "+list.get(i).getCashAmt());
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice());
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
@@ -145,8 +151,54 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
-
+        String partialReason = list.get(i).getPartialReason();
+        String cashComment = list.get(i).getCashComment();
         int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
+
+
+       /* if (partialReason != null) {
+            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getPartialReason());
+        }
+
+        if(partialReason.isEmpty()) {
+            viewHolder.item_partialreason_without_status.setText("No Reason: "+list.get(i).getPartialReason().substring(0,0));
+        }*/
+        if(list.get(i).getCashComment() != null){
+            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
+        }
+        else {
+            viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+        }
+
+       // viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+
+
+      /*  if(cashComment != "NULL"){
+            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
+        }
+        else if(partialReason != "NULL") {
+            viewHolder.item_cashComment_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+        }
+        else {
+            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
+            viewHolder.item_cashComment_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+
+        }*/
+
+      /*  else {
+            viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+        }
+
+*/
+
+       /* else {
+            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
+        }*/
+
+       /* else {
+            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
+        }*/
+
 
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());

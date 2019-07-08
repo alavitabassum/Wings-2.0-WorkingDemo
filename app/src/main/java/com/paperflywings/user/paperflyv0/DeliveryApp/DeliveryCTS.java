@@ -147,6 +147,8 @@ public class DeliveryCTS extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+
     }
     private void getData(String user){
         try{

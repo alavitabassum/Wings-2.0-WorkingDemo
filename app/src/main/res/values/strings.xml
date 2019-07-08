@@ -109,8 +109,6 @@
     </string-array>
 
 
-
-
     <string-array name="cancelreason">
         <item>Please select an option...</item>
         <item>মার্চেন্ট অর্ডার বাতিল করেছে</item>
@@ -200,5 +198,6 @@
     <string name="title_activity_delivery__return_to_supervisor">Return To Supervisor
     </string>
     <string name="title_activity_delivery_cts">Cash To Supervisor</string>
+    <string name="title_activity_return_request">ReturnRequest</string>
 
 </resources>

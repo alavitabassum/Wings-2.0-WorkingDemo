@@ -92,7 +92,7 @@
             android:maxLines="2"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="15sp"
+            android:textSize="11sp"
             />
 
         <TextView

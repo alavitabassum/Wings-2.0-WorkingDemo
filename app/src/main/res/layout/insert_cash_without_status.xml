@@ -9,8 +9,8 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="350dp"
-        android:layout_height="251dp"
+        android:layout_width="366dp"
+        android:layout_height="283dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -73,7 +73,6 @@
             android:inputType="number"
             android:textSize="15sp"
             android:textStyle="bold" />
-
 
 
         <TextView
@@ -168,7 +167,6 @@
             android:textStyle="bold" />
 
 
-
         <EditText
             android:id="@+id/Remarks_without_status"
             android:layout_width="193dp"
@@ -194,12 +192,13 @@
 
 
         <TextView
-            android:id="@+id/package_price_text"
+            android:id="@+id/field_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textViewCollection"
             android:layout_alignParentTop="true"
             android:layout_marginStart="15dp"
+            android:textColor="@color/red"
             android:layout_marginTop="35dp" />
 
     </RelativeLayout>

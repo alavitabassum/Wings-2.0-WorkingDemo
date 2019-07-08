@@ -205,7 +205,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 custName.setText(custname);
                 custAddress.setText(custaddress);
                 price.setText(packageprice);
-                brief.setText(packagebrief);
+                brief.setText("Package Brief: "+packagebrief);
 
 
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -296,7 +296,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 final View mViewCash = getLayoutInflater().inflate(R.layout.insert_cash_without_status, null);
                                                 final EditText et1 = mViewCash.findViewById(R.id.editTextCollection);
                                                 final EditText et2 = mViewCash.findViewById(R.id.Remarks_without_status);
-                                                final TextView tv1 = mViewCash.findViewById(R.id.package_price_text);
+                                                final TextView tv1 = mViewCash.findViewById(R.id.field_text);
                                                 final TextView  OrderIdCollectiontv = mViewCash.findViewById(R.id.OrderIdCollection);
                                                 final TextView  MerchantReftv = mViewCash.findViewById(R.id.MechantRefCollection);
                                                 final TextView  PackagePriceTexttv = mViewCash.findViewById(R.id.packagePrice);
@@ -352,7 +352,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 final EditText partialReturned1qty = mViewPartial.findViewById(R.id.returnedQuantity);
                                                 final EditText partialcash = mViewPartial.findViewById(R.id.editTextPartialCollection);
                                                 final EditText partialremarks = mViewPartial.findViewById(R.id.remarks_partial);
-
+                                                final TextView tvField = mViewPartial.findViewById(R.id.field_text);
                                                 final TextView  OrderIdCollectionPartialtv = mViewPartial.findViewById(R.id.OrderIdCollectionPartial);
                                                 final TextView  MerchantRefPartialtv = mViewPartial.findViewById(R.id.MechantRefCollectionPartial);
                                                 final TextView  PackagePriceTextPartialtv = mViewPartial.findViewById(R.id.packagePricePartial);
@@ -385,6 +385,11 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 dialogPartial.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
+
+                                                        if (partialReceive.getText().toString().trim().isEmpty() && partialReturned1qty.getText().toString().trim().isEmpty() && partialcash.getText().toString().trim().isEmpty() && partialremarks.getText().toString().trim().isEmpty()) {
+                                                            tvField.setText("Field can't be empty");
+                                                        } else {
+
                                                         String partialsCash = partialcash.getText().toString();
                                                         String partialReturn = partialReturned1qty.getText().toString();
                                                         String partialReason = partialremarks.getText().toString();
@@ -393,6 +398,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,"partial");
                                                         dialogPartial.dismiss();
                                                         startActivity(DeliveryListIntent);
+
+                                                        }
                                                     }
                                                 });
                                                 dialog.dismiss();

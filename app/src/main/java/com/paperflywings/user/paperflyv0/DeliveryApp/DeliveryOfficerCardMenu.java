@@ -94,7 +94,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
         else {
             getData(username);
-            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -361,7 +361,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 returnReqst.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,Delivery_ReturnToSupervisor.class);
+                        Intent intent = new Intent(DeliveryOfficerCardMenu.this,ReturnRequest.class);
                         startActivity(intent);
                     }
                 });

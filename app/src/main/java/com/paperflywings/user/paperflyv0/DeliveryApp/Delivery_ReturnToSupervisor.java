@@ -59,6 +59,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class Delivery_ReturnToSupervisor extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,DeliveryReturnToSuperVisorAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -613,4 +614,5 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         }
         view4.getContext().startActivity(callIntent);
     }
+
 }

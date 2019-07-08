@@ -68,6 +68,7 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
         public TextView item_packagePrice_without_status;
         public TextView item_productBrief_without_status;
         public TextView item_deliveryTime_without_status;
+        public TextView item_partialreason_without_status;
         public Button itemStatus_returnr_status;
         public CardView card_view_without_status;
 
@@ -78,7 +79,7 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
             item_ordId_without_status = itemView.findViewById(R.id.orderId_without_status);
             item_merOrderRef_without_status = itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName_without_status = itemView.findViewById(R.id.m_name_without_status);
-
+            item_partialreason_without_status = itemView.findViewById(R.id.partialReasonText);
             item_pickMerchantName_without_status = itemView.findViewById(R.id.pick_m_name_without_status);
             item_custname_without_status = itemView.findViewById(R.id.customer_name_without_status);
             item_custaddress_without_status = itemView.findViewById(R.id.customer_Address_without_status);
@@ -102,6 +103,7 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
                     }
                 }
             });
+
 
             itemStatus_returnr_status.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -147,8 +149,13 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
 
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
+        String partialReason = list.get(i).getPartialReason();
 
         int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
+
+      /*  if(partialReason.isEmpty() || partialReason == null || partialReason.length() == 0){
+
+        }*/
 
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
@@ -168,6 +175,13 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
         else if(!Pick_merchantName.isEmpty()){
             viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
             viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+        }
+
+
+        if(partialReason != "NULL") {
+            viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+        }else {
+            viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getRetReason());
         }
 
       /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
@@ -191,6 +205,8 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
         }
 
         }*/
+
+
     }
 
     @Override

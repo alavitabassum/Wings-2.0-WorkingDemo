@@ -138,7 +138,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
        // lastText = barcode.substring(0,11);
-        viewHolder.item_date_on_hold_onHold.setText("OnHold Schedule: "+list.get(i).getOnHoldReason().substring(0,11));
+        viewHolder.item_date_on_hold_onHold.setText("OnHold Schedule: "+list.get(i).getOnHoldSchedule().substring(0,11));
         viewHolder.item_ordId_onHold.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef_onHold.setText(list.get(i).getMerOrderRef());
 
