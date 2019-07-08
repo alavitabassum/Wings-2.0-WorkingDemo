@@ -70,6 +70,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private TextView without_status_text;
+    private TextView slamiss_text;
     private DeliveryWithoutStatusAdapter DeliveryWithoutStatusAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
@@ -83,7 +84,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
-    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+//    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_ordertrack.php";
     public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -113,6 +115,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
         without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
+        slamiss_text = (TextView)findViewById(R.id.slamMiss_id_);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -221,6 +224,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
             String str = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
             without_status_text.setText(str);
+
+            String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0));
+            slamiss_text.setText(slaMiss);
+
             swipeRefreshLayout.setRefreshing(false);
 
         }catch (Exception e){
@@ -349,6 +356,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
                             String str = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
                             without_status_text.setText(str);
+
+                            String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0));
+                            slamiss_text.setText(slaMiss);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -623,10 +633,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String cashAmt = et1.getText().toString();
                                             String cashComment = et2.getText().toString();
                                             String ordID = OrderIdCollectiontv.getText().toString();
-                                            String merOrderRefs = MerchantReftv.getText().toString();
-                                            String pakagePrices = PackagePriceTexttv.getText().toString();
 
-                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices, "cash");
+                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode, "Cash");
                                             dialogCash.dismiss();
                                             startActivity(DeliveryListIntent);
                                         }
@@ -679,7 +687,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String partialReason = partialremarks.getText().toString();
                                             String partialsReceive = partialReceive.getText().toString();
 
-                                            update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,"partial");
+                                            update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,cashType,"partial");
                                             dialogPartial.dismiss();
                                             startActivity(DeliveryListIntent);
                                         }
@@ -726,7 +734,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                     @Override
                                     public void onClick(View v) {
                                         String retReason = mReturnRSpinner.getSelectedItem().toString();
-                                        update_retR_status(Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode,"returnReq");
+                                        String retRemarks = et4.getText().toString();
+                                        update_retR_status(Ret,RetTime,RetBy,retReason,retRemarks,PreRet,PreRetTime,PreRetBy,orderid, barcode,"Ret");
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -798,7 +807,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
                                             String onHoldSchedule = bt1.getText().toString();
 
-                                            update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode, "onHold");
+                                            update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode, "updateOnHold");
                                             insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                             dialogonHold.dismiss();
                                             startActivity(DeliveryListIntent);
@@ -841,10 +850,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         view4.getContext().startActivity(callIntent);
     }
 
-    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice, final String flagReq) {
+    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode, final String flagReq) {
 
         String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
         without_status_text.setText(str1);
+        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0));
+        slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
                 DeliveryWithoutStatus.class);
 
@@ -856,12 +867,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, flagReq, NAME_SYNCED_WITH_SERVER);
+                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq, NAME_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
@@ -873,7 +884,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, merOrderRef,packagePrice, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);
                     }
                 }
@@ -881,15 +892,14 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Cash", cash);
+                // params.put("Cash", cash);
                 params.put("cashType", cashType);
-                params.put("CashTime", cashTime);
+                //params.put("CashTime", cashTime);
                 params.put("CashAmt", cashAmt);
-                params.put("CashComment", cashComment);
-                params.put("CashBy", cashBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("flagReq", flagReq);
+                params.put("cashComment", cashComment);
+                //params.put("CashBy", cashBy);
+                params.put("order", orderid);
+                params.put("flag", flagReq);
                 return params;
             }
         };
@@ -903,9 +913,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
 
     }
-    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
+    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String retRemarks, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
         String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
         without_status_text.setText(str1);
+        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0));
+        slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
                 DeliveryWithoutStatus.class);
 
@@ -942,16 +954,17 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("Ret", ret);
-                params.put("RetTime", retTime);
-                params.put("RetBy", retBy);
+//                params.put("Ret", ret);
+//                params.put("RetTime", retTime);
+//                params.put("RetBy", retBy);
+                params.put("retRemarks", retRemarks);
                 params.put("retReason", retReason);
-                params.put("PreRet", preRet);
-                params.put("PreRetTime", preRetTime);
-                params.put("PreRetBy", preRetBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("flagReq", flagReq);
+//                params.put("PreRet", preRet);
+//                params.put("PreRetTime", preRetTime);
+//                params.put("PreRetBy", preRetBy);
+                params.put("order", orderid);
+//                params.put("barcode", barcode);
+                params.put("flag", flagReq);
                 return params;
             }
         };
@@ -966,6 +979,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
         String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
         without_status_text.setText(str1);
+        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0));
+        slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
                 DeliveryWithoutStatus.class);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
@@ -1001,14 +1016,14 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("onHoldSchedule", onHoldSchedule);
-                params.put("onHoldReason", onHoldReason);
-                params.put("Rea", Rea);
-                params.put("ReaTime", ReaTime);
-                params.put("ReaBy", ReaBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("flagReq", flagReq);
+                params.put("onHoldDate", onHoldSchedule);
+                params.put("onReason", onHoldReason);
+//                params.put("Rea", Rea);
+//                params.put("ReaTime", ReaTime);
+//                params.put("ReaBy", ReaBy);
+                params.put("order", orderid);
+//                params.put("barcode", barcode);
+                params.put("flag", flagReq);
                 return params;
             }
         };
@@ -1021,9 +1036,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
-    public void update_partial_status (final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String flagReq) {
+    public void update_partial_status (final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String cashType, final String flagReq) {
         String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
         without_status_text.setText(str1);
+        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0));
+        slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryWithoutStatus.this,
                 DeliveryWithoutStatus.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
@@ -1058,18 +1075,19 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Cash", cash);
-                params.put("Ret", Ret);
-                params.put("CashAmt", partialsCash);
-                params.put("partial", partial);
-                params.put("partialTime", partialTime);
-                params.put("partialBy", partialBy);
-                params.put("partialReceive", partialsReceive);
+                //params.put("Cash", cash);
+                //params.put("Ret", Ret);
+                params.put("partialAmt", partialsCash);
+                params.put("cashType", cashType);
+//                params.put("partial", partial);
+//                params.put("partialTime", partialTime);
+//                params.put("partialBy", partialBy);
+                params.put("deliveredQty", partialsReceive);
                 params.put("partialReason", partialReason);
-                params.put("partialReturn", partialReturn);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("flagReq", flagReq);
+                params.put("returnedQty", partialReturn);
+                params.put("order", orderid);
+//                params.put("barcode", barcode);
+                params.put("flag", flagReq);
                 return params;
             }
         };
@@ -1082,6 +1100,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
+
+
     public void insertOnholdLog(final String orderid, final String barcode, final String merchantName, final String pickMerchantName, final String onHoldSchedule, final String onHoldReason, final String username, final String currentDateTime){
         final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
         StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_ONHOLD_LOG,

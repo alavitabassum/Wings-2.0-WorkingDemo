@@ -152,7 +152,7 @@ public class DeliveryCTS extends AppCompatActivity
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "cash");
+            Cursor c = db.get_delivery_CTS(sqLiteDatabase,user, "cash", "Y");
 
             while (c.moveToNext()){
                 int id = c.getInt(0);
@@ -215,7 +215,7 @@ public class DeliveryCTS extends AppCompatActivity
             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
             swipeRefreshLayout.setRefreshing(false);
 
-            String str = String.valueOf(db.getCashCount("cash"));
+            String str = String.valueOf(db.getCashCount("cash", "Y"));
             CashCount_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 
@@ -332,7 +332,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"),
-                                        "cash"
+                                        "cts"
                                         , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);
                             }
@@ -342,7 +342,7 @@ public class DeliveryCTS extends AppCompatActivity
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
 
-                            String str = String.valueOf(db.getOnholdCount("cash"));
+                            String str = String.valueOf(db.getCashCount("cash", "Y"));
                             CashCount_text.setText(str);
 
 
@@ -520,16 +520,11 @@ public class DeliveryCTS extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         final String currentDateTime = df.format(c);
 
-        final String cash = clickedITem.getCash();
-        final String cashBy = clickedITem.getCashBy();
-        final String cashType = clickedITem.getCashType();
-        final String cashTime = clickedITem.getCashTime();
         final String CTS = "Y";
         final String CTSTime = currentDateTime;
         final String CTSBy = username;
@@ -537,11 +532,11 @@ public class DeliveryCTS extends AppCompatActivity
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
 
-        CashToS(CTS,CTSTime,CTSBy,empcode,barcode,orderid);
+        CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "cts");
     }
 
-    private void CashToS(final String CTS,final String CTSTime, final String CTSBy,final String empcode, final String barcode, final String orderid) {
-        String str = String.valueOf(db.getOnholdCount("onHold"));
+    private void CashToS(final String CTS,final String CTSTime, final String CTSBy, final String barcode, final String orderid, final String flagReq) {
+        String str = String.valueOf(db.getCashCount("cash", "Y"));
         CashCount_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryCTS.this,
                 DeliveryCTS.class);
@@ -552,7 +547,7 @@ public class DeliveryCTS extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_SYNCED_WITH_SERVER);
+                                db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid, flagReq, NAME_SYNCED_WITH_SERVER);
                                 Toast toast= Toast.makeText(DeliveryCTS.this,
                                         "Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -561,19 +556,18 @@ public class DeliveryCTS extends AppCompatActivity
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);
                     }
                 }
@@ -584,7 +578,6 @@ public class DeliveryCTS extends AppCompatActivity
                 params.put("CTS", CTS);
                 params.put("CTSTime", CTSTime);
                 params.put("CTSBy", CTSBy);
-                params.put("empcode", empcode);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
                 return params;

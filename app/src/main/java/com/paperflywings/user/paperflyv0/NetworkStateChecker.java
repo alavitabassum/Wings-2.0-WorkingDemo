@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -15,8 +16,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryCTS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryWithoutStatus;
+import com.paperflywings.user.paperflyv0.DeliveryApp.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.Robishop.Robishop_Assign_pickup_manager;
@@ -37,7 +40,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
     private Context context;
     private Database database;
     private BarcodeDbHelper database2;
-    public static final String INSERT_URL = "http://paperflybd.com/insertassign.php";
+    public static final String SYNC_DATA = "http://paperflybd.com/DeliverySyncDataOnline.php";
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
     private RequestQueue requestQueue;
@@ -188,13 +191,91 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursorOnhold.moveToNext());
                 }
 
-                Cursor cursorStatus = database2.getUnsyncedWithoutStatus();
-                if (cursorStatus.moveToFirst()) {
+                Cursor cursorStatus1 = database2.getUnsyncedWithoutStatus();
+                if (cursorStatus1.moveToFirst()) {
                     do {
-                        String statusFlag = cursorStatus.getString(46);
+                        String statusFlag = cursorStatus1.getString(46);
                         if(statusFlag == "cash") {
-                            sync_cash_status(
-                                    cursorStatus.getInt(0), // id
+                        sync_cash_status(cursorStatus1.getInt(0), // id
+                                cursorStatus1.getString(15), // Cash
+                                cursorStatus1.getString(16), // cashType cashType
+                                cursorStatus1.getString(17),//cashTime cashTime
+                                cursorStatus1.getString(18), // cashBy cashBy
+                                cursorStatus1.getString(19), // CashAmt cashAmt
+                                cursorStatus1.getString(20),// CashComment cashComment
+                                cursorStatus1.getString(3),//orderid orderid
+                                cursorStatus1.getString(2),//barcode barcode
+                                cursorStatus1.getString(46));// flag request
+                    } else if(statusFlag == "partial") {
+                        sync_partial_status(cursorStatus1.getInt(0), // id
+                                cursorStatus1.getString(15), // cash
+                                cursorStatus1.getString(32), // ret
+                                cursorStatus1.getString(19), // partial cash
+                                cursorStatus1.getString(21), // partial
+                                cursorStatus1.getString(22),// partial time
+                                cursorStatus1.getString(23), // partialBy
+                                cursorStatus1.getString(24), // partialReceive
+                                cursorStatus1.getString(26),//partialReason
+                                cursorStatus1.getString(25),// partialReturn
+                                cursorStatus1.getString(3),//orderid
+                                cursorStatus1.getString(2), //  barcode
+                                cursorStatus1.getString(46) // flag request
+                        );
+                    } else if(statusFlag == "onHold") {
+                            sync_onhold_status(
+                                    cursorStatus1.getInt(0), // id
+                                    cursorStatus1.getString(27), // onhold schedule
+                                    cursorStatus1.getString(28), // onholdreason
+                                    cursorStatus1.getString(29),// rea
+                                    cursorStatus1.getString(30), // reatime
+                                    cursorStatus1.getString(31), // rea by
+                                    cursorStatus1.getString(3),//orderid orderid
+                                    cursorStatus1.getString(2),//barcode barcode
+                                    cursorStatus1.getString(46) // flag request
+                            );
+                        } else if(statusFlag == "returnReq") {
+                            sync_return_status(
+                                    cursorStatus1.getInt(0), // id
+                                    cursorStatus1.getString(32), // ret
+                                    cursorStatus1.getString(33), // ret time
+                                    cursorStatus1.getString(34),// ret by
+                                    cursorStatus1.getString(35), // ret reason
+                                    cursorStatus1.getString(39), // pre ret
+                                    cursorStatus1.getString(40),// pre ret time
+                                    cursorStatus1.getString(41),// pre ret by
+                                    cursorStatus1.getString(3),//orderid orderid
+                                    cursorStatus1.getString(2),//barcode barcode
+                                    cursorStatus1.getString(46) // flag request
+                            );
+                        } else if(statusFlag == "rts") {
+                            sync_rts(
+                                    cursorStatus1.getInt(0), // id
+                                    cursorStatus1.getString(36), // rts
+                                    cursorStatus1.getString(37), // rtstime
+                                    cursorStatus1.getString(38), // rts by
+                                    cursorStatus1.getString(3), // orderid
+                                    cursorStatus1.getString(2) // barcode
+                            );
+                        } else if(statusFlag == "cts") {
+                            sync_cts(
+                                    cursorStatus1.getInt(0), // id
+                                    cursorStatus1.getString(42), // cts
+                                    cursorStatus1.getString(43), // ctstime
+                                    cursorStatus1.getString(44), // cts by
+                                    cursorStatus1.getString(3), // orderid
+                                    cursorStatus1.getString(2) // barcode
+                            );
+                        }
+
+                    }while (cursorStatus1.moveToNext());
+                }
+
+              /*  Cursor cursorStatus = database2.getUnsyncedWithoutStatus();
+                if (cursorStatus.moveToFirst()) {
+                    String statusFlag = cursorStatus.getString(46);
+                        if(statusFlag == "cash") {
+                            do {
+                            sync_cash_status(cursorStatus.getInt(0), // id
                                     cursorStatus.getString(15), // Cash
                                     cursorStatus.getString(16), // cashType cashType
                                     cursorStatus.getString(17),//cashTime cashTime
@@ -203,27 +284,29 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                     cursorStatus.getString(20),// CashComment cashComment
                                     cursorStatus.getString(3),//orderid orderid
                                     cursorStatus.getString(2),//barcode barcode
-                                    cursorStatus.getString(4), // merorderref
-                                    cursorStatus.getString(10), // package price
                                     cursorStatus.getString(46) // flag request
-                            );
+                            ); } while (cursorStatus.moveToNext());
                         } else if(statusFlag == "partial"){
-                            sync_partial_status(
-                                cursorStatus.getInt(0), // id
-                                cursorStatus.getString(15), // cash
-                                cursorStatus.getString(32), // ret
-                                cursorStatus.getString(19), // partial cash
-                                cursorStatus.getString(21), // partial
-                                cursorStatus.getString(22),// partial time
-                                cursorStatus.getString(23), // partialBy
-                                cursorStatus.getString(24), // partialReceive
-                                cursorStatus.getString(26),//partialReason
-                                cursorStatus.getString(25),// partialReturn
-                                cursorStatus.getString(3),//orderid
-                                cursorStatus.getString(2), //  barcode
-                                cursorStatus.getString(46) // flag request
-                            );
-                        } else if(statusFlag == "onHold") {
+                            do{
+                                sync_partial_status(
+                                        cursorStatus.getInt(0), // id
+                                        cursorStatus.getString(15), // cash
+                                        cursorStatus.getString(32), // ret
+                                        cursorStatus.getString(19), // partial cash
+                                        cursorStatus.getString(21), // partial
+                                        cursorStatus.getString(22),// partial time
+                                        cursorStatus.getString(23), // partialBy
+                                        cursorStatus.getString(24), // partialReceive
+                                        cursorStatus.getString(26),//partialReason
+                                        cursorStatus.getString(25),// partialReturn
+                                        cursorStatus.getString(3),//orderid
+                                        cursorStatus.getString(2), //  barcode
+                                        cursorStatus.getString(46) // flag request
+                                ); } while (cursorStatus.moveToNext());
+                            }
+
+                        else if(statusFlag == "onHold") {
+                            do{
                             sync_onhold_status(
                                     cursorStatus.getInt(0), // id
                                     cursorStatus.getString(27), // onhold schedule
@@ -234,30 +317,129 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                     cursorStatus.getString(3),//orderid orderid
                                     cursorStatus.getString(2),//barcode barcode
                                     cursorStatus.getString(46) // flag request
-                            );
+                            ); } while (cursorStatus.moveToNext());
                         } else if(statusFlag == "returnReq"){
+                            do{
                             sync_return_status(
-                                cursorStatus.getInt(0), // id
-                                cursorStatus.getString(32), // ret
-                                cursorStatus.getString(33), // ret time
-                                cursorStatus.getString(34),// ret by
-                                cursorStatus.getString(35), // ret reason
-                                cursorStatus.getString(39), // pre ret
-                                cursorStatus.getString(40),// pre ret time
-                                cursorStatus.getString(41),// pre ret by
-                                cursorStatus.getString(3),//orderid orderid
-                                cursorStatus.getString(2),//barcode barcode
-                                cursorStatus.getString(46) // flag request
-                        ); }
-                    } while (cursorStatus.moveToNext());
-                }
+                                    cursorStatus.getInt(0), // id
+                                    cursorStatus.getString(32), // ret
+                                    cursorStatus.getString(33), // ret time
+                                    cursorStatus.getString(34),// ret by
+                                    cursorStatus.getString(35), // ret reason
+                                    cursorStatus.getString(39), // pre ret
+                                    cursorStatus.getString(40),// pre ret time
+                                    cursorStatus.getString(41),// pre ret by
+                                    cursorStatus.getString(3),//orderid orderid
+                                    cursorStatus.getString(2),//barcode barcode
+                                    cursorStatus.getString(46) // flag request
+                            ); } while (cursorStatus.moveToNext());
+                         } else if(statusFlag == "rts"){
+                            do{
+                                sync_rts(
+                                        cursorStatus.getInt(0), // id
+                                        cursorStatus.getString(36), // rts
+                                        cursorStatus.getString(37), // rtstime
+                                        cursorStatus.getString(38), // rts by
+                                        cursorStatus.getString(3), // orderid
+                                        cursorStatus.getString(2) // barcode
+                                ); } while (cursorStatus.moveToNext());
+                        } else if(statusFlag == "cts"){
+                            do{
+                                sync_cts(
+                                        cursorStatus.getInt(0), // id
+                                        cursorStatus.getString(42), // cts
+                                        cursorStatus.getString(43), // ctstime
+                                        cursorStatus.getString(44), // cts by
+                                        cursorStatus.getString(3), // orderid
+                                        cursorStatus.getString(2) // barcode
+
+                                ); } while (cursorStatus.moveToNext());
+                        }
+                }*/
             }
         }
     }
 
+    private void sync_cts(final int id,final String CTS,final String CTSTime, final String CTSBy, final String barcode, final String orderid) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryCTS.DELIVERY_CTS_UPDATE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("CTS", CTS);
+                params.put("CTSTime", CTSTime);
+                params.put("CTSBy", CTSBy);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                return params;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
+        requestQueue.add(stringRequest);
+    }
 
- private void sync_return_status(final int id, final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
-       StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
+    private void sync_rts(final int id, final String RTS,final String RTSTime, final String RTSBy, final String barcode, final String orderid) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Delivery_ReturnToSupervisor.DELIVERY_RETURNR_UPDATE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("RTS", RTS);
+                params.put("RTSTime", RTSTime);
+                params.put("RTSBy", RTSBy);
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                return params;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
+        requestQueue.add(stringRequest);
+    }
+
+    private void sync_return_status(final int id, final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -302,7 +484,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     public void sync_onhold_status (final int id,final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode, final String flagReq) {
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -389,7 +571,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-    private void sync_cash_status(final int id, final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice,final String flagReq) {
+    private void sync_cash_status(final int id, final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String flagReq) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
                     @Override
@@ -433,6 +615,73 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
+    /*private void sync_status(final int id, final String barcode,final String orderid, final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String partial,final String partialTime,final String partialBy,final String partialReceive,final String partialReturn,final String partialReason,final String onHoldSchedule,final String onHoldReason,final String rea,final String reatTime,final String reaBy,final String ret, final String retTime,final String retBy,final String retReason,final String rts,final String rtsTime,final String rtsBy,final String preRet,final String preRetTime,final String preRetBy,final String cts, final String ctsTime, final String ctsBy) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, SYNC_DATA,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
+                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                params.put("Cash", cash);
+                params.put("cashType", cashType);
+                params.put("CashBy", cashBy);
+                params.put("CashTime", cashTime);
+                params.put("CashAmt", cashAmt);
+                params.put("CashComment", cashComment);
+                params.put("partial", partial);
+                params.put("partialTime", partialTime);
+                params.put("partialBy", partialBy);
+                params.put("partialReceive", partialReceive);
+                params.put("partialReturn", partialReturn);
+                params.put("partialReason", partialBy);
+
+
+                *//* cursorStatus.getString(15), // Cash
+                                cursorStatus.getString(16), // cashType cashType
+                                cursorStatus.getString(17),//cashTime cashTime
+                                cursorStatus.getString(18), // cashBy cashBy
+                                cursorStatus.getString(19), // CashAmt cashAmt
+                                cursorStatus.getString(20),// CashComment cashComment
+
+                                cursorStatus.getString(21), // partial
+                                cursorStatus.getString(22),// partial time
+                                cursorStatus.getString(23), // partialBy
+                                cursorStatus.getString(24), // partialReceive
+                                cursorStatus.getString(25), // partial return
+                                cursorStatus.getString(26),//partial reason
+
+                                cursorStatus.getString(27), // onhold schedule
+                                cursorStatus.getString(28), // onholdreason*//*
+
+                return params;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+        }
+        requestQueue.add(stringRequest);
+    }
+*/
     private void updateUnpicked_Data(final int id, final String username, final String empCode, final String barcode){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryOfficerUnpicked.DELIVERY_PICK_LIST,
                 new Response.Listener<String>() {

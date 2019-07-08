@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -580,22 +580,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
         return true;
     }
-    public Cursor getUnsyncedWithoutStatus() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM " + TABLE_NAME_9 + " WHERE " + STATUS + " = 0;";
-        Cursor c = db.rawQuery(sql, null);
-        return c;
-    }
-
-    public boolean updateWithoutStatusCash(int id, int status) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(STATUS, status);
-        db.update(TABLE_NAME_9, contentValues, KEY_ID + "=" + id, null);
-        db.close();
-        return true;
-    }
-
 
     public boolean updateBarcodeStatus(int id, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1021,6 +1005,126 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
     }
 
+    public Cursor get_delivery_RTS(SQLiteDatabase db, String user, String flagReq, String rts) {
+        String[] columns = {
+                KEY_ID,
+                DROPPOINTCODE,
+                BARCODE_NO,
+                ORDERID,
+                MERCHANT_ORDER_REF,
+                MERCHANTS_NAME,
+                PICK_MERCHANTS_NAME,
+                CUSTOMER_NAME,
+                CUSTOMER_PHONE,
+                CUSTOMER_ADDRESS,
+                PACKAGE_PRICE,
+                PRODUCT_BRIEF,
+                DELIVERY_TIME,
+                USERNAME,
+                EMPLOYEE_CODE,
+                CASH_ACTION,
+                CASH_TYPE,
+                CASH_TIME,
+                CASH_BY,
+                CASH_AMT,
+                CASH_COMMENT,
+                PARTIAL,
+                PARTIAL_TIME,
+                PARTIAL_BY,
+                PARTIAL_RECEIVE,
+                PARTIAL_RETURN,
+                PARTIAL_RETURN_REASON ,
+                ONHOLD_SCHEDULE,
+                ONHOLD_REASON,
+                REA,
+                REA_TIME,
+                REA_BY,
+                RET,
+                RET_TIME,
+                RET_BY,
+                RET_REASON,
+                RTS,
+                RTS_TIME,
+                RTS_BY,
+                PRERET,
+                PRERET_TIME,
+                PRERET_BY,
+                CTS_CASH,
+                CTSTIME_CASH,
+                CTSBY_CASH,
+                SLAMISS,
+                FLAG_REQ,
+                STATUS};
+
+        String whereClause = USERNAME + "=? AND " +FLAG_REQ+ "=? AND " +RTS+ "<> ?";
+        String[] whereArgs = new String[]{
+                user,
+                flagReq,
+                rts
+        };
+        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
+    }
+
+    public Cursor get_delivery_CTS(SQLiteDatabase db, String user, String flagReq, String cts) {
+        String[] columns = {
+                KEY_ID,
+                DROPPOINTCODE,
+                BARCODE_NO,
+                ORDERID,
+                MERCHANT_ORDER_REF,
+                MERCHANTS_NAME,
+                PICK_MERCHANTS_NAME,
+                CUSTOMER_NAME,
+                CUSTOMER_PHONE,
+                CUSTOMER_ADDRESS,
+                PACKAGE_PRICE,
+                PRODUCT_BRIEF,
+                DELIVERY_TIME,
+                USERNAME,
+                EMPLOYEE_CODE,
+                CASH_ACTION,
+                CASH_TYPE,
+                CASH_TIME,
+                CASH_BY,
+                CASH_AMT,
+                CASH_COMMENT,
+                PARTIAL,
+                PARTIAL_TIME,
+                PARTIAL_BY,
+                PARTIAL_RECEIVE,
+                PARTIAL_RETURN,
+                PARTIAL_RETURN_REASON ,
+                ONHOLD_SCHEDULE,
+                ONHOLD_REASON,
+                REA,
+                REA_TIME,
+                REA_BY,
+                RET,
+                RET_TIME,
+                RET_BY,
+                RET_REASON,
+                RTS,
+                RTS_TIME,
+                RTS_BY,
+                PRERET,
+                PRERET_TIME,
+                PRERET_BY,
+                CTS_CASH,
+                CTSTIME_CASH,
+                CTSBY_CASH,
+                SLAMISS,
+                FLAG_REQ,
+                STATUS};
+
+        String whereClause = USERNAME + "=? AND " +FLAG_REQ+ "=? AND " +CTS_CASH+ "<> ?";
+        String[] whereArgs = new String[]{
+                user,
+                flagReq,
+                cts
+        };
+        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
+    }
+
     public Cursor get_my_delivery_list(SQLiteDatabase db, String user, String flagReq) {
         String[] columns = {
                 BARCODE_NO,
@@ -1079,17 +1183,15 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
 
     //Update Cash Status
-    public void update_cash_status(String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String cashComment, String orderid, String barcode,String merOrderRef,String packagePrice,String flagReq ,int status) {
+    public void update_cash_status(String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String cashComment, String orderid, String barcode,String flagReq ,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(CASH_COMMENT, Cash);
+        values.put(CASH, Cash);
         values.put(CASH_TYPE, cashType);
         values.put(CASH_TIME, CashTime);
         values.put(CASH_BY, CashBy);
         values.put(CASH_AMT, CashAmt);
         values.put(CASH_COMMENT, cashComment);
-        values.put(MERCHANT_ORDER_REF, merOrderRef);
-        values.put(PACKAGE_PRICE, packagePrice);
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
@@ -1342,6 +1444,16 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    public int getWithoutStatusSlaMissCount(int slaMissCount) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + SLAMISS + " < '" + slaMissCount + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
     public int getOnholdCount(String flagReq) {
         String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1351,8 +1463,18 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
         return count;
     }
-    public int getCashCount(String flagReq) {
-        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
+    public int getCashCount(String flagReq, String cts) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "' AND " + CTS_CASH + " <> '" + cts + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(countQuery, null);
+        int count = cursor.getCount();
+        cursor.close();
+        db.close();
+        return count;
+    }
+
+    public int getReturnCount(String flagReq, String rts) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "' AND " + RTS + " <> '" + rts + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
@@ -1372,13 +1494,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public void update_cts_status(String CTS,String CTSTime,String CTSBy, String empcode,String barcode,String orderid, int status) {
+    public void update_cts_status(String CTS,String CTSTime,String CTSBy,String barcode,String orderid, String flagreq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(CTS_CASH, CTS);
         values.put(CTSTIME_CASH, CTSTime);
         values.put(CTSBY_CASH, CTSBy);
-        values.put(EMPLOYEE_CODE, empcode);
+        values.put(FLAG_REQ, flagreq);
         values.put(STATUS, status);
 
         String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
@@ -1391,13 +1513,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void update_rts_status(String Rts,String RTSTime,String RTSBy, String empcode,String barcode,String orderid, int status) {
+    public void update_rts_status(String Rts,String RTSTime,String RTSBy,String barcode,String orderid, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(RTS, Rts);
         values.put(RTS_TIME, RTSTime);
         values.put(RTS_BY, RTSBy);
-        values.put(EMPLOYEE_CODE, empcode);
+        values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
         String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
@@ -1408,6 +1530,22 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         // insert
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
+    }
+
+    public Cursor getUnsyncedWithoutStatus() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_9 + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateWithoutStatusCash(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME_9, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
     }
 }
 

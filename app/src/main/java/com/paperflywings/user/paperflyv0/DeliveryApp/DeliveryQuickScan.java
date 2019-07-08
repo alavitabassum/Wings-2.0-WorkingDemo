@@ -16,7 +16,6 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -44,7 +43,6 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
-import com.paperflywings.user.paperflyv0.PickupList_Model_For_Executive;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONException;
@@ -69,13 +67,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
     private Button done;
     private RequestQueue requestQueue;
 
-    //    private TextView scan_count1 ;
-    private com.paperflywings.user.paperflyv0.PickupOfficer.pickuplistForExecutiveAdapter pickuplistForExecutiveAdapter;
-    RecyclerView recyclerView_pul;
-    RecyclerView.LayoutManager layoutManager_pul;
-    RecyclerView.Adapter adapter_pul;
-    android.widget.RelativeLayout vwParentRow;
-    private List<PickupList_Model_For_Executive> list;
     //1 means data is synced and 0 means data is not synced
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -83,11 +74,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
     //a broadcast to know weather the data is synced or not
     // TODO add sql_primary_id to fulfillment barcode factory
-
-    public static final String BARCODE_INSERT_AND_UPDATE_URL = "http://paperflybd.com/insert_barcode_fulfillment.php";
-
-    public static final String GET_DATA_FOR_BARCODE= "http://paperflybd.com/DeliveryQuickScan.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+    public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -101,8 +89,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
         setContentView(R.layout.delivery_quick_barcode_scan);
 
         notificationManager = NotificationManagerCompat.from(this);
-
-
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.UPC_A);
@@ -184,87 +170,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-
-   /* // Load data from api
-    private void getDataMatchingBarcode (final String barcodeNumber)
-    {
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
-        final String currentDateTimeString = df.format(c);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA_FOR_BARCODE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-//                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                db.clearPTMListExec(sqLiteDatabase);
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("details");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
-                                DeliveryWithoutStatusModel DeliveryQuickScan = new DeliveryWithoutStatusModel(
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief")
-                                );
-
-                                db.insert_quick_delivery_scan_info(
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief"),
-                                        NAME_NOT_SYNCED_WITH_SERVER
-                                );
-                            }
-
-                            getData(barcodeNumber);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
-
-                    }
-                }){
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params1 = new HashMap<String, String>();
-                params1.put("barcodeNumber", barcodeNumber);
-                return params1;
-            }
-
-        };
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(this);
-        }
-        requestQueue.add(stringRequest);
-    }*/
-
-
-
     private void getData(final String barcodeNumber)
     {
         try{
@@ -275,7 +180,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 final String orderId = c.getString(0);
                 final String merorderref = c.getString(1);
                 final String merchantname = c.getString(2);
-                final String pickmerchantname = c.getString(3);
+                final String pickMerchantName = c.getString(3);
                 final String custname = c.getString(4);
                 final String custaddress = c.getString(5);
                 final String custphone = c.getString(6);
@@ -401,8 +306,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 PackagePriceTexttv.setText(packagePrice);
 
                                                 AlertDialog.Builder cashSpinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
-                                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-
                                                 cashSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
@@ -430,17 +333,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
                                                             tv1.setText("Field can't be empty");
                                                         } else {
-
                                                             String cashAmt = et1.getText().toString();
                                                             String cashComment = et2.getText().toString();
                                                             String ordID = OrderIdCollectiontv.getText().toString();
-                                                            String merOrderRefs = MerchantReftv.getText().toString();
-                                                            String pakagePrices = PackagePriceTexttv.getText().toString();
 
-                                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode,merOrderRefs,pakagePrices, "cash");
+                                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode, "cash");
                                                             dialogCash.dismiss();
                                                             startActivity(DeliveryListIntent);
-
                                                         }
                                                     }
                                                 });
@@ -462,11 +361,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 MerchantRefPartialtv.setText(merchantRef);
                                                 PackagePriceTextPartialtv.setText(packagePrice);
 
-                                                //final TextView tv1 = mViewPartial.findViewById(R.id.package_price_text);
-
                                                 AlertDialog.Builder partialSpinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
-                                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-
                                                 partialSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
@@ -490,26 +385,15 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 dialogPartial.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-
-                                     /*   if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
-                                            tv1.setText("Field can't be empty");
-                                        } else {*/
-
                                                         String partialsCash = partialcash.getText().toString();
                                                         String partialReturn = partialReturned1qty.getText().toString();
                                                         String partialReason = partialremarks.getText().toString();
                                                         String partialsReceive = partialReceive.getText().toString();
 
-                                                        String ordIdPartial = OrderIdCollectionPartialtv.getText().toString();
-                                                        String merOrderRefsPartial = MerchantRefPartialtv.getText().toString();
-                                                        String pakagePricesPartial = PackagePriceTextPartialtv.getText().toString();
-
                                                         update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,"partial");
                                                         dialogPartial.dismiss();
                                                         startActivity(DeliveryListIntent);
-
                                                     }
-                                                    //}
                                                 });
                                                 dialog.dismiss();
 
@@ -518,21 +402,17 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 final View mViewReturnR = getLayoutInflater().inflate(R.layout.insert_returnr_without_status, null);
 
                                                 final Spinner mReturnRSpinner = (Spinner) mViewReturnR.findViewById(R.id.Remarks_Retr_status);
-                                                //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
                                                 ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryQuickScan.this,
                                                         android.R.layout.simple_spinner_item,
-                                                        getResources().getStringArray(R.array.onholdreasons));
+                                                        getResources().getStringArray(R.array.returnreasonsAll));
                                                 adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                                 mReturnRSpinner.setAdapter(adapterReturnR);
 
                                                 final EditText et4 = mViewReturnR.findViewById(R.id.remarks_RetR);
                                                 final TextView tv4 = mViewReturnR.findViewById(R.id.remarksTextRetR);
-                                                //final Button bt1 = mViewReturnR.findViewById(R.id.datepicker);
 
 
                                                 AlertDialog.Builder ReturnRSpinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
-                                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-
                                                 ReturnRSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
@@ -556,29 +436,18 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 dialogReturnR.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-
-                                                        //String retReason = et4.getText().toString();
-
                                                         String retReason = mReturnRSpinner.getSelectedItem().toString();
-
-                                                        //String onHoldSchedule = bt1.getText().toString();
                                                         update_retR_status(Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode,"returnReq");
 
                                                         dialogReturnR.dismiss();
                                                         startActivity(DeliveryListIntent);
-
-
                                                     }
                                                 });
                                                 dialog.dismiss();
                                                 break;
                                             case 3:
-
-
                                                 final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
-
                                                 final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.Remarks_onhold_status);
-                                                //final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
                                                 ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(DeliveryQuickScan.this,
                                                         android.R.layout.simple_spinner_item,
                                                         getResources().getStringArray(R.array.onholdreasons));
@@ -601,7 +470,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         datePickerDialog = new DatePickerDialog(DeliveryQuickScan.this, new DatePickerDialog.OnDateSetListener() {
                                                             @Override
                                                             public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDate) {
-                                                                //bt1.setText(mYear+"/"+(mMonth+1)+"/"+mDate);
                                                                 String yearselected    = Integer.toString(mYear) ;
                                                                 String monthselected   = Integer.toString(mMonth + 1);
                                                                 String dayselected     = Integer.toString(mDate);
@@ -615,8 +483,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 });
 
                                                 AlertDialog.Builder onHoldeSpinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
-                                                //cashSpinnerBuilder.setTitle("Write Comment: ");
-
                                                 onHoldeSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
@@ -640,19 +506,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 dialogonHold.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-
-                                                        //String onHoldReason = et3.getText().toString();
-
                                                         String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
-
                                                         String onHoldSchedule = bt1.getText().toString();
 
                                                         update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode, "onHold");
-
+                                                        insertOnholdLog(orderid, barcode, merchantname, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                                         dialogonHold.dismiss();
                                                         startActivity(DeliveryListIntent);
-
-
                                                     }
                                                 });
                                                 dialog.dismiss();
@@ -688,13 +548,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
         }
     }
 
-
-    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode,final String merOrderRef,final String packagePrice, final String flagReq) {
-
-        /*String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
-        without_status_text.setText(str1);*/
-        final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
-                DeliveryWithoutStatus.class);
+    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode, final String flagReq) {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -704,13 +558,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, flagReq, NAME_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq, NAME_SYNCED_WITH_SERVER);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode,merOrderRef,packagePrice, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -721,8 +574,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, merOrderRef,packagePrice, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
+                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+
                     }
                 }
         ) {
@@ -753,13 +606,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
     }
     private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
 
-       /* String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
-        without_status_text.setText(str1);*/
-        final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
-                DeliveryWithoutStatus.class);
-
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
-
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response1) {
@@ -767,12 +614,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
                                 db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
                                 db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -784,7 +631,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
+
                     }
                 }
         ) {
@@ -814,10 +661,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
     }
     public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode, final String flagReq) {
 
-        /*String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
-        without_status_text.setText(str1);*/
-        final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
-                DeliveryWithoutStatus.class);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -827,12 +670,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
                                 db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode,flagReq ,NAME_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
                                 db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -844,7 +687,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
+
                     }
                 }
         ) {
@@ -873,11 +716,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
     }
     public void update_partial_status (final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String flagReq) {
 
-
-        /*String str1 = String.valueOf(db.getWithoutStatusCount("NULL"));
-        without_status_text.setText(str1);*/
-        final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
-                DeliveryWithoutStatus.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -887,12 +725,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
                                 db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -904,7 +742,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);}
+
+                    }
                 }
         ) {
             @Override
@@ -929,6 +768,56 @@ public class DeliveryQuickScan extends AppCompatActivity{
             if (requestQueue == null) {
                 requestQueue = Volley.newRequestQueue(this);
             }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+    }
+    public void insertOnholdLog(final String orderid, final String barcode, final String merchantName, final String pickMerchantName, final String onHoldSchedule, final String onHoldReason, final String username, final String currentDateTime){
+        final BarcodeDbHelper db = new BarcodeDbHelper(getApplicationContext());
+        StringRequest postRequest = new StringRequest(Request.Method.POST, INSERT_ONHOLD_LOG,
+
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                //if there is a success
+                                db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_SYNCED_WITH_SERVER );
+
+                            } else {
+                                //if there is some error
+                                db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_NOT_SYNCED_WITH_SERVER );
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_NOT_SYNCED_WITH_SERVER );}
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("orderid", orderid);
+                params.put("barcode", barcode);
+                params.put("merchantName", merchantName);
+                params.put("pickMerchantName", pickMerchantName);
+                params.put("onHoldSchedule", onHoldSchedule);
+                params.put("onHoldReason", onHoldReason);
+                params.put("username", username);
+                params.put("currentDateTime", currentDateTime);
+
+                return params;
+            }
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
             Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();

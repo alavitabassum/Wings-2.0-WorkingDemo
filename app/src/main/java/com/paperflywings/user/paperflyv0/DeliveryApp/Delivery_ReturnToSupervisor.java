@@ -2,7 +2,6 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,18 +14,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -63,38 +59,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.Manifest.permission.CAMERA;
-
 public class Delivery_ReturnToSupervisor extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,DeliveryReturnToSuperVisorAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    String dateTime;
-
-    private CardView without_Status_card;
     private TextView ReturnRqst_text;
     private RequestQueue requestQueue;
-
-    //delivery without status actions
-
-
-    private static final String URL_DATA = "";
-    private ProgressDialog progress;
     private DeliveryReturnToSuperVisorAdapter DeliveryReturnToSuperVisorAdapter;
-
 
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
-    RecyclerView.Adapter adapter_pul;
-    android.widget.RelativeLayout vwParentRow;
-    private static final int REQUEST_CAMERA = 1;
 
-    //public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String RETURN_REQUEST = "http://paperflybd.com/DeliveryReturnRequestApi.php";
     public static final String DELIVERY_RETURNR_UPDATE = "http://paperflybd.com/DeliveryReturnRequestUpdate.php";
-    public static final String ALL_STATUS_LIST = "http://paperflybd.com/DeliveryAllStatus.php";
-
 
     private List<DeliveryReturnToSuperVisorModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -105,7 +83,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
-
 
 
     @Override
@@ -170,20 +147,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
-        int currentApiVersion = Build.VERSION.SDK_INT;
-
-        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
-        {
-            if(checkPermission())
-            {
-//                Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                requestPermission();
-            }
-        }
-
     }
 
     private void getData(String user){
@@ -191,7 +154,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             list.clear();
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user,"returnReq");
+            Cursor c = db.get_delivery_RTS(sqLiteDatabase,user,"rts", "Y");
 
             while (c.moveToNext()){
                 int id = c.getInt(0);
@@ -248,26 +211,12 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 list.add(withoutStatus_model);
             }
 
-
-       /*     Cursor c1 = db.get_delivery_summary(sqLiteDatabase,user);
-
-            while (c1.moveToNext()){
-
-                String without_Status = c1.getString(2);
-
-                without_Status_card = (CardView)findViewById(R.id.without_Status_id);
-                without_status_text = (TextView)findViewById(R.id.WithoutStatus_id_);
-                without_status_text.setText(String.valueOf(without_Status));
-
-            }*/
-
-
             DeliveryReturnToSuperVisorAdapter = new DeliveryReturnToSuperVisorAdapter(list,getApplicationContext());
             recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
             DeliveryReturnToSuperVisorAdapter.notifyDataSetChanged();
             DeliveryReturnToSuperVisorAdapter.setOnItemClickListener(Delivery_ReturnToSupervisor.this);
 
-            String str = String.valueOf(db.getCashCount("returnReq"));
+            String str = String.valueOf(db.getReturnCount("rts", "Y"));
             ReturnRqst_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 
@@ -284,7 +233,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteList(sqLiteDatabase, "returnReq");
+                        db.deleteList(sqLiteDatabase, "rts");
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -386,7 +335,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"),
-                                        "returnReq"
+                                        "rts"
                                         ,NAME_SYNCED_WITH_SERVER);
                                 list.add(withoutStatus_model);
                             }
@@ -397,7 +346,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                             recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryReturnToSuperVisorAdapter.setOnItemClickListener(Delivery_ReturnToSupervisor.this);
-                            String str = String.valueOf(db.getCashCount("returnReq"));
+                            String str = String.valueOf(db.getReturnCount("rts","Y"));
                             ReturnRqst_text.setText(str);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -427,52 +376,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }
-    private boolean checkPermission()
-    {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
-    }
-    private void requestPermission()
-    {
-        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
-    }
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_CAMERA:
-                if (grantResults.length > 0) {
-
-                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (cameraAccepted){
-                        Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access camera", Toast.LENGTH_LONG).show();
-                    }else {
-                        Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera", Toast.LENGTH_LONG).show();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (shouldShowRequestPermissionRationale(CAMERA)) {
-                                showMessageOKCancel("You need to allow access to both the permissions",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                    requestPermissions(new String[]{CAMERA},
-                                                            REQUEST_CAMERA);
-                                                }
-                                            }
-                                        });
-                                return;
-                            }
-                        }
-                    }
-                }
-                break;
-        }
-    }
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new android.support.v7.app.AlertDialog.Builder(Delivery_ReturnToSupervisor.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
     }
 
     @Override
@@ -604,9 +507,8 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
-        }
-        else{
-            getData(username);
+        } else {
+              getData(username);
         }
     }
 
@@ -617,7 +519,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -632,13 +533,13 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
 
-        ReturnToS(RTS,RTSTime,RTSBy,empcode,barcode,orderid);
+        ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rts");
         //pickedfordelivery(lastText,username,empcode,BarCode,OrderId);
 
     }
 
-    private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy,final String empcode, final String barcode, final String orderid) {
-        String str = String.valueOf(db.getOnholdCount("onHold"));
+    private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy, final String barcode, final String orderid, final String flagReq) {
+        String str = String.valueOf(db.getReturnCount("rts","Y"));
         ReturnRqst_text.setText(str);
         final Intent withoutstatuscount = new Intent(Delivery_ReturnToSupervisor.this,
                 Delivery_ReturnToSupervisor.class);
@@ -650,7 +551,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_rts_status(RTS,RTSTime,RTSBy,empcode,barcode,orderid,NAME_SYNCED_WITH_SERVER);
+                                db.update_rts_status(RTS,RTSTime,RTSBy,barcode,orderid,flagReq,NAME_SYNCED_WITH_SERVER);
                                 Toast toast= Toast.makeText(Delivery_ReturnToSupervisor.this,
                                         "Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -659,7 +560,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_rts_status(RTS,RTSTime,RTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_rts_status(RTS,RTSTime,RTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
@@ -671,7 +572,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_rts_status(RTS,RTSTime,RTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_rts_status(RTS,RTSTime,RTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);
                     }
                 }
@@ -682,7 +583,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 params.put("RTS", RTS);
                 params.put("RTSTime", RTSTime);
                 params.put("RTSBy", RTSBy);
-                params.put("empcode", empcode);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
                 return params;
