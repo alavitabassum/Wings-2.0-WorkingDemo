@@ -199,5 +199,6 @@
     </string>
     <string name="title_activity_delivery_cts">Cash To Supervisor</string>
     <string name="title_activity_return_request">ReturnRequest</string>
+    <string name="title_activity_delivery_cash_rs">DeliveryCashRS</string>
 
 </resources>

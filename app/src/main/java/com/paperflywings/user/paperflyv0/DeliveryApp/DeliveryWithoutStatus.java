@@ -780,7 +780,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                                 bt1.setText(dateTime);
                                             }
                                         },year,month,day);
-
+                                        datePickerDialog.getDatePicker().setMinDate(c1.getTimeInMillis());
                                         datePickerDialog.show();
                                     }
                                 });
