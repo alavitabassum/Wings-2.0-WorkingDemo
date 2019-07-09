@@ -32,7 +32,6 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
     BarcodeDbHelper db;
 
 
-
     public interface OnItemClickListtener {
         void onItemClick_view (View view2, int position2);
         void onItemClick_call (View view4, int position4);

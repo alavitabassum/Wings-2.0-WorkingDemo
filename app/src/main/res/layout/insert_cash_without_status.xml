@@ -9,8 +9,8 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="366dp"
-        android:layout_height="283dp"
+        android:layout_width="364dp"
+        android:layout_height="277dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="29dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="69dp"
             android:text="Order Id"
             android:textAlignment="textStart"
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="29dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="100dp"
             android:text="Merchant Ref"
             android:textAlignment="textStart"
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="29dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="134dp"
             android:text="Price"
             android:textAlignment="textStart"
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="29dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="172dp"
             android:text="Collection"
             android:textAlignment="textStart"
@@ -159,7 +159,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="29dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="204dp"
             android:text="Remarks"
             android:textAlignment="textStart"
@@ -198,8 +198,8 @@
             android:layout_alignStart="@+id/textViewCollection"
             android:layout_alignParentTop="true"
             android:layout_marginStart="15dp"
-            android:textColor="@color/red"
-            android:layout_marginTop="35dp" />
+            android:layout_marginTop="35dp"
+            android:textColor="@color/red" />
 
     </RelativeLayout>
 

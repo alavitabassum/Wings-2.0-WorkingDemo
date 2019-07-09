@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_delivery_cashrs_list"
+    android:layout_width="match_parent"
+    android:layout_height="125dp"
+    android:layout_margin="5dp"
+    android:foreground="?selectableItemBackground"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp"
+    card_view_assign:cardBackgroundColor="#fff"
+    card_view_assign:cardElevation="3dp"
+    card_view_assign:contentPadding="4dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+
+        <TextView
+            android:id="@+id/ordertxt_onhold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="5dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Order ID: "
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/orderIdCash"
+            android:layout_width="279dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/ordertxt_onhold"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="6dp"
+            android:layout_toEndOf="@+id/ordertxt_onhold"
+            android:lines="2"
+            android:maxLines="2"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            />
+
+
+        <TextView
+            android:id="@+id/price_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="30dp"
+            android:text="Package Price: "
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/priceCash"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/price_txt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_toEndOf="@+id/price_txt"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp"
+            style="@style/boldStyle"/>
+
+        <TextView
+            android:id="@+id/CashDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="2dp"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

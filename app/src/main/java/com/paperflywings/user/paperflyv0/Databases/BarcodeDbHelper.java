@@ -962,6 +962,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
     public Cursor get_delivery_without_status(SQLiteDatabase db, String user, String flagReq) {
         String[] columns = {
                 KEY_ID,
@@ -1020,6 +1021,121 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         };
         return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
     }
+
+    public void insert_delivery_crs_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,String slaMiss, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(USERNAME, username);
+        values.put(EMPLOYEE_CODE, empCode);
+        values.put(BARCODE_NO, barcode);
+        values.put(ORDERID, orderid);
+        values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(MERCHANTS_NAME, merchantName);
+        values.put(PICK_MERCHANTS_NAME, pickMerchantName);
+        values.put(CUSTOMER_NAME, custname);
+        values.put(CUSTOMER_ADDRESS, custaddress);
+        values.put(CUSTOMER_PHONE, custphone);
+        values.put(PACKAGE_PRICE, packagePrice);
+        values.put(PRODUCT_BRIEF, productBrief);
+        values.put(DELIVERY_TIME, deliveryTime);
+        values.put(DROPPOINTCODE, dropPointCode);
+        values.put(CASH_ACTION, Cash);
+        values.put(CASH_TYPE, cashType);
+        values.put(CASH_TIME, CashTime);
+        values.put(CASH_BY, CashBy);
+        values.put(CASH_AMT, CashAmt);
+        values.put(CASH_COMMENT, CashComment);
+        values.put(PARTIAL, partial);
+        values.put(PARTIAL_TIME, partialTime);
+        values.put(PARTIAL_BY, partialBy);
+        values.put(PARTIAL_RECEIVE, partialReceive);
+        values.put(PARTIAL_RETURN, partialReturn);
+        values.put(PARTIAL_RETURN_REASON, partialReason);
+        values.put(ONHOLD_SCHEDULE, onHoldSchedule);
+        values.put(ONHOLD_REASON, onHoldReason);
+        values.put(REA, Rea);
+        values.put(REA_TIME, ReaTime);
+        values.put(REA_BY, ReaBy);
+        values.put(RET, Ret);
+        values.put(RET_TIME, RetTime);
+        values.put(RET_BY, RetBy);
+        values.put(REA_BY, RetBy);
+        values.put(RET_REASON, retReason);
+        values.put(RTS, rts);
+        values.put(RTS_TIME, RTSTime);
+        values.put(RTS_BY, RTSBy);
+        values.put(PRERET, PreRet);
+        values.put(PRERET_TIME, PreRetTime);
+        values.put(PRERET_BY, PreRetBy);
+        values.put(CTS_CASH,CTS);
+        values.put(CTSTIME_CASH,CTSTime);
+        values.put(CTSBY_CASH,CTSBy);
+        values.put(SLAMISS,slaMiss);
+        values.put(STATUS, status);
+
+        db.insert(TABLE_NAME_9, null, values);
+        db.close();
+    }
+
+    public Cursor get_delivery_crs_status(SQLiteDatabase db, String user) {
+        String[] columns = {
+                KEY_ID,
+                DROPPOINTCODE,
+                BARCODE_NO,
+                ORDERID,
+                MERCHANT_ORDER_REF,
+                MERCHANTS_NAME,
+                PICK_MERCHANTS_NAME,
+                CUSTOMER_NAME,
+                CUSTOMER_PHONE,
+                CUSTOMER_ADDRESS,
+                PACKAGE_PRICE,
+                PRODUCT_BRIEF,
+                DELIVERY_TIME,
+                USERNAME,
+                EMPLOYEE_CODE,
+                CASH_ACTION,
+                CASH_TYPE,
+                CASH_TIME,
+                CASH_BY,
+                CASH_AMT,
+                CASH_COMMENT,
+                PARTIAL,
+                PARTIAL_TIME,
+                PARTIAL_BY,
+                PARTIAL_RECEIVE,
+                PARTIAL_RETURN,
+                PARTIAL_RETURN_REASON ,
+                ONHOLD_SCHEDULE,
+                ONHOLD_REASON,
+                REA,
+                REA_TIME,
+                REA_BY,
+                RET,
+                RET_TIME,
+                RET_BY,
+                RET_REASON,
+                RTS,
+                RTS_TIME,
+                RTS_BY,
+                PRERET,
+                PRERET_TIME,
+                PRERET_BY,
+                CTS_CASH,
+                CTSTIME_CASH,
+                CTSBY_CASH,
+                SLAMISS,
+
+                STATUS};
+
+        String whereClause = USERNAME + "=?";
+        String[] whereArgs = new String[]{
+                user,
+        };
+        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
+    }
+
 
     public Cursor get_my_delivery_list(SQLiteDatabase db, String user, String flagReq) {
         String[] columns = {
@@ -1315,6 +1431,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
     }
 
+    public void deletecrsList(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9 );
+    }
 
     public void deleteunpickedOrderData(String barcode) {
         SQLiteDatabase db = this.getWritableDatabase();

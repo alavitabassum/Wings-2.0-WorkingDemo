@@ -32,7 +32,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,22 +64,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryCTS extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,DeliveryCTSAdapter.OnItemClickListtener, SwipeRefreshLayout.OnRefreshListener {
+public class DeliveryCashRS extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private TextView CashCount_text;
-    private DeliveryCTSAdapter DeliveryCTSAdapter;
+    private DeliveryCashRSAdapter DeliveryCashRSAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
-    private Button delivery_cts_recieved;
 
-    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
+    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashRSupervisorApi.php";
     public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
 
-    private List<DeliveryCTSModel> list;
+    private List<DeliveryCashRSModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
@@ -90,14 +92,13 @@ public class DeliveryCTS extends AppCompatActivity
         super.onCreate(savedInstanceState);
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
+        setContentView(R.layout.activity_delivery_cash_rs);
 
-        setContentView(R.layout.activity_delivery_cts);
-        CashCount_text = (TextView)findViewById(R.id.CTS_id_);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_without_status_list);
-        recyclerView_pul.setAdapter(DeliveryCTSAdapter);
-        list = new ArrayList<DeliveryCTSModel>();
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cashRS_list);
+        recyclerView_pul.setAdapter(DeliveryCashRSAdapter);
+        list = new ArrayList<DeliveryCashRSModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -109,7 +110,7 @@ public class DeliveryCTS extends AppCompatActivity
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        delivery_cts_recieved = (Button) findViewById(R.id.cash_recieved_by_supervisor);
+        //delivery_cts_recieved = (Button) findViewById(R.id.cash_recieved_by_supervisor);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
@@ -136,17 +137,9 @@ public class DeliveryCTS extends AppCompatActivity
         //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
-        delivery_cts_recieved.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DeliveryCTS.this,
-                        DeliveryCashRS.class);
-                startActivity(intent);
-            }
-        });
 
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_CTS);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -217,19 +210,17 @@ public class DeliveryCTS extends AppCompatActivity
                 String flagReq = c.getString(46);
                 int status = c.getInt(47);
 
-                DeliveryCTSModel withoutStatus_model = new DeliveryCTSModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
+                DeliveryCashRSModel withoutStatus_model = new DeliveryCashRSModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
 
                 list.add(withoutStatus_model);
             }
 
-            DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(DeliveryCTSAdapter);
-            DeliveryCTSAdapter.notifyDataSetChanged();
-            DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
+            DeliveryCashRSAdapter = new DeliveryCashRSAdapter(list,getApplicationContext());
+            recyclerView_pul.setAdapter(DeliveryCashRSAdapter);
+            DeliveryCashRSAdapter.notifyDataSetChanged();
+           // DeliveryCashRSAdapter.setOnItemClickListener(DeliveryCashRS.this);
             swipeRefreshLayout.setRefreshing(false);
 
-            String str = String.valueOf(db.getCashCount("cash"));
-            CashCount_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 
 
@@ -252,7 +243,7 @@ public class DeliveryCTS extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliveryCTSModel withoutStatus_model = new  DeliveryCTSModel(
+                                DeliveryCashRSModel withoutStatus_model = new  DeliveryCashRSModel(
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
@@ -350,14 +341,9 @@ public class DeliveryCTS extends AppCompatActivity
                                 list.add(withoutStatus_model);
                             }
 
-                            DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(DeliveryCTSAdapter);
+                            DeliveryCashRSAdapter = new DeliveryCashRSAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(DeliveryCashRSAdapter);
                             swipeRefreshLayout.setRefreshing(false);
-                            DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
-
-                            String str = String.valueOf(db.getOnholdCount("cash"));
-                            CashCount_text.setText(str);
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -391,12 +377,12 @@ public class DeliveryCTS extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_CTS);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Intent homeIntent = new Intent(DeliveryCTS.this,
-                    DeliveryOfficerCardMenu.class);
+            Intent homeIntent = new Intent(DeliveryCashRS.this,
+                    DeliveryCTS.class);
             startActivity(homeIntent);
         }
     }
@@ -418,7 +404,7 @@ public class DeliveryCTS extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                DeliveryCTSAdapter.getFilter().filter(newText);
+                DeliveryCashRSAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -426,7 +412,7 @@ public class DeliveryCTS extends AppCompatActivity
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(DeliveryCTS.this,DeliveryWithoutStatus.class);
+            Intent intent_stay = new Intent(DeliveryCashRS.this,DeliveryWithoutStatus.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -455,7 +441,7 @@ public class DeliveryCTS extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(DeliveryCTS.this,
+            Intent homeIntent = new Intent(DeliveryCashRS.this,
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
             // Handle the camera action
@@ -487,7 +473,7 @@ public class DeliveryCTS extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliveryCTS.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliveryCashRS.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -503,7 +489,7 @@ public class DeliveryCTS extends AppCompatActivity
             alertDialog.show();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_CTS);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -516,7 +502,7 @@ public class DeliveryCTS extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         list.clear();
-        DeliveryCTSAdapter.notifyDataSetChanged();
+        DeliveryCashRSAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -526,107 +512,5 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onItemClick_view(View view2, int position2) {
-
-        final DeliveryCTSModel clickedITem = list.get(position2);
-
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
-
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        final String currentDateTime = df.format(c);
-
-        final String cash = clickedITem.getCash();
-        final String cashBy = clickedITem.getCashBy();
-        final String cashType = clickedITem.getCashType();
-        final String cashTime = clickedITem.getCashTime();
-        final String CTS = "Y";
-        final String CTSTime = currentDateTime;
-        final String CTSBy = username;
-
-        String barcode = clickedITem.getBarcode();
-        String orderid = clickedITem.getOrderid();
-
-        CashToS(CTS,CTSTime,CTSBy,empcode,barcode,orderid);
-    }
-
-    private void CashToS(final String CTS,final String CTSTime, final String CTSBy,final String empcode, final String barcode, final String orderid) {
-        String str = String.valueOf(db.getOnholdCount("onHold"));
-        CashCount_text.setText(str);
-        final Intent withoutstatuscount = new Intent(DeliveryCTS.this,
-                DeliveryCTS.class);
-        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_SYNCED_WITH_SERVER);
-                                Toast toast= Toast.makeText(DeliveryCTS.this,
-                                        "Successful", Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-                                toast.show();
-                                startActivity(withoutstatuscount);
-                            } else {
-                                //if there is some error
-                                //saving the name to sqlite with status unsynced
-                                db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("CTS", CTS);
-                params.put("CTSTime", CTSTime);
-                params.put("CTSBy", CTSBy);
-                params.put("empcode", empcode);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                return params;
-            }
-        };
-        try {
-            if (requestQueue == null) {
-                requestQueue = Volley.newRequestQueue(this);
-            }
-            requestQueue.add(postRequest);
-        } catch (Exception e) {
-            Toast.makeText(DeliveryCTS.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onItemClick_call(View view4, int position4) {
-        Intent callIntent =new Intent(Intent.ACTION_CALL);
-        String phoneNumber = list.get(position4).getCustphone();
-        String lastFourDigits = phoneNumber.substring(phoneNumber.length() - 10);
-        callIntent.setData(Uri.parse("tel: +880" +lastFourDigits));
-        if (ActivityCompat.checkSelfPermission(view4.getContext(),
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) view4.getContext(),
-                    new String[]{Manifest.permission.CALL_PHONE},
-                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
-            return;
-        }
-        view4.getContext().startActivity(callIntent);
-    }
 
 }
