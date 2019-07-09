@@ -1,22 +1,17 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,16 +22,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,10 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,7 +192,7 @@ public class DeliveryCashRS extends AppCompatActivity
                 String cts = c.getString(42);
                 String ctsTime = c.getString(43);
                 String ctsBy = c.getString(44);
-                String slaMiss = c.getString(45);
+                int slaMiss = c.getInt(45);
                 String flagReq = c.getString(46);
                 int status = c.getInt(47);
 
@@ -288,7 +274,7 @@ public class DeliveryCashRS extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getString("slaMiss"));
+                                        o.getInt("slaMiss"));
 
                                 db.insert_delivery_without_status(
                                         o.getString("username"),
@@ -335,7 +321,7 @@ public class DeliveryCashRS extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getString("slaMiss"),
+                                        o.getInt("slaMiss"),
                                         "cash"
                                         , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);

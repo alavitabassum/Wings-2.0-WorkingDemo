@@ -1174,7 +1174,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CTS_CASH,CTS);
         values.put(CTSTIME_CASH,CTSTime);
         values.put(CTSBY_CASH,CTSBy);
-        values.put(SLAMISS,slaMiss);
+        values.put(String.valueOf(SLAMISS),slaMiss);
         values.put(STATUS, status);
 
         db.insert(TABLE_NAME_9, null, values);
@@ -1228,7 +1228,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 CTS_CASH,
                 CTSTIME_CASH,
                 CTSBY_CASH,
-                SLAMISS,
+                String.valueOf(SLAMISS),
 
                 STATUS};
 
