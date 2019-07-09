@@ -180,7 +180,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getString("slaMiss"),
+                                        o.getInt("slaMiss"),
                                         "withoutStatus"
                                         ,NAME_SYNCED_WITH_SERVER);
                             }

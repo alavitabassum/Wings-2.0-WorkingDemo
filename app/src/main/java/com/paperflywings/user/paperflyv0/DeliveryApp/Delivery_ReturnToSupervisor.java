@@ -335,7 +335,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getString("slaMiss"),
+                                        o.getInt("slaMiss"),
                                         "rts"
                                         ,NAME_SYNCED_WITH_SERVER);
                                 list.add(withoutStatus_model);

@@ -148,16 +148,16 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
 
-        int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
+        int DeliveryTime = list.get(i).getSlaMiss();
 
         if(DeliveryTime<0) {
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_without_status.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
         }
 
         else if (DeliveryTime>=0){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_without_status.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
         }

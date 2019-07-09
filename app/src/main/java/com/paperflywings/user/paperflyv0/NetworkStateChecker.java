@@ -897,7 +897,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("product_id", String.valueOf(product_id));
+                params.put("product_id", product_id);
                 params.put("assign_status", assign_status);
 
                 return params;

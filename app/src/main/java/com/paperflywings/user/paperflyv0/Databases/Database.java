@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Database extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "MerchantDatabase.db";
     private static final String TABLE_NAME = "merchants";
     private static final String TABLE_NAME_1 = "merchantsfor_executives";
@@ -47,7 +47,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp6 = "create table Allmerchantlist(id integer primary key AUTOINCREMENT,merchantName text,merchantCode text,address text, unique(merchantName,merchantCode))";
         String tableEmp7 = "create table pickups_today_manager(id integer primary key AUTOINCREMENT,sql_primary_id,merchantName text,totalcount int,scan_count integer,created_at text,executive_name text, complete_status text,picked_qty integer, p_m_name text,product_name text,demo text, unique(sql_primary_id, merchantName, p_m_name, product_name))";
         // Fulfillment
-        String tableEmp8 = "create table merchantListFulfillment(id integer primary key AUTOINCREMENT,main_merchant text,supplier_name text,supplier_phone text,supplier_address text,product_name text, product_id integer,sum integer, created_at text,assign_status text, merchant_code text,status int, unique(product_id))";
+        String tableEmp8 = "create table merchantListFulfillment(id integer primary key AUTOINCREMENT,main_merchant text,supplier_name text,supplier_phone text,supplier_address text,product_name text, product_id text,sum integer, created_at text,assign_status text, merchant_code text,status int, unique(product_id))";
         String tableEmp9 = "create table Fulfillmentmerchantlist(id integer primary key AUTOINCREMENT,merchantName text, merchant_code text, unique(merchantName,merchant_code))";
         String tableEmp10 = "create table Fulfillmentsupplier(id integer primary key AUTOINCREMENT,supplierName text, unique(supplierName))";
         String tableEmp11 = "create table Fulfillmentproduct(id integer primary key AUTOINCREMENT, productName text, productID text, unique(productName,productID))";
@@ -212,7 +212,7 @@ public class Database extends SQLiteOpenHelper {
 
     //Add Merchant list for Fulfillment
 
-    public void addfulfillmentmerchantlist(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String currentDateTimeString, String assign_status, String merchant_code,int status) {
+    public void addfulfillmentmerchantlist(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name,String  product_id, int sum, String currentDateTimeString, String assign_status, String merchant_code,int status) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -573,7 +573,7 @@ public class Database extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void updateFulAssignedStatusDB(int product_id, int status, String assign_status){
+    public void updateFulAssignedStatusDB(String product_id, int status, String assign_status){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("assign_status",assign_status);

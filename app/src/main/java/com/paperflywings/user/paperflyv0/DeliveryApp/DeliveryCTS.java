@@ -333,7 +333,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getString("slaMiss"),
+                                        o.getInt("slaMiss"),
                                         "cts"
                                         , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);

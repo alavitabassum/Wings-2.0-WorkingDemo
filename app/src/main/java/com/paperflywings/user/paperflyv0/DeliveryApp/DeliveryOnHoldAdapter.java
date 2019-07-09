@@ -1,7 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
@@ -74,6 +73,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         public TextView item_packagePrice_onHold;
         public TextView item_productBrief_onHold;
         public TextView item_deliveryTime_onHold;
+        public TextView item_onHold_reason;
         public Button itemStatus_onHold;
         public CardView card_view_onHold;
 
@@ -83,9 +83,10 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
 
             item_date_on_hold_onHold=itemView.findViewById(R.id.date_on_hold);
             item_ordId_onHold=itemView.findViewById(R.id.orderId_on_hold);
-            item_merOrderRef_onHold=itemView.findViewById(R.id.m_order_ref_on_hold);
+            item_onHold_reason=itemView.findViewById(R.id.onholdReason);
+//            item_merOrderRef_onHold=itemView.findViewById(R.id.m_order_ref_on_hold);
             item_merchantName_onHold=itemView.findViewById(R.id.m_name_on_hold);
-            item_pickMerchantName_onHold=itemView.findViewById(R.id.pick_m_name_on_hold);
+//            item_pickMerchantName_onHold=itemView.findViewById(R.id.pick_m_name_on_hold);
             item_custname_onHold=itemView.findViewById(R.id.customer_name_on_hold);
             item_custaddress_onHold=itemView.findViewById(R.id.customer_Address_on_hold);
             item_custphone_onHold=itemView.findViewById(R.id.m_phn_num_on_hold);
@@ -139,8 +140,9 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
 
        // lastText = barcode.substring(0,11);
         viewHolder.item_date_on_hold_onHold.setText("OnHold Schedule: "+list.get(i).getOnHoldSchedule().substring(0,11));
+        viewHolder.item_onHold_reason.setText(list.get(i).getOnHoldReason());
         viewHolder.item_ordId_onHold.setText(list.get(i).getOrderid());
-        viewHolder.item_merOrderRef_onHold.setText(list.get(i).getMerOrderRef());
+//        viewHolder.item_merOrderRef_onHold.setText(list.get(i).getMerOrderRef());
 
       /*  viewHolder.item_merchantName_onHold.setText(list.get(i).getMerchantName());
         viewHolder.item_pickMerchantName_onHold.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());*/
@@ -176,8 +178,8 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
             viewHolder.item_merchantName_onHold.setText(list.get(i).getMerchantName());
         }
         else if(!Pick_merchantName.isEmpty()){
-            viewHolder.item_merchantName_onHold.setText(list.get(i).getMerchantName());
-            viewHolder.item_pickMerchantName_onHold.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+            viewHolder.item_merchantName_onHold.setText(list.get(i).getPickMerchantName());
+//            viewHolder.item_pickMerchantName_onHold.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         }
 
       /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {

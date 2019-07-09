@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -111,7 +111,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String CTS_CASH = "CTS";
     public static final String CTSTIME_CASH = "CTSTime";
     public static final String CTSBY_CASH = "CTSBy";
-    public static final String SLAMISS = "slaMiss";
+    public static final int SLAMISS = 0;
     public static final String FLAG_REQ = "flagReq";
     public static final String CURRENT_DATE = "currentDateTime";
 
@@ -222,7 +222,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "pickDrop TEXT, "
                 + "pickDropTime TEXT, "
                 + "pickDropBy TEXT, "
-                + "slaMiss TEXT,"
+                + "slaMiss INTEGER,"
                 + "status INT, "
                 + "unique(id, barcode))";
 
@@ -272,7 +272,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "CTS TEXT,"//42
                 + "CTSTime TEXT,"//43
                 + "CTSBy TEXT,"//44
-                + "slaMiss TEXT," //45
+                + "slaMiss INTEGER," //45
                 + "flagReq TEXT," //46
                 + "status INT, " //47
                 + "unique(id, barcode))";
@@ -308,7 +308,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "partialReason TEXT, "
                 + "onHoldSchedule TEXT, "
                 + "onHoldReason TEXT, "
-                + "slaMiss TEXT,"
+                + "slaMiss INTEGER,"
                 + "status INT, "
                 + "unique(id, barcode))";
 
@@ -889,7 +889,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     //insert counts in without status
 
-    public void insert_delivery_without_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,String slaMiss, String flagReq, int status) {
+    public void insert_delivery_without_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -938,7 +938,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CTS_CASH,CTS);
         values.put(CTSTIME_CASH,CTSTime);
         values.put(CTSBY_CASH,CTSBy);
-        values.put(SLAMISS,slaMiss);
+        values.put(String.valueOf(SLAMISS),slaMiss);
         values.put(FLAG_REQ,flagReq);
         values.put(STATUS, status);
 
@@ -993,7 +993,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 CTS_CASH,
                 CTSTIME_CASH,
                 CTSBY_CASH,
-                SLAMISS,
+                String.valueOf(SLAMISS),
                 FLAG_REQ,
                 STATUS};
 
@@ -1052,7 +1052,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 CTS_CASH,
                 CTSTIME_CASH,
                 CTSBY_CASH,
-                SLAMISS,
+                String.valueOf(SLAMISS),
                 FLAG_REQ,
                 STATUS};
 
@@ -1112,7 +1112,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 CTS_CASH,
                 CTSTIME_CASH,
                 CTSBY_CASH,
-                SLAMISS,
+                String.valueOf(SLAMISS),
                 FLAG_REQ,
                 STATUS};
 
@@ -1169,7 +1169,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 CTS_CASH,
                 CTSTIME_CASH,
                 CTSBY_CASH,
-                SLAMISS,
+                String.valueOf(SLAMISS),
                 FLAG_REQ};
 
         String whereClause = USERNAME + "=? AND " + FLAG_REQ + " = ?";
@@ -1183,7 +1183,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
 
     //Update Cash Status
-    public void update_cash_status(String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String cashComment, String orderid, String barcode,String flagReq ,int status) {
+    public void update_cash_status(String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String cashComment, String orderid,String flagReq ,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(CASH, Cash);
@@ -1195,17 +1195,16 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
-        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
+        String whereClause = ORDERID + " = ? ";
         String[] whereArgs = new String[]{
-                orderid,
-                barcode
+                orderid
         };
         // insert
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
 
-    public void update_retR_status(String Ret, String RetTime,String RetBy,String retReason, String PreRet, String PreRetTime, String PreRetBy,  String orderid,String barcode,String flagReq, int status) {
+    public void update_retR_status(String Ret, String RetTime,String RetBy,String retReason, String PreRet, String PreRetTime, String PreRetBy,  String orderid,String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -1220,10 +1219,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
-        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
+        String whereClause = ORDERID + " = ? ";
         String[] whereArgs = new String[]{
-                orderid,
-                barcode
+                orderid
         };
         // insert
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
@@ -1252,7 +1250,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }*/
 
 
-    public void update_onhold_status(String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String orderid, String barcode, String flagReq,int status) {
+    public void update_onhold_status(String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String orderid,String flagReq,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(ONHOLD_SCHEDULE, onHoldSchedule);
@@ -1263,36 +1261,32 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
-        String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
+        String whereClause = ORDERID + " = ?";
         String[] whereArgs = new String[]{
-                orderid,
-                barcode
+                orderid
         };
         // insert
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
 
-    public void update_partial_status (String cash,String Ret, String partialsCash, String partial, String partialTime, String partialBy , String partialsReceive, String partialReason, String partialReturn, String orderid, String barcode, String flagReq,int status) {
+    public void update_partial_status (String partial,String partialsCash,String partialTime, String partialBy , String partialsReceive,String partialReturn, String partialReason, String orderid,String flagReq,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(CASH_ACTION, cash);
-        values.put(RET, Ret);
         values.put(CASH_AMT, partialsCash);
         values.put(PARTIAL, partial);
         values.put(PARTIAL_TIME, partialTime);
         values.put(PARTIAL_BY, partialBy);
         values.put(PARTIAL_RECEIVE, partialsReceive);
-        values.put(PARTIAL_RETURN, partialReturn);
         values.put(PARTIAL_RETURN_REASON, partialReason);
+        values.put(PARTIAL_RETURN, partialReturn);
         values.put(FLAG_REQ, flagReq);
         values.put(STATUS, status);
 
         String whereClause = ORDERID + " = ? AND " + BARCODE_NO + " = ?";
         String[] whereArgs = new String[]{
-                orderid,
-                barcode
+                orderid
         };
         // insert
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
@@ -1344,7 +1338,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(PRERET, PreRet);
         values.put(PRERET_TIME, PreRetTime);
         values.put(PRERET_BY, PreRetBy);
-        values.put(SLAMISS,slaMiss);
+        values.put(String.valueOf(SLAMISS),slaMiss);
         values.put(FLAG_REQ,flagReq);
         values.put(STATUS, status);
 
@@ -1380,7 +1374,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 PARTIAL_RETURN_REASON,
                 ONHOLD_SCHEDULE,
                 ONHOLD_REASON,
-                SLAMISS};
+                String.valueOf(SLAMISS)};
         String whereClause = USERNAME + "=?";
         String[] whereArgs = new String[]{
                 user
@@ -1444,8 +1438,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public int getWithoutStatusSlaMissCount(int slaMissCount) {
-        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + SLAMISS + " < '" + slaMissCount + "'";
+    public int getWithoutStatusSlaMissCount(int slaMissCount, String flag) {
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + SLAMISS + " < '" + slaMissCount + "' AND " + FLAG_REQ + " = '" + flag + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();

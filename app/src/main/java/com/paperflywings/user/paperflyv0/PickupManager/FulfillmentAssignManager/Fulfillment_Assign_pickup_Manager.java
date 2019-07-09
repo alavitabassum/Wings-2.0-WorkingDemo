@@ -300,7 +300,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                                         o.getString("supplier_phone"),
                                         o.getString("supplier_address"),
                                         o.getString("product_name"),
-                                        o.getInt("product_id"),
+                                        o.getString("product_id"),
                                         o.getInt("sum"),
                                         o.getString("created_at"),
                                         o.getString("assign_status"),
@@ -313,7 +313,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                                         o.getString("supplier_phone"),
                                         o.getString("supplier_address"),
                                         o.getString("product_name"),
-                                        o.getInt("product_id"),
+                                        o.getString("product_id"),
                                         o.getInt("sum"),
                                         o.getString("created_at"),
                                         o.getString("assign_status"),
@@ -382,7 +382,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                 String supplier_phone = c.getString(2);
                 String supplier_address = c.getString(3);
                 String product_name = c.getString(4);
-                int product_id = c.getInt(5);
+                String product_id = c.getString(5);
                 int sum = c.getInt(6);
                 String created_at = c.getString(7);
                 String assign_status = c.getString(8);
@@ -482,7 +482,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 database.addproductlist(
                                         o.getString("product_name"),
-                                        String.valueOf(o.getInt("product_id")));
+                                        o.getString("product_id"));
                             }
 
                         } catch (JSONException e) {
@@ -515,7 +515,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
 
     }*/
 
-    private void updateFulAssignedStatus(final int product_id, final int status, final String assign_status) {
+    private void updateFulAssignedStatus(final String product_id, final int status, final String assign_status) {
         database.updateFulAssignedStatusDB(product_id, status, assign_status);
     }
 
@@ -532,13 +532,13 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_SYNCED_WITH_SERVER);
+                                database.assignexecutive(ex_name, empcode, product_name, sum, product_id, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_SYNCED_WITH_SERVER);
 
 //                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(product_id), user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address,complete_status, apiOrderID,demo,pick_from_merchant_status,received_from_HQ_status);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_NOT_SYNCED_WITH_SERVER);
+                                database.assignexecutive(ex_name, empcode, product_name, sum, product_id, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_NOT_SYNCED_WITH_SERVER);
 //                                assignexecutivetosqlite(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status,received_from_HQ_status);
                             }
                         } catch (JSONException e) {
@@ -550,7 +550,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_NOT_SYNCED_WITH_SERVER);
+                        database.assignexecutive(ex_name, empcode, product_name, sum, product_id, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_NOT_SYNCED_WITH_SERVER);
 //                        assignexecutivetosqlite(ex_name, empcode,product_name, sum, String.valueOf(product_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID,demo, pick_from_merchant_status, received_from_HQ_status);
                     }
                 }
@@ -562,7 +562,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
                 params.put("executive_code", empcode);
                 params.put("product_name", product_name);
                 params.put("order_count", sum);
-                params.put("merchant_code", String.valueOf(product_id));
+                params.put("merchant_code", product_id);
                 params.put("assigned_by", user);
                 params.put("created_at", currentDateTimeString);
                 params.put("merchant_name", m_name);
@@ -740,7 +740,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         return true;
     }
 
-    private void updateFulPickAssigedStatus(final int product_id, final String assign_status){
+    private void updateFulPickAssigedStatus(final String product_id, final String assign_status){
         StringRequest postRequest = new StringRequest(Request.Method.POST, UPDATE_FUL_ASSIGN_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -773,7 +773,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("product_id", String.valueOf(product_id));
+                params.put("product_id", product_id);
                 params.put("assign_status", assign_status);
 //                params.put("order_count", order_count);
                 return params;
@@ -805,7 +805,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         et1.setText(totalCount);
 
         final String product_name = clickeditem.getProduct_name();
-        final String product_id = String.valueOf(clickeditem.getProduct_id());
+        final String product_id = clickeditem.getProduct_id();
         final String m_name = clickeditem.getMain_merchant();
         final String contactNumber = clickeditem.getSupplier_phone();
 
@@ -854,8 +854,8 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
 //                    dialog.equals("Order count can't be empty");
                 } else {
                     assignexecutive(empname, empcode, product_name, et1.getText().toString(), product_id, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status,apiOrderID, demo, pick_from_merchant_status,received_from_HQ_status);
-//                    updateFulPickAssigedStatus(Integer.parseInt(product_id), assign_status,et1.getText().toString());
-                    updateFulPickAssigedStatus(Integer.parseInt(product_id), assign_status);
+//                    updateFulPickAssigedStatus(product_id, assign_status,et1.getText().toString());
+                    updateFulPickAssigedStatus(product_id, assign_status);
 
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                     Toast.makeText(Fulfillment_Assign_pickup_Manager.this, mAutoComplete.getText().toString()
@@ -890,8 +890,8 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
 
                 } else {
                     assignexecutive(mAutoComplete.getText().toString(), empcode, product_name, et1.getText().toString(), product_id, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address, complete_status,apiOrderID, demo,pick_from_merchant_status,received_from_HQ_status);
-//                    updateFulPickAssigedStatus(Integer.parseInt(product_id), assign_status,et1.getText().toString());
-                    updateFulPickAssigedStatus(Integer.parseInt(product_id), assign_status);
+//                    updateFulPickAssigedStatus(product_id, assign_status,et1.getText().toString());
+                    updateFulPickAssigedStatus(product_id, assign_status);
                     if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
                         Toast.makeText(Fulfillment_Assign_pickup_Manager.this, mAutoComplete.getText().toString()
                                         + "(" + et1.getText().toString() + ")",
@@ -928,7 +928,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         String p_m_name = clickeditem2.getSupplier_name();
         String product_name = clickeditem2.getProduct_name();
 
-        String merchantcode = String.valueOf(clickeditem2.getProduct_id());
+        String merchantcode = clickeditem2.getProduct_id();
         Intent intent = new Intent(Fulfillment_Assign_pickup_Manager.this, Fulfillment_Assign_pickup_Manager.class);
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE", merchantcode);
@@ -949,7 +949,7 @@ public class Fulfillment_Assign_pickup_Manager extends AppCompatActivity
         String p_m_name = clickeditem3.getSupplier_name();
         String product_name = clickeditem3.getProduct_name();
 
-        String merchantcode = String.valueOf(clickeditem3.getProduct_id());
+        String merchantcode = clickeditem3.getProduct_id();
         Intent intent = new Intent(Fulfillment_Assign_pickup_Manager.this, Fulfillment_Assign_pickup_Manager.class);
         intent.putExtra("MERCHANTNAME", merchantname);
         intent.putExtra("MERCHANTCODE", merchantcode);

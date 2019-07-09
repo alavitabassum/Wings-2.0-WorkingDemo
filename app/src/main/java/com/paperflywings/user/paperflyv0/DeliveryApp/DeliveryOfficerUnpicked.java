@@ -79,7 +79,8 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private static final int REQUEST_CAMERA = 1;
 
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryUnpickedApis.php";
-    public static final String DELIVERY_PICK_LIST = "http://paperflybd.com/DeliveryPick.php";
+//    public static final String DELIVERY_PICK_LIST = "http://paperflybd.com/DeliveryPick.php";
+    public static final String DELIVERY_PICK_LIST = "http://paperflybd.com/update_ordertrack_for_app.php";
 
     private List<Delivery_unpicked_model> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -551,11 +552,12 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
         final Delivery_unpicked_model clickedITem = list.get(position2);
 
+        String orderid = clickedITem.getOrderid();
         String username = clickedITem.getUsername();
         String empcode = clickedITem.getEmpCode();
         String lastText = clickedITem.getBarcode();
 
-        pickedfordelivery(lastText,username,empcode);
+        pickedfordelivery(orderid,lastText,username,empcode, "PickFromAppDirect");
 
     }
 
@@ -576,7 +578,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         view4.getContext().startActivity(callIntent);
     }
 
-    private void pickedfordelivery(final String barcode, final String username, final String empcode) {
+    private void pickedfordelivery(final String orderid, final String barcode, final String username, final String empcode , final String flagReq) {
         String str1 = String.valueOf(db.getUnpickedCount("Y"));
         unpicked_text.setText(str1);
         final Intent unpick = new Intent(DeliveryOfficerUnpicked.this,
@@ -626,9 +628,10 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("barcode", barcode);
                 params.put("username", username);
-                params.put("empcode", empcode);
+                params.put("data", empcode);
+                params.put("order", barcode);
+                params.put("flag", flagReq);
                 return params;
             }
         };

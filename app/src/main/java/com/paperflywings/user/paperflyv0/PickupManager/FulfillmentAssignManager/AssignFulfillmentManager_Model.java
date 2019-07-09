@@ -6,7 +6,7 @@ public class AssignFulfillmentManager_Model  {
     private String supplier_phone;
     private String supplier_address;
     private String product_name;
-    private int product_id;
+    private String product_id;
     private int sum;
     private String product_count;
     private String scan_count;
@@ -48,7 +48,7 @@ public class AssignFulfillmentManager_Model  {
         this.status = status;
     }
 
-    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String created_at, String assign_status, String merchant_code) {
+    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, String product_id, int sum, String created_at, String assign_status, String merchant_code) {
 
         this.main_merchant = main_merchant;
         this.supplier_name = supplier_name;
@@ -64,7 +64,7 @@ public class AssignFulfillmentManager_Model  {
 //        this.status = status;
     }
 
-    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, int product_id, int sum, String created_at, String assign_status, String merchant_code, int status) {
+    public AssignFulfillmentManager_Model(String main_merchant, String supplier_name, String supplier_phone, String supplier_address, String product_name, String product_id, int sum, String created_at, String assign_status, String merchant_code, int status) {
 
         this.main_merchant = main_merchant;
         this.supplier_name = supplier_name;
@@ -87,7 +87,7 @@ public class AssignFulfillmentManager_Model  {
 
     public AssignFulfillmentManager_Model( String product_name, String product_id) {
         this.product_name = product_name;
-        this.product_id = Integer.parseInt(product_id);
+        this.product_id = product_id;
     }
 
     public String getMain_merchant() {
@@ -130,11 +130,11 @@ public class AssignFulfillmentManager_Model  {
         this.product_name = product_name;
     }
 
-    public int getProduct_id() {
+    public String getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(int product_id) {
+    public void setProduct_id(String product_id) {
         this.product_id = product_id;
     }
 

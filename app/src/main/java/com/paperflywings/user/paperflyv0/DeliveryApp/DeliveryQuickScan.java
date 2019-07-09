@@ -180,7 +180,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 final String orderId = c.getString(0);
                 final String merorderref = c.getString(1);
                 final String merchantname = c.getString(2);
-                final String pickMerchantName = c.getString(3);
+                final String pickMerchantname = c.getString(3);
                 final String custname = c.getString(4);
                 final String custaddress = c.getString(5);
                 final String custphone = c.getString(6);
@@ -239,47 +239,50 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                         final CharSequence [] values = {"Cash","Partial","Return-request","On-hold"};
 
-                        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        final String merchEmpCode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF, "Not Available");
 
-                        Date c = Calendar.getInstance().getTime();
-                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        final String currentDateTime = df.format(c);
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        final String currentDateTime = df.format(c);
 
 //                        final DeliveryWithoutStatusModel clickedITem = list.get(position2);
 
-                        // CASH
-                        final String cash = "Y";
-                        final String cashBy = username;
-                        final String cashType = "CoD";
-                        final String cashTime = currentDateTime;
+        // CASH
+        final String cash = "Y";
+        final String cashBy = username;
+        final String cashType = "CoD";
+        final String cashTime = currentDateTime;
 
-                        //Return Request
-                        final String Ret = "Y";
-                        final String RetBy = username;
-                        final String RetTime = currentDateTime;
-                        final String RTS = "Y";
-                        final String RTSBy = username;
-                        final String RTSTime = currentDateTime;
-                        final String PreRet = "Y";
-                        final String PreRetBy = username;
-                        final String PreRetTime = currentDateTime;
+        //partial
+        final String partial = "Y";
+        final String partialBy = username;
+        final String partialTime = currentDateTime;
 
-                        //partial
-                        final String partial = "Y";
-                        final String partialBy = username;
-                        final String partialTime = currentDateTime;
+        //Return Request
+        final String Ret = "Y";
+        final String RetBy = username;
+        final String RetTime = currentDateTime;
+        final String RTS = "Y";
+        final String RTSBy = username;
+        final String RTSTime = currentDateTime;
+        final String PreRet = "Y";
+        final String PreRetBy = username;
+        final String PreRetTime = currentDateTime;
 
-                        //onhold
-                        final String Rea = "Y";
-                        final String ReaBy = username;
-                        final String ReaTime = currentDateTime;
-
+        //onhold
+        final String Rea = "Y";
+        final String ReaBy = username;
+        final String ReaTime = currentDateTime;
 
                         final String orderid = orderId;
                         final String barcode = barcodeNumber;
                         final String merchantRef = merorderref;
                         final String packagePrice = packageprice;
+
+                        final String merchantName = merchantname;
+                        final String pickMerchantName = pickMerchantname;
 
                         final Intent DeliveryListIntent = new Intent(DeliveryQuickScan.this,
                                 DeliveryWithoutStatus.class);
@@ -335,16 +338,14 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         } else {
                                                             String cashAmt = et1.getText().toString();
                                                             String cashComment = et2.getText().toString();
-                                                            String ordID = OrderIdCollectiontv.getText().toString();
 
-                                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,ordID, barcode, "cash");
+                                                            update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
                                                             dialogCash.dismiss();
                                                             startActivity(DeliveryListIntent);
                                                         }
                                                     }
                                                 });
                                                 dialog.dismiss();
-
                                                 break;
                                             case 1:
                                                 final View mViewPartial = getLayoutInflater().inflate(R.layout.insert_partial_without_status, null);
@@ -389,16 +390,14 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         if (partialReceive.getText().toString().trim().isEmpty() && partialReturned1qty.getText().toString().trim().isEmpty() && partialcash.getText().toString().trim().isEmpty() && partialremarks.getText().toString().trim().isEmpty()) {
                                                             tvField.setText("Field can't be empty");
                                                         } else {
+                                                            String partialsCash = partialcash.getText().toString();
+                                                            String partialReturn = partialReturned1qty.getText().toString();
+                                                            String partialReason = partialremarks.getText().toString();
+                                                            String partialsReceive = partialReceive.getText().toString();
 
-                                                        String partialsCash = partialcash.getText().toString();
-                                                        String partialReturn = partialReturned1qty.getText().toString();
-                                                        String partialReason = partialremarks.getText().toString();
-                                                        String partialsReceive = partialReceive.getText().toString();
-
-                                                        update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,"partial");
-                                                        dialogPartial.dismiss();
-                                                        startActivity(DeliveryListIntent);
-
+                                                            update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,cashType,merchEmpCode,"partialApp");
+                                                            dialogPartial.dismiss();
+                                                            startActivity(DeliveryListIntent);
                                                         }
                                                     }
                                                 });
@@ -444,7 +443,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                     @Override
                                                     public void onClick(View v) {
                                                         String retReason = mReturnRSpinner.getSelectedItem().toString();
-                                                        update_retR_status(Ret,RetTime,RetBy,retReason,PreRet,PreRetTime,PreRetBy,orderid, barcode,"returnReq");
+                                                        String retRemarks = et4.getText().toString();
+                                                        update_retR_status(Ret,RetTime,RetBy,retReason,retRemarks,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
 
                                                         dialogReturnR.dismiss();
                                                         startActivity(DeliveryListIntent);
@@ -516,8 +516,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
                                                         String onHoldSchedule = bt1.getText().toString();
 
-                                                        update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, barcode, "onHold");
-                                                        insertOnholdLog(orderid, barcode, merchantname, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
+                                                        update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, merchEmpCode, "updateOnHoldApp");
+                                                        insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                                         dialogonHold.dismiss();
                                                         startActivity(DeliveryListIntent);
                                                     }
@@ -555,7 +555,11 @@ public class DeliveryQuickScan extends AppCompatActivity{
         }
     }
 
-    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String barcode, final String flagReq) {
+    public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String merchEmpCode, final String flagReq) {
+
+
+        final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
+                DeliveryOfficerCardMenu.class);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -565,12 +569,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq, NAME_SYNCED_WITH_SERVER);
+                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid, flagReq, NAME_SYNCED_WITH_SERVER);
+//                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-
+                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+//                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -581,8 +586,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,barcode, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-
+                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+//                        startActivity(withoutstatuscount);
                     }
                 }
         ) {
@@ -593,11 +598,11 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 params.put("cashType", cashType);
                 params.put("CashTime", cashTime);
                 params.put("CashAmt", cashAmt);
-                params.put("CashComment", cashComment);
+                params.put("cashComment", cashComment);
                 params.put("CashBy", cashBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("flagReq", flagReq);
+                params.put("order", orderid);
+                params.put("flag", flagReq);
+                params.put("data", merchEmpCode);
                 return params;
             }
         };
@@ -611,7 +616,10 @@ public class DeliveryQuickScan extends AppCompatActivity{
         }
 
     }
-    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
+    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String retRemarks, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String merchEmpCode, final String flagReq) {
+
+        final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
+                DeliveryWithoutStatus.class);
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
@@ -620,13 +628,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_SYNCED_WITH_SERVER);
-
+                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
+//                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-
+                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+//                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -637,8 +645,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-
+                        db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+//                        startActivity(withoutstatuscount);
                     }
                 }
         ) {
@@ -649,13 +657,14 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 params.put("Ret", ret);
                 params.put("RetTime", retTime);
                 params.put("RetBy", retBy);
+                params.put("retRemarks", retRemarks);
                 params.put("retReason", retReason);
                 params.put("PreRet", preRet);
                 params.put("PreRetTime", preRetTime);
                 params.put("PreRetBy", preRetBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("flagReq", flagReq);
+                params.put("order", orderid);
+                params.put("data", merchEmpCode);
+                params.put("flag", flagReq);
                 return params;
             }
         };
@@ -666,8 +675,10 @@ public class DeliveryQuickScan extends AppCompatActivity{
             Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
-    public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String barcode, final String flagReq) {
+    public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String merchEmpCode, final String flagReq) {
 
+        final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
+                DeliveryWithoutStatus.class);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -676,13 +687,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode,flagReq ,NAME_SYNCED_WITH_SERVER);
-
+                                db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,flagReq ,NAME_SYNCED_WITH_SERVER);
+//                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-
+                                db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+//                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -693,22 +704,22 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-
+                        db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+//                        startActivity(withoutstatuscount);
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("onHoldSchedule", onHoldSchedule);
-                params.put("onHoldReason", onHoldReason);
+                params.put("onHoldDate", onHoldSchedule);
+                params.put("onReason", onHoldReason);
                 params.put("Rea", Rea);
                 params.put("ReaTime", ReaTime);
                 params.put("ReaBy", ReaBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("flagReq", flagReq);
+                params.put("order", orderid);
+                params.put("data", merchEmpCode);
+                params.put("flag", flagReq);
                 return params;
             }
         };
@@ -721,8 +732,10 @@ public class DeliveryQuickScan extends AppCompatActivity{
             Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
-    public void update_partial_status (final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String flagReq) {
+    public void update_partial_status (final String partial,final String partialsCash, final String partialTime,final String partialBy ,final String partialsReceive,final String partialReturn,final String partialReason,final String orderid, final String cashType, final String merchEmpCode,final String flagReq) {
 
+        final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
+                DeliveryWithoutStatus.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -731,13 +744,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_SYNCED_WITH_SERVER);
-
+                                db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
+//                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-
+                                db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+//                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -748,26 +761,26 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_partial_status(cash,Ret,partialsCash,partial,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,barcode,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-
+                        db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+//                        startActivity(withoutstatuscount);
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Cash", cash);
-                params.put("Ret", Ret);
-                params.put("CashAmt", partialsCash);
+
                 params.put("partial", partial);
                 params.put("partialTime", partialTime);
                 params.put("partialBy", partialBy);
-                params.put("partialReceive", partialsReceive);
+                params.put("partialAmt", partialsCash);
+                params.put("cashType", cashType);
+                params.put("deliveredQty", partialsReceive);
                 params.put("partialReason", partialReason);
-                params.put("partialReturn", partialReturn);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("flagReq", flagReq);
+                params.put("returnedQty", partialReturn);
+                params.put("order", orderid);
+                params.put("data", merchEmpCode);
+                params.put("flag", flagReq);
                 return params;
             }
         };

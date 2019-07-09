@@ -149,7 +149,7 @@ public class FullfillmentAssignSupervisorAdapter extends RecyclerView.Adapter<Fu
             }else{
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (FullfillmentAssignSupervisor_Model item : assignFulfillmentManager_modelListFull){
-                    if (item.getSupplier_name().toLowerCase().contains(filterPattern)){
+                    if (item.getMain_merchant().toLowerCase().contains(filterPattern)|| item.getSupplier_address().toLowerCase().contains(filterPattern)|| item.getProduct_name().toLowerCase().contains(filterPattern) || item.getSupplier_name().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }
