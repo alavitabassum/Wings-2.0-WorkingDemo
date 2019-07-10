@@ -33,9 +33,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".DeliveryApp.DeliveryReturnBySupervisor"
+            android:label="@string/title_activity_delivery_return_by_supervisor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".DeliveryApp.DeliveryCashRS"
             android:label="@string/title_activity_delivery_cash_rs"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DeliveryApp.ReturnRequest"
             android:label="@string/title_activity_return_request"

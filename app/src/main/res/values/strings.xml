@@ -198,7 +198,8 @@
     <string name="title_activity_delivery__return_to_supervisor">Return To Supervisor
     </string>
     <string name="title_activity_delivery_cts">Cash To Supervisor</string>
-    <string name="title_activity_return_request">ReturnRequest</string>
-    <string name="title_activity_delivery_cash_rs">DeliveryCashRS</string>
+    <string name="title_activity_return_request">Return Request</string>
+    <string name="title_activity_delivery_cash_rs">Cash Received List</string>
+    <string name="title_activity_delivery_return_by_supervisor">Return Received List</string>
 
 </resources>
