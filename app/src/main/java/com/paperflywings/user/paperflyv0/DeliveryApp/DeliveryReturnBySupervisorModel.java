@@ -29,12 +29,13 @@ public class DeliveryReturnBySupervisorModel {
     private String partialTime;
     private String partialBy;
     private String partialReceive;
-    private String slaMiss;
+    private int slaMiss;
     private String withoutStatus;
     private String Rea;
     private String flagReq;
     private String Ret;
     private String RetTime;
+    private String RetRem;
 
     public int getId() {
         return id;
@@ -241,7 +242,7 @@ public class DeliveryReturnBySupervisorModel {
         ReaBy = reaBy;
     }
 
-    public DeliveryReturnBySupervisorModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, String slaMiss) {
+    public DeliveryReturnBySupervisorModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss) {
 
         this.username = username;
         this.empCode = merchEmpCode;
@@ -277,6 +278,7 @@ public class DeliveryReturnBySupervisorModel {
         this.Ret = ret;
         this.RetTime = retTime;
         this.RetBy = retBy;
+        this.RetRem = retRem;
         this.RetReason = retReason;
         this.Rts = rts;
         this.RtsTime = rtsTime;
@@ -349,11 +351,11 @@ public class DeliveryReturnBySupervisorModel {
     private String onHoldSchedule;
     private String dropPointCode;
 
-    public String getSlaMiss() {
+    public int getSlaMiss() {
         return slaMiss;
     }
 
-    public void setSlaMiss(String slaMiss) {
+    public void setSlaMiss(int slaMiss) {
         this.slaMiss = slaMiss;
     }
 
@@ -391,7 +393,7 @@ public class DeliveryReturnBySupervisorModel {
 
     }
 
-    public DeliveryReturnBySupervisorModel(int id, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String username, String empCode, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, String slaMiss, String flagReq, int status) {
+    public DeliveryReturnBySupervisorModel(int id, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String username, String empCode, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy,String retRem ,String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss, String flagReq, int status) {
         this.id = id;
         this.dropPointCode = dropPointCode;
         this.barcode = barcode;
@@ -427,6 +429,7 @@ public class DeliveryReturnBySupervisorModel {
         this.Ret = ret;
         this.RetTime = retTime;
         this.RetBy = retBy;
+        this.RetRem = retRem;
         this.RetReason = retReason;
         this.Rts = rts;
         this.RtsTime = rtsTime;

@@ -136,7 +136,7 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
         viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress_without_status.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
-        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ "Taka");
+        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ " Taka");
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
         //viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
 
