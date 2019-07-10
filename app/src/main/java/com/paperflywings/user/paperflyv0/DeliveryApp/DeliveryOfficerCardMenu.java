@@ -1,5 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -59,6 +61,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
     private RequestQueue requestQueue;
     private static final int REQUEST_CAMERA = 1;
+    public SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressDialog progress;
     private BroadcastReceiver broadcastReceiver;
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
@@ -93,6 +97,11 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
         cashCollection_count = (TextView)findViewById(R.id.CashCount);
         returnList_count = (TextView)findViewById(R.id.RTS);
+       /* swipeRefreshLayout = findViewById(R.id.refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setRefreshing(true);
+//        pickupList_model_for_executives.clear();
+        swipeRefreshLayout.setRefreshing(true);*/
 
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -143,6 +152,12 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     }
 
     private void loadReturnReason() {
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
 
         StringRequest postRequest1 = new StringRequest(Request.Method.GET, RETURN_REASON_URL,
                 new Response.Listener<String>() {
@@ -280,6 +295,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             public void onResponse(String response) {
                 SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                 db.clearPTMListExec(sqLiteDatabase);
+                progress.dismiss();
 
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -321,6 +337,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
                         Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
 
                     }
