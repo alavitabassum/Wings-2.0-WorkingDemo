@@ -89,10 +89,6 @@
             android:label="@string/title_activity_supervisor_card_menu"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupAutoAssignManager.AutoAssignMyPickuplist"
-            android:label="@string/title_activity_auto_assign_my_pickuplist"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".PickupPendingReportManager.PendingSummary_Manager"
             android:label="@string/title_activity_pending_summary__manager"
             android:theme="@style/AppTheme" />
@@ -143,14 +139,6 @@
         <activity
             android:name=".PickupOfficer.ScanningScreen"
             android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
-        </activity>
-        <activity
-            android:name=".PickupAutoAssignManager.AutoScanningScreen"
-            android:parentActivityName=".PickupAutoAssignManager.AutoAssignMyPickuplist"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

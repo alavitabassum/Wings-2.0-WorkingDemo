@@ -163,7 +163,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         };
 
         //registering the broadcast receiver to update sync status
-        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
+        // registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
 
         // Redirect for quick pick by scanning barcode
@@ -404,6 +404,11 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                 .show();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
 
     @Override
     public void onBackPressed() {

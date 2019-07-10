@@ -1,8 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +17,6 @@ import com.paperflywings.user.paperflyv0.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class DeliveryCashRSAdapter extends RecyclerView.Adapter<DeliveryCashRSAdapter.ViewHolder> implements Filterable {
     private List<DeliveryCashRSModel>list;
@@ -80,7 +77,7 @@ public class DeliveryCashRSAdapter extends RecyclerView.Adapter<DeliveryCashRSAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
-        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice());
+        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ "Taka");
         viewHolder.item_productBrief_without_status.setText("Date: "+list.get(i).getCTSTime());
     }
 

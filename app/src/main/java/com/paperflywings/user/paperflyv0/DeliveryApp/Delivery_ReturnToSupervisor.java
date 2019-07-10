@@ -133,7 +133,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             }
         };
 
-        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
+//        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliveryreturn_to_supervisor);
@@ -193,6 +193,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 String ret = c.getString(32);
                 String retTime = c.getString(33);
                 String retBy = c.getString(34);
+                String retRem = c.getString(48);
                 String retReason = c.getString(35);
                 String rts = c.getString(36);
                 String rtsTime = c.getString(37);
@@ -207,7 +208,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 String flagReq = c.getString(46);
                 int status = c.getInt(47);
 
-                DeliveryReturnToSuperVisorModel withoutStatus_model = new DeliveryReturnToSuperVisorModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
+                DeliveryReturnToSuperVisorModel withoutStatus_model = new DeliveryReturnToSuperVisorModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retRem,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
 
                 list.add(withoutStatus_model);
             }
@@ -234,7 +235,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteList(sqLiteDatabase, "rts");
+                        db.deleteListRTS(sqLiteDatabase, "rts");
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -278,6 +279,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -290,7 +292,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"));
 
-                                db.insert_delivery_without_status(
+                                db.insert_delivery_RTS(
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
@@ -325,6 +327,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -377,6 +380,12 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -534,7 +543,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
 
-        ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rts");
+        ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rtsOk");
         //pickedfordelivery(lastText,username,empcode,BarCode,OrderId);
 
     }

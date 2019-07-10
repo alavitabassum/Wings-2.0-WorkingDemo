@@ -4,6 +4,7 @@ public class DeliveryCashRSModel {
     private String customerDistrict;
     private String barcode;
     private String orderid;
+    private String RetRem;
     private String merOrderRef;
     private String merchantName;
     private String pickMerchantName;
@@ -232,7 +233,7 @@ public class DeliveryCashRSModel {
     private String empCode;
 
 
-    public DeliveryCashRSModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss) {
+    public DeliveryCashRSModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem,String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss) {
 
         this.username = username;
         this.merchEmpCode = merchEmpCode;
@@ -268,6 +269,7 @@ public class DeliveryCashRSModel {
         this.Ret = ret;
         this.RetTime = retTime;
         this.RetBy = retBy;
+        this.RetRem = retRem;
         this.RetReason = retReason;
         this.Rts = rts;
         this.RtsTime = rtsTime;
@@ -380,7 +382,7 @@ public class DeliveryCashRSModel {
 
     }
 
-    public DeliveryCashRSModel(int id, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String username, String empCode, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss, String flagReq, int status) {
+    public DeliveryCashRSModel(int id, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String username, String empCode, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem,String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss, String flagReq, int status) {
         this.id = id;
         this.dropPointCode = dropPointCode;
         this.barcode = barcode;
@@ -416,6 +418,7 @@ public class DeliveryCashRSModel {
         this.Ret = ret;
         this.RetTime = retTime;
         this.RetBy = retBy;
+        this.RetRem = retRem;
         this.RetReason = retReason;
         this.Rts = rts;
         this.RtsTime = rtsTime;

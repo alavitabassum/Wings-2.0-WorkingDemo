@@ -6,12 +6,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,6 +29,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,6 +49,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.Manifest.permission.CAMERA;
+
 public class DeliveryOfficerCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,9 +58,11 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery;
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
     private RequestQueue requestQueue;
+    private static final int REQUEST_CAMERA = 1;
     private BroadcastReceiver broadcastReceiver;
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
+    private String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -91,6 +100,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         {
             loadDeliverySummary(username);
             loadWithoutStatusData(username);
+            loadReturnReason();
         }
         else {
             getData(username);
@@ -116,6 +126,53 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+
+        int currentApiVersion = Build.VERSION.SDK_INT;
+
+        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
+        {
+            if(checkPermission())
+            {
+           //     Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                requestPermission();
+            }
+        }
+    }
+
+    private void loadReturnReason() {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.GET, RETURN_REASON_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("retReasonList");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addReturnReasonlist(o.getString("returnID"),
+                                        o.getString("reason"));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Return Reasons", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        requestQueue.add(postRequest1);
     }
 
     public void loadWithoutStatusData(final String user){
@@ -170,6 +227,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -208,6 +266,10 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
@@ -381,6 +443,58 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
     }
 
+    private boolean checkPermission()
+    {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    // Request for camera permission
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
+    }
+
+    // Actions on camera permission grant result
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if (grantResults.length > 0) {
+
+                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (cameraAccepted){
+                        Toast.makeText(getApplicationContext(), "Permission Granted, Now you can access camera", Toast.LENGTH_LONG).show();
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Permission Denied, You cannot access and camera", Toast.LENGTH_LONG).show();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            if (shouldShowRequestPermissionRationale(CAMERA)) {
+                                showMessageOKCancel("You need to allow access to both the permissions",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                    requestPermissions(new String[]{CAMERA},
+                                                            REQUEST_CAMERA);
+                                                }
+                                            }
+                                        });
+                                return;
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+    }
+
+    // Camera permission ok or cancel
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new android.support.v7.app.AlertDialog.Builder(DeliveryOfficerCardMenu.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
 
 
     @Override

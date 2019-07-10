@@ -199,6 +199,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 String ret = c.getString(32);
                 String retTime = c.getString(33);
                 String retBy = c.getString(34);
+                String retRemarks = c.getString(48);
                 String retReason = c.getString(35);
                 String rts = c.getString(36);
                 String rtsTime = c.getString(37);
@@ -213,7 +214,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 String flagReq = c.getString(46);
                 int status = c.getInt(47);
 
-                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
+                DeliveryWithoutStatusModel withoutStatus_model = new DeliveryWithoutStatusModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retRemarks,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
                 list.add(withoutStatus_model);
             }
 
@@ -286,6 +287,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -333,6 +335,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -390,6 +393,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
 
     @Override
     public void onBackPressed() {
@@ -469,7 +477,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                         public void onClick(DialogInterface arg0, int arg1) {
 
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);
+//                            db.deleteAssignedList(sqLiteDatabase);
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -853,6 +861,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             return;
         }
         view4.getContext().startActivity(callIntent);
+
+
     }
 
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String merchEmpCode, final String flagReq) {
@@ -934,12 +944,12 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
+                                db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
@@ -951,7 +961,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);
                     }
                 }

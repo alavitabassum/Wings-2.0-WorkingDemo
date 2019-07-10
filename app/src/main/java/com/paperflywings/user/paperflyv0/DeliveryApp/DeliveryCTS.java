@@ -85,6 +85,7 @@ public class DeliveryCTS extends AppCompatActivity
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +135,7 @@ public class DeliveryCTS extends AppCompatActivity
         };
 
         //registering the broadcast receiver to update sync status
-        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
+//        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
         delivery_cts_recieved.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +166,7 @@ public class DeliveryCTS extends AppCompatActivity
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_CTS(sqLiteDatabase,user, "cash", "Y");
+            Cursor c = db.get_delivery_CTS(sqLiteDatabase,user, "cts", "Y");
 
             while (c.moveToNext()){
                 int id = c.getInt(0);
@@ -228,7 +229,7 @@ public class DeliveryCTS extends AppCompatActivity
             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
             swipeRefreshLayout.setRefreshing(false);
 
-            String str = String.valueOf(db.getCashCount("cash", "Y"));
+            String str = String.valueOf(db.getCashCount("cts", "Y"));
             CashCount_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 
@@ -244,7 +245,7 @@ public class DeliveryCTS extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteList(sqLiteDatabase, "cash");
+                        db.deleteListCTS(sqLiteDatabase, "cts");
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
@@ -287,6 +288,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -299,7 +301,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"));
 
-                                db.insert_delivery_without_status(
+                                db.insert_delivery_CTS(
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
@@ -334,6 +336,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -355,7 +358,7 @@ public class DeliveryCTS extends AppCompatActivity
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
 
-                            String str = String.valueOf(db.getCashCount("cash", "Y"));
+                            String str = String.valueOf(db.getCashCount("cts", "Y"));
                             CashCount_text.setText(str);
 
 
@@ -469,7 +472,7 @@ public class DeliveryCTS extends AppCompatActivity
                         public void onClick(DialogInterface arg0, int arg1) {
 
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);
+//                            db.deleteAssignedList(sqLiteDatabase);
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -509,6 +512,12 @@ public class DeliveryCTS extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -545,11 +554,11 @@ public class DeliveryCTS extends AppCompatActivity
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
 
-        CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "cts");
+        CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "ctsOk");
     }
 
     private void CashToS(final String CTS,final String CTSTime, final String CTSBy, final String barcode, final String orderid, final String flagReq) {
-        String str = String.valueOf(db.getCashCount("cash", "Y"));
+        String str = String.valueOf(db.getCashCount("cts", "Y"));
         CashCount_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryCTS.this,
                 DeliveryCTS.class);

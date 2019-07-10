@@ -3,9 +3,11 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -47,6 +49,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
+import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
@@ -77,12 +80,16 @@ public class DeliveryOnHold extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 1;
 
     public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
-    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_ordertrack_for_app.php";
     public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
 
     private List<DeliveryOnHoldModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
+    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
+
+    //Broadcast receiver to know the sync status
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +131,15 @@ public class DeliveryOnHold extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
+
+        //Offline sync
+        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+            }
+        };
 
         // Redirect for quick pick by scanning barcode
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_onHold);
@@ -182,6 +198,7 @@ public class DeliveryOnHold extends AppCompatActivity
                 String ret = c.getString(32);
                 String retTime = c.getString(33);
                 String retBy = c.getString(34);
+                String retRem = c.getString(48);
                 String retReason = c.getString(35);
                 String rts = c.getString(36);
                 String rtsTime = c.getString(37);
@@ -192,11 +209,11 @@ public class DeliveryOnHold extends AppCompatActivity
                 String cts = c.getString(42);
                 String ctsTime = c.getString(43);
                 String ctsBy = c.getString(44);
-                String slaMiss = c.getString(45);
+                int slaMiss = c.getInt(45);
                 String flagReq = c.getString(46);
                 int status = c.getInt(47);
 
-                DeliveryOnHoldModel onhold_model = new DeliveryOnHoldModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
+                DeliveryOnHoldModel onhold_model = new DeliveryOnHoldModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retRem,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
 
                list.add(onhold_model);
             }
@@ -207,9 +224,9 @@ public class DeliveryOnHold extends AppCompatActivity
             DeliveryOnHoldAdapter.notifyDataSetChanged();
             DeliveryOnHoldAdapter.setOnItemClickListener(DeliveryOnHold.this);
 
-            String str = String.valueOf(db.getOnholdCount("updateOnHoldApp"));
+            String str = String.valueOf(db.getWithoutStatusCount("OnHold"));
             onhold_text.setText(str);
-            String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0, "updateOnHoldApp"));
+            String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0, "OnHold"));
             slamiss_text.setText(slaMiss);
             swipeRefreshLayout.setRefreshing(false);
 
@@ -227,7 +244,7 @@ public class DeliveryOnHold extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteList(sqLiteDatabase, "onHold");
+                        db.deleteList(sqLiteDatabase, "OnHold");
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -271,6 +288,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -281,7 +299,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getString("slaMiss"));
+                                        o.getInt("slaMiss"));
 
                                 db.insert_delivery_without_status(
                                         o.getString("username"),
@@ -310,14 +328,15 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("partialReceive"),
                                         o.getString("partialReturn"),
                                         o.getString("partialReason"),
-                                        o.getString("onHoldReason"),
                                         o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
                                         o.getString("Rea"),
                                         o.getString("ReaTime"),
                                         o.getString("ReaBy"),
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -329,7 +348,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
                                         o.getInt("slaMiss"),
-                                        "updateOnHoldApp"
+                                        "OnHold"
                                         ,NAME_SYNCED_WITH_SERVER);
 
                                 list.add(onhold_model);
@@ -340,9 +359,9 @@ public class DeliveryOnHold extends AppCompatActivity
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryOnHoldAdapter.setOnItemClickListener(DeliveryOnHold.this);
 
-                            String str = String.valueOf(db.getOnholdCount("updateOnHoldApp"));
+                            String str = String.valueOf(db.getWithoutStatusCount("OnHold"));
                             onhold_text.setText(str);
-                            String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"updateOnHoldApp"));
+                            String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"OnHold"));
                             slamiss_text.setText(slaMiss);
 
                         } catch (JSONException e) {
@@ -374,6 +393,12 @@ public class DeliveryOnHold extends AppCompatActivity
             requestQueue = Volley.newRequestQueue(this);
         }
         requestQueue.add(stringRequest);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -457,8 +482,8 @@ public class DeliveryOnHold extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
 
-                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);
+//                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+//                            db.deleteAssignedList(sqLiteDatabase);
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -767,7 +792,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                                 bt1.setText(dateTime);
                                             }
                                         },year,month,day);
-
+                                        datePickerDialog.getDatePicker().setMinDate(c1.getTimeInMillis());
                                         datePickerDialog.show();
                                     }
                                 });
@@ -806,7 +831,6 @@ public class DeliveryOnHold extends AppCompatActivity
                                     }
                                 });
                                 dialog.dismiss();
-                                break;
                             default:
                                 break;
                         }
@@ -846,12 +870,12 @@ public class DeliveryOnHold extends AppCompatActivity
 
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String merchEmpCode, final String flagReq) {
 
-        String str1 = String.valueOf(db.getWithoutStatusCount("updateOnHoldApp"));
+        String str1 = String.valueOf(db.getWithoutStatusCount("OnHold"));
         onhold_text.setText(str1);
-        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0, "updateOnHoldApp"));
+        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"OnHold"));
         slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
-                DeliveryWithoutStatus.class);
+                DeliveryOnHold.class);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -909,12 +933,12 @@ public class DeliveryOnHold extends AppCompatActivity
 
     }
     private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String retRemarks, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String merchEmpCode, final String flagReq) {
-        String str1 = String.valueOf(db.getWithoutStatusCount("updateOnHoldApp"));
+        String str1 = String.valueOf(db.getWithoutStatusCount("OnHold"));
         onhold_text.setText(str1);
-        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0, "updateOnHoldApp"));
+        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"OnHold"));
         slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
-                DeliveryWithoutStatus.class);
+                DeliveryOnHold.class);
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
@@ -923,12 +947,12 @@ public class DeliveryOnHold extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
+                                db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
@@ -940,7 +964,7 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);
                     }
                 }
@@ -972,12 +996,12 @@ public class DeliveryOnHold extends AppCompatActivity
     }
     public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String merchEmpCode, final String flagReq) {
 
-        String str1 = String.valueOf(db.getWithoutStatusCount("updateOnHoldApp"));
+        String str1 = String.valueOf(db.getWithoutStatusCount("OnHold"));
         onhold_text.setText(str1);
-        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0, "updateOnHoldApp"));
+        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"OnHold"));
         slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
-                DeliveryWithoutStatus.class);
+                DeliveryOnHold.class);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -1032,12 +1056,12 @@ public class DeliveryOnHold extends AppCompatActivity
         }
     }
     public void update_partial_status (final String partial,final String partialsCash, final String partialTime,final String partialBy ,final String partialsReceive,final String partialReturn,final String partialReason,final String orderid, final String cashType, final String merchEmpCode,final String flagReq) {
-        String str1 = String.valueOf(db.getWithoutStatusCount("updateOnHoldApp"));
+        String str1 = String.valueOf(db.getWithoutStatusCount("OnHold"));
         onhold_text.setText(str1);
-        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0, "updateOnHoldApp"));
+        String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"OnHold"));
         slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryOnHold.this,
-                DeliveryWithoutStatus.class);
+                DeliveryOnHold.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -1144,5 +1168,4 @@ public class DeliveryOnHold extends AppCompatActivity
             Toast.makeText(DeliveryOnHold.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
-
 }

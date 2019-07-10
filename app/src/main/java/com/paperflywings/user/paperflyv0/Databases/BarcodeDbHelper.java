@@ -17,8 +17,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
     private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
     private static final String TABLE_NAME_9 = "All_delivery_data";
+    private static final String TABLE_NAME_RTS = "Delivery_RTS";
+    private static final String TABLE_NAME_CTS = "Delivery_CTS";
     private static final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
     private static final String TABLE_NAME_ONHOLD_LOG = "Insert_Onhold_Log";
+    private static final String TABLE_NAME_RETURN_REASONS = "Insert_Return_Reason";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
@@ -111,9 +114,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String CTS_CASH = "CTS";
     public static final String CTSTIME_CASH = "CTSTime";
     public static final String CTSBY_CASH = "CTSBy";
-    public static final int SLAMISS = 0;
+    public static final String  SLAMISS = "slaMiss";
     public static final String FLAG_REQ = "flagReq";
     public static final String CURRENT_DATE = "currentDateTime";
+    public static final String RETURN_ID = "returnID";
+    public static final String RETURN_REASON = "reason";
+    public static final String RET_REMARKS = "retRemarks";
 
     private static final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
@@ -222,7 +228,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "pickDrop TEXT, "
                 + "pickDropTime TEXT, "
                 + "pickDropBy TEXT, "
-                + "slaMiss INTEGER,"
+                + "slaMiss TEXT,"
                 + "status INT, "
                 + "unique(id, barcode))";
 
@@ -272,45 +278,117 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "CTS TEXT,"//42
                 + "CTSTime TEXT,"//43
                 + "CTSBy TEXT,"//44
-                + "slaMiss INTEGER," //45
+                + "slaMiss TEXT," //45
                 + "flagReq TEXT," //46
-                + "status INT, " //47
+                + "retRemarks TEXT," //47
+                + "status INT, " //48
+                + "unique(id, barcode))";
+
+        String CREATION_TABLE_RTS = "CREATE TABLE Delivery_RTS( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, " //0
+                + "dropPointCode TEXT," //1
+                + "barcode TEXT, " //2
+                + "orderid TEXT, " //3
+                + "merOrderRef TEXT, " //4
+                + "merchantName TEXT, " //5
+                + "pickMerchantName TEXT, " //6
+                + "custname TEXT, " //7
+                + "custphone TEXT, " //8
+                + "custaddress TEXT, " //9
+                + "packagePrice TEXT, "//10
+                + "productBrief TEXT, " //11
+                + "deliveryTime TEXT, " //12
+                + "username TEXT, " //13
+                + "empCode TEXT, " //14
+                + "Cash TEXT, " //15
+                + "cashType TEXT, " //16
+                + "CashTime TEXT, " //17
+                + "CashBy TEXT, " //18
+                + "CashAmt TEXT, " //19
+                + "CashComment TEXT, " //20
+                + "partial TEXT, " //21
+                + "partialTime TEXT, " //22
+                + "partialBy TEXT, " //23
+                + "partialReceive TEXT, " //24
+                + "partialReturn TEXT, " //25
+                + "partialReason TEXT, " //26
+                + "onHoldSchedule TEXT, " //27
+                + "onHoldReason TEXT, " //28
+                + "Rea TEXT," //29
+                + "ReaTime TEXT," //30
+                + "ReaBy TEXT," //31
+                + "Ret TEXT," //32
+                + "RetTime TEXT," //33
+                + "RetBy TEXT," //34
+                + "retReason TEXT," //35
+                + "RTS TEXT," //36
+                + "RTSTime TEXT," //37
+                + "RTSBy TEXT," //38
+                + "PreRet TEXT," //39
+                + "PreRetTime TEXT," //40
+                + "PreRetBy TEXT," //41
+                + "CTS TEXT,"//42
+                + "CTSTime TEXT,"//43
+                + "CTSBy TEXT,"//44
+                + "slaMiss TEXT," //45
+                + "flagReq TEXT," //46
+                + "retRemarks TEXT," //47
+                + "status INT, " //48
                 + "unique(id, barcode))";
 
 
-        String CREATION_TABLE10 = "CREATE TABLE Insert_Delivery_OnHold( "
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "dropPointCode TEXT,"
-                + "barcode TEXT, "
-                + "orderid TEXT, "
-                + "merOrderRef TEXT, "
-                + "merchantName TEXT, "
-                + "pickMerchantName TEXT, "
-                + "custname TEXT, "
-                + "custaddress TEXT, "
-                + "custphone TEXT, "
-                + "packagePrice TEXT, "
-                + "productBrief TEXT, "
-                + "deliveryTime TEXT, "
-                + "username TEXT, "
-                + "empCode TEXT, "
-                + "Cash TEXT, "
-                + "cashType TEXT, "
-                + "CashTime TEXT, "
-                + "CashBy TEXT, "
-                + "CashAmt TEXT, "
-                + "CashComment TEXT, "
-                + "partial TEXT, "
-                + "partialTime TEXT, "
-                + "partialBy TEXT, "
-                + "partialReceive TEXT, "
-                + "partialReturn TEXT, "
-                + "partialReason TEXT, "
-                + "onHoldSchedule TEXT, "
-                + "onHoldReason TEXT, "
-                + "slaMiss INTEGER,"
-                + "status INT, "
+        String CREATION_TABLE_CTS = "CREATE TABLE Delivery_CTS( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, " //0
+                + "dropPointCode TEXT," //1
+                + "barcode TEXT, " //2
+                + "orderid TEXT, " //3
+                + "merOrderRef TEXT, " //4
+                + "merchantName TEXT, " //5
+                + "pickMerchantName TEXT, " //6
+                + "custname TEXT, " //7
+                + "custphone TEXT, " //8
+                + "custaddress TEXT, " //9
+                + "packagePrice TEXT, "//10
+                + "productBrief TEXT, " //11
+                + "deliveryTime TEXT, " //12
+                + "username TEXT, " //13
+                + "empCode TEXT, " //14
+                + "Cash TEXT, " //15
+                + "cashType TEXT, " //16
+                + "CashTime TEXT, " //17
+                + "CashBy TEXT, " //18
+                + "CashAmt TEXT, " //19
+                + "CashComment TEXT, " //20
+                + "partial TEXT, " //21
+                + "partialTime TEXT, " //22
+                + "partialBy TEXT, " //23
+                + "partialReceive TEXT, " //24
+                + "partialReturn TEXT, " //25
+                + "partialReason TEXT, " //26
+                + "onHoldSchedule TEXT, " //27
+                + "onHoldReason TEXT, " //28
+                + "Rea TEXT," //29
+                + "ReaTime TEXT," //30
+                + "ReaBy TEXT," //31
+                + "Ret TEXT," //32
+                + "RetTime TEXT," //33
+                + "RetBy TEXT," //34
+                + "retReason TEXT," //35
+                + "RTS TEXT," //36
+                + "RTSTime TEXT," //37
+                + "RTSBy TEXT," //38
+                + "PreRet TEXT," //39
+                + "PreRetTime TEXT," //40
+                + "PreRetBy TEXT," //41
+                + "CTS TEXT,"//42
+                + "CTSTime TEXT,"//43
+                + "CTSBy TEXT,"//44
+                + "slaMiss TEXT," //45
+                + "flagReq TEXT," //46
+                + "retRemarks TEXT," //47
+                + "status INT, " //48
                 + "unique(id, barcode))";
+
 
         String CREATION_TABLE_ONHOLD_LOG = "CREATE TABLE Insert_Onhold_Log ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, " // 0
@@ -325,6 +403,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "status INT, " // 9
                 + " unique(id))";
 
+        String CREATION_TABLE_RETURN_REQUEST = "CREATE TABLE Insert_Return_Reason ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, " // 0
+                + "returnID TEXT, " //1
+                + "reason TEXT, " // 2
+                + " unique(returnID,reason))";
+
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
         db.execSQL(CREATION_TABLE2);
@@ -333,8 +417,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE7);
         db.execSQL(CREATION_TABLE8);
         db.execSQL(CREATION_TABLE9);
-        db.execSQL(CREATION_TABLE10);
+        db.execSQL(CREATION_TABLE_RTS);
+        db.execSQL(CREATION_TABLE_CTS);
         db.execSQL(CREATION_TABLE_ONHOLD_LOG);
+        db.execSQL(CREATION_TABLE_RETURN_REQUEST);
 
     }
 
@@ -348,8 +434,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_7);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_8);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_9);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_10);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_CTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_ONHOLD_LOG);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RETURN_REASONS);
         this.onCreate(db);
     }
 
@@ -889,7 +977,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     //insert counts in without status
 
-    public void insert_delivery_without_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
+    public void insert_delivery_without_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -927,7 +1015,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(RET, Ret);
         values.put(RET_TIME, RetTime);
         values.put(RET_BY, RetBy);
-        values.put(REA_BY, RetBy);
+        values.put(RET_REMARKS, RetRem);
         values.put(RET_REASON, retReason);
         values.put(RTS, rts);
         values.put(RTS_TIME, RTSTime);
@@ -938,7 +1026,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CTS_CASH,CTS);
         values.put(CTSTIME_CASH,CTSTime);
         values.put(CTSBY_CASH,CTSBy);
-        values.put(String.valueOf(SLAMISS),slaMiss);
+        values.put(SLAMISS,slaMiss);
         values.put(FLAG_REQ,flagReq);
         values.put(STATUS, status);
 
@@ -995,7 +1083,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 CTSBY_CASH,
                 String.valueOf(SLAMISS),
                 FLAG_REQ,
-                STATUS};
+                STATUS,
+                RET_REMARKS};
 
         String whereClause = USERNAME + "=? AND " +FLAG_REQ+ "=?" ;
         String[] whereArgs = new String[]{
@@ -1003,6 +1092,63 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 flagReq
         };
         return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
+    }
+
+    public void insert_delivery_RTS(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(USERNAME, username);
+        values.put(EMPLOYEE_CODE, empCode);
+        values.put(BARCODE_NO, barcode);
+        values.put(ORDERID, orderid);
+        values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(MERCHANTS_NAME, merchantName);
+        values.put(PICK_MERCHANTS_NAME, pickMerchantName);
+        values.put(CUSTOMER_NAME, custname);
+        values.put(CUSTOMER_ADDRESS, custaddress);
+        values.put(CUSTOMER_PHONE, custphone);
+        values.put(PACKAGE_PRICE, packagePrice);
+        values.put(PRODUCT_BRIEF, productBrief);
+        values.put(DELIVERY_TIME, deliveryTime);
+        values.put(DROPPOINTCODE, dropPointCode);
+        values.put(CASH_ACTION, Cash);
+        values.put(CASH_TYPE, cashType);
+        values.put(CASH_TIME, CashTime);
+        values.put(CASH_BY, CashBy);
+        values.put(CASH_AMT, CashAmt);
+        values.put(CASH_COMMENT, CashComment);
+        values.put(PARTIAL, partial);
+        values.put(PARTIAL_TIME, partialTime);
+        values.put(PARTIAL_BY, partialBy);
+        values.put(PARTIAL_RECEIVE, partialReceive);
+        values.put(PARTIAL_RETURN, partialReturn);
+        values.put(PARTIAL_RETURN_REASON, partialReason);
+        values.put(ONHOLD_SCHEDULE, onHoldSchedule);
+        values.put(ONHOLD_REASON, onHoldReason);
+        values.put(REA, Rea);
+        values.put(REA_TIME, ReaTime);
+        values.put(REA_BY, ReaBy);
+        values.put(RET, Ret);
+        values.put(RET_TIME, RetTime);
+        values.put(RET_BY, RetBy);
+        values.put(RET_REMARKS, RetRem);
+        values.put(RET_REASON, retReason);
+        values.put(RTS, rts);
+        values.put(RTS_TIME, RTSTime);
+        values.put(RTS_BY, RTSBy);
+        values.put(PRERET, PreRet);
+        values.put(PRERET_TIME, PreRetTime);
+        values.put(PRERET_BY, PreRetBy);
+        values.put(CTS_CASH,CTS);
+        values.put(CTSTIME_CASH,CTSTime);
+        values.put(CTSBY_CASH,CTSBy);
+        values.put(SLAMISS,slaMiss);
+        values.put(FLAG_REQ,flagReq);
+        values.put(STATUS, status);
+
+        db.insert(TABLE_NAME_RTS, null, values);
+        db.close();
     }
 
     public Cursor get_delivery_RTS(SQLiteDatabase db, String user, String flagReq, String rts) {
@@ -1054,7 +1200,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 CTSBY_CASH,
                 String.valueOf(SLAMISS),
                 FLAG_REQ,
-                STATUS};
+                STATUS,
+        RET_REMARKS};
 
         String whereClause = USERNAME + "=? AND " +FLAG_REQ+ "=? AND " +RTS+ "<> ?";
         String[] whereArgs = new String[]{
@@ -1062,7 +1209,64 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 flagReq,
                 rts
         };
-        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
+        return (db.query(TABLE_NAME_RTS, columns, whereClause, whereArgs, null, null, null));
+    }
+
+    public void insert_delivery_CTS(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(USERNAME, username);
+        values.put(EMPLOYEE_CODE, empCode);
+        values.put(BARCODE_NO, barcode);
+        values.put(ORDERID, orderid);
+        values.put(MERCHANT_ORDER_REF, merOrderRef);
+        values.put(MERCHANTS_NAME, merchantName);
+        values.put(PICK_MERCHANTS_NAME, pickMerchantName);
+        values.put(CUSTOMER_NAME, custname);
+        values.put(CUSTOMER_ADDRESS, custaddress);
+        values.put(CUSTOMER_PHONE, custphone);
+        values.put(PACKAGE_PRICE, packagePrice);
+        values.put(PRODUCT_BRIEF, productBrief);
+        values.put(DELIVERY_TIME, deliveryTime);
+        values.put(DROPPOINTCODE, dropPointCode);
+        values.put(CASH_ACTION, Cash);
+        values.put(CASH_TYPE, cashType);
+        values.put(CASH_TIME, CashTime);
+        values.put(CASH_BY, CashBy);
+        values.put(CASH_AMT, CashAmt);
+        values.put(CASH_COMMENT, CashComment);
+        values.put(PARTIAL, partial);
+        values.put(PARTIAL_TIME, partialTime);
+        values.put(PARTIAL_BY, partialBy);
+        values.put(PARTIAL_RECEIVE, partialReceive);
+        values.put(PARTIAL_RETURN, partialReturn);
+        values.put(PARTIAL_RETURN_REASON, partialReason);
+        values.put(ONHOLD_SCHEDULE, onHoldSchedule);
+        values.put(ONHOLD_REASON, onHoldReason);
+        values.put(REA, Rea);
+        values.put(REA_TIME, ReaTime);
+        values.put(REA_BY, ReaBy);
+        values.put(RET, Ret);
+        values.put(RET_TIME, RetTime);
+        values.put(RET_BY, RetBy);
+        values.put(RET_REMARKS, RetRem);
+        values.put(RET_REASON, retReason);
+        values.put(RTS, rts);
+        values.put(RTS_TIME, RTSTime);
+        values.put(RTS_BY, RTSBy);
+        values.put(PRERET, PreRet);
+        values.put(PRERET_TIME, PreRetTime);
+        values.put(PRERET_BY, PreRetBy);
+        values.put(CTS_CASH,CTS);
+        values.put(CTSTIME_CASH,CTSTime);
+        values.put(CTSBY_CASH,CTSBy);
+        values.put(SLAMISS,slaMiss);
+        values.put(FLAG_REQ,flagReq);
+        values.put(STATUS, status);
+
+        db.insert(TABLE_NAME_CTS, null, values);
+        db.close();
     }
 
     public Cursor get_delivery_CTS(SQLiteDatabase db, String user, String flagReq, String cts) {
@@ -1122,7 +1326,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 flagReq,
                 cts
         };
-        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
+        return (db.query(TABLE_NAME_CTS, columns, whereClause, whereArgs, null, null, null));
     }
 
     public void insert_delivery_crs_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,String slaMiss, int status) {
@@ -1319,13 +1523,15 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void update_retR_status(String Ret, String RetTime,String RetBy,String retReason, String PreRet, String PreRetTime, String PreRetBy,  String orderid,String flagReq, int status) {
+
+    public void update_retR_status(String Ret, String RetTime,String RetBy, String RetRemarks,String retReason, String PreRet, String PreRetTime, String PreRetBy,  String orderid,String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(RET, Ret);
         values.put(RET_TIME, RetTime);
         values.put(REA_BY, RetBy);
+        values.put(RET_REMARKS, RetRemarks);
         values.put(RET_REASON, retReason);
 
         values.put(PRERET, PreRet);
@@ -1342,6 +1548,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
+
+
 
     //
 
@@ -1385,6 +1593,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+
     public void update_partial_status (String partial,String partialsCash,String partialTime, String partialBy , String partialsReceive,String partialReturn, String partialReason, String orderid,String flagReq,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -1407,96 +1616,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, values, whereClause, whereArgs);
         db.close();
     }
-
-    //insert on hold
-    public void insert_delivery_OnHold(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String slaMiss, String flagReq, int status) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put(BARCODE_NO, barcode);
-        values.put(ORDERID, orderid);
-        values.put(MERCHANT_ORDER_REF, merOrderRef);
-        values.put(MERCHANTS_NAME, merchantName);
-        values.put(PICK_MERCHANTS_NAME, pickMerchantName);
-        values.put(CUSTOMER_NAME, custname);
-        values.put(CUSTOMER_ADDRESS, custaddress);
-        values.put(CUSTOMER_PHONE, custphone);
-        values.put(PACKAGE_PRICE, packagePrice);
-        values.put(PRODUCT_BRIEF, productBrief);
-        values.put(DELIVERY_TIME, deliveryTime);
-        values.put(DROPPOINTCODE, dropPointCode);
-        values.put(CASH_ACTION, Cash);
-        values.put(CASH_TYPE, cashType);
-        values.put(CASH_TIME, CashTime);
-        values.put(CASH_BY, CashBy);
-        values.put(CASH_AMT, CashAmt);
-        values.put(CASH_COMMENT, CashComment);
-        values.put(PARTIAL, partial);
-        values.put(PARTIAL_TIME, partialTime);
-        values.put(PARTIAL_BY, partialBy);
-        values.put(PARTIAL_RECEIVE, partialReceive);
-        values.put(PARTIAL_RETURN, partialReturn);
-        values.put(PARTIAL_RETURN_REASON, partialReason);
-        values.put(ONHOLD_SCHEDULE, onHoldSchedule);
-        values.put(ONHOLD_REASON, onHoldReason);
-        values.put(REA, Rea);
-        values.put(REA_TIME, ReaTime);
-        values.put(REA_BY, ReaBy);
-
-        values.put(RET, Ret);
-        values.put(RET_TIME, RetTime);
-        values.put(RET_BY, RetBy);
-        values.put(RET_REASON, retReason);
-        values.put(RTS, rts);
-        values.put(RTS_TIME, RTSTime);
-        values.put(RTS_BY, RTSBy);
-        values.put(PRERET, PreRet);
-        values.put(PRERET_TIME, PreRetTime);
-        values.put(PRERET_BY, PreRetBy);
-        values.put(String.valueOf(SLAMISS),slaMiss);
-        values.put(FLAG_REQ,flagReq);
-        values.put(STATUS, status);
-
-        db.insert(TABLE_NAME_9, null, values);
-        db.close();
-    }
-
-    // get on hold
-    public Cursor get_delivery_OnHold(SQLiteDatabase db, String user) {
-        String[] columns = {BARCODE_NO,
-                ORDERID,
-                MERCHANT_ORDER_REF,
-                MERCHANTS_NAME,
-                PICK_MERCHANTS_NAME,
-                CUSTOMER_NAME,
-                CUSTOMER_ADDRESS,
-                CUSTOMER_PHONE,
-                PACKAGE_PRICE,
-                PRODUCT_BRIEF,
-                DELIVERY_TIME ,
-                DROPPOINTCODE,
-                CASH_ACTION,
-                CASH_TYPE,
-                CASH_TIME,
-                CASH_BY,
-                CASH_AMT,
-                CASH_COMMENT,
-                PARTIAL,
-                PARTIAL_TIME,
-                PARTIAL_BY,
-                PARTIAL_RECEIVE,
-                PARTIAL_RETURN,
-                PARTIAL_RETURN_REASON,
-                ONHOLD_SCHEDULE,
-                ONHOLD_REASON,
-                String.valueOf(SLAMISS)};
-        String whereClause = USERNAME + "=?";
-        String[] whereArgs = new String[]{
-                user
-        };
-        return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
-    }
-
 
     public Cursor get_quick_delivery_scan_info(SQLiteDatabase db, String barcodeNumber) {
         String[] columns = {ORDERID,
@@ -1525,15 +1644,14 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public void deleteList(SQLiteDatabase sqLiteDatabase, String flagReq) {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
     }
-
-    public void deletecrsList(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9 );
+    public void deleteListRTS(SQLiteDatabase sqLiteDatabase, String flagReq) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_RTS + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
     }
 
-    public void deleteunpickedOrderData(String barcode) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from " + TABLE_NAME_8 + " WHERE " + BARCODE_NO + " != '" + barcode + "'");
+    public void deleteListCTS(SQLiteDatabase sqLiteDatabase, String flagReq) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_CTS + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
     }
+
     // get scan count
     public int getUnpickedCount(String pickDrop) {
         String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_8 + " WHERE " + PICK_DROP + " != '" + pickDrop + "'";
@@ -1566,17 +1684,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
-    public int getOnholdCount(String flagReq) {
-        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        db.close();
-        return count;
-    }
+
     public int getCashCount(String flagReq, String cts) {
-        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "' AND " + CTS_CASH + " <> '" + cts + "'";
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_CTS + " WHERE " + FLAG_REQ + " = '" + flagReq + "' AND " + CTS_CASH + " <> '" + cts + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
@@ -1586,7 +1696,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     public int getReturnCount(String flagReq, String rts) {
-        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "' AND " + RTS + " <> '" + rts + "'";
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_RTS + " WHERE " + FLAG_REQ + " = '" + flagReq + "' AND " + RTS + " <> '" + rts + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(countQuery, null);
         int count = cursor.getCount();
@@ -1594,17 +1704,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.close();
         return count;
     }
-
-    public int getReturnRequestCount(String flagReq) {
-        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'";
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        db.close();
-        return count;
-    }
-
 
     public void update_cts_status(String CTS,String CTSTime,String CTSBy,String barcode,String orderid, String flagreq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1621,7 +1720,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 barcode
         };
         // insert
-        db.update(TABLE_NAME_9, values, whereClause, whereArgs);
+        db.update(TABLE_NAME_CTS, values, whereClause, whereArgs);
         db.close();
     }
 
@@ -1640,7 +1739,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 barcode
         };
         // insert
-        db.update(TABLE_NAME_9, values, whereClause, whereArgs);
+        db.update(TABLE_NAME_RTS, values, whereClause, whereArgs);
         db.close();
     }
 
@@ -1651,6 +1750,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return c;
     }
 
+
     public boolean updateWithoutStatusCash(int id, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -1658,6 +1758,68 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.update(TABLE_NAME_9, contentValues, KEY_ID + "=" + id, null);
         db.close();
         return true;
+    }
+
+
+    public Cursor getUnsyncedRTS() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_RTS + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+    public boolean updateRTS(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME_RTS, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
+    }
+
+
+    public Cursor getUnsyncedCTS() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "SELECT * FROM " + TABLE_NAME_CTS + " WHERE " + STATUS + " = 0;";
+        Cursor c = db.rawQuery(sql, null);
+        return c;
+    }
+
+
+    public boolean updateCTS(int id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(STATUS, status);
+        db.update(TABLE_NAME_CTS, contentValues, KEY_ID + "=" + id, null);
+        db.close();
+        return true;
+    }
+
+
+    public void addReturnReasonlist(String returnID, String reason) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(RETURN_ID, returnID);
+        values.put(RETURN_REASON, reason);
+        db.insert(TABLE_NAME_RETURN_REASONS, null, values);
+        sqLiteDatabase.close();
+    }
+
+    public Cursor get_return_reason_list(SQLiteDatabase db) {
+        String[] columns = {RETURN_ID, RETURN_REASON};
+        return db.query(TABLE_NAME_RETURN_REASONS, columns, null, null, null, null, null);
+    }
+    public String getSelectedReasonId(String reason){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT" + RETURN_ID + "FROM " + TABLE_NAME_RETURN_REASONS + " WHERE " + RETURN_REASON + " = '" + reason + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex(RETURN_ID));
+            return selection;
+        }
+        return null;
     }
 }
 

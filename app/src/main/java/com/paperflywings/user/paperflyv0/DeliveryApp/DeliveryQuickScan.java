@@ -12,7 +12,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -49,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -66,15 +66,15 @@ public class DeliveryQuickScan extends AppCompatActivity{
     private String barcode;
     private Button done;
     private RequestQueue requestQueue;
+    List<DeliveryWithoutStatusModel> returnReasons;
 
     //1 means data is synced and 0 means data is not synced
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    private NotificationManagerCompat notificationManager;
 
     //a broadcast to know weather the data is synced or not
     // TODO add sql_primary_id to fulfillment barcode factory
-    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
+    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_ordertrack_for_app.php";
     public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -87,9 +87,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delivery_quick_barcode_scan);
-
-        notificationManager = NotificationManagerCompat.from(this);
-
+        returnReasons = new ArrayList<>();
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.UPC_A);
         barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
@@ -170,6 +168,22 @@ public class DeliveryQuickScan extends AppCompatActivity{
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
+   private void getallreturnreasons() {
+        try {
+
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_return_reason_list(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String returnId = c.getString(0);
+                String reason = c.getString(1);
+                DeliveryWithoutStatusModel returnReasonList = new DeliveryWithoutStatusModel(returnId, reason);
+                returnReasons.add(returnReasonList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void getData(final String barcodeNumber)
     {
         try{
@@ -204,7 +218,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 merchantName.setText("Merchant Name: "+merchantname);
                 custName.setText(custname);
                 custAddress.setText(custaddress);
-                price.setText(packageprice);
+                price.setText(packageprice+" Taka");
                 brief.setText("Package Brief: "+packagebrief);
 
 
@@ -453,11 +467,27 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 dialog.dismiss();
                                                 break;
                                             case 3:
+                                                /*List<String> executivenames = new ArrayList<String>();
+
+                                                for (int z = 0; z < assignManager_modelList.size(); z++) {
+                                                    merchantnames.add(assignManager_modelList.get(z).getM_names());
+                                                }
+                                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(NewOrderSupervisor.this,
+                                                        android.R.layout.simple_list_item_1, merchantnames);
+
+
+                                               adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
+                                                getallreturnreasons();
                                                 final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
                                                 final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.Remarks_onhold_status);
+                                                List<String> reasons = new ArrayList<String>();
+
+                                                for (int z = 0; z < returnReasons.size(); z++) {
+                                                    reasons.add(returnReasons.get(z).getReason());
+                                                }
                                                 ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(DeliveryQuickScan.this,
                                                         android.R.layout.simple_spinner_item,
-                                                        getResources().getStringArray(R.array.onholdreasons));
+                                                        reasons);
                                                 adapterOnhold.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                                 mOnholdSpinner.setAdapter(adapterOnhold);
 
@@ -513,7 +543,9 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 dialogonHold.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
+                                                        String reasonCode = mOnholdSpinner.getSelectedItem().toString();
+                                                        final String onHoldReason = db.getSelectedReasonId(reasonCode);
+
                                                         String onHoldSchedule = bt1.getText().toString();
 
                                                         update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, merchEmpCode, "updateOnHoldApp");
@@ -540,9 +572,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         spinnerBuilder.setCancelable(false);
                         final AlertDialog dialog2 = spinnerBuilder.create();
                         dialog2.show();
-
-
-
                     }
                 });
 
@@ -628,12 +657,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
+                                db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
 //                                startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
 //                                startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
@@ -645,7 +674,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_retR_status(ret,retTime,retBy,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
 //                        startActivity(withoutstatuscount);
                     }
                 }

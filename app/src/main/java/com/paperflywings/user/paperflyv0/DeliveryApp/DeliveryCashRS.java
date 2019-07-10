@@ -182,6 +182,7 @@ public class DeliveryCashRS extends AppCompatActivity
                 String ret = c.getString(32);
                 String retTime = c.getString(33);
                 String retBy = c.getString(34);
+                String retRem = c.getString(48);
                 String retReason = c.getString(35);
                 String rts = c.getString(36);
                 String rtsTime = c.getString(37);
@@ -196,7 +197,7 @@ public class DeliveryCashRS extends AppCompatActivity
                 String flagReq = c.getString(46);
                 int status = c.getInt(47);
 
-                DeliveryCashRSModel withoutStatus_model = new DeliveryCashRSModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
+                DeliveryCashRSModel withoutStatus_model = new DeliveryCashRSModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retRem,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
 
                 list.add(withoutStatus_model);
             }
@@ -264,6 +265,7 @@ public class DeliveryCashRS extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -311,6 +313,7 @@ public class DeliveryCashRS extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),

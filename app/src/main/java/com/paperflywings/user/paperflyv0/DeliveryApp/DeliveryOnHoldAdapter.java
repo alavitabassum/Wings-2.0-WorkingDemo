@@ -149,7 +149,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         viewHolder.item_custname_onHold.setText("Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress_onHold.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone_onHold.setText(list.get(i).getCustphone());
-        viewHolder.item_packagePrice_onHold.setText(list.get(i).getPackagePrice());
+        viewHolder.item_packagePrice_onHold.setText(list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_productBrief_onHold.setText("Product Brief: "+list.get(i).getProductBrief());
         //viewHolder.item_deliveryTime_onHold.setText(list.get(i).getDeliveryTime());
 
@@ -162,7 +162,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
 
-        int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
+        int DeliveryTime = list.get(i).getSlaMiss();
 
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_onHold.setText(list.get(i).getSlaMiss());

@@ -36,8 +36,6 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
     public interface OnItemClickListener {
 
            void onItemClick_view (View view2, int position2);
-        /*   void onItemClick(View view, int position);
-           void onItemClick_view_orderIDs (View view3, int position3);*/
            void onItemClick_call (View view4, int position4);
     }
 
@@ -137,7 +135,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress_without_status.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
-        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice());
+        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ " Taka");
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
         //viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
 
@@ -169,29 +167,6 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
             viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         }
-
-      /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (!(CustomerDistrict.equals("1")) && DeliveryTime > 5){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (!(CustomerDistrict.equals("1")) && DeliveryTime < 5){
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-
-             else if (CustomerDistrict.equals("1") && DeliveryTime <2){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-
-        }*/
-
     }
 
     @Override
