@@ -51,10 +51,30 @@ public class DeliveryOnHoldModel{
     private String PreRetTime;
     private String PreRetBy;
     private int status;
+
+    public String getReasonId() {
+        return reasonId;
+    }
+
+    public void setReasonId(String reasonId) {
+        this.reasonId = reasonId;
+    }
+
     private int id;
     private String flagReq;
     private String empCode;
     private String RetRem;
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    private String reasonId;
+    private String reason;
 
 
     public DeliveryOnHoldModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem,String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss) {
@@ -256,6 +276,11 @@ public class DeliveryOnHoldModel{
         this.slaMiss = slaMiss;
         this.flagReq = flagReq;
         this.status = status;
+    }
+
+    public DeliveryOnHoldModel(String reasonId, String reason) {
+        this.reasonId = reasonId;
+        this.reason = reason;
     }
 
     public String getCustomerDistrict() {

@@ -165,7 +165,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         int DeliveryTime = list.get(i).getSlaMiss();
 
         if(DeliveryTime<0) {
-            viewHolder.item_deliveryTime_onHold.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_onHold.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_deliveryTime_onHold.setBackgroundResource(R.color.red);
             viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
         }

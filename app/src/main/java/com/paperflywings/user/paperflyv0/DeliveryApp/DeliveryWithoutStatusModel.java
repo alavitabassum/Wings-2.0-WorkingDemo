@@ -13,6 +13,15 @@ public class DeliveryWithoutStatusModel {
     private String custname;
     private String custaddress;
     private String RetRem;
+    private String reasonId;
+
+    public String getReasonId() {
+        return reasonId;
+    }
+
+    public void setReasonId(String reasonId) {
+        this.reasonId = reasonId;
+    }
 
     public String getReturnId() {
         return returnId;
@@ -252,7 +261,11 @@ public class DeliveryWithoutStatusModel {
         this.slaMiss = slaMiss;
     }
 
-    public DeliveryWithoutStatusModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason,String preRet, String preRetTime, String preRetBy, int slaMiss) {
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public DeliveryWithoutStatusModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason, String preRet, String preRetTime, String preRetBy, int slaMiss) {
 
         this.username = username;
         this.empCode = merchEmpCode;
@@ -295,8 +308,8 @@ public class DeliveryWithoutStatusModel {
         this.slaMiss = slaMiss;
     }
 
-    public DeliveryWithoutStatusModel(String returnId, String reason) {
-        this.returnId = returnId;
+    public DeliveryWithoutStatusModel(String reasonId, String reason) {
+        this.reasonId = reasonId;
         this.reason = reason;
     }
 

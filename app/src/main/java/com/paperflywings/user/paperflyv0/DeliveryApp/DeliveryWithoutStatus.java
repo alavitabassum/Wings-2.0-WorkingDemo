@@ -75,6 +75,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
+    //List<DeliveryWithoutStatusModel> returnReasons;
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
 
@@ -155,6 +156,23 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void getallreturnreasons() {
+        try {
+            list.clear();
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_return_reason_list(sqLiteDatabase);
+            while (c.moveToNext()) {
+                String reasonId = c.getString(0);
+                String reason = c.getString(1);
+                DeliveryWithoutStatusModel returnReasonList = new DeliveryWithoutStatusModel(reasonId, reason);
+                list.add(returnReasonList);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getData(String user){
@@ -298,7 +316,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getInt("slaMiss"));
+                                        o.getInt("slaMiss")
+                                );
 
                                 db.insert_delivery_without_status(
                                         o.getString("username"),
@@ -585,6 +604,9 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         final String merchantName = clickedITem.getMerchantName();
         final String pickMerchantName = clickedITem.getPickMerchantName();
 
+        //final String retReason = clickedITem.getReasonId();
+        //final String retReason = clickedITem.getReason();
+
 
         final Intent DeliveryListIntent = new Intent(DeliveryWithoutStatus.this,
                 DeliveryWithoutStatus.class);
@@ -709,12 +731,19 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
                                 break;
                             case 2:
+                                getallreturnreasons();
                                 final View mViewReturnR = getLayoutInflater().inflate(R.layout.insert_returnr_without_status, null);
 
                                 final Spinner mReturnRSpinner = (Spinner) mViewReturnR.findViewById(R.id.Remarks_Retr_status);
+                                List<String> reasons = new ArrayList<String>();
+                                reasons.add(0,"Please select an option..");
+                                for (int z = 0; z < list.size(); z++) {
+                                    reasons.add(list.get(z).getReason());
+                                }
+
                                 ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryWithoutStatus.this,
                                         android.R.layout.simple_spinner_item,
-                                        getResources().getStringArray(R.array.returnreasonsAll));
+                                        reasons);
                                 adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 mReturnRSpinner.setAdapter(adapterReturnR);
 
@@ -746,9 +775,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 dialogReturnR.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        String retReason = mReturnRSpinner.getSelectedItem().toString();
+
+                                        String retReasonText = mReturnRSpinner.getSelectedItem().toString();
+                                        String retReason = db.getSelectedReasonId(retReasonText);
                                         String retRemarks = et4.getText().toString();
-                                        update_retR_status(Ret,RetTime,RetBy,retReason,retRemarks,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
+                                        update_retR_status(Ret,RetTime,RetBy,retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -929,7 +960,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
 
     }
-    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String retRemarks, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String merchEmpCode, final String flagReq) {
+    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retRemarks, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String merchEmpCode, final String flagReq) {
         String str1 = String.valueOf(db.getWithoutStatusCount("withoutStatus"));
         without_status_text.setText(str1);
         String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"withoutStatus"));

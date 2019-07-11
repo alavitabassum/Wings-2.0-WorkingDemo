@@ -117,7 +117,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String  SLAMISS = "slaMiss";
     public static final String FLAG_REQ = "flagReq";
     public static final String CURRENT_DATE = "currentDateTime";
-    public static final String RETURN_ID = "returnID";
+    public static final String REASON_ID = "reasonID";
     public static final String RETURN_REASON = "reason";
     public static final String RET_REMARKS = "retRemarks";
 
@@ -405,9 +405,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE_RETURN_REQUEST = "CREATE TABLE Insert_Return_Reason ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, " // 0
-                + "returnID TEXT, " //1
+                + "reasonID TEXT, " //1
                 + "reason TEXT, " // 2
-                + " unique(returnID,reason))";
+                + "unique(reasonID,reason))";
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -1637,9 +1637,14 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 
+    public void deleteSummeryList(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_7);
+    }
+
     public void deleteUnpickedList(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_8);
     }
+
 
     public void deleteList(SQLiteDatabase sqLiteDatabase, String flagReq) {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
@@ -1650,6 +1655,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     public void deleteListCTS(SQLiteDatabase sqLiteDatabase, String flagReq) {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_CTS + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
+    }
+
+    public void deleteListRETURN_REASONS(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_RETURN_REASONS);
     }
 
     // get scan count
@@ -1796,27 +1805,25 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public void addReturnReasonlist(String returnID, String reason) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-
+    public void addReturnReasonlist(String reasonID, String reason) {
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        values.put(RETURN_ID, returnID);
+        values.put(REASON_ID, reasonID);
         values.put(RETURN_REASON, reason);
         db.insert(TABLE_NAME_RETURN_REASONS, null, values);
-        sqLiteDatabase.close();
+        db.close();
     }
 
     public Cursor get_return_reason_list(SQLiteDatabase db) {
-        String[] columns = {RETURN_ID, RETURN_REASON};
+        String[] columns = {REASON_ID, RETURN_REASON};
         return db.query(TABLE_NAME_RETURN_REASONS, columns, null, null, null, null, null);
     }
     public String getSelectedReasonId(String reason){
         String selection = "Error";
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT" + RETURN_ID + "FROM " + TABLE_NAME_RETURN_REASONS + " WHERE " + RETURN_REASON + " = '" + reason + "'", null);
+        Cursor c = db.rawQuery("SELECT reasonID FROM " + "Insert_Return_Reason" + " WHERE " + "reason" + " = '" + reason + "'", null);
         if(c.moveToFirst()){
-            selection = c.getString(c.getColumnIndex(RETURN_ID));
+            selection = c.getString(c.getColumnIndex(REASON_ID));
             return selection;
         }
         return null;

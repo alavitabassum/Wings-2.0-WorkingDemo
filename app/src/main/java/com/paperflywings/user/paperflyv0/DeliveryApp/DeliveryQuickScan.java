@@ -419,12 +419,19 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                                                 break;
                                             case 2:
+                                                getallreturnreasons();
                                                 final View mViewReturnR = getLayoutInflater().inflate(R.layout.insert_returnr_without_status, null);
 
                                                 final Spinner mReturnRSpinner = (Spinner) mViewReturnR.findViewById(R.id.Remarks_Retr_status);
+                                                List<String> reasons = new ArrayList<String>();
+                                                reasons.add(0,"Please select an option..");
+                                                for (int z = 1; z < returnReasons.size(); z++) {
+                                                    reasons.add(returnReasons.get(z).getReason());
+                                                }
+
                                                 ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryQuickScan.this,
                                                         android.R.layout.simple_spinner_item,
-                                                        getResources().getStringArray(R.array.returnreasonsAll));
+                                                        reasons);
                                                 adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                                 mReturnRSpinner.setAdapter(adapterReturnR);
 
@@ -456,9 +463,11 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 dialogReturnR.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        String retReason = mReturnRSpinner.getSelectedItem().toString();
+
+                                                        String retReasonText = mReturnRSpinner.getSelectedItem().toString();
+                                                        String retReason = db.getSelectedReasonId(retReasonText);
                                                         String retRemarks = et4.getText().toString();
-                                                        update_retR_status(Ret,RetTime,RetBy,retReason,retRemarks,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
+                                                        update_retR_status(Ret,RetTime,RetBy,retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
 
                                                         dialogReturnR.dismiss();
                                                         startActivity(DeliveryListIntent);
@@ -467,6 +476,77 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 dialog.dismiss();
                                                 break;
                                             case 3:
+                                                final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
+                                                final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.Remarks_onhold_status);
+                                                ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(DeliveryQuickScan.this,
+                                                        android.R.layout.simple_spinner_item,
+                                                        getResources().getStringArray(R.array.onholdreasons));
+                                                adapterOnhold.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                                mOnholdSpinner.setAdapter(adapterOnhold);
+
+                                                final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
+
+                                                bt1.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        Calendar c1;
+                                                        DatePickerDialog datePickerDialog;
+                                                        c1 = Calendar.getInstance();
+
+                                                        int day = c1.get(Calendar.DAY_OF_MONTH);
+                                                        int month = c1.get(Calendar.MONTH);
+                                                        int year = c1.get(Calendar.YEAR);
+
+                                                        datePickerDialog = new DatePickerDialog(DeliveryQuickScan.this, new DatePickerDialog.OnDateSetListener() {
+                                                            @Override
+                                                            public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDate) {
+                                                                String yearselected    = Integer.toString(mYear) ;
+                                                                String monthselected   = Integer.toString(mMonth + 1);
+                                                                String dayselected     = Integer.toString(mDate);
+                                                                String dateTime = yearselected + "-" + monthselected + "-" + dayselected;
+                                                                bt1.setText(dateTime);
+                                                            }
+                                                        },year,month,day);
+                                                        datePickerDialog.getDatePicker().setMinDate(c1.getTimeInMillis());
+                                                        datePickerDialog.show();
+                                                    }
+                                                });
+
+                                                AlertDialog.Builder onHoldeSpinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
+                                                onHoldeSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+
+                                                onHoldeSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int i1) {
+                                                        dialog.dismiss();
+                                                    }
+                                                });
+
+                                                onHoldeSpinnerBuilder.setCancelable(false);
+                                                onHoldeSpinnerBuilder.setView(mViewOnHold);
+
+                                                final AlertDialog dialogonHold = onHoldeSpinnerBuilder.create();
+                                                dialogonHold.show();
+
+                                                dialogonHold.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
+                                                        String onHoldSchedule = bt1.getText().toString();
+
+                                                        update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, merchEmpCode, "updateOnHoldApp");
+                                                        insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
+                                                        dialogonHold.dismiss();
+                                                        startActivity(DeliveryListIntent);
+                                                    }
+                                                });
+                                                dialog.dismiss();
+                                                break;
                                                 /*List<String> executivenames = new ArrayList<String>();
 
                                                 for (int z = 0; z < assignManager_modelList.size(); z++) {
@@ -477,7 +557,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
 
                                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
-                                                getallreturnreasons();
+                                               /* getallreturnreasons();
                                                 final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
                                                 final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.Remarks_onhold_status);
                                                 List<String> reasons = new ArrayList<String>();
@@ -555,7 +635,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                     }
                                                 });
                                                 dialog.dismiss();
-                                                break;
+                                                break;*/
                                             default:
                                                 break;
                                         }
@@ -645,7 +725,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
         }
 
     }
-    private void update_retR_status(final String ret, final String retTime, final String retBy, final String retReason, final String retRemarks, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String merchEmpCode, final String flagReq) {
+    private void update_retR_status(final String ret, final String retTime, final String retBy,  final String retRemarks,final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String merchEmpCode, final String flagReq) {
 
         final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
                 DeliveryWithoutStatus.class);
