@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -110,7 +109,7 @@ public class DeliveryCashRS extends AppCompatActivity
             loadRecyclerView(username);
         }
         else{
-            getData(username);
+//            getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
@@ -140,7 +139,7 @@ public class DeliveryCashRS extends AppCompatActivity
 
 
     }
-    private void getData(String user){
+   /* private void getData(String user){
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
@@ -214,7 +213,7 @@ public class DeliveryCashRS extends AppCompatActivity
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
+    }*/
     private void loadRecyclerView (final String user){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
                 new Response.Listener<String>()
@@ -278,7 +277,7 @@ public class DeliveryCashRS extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getInt("slaMiss"));
 
-                                db.insert_delivery_without_status(
+                                /*db.insert_delivery_without_status(
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
@@ -326,7 +325,7 @@ public class DeliveryCashRS extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getInt("slaMiss"),
                                         "cash"
-                                        , NAME_SYNCED_WITH_SERVER );
+                                        , NAME_SYNCED_WITH_SERVER );*/
                                 list.add(withoutStatus_model);
                             }
 
@@ -443,8 +442,8 @@ public class DeliveryCashRS extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
 
-                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);
+                           /* SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                            db.deleteAssignedList(sqLiteDatabase);*/
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -497,7 +496,8 @@ public class DeliveryCashRS extends AppCompatActivity
             loadRecyclerView(username);
         }
         else{
-            getData(username);
+//            getData(username);
+            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
     }
 

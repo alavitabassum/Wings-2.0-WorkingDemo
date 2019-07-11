@@ -74,7 +74,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
     //a broadcast to know weather the data is synced or not
     // TODO add sql_primary_id to fulfillment barcode factory
-    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_ordertrack_for_app.php";
+    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_or`dertrack_for_app.php";
     public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -121,7 +121,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
             barcodeView.setStatusText("Barcode"+result.getText());
 
-          getData(lastText);
 
             db.close();
 
@@ -574,9 +573,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         dialog2.show();
                     }
                 });
-
                 onPause();
-
             }
         }catch (Exception e)
         {

@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +65,9 @@ public class DeliveryCashRSAdapter extends RecyclerView.Adapter<DeliveryCashRSAd
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
         viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ "Taka");
+
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a");
         viewHolder.item_productBrief_without_status.setText("Date: "+list.get(i).getCTSTime());
     }
 

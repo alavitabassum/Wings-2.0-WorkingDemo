@@ -97,11 +97,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
         cashCollection_count = (TextView)findViewById(R.id.CashCount);
         returnList_count = (TextView)findViewById(R.id.RTS);
-       /* swipeRefreshLayout = findViewById(R.id.refresh);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);
-//        pickupList_model_for_executives.clear();
-        swipeRefreshLayout.setRefreshing(true);*/
 
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -123,7 +118,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         };
 
         //registering the broadcast receiver to update sync status
-        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
+//        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -155,6 +150,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
         progress.setIndeterminate(true);
         progress.setProgress(0);
         progress.show();
@@ -354,6 +350,10 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 

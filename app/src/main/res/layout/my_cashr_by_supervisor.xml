@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_delivery_cashrs_list"
     android:layout_width="match_parent"
-    android:layout_height="125dp"
+    android:layout_height="120dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -56,8 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="30dp"
-            android:text="Package Price: "
+            android:layout_marginTop="26dp"
+            android:text="Cash : "
             android:textColor="#000"
             android:textSize="15sp" />
 
@@ -80,10 +80,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="2dp"
             android:textAlignment="textStart"
-            android:textColor="#000"
+            android:textStyle="bold"
+            android:textColor="#aaa"
             android:textSize="15sp" />
 
     </RelativeLayout>

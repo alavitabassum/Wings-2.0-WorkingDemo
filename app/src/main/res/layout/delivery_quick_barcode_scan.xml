@@ -33,7 +33,7 @@
             android:layout_marginStart="10dp"
             android:background="@drawable/buttonstyle_done"
             android:elevation="5dp"
-            android:text="Done"
+            android:text="Go back"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="18sp"
