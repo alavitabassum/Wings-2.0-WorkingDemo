@@ -752,7 +752,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 final EditText et4 = mViewReturnR.findViewById(R.id.remarks_RetR);
                                 final TextView tv4 = mViewReturnR.findViewById(R.id.remarksTextRetR);
 
-
                                 AlertDialog.Builder ReturnRSpinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
                                 ReturnRSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override

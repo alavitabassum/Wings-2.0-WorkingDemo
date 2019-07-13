@@ -424,7 +424,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 final Spinner mReturnRSpinner = (Spinner) mViewReturnR.findViewById(R.id.Remarks_Retr_status);
                                                 List<String> reasons = new ArrayList<String>();
                                                 reasons.add(0,"Please select an option..");
-                                                for (int z = 1; z < returnReasons.size(); z++) {
+                                                for (int z = 0; z < returnReasons.size(); z++) {
                                                     reasons.add(returnReasons.get(z).getReason());
                                                 }
 

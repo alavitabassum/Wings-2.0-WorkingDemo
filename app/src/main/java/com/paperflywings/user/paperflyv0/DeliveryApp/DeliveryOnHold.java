@@ -738,7 +738,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                 final Spinner mReturnRSpinner = (Spinner) mViewReturnR.findViewById(R.id.Remarks_Retr_status);
                                 List<String> reasons = new ArrayList<String>();
                                 reasons.add(0,"Please select an option..");
-                                for (int z = 1; z < list.size(); z++) {
+                                for (int z = 0; z < list.size(); z++) {
                                     reasons.add(list.get(z).getReason());
                                 }
 
