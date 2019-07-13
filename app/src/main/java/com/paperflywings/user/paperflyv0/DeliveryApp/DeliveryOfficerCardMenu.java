@@ -30,7 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,11 +42,9 @@ import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +136,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         {
             if(checkPermission())
             {
-           //     Toast.makeText(getApplicationContext(), "Permission already granted!", Toast.LENGTH_LONG).show();
+               Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
             }
             else
             {
@@ -148,13 +145,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
     }
 
+    // Payload for delivery return reasons
     public void loadReturnReason(){
-        progress=new ProgressDialog(this);
-        progress.setMessage("Loading Data");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, RETURN_REASON_URL,
                 new Response.Listener<String>()
                 {
@@ -199,52 +191,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-
-
-/*
-    private void loadReturnReason() {
-        progress=new ProgressDialog(this);
-        progress.setMessage("Loading Data");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setCancelable(false);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
-
-        StringRequest postRequest1 = new StringRequest(Request.Method.GET, RETURN_REASON_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        JSONArray array = jsonObject.getJSONArray("retReasonList");
-
-                        for(int i =0;i<array.length();i++)
-                        {
-                            JSONObject o = array.getJSONObject(i);
-                                db.addReturnReasonlist(o.getString("returnID"),
-                                        o.getString("reason"));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Problem Loading Return Reasons", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(this);
-        }
-        requestQueue.add(postRequest1);
-    }
-*/
-
+    // Delivery List payload
     public void loadWithoutStatusData(final String user){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
@@ -263,6 +210,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 db.insert_delivery_without_status(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
@@ -343,8 +291,15 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-    // Load data from api
+    // Delivery summary payload
     private void loadDeliverySummary(final String user){
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DELIVERY_SUMMARY, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -518,6 +473,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
     }
 
+    // Check for camera permission
     private boolean checkPermission()
     {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
@@ -607,6 +563,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -633,7 +590,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                             //Getting editor
                             SharedPreferences.Editor editor = preferences.edit();
 
-                            //Puting the value false for loggedin
+                            //Puting the value false for logged in
                             editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
 
                             //Putting blank value to email
@@ -655,7 +612,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                         }
                     });
 
-            //Showing the alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }

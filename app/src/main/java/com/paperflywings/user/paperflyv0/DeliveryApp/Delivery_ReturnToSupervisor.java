@@ -257,6 +257,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryReturnToSuperVisorModel withoutStatus_model = new  DeliveryReturnToSuperVisorModel(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
@@ -305,6 +306,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         o.getString("slaMiss"));
 
                                 db.insert_delivery_RTS(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),

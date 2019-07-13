@@ -271,6 +271,7 @@ public class DeliveryOnHold extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryOnHoldModel onhold_model = new  DeliveryOnHoldModel(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
@@ -319,6 +320,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getInt("slaMiss"));
 
                                 db.insert_delivery_without_status(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
