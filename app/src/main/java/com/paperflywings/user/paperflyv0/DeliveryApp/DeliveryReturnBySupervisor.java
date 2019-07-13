@@ -60,12 +60,9 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
     private RequestQueue requestQueue;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryReturnRSupervisor.php";
-    public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
-
     private List<DeliveryReturnBySupervisorModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
 
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -88,14 +85,12 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        //delivery_cts_recieved = (Button) findViewById(R.id.cash_recieved_by_supervisor);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
@@ -109,8 +104,7 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
             loadRecyclerView(username);
         }
         else{
-//            getData(username);
-            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -277,55 +271,6 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getInt("slaMiss"));
 
-                                /*db.insert_delivery_without_status(
-                                        o.getString("username"),
-                                        o.getString("merchEmpCode"),
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief"),
-                                        o.getString("deliveryTime"),
-                                        o.getString("dropPointCode"),
-                                        o.getString("Cash"),
-                                        o.getString("cashType"),
-                                        o.getString("CashTime"),
-                                        o.getString("CashBy"),
-                                        o.getString("CashAmt"),
-                                        o.getString("CashComment"),
-                                        o.getString("partial"),
-                                        o.getString("partialTime"),
-                                        o.getString("partialBy"),
-                                        o.getString("partialReceive"),
-                                        o.getString("partialReturn"),
-                                        o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
-                                        o.getString("Rea"),
-                                        o.getString("ReaTime"),
-                                        o.getString("ReaBy"),
-                                        o.getString("Ret"),
-                                        o.getString("RetTime"),
-                                        o.getString("RetBy"),
-                                        o.getString("retRem"),
-                                        o.getString("retReason"),
-                                        o.getString("RTS"),
-                                        o.getString("RTSTime"),
-                                        o.getString("RTSBy"),
-                                        o.getString("PreRet"),
-                                        o.getString("PreRetTime"),
-                                        o.getString("PreRetBy"),
-                                        o.getString("CTS"),
-                                        o.getString("CTSTime"),
-                                        o.getString("CTSBy"),
-                                        o.getInt("slaMiss"),
-                                        "returnReq"
-                                        , NAME_SYNCED_WITH_SERVER );*/
                                 list.add(withoutStatus_model);
                             }
 
@@ -442,9 +387,6 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
 
-                           /* SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);*/
-
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -496,8 +438,7 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
             loadRecyclerView(username);
         }
         else{
-//            getData(username);
-            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
     }
 

@@ -177,7 +177,7 @@ public class DeliveryOnHold extends AppCompatActivity
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "onHold");
+            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "OnHold");
 
             while (c.moveToNext()){
                 int id = c.getInt(0);

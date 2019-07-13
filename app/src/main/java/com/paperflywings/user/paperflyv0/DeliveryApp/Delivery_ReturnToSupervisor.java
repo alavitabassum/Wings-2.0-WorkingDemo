@@ -397,7 +397,11 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        try{
         unregisterReceiver(broadcastReceiver);
+        } catch (Exception e) {
+            Toast.makeText(this, "RTS"+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

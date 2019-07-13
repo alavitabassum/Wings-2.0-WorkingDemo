@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.R;
@@ -63,7 +64,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         public TextView item_customerDistrict_onHold;
         public TextView item_barcode_onHold;
         public TextView item_ordId_onHold;
-        public TextView item_date_on_hold_onHold;//date_on_hold
+        public TextView item_date_on_hold_onHold; //date_on_hold
         public TextView item_merOrderRef_onHold;
         public TextView item_merchantName_onHold;
         public TextView item_pickMerchantName_onHold;
@@ -151,17 +152,8 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         viewHolder.item_custphone_onHold.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice_onHold.setText(list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_productBrief_onHold.setText("Product Brief: "+list.get(i).getProductBrief());
-        //viewHolder.item_deliveryTime_onHold.setText(list.get(i).getDeliveryTime());
 
-        //viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
-
-        // String CustomerDistrict = list.get(i).getCustomerDistrict();
-
-
-
-        String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
-
         int DeliveryTime = list.get(i).getSlaMiss();
 
         if(DeliveryTime<0) {
@@ -170,40 +162,20 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
             viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
         }
         else if (DeliveryTime>=0){
-            viewHolder.item_deliveryTime_onHold.setText(list.get(i).getSlaMiss());
+            try{
+            viewHolder.item_deliveryTime_onHold.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_deliveryTime_onHold.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE);
+            viewHolder.item_deliveryTime_onHold.setTextColor(Color.WHITE); }
+            catch (Exception e){
+                Toast.makeText(context, "DeliveryOnholdAdapter "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
         if (Pick_merchantName.isEmpty()) {
             viewHolder.item_merchantName_onHold.setText(list.get(i).getMerchantName());
         }
         else if(!Pick_merchantName.isEmpty()){
             viewHolder.item_merchantName_onHold.setText(list.get(i).getPickMerchantName());
-//            viewHolder.item_pickMerchantName_onHold.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         }
-
-      /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (!(CustomerDistrict.equals("1")) && DeliveryTime > 5){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (!(CustomerDistrict.equals("1")) && DeliveryTime < 5){
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-
-             else if (CustomerDistrict.equals("1") && DeliveryTime <2){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-
-        }*/
-
     }
 
     @Override
@@ -215,9 +187,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
     public Filter getFilter() {
         return NamesFilter;
     }
-
     private Filter NamesFilter = new Filter() {
-
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -227,7 +197,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for(DeliveryOnHoldModel item: listFull){
-                    if (item.getOrderid().toLowerCase().contains(filterPattern) || item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
+                    if (item.getOrderid().toLowerCase().contains(filterPattern) || item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern) || item.getCustaddress().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }
