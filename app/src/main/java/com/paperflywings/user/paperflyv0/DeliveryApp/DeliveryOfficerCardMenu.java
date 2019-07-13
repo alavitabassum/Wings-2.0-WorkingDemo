@@ -49,6 +49,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static android.Manifest.permission.CAMERA;
@@ -66,12 +67,13 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private BroadcastReceiver broadcastReceiver;
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
-    private String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
+    private static final String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
 
+    private List<DeliverySummary_Model> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +148,60 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
     }
 
+    public void loadReturnReason(){
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, RETURN_REASON_URL,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteListRETURN_REASONS(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("retReasonList");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addReturnReasonlist(
+                                        o.getString("reasonID"),
+                                        o.getString("reason"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Return Reasons" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
+
+
+/*
     private void loadReturnReason() {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -160,10 +216,12 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("retReasonList");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject o = array.getJSONObject(i);
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray array = jsonObject.getJSONArray("retReasonList");
+
+                        for(int i =0;i<array.length();i++)
+                        {
+                            JSONObject o = array.getJSONObject(i);
                                 db.addReturnReasonlist(o.getString("returnID"),
                                         o.getString("reason"));
                             }
@@ -185,6 +243,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
         requestQueue.add(postRequest1);
     }
+*/
 
     public void loadWithoutStatusData(final String user){
 
@@ -290,9 +349,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             @Override
             public void onResponse(String response) {
                 SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                db.clearPTMListExec(sqLiteDatabase);
+                db.deleteSummeryList(sqLiteDatabase);
                 progress.dismiss();
-
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray array = jsonObject.getJSONArray("summary");

@@ -7,7 +7,26 @@ public class DeliverySummary_Model {
     private String onHold;
     private String cash;
     private String returnRequest;
+
+    public String getReturnID() {
+        return returnID;
+    }
+
+    public void setReturnID(String returnID) {
+        this.returnID = returnID;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     private String returnList;
+    private String returnID;
+    private String reason;
     int key_id;
     int status;
 
@@ -31,6 +50,11 @@ public class DeliverySummary_Model {
         this.cash = cash;
         this.returnRequest = returnRequest;
         this.returnList = returnList;
+    }
+
+    public DeliverySummary_Model(String returnID, String reason) {
+        this.returnID = returnID;
+        this.reason = reason;
     }
 
 

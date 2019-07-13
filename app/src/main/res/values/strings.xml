@@ -75,7 +75,7 @@
         <item>Customer request</item>
     </string-array>
 
-    <string-array name="returnreasonsAll">
+  <!--  <string-array name="returnreasonsAll">
         <item>Please select an option..</item>
         <item>গ্রাহকের কাছে টাকা নেই</item>
         <item>গ্রাহক ঠিকানায় নেই</item>
@@ -106,7 +106,7 @@
         <item>আইন প্রয়গকারি সংস্থা পণ্য বাজেয়াপ্ত করেছিল</item>
         <item>Out of coverage</item>
         <item>Open Packet Issue</item>
-    </string-array>
+    </string-array>-->
 
 
     <string-array name="cancelreason">
