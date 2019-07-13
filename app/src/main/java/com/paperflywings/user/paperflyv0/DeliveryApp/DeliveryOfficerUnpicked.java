@@ -71,7 +71,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
     private Button delivery_quick_pick;
     private TextView unpicked_text;
-
     private Delivery_unpicked_adapter Delivery_unpicked_adapter;
     private RecyclerView recyclerView_pul;
     private RecyclerView.LayoutManager layoutManager_pul;
@@ -79,15 +78,12 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     private static final int REQUEST_CAMERA = 1;
 
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliveryUnpickedApis.php";
-//    public static final String DELIVERY_PICK_LIST = "http://paperflybd.com/DeliveryPick.php";
     public static final String DELIVERY_PICK_LIST = "http://paperflybd.com/update_ordertrack_for_app.php";
 
     private List<Delivery_unpicked_model> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
-
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
-
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
@@ -110,25 +106,13 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final String user = username.toString();
+
         // check internet connectivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
         recyclerView_pul = (RecyclerView) findViewById(R.id.recycler_view_myunpickup_list);
         recyclerView_pul.setAdapter(Delivery_unpicked_adapter);
-       /* new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                list.remove(viewHolder.getAdapterPosition());
-                Toast.makeText(DeliveryOfficerUnpicked.this, "Item Removed" + viewHolder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
-                Delivery_unpicked_adapter.notifyDataSetChanged();
-            }
-        }).attachToRecyclerView(recyclerView_pul);*/
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
@@ -164,7 +148,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
         //registering the broadcast receiver to update sync status
         // registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
-
 
         // Redirect for quick pick by scanning barcode
         delivery_quick_pick.setOnClickListener(new View.OnClickListener() {
@@ -243,7 +226,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     }
 
     public void loadRecyclerView(final String user){
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>()
                 {
@@ -260,7 +242,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 Delivery_unpicked_model unpickedmodel = new  Delivery_unpicked_model(
-
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
@@ -283,7 +265,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
                                        );
 
                                 db.insert_delivery_unpicked_count(
-
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
@@ -340,7 +322,6 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",user);
-//                params1.put("created_at",match_date);
                 return params1;
             }
         };
@@ -351,6 +332,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    // Check permission for camera Request
     private boolean checkPermission()
     {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
@@ -407,7 +389,9 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
+        try {
+         unregisterReceiver(broadcastReceiver);
+        } catch (Exception e){}
     }
 
     @Override

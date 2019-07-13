@@ -159,27 +159,32 @@ public class DeliveryReturnToSuperVisorAdapter extends RecyclerView.Adapter<Deli
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
         }
-
         else if (DeliveryTime>=0){
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
         }
-
         if (Pick_merchantName.isEmpty()) {
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+            viewHolder.item_merchantName_without_status.setText("Merchant: "+list.get(i).getMerchantName());
         }
         else if(!Pick_merchantName.isEmpty()){
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-            viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+            viewHolder.item_merchantName_without_status.setText("Merchant: "+list.get(i).getPickMerchantName());
         }
 
+        String partial = list.get(i).getPartial();
+        String ret = list.get(i).getRet();
 
-        if(partialReason != "NULL") {
+        if(partial.equals("Y")){
+            viewHolder.item_partialreason_without_status.setText(list.get(i).getPartialReason());
+        } else if (partial != "Y"){
+            viewHolder.item_partialreason_without_status.setText(list.get(i).getRetReason());
+        }
+
+        /*if(partialReason != "NULL") {
             viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
         }else {
-            viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getRetReason());
-        }
+            viewHolder.item_partialreason_without_status.setText("Return Reason: "+list.get(i).getRetReason());
+        }*/
 
       /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
             viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());

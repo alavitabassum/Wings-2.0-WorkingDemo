@@ -177,7 +177,7 @@ public class DeliveryOnHold extends AppCompatActivity
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "onHold");
+            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "OnHold");
 
             while (c.moveToNext()){
                 int id = c.getInt(0);
@@ -271,6 +271,7 @@ public class DeliveryOnHold extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryOnHoldModel onhold_model = new  DeliveryOnHoldModel(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
@@ -319,6 +320,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                         o.getInt("slaMiss"));
 
                                 db.insert_delivery_without_status(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),

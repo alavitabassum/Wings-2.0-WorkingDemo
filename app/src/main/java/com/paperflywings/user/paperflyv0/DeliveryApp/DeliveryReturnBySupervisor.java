@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -61,12 +60,9 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
     private RequestQueue requestQueue;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryReturnRSupervisor.php";
-    public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
-
     private List<DeliveryReturnBySupervisorModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
 
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -89,14 +85,12 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        //delivery_cts_recieved = (Button) findViewById(R.id.cash_recieved_by_supervisor);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
@@ -110,8 +104,7 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
             loadRecyclerView(username);
         }
         else{
-            getData(username);
-            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -140,81 +133,81 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
 
 
     }
-    private void getData(String user){
-        try{
-            list.clear();
-            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "returnReq");
-
-            while (c.moveToNext()){
-                int id = c.getInt(0);
-                String dropPointCode = c.getString(1);
-                String barcode = c.getString(2);
-                String orderid = c.getString(3);
-                String merOrderRef = c.getString(4);
-                String merchantName = c.getString(5);
-                String pickMerchantName = c.getString(6);
-                String custname = c.getString(7);
-                String custphone = c.getString(8);
-                String custaddress = c.getString(9);
-                String packagePrice = c.getString(10);
-                String productBrief = c.getString(11);
-                String deliveryTime = c.getString(12);
-                String username = c.getString(13);
-                String empCode = c.getString(14);
-                String cash = c.getString(15);
-                String cashType = c.getString(16);
-                String cashTime = c.getString(17);
-                String cashBy = c.getString(18);
-                String cashAmt = c.getString(19);
-                String cashComment = c.getString(20);
-                String partial = c.getString(21);
-                String partialTime = c.getString(22);
-                String partialBy = c.getString(23);
-                String partialReceive = c.getString(24);
-                String partialReturn = c.getString(25);
-                String partialReason = c.getString(26);
-                String onHoldSchedule = c.getString(27);
-                String onHoldReason = c.getString(28);
-                String rea = c.getString(29);
-                String reaTime = c.getString(30);
-                String reaBy = c.getString(31);
-                String ret = c.getString(32);
-                String retTime = c.getString(33);
-                String retBy = c.getString(34);
-                String retRem = c.getString(48);
-                String retReason = c.getString(35);
-                String rts = c.getString(36);
-                String rtsTime = c.getString(37);
-                String rtsBy = c.getString(38);
-                String preRet = c.getString(39);
-                String preRetTime = c.getString(40);
-                String preRetBy = c.getString(41);
-                String cts = c.getString(42);
-                String ctsTime = c.getString(43);
-                String ctsBy = c.getString(44);
-                int slaMiss = c.getInt(45);
-                String flagReq = c.getString(46);
-                int status = c.getInt(47);
-
-                DeliveryReturnBySupervisorModel withoutStatus_model = new DeliveryReturnBySupervisorModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retRem,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
-
-                list.add(withoutStatus_model);
-            }
-
-            DeliveryReturnBySupervisorAdapter = new DeliveryReturnBySupervisorAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(DeliveryReturnBySupervisorAdapter);
-            DeliveryReturnBySupervisorAdapter.notifyDataSetChanged();
-            // DeliveryCashRSAdapter.setOnItemClickListener(DeliveryCashRS.this);
-            swipeRefreshLayout.setRefreshing(false);
-
-            swipeRefreshLayout.setRefreshing(false);
-
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
+//    private void getData(String user){
+//        try{
+//            list.clear();
+//            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+//            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "returnReq");
+//
+//            while (c.moveToNext()){
+//                int id = c.getInt(0);
+//                String dropPointCode = c.getString(1);
+//                String barcode = c.getString(2);
+//                String orderid = c.getString(3);
+//                String merOrderRef = c.getString(4);
+//                String merchantName = c.getString(5);
+//                String pickMerchantName = c.getString(6);
+//                String custname = c.getString(7);
+//                String custphone = c.getString(8);
+//                String custaddress = c.getString(9);
+//                String packagePrice = c.getString(10);
+//                String productBrief = c.getString(11);
+//                String deliveryTime = c.getString(12);
+//                String username = c.getString(13);
+//                String empCode = c.getString(14);
+//                String cash = c.getString(15);
+//                String cashType = c.getString(16);
+//                String cashTime = c.getString(17);
+//                String cashBy = c.getString(18);
+//                String cashAmt = c.getString(19);
+//                String cashComment = c.getString(20);
+//                String partial = c.getString(21);
+//                String partialTime = c.getString(22);
+//                String partialBy = c.getString(23);
+//                String partialReceive = c.getString(24);
+//                String partialReturn = c.getString(25);
+//                String partialReason = c.getString(26);
+//                String onHoldSchedule = c.getString(27);
+//                String onHoldReason = c.getString(28);
+//                String rea = c.getString(29);
+//                String reaTime = c.getString(30);
+//                String reaBy = c.getString(31);
+//                String ret = c.getString(32);
+//                String retTime = c.getString(33);
+//                String retBy = c.getString(34);
+//                String retRem = c.getString(48);
+//                String retReason = c.getString(35);
+//                String rts = c.getString(36);
+//                String rtsTime = c.getString(37);
+//                String rtsBy = c.getString(38);
+//                String preRet = c.getString(39);
+//                String preRetTime = c.getString(40);
+//                String preRetBy = c.getString(41);
+//                String cts = c.getString(42);
+//                String ctsTime = c.getString(43);
+//                String ctsBy = c.getString(44);
+//                int slaMiss = c.getInt(45);
+//                String flagReq = c.getString(46);
+//                int status = c.getInt(47);
+//
+//                DeliveryReturnBySupervisorModel withoutStatus_model = new DeliveryReturnBySupervisorModel(id,dropPointCode,barcode,orderid,merOrderRef,merchantName,pickMerchantName,custname,custaddress,custphone,packagePrice,productBrief,deliveryTime,username,empCode,cash,cashType,cashTime,cashBy,cashAmt,cashComment,partial,partialTime,partialBy,partialReceive,partialReturn,partialReason,onHoldSchedule,onHoldReason,rea,reaTime,reaBy,ret,retTime,retBy,retRem,retReason,rts,rtsTime,rtsBy,preRet,preRetTime,preRetBy,cts,ctsTime,ctsBy,slaMiss,flagReq, status);
+//
+//                list.add(withoutStatus_model);
+//            }
+//
+//            DeliveryReturnBySupervisorAdapter = new DeliveryReturnBySupervisorAdapter(list,getApplicationContext());
+//            recyclerView_pul.setAdapter(DeliveryReturnBySupervisorAdapter);
+//            DeliveryReturnBySupervisorAdapter.notifyDataSetChanged();
+//            // DeliveryCashRSAdapter.setOnItemClickListener(DeliveryCashRS.this);
+//            swipeRefreshLayout.setRefreshing(false);
+//
+//            swipeRefreshLayout.setRefreshing(false);
+//
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//    }
     private void loadRecyclerView (final String user){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
                 new Response.Listener<String>()
@@ -278,55 +271,6 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getInt("slaMiss"));
 
-                                db.insert_delivery_without_status(
-                                        o.getString("username"),
-                                        o.getString("merchEmpCode"),
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief"),
-                                        o.getString("deliveryTime"),
-                                        o.getString("dropPointCode"),
-                                        o.getString("Cash"),
-                                        o.getString("cashType"),
-                                        o.getString("CashTime"),
-                                        o.getString("CashBy"),
-                                        o.getString("CashAmt"),
-                                        o.getString("CashComment"),
-                                        o.getString("partial"),
-                                        o.getString("partialTime"),
-                                        o.getString("partialBy"),
-                                        o.getString("partialReceive"),
-                                        o.getString("partialReturn"),
-                                        o.getString("partialReason"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
-                                        o.getString("Rea"),
-                                        o.getString("ReaTime"),
-                                        o.getString("ReaBy"),
-                                        o.getString("Ret"),
-                                        o.getString("RetTime"),
-                                        o.getString("RetBy"),
-                                        o.getString("retRem"),
-                                        o.getString("retReason"),
-                                        o.getString("RTS"),
-                                        o.getString("RTSTime"),
-                                        o.getString("RTSBy"),
-                                        o.getString("PreRet"),
-                                        o.getString("PreRetTime"),
-                                        o.getString("PreRetBy"),
-                                        o.getString("CTS"),
-                                        o.getString("CTSTime"),
-                                        o.getString("CTSBy"),
-                                        o.getInt("slaMiss"),
-                                        "returnReq"
-                                        , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);
                             }
 
@@ -443,9 +387,6 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
 
-                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);
-
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -497,7 +438,7 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
             loadRecyclerView(username);
         }
         else{
-            getData(username);
+            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
     }
 

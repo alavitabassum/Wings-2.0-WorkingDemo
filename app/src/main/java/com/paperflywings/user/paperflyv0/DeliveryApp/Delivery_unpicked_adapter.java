@@ -75,7 +75,7 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
             item_ordId=itemView.findViewById(R.id.orderId);
             item_merOrderRef=itemView.findViewById(R.id.m_order_ref);
             item_merchantName=itemView.findViewById(R.id.m_name);
-            item_pickMerchantName=itemView.findViewById(R.id.pick_m_name);
+//            item_pickMerchantName=itemView.findViewById(R.id.pick_m_name);
             item_custname=itemView.findViewById(R.id.customer_name);
             item_custaddress=itemView.findViewById(R.id.customer_Address);
             item_custphone=itemView.findViewById(R.id.m_phn_num);
@@ -93,11 +93,11 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
                         int position4 = getAdapterPosition();
                         if(position4!=RecyclerView.NO_POSITION){
                             mListner.onItemClick_call(view4, position4);
-
                         }
                     }
                 }
             });
+
             itemStatus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
@@ -105,14 +105,12 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
                         int position2 = getAdapterPosition();
                         if(position2!=RecyclerView.NO_POSITION){
                             mListner.onItemClick_view(view2, position2);
-
                         }
                     }
                 }
 
 
             });
-
         }
     }
 
@@ -130,13 +128,21 @@ public class Delivery_unpicked_adapter extends RecyclerView.Adapter<Delivery_unp
 
         viewHolder.item_ordId.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef.setText(list.get(i).getMerOrderRef());
-        viewHolder.item_merchantName.setText("Merchant Name: "+list.get(i).getMerchantName());
-        viewHolder.item_pickMerchantName.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
-        viewHolder.item_custname.setText("Customer Name: "+list.get(i).getCustname());
-        viewHolder.item_custaddress.setText("Customer Address: "+list.get(i).getCustaddress());
+
+        String pickMerchantName = list.get(i).getPickMerchantName();
+
+        if(pickMerchantName.equals("")){
+            viewHolder.item_merchantName.setText(list.get(i).getMerchantName());
+        } else if (!pickMerchantName.equals("")) {
+            viewHolder.item_merchantName.setText(list.get(i).getPickMerchantName());
+        }
+
+        // viewHolder.item_pickMerchantName.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+        viewHolder.item_custname.setText(" Customer Name: "+list.get(i).getCustname());
+        viewHolder.item_custaddress.setText(" Customer Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone.setText(list.get(i).getCustphone());
-        viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice());
-        viewHolder.item_productBrief.setText("Product Brief: "+list.get(i).getProductBrief());
+        viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice()+" Taka");
+        viewHolder.item_productBrief.setText("Product Brief:  "+list.get(i).getProductBrief());
 
     }
 

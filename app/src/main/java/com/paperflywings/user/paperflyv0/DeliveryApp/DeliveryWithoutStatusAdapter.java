@@ -116,7 +116,6 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             });
 
         }
-
     }
     @NonNull
     @Override

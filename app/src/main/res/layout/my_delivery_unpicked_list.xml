@@ -44,9 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="15dp"
-            android:lines="2"
-            android:maxLines="2"
+            android:layout_marginTop="10dp"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Order ID: "
             android:textColor="#000"
             android:textSize="15sp"
@@ -58,14 +58,15 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/ordertxt"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="6dp"
             android:layout_toEndOf="@+id/ordertxt"
-            android:lines="2"
-            android:maxLines="2"
+            android:lines="1"
+            android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="#000"
             android:textSize="15sp"
+            android:textStyle="bold"
             />
 
         <TextView
@@ -74,13 +75,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="35dp"
             android:text="Merchant Referance: "
             android:maxLines="2"
             android:lines="2"
             android:textColor="#000"
             android:textStyle="bold"
-
             android:textSize="13sp" />
 
         <TextView
@@ -90,7 +90,7 @@
             android:layout_alignBaseline="@+id/merchant_ref_txt"
             android:layout_alignEnd="@+id/divider"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="35dp"
             android:layout_marginEnd="0dp"
             android:layout_toEndOf="@+id/merchant_ref_txt"
             android:lines="2"
@@ -122,18 +122,36 @@
             android:textSize="15sp" />
 -->
         <TextView
-            android:id="@+id/m_name"
-            android:layout_width="370dp"
+            android:id="@+id/m_name_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="0dp"
-            android:textAlignment="textStart"
+            android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
+            android:layout_marginTop="75dp"
+            android:text="Merchant Name: "
+            android:maxLines="2"
+            android:lines="2"
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            style="@style/boldStyle"  />
 
-
+        <TextView
+            android:id="@+id/m_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/m_name_text"
+            android:layout_alignEnd="@+id/divider"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toEndOf="@+id/m_name_text"
+            android:lines="2"
+            android:maxLines="2"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp"
+            style="@style/boldStyle"
+            />
 
 
         <!--  <TextView
@@ -147,7 +165,7 @@
               android:textColor="#000"
               android:textSize="15sp" />-->
 
-        <TextView
+       <!-- <TextView
             android:id="@+id/pick_m_name"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
@@ -157,7 +175,7 @@
             android:textAlignment="textStart"
             android:layout_marginStart="0dp"
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="15sp" />-->
 
         <View
             android:id="@+id/divider2"
@@ -166,7 +184,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="110dp"
             android:background="?android:attr/listDivider" />
 
 
@@ -189,12 +207,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="120dp"
             android:layout_marginEnd="4dp"
             android:padding="3dp"
             android:drawableLeft="@drawable/ic_person_black_24dp"
             android:textAlignment="textStart"
-            android:textColor="#000"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
             android:textSize="15sp" />
 
 
@@ -216,11 +235,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:layout_marginTop="200dp"
-            android:padding="3dp"
-            android:textAlignment="textStart"
-            android:textColor="#000"
             android:drawableLeft="@drawable/ic_location_on_black_24dp"
-            android:textSize="15sp" />
+            android:textAlignment="textStart"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
        <!-- <View
             android:id="@+id/divider3"
@@ -251,7 +270,7 @@
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="320dp"
+            android:layout_marginTop="325dp"
             android:layout_marginEnd="6dp"
             android:lines="2"
             android:maxLines="2"
@@ -266,18 +285,9 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="295dp"
+            android:layout_marginTop="290dp"
             android:background="?android:attr/listDivider" />
 
-        <View
-            android:id="@+id/divider5"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="365dp"
-            android:background="?android:attr/listDivider" />
 
         <TextView
             android:id="@+id/calltxt"
@@ -285,8 +295,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="170dp"
+            android:layout_marginTop="160dp"
             android:padding="3dp"
+            android:paddingRight="2dp"
             android:drawableLeft="@drawable/ic_local_phone_black_24dp"
             android:textColor="#000" />
 
@@ -296,7 +307,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/calltxt"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="100dp"
             android:layout_marginEnd="0dp"
             android:layout_toEndOf="@+id/calltxt"
             android:textAlignment="textStart"
@@ -327,7 +338,8 @@
             android:layout_toEndOf="@+id/price_txt"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            style="@style/boldStyle"/>
 
 
         <Button

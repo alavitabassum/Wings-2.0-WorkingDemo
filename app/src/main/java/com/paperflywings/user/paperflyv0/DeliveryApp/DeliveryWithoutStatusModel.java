@@ -14,6 +14,7 @@ public class DeliveryWithoutStatusModel {
     private String custaddress;
     private String RetRem;
     private String reasonId;
+    private int sql_primary_id;
 
     public String getReasonId() {
         return reasonId;
@@ -211,8 +212,8 @@ public class DeliveryWithoutStatusModel {
     }
 
 
-    public DeliveryWithoutStatusModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem,String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss) {
-
+    public DeliveryWithoutStatusModel(int sql_primary_id,String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem,String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss) {
+        this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = merchEmpCode;
         this.dropPointCode = dropPointCode;

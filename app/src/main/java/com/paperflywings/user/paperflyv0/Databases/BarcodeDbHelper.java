@@ -208,7 +208,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
 
         String CREATION_TABLE8 = "CREATE TABLE Insert_Delivery_Unpicked( "
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "username TEXT, "
                 + "empCode TEXT, "
                 + "barcode TEXT, "
@@ -230,6 +230,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "pickDropBy TEXT, "
                 + "slaMiss TEXT,"
                 + "status INT, "
+                + "sql_primary_id INTEGER,"
                 + "unique(id, barcode))";
 
         String CREATION_TABLE9 = "CREATE TABLE All_delivery_data( "
@@ -282,6 +283,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "flagReq TEXT," //46
                 + "retRemarks TEXT," //47
                 + "status INT, " //48
+                + "sql_primary_id INTEGER,"// 49
                 + "unique(id, barcode))";
 
         String CREATION_TABLE_RTS = "CREATE TABLE Delivery_RTS( "
@@ -334,6 +336,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "flagReq TEXT," //46
                 + "retRemarks TEXT," //47
                 + "status INT, " //48
+                + "sql_primary_id INTEGER," // 49
                 + "unique(id, barcode))";
 
 
@@ -387,6 +390,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "flagReq TEXT," //46
                 + "retRemarks TEXT," //47
                 + "status INT, " //48
+                + "sql_primary_id INTEGER," // 49
                 + "unique(id, barcode))";
 
 
@@ -903,10 +907,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
  // insert counts in delivery unpicked
-    public void insert_delivery_unpicked_count(String username,String empCode,String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime,String dropPointEmp, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy, int status) {
+    public void insert_delivery_unpicked_count(int sql_primary_id, String username,String empCode,String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime,String dropPointEmp, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put(SQL_PRIMARY_ID, sql_primary_id);
         values.put(USERNAME, username);
         values.put(EMPLOYEE_CODE, empCode);
         values.put(BARCODE_NO, barcode);
@@ -977,10 +982,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     //insert counts in without status
 
-    public void insert_delivery_without_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
+    public void insert_delivery_without_status(int sql_primary_id,String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put(SQL_PRIMARY_ID, sql_primary_id);
         values.put(USERNAME, username);
         values.put(EMPLOYEE_CODE, empCode);
         values.put(BARCODE_NO, barcode);
@@ -1094,10 +1100,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
     }
 
-    public void insert_delivery_RTS(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
+    public void insert_delivery_RTS(int sql_primary_id, String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put(SQL_PRIMARY_ID, sql_primary_id);
         values.put(USERNAME, username);
         values.put(EMPLOYEE_CODE, empCode);
         values.put(BARCODE_NO, barcode);
@@ -1212,10 +1219,11 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_RTS, columns, whereClause, whereArgs, null, null, null));
     }
 
-    public void insert_delivery_CTS(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
+    public void insert_delivery_CTS(int sql_primary_id, String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String RetRem,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,int slaMiss, String flagReq, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put(SQL_PRIMARY_ID, sql_primary_id);
         values.put(USERNAME, username);
         values.put(EMPLOYEE_CODE, empCode);
         values.put(BARCODE_NO, barcode);

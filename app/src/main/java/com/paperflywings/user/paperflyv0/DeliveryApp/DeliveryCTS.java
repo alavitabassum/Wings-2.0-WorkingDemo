@@ -254,7 +254,8 @@ public class DeliveryCTS extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryCTSModel withoutStatus_model = new  DeliveryCTSModel(
-                                        o.getString("username"),
+                                        o.getInt("sql_primary_id"),
+                                        o.getString("usergname"),
                                         o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
                                         o.getString("barcode"),
@@ -302,6 +303,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("slaMiss"));
 
                                 db.insert_delivery_CTS(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),

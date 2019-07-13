@@ -271,6 +271,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryWithoutStatusModel withoutStatus_model = new  DeliveryWithoutStatusModel(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
@@ -320,6 +321,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 );
 
                                 db.insert_delivery_without_status(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
