@@ -2,9 +2,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_delivery_returnr_list"
+    android:id="@+id/card_view_delivery_returnr_request_list"
     android:layout_width="match_parent"
-    android:layout_height="490dp"
+    android:layout_height="390dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -394,7 +394,7 @@
             android:textSize="15sp"
             style="@style/boldStyle"/>
 
-        <Button
+      <!--  <Button
             android:id="@+id/btn_status_returnr_status"
             android:layout_width="105dp"
             android:layout_height="40dp"
@@ -406,7 +406,7 @@
             android:text="Return"
             android:textColor="@color/white"
             android:textSize="14sp" />
-
+-->
         <!--<Button-->
         <!--android:id="@+id/btn_scan"-->
         <!--android:layout_width="106dp"-->

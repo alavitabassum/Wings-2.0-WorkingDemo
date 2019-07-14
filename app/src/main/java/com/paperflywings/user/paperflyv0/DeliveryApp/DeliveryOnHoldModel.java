@@ -48,6 +48,15 @@ public class DeliveryOnHoldModel{
     private String RtsTime;
     private String RtsBy;
     private String PreRet;
+
+    public int getSql_primary_id() {
+        return sql_primary_id;
+    }
+
+    public void setSql_primary_id(int sql_primary_id) {
+        this.sql_primary_id = sql_primary_id;
+    }
+
     private String PreRetTime;
     private String PreRetBy;
     private int status;

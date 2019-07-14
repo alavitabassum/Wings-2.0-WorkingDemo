@@ -1,88 +1,21 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
-public class DeliveryCTSModel {
+public class ReturnRequestModel {
+    private String returnId;
+    private String reason;
     private String customerDistrict;
     private String barcode;
     private String orderid;
     private String merOrderRef;
     private String merchantName;
     private String pickMerchantName;
-    private String custname;
-    private String custaddress;
-    private String custphone;
-    private String packagePrice;
-    private int id;
-    private String CTSTime;
-    private String CTSBy;
-    private int status;
-    private String productBrief;
-    private String deliveryTime;
-    private String phone_no;
-    private String CTS;
-    private String Cash;
-    private String cashType;
-    private String CashTime;
-    private String CashBy;
 
-    public int getSql_primary_id() {
-        return sql_primary_id;
+    public String getRetReason() {
+        return RetReason;
     }
 
-    public void setSql_primary_id(int sql_primary_id) {
-        this.sql_primary_id = sql_primary_id;
-    }
-
-    private String CashAmt;
-    private String CashComment;
-    private String partial;
-    private String partialTime;
-    private String partialBy;
-    private String partialReceive;
-    private String slaMiss;
-    private String withoutStatus;
-    private String Rea;
-    private String flagReq;
-    private String Ret;
-    private String RetTime;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getCTSTime() {
-        return CTSTime;
-    }
-
-    public void setCTSTime(String CTSTime) {
-        this.CTSTime = CTSTime;
-    }
-
-    public String getCTSBy() {
-        return CTSBy;
-    }
-
-    public void setCTSBy(String CTSBy) {
-        this.CTSBy = CTSBy;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public String getFlagReq() {
-        return flagReq;
-    }
-
-    public void setFlagReq(String flagReq) {
-        this.flagReq = flagReq;
+    public void setRetReason(String retReason) {
+        RetReason = retReason;
     }
 
     public String getRet() {
@@ -93,94 +26,43 @@ public class DeliveryCTSModel {
         Ret = ret;
     }
 
-    public String getRetTime() {
-        return RetTime;
+    private String custname;
+    private String custaddress;
+    private String RetRem;
+
+    public int getSql_primary_id() {
+        return sql_primary_id;
     }
 
-    public void setRetTime(String retTime) {
-        RetTime = retTime;
+    public void setSql_primary_id(int sql_primary_id) {
+        this.sql_primary_id = sql_primary_id;
     }
 
-    public String getRetBy() {
-        return RetBy;
+    private String reasonId;
+    private int sql_primary_id;
+
+    public String getReasonId() {
+        return reasonId;
     }
 
-    public void setRetBy(String retBy) {
-        RetBy = retBy;
+    public void setReasonId(String reasonId) {
+        this.reasonId = reasonId;
     }
 
-    public String getRetReason() {
-        return RetReason;
+    public String getReturnId() {
+        return returnId;
     }
 
-    public void setRetReason(String retReason) {
-        RetReason = retReason;
+    public String getReason() {
+        return reason;
     }
 
-    public String getRts() {
-        return Rts;
-    }
-
-    public void setRts(String rts) {
-        Rts = rts;
-    }
-
-    public String getRtsTime() {
-        return RtsTime;
-    }
-
-    public void setRtsTime(String rtsTime) {
-        RtsTime = rtsTime;
-    }
-
-    public String getRtsBy() {
-        return RtsBy;
-    }
-
-    public void setRtsBy(String rtsBy) {
-        RtsBy = rtsBy;
-    }
-
-    public String getPreRet() {
-        return PreRet;
-    }
-
-    public void setPreRet(String preRet) {
-        PreRet = preRet;
-    }
-
-    public String getPreRetTime() {
-        return PreRetTime;
-    }
-
-    public void setPreRetTime(String preRetTime) {
-        PreRetTime = preRetTime;
-    }
-
-    public String getPreRetBy() {
-        return PreRetBy;
-    }
-
-    public void setPreRetBy(String preRetBy) {
-        PreRetBy = preRetBy;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmpCode() {
-        return empCode;
-    }
-
-    public void setEmpCode(String empCode) {
-        this.empCode = empCode;
-    }
-
+    private String custphone;
+    private String packagePrice;
+    private String productBrief;
+    private String flagReq;
+    private String Ret;
+    private String RetTime;
     private String RetBy;
     private String RetReason;
     private String Rts;
@@ -189,25 +71,40 @@ public class DeliveryCTSModel {
     private String PreRet;
     private String PreRetTime;
     private String PreRetBy;
-    private String ReaTime;
-    private String ReaBy;
+    private int id;
+    private String partialReturn;
+    private String partialReason;
+    private String onHoldReason;
+    private String onHoldSchedule;
+    private String dropPointCode;
+    private String deliveryTime;
+    private String phone_no;
     private String username;
     private String empCode;
-    private String RetRem;
-    private int sql_primary_id;
+    private String Cash;
+    private String cashType;
+    private String CashTime;
+    private String CashBy;
+    private String CashAmt;
+    private String CashComment;
+    private String partial;
+    private String partialTime;
+    private String partialBy;
+    private String partialReceive;
+    private int slaMiss;
+    private String withoutStatus;
+    private String Rea;
+    private String ReaTime;
+    private String ReaBy;
+    private String CTS;
+    private String CTSTime;
+    private String CTSBy;
+    private int status;
 
 
-    public String getCTS() {
-        return CTS;
-    }
-
-    public void setCTS(String CTS) {
-        this.CTS = CTS;
-    }
-
-
-
-    public DeliveryCTSModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief) {
+    public ReturnRequestModel(int id, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String username, String empCode, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy,String retRem, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss, String flagReq, int status) {
+        this.id = id;
+        this.dropPointCode = dropPointCode;
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
@@ -218,42 +115,129 @@ public class DeliveryCTSModel {
         this.custphone = custphone;
         this.packagePrice = packagePrice;
         this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+        this.username = username;
+        this.empCode = empCode;
+        this.Cash = cash;
+        this.cashType = cashType;
+        this.CashTime = cashTime;
+        this.CashBy = cashBy;
+        this.CashAmt = cashAmt;
+        this.CashComment = cashComment;
+        this.partial = partial;
+        this.partialTime = partialTime;
+        this.partialBy = partialBy;
+        this.partialReceive = partialReceive;
+        this.partialReturn = partialReturn;
+        this.partialReason = partialReason;
+        this.onHoldReason = onHoldReason;
+        this.onHoldSchedule = onHoldSchedule;
+        this.Rea = rea;
+        this.ReaTime = reaTime;
+        this.ReaBy = reaBy;
+        this.Ret = ret;
+        this.RetTime = retTime;
+        this.RetBy = retBy;
+        this.RetRem = retRem;
+        this.RetReason = retReason;
+        this.Rts = rts;
+        this.RtsTime = rtsTime;
+        this.RtsBy = rtsBy;
+        this.PreRet= preRet;
+        this.PreRetTime = preRetTime;
+        this.PreRetBy = preRetBy;
+        this.CTS = cts;
+        this.CTSTime = ctsTime;
+        this.CTSBy = ctsBy;
+        this.slaMiss = slaMiss;
+        this.flagReq = flagReq;
+        this.status = status;
     }
 
-    public String getPhone_no() {
-        return phone_no;
+    /*public DeliveryWithoutStatusModel(String username, String empCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, int slaMiss) {
+        this.username = username;
+        this.empCode = empCode;
+        this.dropPointCode = dropPointCode;
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+        this.Cash = cash;
+        this.cashType = cashType;
+        this.CashTime = cashTime;
+        this.CashBy = cashBy;
+        this.CashAmt = cashAmt;
+        this.CashComment = cashComment;
+        this.partial = partial;
+        this.partialTime = partialTime;
+        this.partialBy = partialBy;
+        this.partialReceive = partialReceive;
+        this.partialReturn = partialReturn;
+        this.partialReason = partialReason;
+        this.onHoldReason = onHoldReason;
+        this.onHoldSchedule = onHoldSchedule;
+        this.slaMiss = slaMiss;
+        }
+*/
+    public ReturnRequestModel(int id, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String username, String empCode, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String Rea, String ReaTime, String ReaBy, String Ret, String RetTime, String RetBy, String RetReason, String Rts, String RtsTime, String RtsBy, String PreRet, String PreRetTime, String PreRetBy, String CTS, String CTSTime, String CTSBy, int slaMiss, String flagReq) {
+        this.id = id;
+        this.dropPointCode = dropPointCode;
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
+        this.username = username;
+        this.empCode = empCode;
+        this.Cash = cash;
+        this.cashType = cashType;
+        this.CashTime = cashTime;
+        this.CashBy = cashBy;
+        this.CashAmt = cashAmt;
+        this.CashComment = cashComment;
+        this.partial = partial;
+        this.partialTime = partialTime;
+        this.partialBy = partialBy;
+        this.partialReceive = partialReceive;
+        this.partialReturn = partialReturn;
+        this.partialReason = partialReason;
+        this.onHoldReason = onHoldReason;
+        this.onHoldSchedule = onHoldSchedule;
+        this.Rea = Rea;
+        this.ReaTime = ReaTime;
+        this.ReaBy = ReaBy;
+        this.Ret = Ret;
+        this.RetTime = RetTime;
+        this.RetBy = RetBy;
+        this.RetReason = RetReason;
+        this.Rts = Rts;
+        this.RtsTime = RtsTime;
+        this.RtsBy = RtsBy;
+        this.PreRet= PreRet;
+        this.PreRetTime = PreRetTime;
+        this.PreRetBy = PreRetBy;
+        this.CTS = CTS;
+        this.CTSTime = CTSTime;
+        this.CTSBy = CTSBy;
+        this.slaMiss = slaMiss;
+        this.flagReq = flagReq;
     }
 
-    public void setPhone_no(String phone_no) {
-        this.phone_no = phone_no;
-    }
 
-
-    public String getRea() {
-        return Rea;
-    }
-
-    public void setRea(String rea) {
-        Rea = rea;
-    }
-
-    public String getReaTime() {
-        return ReaTime;
-    }
-
-    public void setReaTime(String reaTime) {
-        ReaTime = reaTime;
-    }
-
-    public String getReaBy() {
-        return ReaBy;
-    }
-
-    public void setReaBy(String reaBy) {
-        ReaBy = reaBy;
-    }
-
-    public DeliveryCTSModel(int sql_primary_id,String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, String slaMiss) {
+    public ReturnRequestModel(int sql_primary_id,String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem,String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, int slaMiss) {
         this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = merchEmpCode;
@@ -303,123 +287,26 @@ public class DeliveryCTSModel {
         this.slaMiss = slaMiss;
     }
 
-   /* public DeliveryCTSModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
-        this.dropPointCode = dropPointCode;
-//        this.customerDistrict = customerDistrict;
-        this.barcode = barcode;
-        this.orderid = orderid;
-        this.merOrderRef = merOrderRef;
-        this.merchantName = merchantName;
-        this.pickMerchantName = pickMerchantName;
-        this.custname = custname;
-        this.custaddress = custaddress;
-        this.custphone = custphone;
-        this.packagePrice = packagePrice;
-        this.productBrief = productBrief;
-        this.deliveryTime = deliveryTime;
-        this.Cash = cash;
-        this.cashType = cashType;
-        this.CashTime = cashTime;
-        this.CashBy = cashBy;
-        this.CashAmt = cashAmt;
-        this.CashComment = cashComment;
-        this.partial = partial;
-        this.partialTime = partialTime;
-        this.partialBy = partialBy;
-        this.partialReceive = partialReceive;
-        this.partialReturn = partialReturn;
-        this.partialReason = partialReason;
-        this.onHoldReason = onHoldReason;
-        this.onHoldSchedule = onHoldSchedule;
-        this.slaMiss = slaMiss;
-
-        //this.withoutStatus = withoutStatus;
-    }
-*/
-    public String getWithoutStatus() {
-        return withoutStatus;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
-    public void setWithoutStatus(String withoutStatus) {
-        this.withoutStatus = withoutStatus;
-    }
+    public ReturnRequestModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason, String preRet, String preRetTime, String preRetBy, int slaMiss) {
 
-  /*  public DeliveryWithoutStatusModel(String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss, String withoutStatus) {
-
-    }*/
-
-    public String getDropPointCode() {
-        return dropPointCode;
-    }
-
-    public void setDropPointCode(String dropPointCode) {
-        this.dropPointCode = dropPointCode;
-    }
-
-    private String partialReturn;
-    private String partialReason;
-    private String onHoldReason;
-    private String onHoldSchedule;
-    private String dropPointCode;
-
-    public String getSlaMiss() {
-        return slaMiss;
-    }
-
-    public void setSlaMiss(String slaMiss) {
-        this.slaMiss = slaMiss;
-    }
-
-    public DeliveryCTSModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule,String Rea,String ReaTime,String ReaBy) {
-
-
-        this.barcode = barcode;
-        this.orderid = orderid;
-        this.merOrderRef = merOrderRef;
-        this.merchantName = merchantName;
-        this.pickMerchantName = pickMerchantName;
-        this.custname = custname;
-        this.custaddress = custaddress;
-        this.custphone = custphone;
-        this.packagePrice = packagePrice;
-        this.productBrief = productBrief;
-        this.deliveryTime = deliveryTime;
-        this.Cash = Cash;
-        this.cashType = cashType;
-        this.CashTime = CashTime;
-        this.CashBy = CashBy;
-        this.CashAmt = CashAmt;
-        this.CashComment = CashComment;
-        this.partial = partial;
-        this.partialTime = partialTime;
-        this.partialBy = partialBy;
-        this.partialReceive = partialReceive;
-        this.partialReturn = partialReturn;
-        this.partialReason = partialReason;
-        this.onHoldReason = onHoldReason;
-        this.onHoldSchedule = onHoldSchedule;
-        this.Rea = Rea;
-        this.ReaTime = ReaTime;
-        this.ReaBy = ReaBy;
-
-    }
-
-    public DeliveryCTSModel(int id, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String username, String empCode, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, String slaMiss, String flagReq, int status) {
-        this.id = id;
-        this.dropPointCode = dropPointCode;
-        this.barcode = barcode;
-        this.orderid = orderid;
-        this.merOrderRef = merOrderRef;
-        this.merchantName = merchantName;
-        this.pickMerchantName = pickMerchantName;
-        this.custname = custname;
-        this.custaddress = custaddress;
-        this.custphone = custphone;
-        this.packagePrice = packagePrice;
-        this.productBrief = productBrief;
-        this.deliveryTime = deliveryTime;
         this.username = username;
-        this.empCode = empCode;
+        this.empCode = merchEmpCode;
+        this.dropPointCode = dropPointCode;
+        this.barcode = barcode;
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.merchantName = merchantName;
+        this.pickMerchantName = pickMerchantName;
+        this.custname = custname;
+        this.custaddress = custaddress;
+        this.custphone = custphone;
+        this.packagePrice = packagePrice;
+        this.productBrief = productBrief;
+        this.deliveryTime = deliveryTime;
         this.Cash = cash;
         this.cashType = cashType;
         this.CashTime = cashTime;
@@ -441,18 +328,87 @@ public class DeliveryCTSModel {
         this.RetTime = retTime;
         this.RetBy = retBy;
         this.RetReason = retReason;
-        this.Rts = rts;
-        this.RtsTime = rtsTime;
-        this.RtsBy = rtsBy;
         this.PreRet= preRet;
         this.PreRetTime = preRetTime;
         this.PreRetBy = preRetBy;
-        this.CTS = cts;
-        this.CTSTime = ctsTime;
-        this.CTSBy = ctsBy;
         this.slaMiss = slaMiss;
-        this.flagReq = flagReq;
-        this.status = status;
+    }
+
+    public ReturnRequestModel(String reasonId, String reason) {
+        this.reasonId = reasonId;
+        this.reason = reason;
+    }
+
+    public String getPhone_no() {
+        return phone_no;
+    }
+
+    public void setPhone_no(String phone_no) {
+        this.phone_no = phone_no;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmpCode() {
+        return empCode;
+    }
+
+    public void setEmpCode(String empCode) {
+        this.empCode = empCode;
+    }
+
+    public String getRea() {
+        return Rea;
+    }
+
+    public void setRea(String rea) {
+        Rea = rea;
+    }
+
+    public String getReaTime() {
+        return ReaTime;
+    }
+
+    public void setReaTime(String reaTime) {
+        ReaTime = reaTime;
+    }
+
+    public String getReaBy() {
+        return ReaBy;
+    }
+
+    public void setReaBy(String reaBy) {
+        ReaBy = reaBy;
+    }
+
+    public String getWithoutStatus() {
+        return withoutStatus;
+    }
+
+    public void setWithoutStatus(String withoutStatus) {
+        this.withoutStatus = withoutStatus;
+    }
+
+    public String getDropPointCode() {
+        return dropPointCode;
+    }
+
+    public void setDropPointCode(String dropPointCode) {
+        this.dropPointCode = dropPointCode;
+    }
+
+    public int getSlaMiss() {
+        return slaMiss;
+    }
+
+    public void setSlaMiss(int slaMiss) {
+        this.slaMiss = slaMiss;
     }
 
     public String getCash() {
@@ -566,10 +522,6 @@ public class DeliveryCTSModel {
     public void setOnHoldSchedule(String onHoldSchedule) {
         this.onHoldSchedule = onHoldSchedule;
     }
-
-
-
-
 
     public String getCustomerDistrict() {
         return customerDistrict;

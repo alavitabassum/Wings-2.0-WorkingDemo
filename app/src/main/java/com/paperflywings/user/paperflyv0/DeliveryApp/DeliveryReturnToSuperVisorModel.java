@@ -14,6 +14,15 @@ public class DeliveryReturnToSuperVisorModel {
     private String productBrief;
     private String deliveryTime;
     private String phone_no;
+
+    public int getSql_primary_id() {
+        return sql_primary_id;
+    }
+
+    public void setSql_primary_id(int sql_primary_id) {
+        this.sql_primary_id = sql_primary_id;
+    }
+
     private String username;
     private String empCode;
     private String CTS;

@@ -2,6 +2,7 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -52,12 +57,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -71,8 +78,19 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     private Button delivery_rts_recieved;
     private DeliveryReturnToSuperVisorAdapter DeliveryReturnToSuperVisorAdapter;
 
+    String lats,lngs,addrs,fullAddress;
+    String getlats,getlngs,getaddrs;
+    ProgressDialog progressDialog;
+    LocationManager locationManager;
+    Geocoder geocoder;
+    List<Address> addresses;
+
+    private static final int REQUEST_LOCATION = 1;
+
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
+
+    public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
 
     public static final String RETURN_REQUEST = "http://paperflybd.com/DeliveryReturnRequestApi.php";
     public static final String DELIVERY_RETURNR_UPDATE = "http://paperflybd.com/DeliveryReturnRequestUpdate.php";
@@ -546,7 +564,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         final DeliveryReturnToSuperVisorModel clickedITem = list.get(position2);
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -556,10 +574,63 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         final String RTS = "Y";
         final String RTSTime = currentDateTime;
         final String RTSBy = username;
-
+        final int sql_primary_id = clickedITem.getSql_primary_id();
 
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
+
+        progressDialog = new ProgressDialog(Delivery_ReturnToSupervisor.this);
+        progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+        progressDialog.show();
+        GetValueFromEditText();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String ServerResponse) {
+                        // Hiding the progress dialog after all task complete.
+                        progressDialog.dismiss();
+                        // Showing response message coming from server.
+                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        // Hiding the progress dialog after all task complete.
+                        progressDialog.dismiss();
+                        // Showing error message if something goes wrong.
+                        Toast.makeText(Delivery_ReturnToSupervisor.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                // Creating Map String Params.
+                Map<String, String> params = new HashMap<String, String>();
+
+                // Adding All values to Params.
+                params.put("sqlPrimaryKey", String.valueOf(sql_primary_id));
+                params.put("actionType", "Delivery");
+                params.put("actionFor", "Cash To Supervisor");
+                params.put("actionBy", username);
+                params.put("actionTime",currentDateTime);
+                params.put("latitude", getlats);
+                params.put("longitude", getlngs);
+                params.put("Address", getaddrs);
+
+                return params;
+            }
+
+        };
+
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(Delivery_ReturnToSupervisor.this);
+            requestQueue.add(stringRequest);
+        } catch (Exception e) {
+            Toast.makeText(Delivery_ReturnToSupervisor.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+
 
         ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rtsOk");
         //pickedfordelivery(lastText,username,empcode,BarCode,OrderId);
@@ -625,6 +696,57 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             Toast.makeText(Delivery_ReturnToSupervisor.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
+
+    public void GetValueFromEditText(){
+
+     /*   lat.setText("lat");
+        lng.setText("lng");
+        address.setText("address");*/
+
+        ActivityCompat.requestPermissions(Delivery_ReturnToSupervisor.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+
+        GPStracker g = new GPStracker(getApplicationContext());
+        Location LocationGps = g.getLocation();
+
+        if (LocationGps !=null)
+        {
+            double lati=LocationGps.getLatitude();
+            double longi=LocationGps.getLongitude();
+
+            lats=String.valueOf(lati);
+            lngs=String.valueOf(longi);
+
+            try {
+
+                addresses = geocoder.getFromLocation(lati,longi,1);
+                String addres = addresses.get(0).getAddressLine(0);
+                String area = addresses.get(0).getLocality();
+                String city = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalcode = addresses.get(0).getPostalCode();
+
+                fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
+
+                //address.setText(fullAddress);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            getlats = lats.trim();
+            getlngs = lngs.trim();
+            getaddrs = fullAddress.trim();
+
+        }
+
+        else
+        {
+            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     @Override
     public void onItemClick_call(View view4, int position4) {
