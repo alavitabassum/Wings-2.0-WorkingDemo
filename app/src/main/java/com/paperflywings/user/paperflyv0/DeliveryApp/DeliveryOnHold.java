@@ -586,12 +586,6 @@ public class DeliveryOnHold extends AppCompatActivity
         final String partialTime = currentDateTime;
 
         //Return Request
-        final String Ret = "Y";
-        final String RetBy = username;
-        final String RetTime = currentDateTime;
-        final String RTS = "Y";
-        final String RTSBy = username;
-        final String RTSTime = currentDateTime;
         final String PreRet = "Y";
         final String PreRetBy = username;
         final String PreRetTime = currentDateTime;
@@ -780,7 +774,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                         String retReasonText = mReturnRSpinner.getSelectedItem().toString();
                                         String retReason = db.getSelectedReasonId(retReasonText);
                                         String retRemarks = et4.getText().toString();
-                                        update_retR_status(Ret,RetTime,RetBy,retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
+                                        update_retR_status(retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -960,7 +954,7 @@ public class DeliveryOnHold extends AppCompatActivity
         }
 
     }
-    private void update_retR_status(final String ret, final String retTime, final String retBy,final String retRemarks, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String merchEmpCode, final String flagReq) {
+    private void update_retR_status(final String retRemarks, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String merchEmpCode, final String flagReq) {
         String str1 = String.valueOf(db.getWithoutStatusCount("OnHold"));
         onhold_text.setText(str1);
         String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"OnHold"));
@@ -975,12 +969,12 @@ public class DeliveryOnHold extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response1);
                             if (!obj.getBoolean("error")) {
-                                db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
+                                db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
@@ -992,7 +986,7 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_retR_status(ret,retTime,retBy,retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);
                     }
                 }
@@ -1001,9 +995,6 @@ public class DeliveryOnHold extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("Ret", ret);
-                params.put("RetTime", retTime);
-                params.put("RetBy", retBy);
                 params.put("retRemarks", retRemarks);
                 params.put("retReason", retReason);
                 params.put("PreRet", preRet);

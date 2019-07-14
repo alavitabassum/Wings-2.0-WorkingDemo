@@ -159,13 +159,13 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
         }
 
-        if (Pick_merchantName.isEmpty()) {
+       // if (Pick_merchantName.isEmpty()) {
             viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-        }
-        else if(!Pick_merchantName.isEmpty()){
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-            viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
-        }
+      //  }
+//        else if(!Pick_merchantName.isEmpty()){
+//            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+//            viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+//        }
     }
 
     @Override
