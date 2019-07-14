@@ -1136,8 +1136,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                 double lati=LocationGps.getLatitude();
                 double longi=LocationGps.getLongitude();
 
-                lats=String.valueOf(lati).substring(0,14);
-                lngs=String.valueOf(longi).substring(0,14);
+                lats=String.valueOf(lati);
+                lngs=String.valueOf(longi);
 
                 try {
 
