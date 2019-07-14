@@ -13,6 +13,15 @@ public class DeliveryWithoutStatusModel {
     private String custname;
     private String custaddress;
     private String RetRem;
+
+    public int getSql_primary_id() {
+        return sql_primary_id;
+    }
+
+    public void setSql_primary_id(int sql_primary_id) {
+        this.sql_primary_id = sql_primary_id;
+    }
+
     private String reasonId;
     private int sql_primary_id;
 

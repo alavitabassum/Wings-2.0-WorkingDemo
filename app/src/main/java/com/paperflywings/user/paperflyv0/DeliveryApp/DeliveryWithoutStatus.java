@@ -3,6 +3,7 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,12 +13,18 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -56,12 +63,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class DeliveryWithoutStatus extends AppCompatActivity
@@ -75,6 +84,17 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
+
+    String lats,lngs,addrs,fullAddress;
+    String getlats,getlngs,getaddrs;
+    ProgressDialog progressDialog;
+    LocationManager locationManager;
+    Geocoder geocoder;
+    List<Address> addresses;
+
+
+    private static final int REQUEST_LOCATION = 1;
+
     //List<DeliveryWithoutStatusModel> returnReasons;
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
@@ -85,6 +105,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
+    public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
 //    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/DeliveryAppStatusUpdate.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_ordertrack_for_app.php";
     public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
@@ -599,6 +620,10 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         final String merchantName = clickedITem.getMerchantName();
         final String pickMerchantName = clickedITem.getPickMerchantName();
 
+        final int sql_primary_id = clickedITem.getSql_primary_id();
+        //final String retReason = clickedITem.getReason();
+
+
         final Intent DeliveryListIntent = new Intent(DeliveryWithoutStatus.this,
                 DeliveryWithoutStatus.class);
 
@@ -653,6 +678,63 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         } else {
                                             String cashAmt = et1.getText().toString();
                                             String cashComment = et2.getText().toString();
+
+
+                                            // location detect
+
+                                            progressDialog = new ProgressDialog(DeliveryWithoutStatus.this);
+                                            progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+                                            progressDialog.show();
+                                            GetValueFromEditText();
+
+                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                                                    new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String ServerResponse) {
+                                                            // Hiding the progress dialog after all task complete.
+                                                            progressDialog.dismiss();
+                                                            // Showing response message coming from server.
+                                                            //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                                                        }
+                                                    },
+                                                    new Response.ErrorListener() {
+                                                        @Override
+                                                        public void onErrorResponse(VolleyError volleyError) {
+                                                            // Hiding the progress dialog after all task complete.
+                                                            progressDialog.dismiss();
+                                                            // Showing error message if something goes wrong.
+                                                            Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }) {
+                                                @Override
+                                                protected Map<String, String> getParams() {
+
+                                                    // Creating Map String Params.
+                                                    Map<String, String> params = new HashMap<String, String>();
+
+                                                    // Adding All values to Params.
+                                                    params.put("sqlPrimaryKey", String.valueOf(sql_primary_id));
+                                                    params.put("actionType", "Delivery");
+                                                    params.put("actionFor", "Cash");
+                                                    params.put("actionBy", username);
+                                                    params.put("actionTime",currentDateTime);
+                                                    params.put("latitude", getlats);
+                                                    params.put("longitude", getlngs);
+                                                    params.put("Address", getaddrs);
+
+                                                    return params;
+                                                }
+
+                                            };
+
+
+                                            try {
+                                                RequestQueue requestQueue = Volley.newRequestQueue(DeliveryWithoutStatus.this);
+                                                requestQueue.add(stringRequest);
+                                            } catch (Exception e) {
+                                                Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+                                            }
+                                            //location detect
 
                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
                                             dialogCash.dismiss();
@@ -711,6 +793,62 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String partialReason = partialremarks.getText().toString();
                                             String partialsReceive = partialReceive.getText().toString();
 
+                                            // location detect
+
+                                            progressDialog = new ProgressDialog(DeliveryWithoutStatus.this);
+                                            progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+                                            progressDialog.show();
+                                            GetValueFromEditText();
+
+                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                                                    new Response.Listener<String>() {
+                                                        @Override
+                                                        public void onResponse(String ServerResponse) {
+                                                            // Hiding the progress dialog after all task complete.
+                                                            progressDialog.dismiss();
+                                                            // Showing response message coming from server.
+                                                            //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                                                        }
+                                                    },
+                                                    new Response.ErrorListener() {
+                                                        @Override
+                                                        public void onErrorResponse(VolleyError volleyError) {
+                                                            // Hiding the progress dialog after all task complete.
+                                                            progressDialog.dismiss();
+                                                            // Showing error message if something goes wrong.
+                                                            Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                                                        }
+                                                    }) {
+                                                @Override
+                                                protected Map<String, String> getParams() {
+
+                                                    // Creating Map String Params.
+                                                    Map<String, String> params = new HashMap<String, String>();
+
+                                                    // Adding All values to Params.
+                                                    params.put("sqlPrimaryKey", String.valueOf(sql_primary_id));
+                                                    params.put("actionType", "Delivery");
+                                                    params.put("actionFor", "Partial");
+                                                    params.put("actionBy", username);
+                                                    params.put("actionTime",currentDateTime);
+                                                    params.put("latitude", getlats);
+                                                    params.put("longitude", getlngs);
+                                                    params.put("Address", getaddrs);
+
+                                                    return params;
+                                                }
+
+                                            };
+
+
+                                            try {
+                                                RequestQueue requestQueue = Volley.newRequestQueue(DeliveryWithoutStatus.this);
+                                                requestQueue.add(stringRequest);
+                                            } catch (Exception e) {
+                                                Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+                                            }
+                                            //location detect
+
                                             update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,cashType,merchEmpCode,"partialApp");
                                             dialogPartial.dismiss();
                                             startActivity(DeliveryListIntent);
@@ -768,6 +906,64 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         String retReasonText = mReturnRSpinner.getSelectedItem().toString();
                                         String retReason = db.getSelectedReasonId(retReasonText);
                                         String retRemarks = et4.getText().toString();
+
+                                        // location detect
+
+                                        progressDialog = new ProgressDialog(DeliveryWithoutStatus.this);
+                                        progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+                                        progressDialog.show();
+                                        GetValueFromEditText();
+
+                                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                                                new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String ServerResponse) {
+                                                        // Hiding the progress dialog after all task complete.
+                                                        progressDialog.dismiss();
+                                                        // Showing response message coming from server.
+                                                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                                                    }
+                                                },
+                                                new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError volleyError) {
+                                                        // Hiding the progress dialog after all task complete.
+                                                        progressDialog.dismiss();
+                                                        // Showing error message if something goes wrong.
+                                                        Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                                                    }
+                                                }) {
+                                            @Override
+                                            protected Map<String, String> getParams() {
+
+                                                // Creating Map String Params.
+                                                Map<String, String> params = new HashMap<String, String>();
+
+                                                // Adding All values to Params.
+                                                params.put("sqlPrimaryKey", String.valueOf(sql_primary_id));
+                                                params.put("actionType", "Delivery");
+                                                params.put("actionFor", "Return-request");
+                                                params.put("actionBy", username);
+                                                params.put("actionTime",currentDateTime);
+                                                params.put("latitude", getlats);
+                                                params.put("longitude", getlngs);
+                                                params.put("Address", getaddrs);
+
+                                                return params;
+                                            }
+
+                                        };
+
+
+                                        try {
+                                            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryWithoutStatus.this);
+                                            requestQueue.add(stringRequest);
+                                        } catch (Exception e) {
+                                            Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+                                        }
+                                        //location detect
+
+//                                        update_retR_status(Ret,RetTime,RetBy,retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
                                         update_retR_status(retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
 
                                         dialogReturnR.dismiss();
@@ -840,6 +1036,61 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
                                             String onHoldSchedule = bt1.getText().toString();
 
+                                        // location detect
+
+                                        progressDialog = new ProgressDialog(DeliveryWithoutStatus.this);
+                                        progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+                                        progressDialog.show();
+                                        GetValueFromEditText();
+
+                                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                                                new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String ServerResponse) {
+                                                        // Hiding the progress dialog after all task complete.
+                                                        progressDialog.dismiss();
+                                                        // Showing response message coming from server.
+                                                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                                                    }
+                                                },
+                                                new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError volleyError) {
+                                                        // Hiding the progress dialog after all task complete.
+                                                        progressDialog.dismiss();
+                                                        // Showing error message if something goes wrong.
+                                                        Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                                                    }
+                                                }) {
+                                            @Override
+                                            protected Map<String, String> getParams() {
+
+                                                // Creating Map String Params.
+                                                Map<String, String> params = new HashMap<String, String>();
+
+                                                // Adding All values to Params.
+                                                params.put("sqlPrimaryKey", String.valueOf(sql_primary_id));
+                                                params.put("actionType", "Delivery");
+                                                params.put("actionFor", "Onhold");
+                                                params.put("actionBy", username);
+                                                params.put("actionTime",currentDateTime);
+                                                params.put("latitude", getlats);
+                                                params.put("longitude", getlngs);
+                                                params.put("Address", getaddrs);
+
+                                                return params;
+                                            }
+
+                                        };
+
+                                        try {
+                                            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryWithoutStatus.this);
+                                            requestQueue.add(stringRequest);
+                                        } catch (Exception e) {
+                                            Toast.makeText(DeliveryWithoutStatus.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+                                        }
+                                        //location detect
+
                                             update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, merchEmpCode, "updateOnHoldApp");
                                             insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                             dialogonHold.dismiss();
@@ -866,6 +1117,59 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         dialog2.show();
 
     }
+
+    public void GetValueFromEditText(){
+
+     /*   lat.setText("lat");
+        lng.setText("lng");
+        address.setText("address");*/
+
+        ActivityCompat.requestPermissions(DeliveryWithoutStatus.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+
+            GPStracker g = new GPStracker(getApplicationContext());
+            Location LocationGps = g.getLocation();
+
+            if (LocationGps !=null)
+            {
+                double lati=LocationGps.getLatitude();
+                double longi=LocationGps.getLongitude();
+
+                lats=String.valueOf(lati).substring(0,14);
+                lngs=String.valueOf(longi).substring(0,14);
+
+                try {
+
+                    addresses = geocoder.getFromLocation(lati,longi,1);
+                    String addres = addresses.get(0).getAddressLine(0);
+                    String area = addresses.get(0).getLocality();
+                    String city = addresses.get(0).getAdminArea();
+                    String country = addresses.get(0).getCountryName();
+                    String postalcode = addresses.get(0).getPostalCode();
+
+                    fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
+
+                    //address.setText(fullAddress);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                getlats = lats.trim();
+                getlngs = lngs.trim();
+                getaddrs = fullAddress.trim();
+
+            }
+
+            else
+            {
+                Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+
+
 
     @Override
     public void onItemClick_call(View view4, int position4) {
