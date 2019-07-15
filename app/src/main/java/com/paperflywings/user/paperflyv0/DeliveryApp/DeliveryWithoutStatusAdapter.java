@@ -144,6 +144,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
+        String PreRetTime = list.get(i).getPreRetTime();
 
         int DeliveryTime = list.get(i).getSlaMiss();
 
@@ -159,8 +160,22 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
         }
 
-       // if (Pick_merchantName.isEmpty()) {
+//        if(PreRetTime.isEmpty()){
+//            viewHolder.card_view_without_status.setCardBackgroundColor(R.color.background_color);
+//
+//        } else if(!PreRetTime.isEmpty()) {
+//            viewHolder.card_view_without_status.setBackgroundResource(R.color.white);
+//        }
+
+        if (Pick_merchantName.isEmpty()) {
             viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+        }
+        else if(!Pick_merchantName.isEmpty()){
+            viewHolder.item_merchantName_without_status.setText(list.get(i).getPickMerchantName());
+        }
+
+       // if (Pick_merchantName.isEmpty()) {
+//            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
       //  }
 //        else if(!Pick_merchantName.isEmpty()){
 //            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());

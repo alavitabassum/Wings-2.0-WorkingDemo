@@ -149,7 +149,7 @@ public class DeliveryOnHold extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
-
+//        GetValueFromEditText();
         //Offline sync
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -731,7 +731,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                                             // Hiding the progress dialog after all task complete.
                                                             progressDialog.dismiss();
                                                             // Showing error message if something goes wrong.
-                                                            Toast.makeText(DeliveryOnHold.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                                                            Toast.makeText(DeliveryOnHold.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                                                         }
                                                     }) {
                                                 @Override
@@ -844,7 +844,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                                             // Hiding the progress dialog after all task complete.
                                                             progressDialog.dismiss();
                                                             // Showing error message if something goes wrong.
-                                                            Toast.makeText(DeliveryOnHold.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                                                            Toast.makeText(DeliveryOnHold.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                                                         }
                                                     }) {
                                                 @Override
@@ -959,7 +959,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                                         // Hiding the progress dialog after all task complete.
                                                         progressDialog.dismiss();
                                                         // Showing error message if something goes wrong.
-                                                        Toast.makeText(DeliveryOnHold.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                                                        Toast.makeText(DeliveryOnHold.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                                                     }
                                                 }) {
                                             @Override
@@ -1088,7 +1088,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                                         // Hiding the progress dialog after all task complete.
                                                         progressDialog.dismiss();
                                                         // Showing error message if something goes wrong.
-                                                        Toast.makeText(DeliveryOnHold.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                                                        Toast.makeText(DeliveryOnHold.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                                                     }
                                                 }) {
                                             @Override

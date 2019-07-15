@@ -39,11 +39,11 @@
                 android:id="@+id/CTSText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_centerHorizontal="true"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="Cash: "
+                android:text="Total Cash Order: "
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_marginStart="0dp"/>
@@ -58,7 +58,7 @@
                 android:textAlignment="center"
                 android:textColor="#000"
                 android:textSize="15sp" />
-            <View
+          <!--  <View
                 android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -90,7 +90,7 @@
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="#000"
-                android:textSize="15sp" />
+                android:textSize="15sp" />-->
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

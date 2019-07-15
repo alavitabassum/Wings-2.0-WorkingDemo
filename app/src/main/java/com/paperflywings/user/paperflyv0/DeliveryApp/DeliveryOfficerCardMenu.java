@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -42,9 +43,11 @@ import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,9 +64,11 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private static final int REQUEST_CAMERA = 1;
     public SwipeRefreshLayout swipeRefreshLayout;
     private ProgressDialog progress;
+
     private BroadcastReceiver broadcastReceiver;
     public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
+    public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
     private static final String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -103,7 +108,9 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         {
             loadDeliverySummary(username);
             loadWithoutStatusData(username);
+            loadOnHoldList(username);
             loadReturnReason();
+
         }
         else {
             getData(username);
@@ -136,7 +143,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         {
             if(checkPermission())
             {
-               Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
+//               Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
             }
             else
             {
@@ -144,6 +151,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             }
         }
     }
+
 
     // Payload for delivery return reasons
     public void loadReturnReason(){
@@ -186,6 +194,160 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
+
+    private void loadOnHoldList (final String user){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ONHOLD_LIST,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteList(sqLiteDatabase, "OnHold");
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                DeliveryOnHoldModel onhold_model = new  DeliveryOnHoldModel(
+                                        o.getInt("sql_primary_id"),
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief"),
+                                        o.getString("deliveryTime"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("Ret"),
+                                        o.getString("RetTime"),
+                                        o.getString("RetBy"),
+                                        o.getString("retRem"),
+                                        o.getString("retReason"),
+                                        o.getString("RTS"),
+                                        o.getString("RTSTime"),
+                                        o.getString("RTSBy"),
+                                        o.getString("PreRet"),
+                                        o.getString("PreRetTime"),
+                                        o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
+                                        o.getInt("slaMiss"));
+
+                                db.insert_delivery_without_status(
+                                        o.getInt("sql_primary_id"),
+                                        o.getString("username"),
+                                        o.getString("merchEmpCode"),
+                                        o.getString("barcode"),
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("merchantName"),
+                                        o.getString("pickMerchantName"),
+                                        o.getString("custname"),
+                                        o.getString("custaddress"),
+                                        o.getString("custphone"),
+                                        o.getString("packagePrice"),
+                                        o.getString("productBrief"),
+                                        o.getString("deliveryTime"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("Cash"),
+                                        o.getString("cashType"),
+                                        o.getString("CashTime"),
+                                        o.getString("CashBy"),
+                                        o.getString("CashAmt"),
+                                        o.getString("CashComment"),
+                                        o.getString("partial"),
+                                        o.getString("partialTime"),
+                                        o.getString("partialBy"),
+                                        o.getString("partialReceive"),
+                                        o.getString("partialReturn"),
+                                        o.getString("partialReason"),
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
+                                        o.getString("Rea"),
+                                        o.getString("ReaTime"),
+                                        o.getString("ReaBy"),
+                                        o.getString("Ret"),
+                                        o.getString("RetTime"),
+                                        o.getString("RetBy"),
+                                        o.getString("retRem"),
+                                        o.getString("retReason"),
+                                        o.getString("RTS"),
+                                        o.getString("RTSTime"),
+                                        o.getString("RTSBy"),
+                                        o.getString("PreRet"),
+                                        o.getString("PreRetTime"),
+                                        o.getString("PreRetBy"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
+                                        o.getInt("slaMiss"),
+                                        "OnHold"
+                                        ,NAME_SYNCED_WITH_SERVER);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",user);
+                return params1;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
@@ -483,6 +645,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private void requestPermission()
     {
         ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
+
     }
 
     // Actions on camera permission grant result

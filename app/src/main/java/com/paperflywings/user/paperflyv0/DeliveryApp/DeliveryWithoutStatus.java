@@ -160,6 +160,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             }
         };
 
+//        GetValueFromEditText();
+
         //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
@@ -731,7 +733,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                                             // Hiding the progress dialog after all task complete.
                                                             progressDialog.dismiss();
                                                             // Showing error message if something goes wrong.
-                                                            Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                                                            Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                                                         }
                                                     }) {
                                                 @Override
@@ -844,7 +846,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                                             // Hiding the progress dialog after all task complete.
                                                             progressDialog.dismiss();
                                                             // Showing error message if something goes wrong.
-                                                            Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                                                            Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                                                         }
                                                     }) {
                                                 @Override
@@ -958,7 +960,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                                         // Hiding the progress dialog after all task complete.
                                                         progressDialog.dismiss();
                                                         // Showing error message if something goes wrong.
-                                                        Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                                                        Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                                                     }
                                                 }) {
                                             @Override
@@ -1087,7 +1089,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                                         // Hiding the progress dialog after all task complete.
                                                         progressDialog.dismiss();
                                                         // Showing error message if something goes wrong.
-                                                        Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                                                        Toast.makeText(DeliveryWithoutStatus.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                                                     }
                                                 }) {
                                             @Override

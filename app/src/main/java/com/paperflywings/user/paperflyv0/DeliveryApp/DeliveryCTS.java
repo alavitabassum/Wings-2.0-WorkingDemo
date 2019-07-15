@@ -145,7 +145,7 @@ public class DeliveryCTS extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
-
+//        GetValueFromEditText();
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {

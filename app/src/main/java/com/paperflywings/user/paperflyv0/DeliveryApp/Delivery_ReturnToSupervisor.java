@@ -148,6 +148,9 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
+
+//        GetValueFromEditText();
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -628,7 +631,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                         // Hiding the progress dialog after all task complete.
                         progressDialog.dismiss();
                         // Showing error message if something goes wrong.
-                        Toast.makeText(Delivery_ReturnToSupervisor.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(Delivery_ReturnToSupervisor.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override

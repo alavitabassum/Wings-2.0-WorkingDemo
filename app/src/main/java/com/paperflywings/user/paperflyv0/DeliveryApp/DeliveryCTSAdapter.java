@@ -138,7 +138,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         //viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
 
-        viewHolder.item_cashAmt_without_status.setText("Cash Amount: "+list.get(i).getCashAmt());
+        viewHolder.item_cashAmt_without_status.setText("Cash Amount: "+list.get(i).getCashAmt()+" Taka");
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());

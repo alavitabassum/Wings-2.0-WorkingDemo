@@ -1635,9 +1635,15 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 SQL_PRIMARY_ID
         };
 
-        String whereClause = BARCODE_NO + "=?";
+        String whereClause = BARCODE_NO + "=? AND (" +CASH+ "<>? OR " +PARTIAL+ "<>? OR " +PRERET+ "<>? OR " +REA+ "<>?) AND ("+FLAG_REQ+ "=? OR " +FLAG_REQ+ "=?)" ;
         String[] whereArgs = new String[]{
-                barcodeNumber
+                barcodeNumber,
+                "Y",
+                "Y",
+                "Y",
+                "Y",
+                "withoutStatus",
+                "OnHold"
         };
         return (db.query(TABLE_NAME_9, columns, whereClause, whereArgs, null, null, null));
     }
@@ -1833,6 +1839,20 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
             return selection;
         }
         return null;
+    }
+
+    public boolean barcodeExists(String barcode) {
+        SQLiteDatabase db1 = this.getReadableDatabase();
+        String sql = "SELECT * FROM "+TABLE_NAME_9+" WHERE "+BARCODE_NO+"='"+barcode+"' LIMIT 1";
+        Cursor cursor = db1.rawQuery(sql, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        } else {
+            cursor.close();
+            return false;
+        }
     }
 }
 
