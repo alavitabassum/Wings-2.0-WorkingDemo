@@ -92,7 +92,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
 
-    public static final String RETURN_REQUEST = "http://paperflybd.com/DeliveryReturnRequestApi.php";
+    public static final String RETURN_LIST = "http://paperflybd.com/DeliveryReturnRequestApi.php";
     public static final String DELIVERY_RETURNR_UPDATE = "http://paperflybd.com/DeliveryReturnRequestUpdate.php";
 
     private List<DeliveryReturnToSuperVisorModel> list;
@@ -259,7 +259,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     }
 
     private void loadRecyclerView (final String user){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, RETURN_REQUEST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, RETURN_LIST,
                 new Response.Listener<String>()
                 {
                     @Override

@@ -90,7 +90,7 @@ public class DeliveryCTS extends AppCompatActivity
     private Button delivery_cts_recieved;
 
     public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
-    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
+    public static final String CTS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
     public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
 
     private List<DeliveryCTSModel> list;
@@ -114,7 +114,7 @@ public class DeliveryCTS extends AppCompatActivity
         CashCount_text = (TextView)findViewById(R.id.CTS_id_);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_without_status_list);
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cts_list);
         recyclerView_pul.setAdapter(DeliveryCTSAdapter);
         list = new ArrayList<DeliveryCTSModel>();
 
@@ -257,7 +257,7 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
     private void loadRecyclerView (final String user){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CTS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -273,7 +273,7 @@ public class DeliveryCTS extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryCTSModel withoutStatus_model = new  DeliveryCTSModel(
                                         o.getInt("sql_primary_id"),
-                                        o.getString("usergname"),
+                                        o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
                                         o.getString("barcode"),

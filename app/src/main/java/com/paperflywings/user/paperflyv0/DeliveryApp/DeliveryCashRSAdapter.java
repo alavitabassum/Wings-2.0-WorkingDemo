@@ -64,7 +64,7 @@ public class DeliveryCashRSAdapter extends RecyclerView.Adapter<DeliveryCashRSAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
-        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ "Taka");
+        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ " Taka");
 
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a");
