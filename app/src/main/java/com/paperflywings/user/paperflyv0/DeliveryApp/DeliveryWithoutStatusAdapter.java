@@ -78,7 +78,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
 
-            item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
+//            item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
             item_custname_without_status=itemView.findViewById(R.id.customer_name_without_status);
             item_custaddress_without_status=itemView.findViewById(R.id.customer_Address_without_status);
             item_custphone_without_status=itemView.findViewById(R.id.m_phn_num_without_status);
