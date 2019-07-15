@@ -151,7 +151,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
         String partialReason = list.get(i).getPartialReason();
-        String cashComment = list.get(i).getCashComment();
+        String cash = list.get(i).getCash();
         int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
 
 
@@ -162,11 +162,21 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         if(partialReason.isEmpty()) {
             viewHolder.item_partialreason_without_status.setText("No Reason: "+list.get(i).getPartialReason().substring(0,0));
         }*/
-        if(list.get(i).getCashComment() != null){
+
+        String partial = list.get(i).getPartial();
+        String ret = list.get(i).getRet();
+
+        if(cash.equals("Y")){
             viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
         }
-        else {
-            viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+        else if (partial.equals("Y")) {
+            viewHolder.item_cashComment_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+        }
+        else if (!(partial.equals("Y"))) {
+            viewHolder.item_cashComment_without_status.setText("Partial Reason: no reason");
+        }
+        else if (!(cash.equals("Y"))) {
+            viewHolder.item_cashComment_without_status.setText("Remarks: no remarks");
         }
 
        // viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
