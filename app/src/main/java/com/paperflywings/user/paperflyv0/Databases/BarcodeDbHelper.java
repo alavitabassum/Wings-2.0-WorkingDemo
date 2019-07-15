@@ -1631,7 +1631,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 CUSTOMER_ADDRESS,
                 CUSTOMER_PHONE,
                 PACKAGE_PRICE,
-                PRODUCT_BRIEF
+                PRODUCT_BRIEF,
+                SQL_PRIMARY_ID
         };
 
         String whereClause = BARCODE_NO + "=?";

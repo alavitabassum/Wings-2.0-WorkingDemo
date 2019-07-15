@@ -1,6 +1,8 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,8 +12,13 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +54,7 @@ import com.paperflywings.user.paperflyv0.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,6 +63,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class DeliveryQuickScan extends AppCompatActivity{
@@ -68,13 +77,24 @@ public class DeliveryQuickScan extends AppCompatActivity{
     private RequestQueue requestQueue;
     List<DeliveryWithoutStatusModel> returnReasons;
 
+    String lats,lngs,addrs,fullAddress;
+    String getlats,getlngs,getaddrs;
+    ProgressDialog progressDialog;
+    LocationManager locationManager;
+    Geocoder geocoder;
+    List<Address> addresses;
+    // int sql_primary_id;
+
+    private static final int REQUEST_LOCATION = 1;
+
     //1 means data is synced and 0 means data is not synced
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
 
     //a broadcast to know weather the data is synced or not
     // TODO add sql_primary_id to fulfillment barcode factory
-    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_or`dertrack_for_app.php";
+    public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
+    public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_ordertrack_for_app.php";
     public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -89,10 +109,22 @@ public class DeliveryQuickScan extends AppCompatActivity{
         setContentView(R.layout.delivery_quick_barcode_scan);
         returnReasons = new ArrayList<>();
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
+        done = (Button)findViewById(R.id.done);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.UPC_A);
         barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
         barcodeView.initializeFromIntent(getIntent());
         barcodeView.decodeContinuous(callback);
+
+
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DeliveryQuickScan.this,
+                        DeliveryOfficerCardMenu.class);
+                startActivity(intent);
+            }
+        });
+
 
         beepManager = new BeepManager(this);
 
@@ -121,7 +153,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
             barcodeView.setStatusText("Barcode"+result.getText());
 
-
+            getData(lastText);
             db.close();
 
             beepManager.playBeepSoundAndVibrate();
@@ -167,7 +199,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-   private void getallreturnreasons() {
+    private void getallreturnreasons() {
         try {
 
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
@@ -199,6 +231,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 final String custphone = c.getString(6);
                 final String packageprice = c.getString(7);
                 final String packagebrief = c.getString(8);
+                final String sql_primary_id = c.getString(9);
 
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(DeliveryQuickScan.this);
@@ -252,36 +285,36 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                         final CharSequence [] values = {"Cash","Partial","Return-request","On-hold"};
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        final String merchEmpCode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF, "Not Available");
+                        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+                        final String merchEmpCode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF, "Not Available");
 
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        final String currentDateTime = df.format(c);
+                        Date c = Calendar.getInstance().getTime();
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        final String currentDateTime = df.format(c);
 
-//                        final DeliveryWithoutStatusModel clickedITem = list.get(position2);
+//      final DeliveryWithoutStatusModel clickedITem = list.get(position2);
 
-        // CASH
-        final String cash = "Y";
-        final String cashBy = username;
-        final String cashType = "CoD";
-        final String cashTime = currentDateTime;
+                        // CASH
+                        final String cash = "Y";
+                        final String cashBy = username;
+                        final String cashType = "CoD";
+                        final String cashTime = currentDateTime;
 
-        //partial
-        final String partial = "Y";
-        final String partialBy = username;
-        final String partialTime = currentDateTime;
+                        //partial
+                        final String partial = "Y";
+                        final String partialBy = username;
+                        final String partialTime = currentDateTime;
 
-        //Return Request
-        final String PreRet = "Y";
-        final String PreRetBy = username;
-        final String PreRetTime = currentDateTime;
+                        //Return Request
+                        final String PreRet = "Y";
+                        final String PreRetBy = username;
+                        final String PreRetTime = currentDateTime;
 
-        //onhold
-        final String Rea = "Y";
-        final String ReaBy = username;
-        final String ReaTime = currentDateTime;
+                        //onhold
+                        final String Rea = "Y";
+                        final String ReaBy = username;
+                        final String ReaTime = currentDateTime;
 
                         final String orderid = orderId;
                         final String barcode = barcodeNumber;
@@ -291,8 +324,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         final String merchantName = merchantname;
                         final String pickMerchantName = pickMerchantname;
 
+
+//                        DeliveryWithoutStatusModel Dwo = new DeliveryWithoutStatusModel(sql_primary_id);
+//                        sql_primary_id =  Dwo.getSql_primary_id();
+
                         final Intent DeliveryListIntent = new Intent(DeliveryQuickScan.this,
-                                DeliveryWithoutStatus.class);
+                                DeliveryQuickScan.class);
 
                         final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
                         spinnerBuilder.setTitle("Select Action: ");
@@ -345,7 +382,61 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         } else {
                                                             String cashAmt = et1.getText().toString();
                                                             String cashComment = et2.getText().toString();
+                                                            // location detect
 
+                                                            progressDialog = new ProgressDialog(DeliveryQuickScan.this);
+                                                            progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+                                                            progressDialog.show();
+                                                            GetValueFromEditText();
+
+                                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                                                                    new Response.Listener<String>() {
+                                                                        @Override
+                                                                        public void onResponse(String ServerResponse) {
+                                                                            // Hiding the progress dialog after all task complete.
+                                                                            progressDialog.dismiss();
+                                                                            // Showing response message coming from server.
+                                                                            //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    },
+                                                                    new Response.ErrorListener() {
+                                                                        @Override
+                                                                        public void onErrorResponse(VolleyError volleyError) {
+                                                                            // Hiding the progress dialog after all task complete.
+                                                                            progressDialog.dismiss();
+                                                                            // Showing error message if something goes wrong.
+                                                                            Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    }) {
+                                                                @Override
+                                                                protected Map<String, String> getParams() {
+
+                                                                    // Creating Map String Params.
+                                                                    Map<String, String> params = new HashMap<String, String>();
+
+                                                                    // Adding All values to Params.
+                                                                    params.put("sqlPrimaryKey", sql_primary_id);
+                                                                    params.put("actionType", "Delivery");
+                                                                    params.put("actionFor", "Cash");
+                                                                    params.put("actionBy", username);
+                                                                    params.put("actionTime",currentDateTime);
+                                                                    params.put("latitude", getlats);
+                                                                    params.put("longitude", getlngs);
+                                                                    params.put("Address", getaddrs);
+
+                                                                    return params;
+                                                                }
+
+                                                            };
+
+
+                                                            try {
+                                                                RequestQueue requestQueue = Volley.newRequestQueue(DeliveryQuickScan.this);
+                                                                requestQueue.add(stringRequest);
+                                                            } catch (Exception e) {
+                                                                Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+                                                            }
+                                                            //location detect*/
                                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
                                                             dialogCash.dismiss();
                                                             startActivity(DeliveryListIntent);
@@ -401,6 +492,61 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                             String partialReturn = partialReturned1qty.getText().toString();
                                                             String partialReason = partialremarks.getText().toString();
                                                             String partialsReceive = partialReceive.getText().toString();
+
+                                                            // location detect
+
+                                                            progressDialog = new ProgressDialog(DeliveryQuickScan.this);
+                                                            progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+                                                            progressDialog.show();
+                                                            GetValueFromEditText();
+
+                                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                                                                    new Response.Listener<String>() {
+                                                                        @Override
+                                                                        public void onResponse(String ServerResponse) {
+                                                                            // Hiding the progress dialog after all task complete.
+                                                                            progressDialog.dismiss();
+                                                                            // Showing response message coming from server.
+                                                                            //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    },
+                                                                    new Response.ErrorListener() {
+                                                                        @Override
+                                                                        public void onErrorResponse(VolleyError volleyError) {
+                                                                            // Hiding the progress dialog after all task complete.
+                                                                            progressDialog.dismiss();
+                                                                            // Showing error message if something goes wrong.
+                                                                            Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                                                                        }
+                                                                    }) {
+                                                                @Override
+                                                                protected Map<String, String> getParams() {
+
+                                                                    // Creating Map String Params.
+                                                                    Map<String, String> params = new HashMap<String, String>();
+
+                                                                    // Adding All values to Params.
+                                                                    params.put("sqlPrimaryKey", sql_primary_id);
+                                                                    params.put("actionType", "Delivery");
+                                                                    params.put("actionFor", "Partial");
+                                                                    params.put("actionBy", username);
+                                                                    params.put("actionTime",currentDateTime);
+                                                                    params.put("latitude", getlats);
+                                                                    params.put("longitude", getlngs);
+                                                                    params.put("Address", getaddrs);
+
+                                                                    return params;
+                                                                }
+
+                                                            };
+
+
+                                                            try {
+                                                                RequestQueue requestQueue = Volley.newRequestQueue(DeliveryQuickScan.this);
+                                                                requestQueue.add(stringRequest);
+                                                            } catch (Exception e) {
+                                                                Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+                                                            }
 
                                                             update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,cashType,merchEmpCode,"partialApp");
                                                             dialogPartial.dismiss();
@@ -460,6 +606,63 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         String retReasonText = mReturnRSpinner.getSelectedItem().toString();
                                                         String retReason = db.getSelectedReasonId(retReasonText);
                                                         String retRemarks = et4.getText().toString();
+
+                                                        // location detect
+
+                                                        progressDialog = new ProgressDialog(DeliveryQuickScan.this);
+                                                        progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+                                                        progressDialog.show();
+                                                        GetValueFromEditText();
+
+                                                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                                                                new Response.Listener<String>() {
+                                                                    @Override
+                                                                    public void onResponse(String ServerResponse) {
+                                                                        // Hiding the progress dialog after all task complete.
+                                                                        progressDialog.dismiss();
+                                                                        // Showing response message coming from server.
+                                                                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                },
+                                                                new Response.ErrorListener() {
+                                                                    @Override
+                                                                    public void onErrorResponse(VolleyError volleyError) {
+                                                                        // Hiding the progress dialog after all task complete.
+                                                                        progressDialog.dismiss();
+                                                                        // Showing error message if something goes wrong.
+                                                                        Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                }) {
+                                                            @Override
+                                                            protected Map<String, String> getParams() {
+
+                                                                // Creating Map String Params.
+                                                                Map<String, String> params = new HashMap<String, String>();
+
+                                                                // Adding All values to Params.
+                                                                params.put("sqlPrimaryKey", sql_primary_id);
+                                                                params.put("actionType", "Delivery");
+                                                                params.put("actionFor", "Return-Request");
+                                                                params.put("actionBy", username);
+                                                                params.put("actionTime",currentDateTime);
+                                                                params.put("latitude", getlats);
+                                                                params.put("longitude", getlngs);
+                                                                params.put("Address", getaddrs);
+
+                                                                return params;
+                                                            }
+
+                                                        };
+
+
+                                                        try {
+                                                            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryQuickScan.this);
+                                                            requestQueue.add(stringRequest);
+                                                        } catch (Exception e) {
+                                                            Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+                                                        }
+
+
                                                         update_retR_status(retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
 
                                                         dialogReturnR.dismiss();
@@ -532,6 +735,59 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
                                                         String onHoldSchedule = bt1.getText().toString();
 
+                                                        progressDialog = new ProgressDialog(DeliveryQuickScan.this);
+                                                        progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
+                                                        progressDialog.show();
+                                                        GetValueFromEditText();
+
+                                                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                                                                new Response.Listener<String>() {
+                                                                    @Override
+                                                                    public void onResponse(String ServerResponse) {
+                                                                        // Hiding the progress dialog after all task complete.
+                                                                        progressDialog.dismiss();
+                                                                        // Showing response message coming from server.
+                                                                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                },
+                                                                new Response.ErrorListener() {
+                                                                    @Override
+                                                                    public void onErrorResponse(VolleyError volleyError) {
+                                                                        // Hiding the progress dialog after all task complete.
+                                                                        progressDialog.dismiss();
+                                                                        // Showing error message if something goes wrong.
+                                                                        Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                                                                    }
+                                                                }) {
+                                                            @Override
+                                                            protected Map<String, String> getParams() {
+
+                                                                // Creating Map String Params.
+                                                                Map<String, String> params = new HashMap<String, String>();
+
+                                                                // Adding All values to Params.
+                                                                params.put("sqlPrimaryKey", sql_primary_id);
+                                                                params.put("actionType", "Delivery");
+                                                                params.put("actionFor", "OnHold");
+                                                                params.put("actionBy", username);
+                                                                params.put("actionTime",currentDateTime);
+                                                                params.put("latitude", getlats);
+                                                                params.put("longitude", getlngs);
+                                                                params.put("Address", getaddrs);
+
+                                                                return params;
+                                                            }
+
+                                                        };
+
+
+                                                        try {
+                                                            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryQuickScan.this);
+                                                            requestQueue.add(stringRequest);
+                                                        } catch (Exception e) {
+                                                            Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+                                                        }
+
                                                         update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, merchEmpCode, "updateOnHoldApp");
                                                         insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                                         dialogonHold.dismiss();
@@ -540,95 +796,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                 });
                                                 dialog.dismiss();
                                                 break;
-                                                /*List<String> executivenames = new ArrayList<String>();
 
-                                                for (int z = 0; z < assignManager_modelList.size(); z++) {
-                                                    merchantnames.add(assignManager_modelList.get(z).getM_names());
-                                                }
-                                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(NewOrderSupervisor.this,
-                                                        android.R.layout.simple_list_item_1, merchantnames);
-
-
-                                               adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);*/
-                                               /* getallreturnreasons();
-                                                final View mViewOnHold = getLayoutInflater().inflate(R.layout.insert_on_hold_without_status, null);
-                                                final Spinner mOnholdSpinner = (Spinner) mViewOnHold.findViewById(R.id.Remarks_onhold_status);
-                                                List<String> reasons = new ArrayList<String>();
-
-                                                for (int z = 0; z < returnReasons.size(); z++) {
-                                                    reasons.add(returnReasons.get(z).getReason());
-                                                }
-                                                ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(DeliveryQuickScan.this,
-                                                        android.R.layout.simple_spinner_item,
-                                                        reasons);
-                                                adapterOnhold.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                                mOnholdSpinner.setAdapter(adapterOnhold);
-
-                                                final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
-
-                                                bt1.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View view) {
-                                                        Calendar c1;
-                                                        DatePickerDialog datePickerDialog;
-                                                        c1 = Calendar.getInstance();
-
-                                                        int day = c1.get(Calendar.DAY_OF_MONTH);
-                                                        int month = c1.get(Calendar.MONTH);
-                                                        int year = c1.get(Calendar.YEAR);
-
-                                                        datePickerDialog = new DatePickerDialog(DeliveryQuickScan.this, new DatePickerDialog.OnDateSetListener() {
-                                                            @Override
-                                                            public void onDateSet(DatePicker datePicker, int mYear, int mMonth, int mDate) {
-                                                                String yearselected    = Integer.toString(mYear) ;
-                                                                String monthselected   = Integer.toString(mMonth + 1);
-                                                                String dayselected     = Integer.toString(mDate);
-                                                                String dateTime = yearselected + "-" + monthselected + "-" + dayselected;
-                                                                bt1.setText(dateTime);
-                                                            }
-                                                        },year,month,day);
-
-                                                        datePickerDialog.show();
-                                                    }
-                                                });
-
-                                                AlertDialog.Builder onHoldeSpinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
-                                                onHoldeSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dialog.dismiss();
-                                                    }
-                                                });
-
-                                                onHoldeSpinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int i1) {
-                                                        dialog.dismiss();
-                                                    }
-                                                });
-
-                                                onHoldeSpinnerBuilder.setCancelable(false);
-                                                onHoldeSpinnerBuilder.setView(mViewOnHold);
-
-                                                final AlertDialog dialogonHold = onHoldeSpinnerBuilder.create();
-                                                dialogonHold.show();
-
-                                                dialogonHold.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        String reasonCode = mOnholdSpinner.getSelectedItem().toString();
-                                                        final String onHoldReason = db.getSelectedReasonId(reasonCode);
-
-                                                        String onHoldSchedule = bt1.getText().toString();
-
-                                                        update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, merchEmpCode, "updateOnHoldApp");
-                                                        insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
-                                                        dialogonHold.dismiss();
-                                                        startActivity(DeliveryListIntent);
-                                                    }
-                                                });
-                                                dialog.dismiss();
-                                                break;*/
                                             default:
                                                 break;
                                         }
@@ -655,6 +823,60 @@ public class DeliveryQuickScan extends AppCompatActivity{
         }
     }
 
+
+    public void GetValueFromEditText(){
+
+     /*   lat.setText("lat");
+        lng.setText("lng");
+        address.setText("address");*/
+
+        ActivityCompat.requestPermissions(DeliveryQuickScan.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+
+        GPStracker g = new GPStracker(getApplicationContext());
+        Location LocationGps = g.getLocation();
+
+        if (LocationGps !=null)
+        {
+            double lati=LocationGps.getLatitude();
+            double longi=LocationGps.getLongitude();
+
+            lats=String.valueOf(lati);
+            lngs=String.valueOf(longi);
+
+            try {
+
+                addresses = geocoder.getFromLocation(lati,longi,1);
+                String addres = addresses.get(0).getAddressLine(0);
+                String area = addresses.get(0).getLocality();
+                String city = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalcode = addresses.get(0).getPostalCode();
+
+                fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
+
+                //address.setText(fullAddress);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            getlats = lats.trim();
+            getlngs = lngs.trim();
+            getaddrs = fullAddress.trim();
+
+        }
+
+        else
+        {
+            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String merchEmpCode, final String flagReq) {
 
 
@@ -675,7 +897,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-//                                startActivity(withoutstatuscount);
+//                               startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

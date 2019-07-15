@@ -612,7 +612,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 // Adding All values to Params.
                 params.put("sqlPrimaryKey", String.valueOf(sql_primary_id));
                 params.put("actionType", "Delivery");
-                params.put("actionFor", "Cash To Supervisor");
+                params.put("actionFor", "Return To Supervisor");
                 params.put("actionBy", username);
                 params.put("actionTime",currentDateTime);
                 params.put("latitude", getlats);
