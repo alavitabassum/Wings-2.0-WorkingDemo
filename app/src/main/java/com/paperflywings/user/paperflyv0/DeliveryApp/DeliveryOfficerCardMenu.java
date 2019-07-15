@@ -574,8 +574,38 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryOfficerUnpicked.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryWithoutStatus.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryOnHold.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    ReturnRequest.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    Delivery_ReturnToSupervisor.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryCTS.class);
+            startActivity(homeIntent);
+            // Handle the camera action
         }
-
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

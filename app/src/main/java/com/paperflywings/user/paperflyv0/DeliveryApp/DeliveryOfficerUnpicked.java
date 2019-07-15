@@ -459,13 +459,42 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+       if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryOfficerUnpicked.this,
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
-        }
-
-        else if (id == R.id.nav_logout) {
+            // Handle the camera action
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(DeliveryOfficerUnpicked.this,
+                    DeliveryOfficerUnpicked.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(DeliveryOfficerUnpicked.this,
+                    DeliveryWithoutStatus.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(DeliveryOfficerUnpicked.this,
+                    DeliveryOnHold.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(DeliveryOfficerUnpicked.this,
+                    ReturnRequest.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(DeliveryOfficerUnpicked.this,
+                    Delivery_ReturnToSupervisor.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(DeliveryOfficerUnpicked.this,
+                    DeliveryCTS.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

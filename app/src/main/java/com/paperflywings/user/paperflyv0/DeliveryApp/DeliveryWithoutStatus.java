@@ -21,10 +21,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -505,6 +503,36 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
                     DeliveryOfficerCardMenu.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
+                    DeliveryOfficerUnpicked.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
+                    DeliveryWithoutStatus.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
+                    DeliveryOnHold.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
+                    ReturnRequest.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
+                    Delivery_ReturnToSupervisor.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
+                    DeliveryCTS.class);
             startActivity(homeIntent);
             // Handle the camera action
         }

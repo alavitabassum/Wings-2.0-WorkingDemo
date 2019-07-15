@@ -491,9 +491,37 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }
-
-        else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(Delivery_ReturnToSupervisor.this,
+                    DeliveryOfficerUnpicked.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(Delivery_ReturnToSupervisor.this,
+                    DeliveryWithoutStatus.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(Delivery_ReturnToSupervisor.this,
+                    DeliveryOnHold.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(Delivery_ReturnToSupervisor.this,
+                    ReturnRequest.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(Delivery_ReturnToSupervisor.this,
+                    Delivery_ReturnToSupervisor.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(Delivery_ReturnToSupervisor.this,
+                    DeliveryCTS.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -537,7 +565,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             alertDialog.show();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_without_status);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliveryreturn_to_supervisor);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

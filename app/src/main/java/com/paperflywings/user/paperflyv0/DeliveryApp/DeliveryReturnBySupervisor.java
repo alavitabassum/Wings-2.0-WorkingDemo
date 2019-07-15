@@ -378,7 +378,37 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }   else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(DeliveryReturnBySupervisor.this,
+                    DeliveryOfficerUnpicked.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(DeliveryReturnBySupervisor.this,
+                    DeliveryWithoutStatus.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(DeliveryReturnBySupervisor.this,
+                    DeliveryOnHold.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(DeliveryReturnBySupervisor.this,
+                    ReturnRequest.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(DeliveryReturnBySupervisor.this,
+                    Delivery_ReturnToSupervisor.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(DeliveryReturnBySupervisor.this,
+                    DeliveryCTS.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

@@ -114,7 +114,7 @@ public class DeliveryCTS extends AppCompatActivity
         CashCount_text = (TextView)findViewById(R.id.CTS_id_);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cts_list);
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view);
         recyclerView_pul.setAdapter(DeliveryCTSAdapter);
         list = new ArrayList<DeliveryCTSModel>();
 
@@ -482,7 +482,38 @@ public class DeliveryCTS extends AppCompatActivity
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }   else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    DeliveryOfficerUnpicked.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    DeliveryWithoutStatus.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    DeliveryOnHold.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    ReturnRequest.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    Delivery_ReturnToSupervisor.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    DeliveryCTS.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
