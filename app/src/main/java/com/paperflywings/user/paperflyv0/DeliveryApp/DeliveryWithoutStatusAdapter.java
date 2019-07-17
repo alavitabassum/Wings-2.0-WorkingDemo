@@ -146,6 +146,12 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         String Pick_merchantName = list.get(i).getPickMerchantName();
         String PreRetTime = list.get(i).getPreRetTime();
 
+        if (Pick_merchantName.equals("")) {
+            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+        } else if (!Pick_merchantName.equals("")) {
+            viewHolder.item_merchantName_without_status.setText(list.get(i).getPickMerchantName());
+        }
+
         int DeliveryTime = list.get(i).getSlaMiss();
 
         if(DeliveryTime<0) {
@@ -167,13 +173,17 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 //            viewHolder.card_view_without_status.setBackgroundResource(R.color.white);
 //        }
 
-        if (Pick_merchantName.isEmpty()) {
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-        }
-        else if(!Pick_merchantName.isEmpty()){
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getPickMerchantName());
-        }
 
+
+       /* try {
+            if (Pick_merchantName.equals("")) {
+                viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+            } else if (!Pick_merchantName.equals("")) {
+                viewHolder.item_merchantName_without_status.setText(list.get(i).getPickMerchantName());
+            }
+        } catch (Exception e){
+            Toast.makeText(context, "ERR  "+e, Toast.LENGTH_SHORT).show();
+        }*/
        // if (Pick_merchantName.isEmpty()) {
 //            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
       //  }

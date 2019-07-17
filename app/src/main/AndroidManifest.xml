@@ -49,23 +49,23 @@
         <activity
             android:name=".DeliveryApp.DeliveryCTS"
             android:label="@string/title_activity_delivery_cts"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.Delivery_ReturnToSupervisor"
             android:label="@string/title_activity_delivery__return_to_supervisor"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryQuickScan"
             android:label="@string/title_activity_delivery_quick_scan"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryOnHold"
             android:label="@string/title_activity_delivery_on_hold"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryWithoutStatus"
             android:label="@string/title_activity_delivery_without_status"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryOfficerUnpicked"
             android:label="@string/title_activity_delivery_officer_unpicked"
