@@ -2,12 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'key0'
-            keyPassword 'abcd1234'
-            storeFile file('C:/Users/Hp/Desktop/paperflywings.jks')
-            storePassword 'abcd1234'
-        }
     }
     compileSdkVersion 28
     defaultConfig {
@@ -23,10 +17,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
         debug {
-            signingConfig signingConfigs.config
         }
     }
     lintOptions {
