@@ -46,7 +46,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="38dp"
             android:layout_marginTop="51dp"
-            android:text="Order Id"
+            android:text="Order Id:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -73,7 +73,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="38dp"
             android:layout_marginTop="84dp"
-            android:text="Merchant Ref"
+            android:text="Merchant Ref:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -99,7 +99,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="38dp"
             android:layout_marginTop="116dp"
-            android:text="Price"
+            android:text="Price:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -138,7 +138,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginTop="148dp"
             android:padding="5dp"
-            android:text="Delivered qty"
+            android:text="Delivered qty:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -165,7 +165,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginTop="186dp"
             android:padding="5dp"
-            android:text="Returned Qty"
+            android:text="Returned Qty:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -193,7 +193,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginTop="230dp"
             android:padding="5dp"
-            android:text="Collection"
+            android:text="Collection:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -220,7 +220,7 @@
             android:layout_marginStart="34dp"
             android:layout_marginTop="275dp"
             android:padding="5dp"
-            android:text="Remarks"
+            android:text="Comment:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -230,7 +230,7 @@
             android:layout_width="217dp"
             android:layout_height="35dp"
             android:layout_alignBaseline="@+id/remarksTextPartial"
-            android:layout_marginStart="38dp"
+            android:layout_marginStart="25dp"
             android:layout_toEndOf="@+id/remarksTextPartial"
             android:autofillHints=""
             android:ems="10"
@@ -265,9 +265,15 @@
             android:layout_alignStart="@+id/textViewCollection"
             android:layout_alignParentTop="true"
             android:layout_marginStart="15dp"
-            android:textSize="11sp"
-            android:textColor="@color/red"
-            android:layout_marginTop="30dp" />
+            android:textSize="15dp"
+            android:textColor="#ff0000"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:shadowColor="#7F000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:textStyle="bold"/>
 
     </RelativeLayout>
 

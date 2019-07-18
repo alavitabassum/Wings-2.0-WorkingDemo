@@ -19,7 +19,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -62,7 +61,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
     private RequestQueue requestQueue;
     private static final int REQUEST_CAMERA = 1;
-    public SwipeRefreshLayout swipeRefreshLayout;
+
     private ProgressDialog progress;
 
     private BroadcastReceiver broadcastReceiver;
@@ -320,7 +319,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 },
@@ -328,8 +326,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected!cm" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected! cm" ,Toast.LENGTH_LONG).show();
 
                     }
                 })

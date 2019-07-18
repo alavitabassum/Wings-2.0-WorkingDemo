@@ -226,6 +226,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         cursorStatus1.getString(46) // flagReq
                        );
                     } while (cursorStatus1.moveToNext());
+
                 }
 
                 Cursor cursorStatusRTS = database2.getUnsyncedRTS();
@@ -268,13 +269,13 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                   final String preRet, final String preRetTime, final String preRetBy, final String flagReq){
 
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/update_ordertrack_for_app.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             try {
                                 JSONObject obj = new JSONObject(response);
-                                if (!obj.getBoolean("error")) {
+                                if (obj.getBoolean("success")) {
                                     database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
                                     context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
                                 }

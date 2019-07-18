@@ -57,17 +57,11 @@ public class DeliveryCashRS extends AppCompatActivity
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
+//    TextView totalCash;
 
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashRSupervisorApi.php";
 
     private List<DeliveryCashRSModel> list;
-    /*public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    public static final int NAME_SYNCED_WITH_SERVER = 1;
-
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
-
-    //Broadcast receiver to know the sync status
-    private BroadcastReceiver broadcastReceiver;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +73,7 @@ public class DeliveryCashRS extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cashRS_list);
+       //totalCash = (TextView) findViewById(R.id.totalCash_id_);
         recyclerView_pul.setAdapter(DeliveryCashRSAdapter);
         list = new ArrayList<DeliveryCashRSModel>();
 
@@ -107,15 +102,6 @@ public class DeliveryCashRS extends AppCompatActivity
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-        /*broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        };*/
-
-        //registering the broadcast receiver to update sync status
-//        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -127,7 +113,6 @@ public class DeliveryCashRS extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     private void loadRecyclerView (final String user){
@@ -197,6 +182,9 @@ public class DeliveryCashRS extends AppCompatActivity
 
                             DeliveryCashRSAdapter = new DeliveryCashRSAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(DeliveryCashRSAdapter);
+
+                            /*String totalCashCollection = String.valueOf();
+                            totalCash.setText(totalCashCollection+ "Taka");*/
                             swipeRefreshLayout.setRefreshing(false);
 
                         } catch (JSONException e) {

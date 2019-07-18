@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 15;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -1768,7 +1768,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM " + TABLE_NAME_9 + " WHERE " + STATUS + " = 0;";
         Cursor c = db.rawQuery(sql, null);
+//        c.close();
+//        db.close();
         return c;
+
     }
 
 
@@ -1777,7 +1780,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(STATUS, status);
         db.update(TABLE_NAME_9, contentValues, KEY_ID + "=" + id, null);
-        db.close();
+//        db.close();
         return true;
     }
 
@@ -1854,5 +1857,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+
 }
 

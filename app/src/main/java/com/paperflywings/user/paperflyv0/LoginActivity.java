@@ -36,6 +36,8 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private long backPressed;
+    private Toast backPressedToast;
     Button signin;
     EditText username,pass;
     private boolean loggedIn = false;
@@ -267,8 +269,20 @@ public class LoginActivity extends AppCompatActivity {
         Intent homeIntentSuper = new Intent(LoginActivity.this,
                 LoginActivity.class);
         startActivity(homeIntentSuper);
-//        finish();
+        /*if (backPressed + 2000 > System.currentTimeMillis()){
+            backPressedToast.cancel();
+            super.onBackPressed();
+
+            return;
+        } else {
+            backPressedToast = Toast.makeText(getBaseContext(), "Double press to exit!", Toast.LENGTH_LONG);
+            backPressedToast.show();
+        }
+
+        backPressed = System.currentTimeMillis();*/
+
     }
+
 
 /*    boolean doubleBackToExitPressedOnce = false;
 
