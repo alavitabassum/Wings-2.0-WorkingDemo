@@ -634,7 +634,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             }
         }catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(), "Error occured"+e.getMessage() ,Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Error occured! q" ,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -684,7 +684,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
 //            Toast.makeText(this, "Turn on GPS/Location", Toast.LENGTH_SHORT).show();
         }
     }
-
    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
       GetValueFromEditText();
 
@@ -733,10 +732,9 @@ public class DeliveryQuickScan extends AppCompatActivity{
            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryQuickScan.this);
            requestQueue.add(stringRequest);
        } catch (Exception e) {
-           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
        }
    }
-
 
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String merchEmpCode, final String flagReq) {
 
@@ -795,7 +793,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             }
             requestQueue.add(stringRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliveryQuickScan.this, "No Internet! cq" , Toast.LENGTH_LONG).show();
         }
 
     }
@@ -852,7 +850,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest1);
         } catch (Exception e) {
-            Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliveryQuickScan.this, "No Internet! pretq" , Toast.LENGTH_LONG).show();
         }
     }
     public void update_onhold_status (final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String merchEmpCode, final String flagReq) {
@@ -909,7 +907,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             }
             requestQueue.add(stringRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliveryQuickScan.this, "No Internet! hldq", Toast.LENGTH_LONG).show();
         }
     }
     public void update_partial_status (final String partial,final String partialsCash, final String partialTime,final String partialBy ,final String partialsReceive,final String partialReturn,final String partialReason,final String orderid, final String cashType, final String merchEmpCode,final String flagReq) {
@@ -970,7 +968,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliveryQuickScan.this, "No Internet! parq", Toast.LENGTH_LONG).show();
         }
     }
     public void insertOnholdLog(final String orderid, final String barcode, final String merchantName, final String pickMerchantName, final String onHoldSchedule, final String onHoldReason, final String username, final String currentDateTime){
@@ -1020,7 +1018,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliveryQuickScan.this, "No Internet! olq", Toast.LENGTH_LONG).show();
         }
     }
 }

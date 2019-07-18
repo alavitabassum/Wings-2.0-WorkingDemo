@@ -8,7 +8,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
 
 public class GPStracker implements LocationListener {
     Context context;
@@ -20,7 +19,7 @@ public class GPStracker implements LocationListener {
     public Location getLocation(){
 
         if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(context,"Permission not Granted", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context,"Permission not Granted", Toast.LENGTH_SHORT).show();
             return null;
         }
 
@@ -35,7 +34,7 @@ public class GPStracker implements LocationListener {
             return l;
 
         }else{
-            Toast.makeText(context,"Please enable gps", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context,"Please enable gps", Toast.LENGTH_SHORT).show();
         }
         return null;
     }

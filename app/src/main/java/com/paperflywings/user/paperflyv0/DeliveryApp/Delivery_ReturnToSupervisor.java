@@ -91,7 +91,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager_pul;
 
     public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
-
     public static final String RETURN_LIST = "http://paperflybd.com/DeliveryReturnRequestApi.php";
     public static final String DELIVERY_RETURNR_UPDATE = "http://paperflybd.com/DeliveryReturnRequestUpdate.php";
 
@@ -149,15 +148,11 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-//        GetValueFromEditText();
-
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
             }
         };
-
-//        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
         delivery_rts_recieved.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,7 +162,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliveryreturn_to_supervisor);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -180,7 +174,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     private void getData(String user){
@@ -254,8 +247,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             String str = String.valueOf(db.getReturnCount("rts", "Y"));
             ReturnRqst_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -378,9 +369,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                         ,NAME_SYNCED_WITH_SERVER);
                                 list.add(withoutStatus_model);
                             }
-//                    swipeRefreshLayout.setRefreshing(false);
-
-
                             DeliveryReturnToSuperVisorAdapter = new DeliveryReturnToSuperVisorAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
                             swipeRefreshLayout.setRefreshing(false);
@@ -396,7 +384,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
 
@@ -408,7 +395,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",user);
-//                params1.put("created_at",match_date);
                 return params1;
             }
         };
@@ -605,67 +591,13 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         final String RTS = "Y";
         final String RTSTime = currentDateTime;
         final String RTSBy = username;
-        final int sql_primary_id = clickedITem.getSql_primary_id();
+        final String sql_primary_id = String.valueOf(clickedITem.getSql_primary_id());
 
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
 
-        progressDialog = new ProgressDialog(Delivery_ReturnToSupervisor.this);
-        progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
-        progressDialog.show();
-        GetValueFromEditText();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String ServerResponse) {
-                        // Hiding the progress dialog after all task complete.
-                        progressDialog.dismiss();
-                        // Showing response message coming from server.
-                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        // Hiding the progress dialog after all task complete.
-                        progressDialog.dismiss();
-                        // Showing error message if something goes wrong.
-//                        Toast.makeText(Delivery_ReturnToSupervisor.this, volleyError.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-
-                // Creating Map String Params.
-                Map<String, String> params = new HashMap<String, String>();
-
-                // Adding All values to Params.
-                params.put("sqlPrimaryKey", String.valueOf(sql_primary_id));
-                params.put("actionType", "Delivery");
-                params.put("actionFor", "Return To Supervisor");
-                params.put("actionBy", username);
-                params.put("actionTime",currentDateTime);
-                params.put("latitude", getlats);
-                params.put("longitude", getlngs);
-                params.put("Address", getaddrs);
-
-                return params;
-            }
-
-        };
-
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(Delivery_ReturnToSupervisor.this);
-            requestQueue.add(stringRequest);
-        } catch (Exception e) {
-            Toast.makeText(Delivery_ReturnToSupervisor.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
-        }
-
-
         ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rtsOk");
-        //pickedfordelivery(lastText,username,empcode,BarCode,OrderId);
-
+        lat_long_store(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
     }
 
     private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy, final String barcode, final String orderid, final String flagReq) {
@@ -724,19 +656,13 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(Delivery_ReturnToSupervisor.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(Delivery_ReturnToSupervisor.this, "Connection problem! rts", Toast.LENGTH_LONG).show();
         }
     }
 
     public void GetValueFromEditText(){
-
-     /*   lat.setText("lat");
-        lng.setText("lng");
-        address.setText("address");*/
-
         ActivityCompat.requestPermissions(Delivery_ReturnToSupervisor.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
-
 
         GPStracker g = new GPStracker(getApplicationContext());
         Location LocationGps = g.getLocation();
@@ -759,9 +685,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 String postalcode = addresses.get(0).getPostalCode();
 
                 fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
-
-                //address.setText(fullAddress);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -774,10 +697,51 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
         else
         {
-            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
         }
     }
 
+    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+        GetValueFromEditText();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String ServerResponse) {
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                // Creating Map String Params.
+                Map<String, String> params = new HashMap<String, String>();
+
+                // Adding All values to Params.
+                params.put("sqlPrimaryKey", sql_primary_id);
+                params.put("actionType", action_type);
+                params.put("actionFor", action_for);
+                params.put("actionBy", username);
+                params.put("actionTime",currentDateTime);
+                params.put("latitude", getlats);
+                params.put("longitude", getlngs);
+                params.put("Address", getaddrs);
+
+                return params;
+            }
+
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(Delivery_ReturnToSupervisor.this);
+            requestQueue.add(stringRequest);
+        } catch (Exception e) {
+//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public void onItemClick_call(View view4, int position4) {

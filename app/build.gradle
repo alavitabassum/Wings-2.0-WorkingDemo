@@ -1,13 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword 'abcd1234'
+            storeFile file('C:/Users/Hp/Desktop/paperflywings.jks')
+            storePassword 'abcd1234'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.paperflywings.user.paperflyv0"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 25
-        versionName "25.0"
+        versionCode 26
+        versionName "26.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true;
     }
@@ -15,6 +23,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     lintOptions {

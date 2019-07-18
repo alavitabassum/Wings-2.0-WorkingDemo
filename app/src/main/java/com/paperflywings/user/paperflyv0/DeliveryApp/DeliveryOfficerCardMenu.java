@@ -143,7 +143,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         {
             if(checkPermission())
             {
-//               Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
             }
             else
             {
@@ -329,7 +329,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
 //                        progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected!cm" ,Toast.LENGTH_LONG).show();
 
                     }
                 })
@@ -631,7 +631,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
 
         }catch (Exception e)
         {
-            Toast.makeText(getApplicationContext(), "some error"+e ,Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Error! cm" ,Toast.LENGTH_LONG).show();
         }
     }
 

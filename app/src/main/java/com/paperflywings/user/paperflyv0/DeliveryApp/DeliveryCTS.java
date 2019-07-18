@@ -145,15 +145,12 @@ public class DeliveryCTS extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
-//        GetValueFromEditText();
+
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
             }
         };
-
-        //registering the broadcast receiver to update sync status
-//        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
         delivery_cts_recieved.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -604,62 +601,10 @@ public class DeliveryCTS extends AppCompatActivity
 
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
-        final int sql_primary_id = clickedITem.getSql_primary_id();
-        // location detect
+        final String sql_primary_id = String.valueOf(clickedITem.getSql_primary_id());
 
-        progressDialog = new ProgressDialog(DeliveryCTS.this);
-        progressDialog.setMessage("Please Wait, We are Inserting Your Data on Server");
-        progressDialog.show();
-        GetValueFromEditText();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String ServerResponse) {
-                        // Hiding the progress dialog after all task complete.
-                        progressDialog.dismiss();
-                        // Showing response message coming from server.
-                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        // Hiding the progress dialog after all task complete.
-                        progressDialog.dismiss();
-                        // Showing error message if something goes wrong.
-                        Toast.makeText(DeliveryCTS.this, volleyError.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-
-                // Creating Map String Params.
-                Map<String, String> params = new HashMap<String, String>();
-
-                // Adding All values to Params.
-                params.put("sqlPrimaryKey", String.valueOf(sql_primary_id));
-                params.put("actionType", "Delivery");
-                params.put("actionFor", "Cash To Supervisor");
-                params.put("actionBy", username);
-                params.put("actionTime",currentDateTime);
-                params.put("latitude", getlats);
-                params.put("longitude", getlngs);
-                params.put("Address", getaddrs);
-
-                return params;
-            }
-
-        };
-
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryCTS.this);
-            requestQueue.add(stringRequest);
-        } catch (Exception e) {
-            Toast.makeText(DeliveryCTS.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
-        }
-        //location detect
         CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "ctsOk");
+        lat_long_store(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
     }
 
     private void CashToS(final String CTS,final String CTSTime, final String CTSBy, final String barcode, final String orderid, final String flagReq) {
@@ -716,20 +661,14 @@ public class DeliveryCTS extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryCTS.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliveryCTS.this, "Server Error! cts", Toast.LENGTH_LONG).show();
         }
     }
 
 
     public void GetValueFromEditText(){
-
-     /*   lat.setText("lat");
-        lng.setText("lng");
-        address.setText("address");*/
-
         ActivityCompat.requestPermissions(DeliveryCTS.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
-
 
         GPStracker g = new GPStracker(getApplicationContext());
         Location LocationGps = g.getLocation();
@@ -753,23 +692,61 @@ public class DeliveryCTS extends AppCompatActivity
 
                 fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
 
-                //address.setText(fullAddress);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             getlats = lats.trim();
             getlngs = lngs.trim();
             getaddrs = fullAddress.trim();
-
         }
-
         else
         {
-            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+//        GetValueFromEditText();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String ServerResponse) {
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                      }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                // Creating Map String Params.
+                Map<String, String> params = new HashMap<String, String>();
+
+                // Adding All values to Params.
+                params.put("sqlPrimaryKey", sql_primary_id);
+                params.put("actionType", action_type);
+                params.put("actionFor", action_for);
+                params.put("actionBy", username);
+                params.put("actionTime",currentDateTime);
+                params.put("latitude", getlats);
+                params.put("longitude", getlngs);
+                params.put("Address", getaddrs);
+
+                return params;
+            }
+
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryCTS.this);
+            requestQueue.add(stringRequest);
+        } catch (Exception e) {
+//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 
 
