@@ -99,7 +99,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         onHold_count = (TextView)findViewById(R.id.OnHoldCount);
         returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
         cashCollection_count = (TextView)findViewById(R.id.CashCount);
-        returnList_count = (TextView)findViewById(R.id.RTS);
+        returnList_count = (TextView)findViewById(R.id.RTS_);
 
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -553,7 +553,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 onHold_count = (TextView)findViewById(R.id.OnHoldCount);
                 returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
                 cashCollection_count = (TextView)findViewById(R.id.CashCount);
-                returnList_count = (TextView)findViewById(R.id.RTS);
+                returnList_count = (TextView)findViewById(R.id.RTS_);
 
                 unpicked_count.setText(String.valueOf(unpicked));
                 withoutStatus_count.setText(String.valueOf(withoutStatus));

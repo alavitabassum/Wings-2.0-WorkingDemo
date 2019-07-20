@@ -22,6 +22,24 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp">
+        <Button
+            android:id="@+id/searchUsingDate"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_centerHorizontal="true"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="text"
+            android:textSize="15sp"
+            android:text="Select date"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
     <android.support.v7.widget.CardView
         android:id="@+id/without_Status_id"
         android:layout_width="match_parent"

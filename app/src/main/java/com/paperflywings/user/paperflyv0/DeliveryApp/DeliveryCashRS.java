@@ -1,9 +1,10 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -12,7 +13,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +38,6 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
@@ -44,22 +45,32 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class DeliveryCashRS extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     BarcodeDbHelper db;
-    public SwipeRefreshLayout swipeRefreshLayout;
+//    public SwipeRefreshLayout swipeRefreshLayout;
     private DeliveryCashRSAdapter DeliveryCashRSAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
+    Button selectDate;
+    TextView dateShow;
+    DatePickerDialog datePickerDialog;
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
+    private ProgressDialog progress;
 //    TextView totalCash;
 
-    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashRSupervisorApi.php";
+//    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashRSupervisorApi.php";
+    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/testing_testing.php";
 
     private List<DeliveryCashRSModel> list;
 
@@ -78,29 +89,59 @@ public class DeliveryCashRS extends AppCompatActivity
         list = new ArrayList<DeliveryCashRSModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
-        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+        final NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+     /*   swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);
+        swipeRefreshLayout.setRefreshing(true);*/
         list.clear();
-        swipeRefreshLayout.setRefreshing(true);
+//        swipeRefreshLayout.setRefreshing(true);
 
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        final Button selectDate = findViewById(R.id.searchUsingDate);
+        selectDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                datePickerDialog = new DatePickerDialog(DeliveryCashRS.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        selectDate.setText(day + "/" + (month+1) + "/" + year);
+                        String yearselected  = Integer.toString(year) ;
+                        String monthselected  = Integer.toString(month + 1);
+                        String dayselected  = Integer.toString(day);
+                        /*2019-07-15 03:45:29*/
+                        String dateTime = yearselected + "-" + monthselected + "-" + dayselected;
+                        loadRecyclerView(username,dateTime);
+                        list.clear();
+                       /* pendingsummary_modelslist.clear();
+                        Toast.makeText(PendingSummary_Manager.this, dateTime, Toast.LENGTH_LONG);*/
 
-        if(nInfo!= null && nInfo.isConnected())
+                    }
+                },year,month,dayOfMonth );
+                datePickerDialog.show();
+
+            }
+
+        });
+
+//        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+       /* if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+            loadRecyclerView(username, da);
         }
         else{
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
-        }
+        }*/
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -113,16 +154,26 @@ public class DeliveryCashRS extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
-    private void loadRecyclerView (final String user){
+    private void loadRecyclerView (final String username, final String date_match){
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteList(sqLiteDatabase, "cash");
+//                        db.deleteList(sqLiteDatabase, "cash");
+                        list.clear();
+                        progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
@@ -185,19 +236,19 @@ public class DeliveryCashRS extends AppCompatActivity
 
                             /*String totalCashCollection = String.valueOf();
                             totalCash.setText(totalCashCollection+ "Taka");*/
-                            swipeRefreshLayout.setRefreshing(false);
+//                            swipeRefreshLayout.setRefreshing(false);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            swipeRefreshLayout.setRefreshing(false);
+//                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // progress.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
+                         progress.dismiss();
+//                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
                     }
                 })
@@ -206,7 +257,8 @@ public class DeliveryCashRS extends AppCompatActivity
             protected Map<String, String> getParams()
             {
                 Map<String,String> params1 = new HashMap<String,String>();
-                params1.put("username",user);
+                params1.put("username", username);
+                params1.put("date", date_match);
                 return params1;
             }
         };
@@ -362,7 +414,7 @@ public class DeliveryCashRS extends AppCompatActivity
         return true;
     }
 
-    @Override
+   /* @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -371,14 +423,15 @@ public class DeliveryCashRS extends AppCompatActivity
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         list.clear();
         DeliveryCashRSAdapter.notifyDataSetChanged();
-        if(nInfo!= null && nInfo.isConnected())
+        Toast.makeText(this,"Select specific date",Toast.LENGTH_LONG).show();
+       *//* if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
         }
         else{
             Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
-        }
-    }
+        }*//*
+    }*/
 
 
 }
