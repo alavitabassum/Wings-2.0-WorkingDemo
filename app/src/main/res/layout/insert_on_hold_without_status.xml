@@ -61,6 +61,22 @@
             android:inputType="text"
             android:textSize="15sp"
             android:textStyle="bold" />-->
+        <TextView
+            android:id="@+id/error_msg_onhold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textViewCollection"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:textSize="15dp"
+            android:textColor="#ff0000"
+            android:layout_marginTop="55dp"
+            android:layout_centerHorizontal="true"
+            android:shadowColor="#7F000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:textStyle="bold"/>
 
         <Spinner
             android:id="@+id/Remarks_onhold_status"

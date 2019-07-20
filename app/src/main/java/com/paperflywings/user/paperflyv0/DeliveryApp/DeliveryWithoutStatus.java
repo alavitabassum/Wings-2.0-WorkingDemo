@@ -675,7 +675,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
                                 OrderIdCollectiontv.setText(orderid);
                                 MerchantReftv.setText(merchantRef);
-                                PackagePriceTexttv.setText(packagePrice);
+                                PackagePriceTexttv.setText(packagePrice+ " Taka");
 
                                 AlertDialog.Builder cashSpinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
                                 cashSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -701,13 +701,15 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+                                        String cashAmt = et1.getText().toString().trim();
+                                        String cashComment = et2.getText().toString().trim();
 
-                                        if (et1.getText().toString().trim().isEmpty() && et2.getText().toString().trim().isEmpty()) {
-                                            tv1.setText("Field can't be empty");
-                                        } else {
-                                            String cashAmt = et1.getText().toString();
-                                            String cashComment = et2.getText().toString();
-
+                                        if (cashAmt.isEmpty() ) {
+                                            tv1.setText("Enter cash amount");
+                                        } else if(cashComment.isEmpty()) {
+                                            tv1.setText("Please write some comment");
+                                        }
+                                        else {
                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
                                             lat_long_store(sql_primary_id,"Delivery", "Cash", username, currentDateTime);
 
@@ -759,9 +761,15 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                     @Override
                                     public void onClick(View v) {
 
-                                        if (partialReceive.getText().toString().trim().isEmpty() && partialReturned1qty.getText().toString().trim().isEmpty() && partialcash.getText().toString().trim().isEmpty() && partialremarks.getText().toString().trim().isEmpty()) {
-                                            tvField.setText("Field can't be empty");
-                                        } else {
+                                        if (partialReceive.getText().toString().trim().isEmpty()) {
+                                            tvField.setText("Enter received quantity!");
+                                        } else if(partialReturned1qty.getText().toString().trim().isEmpty()){
+                                            tvField.setText("Enter returned quantity!");
+                                        } else if(partialcash.getText().toString().trim().isEmpty()){
+                                            tvField.setText("Enter cash amount..");
+                                        } else if (partialremarks.getText().toString().trim().isEmpty()) {
+                                            tvField.setText("Enter comment..");
+                                        }  else {
                                             String partialsCash = partialcash.getText().toString();
                                             String partialReturn = partialReturned1qty.getText().toString();
                                             String partialReason = partialremarks.getText().toString();
@@ -797,6 +805,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
                                 final EditText et4 = mViewReturnR.findViewById(R.id.remarks_RetR);
                                 final TextView tv4 = mViewReturnR.findViewById(R.id.remarksTextRetR);
+                                final TextView error_msg = mViewReturnR.findViewById(R.id.error_msg);
 
                                 AlertDialog.Builder ReturnRSpinnerBuilder = new AlertDialog.Builder(DeliveryWithoutStatus.this);
                                 ReturnRSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -827,9 +836,13 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         String retReason = db.getSelectedReasonId(retReasonText);
                                         String retRemarks = et4.getText().toString();
 
+                                       /* if (mReturnRSpinner.getSelectedItem().toString().equalsIgnoreCase("Please select an option..")) {
+                                            error_msg.setText("Please select return reason!");
+                                        }  else {*/
 //                                        update_retR_status(Ret,RetTime,RetBy,retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
-                                        update_retR_status(retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
-                                        lat_long_store(sql_primary_id,"Delivery", "Return-Request", username, currentDateTime);
+                                            update_retR_status(retRemarks, retReason, PreRet, PreRetTime, PreRetBy, orderid, merchEmpCode, "RetApp");
+                                            lat_long_store(sql_primary_id,"Delivery", "Return-Request", username, currentDateTime);
+//                                        }
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -847,6 +860,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 mOnholdSpinner.setAdapter(adapterOnhold);
 
                                 final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
+                                final TextView error_msg_onhold = findViewById(R.id.error_msg_onhold);
 
                                 bt1.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -898,13 +912,20 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                 dialogonHold.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+
+
+                                      /*  if (mOnholdSpinner.getSelectedItem().toString().equalsIgnoreCase("Please select an option..")) {
+                                            error_msg_onhold.setText("Please select return reason!");
+                                        } else if(bt1.getText().toString().trim().equals("1970-01-01")){
+                                            error_msg_onhold.setText("Please select a date!");
+                                        }
+                                        else {*/
                                             String onHoldReason = mOnholdSpinner.getSelectedItem().toString();
                                             String onHoldSchedule = bt1.getText().toString();
-
-                                            update_onhold_status(onHoldSchedule ,onHoldReason,Rea,ReaTime,ReaBy,orderid, merchEmpCode, "updateOnHoldApp");
+                                            update_onhold_status(onHoldSchedule, onHoldReason, Rea, ReaTime, ReaBy, orderid, merchEmpCode, "updateOnHoldApp");
                                             insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
-                                            lat_long_store(sql_primary_id,"Delivery", "OnHold", username, currentDateTime);
-
+                                            lat_long_store(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
+//                                        }
                                             dialogonHold.dismiss();
                                             startActivity(DeliveryListIntent);
                                     }

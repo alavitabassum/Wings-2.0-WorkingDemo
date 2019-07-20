@@ -142,15 +142,18 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 
        // String CustomerDistrict = list.get(i).getCustomerDistrict();
 
-        String Merchant_name = list.get(i).getMerchantName();
+        /*String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
-        String PreRetTime = list.get(i).getPreRetTime();
+        String PreRetTime = list.get(i).getPreRetTime();*/
+        String Pick_merchantName = list.get(i).getPickMerchantName();
 
-        if (Pick_merchantName.equals("")) {
+        viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+
+       /* if (Pick_merchantName.isEmpty() || Pick_merchantName == null) {
             viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-        } else if (!Pick_merchantName.equals("")) {
+        } else if (!Pick_merchantName.isEmpty()) {
             viewHolder.item_merchantName_without_status.setText(list.get(i).getPickMerchantName());
-        }
+        }*/
 
         int DeliveryTime = list.get(i).getSlaMiss();
 

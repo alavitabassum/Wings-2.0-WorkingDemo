@@ -10,10 +10,11 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="364dp"
-        android:layout_height="277dp"
+        android:layout_height="275dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
+        android:paddingLeft="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -56,7 +57,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="35dp"
             android:layout_marginTop="69dp"
-            android:text="Order Id"
+            android:text="Order Id:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -83,7 +84,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="35dp"
             android:layout_marginTop="100dp"
-            android:text="Merchant Ref"
+            android:text="Merchant Ref:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -109,7 +110,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="35dp"
             android:layout_marginTop="134dp"
-            android:text="Price"
+            android:text="Price:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -135,17 +136,17 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="35dp"
             android:layout_marginTop="172dp"
-            android:text="Collection"
+            android:text="Collection:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editTextCollection"
-            android:layout_width="wrap_content"
+            android:layout_width="193dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textViewCollection"
-            android:layout_marginStart="52dp"
+            android:layout_marginStart="34dp"
             android:layout_toEndOf="@+id/textViewCollection"
             android:autofillHints=""
             android:ems="10"
@@ -161,7 +162,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="35dp"
             android:layout_marginTop="204dp"
-            android:text="Remarks"
+            android:text="Comment:"
             android:textAlignment="textStart"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -172,7 +173,7 @@
             android:layout_width="193dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/Remarks_without_status_text"
-            android:layout_marginStart="61dp"
+            android:layout_marginStart="35dp"
             android:layout_toEndOf="@+id/Remarks_without_status_text"
             android:autofillHints=""
             android:ems="10"
@@ -197,9 +198,15 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textViewCollection"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="15dp"
             android:layout_marginTop="35dp"
-            android:textColor="@color/red" />
+            android:layout_centerHorizontal="true"
+            android:shadowColor="#7F000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:textColor="#ff0000"
+            android:textSize="20dp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
