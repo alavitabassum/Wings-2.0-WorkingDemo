@@ -18,7 +18,6 @@ import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryCTS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.DeliveryApp.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
@@ -1084,7 +1083,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     // Action Log Sync
     private void insertOnholdLog(final int id, final String orderid, final String barcode, final String merchantName, final String pickMerchantName, final String onHoldSchedule, final String onHoldReason, final String username, final String currentDateTime){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.INSERT_ONHOLD_LOG,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryOnholdLog.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

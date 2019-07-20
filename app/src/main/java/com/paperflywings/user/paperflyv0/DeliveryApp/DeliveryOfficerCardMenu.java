@@ -183,11 +183,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), "Problem Loading Return Reasons" ,Toast.LENGTH_LONG).show();
                     }
-                })
-        {
-
-        };
-
+                });
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
