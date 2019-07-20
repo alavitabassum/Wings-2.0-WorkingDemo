@@ -120,7 +120,7 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
 
-                    pickedfordelivery(lastText, username, empcode);
+                    pickedfordelivery(lastText, username, empcode, "PickAndAssignFromApp");
                     dialog.dismiss();
                     onResume();
                 }
@@ -181,18 +181,24 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
     //API HIT
-    private void pickedfordelivery(final String barcode, final String username, final String empcode) {
+    private void pickedfordelivery(final String barcode, final String username, final String empcode, final String flagReq) {
 
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
         final String currentDateTimeString = df.format(date);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryQuickPickScan.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/update_ordertrack_for_app.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -228,9 +234,10 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("barcode", barcode);
+                params.put("order", barcode);
                 params.put("username", username);
-                params.put("empcode", empcode);
+                params.put("data", empcode);
+                params.put("flag", flagReq);
                 return params;
             }
         };

@@ -353,13 +353,13 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
-                                database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_SYNCED_WITH_SERVER);
+                                database.assignexecutive(ex_name, empcode, product_name, sum, product_id, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_SYNCED_WITH_SERVER);
 
 //                                assignexecutivetosqlite(ex_name, empcode, product_name, sum,String.valueOf(product_id), user, currentDateTimeString, NAME_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address,complete_status,apiOrderID, demo, pick_from_merchant_status,received_from_HQ_status);
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_NOT_SYNCED_WITH_SERVER);
+                                database.assignexecutive(ex_name, empcode, product_name, sum, product_id, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_NOT_SYNCED_WITH_SERVER);
 
 //                                assignexecutivetosqlite(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status, apiOrderID, demo,pick_from_merchant_status,received_from_HQ_status);
                             }
@@ -371,7 +371,7 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        database.assignexecutive(ex_name, empcode, product_name, sum, String.valueOf(product_id), user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_NOT_SYNCED_WITH_SERVER);
+                        database.assignexecutive(ex_name, empcode, product_name, sum, product_id, user, currentDateTimeString,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,NAME_NOT_SYNCED_WITH_SERVER);
 
 //                        assignexecutivetosqlite(ex_name, empcode,product_name, sum, String.valueOf(product_id), user, currentDateTimeString, NAME_NOT_SYNCED_WITH_SERVER,m_name,contactNumber,pick_m_name,pick_m_address, complete_status,apiOrderID, demo, pick_from_merchant_status, received_from_HQ_status);
                     }
@@ -384,7 +384,7 @@ public class Robishop_Assign_pickup_manager extends AppCompatActivity
                 params.put("executive_code", empcode);
                 params.put("product_name", product_name);
                 params.put("order_count", sum);
-                params.put("merchant_code", String.valueOf(product_id));
+                params.put("merchant_code", product_id);
                 params.put("assigned_by", user);
                 params.put("created_at", currentDateTimeString);
                 params.put("merchant_name", m_name);

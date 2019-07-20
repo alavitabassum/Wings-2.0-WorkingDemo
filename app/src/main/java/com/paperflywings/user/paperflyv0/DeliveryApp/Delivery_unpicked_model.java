@@ -45,8 +45,10 @@ public class Delivery_unpicked_model {
     private String packagePrice;
     int key_id;
     int status;
+    int sql_primary_id;
 
-    public Delivery_unpicked_model(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointEmp, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy) {
+    public Delivery_unpicked_model(int sql_primary_id, String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointEmp, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy) {
+        this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = empCode;
         this.barcode = barcode;

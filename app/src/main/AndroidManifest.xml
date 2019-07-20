@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.paperflywings.user.paperflyv0">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -29,33 +31,42 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/wings_launcher"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".DeliveryApp.DeliveryReturnBySupervisor"
+            android:label="@string/title_activity_delivery_return_by_supervisor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliveryCashRS"
+            android:label="@string/title_activity_delivery_cash_rs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".DeliveryApp.ReturnRequest"
             android:label="@string/title_activity_return_request"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DeliveryApp.DeliveryCTS"
             android:label="@string/title_activity_delivery_cts"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.Delivery_ReturnToSupervisor"
             android:label="@string/title_activity_delivery__return_to_supervisor"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryQuickScan"
             android:label="@string/title_activity_delivery_quick_scan"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryOnHold"
             android:label="@string/title_activity_delivery_on_hold"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryWithoutStatus"
             android:label="@string/title_activity_delivery_without_status"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryOfficerUnpicked"
             android:label="@string/title_activity_delivery_officer_unpicked"
@@ -83,10 +94,6 @@
         <activity
             android:name=".PickupSupervisor.SupervisorCardMenu"
             android:label="@string/title_activity_supervisor_card_menu"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".PickupAutoAssignManager.AutoAssignMyPickuplist"
-            android:label="@string/title_activity_auto_assign_my_pickuplist"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".PickupPendingReportManager.PendingSummary_Manager"
@@ -139,14 +146,6 @@
         <activity
             android:name=".PickupOfficer.ScanningScreen"
             android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
-        </activity>
-        <activity
-            android:name=".PickupAutoAssignManager.AutoScanningScreen"
-            android:parentActivityName=".PickupAutoAssignManager.AutoAssignMyPickuplist"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

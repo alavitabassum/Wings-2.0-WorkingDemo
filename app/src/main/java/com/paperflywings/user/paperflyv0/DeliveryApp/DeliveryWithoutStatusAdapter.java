@@ -36,8 +36,6 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
     public interface OnItemClickListener {
 
            void onItemClick_view (View view2, int position2);
-        /*   void onItemClick(View view, int position);
-           void onItemClick_view_orderIDs (View view3, int position3);*/
            void onItemClick_call (View view4, int position4);
     }
 
@@ -80,7 +78,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
 
-            item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
+//            item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
             item_custname_without_status=itemView.findViewById(R.id.customer_name_without_status);
             item_custaddress_without_status=itemView.findViewById(R.id.customer_Address_without_status);
             item_custphone_without_status=itemView.findViewById(R.id.m_phn_num_without_status);
@@ -118,7 +116,6 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
             });
 
         }
-
     }
     @NonNull
     @Override
@@ -137,7 +134,7 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress_without_status.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
-        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice());
+        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ " Taka");
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
         //viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
 
@@ -147,51 +144,53 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
 
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
+        String PreRetTime = list.get(i).getPreRetTime();
 
-        int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
+        if (Pick_merchantName.equals("")) {
+            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+        } else if (!Pick_merchantName.equals("")) {
+            viewHolder.item_merchantName_without_status.setText(list.get(i).getPickMerchantName());
+        }
+
+        int DeliveryTime = list.get(i).getSlaMiss();
 
         if(DeliveryTime<0) {
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_without_status.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
         }
 
         else if (DeliveryTime>=0){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
+            viewHolder.item_deliveryTime_without_status.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
             viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
         }
 
-        if (Pick_merchantName.isEmpty()) {
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-        }
-        else if(!Pick_merchantName.isEmpty()){
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-            viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
-        }
+//        if(PreRetTime.isEmpty()){
+//            viewHolder.card_view_without_status.setCardBackgroundColor(R.color.background_color);
+//
+//        } else if(!PreRetTime.isEmpty()) {
+//            viewHolder.card_view_without_status.setBackgroundResource(R.color.white);
+//        }
 
-      /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (!(CustomerDistrict.equals("1")) && DeliveryTime > 5){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (!(CustomerDistrict.equals("1")) && DeliveryTime < 5){
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
 
-             else if (CustomerDistrict.equals("1") && DeliveryTime <2){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
 
+       /* try {
+            if (Pick_merchantName.equals("")) {
+                viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+            } else if (!Pick_merchantName.equals("")) {
+                viewHolder.item_merchantName_without_status.setText(list.get(i).getPickMerchantName());
+            }
+        } catch (Exception e){
+            Toast.makeText(context, "ERR  "+e, Toast.LENGTH_SHORT).show();
         }*/
-
+       // if (Pick_merchantName.isEmpty()) {
+//            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+      //  }
+//        else if(!Pick_merchantName.isEmpty()){
+//            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
+//            viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+//        }
     }
 
     @Override

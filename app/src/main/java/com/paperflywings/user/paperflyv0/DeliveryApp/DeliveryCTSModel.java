@@ -23,6 +23,15 @@ public class DeliveryCTSModel {
     private String cashType;
     private String CashTime;
     private String CashBy;
+
+    public int getSql_primary_id() {
+        return sql_primary_id;
+    }
+
+    public void setSql_primary_id(int sql_primary_id) {
+        this.sql_primary_id = sql_primary_id;
+    }
+
     private String CashAmt;
     private String CashComment;
     private String partial;
@@ -35,6 +44,143 @@ public class DeliveryCTSModel {
     private String flagReq;
     private String Ret;
     private String RetTime;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCTSTime() {
+        return CTSTime;
+    }
+
+    public void setCTSTime(String CTSTime) {
+        this.CTSTime = CTSTime;
+    }
+
+    public String getCTSBy() {
+        return CTSBy;
+    }
+
+    public void setCTSBy(String CTSBy) {
+        this.CTSBy = CTSBy;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getFlagReq() {
+        return flagReq;
+    }
+
+    public void setFlagReq(String flagReq) {
+        this.flagReq = flagReq;
+    }
+
+    public String getRet() {
+        return Ret;
+    }
+
+    public void setRet(String ret) {
+        Ret = ret;
+    }
+
+    public String getRetTime() {
+        return RetTime;
+    }
+
+    public void setRetTime(String retTime) {
+        RetTime = retTime;
+    }
+
+    public String getRetBy() {
+        return RetBy;
+    }
+
+    public void setRetBy(String retBy) {
+        RetBy = retBy;
+    }
+
+    public String getRetReason() {
+        return RetReason;
+    }
+
+    public void setRetReason(String retReason) {
+        RetReason = retReason;
+    }
+
+    public String getRts() {
+        return Rts;
+    }
+
+    public void setRts(String rts) {
+        Rts = rts;
+    }
+
+    public String getRtsTime() {
+        return RtsTime;
+    }
+
+    public void setRtsTime(String rtsTime) {
+        RtsTime = rtsTime;
+    }
+
+    public String getRtsBy() {
+        return RtsBy;
+    }
+
+    public void setRtsBy(String rtsBy) {
+        RtsBy = rtsBy;
+    }
+
+    public String getPreRet() {
+        return PreRet;
+    }
+
+    public void setPreRet(String preRet) {
+        PreRet = preRet;
+    }
+
+    public String getPreRetTime() {
+        return PreRetTime;
+    }
+
+    public void setPreRetTime(String preRetTime) {
+        PreRetTime = preRetTime;
+    }
+
+    public String getPreRetBy() {
+        return PreRetBy;
+    }
+
+    public void setPreRetBy(String preRetBy) {
+        PreRetBy = preRetBy;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmpCode() {
+        return empCode;
+    }
+
+    public void setEmpCode(String empCode) {
+        this.empCode = empCode;
+    }
+
     private String RetBy;
     private String RetReason;
     private String Rts;
@@ -47,6 +193,8 @@ public class DeliveryCTSModel {
     private String ReaBy;
     private String username;
     private String empCode;
+    private String RetRem;
+    private int sql_primary_id;
 
 
     public String getCTS() {
@@ -105,8 +253,8 @@ public class DeliveryCTSModel {
         ReaBy = reaBy;
     }
 
-    public DeliveryCTSModel(String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, String slaMiss) {
-
+    public DeliveryCTSModel(int sql_primary_id,String username, String merchEmpCode, String dropPointCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String cash, String cashType, String cashTime, String cashBy, String cashAmt, String cashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldReason, String onHoldSchedule, String rea, String reaTime, String reaBy, String ret, String retTime, String retBy, String retRem, String retReason, String rts, String rtsTime, String rtsBy, String preRet, String preRetTime, String preRetBy, String cts, String ctsTime, String ctsBy, String slaMiss) {
+        this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = merchEmpCode;
         this.dropPointCode = dropPointCode;
@@ -141,6 +289,7 @@ public class DeliveryCTSModel {
         this.Ret = ret;
         this.RetTime = retTime;
         this.RetBy = retBy;
+        this.RetRem = retRem;
         this.RetReason = retReason;
         this.Rts = rts;
         this.RtsTime = rtsTime;

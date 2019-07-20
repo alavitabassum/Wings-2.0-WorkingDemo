@@ -777,26 +777,6 @@ public class AssignPickup_Supervisor extends AppCompatActivity
 
             @Override
             public void onClick(DialogInterface dialog, int i1) {
-
-
-           /*     if(et1.getText().toString().trim().isEmpty()) {
-                    tv1.setText("Order count can't be empty");
-//                    dialog.equals("Order count can't be empty");
-
-
-                } else {
-
-                    assignexecutive(mAutoComplete.getText().toString(), empcode, et1.getText().toString(), merchant_code, user, currentDateTimeString, m_name, contactNumber, pick_merchant_name, pick_merchant_address);
-
-                if (!mAutoComplete.getText().toString().isEmpty() || mAutoComplete.getText().toString().equals(null)) {
-                    Toast.makeText(AssignPickup_Manager.this, mAutoComplete.getText().toString()
-                                    + "(" + et1.getText().toString() + ")",
-                            Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-
-                    }
-                }*/
-
             }
         });
 

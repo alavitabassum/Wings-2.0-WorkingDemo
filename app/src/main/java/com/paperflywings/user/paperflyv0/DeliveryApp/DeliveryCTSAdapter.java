@@ -32,7 +32,6 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
     BarcodeDbHelper db;
 
 
-
     public interface OnItemClickListtener {
         void onItemClick_view (View view2, int position2);
         void onItemClick_call (View view4, int position4);
@@ -139,9 +138,9 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         //viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
         viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
 
-        viewHolder.item_cashAmt_without_status.setText("Cash Amount: "+list.get(i).getCashAmt());
+        viewHolder.item_cashAmt_without_status.setText("Cash Amount: "+list.get(i).getCashAmt()+" Taka");
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
-        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice());
+        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
         //viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
 
@@ -152,7 +151,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         String Merchant_name = list.get(i).getMerchantName();
         String Pick_merchantName = list.get(i).getPickMerchantName();
         String partialReason = list.get(i).getPartialReason();
-        String cashComment = list.get(i).getCashComment();
+        String cash = list.get(i).getCash();
         int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
 
 
@@ -163,11 +162,21 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         if(partialReason.isEmpty()) {
             viewHolder.item_partialreason_without_status.setText("No Reason: "+list.get(i).getPartialReason().substring(0,0));
         }*/
-        if(list.get(i).getCashComment() != null){
+
+        String partial = list.get(i).getPartial();
+        String ret = list.get(i).getRet();
+
+        if(cash.equals("Y")){
             viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
         }
-        else {
-            viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+        else if (partial.equals("Y")) {
+            viewHolder.item_cashComment_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+        }
+        else if (!(partial.equals("Y"))) {
+            viewHolder.item_cashComment_without_status.setText("Partial Reason: no reason");
+        }
+        else if (!(cash.equals("Y"))) {
+            viewHolder.item_cashComment_without_status.setText("Remarks: no remarks");
         }
 
        // viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());

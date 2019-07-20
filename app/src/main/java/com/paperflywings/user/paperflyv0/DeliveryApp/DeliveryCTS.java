@@ -2,6 +2,7 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -32,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,12 +57,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class DeliveryCTS extends AppCompatActivity
@@ -70,7 +78,19 @@ public class DeliveryCTS extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
 
-    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
+    String lats,lngs,addrs,fullAddress;
+    String getlats,getlngs,getaddrs;
+    ProgressDialog progressDialog;
+    LocationManager locationManager;
+    Geocoder geocoder;
+    List<Address> addresses;
+
+    private static final int REQUEST_LOCATION = 1;
+
+    private Button delivery_cts_recieved;
+
+    public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
+    public static final String CTS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
     public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
 
     private List<DeliveryCTSModel> list;
@@ -83,6 +103,7 @@ public class DeliveryCTS extends AppCompatActivity
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +114,7 @@ public class DeliveryCTS extends AppCompatActivity
         CashCount_text = (TextView)findViewById(R.id.CTS_id_);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_without_status_list);
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view);
         recyclerView_pul.setAdapter(DeliveryCTSAdapter);
         list = new ArrayList<DeliveryCTSModel>();
 
@@ -107,6 +128,7 @@ public class DeliveryCTS extends AppCompatActivity
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
+        delivery_cts_recieved = (Button) findViewById(R.id.cash_recieved_by_supervisor);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
@@ -130,9 +152,14 @@ public class DeliveryCTS extends AppCompatActivity
             }
         };
 
-        //registering the broadcast receiver to update sync status
-        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
-
+        delivery_cts_recieved.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DeliveryCTS.this,
+                        DeliveryCashRS.class);
+                startActivity(intent);
+            }
+        });
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_CTS);
@@ -154,7 +181,7 @@ public class DeliveryCTS extends AppCompatActivity
         try{
             list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_delivery_without_status(sqLiteDatabase,user, "cash");
+            Cursor c = db.get_delivery_CTS(sqLiteDatabase,user, "cts", "Y");
 
             while (c.moveToNext()){
                 int id = c.getInt(0);
@@ -217,7 +244,7 @@ public class DeliveryCTS extends AppCompatActivity
             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
             swipeRefreshLayout.setRefreshing(false);
 
-            String str = String.valueOf(db.getCashCount("cash"));
+            String str = String.valueOf(db.getCashCount("cts", "Y"));
             CashCount_text.setText(str);
             swipeRefreshLayout.setRefreshing(false);
 
@@ -227,13 +254,13 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
     private void loadRecyclerView (final String user){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, WITHOUT_STATUS_LIST,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, CTS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteList(sqLiteDatabase, "cash");
+                        db.deleteListCTS(sqLiteDatabase, "cts");
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
@@ -242,6 +269,7 @@ public class DeliveryCTS extends AppCompatActivity
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryCTSModel withoutStatus_model = new  DeliveryCTSModel(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("dropPointCode"),
@@ -276,6 +304,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -288,7 +317,8 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getString("slaMiss"));
 
-                                db.insert_delivery_without_status(
+                                db.insert_delivery_CTS(
+                                        o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
                                         o.getString("barcode"),
@@ -323,6 +353,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("Ret"),
                                         o.getString("RetTime"),
                                         o.getString("RetBy"),
+                                        o.getString("retRem"),
                                         o.getString("retReason"),
                                         o.getString("RTS"),
                                         o.getString("RTSTime"),
@@ -333,8 +364,8 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getString("slaMiss"),
-                                        "cash"
+                                        o.getInt("slaMiss"),
+                                        "cts"
                                         , NAME_SYNCED_WITH_SERVER );
                                 list.add(withoutStatus_model);
                             }
@@ -344,7 +375,7 @@ public class DeliveryCTS extends AppCompatActivity
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
 
-                            String str = String.valueOf(db.getOnholdCount("cash"));
+                            String str = String.valueOf(db.getCashCount("cts", "Y"));
                             CashCount_text.setText(str);
 
 
@@ -448,7 +479,38 @@ public class DeliveryCTS extends AppCompatActivity
                     DeliveryOfficerCardMenu.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }   else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    DeliveryOfficerUnpicked.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    DeliveryWithoutStatus.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    DeliveryOnHold.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    ReturnRequest.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    Delivery_ReturnToSupervisor.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(DeliveryCTS.this,
+                    DeliveryCTS.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -458,7 +520,7 @@ public class DeliveryCTS extends AppCompatActivity
                         public void onClick(DialogInterface arg0, int arg1) {
 
                             SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                            db.deleteAssignedList(sqLiteDatabase);
+//                            db.deleteAssignedList(sqLiteDatabase);
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -498,6 +560,12 @@ public class DeliveryCTS extends AppCompatActivity
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -521,29 +589,26 @@ public class DeliveryCTS extends AppCompatActivity
         final DeliveryCTSModel clickedITem = list.get(position2);
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         final String currentDateTime = df.format(c);
 
-        final String cash = clickedITem.getCash();
-        final String cashBy = clickedITem.getCashBy();
-        final String cashType = clickedITem.getCashType();
-        final String cashTime = clickedITem.getCashTime();
         final String CTS = "Y";
         final String CTSTime = currentDateTime;
         final String CTSBy = username;
 
         String barcode = clickedITem.getBarcode();
         String orderid = clickedITem.getOrderid();
+        final String sql_primary_id = String.valueOf(clickedITem.getSql_primary_id());
 
-        CashToS(CTS,CTSTime,CTSBy,empcode,barcode,orderid);
+        CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "ctsOk");
+        lat_long_store(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
     }
 
-    private void CashToS(final String CTS,final String CTSTime, final String CTSBy,final String empcode, final String barcode, final String orderid) {
-        String str = String.valueOf(db.getOnholdCount("onHold"));
+    private void CashToS(final String CTS,final String CTSTime, final String CTSBy, final String barcode, final String orderid, final String flagReq) {
+        String str = String.valueOf(db.getCashCount("cts", "Y"));
         CashCount_text.setText(str);
         final Intent withoutstatuscount = new Intent(DeliveryCTS.this,
                 DeliveryCTS.class);
@@ -554,7 +619,7 @@ public class DeliveryCTS extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_SYNCED_WITH_SERVER);
+                                db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid, flagReq, NAME_SYNCED_WITH_SERVER);
                                 Toast toast= Toast.makeText(DeliveryCTS.this,
                                         "Successful", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -563,19 +628,18 @@ public class DeliveryCTS extends AppCompatActivity
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                                db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
                                 startActivity(withoutstatuscount);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cts_status(CTS,CTSTime,CTSBy,empcode,barcode,orderid,NAME_NOT_SYNCED_WITH_SERVER);
+                        db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);
                     }
                 }
@@ -586,7 +650,6 @@ public class DeliveryCTS extends AppCompatActivity
                 params.put("CTS", CTS);
                 params.put("CTSTime", CTSTime);
                 params.put("CTSBy", CTSBy);
-                params.put("empcode", empcode);
                 params.put("orderid", orderid);
                 params.put("barcode", barcode);
                 return params;
@@ -598,9 +661,94 @@ public class DeliveryCTS extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryCTS.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliveryCTS.this, "Server Error! cts", Toast.LENGTH_LONG).show();
         }
     }
+
+
+    public void GetValueFromEditText(){
+        ActivityCompat.requestPermissions(DeliveryCTS.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        GPStracker g = new GPStracker(getApplicationContext());
+        Location LocationGps = g.getLocation();
+
+        if (LocationGps !=null)
+        {
+            double lati=LocationGps.getLatitude();
+            double longi=LocationGps.getLongitude();
+
+            lats=String.valueOf(lati);
+            lngs=String.valueOf(longi);
+
+            try {
+
+                addresses = geocoder.getFromLocation(lati,longi,1);
+                String addres = addresses.get(0).getAddressLine(0);
+                String area = addresses.get(0).getLocality();
+                String city = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalcode = addresses.get(0).getPostalCode();
+
+                fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            getlats = lats.trim();
+            getlngs = lngs.trim();
+            getaddrs = fullAddress.trim();
+        }
+        else
+        {
+            // Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+//        GetValueFromEditText();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String ServerResponse) {
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                      }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                // Creating Map String Params.
+                Map<String, String> params = new HashMap<String, String>();
+
+                // Adding All values to Params.
+                params.put("sqlPrimaryKey", sql_primary_id);
+                params.put("actionType", action_type);
+                params.put("actionFor", action_for);
+                params.put("actionBy", username);
+                params.put("actionTime",currentDateTime);
+                params.put("latitude", getlats);
+                params.put("longitude", getlngs);
+                params.put("Address", getaddrs);
+
+                return params;
+            }
+
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryCTS.this);
+            requestQueue.add(stringRequest);
+        } catch (Exception e) {
+//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
 
     @Override
     public void onItemClick_call(View view4, int position4) {
