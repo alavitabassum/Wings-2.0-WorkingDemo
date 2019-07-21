@@ -23,21 +23,60 @@
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp">
         <Button
             android:id="@+id/searchUsingDate"
-            android:layout_width="170dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
             android:autofillHints=""
             android:ems="10"
             android:inputType="text"
             android:textSize="15sp"
             android:text="Select date"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/total_order_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:layout_marginLeft="50dp"
+            android:layout_toEndOf="@+id/searchUsingDate"
+            android:text="Total Order: " />
+        <TextView
+            android:id="@+id/total_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="0"
+            android:layout_toEndOf="@+id/total_order_text"/>
+
+        <TextView
+            android:id="@+id/total_cash_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:padding="2dp"
+            android:layout_toEndOf="@+id/searchUsingDate"
+            android:layout_below="@+id/total_order_text"
+            android:text="Total Cash Collection: " />
+
+        <TextView
+            android:id="@+id/total_cash_collection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="0 Taka"
+            android:layout_below="@+id/total_order"
+            android:layout_toEndOf="@+id/total_cash_text"
+            android:textColor="@color/view_green"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+
     </RelativeLayout>
 
     <android.support.v7.widget.CardView
@@ -57,7 +96,7 @@
             android:background="#aaaaaa">
             <TextView
                 android:id="@+id/ordertxt_order_cash_head"
-                android:layout_width="150dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:lines="1"
@@ -69,7 +108,7 @@
 
             <TextView
                 android:id="@+id/merOrderRefId_head"
-                android:layout_width="160dp"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/ordertxt_order_cash_head"
                 android:layout_toEndOf="@+id/ordertxt_order_cash_head"
@@ -84,13 +123,14 @@
 
             <TextView
                 android:id="@+id/orderIdCash_head"
-                android:layout_width="100dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/merOrderRefId_head"
                 android:layout_toEndOf="@+id/merOrderRefId_head"
                 android:lines="1"
                 android:maxLines="1"
                 android:text="Price"
+                android:paddingLeft="10dp"
                 android:textAlignment="textStart"
                 android:textColor="#fff"
                 android:textSize="14sp"
@@ -99,13 +139,14 @@
 
             <TextView
                 android:id="@+id/collectedCashAmt_head"
-                android:layout_width="100dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/orderIdCash_head"
                 android:layout_toEndOf="@+id/orderIdCash_head"
                 android:lines="1"
                 android:maxLines="1"
                 android:text="Collection"
+                android:paddingLeft="10dp"
                 android:textAlignment="textStart"
                 android:textColor="#fff"
                 android:textSize="14sp"
@@ -118,5 +159,6 @@
         android:layout_marginTop="118dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

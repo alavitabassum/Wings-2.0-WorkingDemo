@@ -70,9 +70,11 @@ public class DeliveryCashRS extends AppCompatActivity
 //    TextView totalCash;
 
 //    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashRSupervisorApi.php";
-    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/testing_testing.php";
+    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCRS.php";
 
     private List<DeliveryCashRSModel> list;
+    TextView totalOrder;
+    TextView totalCashCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,9 @@ public class DeliveryCashRS extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cashRS_list);
-       //totalCash = (TextView) findViewById(R.id.totalCash_id_);
+        totalOrder = (TextView) findViewById(R.id.total_order);
+        totalCashCollection = (TextView)findViewById(R.id.total_cash_collection);
+
         recyclerView_pul.setAdapter(DeliveryCashRSAdapter);
         list = new ArrayList<DeliveryCashRSModel>();
 
@@ -120,6 +124,7 @@ public class DeliveryCashRS extends AppCompatActivity
                         String dayselected  = Integer.toString(day);
                         /*2019-07-15 03:45:29*/
                         String dateTime = yearselected + "-" + monthselected + "-" + dayselected;
+                        loadcashamt(username,dateTime);
                         loadRecyclerView(username,dateTime);
                         list.clear();
                        /* pendingsummary_modelslist.clear();
@@ -155,6 +160,76 @@ public class DeliveryCashRS extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    private void loadcashamt(final String username, final String date_match){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryGetCashCount.php",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+//                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+//                        db.deleteList(sqLiteDatabase, "cash");
+                        list.clear();
+//                        progress.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                            /*    DeliveryCashRSModel withoutStatus_model = new  DeliveryCashRSModel(
+                                        o.getInt("totalOrder"),
+                                        o.getInt("totalCollection"));*/
+
+                                /*list.add(withoutStatus_model);*/
+
+                                totalOrder.setText(o.getString("totalOrder"));
+                                totalCashCollection.setText(o.getString("totalCollection")+" Taka");
+
+                            }
+
+
+
+
+                            /*DeliveryCashRSAdapter = new DeliveryCashRSAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(DeliveryCashRSAdapter);*/
+
+                            /*String totalCashCollection = String.valueOf();
+                            totalCash.setText(totalCashCollection+ "Taka");*/
+//                            swipeRefreshLayout.setRefreshing(false);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+//                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+//                        progress.dismiss();
+//                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username", username);
+                params1.put("date", date_match);
+                return params1;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        requestQueue.add(stringRequest);
     }
 
     private void loadRecyclerView (final String username, final String date_match){

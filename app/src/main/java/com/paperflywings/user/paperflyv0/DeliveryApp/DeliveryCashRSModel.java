@@ -43,6 +43,30 @@ public class DeliveryCashRSModel {
     private String Ret;
     private String RetTime;
 
+    public int getTotalOrder() {
+        return totalOrder;
+    }
+
+    public void setTotalOrder(int totalOrder) {
+        this.totalOrder = totalOrder;
+    }
+
+    public int getTotalCollection() {
+        return totalCollection;
+    }
+
+    public void setTotalCollection(int totalCollection) {
+        this.totalCollection = totalCollection;
+    }
+
+    private int totalOrder;
+    private int totalCollection;
+
+    public DeliveryCashRSModel(int totalOrder, int totalCollection) {
+        this.totalOrder = totalOrder;
+        this.totalCollection = totalCollection;
+    }
+
     public String getUsername() {
         return username;
     }
