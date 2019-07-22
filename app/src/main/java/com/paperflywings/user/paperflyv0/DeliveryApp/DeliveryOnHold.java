@@ -21,6 +21,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
@@ -141,6 +142,31 @@ public class DeliveryOnHold extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
+        // location enabled
+        isLocationEnabled();
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setTitle("Turn on location!")
+                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            });
+                    /*.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });*/
+            AlertDialog alert = builder.create();
+            alert.show();
+        } else {
+            GetValueFromEditText();
+        }
+
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -172,6 +198,12 @@ public class DeliveryOnHold extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    protected boolean isLocationEnabled(){
+        String le = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager) getSystemService(le);
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     private void getallreturnreasons() {
@@ -948,7 +980,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
     public void GetValueFromEditText(){
 
-        ActivityCompat.requestPermissions(DeliveryOnHold.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+//        ActivityCompat.requestPermissions(DeliveryOnHold.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
             GPStracker g = new GPStracker(getApplicationContext());
             Location LocationGps = g.getLocation();
@@ -990,27 +1022,19 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String ServerResponse) {
-                        // Hiding the progress dialog after all task complete.
-
-                        // Showing response message coming from server.
                         //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        // Hiding the progress dialog after all task complete.
-
-                        // Showing error message if something goes wrong.
-//                       Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() {
-
                 // Creating Map String Params.
                 Map<String, String> params = new HashMap<String, String>();
-
                 // Adding All values to Params.
                 params.put("sqlPrimaryKey", sql_primary_id);
                 params.put("actionType", action_type);
@@ -1023,13 +1047,12 @@ public class DeliveryOnHold extends AppCompatActivity
 
                 return params;
             }
-
         };
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(DeliveryOnHold.this);
             requestQueue.add(stringRequest);
         } catch (Exception e) {
-//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            // Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
 

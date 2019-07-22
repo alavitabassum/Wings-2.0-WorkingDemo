@@ -18,6 +18,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -76,7 +77,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
     private Button done;
     private RequestQueue requestQueue;
     List<DeliveryWithoutStatusModel> returnReasons;
-
     String lats,lngs,addrs,fullAddress;
     String getlats,getlngs,getaddrs;
     ProgressDialog progressDialog;
@@ -84,7 +84,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
     Geocoder geocoder;
     List<Address> addresses;
     // int sql_primary_id;
-
     private static final int REQUEST_LOCATION = 1;
 
     //1 means data is synced and 0 means data is not synced
@@ -97,10 +96,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_ordertrack_for_app.php";
     public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
-
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +112,23 @@ public class DeliveryQuickScan extends AppCompatActivity{
         barcodeView.initializeFromIntent(getIntent());
         barcodeView.decodeContinuous(callback);
 
+        // location enabled
+        isLocationEnabled();
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setCancelable(false);
+            builder.setTitle("Turn on location!")
+                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,21 +139,24 @@ public class DeliveryQuickScan extends AppCompatActivity{
             }
         });
 
-
         beepManager = new BeepManager(this);
-
         //the broadcast receiver to update sync status
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
             }
         };
         //registering the broadcast receiver to update sync status
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
     }
-    private BarcodeCallback callback = new BarcodeCallback()  {
 
+    protected boolean isLocationEnabled(){
+        String le = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager) getSystemService(le);
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    private BarcodeCallback callback = new BarcodeCallback()  {
         @Override
         public void barcodeResult(BarcodeResult result)  {
             //Fetching email from shared preferences
@@ -172,27 +189,24 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
-//                Toast.makeText(DeliveryQuickScan.this, "No Data Matched", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(DeliveryQuickScan.this, "No Data Matched", Toast.LENGTH_SHORT).show();
             } onPause();
 
             db.close();
-
             beepManager.playBeepSoundAndVibrate();
-
             //Added preview of scanned barcode
             ImageView imageView = (ImageView) findViewById(R.id.barcodePreview);
             imageView.setImageBitmap(result.getBitmapWithResultPoints(Color.YELLOW));
-
         }
 
         @Override
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
         }
     };
+
     @Override
     protected void onResume() {
         super.onResume();
-
         barcodeView.resume();
     }
 
@@ -222,7 +236,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
     private void getallreturnreasons() {
         try {
-
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_return_reason_list(sqLiteDatabase);
             while (c.moveToNext()) {
@@ -231,11 +244,11 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 DeliveryWithoutStatusModel returnReasonList = new DeliveryWithoutStatusModel(returnId, reason);
                 returnReasons.add(returnReasonList);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     private void getData(final String barcodeNumber)
     {
         try{
@@ -253,7 +266,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 final String packageprice = c.getString(7);
                 final String packagebrief = c.getString(8);
                 final String sql_primary_id = c.getString(9);
-
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(DeliveryQuickScan.this);
                 View mView = getLayoutInflater().inflate(R.layout.delivery_quick_scan, null);
@@ -274,7 +286,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
                 price.setText(packageprice+" Taka");
                 brief.setText("Package Brief: "+packagebrief);
 
-
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i1) {
@@ -289,21 +300,15 @@ public class DeliveryQuickScan extends AppCompatActivity{
                     }
                 });
 
-
                 builder.setCancelable(false);
                 builder.setView(mView);
 
                 final AlertDialog alert1 = builder.create();
                 alert1.show();
 
-
                 alert1.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-//                        alert1.dismiss();
-//                        onResume();
-
                         final CharSequence [] values = {"Cash","Partial","Return-request","On-hold"};
 
                         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -313,8 +318,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         Date c = Calendar.getInstance().getTime();
                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                         final String currentDateTime = df.format(c);
-
-//      final DeliveryWithoutStatusModel clickedITem = list.get(position2);
 
                         // CASH
                         final String cash = "Y";
@@ -344,10 +347,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                         final String merchantName = merchantname;
                         final String pickMerchantName = pickMerchantname;
-
-
-//                        DeliveryWithoutStatusModel Dwo = new DeliveryWithoutStatusModel(sql_primary_id);
-//                        sql_primary_id =  Dwo.getSql_primary_id();
 
                         final Intent DeliveryListIntent = new Intent(DeliveryQuickScan.this,
                                 DeliveryQuickScan.class);

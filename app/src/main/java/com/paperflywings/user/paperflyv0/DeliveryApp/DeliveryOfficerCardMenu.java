@@ -1,5 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,10 +11,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -61,7 +64,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
     private RequestQueue requestQueue;
     private static final int REQUEST_CAMERA = 1;
-
+    private static final int REQUEST_LOCATION = 4;
+    LocationManager locationManager;
     private ProgressDialog progress;
 
     private BroadcastReceiver broadcastReceiver;
@@ -136,6 +140,30 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // location enabled
+        isLocationEnabled();
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setTitle("Turn on location!")
+                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            });
+                    /*.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });*/
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        // Camera permission
         int currentApiVersion = Build.VERSION.SDK_INT;
 
         if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
@@ -151,6 +179,11 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
     }
 
+    protected boolean isLocationEnabled(){
+        String le = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager) getSystemService(le);
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
 
     // Payload for delivery return reasons
     public void loadReturnReason(){
@@ -194,7 +227,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-
+    // Delivery onhold list payload
     private void loadOnHoldList (final String user){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ONHOLD_LIST,
@@ -562,7 +595,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 cashCollection_count.setText(String.valueOf(cash));
                 returnList_count.setText(String.valueOf(returnList));
 
-
                 quickDelivery.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -631,13 +663,14 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     // Check for camera permission
     private boolean checkPermission()
     {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
     // Request for camera permission
     private void requestPermission()
     {
         ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
 
     }
 
