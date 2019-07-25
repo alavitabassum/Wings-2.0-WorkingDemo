@@ -1,6 +1,5 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -19,7 +18,6 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -408,7 +406,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                             // Store information of cash
                                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
                                                             // Store lat long
-                                                            lat_long_store(sql_primary_id,"Delivery", "Cash", username, currentDateTime);
+                                                            GetValueFromEditText(sql_primary_id,"Delivery", "Cash", username, currentDateTime);
                                                             dialogCash.dismiss();
                                                             startActivity(DeliveryListIntent);
                                                         }
@@ -473,7 +471,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                             // Store partial status information
                                                             update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,cashType,merchEmpCode,"partialApp");
                                                             // store lat long for partial status
-                                                            lat_long_store(sql_primary_id,"Delivery", "Partial", username, currentDateTime);
+                                                            GetValueFromEditText(sql_primary_id,"Delivery", "Partial", username, currentDateTime);
 
                                                             dialogPartial.dismiss();
                                                             startActivity(DeliveryListIntent);
@@ -537,7 +535,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         }  else {*/
                                                          update_retR_status(retRemarks, retReason, PreRet, PreRetTime, PreRetBy, orderid, merchEmpCode, "RetApp");
                                                         // store lat long for partial status
-                                                         lat_long_store(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
+                                                        GetValueFromEditText(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
 //                                                        }
                                                         dialogReturnR.dismiss();
                                                         startActivity(DeliveryListIntent);
@@ -618,7 +616,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                            update_onhold_status(onHoldSchedule, onHoldReason, Rea, ReaTime, ReaBy, orderid, merchEmpCode, "updateOnHoldApp");
                                                             insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                                             // store lat long for partial status
-                                                            lat_long_store(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
+                                                        GetValueFromEditText(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
 //                                                        }
                                                         dialogonHold.dismiss();
                                                         startActivity(DeliveryListIntent);
@@ -654,12 +652,9 @@ public class DeliveryQuickScan extends AppCompatActivity{
     }
 
 
-   public void GetValueFromEditText(){
-
-        ActivityCompat.requestPermissions(DeliveryQuickScan.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+   public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+//        ActivityCompat.requestPermissions(DeliveryQuickScan.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
-
-
         GPStracker g = new GPStracker(getApplicationContext());
         Location LocationGps = g.getLocation();
 
@@ -691,6 +686,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             getlats = lats.trim();
             getlngs = lngs.trim();
             getaddrs = fullAddress.trim();
+            lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
 
         }
 
@@ -699,9 +695,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
 //            Toast.makeText(this, "Turn on GPS/Location", Toast.LENGTH_SHORT).show();
         }
     }
-   public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
-      GetValueFromEditText();
 
+   public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
                new Response.Listener<String>() {
                    @Override
@@ -733,16 +728,14 @@ public class DeliveryQuickScan extends AppCompatActivity{
                params.put("actionFor", action_for);
                params.put("actionBy", username);
                params.put("actionTime",currentDateTime);
-               params.put("latitude", getlats);
-               params.put("longitude", getlngs);
-               params.put("Address", getaddrs);
+               params.put("latitude", lats);
+               params.put("longitude", longs);
+               params.put("Address", address);
 
                return params;
            }
 
        };
-
-
        try {
            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryQuickScan.this);
            requestQueue.add(stringRequest);

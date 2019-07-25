@@ -19,9 +19,12 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -137,6 +140,37 @@ public class DeliveryCTS extends AppCompatActivity
 
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
+        // location enabled
+        isLocationEnabled();
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setTitle("Turn on location!")
+                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        int currentApiVersion = Build.VERSION.SDK_INT;
+
+        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
+        {
+            if(checkPermission())
+            {
+                // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                requestPermission();
+            }
+        }
+
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -174,9 +208,27 @@ public class DeliveryCTS extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
     }
+
+    // Check for camera permission
+    private boolean checkPermission()
+    {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    // Request for camera permission
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+    }
+
+    protected boolean isLocationEnabled(){
+        String le = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager) getSystemService(le);
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+
     private void getData(String user){
         try{
             list.clear();
@@ -422,7 +474,6 @@ public class DeliveryCTS extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -604,7 +655,7 @@ public class DeliveryCTS extends AppCompatActivity
         final String sql_primary_id = String.valueOf(clickedITem.getSql_primary_id());
 
         CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "ctsOk");
-        lat_long_store(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
+        GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
     }
 
     private void CashToS(final String CTS,final String CTSTime, final String CTSBy, final String barcode, final String orderid, final String flagReq) {
@@ -666,8 +717,8 @@ public class DeliveryCTS extends AppCompatActivity
     }
 
 
-    public void GetValueFromEditText(){
-        ActivityCompat.requestPermissions(DeliveryCTS.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+//        ActivityCompat.requestPermissions(DeliveryCTS.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
 
         GPStracker g = new GPStracker(getApplicationContext());
@@ -698,6 +749,7 @@ public class DeliveryCTS extends AppCompatActivity
             getlats = lats.trim();
             getlngs = lngs.trim();
             getaddrs = fullAddress.trim();
+            lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
         }
         else
         {
@@ -705,8 +757,7 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
-//        GetValueFromEditText();
+    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
                 new Response.Listener<String>() {
@@ -731,9 +782,9 @@ public class DeliveryCTS extends AppCompatActivity
                 params.put("actionFor", action_for);
                 params.put("actionBy", username);
                 params.put("actionTime",currentDateTime);
-                params.put("latitude", getlats);
-                params.put("longitude", getlngs);
-                params.put("Address", getaddrs);
+                params.put("latitude", lats);
+                params.put("longitude", longs);
+                params.put("Address", address);
 
                 return params;
             }

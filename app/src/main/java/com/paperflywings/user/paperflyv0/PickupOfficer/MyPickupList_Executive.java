@@ -718,7 +718,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                                             final TextView error_msg = (TextView) mViewOnHold.findViewById(R.id.error_msg);
                                             ArrayAdapter<String> adapterOnhold = new ArrayAdapter<String>(MyPickupList_Executive.this,
                                                     android.R.layout.simple_spinner_item,
-                                                    getResources().getStringArray(R.array.onholdreasons));
+                                                    getResources().getStringArray(R.array.onholdreasonsforpickup));
                                             adapterOnhold.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                             mOnholdSpinner.setAdapter(adapterOnhold);
 

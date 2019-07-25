@@ -212,7 +212,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-        // Check for camera permission
+    // Check for camera permission
     private boolean checkPermission()
     {
         return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
@@ -999,7 +999,6 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         spinnerBuilder.setCancelable(false);
         final AlertDialog dialog2 = spinnerBuilder.create();
         dialog2.show();
-
     }
 
     public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){

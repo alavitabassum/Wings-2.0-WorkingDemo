@@ -20,10 +20,12 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -163,8 +165,20 @@ public class DeliveryOnHold extends AppCompatActivity
                             });*/
             AlertDialog alert = builder.create();
             alert.show();
-        } else {
-            GetValueFromEditText();
+        }
+        // Location perssion
+        int currentApiVersion = Build.VERSION.SDK_INT;
+
+        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
+        {
+            if(checkPermission())
+            {
+                // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                requestPermission();
+            }
         }
 
         if(nInfo!= null && nInfo.isConnected())
@@ -198,6 +212,17 @@ public class DeliveryOnHold extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    private boolean checkPermission()
+    {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    // Request for camera permission
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
     }
 
     protected boolean isLocationEnabled(){
@@ -739,7 +764,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                             tv1.setText("Please write some comment");
                                         } else {
                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
-                                            lat_long_store(sql_primary_id,"Delivery", "Cash", username, currentDateTime);
+                                            GetValueFromEditText(sql_primary_id,"Delivery", "Cash", username, currentDateTime);
 
                                             dialogCash.dismiss();
                                             startActivity(DeliveryListIntent);
@@ -805,7 +830,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
                                             update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,cashType,merchEmpCode,"partialApp");
                                             // store lat long for partial status
-                                            lat_long_store(sql_primary_id,"Delivery", "Partial", username, currentDateTime);
+                                            GetValueFromEditText(sql_primary_id,"Delivery", "Partial", username, currentDateTime);
 
                                             dialogPartial.dismiss();
                                             startActivity(DeliveryListIntent);
@@ -870,7 +895,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                             // update_retR_status(Ret,RetTime,RetBy,retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
                                             update_retR_status(retRemarks, retReason, PreRet, PreRetTime, PreRetBy, orderid, merchEmpCode, "RetApp");
                                             // store lat long for partial status
-                                            lat_long_store(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
+                                        GetValueFromEditText(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
 //                                        }
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -951,7 +976,7 @@ public class DeliveryOnHold extends AppCompatActivity
                                            update_onhold_status(onHoldSchedule, onHoldReason, Rea, ReaTime, ReaBy, orderid, merchEmpCode, "updateOnHoldApp");
                                             insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                             // store lat long for partial status
-                                            lat_long_store(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
+                                        GetValueFromEditText(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
 //                                        }
                                             dialogonHold.dismiss();
                                             startActivity(DeliveryListIntent);
@@ -978,7 +1003,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
     }
 
-    public void GetValueFromEditText(){
+    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
 
 //        ActivityCompat.requestPermissions(DeliveryOnHold.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
@@ -1009,13 +1034,15 @@ public class DeliveryOnHold extends AppCompatActivity
                 getlats = lats.trim();
                 getlngs = lngs.trim();
                 getaddrs = fullAddress.trim();
+                lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
+
             }
             else
             {
                 // Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
             }
         }
-    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
 //        GetValueFromEditText();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
@@ -1041,9 +1068,9 @@ public class DeliveryOnHold extends AppCompatActivity
                 params.put("actionFor", action_for);
                 params.put("actionBy", username);
                 params.put("actionTime",currentDateTime);
-                params.put("latitude", getlats);
-                params.put("longitude", getlngs);
-                params.put("Address", getaddrs);
+                params.put("latitude", lats);
+                params.put("longitude", longs);
+                params.put("Address", address);
 
                 return params;
             }
