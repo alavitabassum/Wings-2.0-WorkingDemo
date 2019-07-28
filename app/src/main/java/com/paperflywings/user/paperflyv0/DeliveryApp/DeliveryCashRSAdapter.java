@@ -1,6 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -73,6 +74,15 @@ public class DeliveryCashRSAdapter extends RecyclerView.Adapter<DeliveryCashRSAd
 
         /*SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a");
         viewHolder.item_productBrief_without_status.setText("Date: "+list.get(i).getCTSTime());*/
+
+        String ctsVal = list.get(i).getCTS();
+        if(ctsVal.equals("Y")){
+            viewHolder.item_ordId_without_status.setTextColor(Color.BLACK);
+        }
+
+        if(!ctsVal.equals("Y")){
+            viewHolder.item_ordId_without_status.setTextColor(Color.RED);
+        }
     }
 
     @Override

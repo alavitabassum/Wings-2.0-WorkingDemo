@@ -1,10 +1,13 @@
 package com.paperflywings.user.paperflyv0.PickupSupervisor;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -21,8 +24,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.nex3z.notificationbadge.NotificationBadge;
+import com.paperflywings.user.paperflyv0.AssignManager_ExecutiveList;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.LoginActivity;
@@ -33,14 +44,24 @@ import com.paperflywings.user.paperflyv0.PickupSupervisor.PickupTodaySupervisor.
 import com.paperflywings.user.paperflyv0.R;
 import com.txusballesteros.bubbles.BubblesManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SupervisorCardMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private String MERCHANT_INVENTORY_URL = "http://paperflybd.com/merchantInventoryAPI.php";
+    private String EXECUTIVE_URL = "http://paperflybd.com/executiveListNewZonewise.php";
 //    private String MERCHANT_URL = "http://paperflybd.com/unassignedAPI.php";
     List<AssignManager_Model> assignManager_modelList;
+    List<AssignManager_ExecutiveList> executiveLists;
     Database database;
+    private ProgressDialog progress;
 
     private BubblesManager bubblesManager;
     private NotificationBadge mBadge;
@@ -66,12 +87,18 @@ public class SupervisorCardMenu extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_s);
         setSupportActionBar(toolbar);
 
+        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
+        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
+
+
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         /*   getallmerchant();
         loadmerchantlist(username);*/
 
+        loadexecutivelist(username);
+        loadallinventorymerchantlist(username);
 
         recyclerView =
                 (RecyclerView) findViewById(R.id.recycler_view_supervisor);
@@ -94,6 +121,156 @@ public class SupervisorCardMenu extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.manager_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+  //Load executive from api
+  /*  private void loadexecutivelist(final String user) {
+
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, EXECUTIVE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progress.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("executivelist");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(
+                                        o.getString("userName"),
+                                        o.getString("empCode"),
+                                        o.getString("empName"),
+                                        o.getString("contactNumber")
+                                );
+
+                                database.addexecutivelist(  o.getString("userName"),
+                                        o.getString("empCode"),
+                                        o.getString("empName"),
+                                        o.getString("contactNumber"));
+
+                                executiveLists.add(assignManager_executiveList);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(SupervisorCardMenu.this, "json exception" +e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
+                        Toast.makeText(SupervisorCardMenu.this, "111 "+error.getMessage() , Toast.LENGTH_LONG).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }*/
+
+
+
+    //Merchant List API hit
+    private void loadexecutivelist(final String user) {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, EXECUTIVE_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("executivelist");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                database.addexecutivelist(  o.getString("userName"),
+                                        o.getString("empCode"),
+                                        o.getString("empName"),
+                                        o.getString("contactNumber"));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
+    }
+
+
+    //Merchant List API hit
+    private void loadallinventorymerchantlist(final String user) {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, MERCHANT_INVENTORY_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("merchantlist");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                database.addallInventorymerchantlist(o.getString("merchantName"),
+                                        o.getString("merchantCode"),
+                                        o.getString("address"),
+                                        o.getString("contactName"),
+                                        o.getString("contactNumber"));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(postRequest1);
     }
 
     @Override

@@ -385,6 +385,30 @@ public class DeliveryOnHoldModel{
         return pickMerchantName;
     }
 
+    public String getPreRet() {
+        return PreRet;
+    }
+
+    public void setPreRet(String preRet) {
+        PreRet = preRet;
+    }
+
+    public String getPreRetTime() {
+        return PreRetTime;
+    }
+
+    public void setPreRetTime(String preRetTime) {
+        PreRetTime = preRetTime;
+    }
+
+    public String getPreRetBy() {
+        return PreRetBy;
+    }
+
+    public void setPreRetBy(String preRetBy) {
+        PreRetBy = preRetBy;
+    }
+
     public void setPickMerchantName(String pickMerchantName) {
         this.pickMerchantName = pickMerchantName;
     }

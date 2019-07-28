@@ -1005,6 +1005,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 //        ActivityCompat.requestPermissions(DeliveryWithoutStatus.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
 
+//            MyLocationService g = new MyLocationService(getApplicationContext());
             GPStracker g = new GPStracker(getApplicationContext());
             Location LocationGps = g.getLocation();
 

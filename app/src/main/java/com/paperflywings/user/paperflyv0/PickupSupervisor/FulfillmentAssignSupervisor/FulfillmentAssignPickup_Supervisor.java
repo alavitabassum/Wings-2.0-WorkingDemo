@@ -341,6 +341,13 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
     }
 
     private void loadProductlist() {
+       /* progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setCancelable(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();*/
 
         StringRequest postRequest1 = new StringRequest(Request.Method.GET, PRODUCT_LIST_URL,
                 new Response.Listener<String>() {
@@ -349,6 +356,7 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
+//                            progress.dismiss();
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
                                 FullfillmentAssignSupervisor_Model productList = new FullfillmentAssignSupervisor_Model(
@@ -364,7 +372,7 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-
+//                            progress.dismiss();
 
                         }
                     }
@@ -459,6 +467,7 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
 
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
+        progress.setCancelable(false);
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(true);
         progress.setProgress(0);

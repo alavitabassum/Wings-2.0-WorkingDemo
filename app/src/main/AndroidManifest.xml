@@ -115,6 +115,7 @@
             android:label="@string/title_activity_assign_pickup__supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".PickupSupervisor.SupervisorCardMenu"
             android:label="@string/title_activity_supervisor_card_menu"
@@ -216,6 +217,8 @@
         <activity android:name=".PickupManager.LogisticAssignManager.NewOrder"
             android:screenOrientation="portrait"/>
         <activity android:name=".PickupSupervisor.LogisticAssignSupervisor.NewOrderSupervisor"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PickupSupervisor.InventorySupervisor.AssignInventorySupervisor"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager"

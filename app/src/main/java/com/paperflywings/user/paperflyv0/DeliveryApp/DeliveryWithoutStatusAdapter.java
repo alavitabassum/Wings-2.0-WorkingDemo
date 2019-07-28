@@ -131,19 +131,22 @@ public class DeliveryWithoutStatusAdapter extends RecyclerView.Adapter<DeliveryW
         viewHolder.item_merOrderRef_without_status.setText(list.get(i).getMerOrderRef());
         //viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
         //viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
-        viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getPreRetTime());
+        viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress_without_status.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
         viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ " Taka");
         viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
 
         String Pick_merchantName = list.get(i).getPickMerchantName();
-        String PreRetTime = list.get(i).getPreRetTime();
-        if(PreRetTime.equals(null)){
+        String PreRetBY = list.get(i).getPreRetBy();
+        if(PreRetBY == null && PreRetBY.isEmpty() && PreRetBY.equals("null")){
 //            viewHolder.card_view_without_status.setCardBackgroundColor(Color.RED);
             // viewHolder.item_ordId_without_status.setTextColor(Integer.parseInt("#bbbbbb"));
+            viewHolder.card_view_without_status.setCardBackgroundColor(Color.WHITE);
 
-        } else if(!PreRetTime.equals(null)) {
+        }
+        if(PreRetBY != null && !PreRetBY.isEmpty() && !PreRetBY.equals("null")) {
+            viewHolder.card_view_without_status.setCardBackgroundColor(Color.LTGRAY);
 //            viewHolder.card_view_without_status.setBackgroundColor(Color.RED);
         }
 

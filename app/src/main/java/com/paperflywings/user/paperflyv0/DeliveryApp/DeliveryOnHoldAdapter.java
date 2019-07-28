@@ -156,6 +156,18 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         String Pick_merchantName = list.get(i).getPickMerchantName();
         int DeliveryTime = list.get(i).getSlaMiss();
 
+        String PreRetBY = list.get(i).getPreRetBy();
+        if(PreRetBY == null && PreRetBY.isEmpty() && PreRetBY.equals("null")){
+//            viewHolder.card_view_without_status.setCardBackgroundColor(Color.RED);
+            // viewHolder.item_ordId_without_status.setTextColor(Integer.parseInt("#bbbbbb"));
+            viewHolder.card_view_onHold.setCardBackgroundColor(Color.WHITE);
+
+        }
+        if(PreRetBY != null && !PreRetBY.isEmpty() && !PreRetBY.equals("null")) {
+            viewHolder.card_view_onHold.setCardBackgroundColor(Color.LTGRAY);
+//            viewHolder.card_view_without_status.setBackgroundColor(Color.RED);
+        }
+
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_onHold.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_deliveryTime_onHold.setBackgroundResource(R.color.red);

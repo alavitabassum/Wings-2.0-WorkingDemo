@@ -73,6 +73,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
     private static final String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
+    private static final String GET_POINT_CODE = "http://paperflybd.com/deliveryEmpPoint.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -119,6 +120,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
+
+        loadPointCodeInfo(username);
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -183,6 +186,54 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         String le = Context.LOCATION_SERVICE;
         locationManager = (LocationManager) getSystemService(le);
         return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    //Merchant List API hit
+    private void loadPointCodeInfo(final String user) {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, GET_POINT_CODE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteDataFromEmpPointCode(sqLiteDatabase);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("pointCodes");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addPointCodeInfo(  o.getString("username"),
+                                        o.getString("empCode"),
+                                        o.getString("pointCode"));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        postRequest1.setRetryPolicy(new DefaultRetryPolicy(
+                9000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(postRequest1);
     }
 
     // Payload for delivery return reasons
