@@ -83,7 +83,15 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
 
         if(complete_status.equals("p")) {
             viewHolder.item_mName.setText(summaries.get(i).getMerchant_name());
-            viewHolder.item_prodName.setText("Null");
+            viewHolder.item_prodName.setText("0");
+//            viewHolder.item_pName.setText("Null");
+            viewHolder.text_rQty.setText("Scan Count: ");
+            viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
+        }
+
+        if(complete_status.equals("I")) {
+            viewHolder.item_mName.setText(summaries.get(i).getMerchant_name()+" (Inventory)");
+            viewHolder.item_prodName.setText("0");
 //            viewHolder.item_pName.setText("Null");
             viewHolder.text_rQty.setText("Scan Count: ");
             viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
@@ -129,6 +137,19 @@ class mListForExecutiveAdapter extends RecyclerView.Adapter<mListForExecutiveAda
                 if (count < count_assigned && complete_status.equals("p")) {
                     viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
                 }
+
+                if (count == count_assigned && complete_status.equals("I")) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                }
+
+                if (count > count_assigned && complete_status.equals("I")) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+                }
+
+                if (count < count_assigned && complete_status.equals("I")) {
+                    viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+                }
+
                 if (count_picked == count_assigned && complete_status.equals("f")) {
                     viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
                 }

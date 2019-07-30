@@ -619,6 +619,17 @@ public class MyPickupList_Executive extends AppCompatActivity
             startActivity(scanIntent3);
         }
 
+        else  if (clickedItem.getComplete_status().equals("I")){
+            Intent scanIntentIn = new Intent(MyPickupList_Executive.this, ScanningScreen.class);
+            scanIntentIn.putExtra(MERCHANT_NAME, clickedItem.getMerchant_name());
+            scanIntentIn.putExtra(SUB_MERCHANT_NAME, clickedItem.getP_m_name());
+            scanIntentIn.putExtra(MERCHANT_ID, clickedItem.getMerchant_id());
+            scanIntentIn.putExtra(CREATED_AT, clickedItem.getCreated_at());
+            scanIntentIn.putExtra(SQL_PRIMARY_ID, clickedItem.getSql_primary_id());
+            // scanIntent.putExtra(ITEM_POSITION, String.valueOf(position));
+
+            startActivity(scanIntentIn); }
+
     }
 
     @Override
@@ -688,7 +699,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                                                 tv1.setText("Field can't be empty");
                                             } else {
                                                 String comments = et1.getText().toString();
-                                                if(clickedItem.getComplete_status().equals("p")){
+                                                if(clickedItem.getComplete_status().equals("p") || clickedItem.getComplete_status().equals("I")){
                                                     // complete
 //                                                    final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
                                                     //if order is cancelled this will save the status 2
@@ -750,7 +761,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                                             } else {
 
                                                 String comments = mOnholdSpinner.getSelectedItem().toString();
-                                                if(clickedItem.getComplete_status().equals("p")){
+                                                if(clickedItem.getComplete_status().equals("p") || clickedItem.getComplete_status().equals("I")){
                                                     // pause
                                                     final String strI = String.valueOf(db.getRowsCount(sql_primary_id,merchant_id, sub_merchant_name));
 
@@ -811,7 +822,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                                                 error_msg6.setText("Please select one partial reason");
                                             } else {
                                                 String comments = mOnholdSpinner6.getSelectedItem().toString();
-                                                if(clickedItem.getComplete_status().equals("p")){
+                                                if(clickedItem.getComplete_status().equals("p") || clickedItem.getComplete_status().equals("I")){
                                                     // pause
                                                     //if order is cancelled this will save the status 2
                                                     updateActionStatus(strI, strI, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "5", "Partial",sql_primary_id);
@@ -868,7 +879,7 @@ public class MyPickupList_Executive extends AppCompatActivity
                                             } else {
 
                                                 String comments = mOnholdSpinner2.getSelectedItem().toString();
-                                                if(clickedItem.getComplete_status().equals("p")){
+                                                if(clickedItem.getComplete_status().equals("p") || clickedItem.getComplete_status().equals("I")){
                                                     // delete
                                                    //if order is cancelled this will save the status 2
                                                     updateActionStatus(strI, strI, username, updated_at, merchant_id, sub_merchant_name, merchant_order_ref,comments, match_date, "3", "Cancel",sql_primary_id);

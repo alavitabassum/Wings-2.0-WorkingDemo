@@ -101,29 +101,6 @@ public class PickupsToday_Executive extends AppCompatActivity
         summaries.clear();
         swipeRefreshLayout.setRefreshing(true);
 
-      /*  int total = db.totalassigned_order_for_ex(user, currentDateTimeString);
-        total_assigned= findViewById(R.id.a_count);
-        total_assigned.setText(String.valueOf(total));
-
-        int cm = db.complete_order_for_ex(user, currentDateTimeString);
-        complete = findViewById(R.id.com_count);
-        complete.setText(String.valueOf(cm));
-
-        int pm = db.pending_order_for_ex(user, currentDateTimeString);
-        pending = findViewById(R.id.pen_count);
-        pending.setText(String.valueOf(pm));*/
-
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-
         //If internet connection is available or not
         if(nInfo!= null && nInfo.isConnected())
         {

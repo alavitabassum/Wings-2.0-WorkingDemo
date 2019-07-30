@@ -1092,6 +1092,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
         }
     }
 
+    // On Phone number click
     @Override
     public void onItemClick_call(View view4, int position4) {
         Intent callIntent =new Intent(Intent.ACTION_CALL);
