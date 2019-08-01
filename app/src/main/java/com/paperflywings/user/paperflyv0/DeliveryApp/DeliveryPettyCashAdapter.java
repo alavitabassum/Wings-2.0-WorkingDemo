@@ -110,7 +110,6 @@ public class DeliveryPettyCashAdapter extends RecyclerView.Adapter<DeliveryPetty
         } else {
             viewHolder.item_comment.setText(list.get(i).getExpense_comment());
         }
-
     }
 
     @Override
