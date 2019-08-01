@@ -26,7 +26,6 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:name=".CustomFontApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -34,7 +33,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
@@ -46,10 +47,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".DeliveryApp.DeliveryPettyCash"
+            android:label="@string/title_activity_delivery_petty_cash"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DeliveryApp.AddNewExpense"
+            android:label="@string/title_activity_delivery_petty_cash"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".DeliveryApp.DeliveryReturnBySupervisor"
             android:label="@string/title_activity_delivery_return_by_supervisor"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryCashRS"
             android:label="@string/title_activity_delivery_cash_rs"
@@ -115,7 +126,6 @@
             android:label="@string/title_activity_assign_pickup__supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".PickupSupervisor.SupervisorCardMenu"
             android:label="@string/title_activity_supervisor_card_menu"
@@ -126,7 +136,6 @@
             android:label="@string/title_activity_pending_summary__manager"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
@@ -166,8 +175,8 @@
         <activity
             android:name=".PickupOfficer.MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
-            android:supportsRtl="true"
             android:screenOrientation="portrait"
+            android:supportsRtl="true"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".PickupOfficer.ScanningScreen"
@@ -214,20 +223,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked" />
         </activity>
-        <activity android:name=".PickupManager.LogisticAssignManager.NewOrder"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PickupSupervisor.LogisticAssignSupervisor.NewOrderSupervisor"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PickupSupervisor.InventorySupervisor.AssignInventorySupervisor"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PickupManager.LogisticAssignManager.NewOrder"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PickupSupervisor.LogisticAssignSupervisor.NewOrderSupervisor"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PickupSupervisor.InventorySupervisor.AssignInventorySupervisor"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager"
             android:label="@string/title_activity_testing_fulfillment"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity android:name=".PickupManager.FulfillmentAssignManager.NewOrderEntry_ful" />
-        <activity android:name=".PickupSupervisor.FulfillmentAssignSupervisor.NewOrderEntry_Supervisor_ful"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PickupSupervisor.FulfillmentAssignSupervisor.NewOrderEntry_Supervisor_ful"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PickupManager.AjkerdealdirectdeliveryManager.AjkerDealOther_Assign_Pickup_manager"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_manager"

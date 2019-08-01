@@ -47,12 +47,12 @@ import com.paperflywings.user.paperflyv0.AssignManager_ExecutiveList;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.LoginActivity;
+import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor;
-import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor;
-import com.paperflywings.user.paperflyv0.R;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.SupervisorCardMenu;
+import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

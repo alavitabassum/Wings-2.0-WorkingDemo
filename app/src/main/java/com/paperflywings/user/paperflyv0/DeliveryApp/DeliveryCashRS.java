@@ -138,15 +138,6 @@ public class DeliveryCashRS extends AppCompatActivity
 
         });
 
-//        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
-       /* if(nInfo!= null && nInfo.isConnected())
-        {
-            loadRecyclerView(username, da);
-        }
-        else{
-            Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
-        }*/
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

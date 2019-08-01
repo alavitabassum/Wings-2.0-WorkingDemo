@@ -73,6 +73,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
     private static final String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
+    private static final String EXPENSE_PURPOSE_URL = "http://paperflybd.com/DeliveryLoadExpensePurpose.php";
     private static final String GET_POINT_CODE = "http://paperflybd.com/deliveryEmpPoint.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -114,6 +115,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             loadWithoutStatusData(username);
             loadOnHoldList(username);
             loadReturnReason();
+            loadExpenseReason();
 
         }
         else {
@@ -181,6 +183,19 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             }
         }
     }
+
+  /*  @Override
+    protected void onStart() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        boolean loggedin = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF,false);
+        if(loggedin){
+            super.onStart();
+            Intent intent1 = new Intent(DeliveryOfficerCardMenu.this,LoginActivity.class);
+            startActivity(intent1);
+        }
+
+    }*/
 
     protected boolean isLocationEnabled(){
         String le = Context.LOCATION_SERVICE;
@@ -273,6 +288,47 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
+    public void loadExpenseReason(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EXPENSE_PURPOSE_URL,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteListExpensePurposes(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("expenseList");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addExpenselist(
+                                        o.getString("id"),
+                                        o.getString("expense_purpose"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Expense Purpose" ,Toast.LENGTH_LONG).show();
+                    }
+                });
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
@@ -843,6 +899,12 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         } else if (id == R.id.nav_cash) {
             Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
                     DeliveryCTS.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }
+        else if (id == R.id.nav_cash_expense) {
+            Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryPettyCash.class);
             startActivity(homeIntent);
             // Handle the camera action
         }

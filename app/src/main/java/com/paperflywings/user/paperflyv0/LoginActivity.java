@@ -219,7 +219,7 @@ public class LoginActivity extends AppCompatActivity {
                         //delivery officer
                         else if(user_role_id.equals("7")) {
 
-                            startActivity(new Intent(getApplicationContext(),DeliveryOfficerCardMenu.class));
+                            startActivity(new Intent(getApplicationContext(), DeliveryOfficerCardMenu.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                         }
                         else {

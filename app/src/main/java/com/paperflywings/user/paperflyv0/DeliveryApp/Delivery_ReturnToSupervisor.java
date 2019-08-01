@@ -750,7 +750,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
         else
         {
-//            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+           Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
         }
     }
 

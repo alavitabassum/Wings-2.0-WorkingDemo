@@ -1002,7 +1002,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
     }
 
     public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
-//        ActivityCompat.requestPermissions(DeliveryWithoutStatus.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+// ActivityCompat.requestPermissions(DeliveryWithoutStatus.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
 
 //            MyLocationService g = new MyLocationService(getApplicationContext());

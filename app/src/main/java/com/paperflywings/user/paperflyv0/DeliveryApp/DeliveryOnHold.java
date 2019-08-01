@@ -1039,7 +1039,7 @@ public class DeliveryOnHold extends AppCompatActivity
             }
             else
             {
-                // Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
             }
         }
     public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){

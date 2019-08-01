@@ -22,6 +22,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
     private static final String TABLE_NAME_ONHOLD_LOG = "Insert_Onhold_Log";
     private static final String TABLE_NAME_RETURN_REASONS = "Insert_Return_Reason";
+    private static final String TABLE_NAME_EXPENSE_PURPOSE = "Insert_Expense_Purpose";
     private static final String TABLE_NAME_EMP_POINTCODE = "EmpPointCode";
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
@@ -122,6 +123,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String RETURN_REASON = "reason";
     public static final String RET_REMARKS = "retRemarks";
     public static final String EMP_POINTCODE = "empPointCode";
+    public static final String PURPOSE_ID = "purposeId";
+    public static final String PURPOSE_REASON = "purpose";
 
     private static final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
@@ -415,6 +418,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "reason TEXT, " // 2
                 + "unique(reasonID,reason))";
 
+        String CREATION_TABLE_EXPENSE_PURPOSE = "CREATE TABLE Insert_Expense_Purpose ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, " // 0
+                + "purposeId TEXT, " //1
+                + "purpose TEXT, " // 2
+                + "unique(purposeId,purpose))";
+
         String CREATION_TABLE_EMP_POINTCODE = "CREATE TABLE EmpPointCode ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "username TEXT, "
@@ -435,6 +444,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE_ONHOLD_LOG);
         db.execSQL(CREATION_TABLE_RETURN_REQUEST);
         db.execSQL(CREATION_TABLE_EMP_POINTCODE);
+        db.execSQL(CREATION_TABLE_EXPENSE_PURPOSE);
 
     }
 
@@ -453,6 +463,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_ONHOLD_LOG);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RETURN_REASONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EMP_POINTCODE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EXPENSE_PURPOSE);
         this.onCreate(db);
     }
 
@@ -1660,6 +1671,10 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_RETURN_REASONS);
     }
 
+    public void deleteListExpensePurposes(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_EXPENSE_PURPOSE);
+    }
+
     // get scan count
     public int getUnpickedCount(String pickDrop) {
         String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_8 + " WHERE " + PICK_DROP + " != '" + pickDrop + "'";
@@ -1820,6 +1835,19 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         String[] columns = {REASON_ID, RETURN_REASON};
         return db.query(TABLE_NAME_RETURN_REASONS, columns, null, null, null, null, null);
     }
+    public void addExpenselist(String purposeId, String purpose) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PURPOSE_ID, purposeId);
+        values.put(PURPOSE_REASON, purpose);
+        db.insert(TABLE_NAME_EXPENSE_PURPOSE, null, values);
+        db.close();
+    }
+
+    public Cursor get_purpose_list(SQLiteDatabase db) {
+        String[] columns = {PURPOSE_ID, PURPOSE_REASON};
+        return db.query(TABLE_NAME_EXPENSE_PURPOSE, columns, null, null, null, null, null);
+    }
 
     public String getSelectedReasonId(String reason){
         String selection = "Error";
@@ -1827,6 +1855,17 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT reasonID FROM " + "Insert_Return_Reason" + " WHERE " + "reason" + " = '" + reason + "'", null);
         if(c.moveToFirst()){
             selection = c.getString(c.getColumnIndex(REASON_ID));
+            return selection;
+        }
+        return null;
+    }
+
+    public String getSelectedPurposeId(String purposeTxt){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT purposeId FROM " + "Insert_Expense_Purpose" + " WHERE " + "purpose" + " = '" + purposeTxt + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex(PURPOSE_ID));
             return selection;
         }
         return null;
