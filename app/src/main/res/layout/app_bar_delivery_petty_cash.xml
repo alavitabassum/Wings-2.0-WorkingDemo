@@ -30,33 +30,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_alignParentTop="true"
-            android:autofillHints=""
             android:ems="8"
-            android:inputType="text"
-            android:textSize="15sp"
-            android:text="From"
+            android:inputType="date"
+            android:textSize="13sp"
+            android:lines="2"
+            android:maxLines="2"
+            android:hint="Date from"
             android:textStyle="bold" />
         <Button
             android:id="@+id/enddate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dp"
+            android:inputType="date"
+            android:textSize="13sp"
             android:layout_marginLeft="10dp"
             android:layout_toEndOf="@+id/startdate"
             android:ems="8"
-            android:text="To"
+            android:lines="2"
+            android:maxLines="2"
+            android:hint="Date to"
             android:textStyle="bold"/>
+
 
         <Button
             android:id="@+id/search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:elevation="2dp"
+            android:layout_marginTop="3dp"
             android:layout_marginLeft="50dp"
             android:layout_toEndOf="@+id/enddate"
+            android:background="@color/green"
             android:text="Search"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
 
     </RelativeLayout>
     <RelativeLayout

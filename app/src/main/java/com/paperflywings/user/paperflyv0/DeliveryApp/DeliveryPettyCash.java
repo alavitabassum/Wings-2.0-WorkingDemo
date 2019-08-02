@@ -311,6 +311,7 @@ public class DeliveryPettyCash extends AppCompatActivity
 
                             deliveryPettyCashAdapter = new DeliveryPettyCashAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliveryPettyCashAdapter);
+                            deliveryPettyCashAdapter.notifyDataSetChanged();
 
                             /*String totalCashCollection = String.valueOf();
                             totalCash.setText(totalCashCollection+ "Taka");*/
@@ -447,7 +448,16 @@ public class DeliveryPettyCash extends AppCompatActivity
                     DeliveryCTS.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }  else if (id == R.id.nav_logout) {
+        }  else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(DeliveryPettyCash.this,
+                    AddNewExpense.class);
+            startActivity(expenseIntent);
+        }  else if (id == R.id.nav_cash_expense) {
+            Intent expenseIntent = new Intent(DeliveryPettyCash.this,
+                    DeliveryPettyCash.class);
+            startActivity(expenseIntent);
+        }
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -487,7 +497,7 @@ public class DeliveryPettyCash extends AppCompatActivity
             alertDialog.show();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_petty_cash);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

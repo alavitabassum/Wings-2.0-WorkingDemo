@@ -901,12 +901,15 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     DeliveryCTS.class);
             startActivity(homeIntent);
             // Handle the camera action
+        } else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    AddNewExpense.class);
+            startActivity(expenseIntent);
         }
         else if (id == R.id.nav_cash_expense) {
-            Intent homeIntent = new Intent(DeliveryOfficerCardMenu.this,
+            Intent expenseIntent = new Intent(DeliveryOfficerCardMenu.this,
                     DeliveryPettyCash.class);
-            startActivity(homeIntent);
-            // Handle the camera action
+            startActivity(expenseIntent);
         }
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout

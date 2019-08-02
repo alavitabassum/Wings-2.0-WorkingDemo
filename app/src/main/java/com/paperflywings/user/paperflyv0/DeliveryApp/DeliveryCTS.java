@@ -555,7 +555,12 @@ public class DeliveryCTS extends AppCompatActivity
                     Delivery_ReturnToSupervisor.class);
             startActivity(homeIntent);
             // Handle the camera action
-        } else if (id == R.id.nav_cash) {
+        } else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(DeliveryCTS.this,
+                    AddNewExpense.class);
+            startActivity(expenseIntent);
+        }
+        else if (id == R.id.nav_cash) {
             Intent homeIntent = new Intent(DeliveryCTS.this,
                     DeliveryCTS.class);
             startActivity(homeIntent);

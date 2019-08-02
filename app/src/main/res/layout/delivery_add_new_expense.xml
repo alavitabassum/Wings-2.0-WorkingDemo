@@ -17,7 +17,6 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
     android:layout_width="match_parent"
     android:layout_marginTop="20dp"
     android:layout_height="wrap_content"
-    android:layout_marginStart="50dp"
     android:layout_centerHorizontal="true"
     android:layout_below="@id/create_tv"
     android:autofillHints=""
@@ -81,6 +80,17 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
         android:textColor="#000"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/error_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@id/expense_comment"
+        android:textColor="@color/red"/>
 
 
 <Button

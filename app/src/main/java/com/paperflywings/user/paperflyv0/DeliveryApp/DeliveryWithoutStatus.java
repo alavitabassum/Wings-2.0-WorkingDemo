@@ -588,9 +588,15 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                     DeliveryCTS.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }
-
-        else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(DeliveryWithoutStatus.this,
+                    AddNewExpense.class);
+            startActivity(expenseIntent);
+        } else if (id == R.id.nav_cash_expense) {
+            Intent expenseIntent = new Intent(DeliveryWithoutStatus.this,
+                    DeliveryPettyCash.class);
+            startActivity(expenseIntent);
+        } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

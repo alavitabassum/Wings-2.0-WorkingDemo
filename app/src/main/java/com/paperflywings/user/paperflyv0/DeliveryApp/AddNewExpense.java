@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -67,6 +68,7 @@ public class AddNewExpense extends AppCompatActivity {
         button = findViewById(R.id.btn_assign);
         final EditText cashAmt = findViewById(R.id.cashAmt);
         final EditText expense_comment = findViewById(R.id.expense_comment);
+        final TextView error_msg = findViewById(R.id.error_msg);
 
         // select date
         selectDate.setOnClickListener(new View.OnClickListener() {
@@ -119,10 +121,16 @@ public class AddNewExpense extends AppCompatActivity {
 
                 String cashAmount = cashAmt.getText().toString();
                 String cashComment = expense_comment.getText().toString();
-                addNewExpense(user,selectdate,purposeId,cashAmount,cashComment);
+                if(mReturnRSpinner.getSelectedItem().toString().equals("Please select an option..")
+                || selectDate.getText().toString().equals("0000-00-00") || cashAmt.getText().toString().equals("")|| expense_comment.getText().toString().equals("")){
+                    error_msg.setText("Please enter all fields");
+                } else {
+                    addNewExpense(user,selectdate,purposeId,cashAmount,cashComment);
 
-                Intent intent = new Intent(AddNewExpense.this, AddNewExpense.class);
-                startActivity(intent);
+                    Intent intent = new Intent(AddNewExpense.this, AddNewExpense.class);
+                    startActivity(intent);
+                }
+
             }
         });
     }
@@ -130,7 +138,7 @@ public class AddNewExpense extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent homeIntentSuper = new Intent(AddNewExpense.this,
-                DeliveryPettyCash.class);
+                DeliveryOfficerCardMenu.class);
         startActivity(homeIntentSuper);
     }
 
