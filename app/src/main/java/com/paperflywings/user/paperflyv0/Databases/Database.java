@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Database extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
     private static final String DATABASE_NAME = "MerchantDatabase.db";
     private static final String TABLE_NAME = "merchants";
     private static final String TABLE_NAME_1 = "merchantsfor_executives";
@@ -734,6 +734,15 @@ public class Database extends SQLiteOpenHelper {
         values.put("empContactNumber", empContactNumber);
         sqLiteDatabase.insertWithOnConflict("executivelist", null, values, SQLiteDatabase.CONFLICT_IGNORE);
         sqLiteDatabase.close();
+    }
+
+    public void deleteExecutive_list(SQLiteDatabase sqLiteDatabase){
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"executivelist");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "executivelist");
+        }
     }
 
     public Cursor get_executivelist(SQLiteDatabase db) {

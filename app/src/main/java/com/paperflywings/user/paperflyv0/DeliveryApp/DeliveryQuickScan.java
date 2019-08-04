@@ -406,7 +406,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                             // Store information of cash
                                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
                                                             // Store lat long
-                                                            GetValueFromEditText(sql_primary_id,"Delivery", "Cash", username, currentDateTime);
+
+                                                            try {
+                                                                GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
+                                                            } catch (Exception e) {
+                                                                Toast.makeText(DeliveryQuickScan.this, "Server not connected", Toast.LENGTH_SHORT).show();
+                                                            }
                                                             dialogCash.dismiss();
                                                             startActivity(DeliveryListIntent);
                                                         }
@@ -471,8 +476,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                             // Store partial status information
                                                             update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,cashType,merchEmpCode,"partialApp");
                                                             // store lat long for partial status
-                                                            GetValueFromEditText(sql_primary_id,"Delivery", "Partial", username, currentDateTime);
 
+                                                            try {
+                                                                GetValueFromEditText(sql_primary_id, "Delivery", "Partial", username, currentDateTime);
+                                                            } catch (Exception e) {
+                                                                Toast.makeText(DeliveryQuickScan.this, "Server not connected", Toast.LENGTH_SHORT).show();
+                                                            }
                                                             dialogPartial.dismiss();
                                                             startActivity(DeliveryListIntent);
                                                         }
@@ -535,8 +544,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                         }  else {*/
                                                          update_retR_status(retRemarks, retReason, PreRet, PreRetTime, PreRetBy, orderid, merchEmpCode, "RetApp");
                                                         // store lat long for partial status
-                                                        GetValueFromEditText(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
-//                                                        }
+                                                        //                                                        }
+                                                        try {
+                                                            GetValueFromEditText(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
+                                                        } catch (Exception e) {
+                                                            Toast.makeText(DeliveryQuickScan.this, "Server not connected", Toast.LENGTH_SHORT).show();
+                                                        }
                                                         dialogReturnR.dismiss();
                                                         startActivity(DeliveryListIntent);
                                                     }
@@ -616,8 +629,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                            update_onhold_status(onHoldSchedule, onHoldReason, Rea, ReaTime, ReaBy, orderid, merchEmpCode, "updateOnHoldApp");
                                                             insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                                             // store lat long for partial status
-                                                        GetValueFromEditText(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
+
 //                                                        }
+                                                        try {
+                                                            GetValueFromEditText(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
+                                                        } catch (Exception e) {
+                                                            Toast.makeText(DeliveryQuickScan.this, "Server not connected", Toast.LENGTH_SHORT).show();
+                                                        }
                                                         dialogonHold.dismiss();
                                                         startActivity(DeliveryListIntent);
                                                     }

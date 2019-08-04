@@ -660,8 +660,13 @@ public class DeliveryCTS extends AppCompatActivity
         final String sql_primary_id = String.valueOf(clickedITem.getSql_primary_id());
 
         CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "ctsOk");
-        GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
-    }
+        try {
+            GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryCTS.this, "Server not connected", Toast.LENGTH_SHORT).show();
+        }
+
+        }
 
     private void CashToS(final String CTS,final String CTSTime, final String CTSBy, final String barcode, final String orderid, final String flagReq) {
         String str = String.valueOf(db.getCashCount("cts", "Y"));

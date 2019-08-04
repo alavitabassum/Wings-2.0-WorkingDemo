@@ -206,6 +206,8 @@ public class AssignPickup_Supervisor extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
+                        database.deleteExecutive_list(sqLiteDatabase);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("executivelist");

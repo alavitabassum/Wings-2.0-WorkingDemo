@@ -658,7 +658,12 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         String orderid = clickedITem.getOrderid();
 
         ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rtsOk");
-        GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
+        try {
+            GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
+        } catch (Exception e) {
+            Toast.makeText(Delivery_ReturnToSupervisor.this, "Server not connected", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy, final String barcode, final String orderid, final String flagReq) {

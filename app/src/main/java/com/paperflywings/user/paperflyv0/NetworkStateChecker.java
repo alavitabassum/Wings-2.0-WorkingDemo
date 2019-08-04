@@ -274,12 +274,16 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         public void onResponse(String response) {
                             try {
                                 JSONObject obj = new JSONObject(response);
-                                if (obj.getBoolean("success")) {
+
+                                /*String successMsg = String.valueOf(response);
+                                Log.d("ADebugTag", "ValueRr: " + response);*/
+                                if (!obj.getBoolean("error")) {
                                     database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
                                     context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                                Toast.makeText(context, "bleeeehhh"+e, Toast.LENGTH_SHORT).show();
                             }
                         }
                     },
@@ -332,10 +336,14 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     return params;
                 }
             };
+        try {
             if (requestQueue == null) {
                 requestQueue = Volley.newRequestQueue(context);
             }
             requestQueue.add(stringRequest);
+        } catch (Exception e) {
+            Toast.makeText(context, "Error Connecting", Toast.LENGTH_LONG).show();
+        }
 
     }
 

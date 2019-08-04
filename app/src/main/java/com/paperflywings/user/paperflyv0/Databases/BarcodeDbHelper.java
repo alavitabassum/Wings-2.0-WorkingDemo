@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 19;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -289,7 +289,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "retRemarks TEXT," //47
                 + "status INT, " //48
                 + "sql_primary_id INTEGER,"// 49
-                + "unique(id, barcode))";
+                + "unique(barcode))";
 
         String CREATION_TABLE_RTS = "CREATE TABLE Delivery_RTS( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, " //0

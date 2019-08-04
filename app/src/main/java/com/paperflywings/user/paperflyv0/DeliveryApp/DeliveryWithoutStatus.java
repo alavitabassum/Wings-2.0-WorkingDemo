@@ -768,8 +768,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         }
                                         else {
                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
-                                            GetValueFromEditText(sql_primary_id,"Delivery", "Cash", username, currentDateTime);
-
+                                           try {
+                                               GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
+                                           } catch (Exception e) {
+                                               Toast.makeText(DeliveryWithoutStatus.this, "Server not connected", Toast.LENGTH_SHORT).show();
+                                           }
                                             dialogCash.dismiss();
                                             startActivity(DeliveryListIntent);
                                         }
@@ -833,8 +836,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String partialsReceive = partialReceive.getText().toString();
 
                                             update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,cashType,merchEmpCode,"partialApp");
-                                            GetValueFromEditText(sql_primary_id,"Delivery", "Partial", username, currentDateTime);
-
+                                            try {
+                                                GetValueFromEditText(sql_primary_id, "Delivery", "Partial", username, currentDateTime);
+                                            } catch (Exception e) {
+                                                Toast.makeText(DeliveryWithoutStatus.this, "Server not connected", Toast.LENGTH_SHORT).show();
+                                            }
                                             dialogPartial.dismiss();
                                             startActivity(DeliveryListIntent);
                                         }
@@ -898,8 +904,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                         }  else {*/
 //                                        update_retR_status(Ret,RetTime,RetBy,retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
                                             update_retR_status(retRemarks, retReason, PreRet, PreRetTime, PreRetBy, orderid, merchEmpCode, "RetApp");
-                                        GetValueFromEditText(sql_primary_id,"Delivery", "Return-Request", username, currentDateTime);
-//                                        }
+                                        try {
+                                            GetValueFromEditText(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
+                                        } catch (Exception e) {
+                                            Toast.makeText(DeliveryWithoutStatus.this, "Server not connected", Toast.LENGTH_SHORT).show();
+                                        }
 
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -981,8 +990,11 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                                             String onHoldSchedule = bt1.getText().toString();
                                             update_onhold_status(onHoldSchedule, onHoldReason, Rea, ReaTime, ReaBy, orderid, merchEmpCode, "updateOnHoldApp");
                                             insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
-                                        GetValueFromEditText(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
-//                                        }
+                                            try {
+                                                GetValueFromEditText(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
+                                            } catch (Exception e) {
+                                                Toast.makeText(DeliveryWithoutStatus.this, "Server not connected", Toast.LENGTH_SHORT).show();
+                                            }
                                             dialogonHold.dismiss();
                                             startActivity(DeliveryListIntent);
                                     }
