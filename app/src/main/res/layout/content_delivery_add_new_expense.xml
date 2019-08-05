@@ -8,7 +8,8 @@ android:layout_margin="5dp"
 android:foreground="?selectableItemBackground"
 android:padding="50dp"
 app:cardBackgroundColor="#fff"
-tools:context=".DeliveryApp.AddNewExpense"
+tools:context=".DeliveryApp.DeliveryAddNewExpense"
+tools:showIn="@layout/app_bar_delivery_add_new_expense"
 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
@@ -26,25 +27,25 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
     android:text="Select date"
     android:textStyle="bold" />
 
-    <Spinner
-        android:id="@+id/purpose_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/select_day_of_expense"
-        android:layout_alignBaseline="@+id/reason"
-        android:layout_toEndOf="@+id/reason"/>
+<Spinner
+    android:id="@+id/purpose_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/select_day_of_expense"
+    android:layout_alignBaseline="@+id/reason"
+    android:layout_toEndOf="@+id/reason"/>
 
-    <TextView
-        android:id="@+id/reason"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+<TextView
+    android:id="@+id/reason"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
 
-        android:layout_marginTop="20dp"
-        android:layout_below="@id/select_day_of_expense"
-        android:text="Reason"
-        android:textAlignment="textStart"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+    android:layout_marginTop="20dp"
+    android:layout_below="@id/select_day_of_expense"
+    android:text="Reason"
+    android:textAlignment="textStart"
+    android:textSize="15sp"
+    android:textStyle="bold" />
 
 <EditText
     android:id="@+id/cashAmt"
@@ -64,33 +65,33 @@ app:layout_behavior="@string/appbar_scrolling_view_behavior">
     android:textSize="18sp"
     android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/expense_comment"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@id/cashAmt"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/light_grey"
-        android:hint="Comment"
-        android:lines="1"
-        android:maxLines="2"
-        android:padding="5dp"
-        android:textAlignment="textStart"
-        android:textColor="#000"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+<EditText
+    android:id="@+id/expense_comment"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_below="@id/cashAmt"
+    android:layout_marginStart="2dp"
+    android:layout_marginTop="20dp"
+    android:background="@color/light_grey"
+    android:hint="Comment"
+    android:lines="1"
+    android:maxLines="2"
+    android:padding="5dp"
+    android:textAlignment="textStart"
+    android:textColor="#000"
+    android:textSize="18sp"
+    android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/error_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_below="@id/expense_comment"
-        android:textColor="@color/red"/>
+<TextView
+    android:id="@+id/error_msg"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:textAlignment="center"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:layout_below="@id/expense_comment"
+    android:textColor="@color/red"/>
 
 
 <Button

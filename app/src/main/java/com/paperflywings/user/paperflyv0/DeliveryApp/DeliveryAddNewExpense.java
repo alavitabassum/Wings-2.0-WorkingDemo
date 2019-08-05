@@ -2,12 +2,21 @@ package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +34,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONException;
@@ -36,9 +46,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class AddNewExpense extends AppCompatActivity {
-
+public class DeliveryAddNewExpense extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
     DatePickerDialog datePickerDialog;
     BarcodeDbHelper db;
     int year;
@@ -49,11 +58,11 @@ public class AddNewExpense extends AppCompatActivity {
     private String ADD_EXPENSE = "http://paperflybd.com/findMerchantOrders.php";
     Button button;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.delivery_add_new_expense);
+        setContentView(R.layout.activity_delivery_add_new_expense);
+
         db = new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
         list = new ArrayList<DeliveryPettyCashModel>();
@@ -62,7 +71,6 @@ public class AddNewExpense extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String user = username.toString();
-
 
         final Button selectDate = findViewById(R.id.select_day_of_expense);
         button = findViewById(R.id.btn_assign);
@@ -78,7 +86,7 @@ public class AddNewExpense extends AppCompatActivity {
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
                 dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog = new DatePickerDialog(AddNewExpense.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(DeliveryAddNewExpense.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         String yearselected  = Integer.toString(year) ;
@@ -102,7 +110,7 @@ public class AddNewExpense extends AppCompatActivity {
             reasons.add(list.get(z).getPurpose());
         }
 
-        ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(AddNewExpense.this,
+        ArrayAdapter<String> adapterReturnR = new ArrayAdapter<String>(DeliveryAddNewExpense.this,
                 android.R.layout.simple_spinner_item,
                 reasons);
         adapterReturnR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -122,25 +130,165 @@ public class AddNewExpense extends AppCompatActivity {
                 String cashAmount = cashAmt.getText().toString();
                 String cashComment = expense_comment.getText().toString();
                 if(mReturnRSpinner.getSelectedItem().toString().equals("Please select an option..")
-                || selectDate.getText().toString().equals("0000-00-00") || cashAmt.getText().toString().equals("")|| expense_comment.getText().toString().equals("")){
+                        || selectDate.getText().toString().equals("0000-00-00") || cashAmt.getText().toString().equals("")|| expense_comment.getText().toString().equals("")){
                     error_msg.setText("Please enter all fields");
                 } else {
                     addNewExpense(user,selectdate,purposeId,cashAmount,cashComment);
 
-                    Intent intent = new Intent(AddNewExpense.this, AddNewExpense.class);
+                    Intent intent = new Intent(DeliveryAddNewExpense.this, DeliveryAddNewExpense.class);
                     startActivity(intent);
                 }
 
             }
         });
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_add_new_expense);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        Intent homeIntentSuper = new Intent(AddNewExpense.this,
-                DeliveryOfficerCardMenu.class);
-        startActivity(homeIntentSuper);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_add_new_expense);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            Intent homeIntentSuper = new Intent(DeliveryAddNewExpense.this,
+                    DeliveryOfficerCardMenu.class);
+            startActivity(homeIntentSuper);
+        }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.delivery_add_new_expense, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_search) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_home) {
+            Intent homeIntent = new Intent(DeliveryAddNewExpense.this,
+                    DeliveryOfficerCardMenu.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(DeliveryAddNewExpense.this,
+                    DeliveryOfficerUnpicked.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(DeliveryAddNewExpense.this,
+                    DeliveryWithoutStatus.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(DeliveryAddNewExpense.this,
+                    DeliveryOnHold.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(DeliveryAddNewExpense.this,
+                    ReturnRequest.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(DeliveryAddNewExpense.this,
+                    Delivery_ReturnToSupervisor.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(DeliveryAddNewExpense.this,
+                    DeliveryCTS.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        }  else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(DeliveryAddNewExpense.this,
+                    DeliveryAddNewExpense.class);
+            startActivity(expenseIntent);
+        }
+        else if (id == R.id.nav_cash_expense) {
+            Intent expenseIntent = new Intent(DeliveryAddNewExpense.this,
+                    DeliveryPettyCash.class);
+            startActivity(expenseIntent);
+        } else if (id == R.id.nav_logout) {
+            //Creating an alert dialog to confirm logout
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Are you sure you want to logout?");
+            alertDialogBuilder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+//                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+//                            db.deleteAssignedList(sqLiteDatabase);
+
+                            //Getting out sharedpreferences
+                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+
+                            //Getting editor
+                            SharedPreferences.Editor editor = preferences.edit();
+
+                            //Puting the value false for loggedin
+                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+
+                            //Putting blank value to email
+                            editor.putString(Config.EMAIL_SHARED_PREF, "");
+
+                            //Saving the sharedpreferences
+                            editor.commit();
+
+                            //Starting login activity
+                            Intent intent = new Intent(DeliveryAddNewExpense.this, LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+            alertDialogBuilder.setNegativeButton("No",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                        }
+                    });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_add_new_expense);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 
     private void getallexpensepurposes() {
         try {
@@ -169,12 +317,12 @@ public class AddNewExpense extends AppCompatActivity {
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                Toast.makeText(AddNewExpense.this, "Successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DeliveryAddNewExpense.this, "Successful", Toast.LENGTH_SHORT).show();
                                 //if there is a success
                                 //storing the name to sqlite with status synced
                                 // database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,AssignPickup_Manager.NAME_SYNCED_WITH_SERVER);
                             } else {
-                                Toast.makeText(AddNewExpense.this, "Unsuccessful"+obj, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DeliveryAddNewExpense.this, "Unsuccessful"+obj, Toast.LENGTH_SHORT).show();
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
                                 // database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER);
@@ -188,8 +336,8 @@ public class AddNewExpense extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(AddNewExpense.this, "Unsuccessful"+error, Toast.LENGTH_SHORT).show();
-                    // database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER);
+                        Toast.makeText(DeliveryAddNewExpense.this, "Unsuccessful"+error, Toast.LENGTH_SHORT).show();
+                        // database.assignexecutive(ex_name, empcode, product_name, order_count, merchant_code, user, currentDateTimeString,m_name,contactNumber,p_m_name,p_m_address, complete_status,apiOrderID, demo,pick_from_merchant_status, received_from_HQ_status,AssignPickup_Manager.NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {
@@ -210,7 +358,6 @@ public class AddNewExpense extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest);
-
     }
-}
 
+}

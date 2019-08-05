@@ -564,7 +564,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             // Handle the camera action
         }   else if (id == R.id.nav_new_expense) {
             Intent expenseIntent = new Intent(Delivery_ReturnToSupervisor.this,
-                    AddNewExpense.class);
+                    DeliveryAddNewExpense.class);
             startActivity(expenseIntent);
         }
         else if (id == R.id.nav_cash_expense) {

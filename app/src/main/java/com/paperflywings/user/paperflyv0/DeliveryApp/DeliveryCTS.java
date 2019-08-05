@@ -557,7 +557,7 @@ public class DeliveryCTS extends AppCompatActivity
             // Handle the camera action
         } else if (id == R.id.nav_new_expense) {
             Intent expenseIntent = new Intent(DeliveryCTS.this,
-                    AddNewExpense.class);
+                    DeliveryAddNewExpense.class);
             startActivity(expenseIntent);
         }
         else if (id == R.id.nav_cash) {

@@ -437,7 +437,7 @@ public class DeliveryCashRS extends AppCompatActivity
             // Handle the camera action
         }  else if (id == R.id.nav_new_expense) {
             Intent expenseIntent = new Intent(DeliveryCashRS.this,
-                    AddNewExpense.class);
+                    DeliveryAddNewExpense.class);
             startActivity(expenseIntent);
         } else if (id == R.id.nav_cash_expense) {
             Intent expenseIntent = new Intent(DeliveryCashRS.this,

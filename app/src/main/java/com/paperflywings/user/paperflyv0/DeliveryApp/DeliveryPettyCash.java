@@ -185,7 +185,7 @@ public class DeliveryPettyCash extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Intent intentorder = new Intent(DeliveryPettyCash.this,
-                        AddNewExpense.class);
+                        DeliveryAddNewExpense.class);
                 startActivity(intentorder);
             }
         });
@@ -449,7 +449,7 @@ public class DeliveryPettyCash extends AppCompatActivity
             // Handle the camera action
         }  else if (id == R.id.nav_new_expense) {
             Intent expenseIntent = new Intent(DeliveryPettyCash.this,
-                    AddNewExpense.class);
+                    DeliveryAddNewExpense.class);
             startActivity(expenseIntent);
         }  else if (id == R.id.nav_cash_expense) {
             Intent expenseIntent = new Intent(DeliveryPettyCash.this,

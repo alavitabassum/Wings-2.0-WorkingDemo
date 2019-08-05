@@ -206,5 +206,6 @@
     <string name="title_activity_delivery_main_page">Home</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="title_activity_delivery_home">DeliveryHome</string>
+    <string name="title_activity_delivery_add_new_expense">Add New Expense</string>
 
 </resources>

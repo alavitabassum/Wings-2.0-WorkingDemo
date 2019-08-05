@@ -47,15 +47,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".DeliveryApp.DeliveryAddNewExpense"
+            android:label="@string/title_activity_delivery_add_new_expense"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+        <activity
             android:name=".DeliveryApp.DeliveryPettyCash"
             android:label="@string/title_activity_delivery_petty_cash"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".DeliveryApp.AddNewExpense"
-            android:label="@string/title_activity_delivery_petty_cash"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".DeliveryApp.DeliveryReturnBySupervisor"
             android:label="@string/title_activity_delivery_return_by_supervisor"
