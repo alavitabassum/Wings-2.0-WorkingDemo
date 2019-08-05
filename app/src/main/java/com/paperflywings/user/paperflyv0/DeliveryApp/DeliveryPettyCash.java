@@ -170,7 +170,6 @@ public class DeliveryPettyCash extends AppCompatActivity
         searchData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String startdate = startDate.getText().toString();
                 String enddate = endDate.getText().toString();
                 loadcashamt(username,startdate,enddate);

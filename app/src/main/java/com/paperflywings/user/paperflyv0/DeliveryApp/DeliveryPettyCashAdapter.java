@@ -105,10 +105,18 @@ public class DeliveryPettyCashAdapter extends RecyclerView.Adapter<DeliveryPetty
             viewHolder.item_payment_amt.setText(list.get(i).getExpense()+" Tk");
         }
 
-        if((expense_comments.equals("null") || expense_comments.isEmpty()) && !expense.equals("null") && recv_amount.equals("null")){
+        /*if(expense_comments.equals("null")){
             viewHolder.item_comment.setText(" ");
         } else {
             viewHolder.item_comment.setText(list.get(i).getExpense_comment());
+        }*/
+
+        if(recv_comments.equals("null") || expense_comments.equals(" ")){
+            viewHolder.item_comment.setText(list.get(i).getExpense_comment());
+        }
+
+        if(expense_comments.equals("null") || recv_comments.equals(" ")) {
+            viewHolder.item_comment.setText(list.get(i).getRecv_comment());
         }
     }
 
