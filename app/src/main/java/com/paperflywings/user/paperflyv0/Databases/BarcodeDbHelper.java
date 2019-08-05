@@ -289,7 +289,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "retRemarks TEXT," //47
                 + "status INT, " //48
                 + "sql_primary_id INTEGER,"// 49
-                + "unique(barcode))";
+                + "unique(id, barcode))";
 
         String CREATION_TABLE_RTS = "CREATE TABLE Delivery_RTS( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, " //0

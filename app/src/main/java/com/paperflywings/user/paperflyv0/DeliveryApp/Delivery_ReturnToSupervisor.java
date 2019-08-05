@@ -659,9 +659,9 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
         ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rtsOk");
         try {
-            GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
+            GetValueFromEditText(sql_primary_id,"Delivery", "Return To Supervisor", username, currentDateTime);
         } catch (Exception e) {
-            Toast.makeText(Delivery_ReturnToSupervisor.this, "Server not connected", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Delivery_ReturnToSupervisor.this, "No internet connection!", Toast.LENGTH_SHORT).show();
         }
 
     }

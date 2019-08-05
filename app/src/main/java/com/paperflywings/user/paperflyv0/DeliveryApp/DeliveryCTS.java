@@ -663,7 +663,7 @@ public class DeliveryCTS extends AppCompatActivity
         try {
             GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
         } catch (Exception e) {
-            Toast.makeText(DeliveryCTS.this, "Server not connected", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(DeliveryCTS.this, "No internet connection!", Toast.LENGTH_SHORT).show();
         }
 
         }
