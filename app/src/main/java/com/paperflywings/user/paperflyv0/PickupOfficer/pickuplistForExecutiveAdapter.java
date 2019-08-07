@@ -187,7 +187,15 @@ public class pickuplistForExecutiveAdapter extends RecyclerView.Adapter<pickupli
             viewHolder.text_pickedCount.setText("Picked: ");
             viewHolder.item_pickedCount.setText(list.get(i).getScan_count());
 
-        } if ( complete_status.equals("f") && product_name != "0") {
+        } if(complete_status.equals("I")) {
+            viewHolder.item_m_pul.setText(list.get(i).getMerchant_name()+" (Inventory)");
+            viewHolder.text_scanCount.setText("Scan Count: ");
+            viewHolder.item_productName.setText(list.get(i).getScan_count());
+            viewHolder.text_pickedCount.setText("Picked: ");
+            viewHolder.item_pickedCount.setText(list.get(i).getScan_count());
+
+        }
+        if ( complete_status.equals("f") && product_name != "0") {
             viewHolder.item_m_pul.setText(list.get(i).getMerchant_name());
             viewHolder.text_scanCount.setText("Product: ");
             viewHolder.item_productName.setText(list.get(i).getProduct_name());

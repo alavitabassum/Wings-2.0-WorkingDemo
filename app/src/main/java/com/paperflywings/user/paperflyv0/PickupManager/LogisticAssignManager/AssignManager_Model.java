@@ -11,6 +11,25 @@ public class AssignManager_Model  {
     private int scan_count;
     private String phone_no;
 
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    private String contactName;
+    private String contactNumber;
+
     public String getTotalamount() {
         return totalamount;
     }
@@ -88,6 +107,14 @@ public class AssignManager_Model  {
         this.m_address = m_address; // mainly the merchant code is saved here
         this.address = address; // main merchant address is saved here for creating a new order
         }
+
+    public AssignManager_Model(String m_names, String m_address, String address, String contactName, String contactNumber) {
+        this.m_names = m_names;
+        this.m_address = m_address; // mainly the merchant code is saved here
+        this.address = address; // main merchant address is saved here for creating a new order
+        this.contactName = contactName;
+        this.contactNumber = contactNumber;
+    }
 
     public String getMerchant_code() {
         return merchant_code;

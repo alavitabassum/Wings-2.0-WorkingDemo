@@ -1,5 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,10 +11,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -39,6 +42,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourier;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
@@ -61,7 +65,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
     private RequestQueue requestQueue;
     private static final int REQUEST_CAMERA = 1;
-
+    private static final int REQUEST_LOCATION = 4;
+    LocationManager locationManager;
     private ProgressDialog progress;
 
     private BroadcastReceiver broadcastReceiver;
@@ -69,6 +74,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
     public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
     private static final String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
+    private static final String EXPENSE_PURPOSE_URL = "http://paperflybd.com/DeliveryLoadExpensePurpose.php";
+    private static final String GET_POINT_CODE = "http://paperflybd.com/deliveryEmpPoint.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -100,7 +107,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         onHold_count = (TextView)findViewById(R.id.OnHoldCount);
         returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
         cashCollection_count = (TextView)findViewById(R.id.CashCount);
-        returnList_count = (TextView)findViewById(R.id.RTS);
+        returnList_count = (TextView)findViewById(R.id.RTS_);
 
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -110,12 +117,15 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
             loadWithoutStatusData(username);
             loadOnHoldList(username);
             loadReturnReason();
+            loadExpenseReason();
 
         }
         else {
             getData(username);
             Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
+
+        loadPointCodeInfo(username);
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -137,6 +147,30 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // location enabled
+        isLocationEnabled();
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setTitle("Turn on location!")
+                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            });
+                    /*.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });*/
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        // Camera permission
         int currentApiVersion = Build.VERSION.SDK_INT;
 
         if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
@@ -152,6 +186,72 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         }
     }
 
+  /*  @Override
+    protected void onStart() {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        boolean loggedin = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF,false);
+        if(loggedin){
+            super.onStart();
+            Intent intent1 = new Intent(DeliveryOfficerCardMenu.this,LoginActivity.class);
+            startActivity(intent1);
+        }
+
+    }*/
+
+    protected boolean isLocationEnabled(){
+        String le = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager) getSystemService(le);
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    //Merchant List API hit
+    private void loadPointCodeInfo(final String user) {
+
+        StringRequest postRequest1 = new StringRequest(Request.Method.POST, GET_POINT_CODE,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteDataFromEmpPointCode(sqLiteDatabase);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("pointCodes");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addPointCodeInfo(  o.getString("username"),
+                                        o.getString("empCode"),
+                                        o.getString("pointCode"));
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params1 = new HashMap<String, String>();
+                params1.put("username", user);
+                return params1;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        postRequest1.setRetryPolicy(new DefaultRetryPolicy(
+                9000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(postRequest1);
+    }
 
     // Payload for delivery return reasons
     public void loadReturnReason(){
@@ -184,11 +284,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getApplicationContext(), "Problem Loading Return Reasons" ,Toast.LENGTH_LONG).show();
                     }
-                })
-        {
-
-        };
-
+                });
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
@@ -199,7 +295,48 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    public void loadExpenseReason(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, EXPENSE_PURPOSE_URL,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteListExpensePurposes(sqLiteDatabase);
 
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("expenseList");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addExpenselist(
+                                        o.getString("id"),
+                                        o.getString("expense_purpose"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Expense Purpose" ,Toast.LENGTH_LONG).show();
+                    }
+                });
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
+    // Delivery onhold list payload
     private void loadOnHoldList (final String user){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ONHOLD_LIST,
@@ -558,7 +695,7 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 onHold_count = (TextView)findViewById(R.id.OnHoldCount);
                 returnReqst_count = (TextView)findViewById(R.id.ReturnCount);
                 cashCollection_count = (TextView)findViewById(R.id.CashCount);
-                returnList_count = (TextView)findViewById(R.id.RTS);
+                returnList_count = (TextView)findViewById(R.id.RTS_);
 
                 unpicked_count.setText(String.valueOf(unpicked));
                 withoutStatus_count.setText(String.valueOf(withoutStatus));
@@ -566,7 +703,6 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                 returnReqst_count.setText(String.valueOf(returnRequest));
                 cashCollection_count.setText(String.valueOf(cash));
                 returnList_count.setText(String.valueOf(returnList));
-
 
                 quickDelivery.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -636,13 +772,14 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
     // Check for camera permission
     private boolean checkPermission()
     {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED);
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
     }
 
     // Request for camera permission
     private void requestPermission()
     {
         ActivityCompat.requestPermissions(this, new String[]{CAMERA}, REQUEST_CAMERA);
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
 
     }
 
@@ -766,6 +903,20 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                     DeliveryCTS.class);
             startActivity(homeIntent);
             // Handle the camera action
+        } else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryAddNewExpense.class);
+            startActivity(expenseIntent);
+        }
+        else if (id == R.id.nav_cash_expense) {
+            Intent expenseIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryPettyCash.class);
+            startActivity(expenseIntent);
+        }
+        else if (id == R.id.nav_courier) {
+            Intent expenseIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryCourier.class);
+            startActivity(expenseIntent);
         }
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout

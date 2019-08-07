@@ -80,7 +80,14 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
 
         if(complete_status.equals("p")) {
             viewHolder.itemMerchantName.setText(pickupList_model_for_executive.getMerchant_name());
-            viewHolder.itemProductName.setText("Not present");
+            viewHolder.itemProductName.setText("0");
+            viewHolder.textReceivedQty.setText("Scan Count: ");
+            viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
+        }
+
+        if(complete_status.equals("I")) {
+            viewHolder.itemMerchantName.setText(pickupList_model_for_executive.getMerchant_name()+" (Inventory)");
+            viewHolder.itemProductName.setText("0");
             viewHolder.textReceivedQty.setText("Scan Count: ");
             viewHolder.itemReceivedQty.setText(pickupList_model_for_executive.getScan_count());
         }
@@ -122,6 +129,18 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
              }
 
             if (count < count_assigned && complete_status.equals("p")){
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
+            }
+
+            if (count == count_assigned && complete_status.equals("I")){
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+            }
+
+            if(count > count_assigned && complete_status.equals("I")){
+                viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
+            }
+
+            if (count < count_assigned && complete_status.equals("I")){
                 viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
             }
 
@@ -167,37 +186,6 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantListAdapte
             e.printStackTrace();
             Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
         }
-
-        /*String complete_status = summaries.get(i).getComplete_status();
-
-        if(complete_status.equals("p")) {
-            viewHolder.text_rQty.setText("Scan Count: ");
-            viewHolder.item_rQty.setText(summaries.get(i).getScan_count());
-        } else if ( complete_status.equals("f")) {
-            viewHolder.text_pQty.setText("Picked: ");
-            viewHolder.item_pQty.setText(summaries.get(i).getPicked_qty());
-        }
-
-        try {
-            int count_assigned = Integer.parseInt(summaries.get(i).getAssined_qty());
-            int count = Integer.parseInt(summaries.get(i).getScan_count());
-            int count_picked = Integer.parseInt(summaries.get(i).getPicked_qty());
-
-
-                if (count == count_assigned || count > count_assigned && complete_status.equals('p')) {
-                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
-                } else if (count < count_assigned && complete_status.equals('p')) {
-                    viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
-                } else if (count_picked == count_assigned || count_picked > count_assigned && complete_status.equals('f')) {
-                    viewHolder.relativeLayout2.setBackgroundResource(R.color.put_bg_color);
-                } else if (count_picked < count_assigned && complete_status.equals('f')) {
-                    viewHolder.relativeLayout2.setBackgroundResource(R.color.pending_bg_color);
-                }
-
-        } catch(Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context, "Status not changed" +e ,Toast.LENGTH_SHORT).show();
-        }*/
     }
 
     @Override

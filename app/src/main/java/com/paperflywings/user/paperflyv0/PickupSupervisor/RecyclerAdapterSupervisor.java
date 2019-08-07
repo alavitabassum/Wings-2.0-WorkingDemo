@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paperflywings.user.paperflyv0.PickupSupervisor.FulfillmentAssignSupervisor.FulfillmentAssignPickup_Supervisor;
+import com.paperflywings.user.paperflyv0.PickupSupervisor.InventorySupervisor.AssignInventorySupervisor;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor;
 import com.paperflywings.user.paperflyv0.R;
@@ -17,9 +18,9 @@ import com.paperflywings.user.paperflyv0.R;
 public class RecyclerAdapterSupervisor extends RecyclerView.Adapter<RecyclerAdapterSupervisor.ViewHolder> {
 
 //    private String[] titles = { "Assign(Logistic)","Assign(Fulfillment)","AjkerDeal(Direct Delivery)","Pickups Today"};
-    private String[] titles = { "Assign(Logistic)","Assign(Fulfillment)","Pickups Today"};
+    private String[] titles = { "Assign(Logistic)","Assign(Fulfillment)","Assign(Inventory)","Pickups Today"};
 //    private int[] images = { R.drawable.assignpickup,R.drawable.pickupstoday,R.drawable.ajkerdeal , R.drawable.pickupstoday};
-    private int[] images = { R.drawable.assignpickup,R.drawable.pickupstoday,R.drawable.pickupstoday};
+    private int[] images = { R.drawable.assignpickup,R.drawable.pickupstoday,R.drawable.inventoryspace,R.drawable.summary};
 
     class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -43,10 +44,10 @@ public class RecyclerAdapterSupervisor extends RecyclerView.Adapter<RecyclerAdap
                         Intent intent_assign_fulfillment = new Intent(v.getContext(), FulfillmentAssignPickup_Supervisor.class);
                         v.getContext().startActivity(intent_assign_fulfillment);
                     }
-                   /* else if (position == 2) {
-                        Intent intent_assign_ad_direct_delivery = new Intent(v.getContext(), AjkerDealOther_Assign_Pickup_supervisor.class);
-                        v.getContext().startActivity(intent_assign_ad_direct_delivery);
-                    }*/
+                    else if (position == 2) {
+                        Intent intent_assign_inv = new Intent(v.getContext(), AssignInventorySupervisor.class);
+                        v.getContext().startActivity(intent_assign_inv);
+                    }
                     else {
                         Intent intent = new Intent(v.getContext(), PickupsToday_Supervisor.class);
                         v.getContext().startActivity(intent);

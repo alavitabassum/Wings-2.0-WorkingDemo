@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_margin="5dp"
+android:foreground="?selectableItemBackground"
+android:padding="50dp"
+app:cardBackgroundColor="#fff"
+tools:context=".DeliveryApp.DeliveryAddNewExpense"
+tools:showIn="@layout/app_bar_delivery_add_new_expense"
+app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+<Button
+    android:id="@+id/select_day_of_expense"
+    android:layout_width="match_parent"
+    android:layout_marginTop="20dp"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@id/create_tv"
+    android:autofillHints=""
+    android:ems="15"
+    android:inputType="text"
+    android:textSize="15sp"
+    android:text="Select date"
+    android:textStyle="bold" />
+
+<Spinner
+    android:id="@+id/purpose_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/select_day_of_expense"
+    android:layout_alignBaseline="@+id/reason"
+    android:layout_toEndOf="@+id/reason"/>
+
+<TextView
+    android:id="@+id/reason"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    android:layout_marginTop="20dp"
+    android:layout_below="@id/select_day_of_expense"
+    android:text="Reason"
+    android:textAlignment="textStart"
+    android:textSize="15sp"
+    android:textStyle="bold" />
+
+<EditText
+    android:id="@+id/cashAmt"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_below="@id/reason"
+    android:layout_marginStart="2dp"
+    android:layout_marginTop="20dp"
+    android:background="@color/light_grey"
+    android:hint="Enter Amount"
+    android:lines="1"
+    android:maxLines="1"
+    android:padding="5dp"
+    android:inputType="number"
+    android:textAlignment="textStart"
+    android:textColor="#000"
+    android:textSize="18sp"
+    android:textStyle="bold" />
+
+<EditText
+    android:id="@+id/expense_comment"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_below="@id/cashAmt"
+    android:layout_marginStart="2dp"
+    android:layout_marginTop="20dp"
+    android:background="@color/light_grey"
+    android:hint="Comment"
+    android:lines="1"
+    android:maxLines="2"
+    android:padding="5dp"
+    android:textAlignment="textStart"
+    android:textColor="#000"
+    android:textSize="18sp"
+    android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/error_msg"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:textAlignment="center"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:layout_below="@id/expense_comment"
+    android:textColor="@color/red"/>
+
+
+<Button
+    android:id="@+id/btn_assign"
+    android:layout_width="150dp"
+    android:layout_height="40dp"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="320dp"
+    android:background="@drawable/buttonstyle_default"
+    android:color="#000"
+    android:foregroundGravity="bottom|center"
+    android:gravity="center"
+    android:text="Add Expense"
+    android:textAlignment="center"
+    android:textColor="@color/white"
+    android:textSize="12sp"
+    android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/create_tv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="24dp"
+    android:text="Add New Expense"
+    android:textAlignment="center"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    android:textColor="@color/pfColor"/>
+</RelativeLayout>

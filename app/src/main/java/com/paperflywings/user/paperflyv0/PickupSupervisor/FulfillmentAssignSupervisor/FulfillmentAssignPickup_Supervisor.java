@@ -47,12 +47,12 @@ import com.paperflywings.user.paperflyv0.AssignManager_ExecutiveList;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.LoginActivity;
+import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor;
-import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor;
-import com.paperflywings.user.paperflyv0.R;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.SupervisorCardMenu;
+import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -115,7 +115,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         productLists = new ArrayList<>();
         mainmerchantlists = new ArrayList<>();
 
-
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
@@ -123,7 +122,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         String user = username.toString();
-
 
         //recycler with cardview
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_assign_supervisor_f);
@@ -136,7 +134,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         swipeRefreshLayout.setRefreshing(true);
         assignFulfillmentManager_modelList.clear();
         swipeRefreshLayout.setRefreshing(true);
-
 
         //Offline sync
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -154,13 +151,8 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         else{
             getallmerchant();
             getallexecutives();
-            /*getmainmerchantlist();
-            getSuppliermerchantlist();
-            getProductlist();*/
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
-
-
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -168,7 +160,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
                 //loading the names again
             }
         };
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -341,6 +332,13 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
     }
 
     private void loadProductlist() {
+       /* progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setCancelable(false);
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();*/
 
         StringRequest postRequest1 = new StringRequest(Request.Method.GET, PRODUCT_LIST_URL,
                 new Response.Listener<String>() {
@@ -349,6 +347,7 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
+//                            progress.dismiss();
                             for (int i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
                                 FullfillmentAssignSupervisor_Model productList = new FullfillmentAssignSupervisor_Model(
@@ -364,7 +363,7 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-
+//                            progress.dismiss();
 
                         }
                     }
@@ -399,66 +398,12 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         }
     }
 
-    //Get Executive List from sqlite
-    private void getmainmerchantlist() {
-        try {
-
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_mainmerchantlist(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String merchantName = c.getString(0);
-                String merchantCode = c.getString(1);
-                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(merchantName, merchantCode);
-                executiveLists.add(assignManager_executiveList);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // get supplier list
-    private void getSuppliermerchantlist(){
-        try {
-
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_supplierlist(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String supplierName = c.getString(0);
-                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(supplierName);
-                executiveLists.add(assignManager_executiveList);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // get product List
-    private void getProductlist(){
-        try {
-
-            SQLiteDatabase sqLiteDatabase = database.getReadableDatabase();
-            Cursor c = database.get_productlist(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String productName = c.getString(0);
-                String productCode = c.getString(1);
-                AssignManager_ExecutiveList assignManager_executiveList = new AssignManager_ExecutiveList(productName,productCode);
-                executiveLists.add(assignManager_executiveList);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    //Merchant List API hit
+   //Merchant List API hit
     private void loadmerchantlist(final String user) {
 
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
+        progress.setCancelable(false);
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(true);
         progress.setProgress(0);

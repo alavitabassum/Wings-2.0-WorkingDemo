@@ -240,6 +240,7 @@ public class AjkerDealOther_Assign_Pickup_supervisor extends AppCompatActivity
 
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
+        progress.setCancelable(false);
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progress.setIndeterminate(true);
         progress.setProgress(0);

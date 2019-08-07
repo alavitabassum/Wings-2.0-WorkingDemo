@@ -1,6 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.R;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,16 +38,18 @@ public class DeliveryCashRSAdapter extends RecyclerView.Adapter<DeliveryCashRSAd
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView item_ordId_without_status;
-        public TextView item_packagePrice_without_status;
-        public TextView item_productBrief_without_status;
+        public TextView item_mer_order_ref;
+        public TextView item_packagePrice;
+        public TextView item_collected_amt;
         public CardView card_view_without_status;
 
         public ViewHolder(View itemView, int i) {
             super(itemView);
 
-            item_ordId_without_status=itemView.findViewById(R.id.orderIdCash);
-            item_packagePrice_without_status=itemView.findViewById(R.id.priceCash);
-            item_productBrief_without_status=itemView.findViewById(R.id.CashDate);
+            item_ordId_without_status=itemView.findViewById(R.id.ordertxt_order_cash);
+            item_mer_order_ref=itemView.findViewById(R.id.merOrderRefId);
+            item_packagePrice=itemView.findViewById(R.id.orderIdCash);
+            item_collected_amt=itemView.findViewById(R.id.collectedCashAmt);
             card_view_without_status=itemView.findViewById(R.id.card_view_delivery_cashrs_list);
 
         }
@@ -64,11 +66,23 @@ public class DeliveryCashRSAdapter extends RecyclerView.Adapter<DeliveryCashRSAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
-        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ " Taka");
+        viewHolder.item_mer_order_ref.setText(list.get(i).getMerOrderRef());
+        viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice()+" Taka");
+        viewHolder.item_collected_amt.setText(list.get(i).getCashAmt()+" Taka");
+//        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+ " Taka");
 
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a");
-        viewHolder.item_productBrief_without_status.setText("Date: "+list.get(i).getCTSTime());
+        /*SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss a");
+        viewHolder.item_productBrief_without_status.setText("Date: "+list.get(i).getCTSTime());*/
+
+        String ctsVal = list.get(i).getCTS();
+        if(ctsVal.equals("Y")){
+            viewHolder.item_ordId_without_status.setTextColor(Color.BLACK);
+        }
+
+        if(!ctsVal.equals("Y")){
+            viewHolder.item_ordId_without_status.setTextColor(Color.RED);
+        }
     }
 
     @Override

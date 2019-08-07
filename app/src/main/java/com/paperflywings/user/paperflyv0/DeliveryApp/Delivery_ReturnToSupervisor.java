@@ -19,9 +19,12 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -139,6 +142,37 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
+        // location enabled
+        isLocationEnabled();
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setTitle("Turn on location!")
+                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        int currentApiVersion = Build.VERSION.SDK_INT;
+
+        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
+        {
+            if(checkPermission())
+            {
+                // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                requestPermission();
+            }
+        }
+
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -174,6 +208,24 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    // Check for camera permission
+    private boolean checkPermission()
+    {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    // Request for camera permission
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+    }
+
+    protected boolean isLocationEnabled(){
+        String le = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager) getSystemService(le);
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     private void getData(String user){
@@ -510,7 +562,16 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                     DeliveryCTS.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }  else if (id == R.id.nav_logout) {
+        }   else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(Delivery_ReturnToSupervisor.this,
+                    DeliveryAddNewExpense.class);
+            startActivity(expenseIntent);
+        }
+        else if (id == R.id.nav_cash_expense) {
+            Intent expenseIntent = new Intent(Delivery_ReturnToSupervisor.this,
+                    DeliveryPettyCash.class);
+            startActivity(expenseIntent);
+        } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -597,7 +658,12 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         String orderid = clickedITem.getOrderid();
 
         ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rtsOk");
-        lat_long_store(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
+        try {
+            GetValueFromEditText(sql_primary_id,"Delivery", "Return To Supervisor", username, currentDateTime);
+        } catch (Exception e) {
+            //Toast.makeText(Delivery_ReturnToSupervisor.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy, final String barcode, final String orderid, final String flagReq) {
@@ -660,8 +726,8 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         }
     }
 
-    public void GetValueFromEditText(){
-        ActivityCompat.requestPermissions(Delivery_ReturnToSupervisor.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+//   ActivityCompat.requestPermissions(Delivery_ReturnToSupervisor.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
 
         GPStracker g = new GPStracker(getApplicationContext());
@@ -692,17 +758,17 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             getlats = lats.trim();
             getlngs = lngs.trim();
             getaddrs = fullAddress.trim();
+            lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
 
         }
 
         else
         {
-//            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+           Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
-        GetValueFromEditText();
+    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
                 new Response.Listener<String>() {

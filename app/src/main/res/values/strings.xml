@@ -59,7 +59,7 @@
         <item>Saiful</item>
     </string-array>
 
-    <!--   <string-array name="onholdreasons">
+    <string-array name="onholdreasonsforpickup">
         <item>Please select an option..</item>
         <item>স্টকে পণ্য নেই</item>
         <item>গুণগত মান / প্যাকেজিং সমস্যা</item>
@@ -67,7 +67,7 @@
         <item>মার্চেন্ট অনুপস্থিত</item>
         <item>মার্চেন্ট দেরি করেছে</item>
         <item>নির্ধারিত সময়ের পর পিক আপ অনুরোধ</item>
-    -->
+    </string-array>
 
     <string-array name="onholdreasons">
         <item>Please select an option..</item>
@@ -75,7 +75,8 @@
         <item>Customer request</item>
     </string-array>
 
-  <!--  <string-array name="returnreasonsAll">
+
+    <!--  <string-array name="returnreasonsAll">
         <item>Please select an option..</item>
         <item>গ্রাহকের কাছে টাকা নেই</item>
         <item>গ্রাহক ঠিকানায় নেই</item>
@@ -133,8 +134,8 @@
     <string name="title_activity_baal">Baal</string>
     <string name="title_activity_lol">lol</string>
     <string name="title_activity_lel">lel</string>
-    <string name="tab_text_1">Pickups Completed</string>
-    <string name="tab_text_2">Pickups Pending</string>
+    <string name="tab_text_1">My Daily Delivery</string>
+    <string name="tab_text_2">My Daily Expense</string>
     <string name="title_activity_ppl">ppl</string>
     <string name="picked_qty">Picked Qty :</string>
     <string name="received_qty">Received Qty :</string>
@@ -201,5 +202,11 @@
     <string name="title_activity_return_request">Return Request</string>
     <string name="title_activity_delivery_cash_rs">Cash Received List</string>
     <string name="title_activity_delivery_return_by_supervisor">Return Received List</string>
+    <string name="title_activity_delivery_petty_cash">DeliveryPettyCash</string>
+    <string name="title_activity_delivery_courier">Courier Receive</string>
+    <string name="title_activity_delivery_main_page">Home</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="title_activity_delivery_home">DeliveryHome</string>
+    <string name="title_activity_delivery_add_new_expense">Add New Expense</string>
 
 </resources>

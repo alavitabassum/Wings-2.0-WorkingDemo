@@ -132,6 +132,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
     }
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+
         viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef_without_status.setText(list.get(i).getMerOrderRef());
         //viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
@@ -148,7 +149,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
         // String CustomerDistrict = list.get(i).getCustomerDistrict();
 
-        String Merchant_name = list.get(i).getMerchantName();
+
         String Pick_merchantName = list.get(i).getPickMerchantName();
         String partialReason = list.get(i).getPartialReason();
         String cash = list.get(i).getCash();

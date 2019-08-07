@@ -20,9 +20,12 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -141,6 +144,43 @@ public class DeliveryOnHold extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
+        // location enabled
+        isLocationEnabled();
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setTitle("Turn on location!")
+                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            });
+                    /*.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });*/
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        // Location perssion
+        int currentApiVersion = Build.VERSION.SDK_INT;
+
+        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
+        {
+            if(checkPermission())
+            {
+                // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                requestPermission();
+            }
+        }
+
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -172,6 +212,23 @@ public class DeliveryOnHold extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
+    }
+
+    private boolean checkPermission()
+    {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    // Request for camera permission
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+    }
+
+    protected boolean isLocationEnabled(){
+        String le = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager) getSystemService(le);
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     private void getallreturnreasons() {
@@ -538,7 +595,16 @@ public class DeliveryOnHold extends AppCompatActivity
                     DeliveryCTS.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }  else if (id == R.id.nav_logout) {
+        }  else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(DeliveryOnHold.this,
+                    DeliveryAddNewExpense.class);
+            startActivity(expenseIntent);
+        }
+        else if (id == R.id.nav_cash_expense) {
+            Intent expenseIntent = new Intent(DeliveryOnHold.this,
+                    DeliveryPettyCash.class);
+            startActivity(expenseIntent);
+        } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -707,8 +773,12 @@ public class DeliveryOnHold extends AppCompatActivity
                                             tv1.setText("Please write some comment");
                                         } else {
                                             update_cash_status(cash, cashType, cashTime, cashBy, cashAmt ,cashComment,orderid, merchEmpCode,"CashApp");
-                                            lat_long_store(sql_primary_id,"Delivery", "Cash", username, currentDateTime);
 
+                                            try {
+                                                GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
+                                            } catch (Exception e) {
+                                                // Toast.makeText(DeliveryOnHold.this, "No internet connection!"+e, Toast.LENGTH_SHORT).show();
+                                            }
                                             dialogCash.dismiss();
                                             startActivity(DeliveryListIntent);
                                         }
@@ -773,8 +843,11 @@ public class DeliveryOnHold extends AppCompatActivity
 
                                             update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReturn,partialReason,orderid,cashType,merchEmpCode,"partialApp");
                                             // store lat long for partial status
-                                            lat_long_store(sql_primary_id,"Delivery", "Partial", username, currentDateTime);
-
+                                            try {
+                                                GetValueFromEditText(sql_primary_id, "Delivery", "Partial", username, currentDateTime);
+                                            } catch (Exception e) {
+                                                // Toast.makeText(DeliveryOnHold.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+                                            }
                                             dialogPartial.dismiss();
                                             startActivity(DeliveryListIntent);
                                         }
@@ -838,7 +911,11 @@ public class DeliveryOnHold extends AppCompatActivity
                                             // update_retR_status(Ret,RetTime,RetBy,retRemarks,retReason,PreRet,PreRetTime,PreRetBy,orderid, merchEmpCode,"RetApp");
                                             update_retR_status(retRemarks, retReason, PreRet, PreRetTime, PreRetBy, orderid, merchEmpCode, "RetApp");
                                             // store lat long for partial status
-                                            lat_long_store(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
+                                        try {
+                                            GetValueFromEditText(sql_primary_id, "Delivery", "Return-Request", username, currentDateTime);
+                                        } catch (Exception e) {
+                                            // Toast.makeText(DeliveryOnHold.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+                                        }
 //                                        }
                                         dialogReturnR.dismiss();
                                         startActivity(DeliveryListIntent);
@@ -919,8 +996,12 @@ public class DeliveryOnHold extends AppCompatActivity
                                            update_onhold_status(onHoldSchedule, onHoldReason, Rea, ReaTime, ReaBy, orderid, merchEmpCode, "updateOnHoldApp");
                                             insertOnholdLog(orderid, barcode, merchantName, pickMerchantName, onHoldSchedule, onHoldReason, username, currentDateTime);
                                             // store lat long for partial status
-                                            lat_long_store(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
-//                                        }
+                                        //                                        }
+                                        try {
+                                            GetValueFromEditText(sql_primary_id, "Delivery", "OnHold", username, currentDateTime);
+                                        } catch (Exception e) {
+                                            //Toast.makeText(DeliveryOnHold.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+                                        }
                                             dialogonHold.dismiss();
                                             startActivity(DeliveryListIntent);
                                     }
@@ -946,9 +1027,9 @@ public class DeliveryOnHold extends AppCompatActivity
 
     }
 
-    public void GetValueFromEditText(){
+    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
 
-        ActivityCompat.requestPermissions(DeliveryOnHold.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+//        ActivityCompat.requestPermissions(DeliveryOnHold.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
             GPStracker g = new GPStracker(getApplicationContext());
             Location LocationGps = g.getLocation();
@@ -977,59 +1058,52 @@ public class DeliveryOnHold extends AppCompatActivity
                 getlats = lats.trim();
                 getlngs = lngs.trim();
                 getaddrs = fullAddress.trim();
+                lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
+
             }
             else
             {
-                // Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
             }
         }
-    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
 //        GetValueFromEditText();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String ServerResponse) {
-                        // Hiding the progress dialog after all task complete.
-
-                        // Showing response message coming from server.
                         //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        // Hiding the progress dialog after all task complete.
-
-                        // Showing error message if something goes wrong.
-//                       Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
             protected Map<String, String> getParams() {
-
                 // Creating Map String Params.
                 Map<String, String> params = new HashMap<String, String>();
-
                 // Adding All values to Params.
                 params.put("sqlPrimaryKey", sql_primary_id);
                 params.put("actionType", action_type);
                 params.put("actionFor", action_for);
                 params.put("actionBy", username);
                 params.put("actionTime",currentDateTime);
-                params.put("latitude", getlats);
-                params.put("longitude", getlngs);
-                params.put("Address", getaddrs);
+                params.put("latitude", lats);
+                params.put("longitude", longs);
+                params.put("Address", address);
 
                 return params;
             }
-
         };
         try {
             RequestQueue requestQueue = Volley.newRequestQueue(DeliveryOnHold.this);
             requestQueue.add(stringRequest);
         } catch (Exception e) {
-//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            // Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
 

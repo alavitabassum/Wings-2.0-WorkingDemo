@@ -54,8 +54,8 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
     BarcodeDbHelper db;
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
-    private String lastText;
-    private String barcode;
+    public String lastText;
+    public String barcode;
     private Button done;
 
     public static final int NAME_SYNCED_WITH_SERVER = 1;
@@ -97,8 +97,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
         registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
     }
 
-
-
     private BarcodeCallback callback = new BarcodeCallback()  {
         @Override
         public void barcodeResult(BarcodeResult result)  {
@@ -112,23 +110,46 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
             barcode = result.getText();
             lastText = barcode.substring(0,11);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+           /* String dropPointCode = db.getDropPointCode(lastText);
 
-            builder.setTitle("Scanned for Barcode number: "+result.getText());
-            onPause();
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+            boolean pointCodeExist = db.pointCodeMatch(dropPointCode);
 
-                    pickedfordelivery(lastText, username, empcode, "PickAndAssignFromApp");
-                    dialog.dismiss();
-                    onResume();
-                }
-            });
+            if(pointCodeExist == true){*/
+                AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
 
-            builder.setCancelable(false);
-            final AlertDialog alert1 = builder.create();
-            alert1.show();
+                builder.setTitle("Scanned for Barcode number: "+result.getText());
+                onPause();
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        pickedfordelivery(lastText, username, empcode, "PickAndAssignFromApp");
+                        dialog.dismiss();
+                        onResume();
+                    }
+                });
+
+                builder.setCancelable(false);
+                final AlertDialog alert1 = builder.create();
+                alert1.show();
+            /*} else {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+
+                alertDialogBuilder.setMessage("No record found!");
+                alertDialogBuilder.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                arg0.dismiss();
+                                onResume();
+                            }
+                        });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                // Toast.makeText(DeliveryQuickScan.this, "No Data Matched", Toast.LENGTH_SHORT).show();
+            } onPause();*/
+
 
             db.close();
 

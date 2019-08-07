@@ -73,11 +73,11 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="20dp"
-            android:lines="2"
-            android:maxLines="2"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Order ID: "
             android:textColor="#000"
-            android:textSize="11sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
@@ -89,11 +89,12 @@
             android:layout_marginTop="15dp"
             android:layout_marginEnd="6dp"
             android:layout_toEndOf="@+id/ordertxt"
-            android:lines="2"
-            android:maxLines="2"
+            android:textStyle="bold"
+            android:lines="1"
+            android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="11sp"
+            android:textSize="13sp"
             />
 
 
@@ -159,10 +160,10 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="80dp"
             android:text="Merchant Name: "
-            android:maxLines="2"
-            android:lines="2"
+            android:maxLines="1"
+            android:lines="1"
             android:textColor="#000"
-            android:textSize="13sp" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/m_name_without_status"
@@ -174,11 +175,11 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="0dp"
             android:layout_toEndOf="@+id/merchant_name_txt"
-            android:lines="2"
-            android:maxLines="2"
+            android:lines="1"
+            android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="15sp"
+            android:textSize="11sp"
             style="@style/boldStyle"
             />
 
@@ -220,7 +221,7 @@
             android:textAlignment="textStart"
             android:layout_marginStart="0dp"
             android:textColor="#000"
-            android:textSize="15sp" />
+            android:textSize="11sp" />
 
         <View
             android:id="@+id/divider2"
@@ -304,7 +305,7 @@
             android:layout_marginTop="220dp"
             android:padding="3dp"
             android:textAlignment="textStart"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/view_green"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -316,7 +317,7 @@
             android:layout_marginTop="240dp"
             android:padding="3dp"
             android:textAlignment="textStart"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/view_green"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -344,6 +345,17 @@
                 android:textSize="15sp" />
 
     -->
+
+        <View
+            android:id="@+id/divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="295dp"
+            android:background="?android:attr/listDivider" />
+
         <TextView
             android:id="@+id/package_brief_without_status"
             android:layout_width="370dp"
@@ -358,16 +370,6 @@
             android:textSize="15sp" />
 
         <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="295dp"
-            android:background="?android:attr/listDivider" />
-
-        <View
             android:id="@+id/divider5"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -376,7 +378,6 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="365dp"
             android:background="?android:attr/listDivider" />
-
 
         <TextView
             android:id="@+id/m_phn_num_without_status"
@@ -391,7 +392,6 @@
             android:textColor="@color/blue_link"
             android:textSize="15sp" />
         <!--android:onClick="callMerchant"-->
-
 
         <TextView
             android:id="@+id/price_txt"

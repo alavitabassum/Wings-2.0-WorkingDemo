@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Database extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 20;
     private static final String DATABASE_NAME = "MerchantDatabase.db";
     private static final String TABLE_NAME = "merchants";
     private static final String TABLE_NAME_1 = "merchantsfor_executives";
@@ -30,6 +30,7 @@ public class Database extends SQLiteOpenHelper {
     private static final String TABLE_NAME_13 = "ajkerDealOtherList";
     private static final String TABLE_NAME_14 = "ajkerDealEkshopList";
     private static final String TABLE_NAME_15 = "robiShopList";
+    private static final String TABLE_NAME_16 = "AllInventorymerchantlist";
 
     public Database(Context context)
         {
@@ -55,6 +56,7 @@ public class Database extends SQLiteOpenHelper {
         String tableEmp13 = "create table ajkerDealOtherList(id integer primary key AUTOINCREMENT,main_merchant text,pick_supplier_name text,supplier_address text,supplier_phone text,count text, pickAssignedStatus text, order_id text,status int,unique(order_id) )";
         String tableEmp14 = "create table ajkerDealEkshopList(id integer primary key AUTOINCREMENT,main_merchant text,supplier_phone text,supplier_address text,supplier_name text, apiOrderID text, product_id text, created_at text,unique(product_id) )";
         String tableEmp15 = "create table robiShopList(id integer primary key AUTOINCREMENT, merchantCode text,address text,merchantName text,pickMerchantName text,pickMerchantAddress text, pickupMerchantPhone text,merOrderRef text, productBrief text,created_at text,pickAssignedStatus text,status int, unique(merOrderRef))";
+        String tableEmp16 = "create table AllInventorymerchantlist(id integer primary key AUTOINCREMENT,merchantName text,merchantCode text,address text, contactName text, contactNumber text, unique(merchantName,merchantCode))";
 
         sqLiteDatabase.execSQL(tableEmp);
         sqLiteDatabase.execSQL(tableEmp1);
@@ -72,6 +74,7 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(tableEmp13);
         sqLiteDatabase.execSQL(tableEmp14);
         sqLiteDatabase.execSQL(tableEmp15);
+        sqLiteDatabase.execSQL(tableEmp16);
     }
 
     @Override
@@ -92,6 +95,7 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_13);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_14);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_15);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_16);
         this.onCreate(sqLiteDatabase);
     }
 
@@ -415,6 +419,27 @@ public class Database extends SQLiteOpenHelper {
         return db.query("Allmerchantlist", columns, null, null, null, null, null);
     }
 
+
+    public void addallInventorymerchantlist(String merchantName, String merchantCode, String address, String contactName, String contactNumber) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("merchantName", merchantName);
+        values.put("merchantCode", merchantCode);
+        values.put("address", address);
+        values.put("contactName", contactName);
+        values.put("contactNumber", contactNumber);
+        sqLiteDatabase.insertWithOnConflict("AllInventorymerchantlist", null, values,SQLiteDatabase.CONFLICT_IGNORE);
+
+        sqLiteDatabase.close();
+    }
+
+    public Cursor get_All_Inventory_merchantlist(SQLiteDatabase db) {
+        String[] columns = {"merchantName", "merchantCode","address", "contactName", "contactNumber"};
+        return db.query("AllInventorymerchantlist", columns, null, null, null, null, null);
+    }
+
     public void deletemerchantList(SQLiteDatabase sqLiteDatabase)
     {
         SQLiteDatabase database = this.getReadableDatabase();
@@ -711,6 +736,15 @@ public class Database extends SQLiteOpenHelper {
         sqLiteDatabase.close();
     }
 
+    public void deleteExecutive_list(SQLiteDatabase sqLiteDatabase){
+        SQLiteDatabase database = this.getReadableDatabase();
+        int NoOfRows = (int) DatabaseUtils.queryNumEntries(database,"executivelist");
+
+        if (NoOfRows != 0){
+            sqLiteDatabase.execSQL("delete from "+ "executivelist");
+        }
+    }
+
     public Cursor get_executivelist(SQLiteDatabase db) {
         String[] columns = {"empName", "empCode"};
         return db.query("executivelist", columns, null, null, null, null, null);
@@ -769,6 +803,28 @@ public class Database extends SQLiteOpenHelper {
         String selection = "Error";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT address FROM " + "Allmerchantlist"+ " WHERE " + "merchantName" + " = '" + merchantname + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("address"));
+            return selection;
+        }
+        return null;
+    }
+
+    public String getSelectedMerchantCodeIn(String merchantname){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT merchantCode FROM " + "AllInventorymerchantlist"+ " WHERE " + "merchantName" + " = '" + merchantname + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex("merchantCode"));
+            return selection;
+        }
+        return null;
+    }
+
+    public String getSelectedMerchantAddressIn(String merchantname){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT address FROM " + "AllInventorymerchantlist"+ " WHERE " + "merchantName" + " = '" + merchantname + "'", null);
         if(c.moveToFirst()){
             selection = c.getString(c.getColumnIndex("address"));
             return selection;

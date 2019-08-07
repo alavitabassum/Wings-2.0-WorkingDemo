@@ -18,7 +18,6 @@ import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryCTS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.DeliveryApp.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupManager.LogisticAssignManager.AssignPickup_Manager;
@@ -275,19 +274,23 @@ public class NetworkStateChecker extends BroadcastReceiver {
                         public void onResponse(String response) {
                             try {
                                 JSONObject obj = new JSONObject(response);
-                                if (obj.getBoolean("success")) {
+
+                                /*String successMsg = String.valueOf(response);
+                                Log.d("ADebugTag", "ValueRr: " + response);*/
+                                if (!obj.getBoolean("error")) {
                                     database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
                                     context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
+//                                Toast.makeText(context, "bleeeehhh"+e, Toast.LENGTH_SHORT).show();
                             }
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(context, "Unable to connect to the server! Please ensure your internet is working! all", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Unable to connect to the server! Please ensure your internet is working! all"+error, Toast.LENGTH_SHORT).show();
                         }
                     }) {
                 @Override
@@ -333,10 +336,14 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     return params;
                 }
             };
+        try {
             if (requestQueue == null) {
                 requestQueue = Volley.newRequestQueue(context);
             }
             requestQueue.add(stringRequest);
+        } catch (Exception e) {
+            Toast.makeText(context, "Error Connecting", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -418,250 +425,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         requestQueue.add(stringRequest);
     }
 
-//    private void sync_return_status(final int id, final String ret, final String retTime, final String retBy, final String retReason, final String preRet, final String preRetTime, final String preRetBy, final String orderid, final String barcode, final String flagReq) {
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject obj = new JSONObject(response);
-//                            if (!obj.getBoolean("error")) {
-//                                database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
-//                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Ret", ret);
-//                params.put("RetTime", retTime);
-//                params.put("RetBy", retBy);
-//                params.put("retReason", retReason);
-//                params.put("PreRet", preRet);
-//                params.put("PreRetTime", preRetTime);
-//                params.put("PreRetBy", preRetBy);
-//                params.put("orderid", orderid);
-//                params.put("barcode", barcode);
-//                params.put("flagReq", flagReq);
-//                return params;
-//            }
-//        };
-//        if (requestQueue == null) {
-//            requestQueue = Volley.newRequestQueue(context);
-//        }
-//        requestQueue.add(stringRequest);
-//    }
 
-//    public void sync_onhold_status (final int id,final String onHoldSchedule,final String onHoldReason,final String Rea,final String ReaTime,final String ReaBy,final String orderid,final String merchEmpCode, final String flagReq) {
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject obj = new JSONObject(response);
-//                            if (!obj.getBoolean("error")) {
-//                                database2.updateOnholdStatus(id, NAME_SYNCED_WITH_SERVER);
-//                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("onHoldDate", onHoldSchedule);
-//                params.put("onReason", onHoldReason);
-//                params.put("Rea", Rea);
-//                params.put("ReaTime", ReaTime);
-//                params.put("ReaBy", ReaBy);
-//                params.put("order", orderid);
-//                params.put("data", merchEmpCode);
-//                params.put("flag", flagReq);
-//                return params;
-//            }
-//        };
-//        if (requestQueue == null) {
-//            requestQueue = Volley.newRequestQueue(context);
-//        }
-//        requestQueue.add(stringRequest);
-//    }
-
-//    public void sync_partial_status (final int id, final String cash,final String Ret,final String partialsCash, final String partial,final String partialTime,final String partialBy ,final String partialsReceive,final String partialReason,final String partialReturn,final String orderid,final String barcode, final String flagReq) {
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject obj = new JSONObject(response);
-//                            if (!obj.getBoolean("error")) {
-//                                database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
-//                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//                params.put("Cash", cash);
-//                params.put("Ret", Ret);
-//                params.put("CashAmt", partialsCash);
-//                params.put("partial", partial);
-//                params.put("partialTime", partialTime);
-//                params.put("partialBy", partialBy);
-//                params.put("partialReceive", partialsReceive);
-//                params.put("partialReason", partialReason);
-//                params.put("partialReturn", partialReturn);
-//                params.put("orderid", orderid);
-//                params.put("barcode", barcode);
-//                params.put("flagReq", flagReq);
-//                return params;
-//            }
-//        };
-//        if (requestQueue == null) {
-//            requestQueue = Volley.newRequestQueue(context);
-//        }
-//        requestQueue.add(stringRequest);
-//    }
-
-//    private void sync_cash_status(final int id, final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String merchEmpCode,final String flagReq) {
-//        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.DELIVERY_STATUS_UPDATE,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject obj = new JSONObject(response);
-//                            if (!obj.getBoolean("error")) {
-//                                database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
-//                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
-//                            }
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<String, String>();
-//
-//                params.put("Cash", cash);
-//                params.put("cashType", cashType);
-//                params.put("CashTime", cashTime);
-//                params.put("CashAmt", cashAmt);
-//                params.put("cashComment", cashComment);
-//                params.put("CashBy", cashBy);
-//                params.put("order", orderid);
-//                params.put("flag", flagReq);
-//                params.put("data", merchEmpCode);
-//                return params;
-//            }
-//        };
-//        if (requestQueue == null) {
-//            requestQueue = Volley.newRequestQueue(context);
-//        }
-//        requestQueue.add(stringRequest);
-//    }
-
-    /*private void sync_status(final int id, final String barcode,final String orderid, final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String partial,final String partialTime,final String partialBy,final String partialReceive,final String partialReturn,final String partialReason,final String onHoldSchedule,final String onHoldReason,final String rea,final String reatTime,final String reaBy,final String ret, final String retTime,final String retBy,final String retReason,final String rts,final String rtsTime,final String rtsBy,final String preRet,final String preRetTime,final String preRetBy,final String cts, final String ctsTime, final String ctsBy) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, SYNC_DATA,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                database2.updateWithoutStatusCash(id, NAME_SYNCED_WITH_SERVER);
-                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Voly  " +error, Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                params.put("Cash", cash);
-                params.put("cashType", cashType);
-                params.put("CashBy", cashBy);
-                params.put("CashTime", cashTime);
-                params.put("CashAmt", cashAmt);
-                params.put("CashComment", cashComment);
-                params.put("partial", partial);
-                params.put("partialTime", partialTime);
-                params.put("partialBy", partialBy);
-                params.put("partialReceive", partialReceive);
-                params.put("partialReturn", partialReturn);
-                params.put("partialReason", partialBy);
-
-
-                *//* cursorStatus.getString(15), // Cash
-                                cursorStatus.getString(16), // cashType cashType
-                                cursorStatus.getString(17),//cashTime cashTime
-                                cursorStatus.getString(18), // cashBy cashBy
-                                cursorStatus.getString(19), // CashAmt cashAmt
-                                cursorStatus.getString(20),// CashComment cashComment
-
-                                cursorStatus.getString(21), // partial
-                                cursorStatus.getString(22),// partial time
-                                cursorStatus.getString(23), // partialBy
-                                cursorStatus.getString(24), // partialReceive
-                                cursorStatus.getString(25), // partial return
-                                cursorStatus.getString(26),//partial reason
-
-                                cursorStatus.getString(27), // onhold schedule
-                                cursorStatus.getString(28), // onholdreason*//*
-
-                return params;
-            }
-        };
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(context);
-        }
-        requestQueue.add(stringRequest);
-    }
-*/
     private void updateUnpicked_Data(final int id, final String username, final String empCode, final String barcode){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryOfficerUnpicked.DELIVERY_PICK_LIST,
                 new Response.Listener<String>() {
@@ -1084,7 +848,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     // Action Log Sync
     private void insertOnholdLog(final int id, final String orderid, final String barcode, final String merchantName, final String pickMerchantName, final String onHoldSchedule, final String onHoldReason, final String username, final String currentDateTime){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryWithoutStatus.INSERT_ONHOLD_LOG,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryOnholdLog.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
