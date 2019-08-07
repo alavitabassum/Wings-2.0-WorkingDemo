@@ -20,6 +20,8 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerCardMenu;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.TabLayoutActivity;
 import com.paperflywings.user.paperflyv0.PickupManager.ManagerCardMenu;
 import com.paperflywings.user.paperflyv0.PickupOfficer.ExecutiveCardMenu;
 import com.paperflywings.user.paperflyv0.PickupSupervisor.SupervisorCardMenu;
@@ -99,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, ExecutiveCardMenu.class);
                 startActivity(intent);
             }else if(user_role_id.equals("7")) {
-                Intent intent = new Intent(LoginActivity.this, DeliveryOfficerCardMenu.class);
+                Intent intent = new Intent(LoginActivity.this, DeliveryTablayout.class);
                 startActivity(intent);
             }
         }
@@ -219,7 +221,7 @@ public class LoginActivity extends AppCompatActivity {
                         //delivery officer
                         else if(user_role_id.equals("7")) {
 
-                            startActivity(new Intent(getApplicationContext(), DeliveryOfficerCardMenu.class));
+                            startActivity(new Intent(getApplicationContext(), DeliveryTablayout.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                         }
                         else {

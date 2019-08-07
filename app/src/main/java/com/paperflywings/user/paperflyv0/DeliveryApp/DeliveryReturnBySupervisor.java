@@ -375,7 +375,7 @@ public class DeliveryReturnBySupervisor extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryReturnBySupervisor.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {
