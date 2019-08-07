@@ -203,6 +203,7 @@
     <string name="title_activity_delivery_cash_rs">Cash Received List</string>
     <string name="title_activity_delivery_return_by_supervisor">Return Received List</string>
     <string name="title_activity_delivery_petty_cash">DeliveryPettyCash</string>
+    <string name="title_activity_delivery_courier">Courier Receive</string>
     <string name="title_activity_delivery_main_page">Home</string>
     <string name="tab_text_3">Tab 3</string>
     <string name="title_activity_delivery_home">DeliveryHome</string>

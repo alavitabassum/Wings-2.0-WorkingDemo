@@ -763,8 +763,6 @@ public class DeliveryQuickScan extends AppCompatActivity{
    }
 
     public void update_cash_status (final String cash,final String cashType, final String cashTime,final String cashBy,final String cashAmt ,final String cashComment,final String orderid,final String merchEmpCode, final String flagReq) {
-
-
         final Intent withoutstatuscount = new Intent(DeliveryQuickScan.this,
                 DeliveryOfficerCardMenu.class);
 

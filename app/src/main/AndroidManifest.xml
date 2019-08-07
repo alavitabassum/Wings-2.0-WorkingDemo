@@ -56,7 +56,11 @@
             android:label="@string/title_activity_delivery_petty_cash"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
-
+        <activity
+            android:name=".DeliveryApp.Courier.DeliveryCourier"
+            android:label="@string/title_activity_delivery_courier"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryReturnBySupervisor"
             android:label="@string/title_activity_delivery_return_by_supervisor"

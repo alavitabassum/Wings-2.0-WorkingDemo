@@ -42,6 +42,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourier;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
@@ -909,6 +910,11 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
         else if (id == R.id.nav_cash_expense) {
             Intent expenseIntent = new Intent(DeliveryOfficerCardMenu.this,
                     DeliveryPettyCash.class);
+            startActivity(expenseIntent);
+        }
+        else if (id == R.id.nav_courier) {
+            Intent expenseIntent = new Intent(DeliveryOfficerCardMenu.this,
+                    DeliveryCourier.class);
             startActivity(expenseIntent);
         }
         else if (id == R.id.nav_logout) {

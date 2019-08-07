@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+
+<com.journeyapps.barcodescanner.DecoratedBarcodeView
+    android:id="@+id/barcode_scanner"
+    android:layout_width="match_parent"
+    android:layout_height="367dp"
+    android:layout_above="@+id/buttonsLayout"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:layout_marginStart="0dp"
+    android:layout_marginTop="0dp"
+    android:layout_marginBottom="104dp">
+
+</com.journeyapps.barcodescanner.DecoratedBarcodeView>
+
+<LinearLayout
+    android:id="@+id/buttonsLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentBottom="true"
+    android:layout_marginStart="0dp"
+    android:layout_marginBottom="10dp"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="105dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/buttonstyle_done"
+        android:elevation="5dp"
+        android:text="Done"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        />
+    <ImageButton
+        android:layout_width="47dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/buttonstyle_pause"
+        android:cropToPadding="true"
+        android:elevation="5dp"
+        android:onClick="pause"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/pause"
+        android:text="Pause"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:layout_width="47dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/buttonstyle_resume"
+        android:cropToPadding="true"
+        android:elevation="5dp"
+        android:onClick="resume"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/resume"
+        android:text="Resume"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+</LinearLayout>
+
+
+<ImageView
+    android:id="@+id/barcodePreview"
+    android:layout_width="200dp"
+    android:layout_height="91dp"
+    android:layout_alignParentBottom="true"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="-45dp"
+    android:layout_marginEnd="11dp"
+    android:layout_marginBottom="10dp"
+    android:layout_toRightOf="@id/buttonsLayout"
+    android:background="@color/light_grey"
+    android:contentDescription="TODO" />
+
+
+
+<TextView
+    android:id="@+id/merchant_name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/barcode_scanner"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="11dp"
+    android:layout_marginEnd="11dp"
+    android:layout_marginTop="-90dp"
+    android:textSize="20dp"
+    android:textStyle="bold"
+    android:textColor="@color/pfColor" />
+
+<TextView
+    android:id="@+id/sub_merchant_name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/barcode_scanner"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="11dp"
+    android:layout_marginEnd="11dp"
+    android:layout_marginTop="-90dp"
+    android:textSize="20dp"
+    android:textStyle="bold"
+    android:textColor="@color/pfColor" />
+
+<TextView
+    android:id="@+id/product_name"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/barcode_scanner"
+    android:layout_alignParentStart="true"
+    android:layout_marginStart="11dp"
+    android:layout_marginTop="-50dp"
+    android:layout_marginEnd="11dp"
+    android:textColor="@color/pfColor"
+    android:textSize="15dp"
+    android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/scan_count"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/merchant_name"
+    android:layout_alignStart="@+id/merchant_name"
+    android:layout_marginStart="0dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="11dp"
+    android:textColor="@color/red"
+    android:textSize="20dp"
+    android:textStyle="bold" />
+
+</RelativeLayout>

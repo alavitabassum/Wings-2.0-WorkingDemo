@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="10dp"
+    >
+
+<RelativeLayout
+    android:id="@+id/relativeLayout"
+    android:layout_width="364dp"
+    android:layout_height="300dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="8dp"
+    android:paddingLeft="5dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/CashCollection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:padding="7dp"
+        android:text="Sack Accept"
+        android:textAlignment="textStart"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="33dp"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/pickup_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="69dp"
+        android:text="Pickup Point  :"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/pickup_point_name"
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/pickup_point"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/pickup_point"
+        android:autofillHints=""
+        android:ems="10"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/courier_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="100dp"
+        android:text="Courier Name  :"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/courier_name"
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/courier_name_title"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/courier_name_title"
+        android:autofillHints=""
+        android:ems="10"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/no_of_percel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="130dp"
+        android:text="Percel Amount :"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/percent_amt"
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/no_of_percel"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/no_of_percel"
+        android:autofillHints=""
+        android:ems="10"
+        android:textColor="@color/put_hd_color_green"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/point_code_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="160dp"
+        android:text="Point Code    :"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/point_code"
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/point_code_title"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/point_code_title"
+        android:autofillHints=""
+        android:ems="10"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/barcode_number_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="188dp"
+        android:text="Barcode       :"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/barcode_number"
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/barcode_number_title"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/barcode_number_title"
+        android:autofillHints=""
+        android:ems="10"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/van_number_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="215dp"
+        android:text="Van Number    :"
+        android:lines="2"
+        android:maxLines="2"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/van_number"
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/van_number_title"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/van_number_title"
+        android:autofillHints=""
+        android:lines="2"
+        android:maxLines="2"
+        android:ems="10"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/recv_comment_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="260dp"
+        android:text="Comment :"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/recv_comment"
+        android:layout_width="193dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/recv_comment_title"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/recv_comment_title"
+        android:autofillHints=""
+        android:ems="10"
+        android:inputType="text"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/error_message_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textViewCollection"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="35dp"
+        android:paddingLeft="45dp"
+        android:layout_centerHorizontal="true"
+        android:shadowColor="#7F000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:textColor="#ff0000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
