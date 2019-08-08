@@ -35,7 +35,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".DeliveryApp.DeliveryTablayout"
+            android:label="@string/title_activity_delivery_tablayout"
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
@@ -50,7 +53,7 @@
             android:name=".DeliveryApp.DeliveryAddNewExpense"
             android:label="@string/title_activity_delivery_add_new_expense"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryPettyCash"
             android:label="@string/title_activity_delivery_petty_cash"
@@ -219,6 +222,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
         </activity>
+        <activity
+            android:name=".DeliveryApp.TabLayoutActivity"
+            android:label="@string/title_activity_delivery_officer_card_menu"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.Delivery_quick_pick_scan"
             android:parentActivityName=".DeliveryApp.DeliveryOfficerUnpicked"

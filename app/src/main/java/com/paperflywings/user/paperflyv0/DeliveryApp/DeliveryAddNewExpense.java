@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -163,7 +164,7 @@ public class DeliveryAddNewExpense extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Intent homeIntentSuper = new Intent(DeliveryAddNewExpense.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntentSuper);
         }
     }
@@ -198,7 +199,7 @@ public class DeliveryAddNewExpense extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryAddNewExpense.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {

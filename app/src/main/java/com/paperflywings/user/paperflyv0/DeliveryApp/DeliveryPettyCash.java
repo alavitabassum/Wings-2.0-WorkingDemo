@@ -356,7 +356,7 @@ public class DeliveryPettyCash extends AppCompatActivity
         } else {
             Intent homeIntent = new Intent(
                     DeliveryPettyCash.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
         }
     }
@@ -414,7 +414,7 @@ public class DeliveryPettyCash extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryPettyCash.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {

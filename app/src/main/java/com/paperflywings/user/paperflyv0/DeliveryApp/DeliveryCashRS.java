@@ -402,7 +402,7 @@ public class DeliveryCashRS extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryCashRS.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {

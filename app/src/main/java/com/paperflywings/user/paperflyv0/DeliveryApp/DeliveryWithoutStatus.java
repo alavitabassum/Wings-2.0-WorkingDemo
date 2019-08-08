@@ -499,7 +499,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
         }
     }
@@ -555,7 +555,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryWithoutStatus.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {

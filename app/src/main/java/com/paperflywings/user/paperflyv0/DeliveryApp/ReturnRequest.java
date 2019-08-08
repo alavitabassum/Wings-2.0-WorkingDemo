@@ -433,7 +433,7 @@ public class ReturnRequest extends AppCompatActivity
         } else {
             //super.onBackPressed();
             Intent homeIntentSuper = new Intent(ReturnRequest.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntentSuper);
         }
     }
@@ -494,7 +494,7 @@ public class ReturnRequest extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(ReturnRequest.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {

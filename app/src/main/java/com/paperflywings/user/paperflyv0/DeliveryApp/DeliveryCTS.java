@@ -41,6 +41,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -468,7 +469,7 @@ public class DeliveryCTS extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Intent homeIntent = new Intent(DeliveryCTS.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
         }
     }
@@ -527,7 +528,7 @@ public class DeliveryCTS extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryCTS.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {

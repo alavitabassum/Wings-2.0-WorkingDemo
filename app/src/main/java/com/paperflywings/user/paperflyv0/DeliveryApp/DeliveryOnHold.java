@@ -502,7 +502,7 @@ public class DeliveryOnHold extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Intent homeIntent = new Intent(DeliveryOnHold.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
         }
     }
@@ -562,7 +562,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliveryOnHold.this,
-                    DeliveryOfficerCardMenu.class);
+                    TabLayoutActivity.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {
