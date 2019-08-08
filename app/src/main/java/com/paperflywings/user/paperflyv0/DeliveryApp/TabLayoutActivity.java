@@ -23,7 +23,7 @@ import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
-public class TabLayoutActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+public class TabLayoutActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     TabLayout tabLayout;
@@ -106,93 +106,5 @@ public class TabLayoutActivity extends AppCompatActivity  implements NavigationV
         startActivity(homeIntentSuper);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(TabLayoutActivity.this,
-                    TabLayoutActivity.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_unpicked) {
-            Intent homeIntent = new Intent(TabLayoutActivity.this,
-                    DeliveryOfficerUnpicked.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_without_status) {
-            Intent homeIntent = new Intent(TabLayoutActivity.this,
-                    DeliveryWithoutStatus.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        }  else if (id == R.id.nav_on_hold) {
-            Intent homeIntent = new Intent(TabLayoutActivity.this,
-                    DeliveryOnHold.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_return_request) {
-            Intent homeIntent = new Intent(TabLayoutActivity.this,
-                    ReturnRequest.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_return) {
-            Intent homeIntent = new Intent(TabLayoutActivity.this,
-                    Delivery_ReturnToSupervisor.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_cash) {
-            Intent homeIntent = new Intent(TabLayoutActivity.this,
-                    DeliveryCTS.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        }  else if (id == R.id.nav_logout) {
-            //Creating an alert dialog to confirm logout
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage("Are you sure you want to logout?");
-            alertDialogBuilder.setPositiveButton("Yes",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-
-//                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                            db.deleteAssignedList(sqLiteDatabase);
-
-                            //Getting out sharedpreferences
-                            SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-                            //Getting editor
-                            SharedPreferences.Editor editor = preferences.edit();
-
-                            //Puting the value false for loggedin
-                            editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
-
-                            //Putting blank value to email
-                            editor.putString(Config.EMAIL_SHARED_PREF, "");
-
-                            //Saving the sharedpreferences
-                            editor.commit();
-
-                            //Starting login activity
-                            Intent intent = new Intent(TabLayoutActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-
-            alertDialogBuilder.setNegativeButton("No",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-
-                        }
-                    });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_tablayout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 
 }

@@ -1,15 +1,73 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
- >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey"
+    android:id="@+id/ss"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <!-- TODO: Update blank fragment layout -->
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_vertical|center_horizontal"
-    android:text="Courier"
-    android:textSize="30sp" />
+
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+      <Button
+          android:id="@+id/courier_receive"
+          android:layout_width="250dp"
+          android:layout_height="150dp"
+          android:layout_marginTop="100dp"
+          android:background="@drawable/courier_receive"
+          android:gravity="bottom|center"
+          android:textColor="#000" />
+
+      <TextView
+          android:id="@+id/courier_receive_text"
+          android:layout_width="250dp"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:layout_marginTop="5dp"
+          android:text="Courier Recieve"
+          android:textAlignment="center"
+          android:textColor="@android:color/black"
+          android:textSize="20sp"
+          android:background="@color/white"
+          android:textStyle="bold" />
+
+      <Button
+          android:id="@+id/view_details"
+          android:layout_width="250dp"
+          android:layout_height="150dp"
+          android:layout_marginTop="100dp"
+          android:background="@drawable/view"
+          android:gravity="bottom|center"
+          android:textColor="#000" />
+      <TextView
+          android:id="@+id/view_details_text"
+          android:layout_width="250dp"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:layout_marginTop="5dp"
+          android:text="View Details"
+          android:textAlignment="center"
+          android:textColor="@android:color/black"
+          android:textSize="20sp"
+          android:background="@color/white"
+          android:textStyle="bold" />
+
+
+
+    </LinearLayout>
+
+
+  </RelativeLayout>
+
 
 </FrameLayout>

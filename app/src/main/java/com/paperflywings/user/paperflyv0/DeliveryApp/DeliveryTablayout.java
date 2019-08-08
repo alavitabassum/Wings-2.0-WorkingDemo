@@ -23,6 +23,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.paperflywings.user.paperflyv0.Config;
@@ -44,9 +45,13 @@ public class DeliveryTablayout extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_tablayout2);
-       /* Toolbar toolbar1 = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar1);*/
 
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+       /* Toolbar toolbar1 = findViewById(R.id.toolbar1);
+        setSupportActionBar(toolbar1);
+*/
         tabLayout = findViewById(R.id.tablayout);
         tabChats = findViewById(R.id.tabChats);
         tabStatus = findViewById(R.id.tabStatus);
@@ -57,22 +62,23 @@ public class DeliveryTablayout extends AppCompatActivity
         viewPager.setAdapter(pageAdapter);
 
 
-      /*  DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar1, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_deliver_tablayout);
+        ImageButton menuRight = findViewById(R.id.leftRight);
+        menuRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+            }
+        });
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
-        navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
-       */
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -117,6 +123,8 @@ public class DeliveryTablayout extends AppCompatActivity
 
         });
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+
     }
 
     @Override
@@ -239,7 +247,7 @@ public class DeliveryTablayout extends AppCompatActivity
             alertDialog.show();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_tablayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

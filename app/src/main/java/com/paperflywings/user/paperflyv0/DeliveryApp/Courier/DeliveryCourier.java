@@ -42,8 +42,10 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.CourierFragment;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerCardMenu;
 import com.paperflywings.user.paperflyv0.DeliveryApp.GPStracker;
+import com.paperflywings.user.paperflyv0.DeliveryApp.TabLayoutActivity;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -123,7 +125,7 @@ public class DeliveryCourier extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DeliveryCourier.this,
-                        DeliveryOfficerCardMenu.class);
+                        TabLayoutActivity.class);
                 startActivity(intent);
             }
         });

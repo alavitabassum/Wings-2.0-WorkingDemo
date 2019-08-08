@@ -1,15 +1,20 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourier;
 import com.paperflywings.user.paperflyv0.R;
 
 
@@ -22,8 +27,24 @@ public class CourierFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_courier, container, false);
+        //setHasOptionsMenu(true);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_courier,container,false);
+        Button Courier_receive = (Button)viewGroup.findViewById(R.id.courier_receive);
+        Button View_details = (Button)viewGroup.findViewById(R.id.view_details);
+
+
+
+
+        Courier_receive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCourier.class);
+                startActivity(intent);
+            }
+        });
+
+        return viewGroup;
     }
 
     @Override
@@ -39,4 +60,8 @@ public class CourierFragment extends Fragment {
         }*/
         return true;
     }
+
+
+
+
 }
