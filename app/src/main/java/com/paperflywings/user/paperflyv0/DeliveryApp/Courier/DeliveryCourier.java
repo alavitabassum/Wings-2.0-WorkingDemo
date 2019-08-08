@@ -264,7 +264,7 @@ public void GetValueFromEditText(final String sql_primary_id, final String actio
                         // Hiding the progress dialog after all task complete.
 
                         // Showing error message if something goes wrong.
-//                       Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                        //  Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override
@@ -291,7 +291,7 @@ public void GetValueFromEditText(final String sql_primary_id, final String actio
             RequestQueue requestQueue = Volley.newRequestQueue(DeliveryCourier.this);
             requestQueue.add(stringRequest);
         } catch (Exception e) {
-//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            // Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
         }
     }
 
