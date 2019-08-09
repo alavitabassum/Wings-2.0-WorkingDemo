@@ -8,23 +8,10 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-   <!-- <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
--->
         <include
             layout="@layout/app_bar_delivery_tablayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-      <!--  <FrameLayout
-            android:id="@+id/f_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>-->
-
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -32,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_delivery_tablayout"
+        app:headerLayout="@layout/nav_header_delivery_officer_card_menu"
         app:menu="@menu/activity_delivery_officer_card_menu_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

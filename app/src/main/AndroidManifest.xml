@@ -36,10 +36,6 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".DeliveryApp.DeliveryTablayout"
-            android:label="@string/title_activity_delivery_tablayout"
-            android:theme="@style/AppTheme"></activity>
-        <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
@@ -50,12 +46,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DeliveryApp.DeliveryAddNewExpense"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout"
+            android:label="@string/title_activity_delivery_tablayout"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense"
             android:label="@string/title_activity_delivery_add_new_expense"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryPettyCash"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryPettyCash"
             android:label="@string/title_activity_delivery_petty_cash"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
@@ -65,82 +66,82 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryReturnBySupervisor"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerRBS.DeliveryReturnBySupervisor"
             android:label="@string/title_activity_delivery_return_by_supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryCashRS"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerCRS.DeliveryCashRS"
             android:label="@string/title_activity_delivery_cash_rs"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.ReturnRequest"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest"
             android:label="@string/title_activity_return_request"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryCTS"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS"
             android:label="@string/title_activity_delivery_cts"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.Delivery_ReturnToSupervisor"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor"
             android:label="@string/title_activity_delivery__return_to_supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryQuickScan"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryQuickScan"
             android:label="@string/title_activity_delivery_quick_scan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryOnHold"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold"
             android:label="@string/title_activity_delivery_on_hold"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryWithoutStatus"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus"
             android:label="@string/title_activity_delivery_without_status"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryOfficerUnpicked"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked"
             android:label="@string/title_activity_delivery_officer_unpicked"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliveryOfficerCardMenu"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryOfficerCardMenu"
             android:label="@string/title_activity_delivery_officer_card_menu"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupSupervisor.FulfillmentAssignSupervisor.FulfillmentAssignPickup_Supervisor"
+            android:name=".PickupModule.PickupSupervisor.FulfillmentAssignSupervisor.FulfillmentAssignPickup_Supervisor"
             android:label="@string/title_activity_fulfillment_assign_pickup__supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupSupervisor.AjkerdealdirectdeliverySupervisor.AjkerDealOther_Assign_Pickup_supervisor"
+            android:name=".PickupModule.PickupSupervisor.AjkerdealdirectdeliverySupervisor.AjkerDealOther_Assign_Pickup_supervisor"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor"
+            android:name=".PickupModule.PickupSupervisor.PickupTodaySupervisor.PickupsToday_Supervisor"
             android:label="@string/title_activity_pickups_today__supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor"
+            android:name=".PickupModule.PickupSupervisor.LogisticAssignSupervisor.AssignPickup_Supervisor"
             android:label="@string/title_activity_assign_pickup__supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupSupervisor.SupervisorCardMenu"
+            android:name=".PickupModule.PickupSupervisor.SupervisorCardMenu"
             android:label="@string/title_activity_supervisor_card_menu"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupPendingReportManager.PendingSummary_Manager"
+            android:name=".PickupModule.PickupPendingReportManager.PendingSummary_Manager"
             android:label="@string/title_activity_pending_summary__manager"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -149,12 +150,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupsToday_Manager"
+            android:name=".PickupModule.PickupsToday_Manager"
             android:label="@string/title_activity_pickups_today__manager"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupManager.LogisticAssignManager.AssignPickup_Manager"
+            android:name=".PickupModule.PickupManager.LogisticAssignManager.AssignPickup_Manager"
             android:label="@string/title_activity_assign_pickup__manager"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -166,100 +167,96 @@
         </receiver>
 
         <activity
-            android:name=".PickupOfficer.ExecutiveCardMenu"
+            android:name=".PickupModule.PickupOfficer.ExecutiveCardMenu"
             android:label="@string/title_activity_executive_card_menu"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupManager.ManagerCardMenu"
+            android:name=".PickupModule.PickupManager.ManagerCardMenu"
             android:label="@string/title_activity_manager_card_menu"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupsToday_Executive"
+            android:name=".PickupModule.PickupsToday_Executive"
             android:label="@string/title_activity_pickups_today__executive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupOfficer.MyPickupList_Executive"
+            android:name=".PickupModule.PickupOfficer.MyPickupList_Executive"
             android:label="@string/title_activity_my_pickups__executive"
             android:screenOrientation="portrait"
             android:supportsRtl="true"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupOfficer.ScanningScreen"
-            android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
+            android:name=".PickupModule.PickupOfficer.ScanningScreen"
+            android:parentActivityName=".PickupModule.PickupOfficer.MyPickupList_Executive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
+                android:value=".PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
-            android:name=".PickupOfficer.FulfillmentScanningScreen"
-            android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
+            android:name=".PickupModule.PickupOfficer.FulfillmentScanningScreen"
+            android:parentActivityName=".PickupModule.PickupOfficer.MyPickupList_Executive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
+                android:value=".PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
-            android:name=".PickupOfficer.FulfillmentScanningScreenAjkerDeal"
-            android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
+            android:name=".PickupModule.PickupOfficer.FulfillmentScanningScreenAjkerDeal"
+            android:parentActivityName=".PickupModule.PickupOfficer.MyPickupList_Executive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
+                android:value=".PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
-            android:name=".PickupManager.Robishop.RobishopScanningScreen"
-            android:parentActivityName=".PickupOfficer.MyPickupList_Executive"
+            android:name=".PickupModule.PickupManager.Robishop.RobishopScanningScreen"
+            android:parentActivityName=".PickupModule.PickupOfficer.MyPickupList_Executive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.PickupOfficer.MyPickupList_Executive" />
+                android:value=".PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
-            android:name=".DeliveryApp.TabLayoutActivity"
-            android:label="@string/title_activity_delivery_officer_card_menu"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".DeliveryApp.Delivery_quick_pick_scan"
-            android:parentActivityName=".DeliveryApp.DeliveryOfficerUnpicked"
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.Delivery_quick_pick_scan"
+            android:parentActivityName=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerUnpicked" />
+                android:value="com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked" />
         </activity>
         <activity
-            android:name=".PickupManager.LogisticAssignManager.NewOrder"
+            android:name=".PickupModule.PickupManager.LogisticAssignManager.NewOrder"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PickupSupervisor.LogisticAssignSupervisor.NewOrderSupervisor"
+            android:name=".PickupModule.PickupSupervisor.LogisticAssignSupervisor.NewOrderSupervisor"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PickupSupervisor.InventorySupervisor.AssignInventorySupervisor"
+            android:name=".PickupModule.PickupSupervisor.InventorySupervisor.AssignInventorySupervisor"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager"
+            android:name=".PickupModule.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager"
             android:label="@string/title_activity_testing_fulfillment"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".PickupManager.FulfillmentAssignManager.NewOrderEntry_ful" />
+        <activity android:name=".PickupModule.PickupManager.FulfillmentAssignManager.NewOrderEntry_ful" />
         <activity
-            android:name=".PickupSupervisor.FulfillmentAssignSupervisor.NewOrderEntry_Supervisor_ful"
+            android:name=".PickupModule.PickupSupervisor.FulfillmentAssignSupervisor.NewOrderEntry_Supervisor_ful"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PickupManager.AjkerdealdirectdeliveryManager.AjkerDealOther_Assign_Pickup_manager"
+            android:name=".PickupModule.PickupManager.AjkerdealdirectdeliveryManager.AjkerDealOther_Assign_Pickup_manager"
             android:label="@string/title_activity_ajker_deal_other__assign__pickup_manager"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".PickupManager.Robishop.Robishop_Assign_pickup_manager"
+            android:name=".PickupModule.PickupManager.Robishop.Robishop_Assign_pickup_manager"
             android:label="@string/title_activity_robishop__assign_pickup_manager"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PickupSupervisor.AjkerdealdirectdeliverySupervisor.AjkerDealOther_Assign_Pickup_supervisor">
+    tools:context=".PickupModule.PickupSupervisor.AjkerdealdirectdeliverySupervisor.AjkerDealOther_Assign_Pickup_supervisor">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

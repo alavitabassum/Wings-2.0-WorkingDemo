@@ -208,6 +208,6 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="title_activity_delivery_home">DeliveryHome</string>
     <string name="title_activity_delivery_add_new_expense">Add New Expense</string>
-    <string name="title_activity_delivery_tablayout">DeliveryTablayout</string>
+    <string name="title_activity_delivery_tablayout">Home</string>
 
 </resources>

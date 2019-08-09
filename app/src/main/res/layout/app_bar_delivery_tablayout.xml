@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeliveryApp.DeliveryTablayout">
+    tools:context=".DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -15,33 +15,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimaryDark"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-
-          <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-              <TextView
-                    android:id="@+id/appbar_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text=""
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <ImageButton
-                    android:id="@+id/leftRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
-                    android:src="@drawable/ic_menu_black_24dp" />
-
-            </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 

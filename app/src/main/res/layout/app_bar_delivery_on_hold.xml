@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeliveryApp.DeliveryOnHold"
+    tools:context=".DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold"
     android:background="@color/light_grey">
 
     <android.support.design.widget.AppBarLayout

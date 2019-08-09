@@ -8,7 +8,7 @@ android:layout_margin="5dp"
 android:foreground="?selectableItemBackground"
 android:padding="50dp"
 app:cardBackgroundColor="#fff"
-tools:context=".DeliveryApp.DeliveryAddNewExpense"
+tools:context=".DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense"
 tools:showIn="@layout/app_bar_delivery_add_new_expense"
 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 

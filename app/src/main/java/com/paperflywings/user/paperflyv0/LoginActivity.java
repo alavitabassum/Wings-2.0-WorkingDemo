@@ -19,12 +19,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficerCardMenu;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.TabLayoutActivity;
-import com.paperflywings.user.paperflyv0.PickupManager.ManagerCardMenu;
-import com.paperflywings.user.paperflyv0.PickupOfficer.ExecutiveCardMenu;
-import com.paperflywings.user.paperflyv0.PickupSupervisor.SupervisorCardMenu;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
+import com.paperflywings.user.paperflyv0.PickupModule.PickupManager.ManagerCardMenu;
+import com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.ExecutiveCardMenu;
+import com.paperflywings.user.paperflyv0.PickupModule.PickupSupervisor.SupervisorCardMenu;
 
 import org.json.JSONArray;
 import org.json.JSONException;
