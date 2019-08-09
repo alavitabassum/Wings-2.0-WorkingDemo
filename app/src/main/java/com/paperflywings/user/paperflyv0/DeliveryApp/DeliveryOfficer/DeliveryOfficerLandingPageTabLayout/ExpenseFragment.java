@@ -1,6 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,7 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryPettyCash;
 import com.paperflywings.user.paperflyv0.R;
 
 
@@ -23,7 +27,30 @@ public class ExpenseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //setHasOptionsMenu(true);
-        return inflater.inflate(R.layout.fragment_expense, container, false);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_expense,container,false);
+
+        Button addExpense = (Button)viewGroup.findViewById(R.id.add_new_expense);
+        Button searchExpense = (Button)viewGroup.findViewById(R.id.search_expense);
+
+        addExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
+                Intent intentAdd = new Intent(getActivity().getApplicationContext(), DeliveryAddNewExpense.class);
+                startActivity(intentAdd);
+            }
+        });
+
+        searchExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
+                Intent intentSearch = new Intent(getActivity().getApplicationContext(), DeliveryPettyCash.class);
+                startActivity(intentSearch);
+            }
+        });
+
+        return viewGroup;
     }
 
     @Override

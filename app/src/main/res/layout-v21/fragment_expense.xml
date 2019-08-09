@@ -8,11 +8,56 @@
     >
 
   <!-- TODO: Update blank fragment layout -->
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical|center_horizontal"
-      android:text="Expense"
-      android:textSize="30sp" />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/add_new_expense"
+                style="@style/FirebaseUI.Button"
+                android:layout_width="300sp"
+                android:layout_height="120sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@color/white"
+                android:drawableTop="@drawable/ic_add_expense"
+                android:padding="10dp"
+                android:text="Add New Expense"
+                android:textColor="@color/black_overlay"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/search_expense"
+                style="@style/FirebaseUI.Button"
+                android:layout_width="300sp"
+                android:layout_height="120sp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@color/white"
+                android:drawableTop="@drawable/ic_search_expense"
+                android:padding="10dp"
+                android:text="Search Expense"
+                android:textColor="@color/black_overlay"
+                android:visibility="visible" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
 
 </FrameLayout>
