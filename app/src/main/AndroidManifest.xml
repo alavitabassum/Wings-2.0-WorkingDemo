@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
@@ -36,6 +37,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout"
+            android:label="@string/title_activity_delivery_tablayout"
+            android:theme="@style/AppTheme"></activity>
+        <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
@@ -45,11 +50,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout"
-            android:label="@string/title_activity_delivery_tablayout"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense"
             android:label="@string/title_activity_delivery_add_new_expense"
@@ -194,7 +194,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PickupModule.PickupOfficer.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
             android:name=".PickupModule.PickupOfficer.FulfillmentScanningScreen"
@@ -203,7 +203,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PickupModule.PickupOfficer.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
             android:name=".PickupModule.PickupOfficer.FulfillmentScanningScreenAjkerDeal"
@@ -212,7 +212,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PickupModule.PickupOfficer.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
         <activity
             android:name=".PickupModule.PickupManager.Robishop.RobishopScanningScreen"
@@ -221,8 +221,12 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PickupModule.PickupOfficer.MyPickupList_Executive" />
+                android:value="com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
+       <!-- <activity
+            android:name=".DeliveryApp.TabLayoutActivity"
+            android:label="@string/title_activity_delivery_officer_card_menu"
+            android:theme="@style/AppTheme" />-->
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.Delivery_quick_pick_scan"
             android:parentActivityName=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked"
