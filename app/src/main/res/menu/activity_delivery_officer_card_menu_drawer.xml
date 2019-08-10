@@ -16,6 +16,8 @@
     <item android:title="Add New Expense" android:icon="@drawable/cash" android:id="@+id/nav_new_expense"/>
     <item android:title="Search Cash Expense" android:icon="@drawable/cash" android:id="@+id/nav_cash_expense"/>
     <item android:title="Courier Receive" android:icon="@drawable/cash" android:id="@+id/nav_courier"/>
+    <item android:title="Delivery Supervisor" android:icon="@drawable/cash" android:id="@+id/nav_delivery_supervisor"/>
+
 
     <!--<item android:title="My Pickup List" android:icon="@drawable/attention" android:id="@+id/nav_exe_pickup"/>-->
     <!--<item android:title="Pickups Today" android:icon="@drawable/box" android:id="@+id/nav_pickup_sum"/>-->

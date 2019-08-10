@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -12,21 +12,24 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +44,8 @@ import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourier;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.PageAdapter;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHoldModel;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
@@ -49,7 +54,6 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -62,13 +66,13 @@ import java.util.Map;
 
 import static android.Manifest.permission.CAMERA;
 
-public class DeliveryTablayout extends AppCompatActivity
+public class DeliverySuperVisorTablayout extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
-    PageAdapter pageAdapter;
+    PageAdapterSupervisor pageAdapter;
     TabItem tabChats;
     TabItem tabStatus;
     TabItem tabCalls;
@@ -94,9 +98,8 @@ public class DeliveryTablayout extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delivery_tablayout2);
-
-       /* toolbar = findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_delivery_super_visor_tablayout);
+       /* Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -116,7 +119,7 @@ public class DeliveryTablayout extends AppCompatActivity
         tabCalls = findViewById(R.id.tabCalls);
         viewPager = findViewById(R.id.viewPager);
 
-        pageAdapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        pageAdapter = new PageAdapterSupervisor(getSupportFragmentManager(), tabLayout.getTabCount());
 
         viewPager.setAdapter(pageAdapter);
 
@@ -156,7 +159,7 @@ public class DeliveryTablayout extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_deliver_tablayout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_deliver_supervisor_tablayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -180,30 +183,30 @@ public class DeliveryTablayout extends AppCompatActivity
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
                 if (tab.getPosition() == 1) {
-                    toolbar.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
+                    toolbar.setBackgroundColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                             R.color.colorAccent2));
-                    tabLayout.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
+                    tabLayout.setBackgroundColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                             R.color.colorAccent2));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getWindow().setStatusBarColor(ContextCompat.getColor(DeliveryTablayout.this,
+                        getWindow().setStatusBarColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                                 R.color.colorAccent2));
                     }
                 } else if (tab.getPosition() == 2) {
-                    toolbar.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
+                    toolbar.setBackgroundColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                             R.color.colorAccent3));
-                    tabLayout.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
+                    tabLayout.setBackgroundColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                             R.color.colorAccent3));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getWindow().setStatusBarColor(ContextCompat.getColor(DeliveryTablayout.this,
+                        getWindow().setStatusBarColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                                 R.color.colorAccent3));
                     }
                 } else {
-                    toolbar.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
+                    toolbar.setBackgroundColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                             R.color.colorPrimary));
-                    tabLayout.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
+                    tabLayout.setBackgroundColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                             R.color.colorPrimary));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getWindow().setStatusBarColor(ContextCompat.getColor(DeliveryTablayout.this,
+                        getWindow().setStatusBarColor(ContextCompat.getColor(DeliverySuperVisorTablayout.this,
                                 R.color.colorPrimary));
                     }
                 }
@@ -274,12 +277,12 @@ public class DeliveryTablayout extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_tablayout);
+        DrawerLayout drawer = findViewById(R.id.drawer_deliver_supervisor_tablayout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            //super.onBackPressed();
-            Intent homeIntentSuper = new Intent(DeliveryTablayout.this,
+           // super.onBackPressed();
+            Intent homeIntentSuper = new Intent(DeliverySuperVisorTablayout.this,
                     LoginActivity.class);
             startActivity(homeIntentSuper);
         }
@@ -288,7 +291,7 @@ public class DeliveryTablayout extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.delivery_tablayout, menu);
+        getMenuInflater().inflate(R.menu.delivery_super_visor_tablayout, menu);
         return true;
     }
 
@@ -314,59 +317,59 @@ public class DeliveryTablayout extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(DeliveryTablayout.this,
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliveryTablayout.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_unpicked) {
-            Intent homeIntent = new Intent(DeliveryTablayout.this,
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliveryOfficerUnpicked.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_without_status) {
-            Intent homeIntent = new Intent(DeliveryTablayout.this,
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliveryWithoutStatus.class);
             startActivity(homeIntent);
             // Handle the camera action
         }  else if (id == R.id.nav_on_hold) {
-            Intent homeIntent = new Intent(DeliveryTablayout.this,
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliveryOnHold.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_return_request) {
-            Intent homeIntent = new Intent(DeliveryTablayout.this,
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     ReturnRequest.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_return) {
-            Intent homeIntent = new Intent(DeliveryTablayout.this,
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     Delivery_ReturnToSupervisor.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_cash) {
-            Intent homeIntent = new Intent(DeliveryTablayout.this,
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliveryCTS.class);
             startActivity(homeIntent);
             // Handle the camera action
         } else if (id == R.id.nav_new_expense) {
-            Intent expenseIntent = new Intent(DeliveryTablayout.this,
+            Intent expenseIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliveryAddNewExpense.class);
             startActivity(expenseIntent);
         }
         else if (id == R.id.nav_cash_expense) {
-            Intent expenseIntent = new Intent(DeliveryTablayout.this,
+            Intent expenseIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliveryPettyCash.class);
             startActivity(expenseIntent);
         }
         else if (id == R.id.nav_courier) {
-            Intent expenseIntent = new Intent(DeliveryTablayout.this,
+            Intent expenseIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliveryCourier.class);
             startActivity(expenseIntent);
         }
         else if (id == R.id.nav_delivery_supervisor) {
-                Intent expenseIntent = new Intent(DeliveryTablayout.this,
-                        DeliverySuperVisorTablayout.class);
-                startActivity(expenseIntent);
+            Intent expenseIntent = new Intent(DeliverySuperVisorTablayout.this,
+                    DeliverySuperVisorTablayout.class);
+            startActivity(expenseIntent);
         }else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -395,7 +398,7 @@ public class DeliveryTablayout extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliveryTablayout.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliverySuperVisorTablayout.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -411,12 +414,11 @@ public class DeliveryTablayout extends AppCompatActivity
             alertDialog.show();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_tablayout);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_deliver_supervisor_tablayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
     public void loadExpenseReason(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EXPENSE_PURPOSE_URL,
                 new Response.Listener<String>()
@@ -457,8 +459,6 @@ public class DeliveryTablayout extends AppCompatActivity
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
-
-
     public void loadReturnReason(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, RETURN_REASON_URL,
                 new Response.Listener<String>()

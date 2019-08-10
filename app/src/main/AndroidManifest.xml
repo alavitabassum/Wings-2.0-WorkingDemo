@@ -37,9 +37,25 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn.DeliverySReturnReceive"
+            android:label="@string/title_activity_delivery_sreturn_receive"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySCashReceive"
+            android:label="@string/title_activity_delivery_scash_receive"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySupervisorDp2.DeliverySDp2"
+            android:label="@string/title_activity_delivery_sdp2"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout"
+            android:label="@string/title_activity_delivery_super_visor_tablayout"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout"
             android:label="@string/title_activity_delivery_tablayout"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
@@ -223,10 +239,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
-       <!-- <activity
+        <!--
+ <activity
             android:name=".DeliveryApp.TabLayoutActivity"
             android:label="@string/title_activity_delivery_officer_card_menu"
-            android:theme="@style/AppTheme" />-->
+            android:theme="@style/AppTheme" />
+        -->
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.Delivery_quick_pick_scan"
             android:parentActivityName=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked"
