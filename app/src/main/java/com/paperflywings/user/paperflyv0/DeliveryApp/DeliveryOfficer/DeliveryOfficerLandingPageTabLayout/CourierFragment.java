@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,17 +24,16 @@ import com.paperflywings.user.paperflyv0.R;
  */
 public class CourierFragment extends Fragment {
 
+    private CardView Courier_receive,View_details;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         //setHasOptionsMenu(true);
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_courier,container,false);
-        Button Courier_receive = (Button)viewGroup.findViewById(R.id.courier_receive);
-        Button View_details = (Button)viewGroup.findViewById(R.id.view_details);
-
-
-
+        Courier_receive = (CardView)viewGroup.findViewById(R.id.courier_receive_id);
+        View_details = (CardView)viewGroup.findViewById(R.id.view_details_id);
 
         Courier_receive.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,8 +60,5 @@ public class CourierFragment extends Fragment {
         }*/
         return true;
     }
-
-
-
 
 }
