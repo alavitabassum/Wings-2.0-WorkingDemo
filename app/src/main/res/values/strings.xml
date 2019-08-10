@@ -209,5 +209,10 @@
     <string name="title_activity_delivery_home">DeliveryHome</string>
     <string name="title_activity_delivery_add_new_expense">Add New Expense</string>
     <string name="title_activity_delivery_tablayout">Home</string>
+    <string name="title_activity_delivery_super_visor_tablayout">DeliverySuperVisorTablayout
+    </string>
+    <string name="title_activity_delivery_sdp2">DeliverySDp2</string>
+    <string name="title_activity_delivery_scash_receive">DeliverySCashReceive</string>
+    <string name="title_activity_delivery_sreturn_receive">DeliverySReturnReceive</string>
 
 </resources>

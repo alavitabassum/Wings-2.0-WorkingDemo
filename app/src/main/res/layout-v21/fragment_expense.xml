@@ -4,20 +4,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_grey"
-
-
     >
 
-
-
   <!-- TODO: Update blank fragment layout -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-
-
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:weightSum="8"
+      android:background="@color/light_grey"
+      android:padding="5dp">
     <LinearLayout
       android:orientation="vertical"
       android:layout_width="match_parent"
@@ -29,13 +25,13 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:gravity="center"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
       <android.support.v7.widget.CardView
           android:id="@+id/add_new_expense"
           android:layout_width="match_parent"
-          android:layout_height="240dp"
+          android:layout_height="185dp"
           android:layout_margin="10dp"
           app:cardCornerRadius="8dp"
           app:cardElevation="3dp">
@@ -46,19 +42,19 @@
             android:gravity="center">
 
           <ImageView
-              android:layout_width="360dp"
-              android:layout_height="180dp"
-              android:background="@drawable/courier_services" />
+              android:layout_width="320dp"
+              android:layout_height="130dp"
+              android:background="@drawable/expenses" />
         </RelativeLayout>
 
         <TextView
             android:id="@+id/courier_receive_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="215dp"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="160dp"
             android:gravity="center"
-            android:text="Courier Receive"
+            android:text="Add Expense"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -79,7 +75,7 @@
       <android.support.v7.widget.CardView
           android:id="@+id/search_expense"
           android:layout_width="match_parent"
-          android:layout_height="240dp"
+          android:layout_height="185dp"
           android:layout_margin="10dp"
           app:cardCornerRadius="8dp"
           app:cardElevation="3dp"
@@ -89,20 +85,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center">
-
           <ImageView
-              android:layout_width="360dp"
-              android:layout_height="180dp"
-              android:background="@drawable/view_details" />
+              android:layout_width="320dp"
+              android:layout_height="130dp"
+              android:background="@drawable/searchexpense" />
         </RelativeLayout>
         <TextView
             android:id="@+id/view_details_id_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="140dp"
-            android:layout_marginTop="215dp"
+            android:layout_marginTop="160dp"
             android:gravity="center"
-            android:text="View Details"
+            android:text="Search Expense"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="18sp"
@@ -110,5 +105,5 @@
       </android.support.v7.widget.CardView>
     </LinearLayout>
   </LinearLayout>
-    </ScrollView>
+  </ScrollView>
 </FrameLayout>
