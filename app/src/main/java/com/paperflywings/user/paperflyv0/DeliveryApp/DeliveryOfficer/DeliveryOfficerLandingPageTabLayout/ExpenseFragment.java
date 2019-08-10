@@ -4,13 +4,13 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOf
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryPettyCash;
@@ -29,8 +29,8 @@ public class ExpenseFragment extends Fragment {
         //setHasOptionsMenu(true);
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_expense,container,false);
 
-        Button addExpense = (Button)viewGroup.findViewById(R.id.add_new_expense);
-        Button searchExpense = (Button)viewGroup.findViewById(R.id.search_expense);
+        CardView addExpense = (CardView)viewGroup.findViewById(R.id.add_new_expense);
+        CardView searchExpense = (CardView)viewGroup.findViewById(R.id.search_expense);
 
         addExpense.setOnClickListener(new View.OnClickListener() {
             @Override
