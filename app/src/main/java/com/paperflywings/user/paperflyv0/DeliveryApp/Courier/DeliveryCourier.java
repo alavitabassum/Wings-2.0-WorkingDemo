@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -43,7 +42,6 @@ import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.LocationService.GPStracker;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -51,12 +49,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class DeliveryCourier extends AppCompatActivity {
@@ -201,98 +197,6 @@ public class DeliveryCourier extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
-    }
-
-public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
-//        ActivityCompat.requestPermissions(DeliveryQuickScan.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
-        geocoder = new Geocoder(this, Locale.getDefault());
-        GPStracker g = new GPStracker(getApplicationContext());
-        Location LocationGps = g.getLocation();
-
-        if (LocationGps !=null)
-        {
-            double lati=LocationGps.getLatitude();
-            double longi=LocationGps.getLongitude();
-
-            lats=String.valueOf(lati);
-            lngs=String.valueOf(longi);
-
-            try {
-
-                addresses = geocoder.getFromLocation(lati,longi,1);
-                String addres = addresses.get(0).getAddressLine(0);
-                String area = addresses.get(0).getLocality();
-                String city = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalcode = addresses.get(0).getPostalCode();
-
-                fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
-
-                //address.setText(fullAddress);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            getlats = lats.trim();
-            getlngs = lngs.trim();
-            getaddrs = fullAddress.trim();
-            lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
-
-        }
-
-        else
-        {
-//            Toast.makeText(this, "Turn on GPS/Location", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String ServerResponse) {
-                        // Hiding the progress dialog after all task complete.
-
-                        // Showing response message coming from server.
-                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        // Hiding the progress dialog after all task complete.
-
-                        // Showing error message if something goes wrong.
-                        //  Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-
-                // Creating Map String Params.
-                Map<String, String> params = new HashMap<String, String>();
-
-                // Adding All values to Params.
-                params.put("sqlPrimaryKey", sql_primary_id);
-                params.put("actionType", action_type);
-                params.put("actionFor", action_for);
-                params.put("actionBy", username);
-                params.put("actionTime",currentDateTime);
-                params.put("latitude", lats);
-                params.put("longitude", longs);
-                params.put("Address", address);
-
-                return params;
-            }
-
-        };
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryCourier.this);
-            requestQueue.add(stringRequest);
-        } catch (Exception e) {
-            // Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
-        }
     }
 
     private void SearchCourierDetails(final String barcode, final String username){
