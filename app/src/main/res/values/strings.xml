@@ -214,5 +214,6 @@
     <string name="title_activity_delivery_sdp2">DeliverySDp2</string>
     <string name="title_activity_delivery_scash_receive">DeliverySCashReceive</string>
     <string name="title_activity_delivery_sreturn_receive">DeliverySReturnReceive</string>
+    <string name="title_activity_delivery_courier_details">DeliveryCourierDetails</string>
 
 </resources>

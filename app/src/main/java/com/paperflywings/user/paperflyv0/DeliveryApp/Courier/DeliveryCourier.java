@@ -1,6 +1,5 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.Courier;
 
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,11 +19,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -44,11 +41,9 @@ import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -63,9 +58,10 @@ public class DeliveryCourier extends AppCompatActivity {
     private String lastText;
     private String barcode;
     private Button done;
+    private TextView scanCountText;
+    private TextView scanCount;
+    private int Counter = 0;
     private RequestQueue requestQueue;
-    String lats,lngs,addrs,fullAddress;
-    String getlats,getlngs,getaddrs;
 
     LocationManager locationManager;
     Geocoder geocoder;
@@ -92,6 +88,10 @@ public class DeliveryCourier extends AppCompatActivity {
 
         barcodeView = (DecoratedBarcodeView) findViewById(R.id.barcode_scanner);
         done = (Button)findViewById(R.id.done);
+
+        scanCountText = (TextView) findViewById(R.id.scanCountTitle);
+        scanCount = (TextView) findViewById(R.id.scanCount);
+
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.UPC_A);
         barcodeView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
         barcodeView.initializeFromIntent(getIntent());
@@ -153,9 +153,16 @@ public class DeliveryCourier extends AppCompatActivity {
             barcode = result.getText();
             lastText = barcode.substring(0,11);
 
-            barcodeView.setStatusText("Barcode"+result.getText());
-            SearchCourierDetails(lastText, username);
-            onPause();
+           /* if(result.getText().equals(lastText)) {
+
+                Toast.makeText(DeliveryCourier.this, "Already Scanned", Toast.LENGTH_SHORT).show();
+
+            } else {*/
+                barcodeView.setStatusText("Barcode"+result.getText());
+                SearchCourierDetails(lastText, username);
+                onPause();
+
+//            }
 
             db.close();
             beepManager.playBeepSoundAndVibrate();
@@ -212,7 +219,7 @@ public class DeliveryCourier extends AppCompatActivity {
                         if(statusCode.equals("409")){
 
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCourier.this);
-
+                            alertDialogBuilder.setCancelable(false);
                             alertDialogBuilder.setMessage(o.getString("duplicate"));
 
                             alertDialogBuilder.setNegativeButton("OK",
@@ -228,10 +235,8 @@ public class DeliveryCourier extends AppCompatActivity {
 
                         } else if(statusCode.equals("200")){
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCourier.this);
-
+                            alertDialogBuilder.setCancelable(false);
                             final View mViewCourierRcv = getLayoutInflater().inflate(R.layout.courier_receive_layout, null);
-                            final EditText recv_comment = mViewCourierRcv.findViewById(R.id.recv_comment);
-                            final TextView error_msg = mViewCourierRcv.findViewById(R.id.error_message_show);
 
                             final TextView  pickupPointName = mViewCourierRcv.findViewById(R.id.pickup_point_name);
                             final TextView  courierName = mViewCourierRcv.findViewById(R.id.courier_name);
@@ -242,7 +247,7 @@ public class DeliveryCourier extends AppCompatActivity {
                             final String primary_id = o.getString("primary_key");
                             pickupPointName.setText(o.getString("pickPoint"));
                             courierName.setText(o.getString("courierName"));
-                            orderCount.setText(o.getString("orderCount"));
+                            orderCount.setText(o.getString("orderid"));
                             pointId.setText(o.getString("pointId"));
                             barcodeNumber.setText(o.getString("barcodeNumber"));
                             vanNumber.setText(o.getString("van"));
@@ -270,14 +275,14 @@ public class DeliveryCourier extends AppCompatActivity {
                             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    String comment = recv_comment.getText().toString();
-                                    if (comment.isEmpty()){
-                                        error_msg.setText("Please enter comment!");
-                                    } else {
-                                        ReceiveSack("Y", username,comment,primary_id);
+//                                    String comment = recv_comment.getText().toString();
+//                                    if (comment.isEmpty()){
+//                                        error_msg.setText("Please enter comment!");
+//                                    } else {
+                                        ReceiveSack("Y", username,primary_id);
                                         alertDialog.dismiss();
                                         onResume();
-                                    }
+                                    //}
 
                                 }
                             });
@@ -287,6 +292,7 @@ public class DeliveryCourier extends AppCompatActivity {
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCourier.this);
 
                             alertDialogBuilder.setMessage(o.getString("notFound"));
+                            alertDialogBuilder.setCancelable(false);
                             alertDialogBuilder.setNegativeButton("Cancel",
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -334,8 +340,7 @@ public class DeliveryCourier extends AppCompatActivity {
     }
 
 
-    private void ReceiveSack(final String received, final String received_by, final String recv_comment, final String primary_id){
-
+    private void ReceiveSack(final String received, final String received_by, final String primary_id){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, COURIER_DETAILS, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -346,8 +351,9 @@ public class DeliveryCourier extends AppCompatActivity {
                         JSONObject o = array.getJSONObject(i);
                         String statusCode = o.getString("responseCode");
                         if(statusCode.equals("200")){
-
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCourier.this);
+                            Toast.makeText(DeliveryCourier.this, o.getString("responseMsg"), Toast.LENGTH_SHORT).show();
+                            onResume();
+                            /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCourier.this);
 
                             alertDialogBuilder.setMessage(o.getString("responseMsg"));
 
@@ -360,11 +366,13 @@ public class DeliveryCourier extends AppCompatActivity {
                                         }
                                     });
                             AlertDialog alertDialog = alertDialogBuilder.create();
-                            alertDialog.show();
+                            alertDialog.show();*/
+                            Counter++;
+                            scanCount.setText(String.valueOf(Counter));
 
                         } else if(statusCode.equals("404")){
                             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCourier.this);
-
+                            alertDialogBuilder.setCancelable(false);
                             alertDialogBuilder.setMessage(o.getString("notFound"));
                             alertDialogBuilder.setNegativeButton("OK",
                                     new DialogInterface.OnClickListener() {
@@ -398,7 +406,6 @@ public class DeliveryCourier extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("received", received);
                 params.put("received_by", received_by);
-                params.put("received_comment", recv_comment);
                 params.put("primary_key", primary_id);
                 params.put("flagreq", "Courier_received_At_point");
                 return params;

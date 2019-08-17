@@ -213,7 +213,6 @@ public class DeliveryPettyCash extends AppCompatActivity
     }
 
     private void loadcashamt(final String username, final String startdate, final String enddate){
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryOpenAndCloseAmt.php",
                 new Response.Listener<String>()
                 {

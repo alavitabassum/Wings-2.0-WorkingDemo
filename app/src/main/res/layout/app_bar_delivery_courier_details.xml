@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    tools:context=".DeliveryApp.Courier.DeliveryCourierDetails">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp">
+        <Button
+            android:id="@+id/startdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ems="8"
+            android:inputType="date"
+            android:textSize="13sp"
+            android:lines="2"
+            android:maxLines="2"
+            android:hint="Date from"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/enddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:textSize="13sp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/startdate"
+            android:ems="8"
+            android:lines="2"
+            android:maxLines="2"
+            android:hint="Date to"
+            android:textStyle="bold"/>
+
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:elevation="2dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/enddate"
+            android:background="@color/green"
+            android:text="Search"
+            android:layout_marginRight="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp">
+
+        <TextView
+            android:id="@+id/totalScanRecv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:text="Total Orders: " />
+        <TextView
+            android:id="@+id/totalPackageRecv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="0"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:layout_toEndOf="@+id/totalScanRecv"/>
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/without_Status_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:gravity="center"
+        android:foregroundGravity="center|fill"
+        android:layout_gravity="center_horizontal"
+        app:cardElevation="4dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:background="#aaaaaa">
+            <TextView
+                android:id="@+id/receivedDate"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Date"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/orderID"
+                android:layout_width="185dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/receivedDate"
+                android:layout_toEndOf="@+id/receivedDate"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Order Id"
+                android:textAlignment="textStart"
+                android:paddingLeft="10dp"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/Receive"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/orderID"
+                android:layout_toEndOf="@+id/orderID"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Receive"
+                android:paddingLeft="10dp"
+                android:textAlignment="textStart"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <include layout="@layout/content_delivery_courier_details" />
+
+
+
+</android.support.design.widget.CoordinatorLayout>
