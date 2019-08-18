@@ -55,10 +55,10 @@
             android:icon="@drawable/courier_"
             android:id="@+id/nav_courier"/>
 
-        <item
+       <!-- <item
             android:title="Delivery Supervisor"
             android:icon="@drawable/cash"
-            android:id="@+id/nav_delivery_supervisor"/>
+            android:id="@+id/nav_delivery_supervisor"/>-->
 
     </group>
 
