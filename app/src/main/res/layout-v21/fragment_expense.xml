@@ -45,18 +45,20 @@
               android:layout_width="360dp"
               android:layout_height="160dp"
               android:background="@drawable/addexpences_" />
-          <View
-              android:layout_width="360dp"
-              android:layout_height="160dp"
-              android:background="#8D1A2E38"/>
-        </RelativeLayout>
 
+        </RelativeLayout>
+        <View
+            android:layout_marginTop="7dp"
+            android:layout_width="360dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="#B01A2E38"/>
         <TextView
             android:id="@+id/add_expence_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="80dp"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="28sp"
@@ -92,22 +94,25 @@
               android:layout_width="360dp"
               android:layout_height="160dp"
               android:background="@drawable/searchexpences_" />
-          <View
-              android:layout_width="360dp"
-              android:layout_height="160dp"
-              android:background="#8D1A2E38"/>
         </RelativeLayout>
+        <View
+            android:layout_marginTop="7dp"
+            android:layout_width="360dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="#B01A2E38"/>
         <TextView
             android:id="@+id/search_expence_id_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="80dp"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="28sp"
             android:textStyle="bold|italic"
             android:text="Search Expense"/>
+
       </android.support.v7.widget.CardView>
     </LinearLayout>
   </LinearLayout>

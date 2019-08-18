@@ -46,18 +46,20 @@
                 android:layout_width="360dp"
                 android:layout_height="160dp"
                 android:background="@drawable/courier_service_" />
-            <View
-                android:layout_width="360dp"
-                android:layout_height="160dp"
-                android:background="#8D1A2E38"/>
-          </RelativeLayout>
 
+          </RelativeLayout>
+          <View
+              android:layout_marginTop="7dp"
+              android:layout_width="360dp"
+              android:layout_height="40dp"
+              android:layout_gravity="center"
+              android:background="#B01A2E38"/>
           <TextView
               android:id="@+id/courier_receive_text"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginLeft="0dp"
-              android:layout_marginTop="130dp"
+              android:layout_marginTop="80dp"
               android:textAlignment="center"
               android:textColor="@android:color/white"
               android:textSize="28sp"
@@ -92,24 +94,27 @@
             <ImageView
                 android:layout_width="360dp"
                 android:layout_height="160dp"
-                android:background="@drawable/view_details" />
-            <View
-                android:layout_width="360dp"
-                android:layout_height="160dp"
-                android:background="#A61A2E38"/>
+                android:background="@drawable/view_detail_" />
 
           </RelativeLayout>
+          <View
+              android:layout_marginTop="7dp"
+              android:layout_width="360dp"
+              android:layout_height="40dp"
+              android:layout_gravity="center"
+              android:background="#B01A2E38"/>
           <TextView
               android:id="@+id/view_details_id_text"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginLeft="0dp"
-              android:layout_marginTop="130dp"
+              android:layout_marginTop="80dp"
               android:text="View Details"
               android:textAlignment="center"
               android:textColor="@android:color/white"
               android:textSize="28sp"
               android:textStyle="bold|italic"/>
+
         </android.support.v7.widget.CardView>
       </LinearLayout>
     </LinearLayout>
