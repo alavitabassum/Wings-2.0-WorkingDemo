@@ -41,26 +41,28 @@ android:padding="10dp"
         android:background="?android:attr/listDivider" />
 
     <TextView
-        android:id="@+id/pickup_point"
+        android:id="@+id/no_of_percel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
         android:layout_marginTop="69dp"
-        android:text="Pickup Point  :"
+        android:text="Order Id  :"
+        android:textColor="@color/put_hd_color_green"
         android:textAlignment="textStart"
         android:textSize="15sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/pickup_point_name"
+        android:id="@+id/percent_amt"
         android:layout_width="211dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/pickup_point"
+        android:layout_alignBaseline="@+id/no_of_percel"
         android:layout_marginStart="20dp"
-        android:layout_toEndOf="@+id/pickup_point"
+        android:layout_toEndOf="@+id/no_of_percel"
         android:autofillHints=""
+        android:textColor="@color/put_hd_color_green"
         android:ems="10"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -91,28 +93,27 @@ android:padding="10dp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/no_of_percel"
+        android:id="@+id/pickup_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
         android:layout_marginTop="130dp"
-        android:text="Percel Amount :"
+        android:text="Pickup Point :"
         android:textAlignment="textStart"
         android:textSize="15sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/percent_amt"
+        android:id="@+id/pickup_point_name"
         android:layout_width="211dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/no_of_percel"
+        android:layout_alignBaseline="@+id/pickup_point"
         android:layout_marginStart="20dp"
-        android:layout_toEndOf="@+id/no_of_percel"
+        android:layout_toEndOf="@+id/pickup_point"
         android:autofillHints=""
         android:ems="10"
-        android:textColor="@color/put_hd_color_green"
         android:textSize="15sp"
         android:textStyle="bold" />
 
@@ -124,7 +125,7 @@ android:padding="10dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="35dp"
         android:layout_marginTop="160dp"
-        android:text="Point Code    :"
+        android:text="Receive Point :"
         android:textAlignment="textStart"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -138,7 +139,7 @@ android:padding="10dp"
         android:layout_toEndOf="@+id/point_code_title"
         android:autofillHints=""
         android:ems="10"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
 

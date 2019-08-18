@@ -170,7 +170,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
         toggle.syncState()*/;
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_supervisor_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 

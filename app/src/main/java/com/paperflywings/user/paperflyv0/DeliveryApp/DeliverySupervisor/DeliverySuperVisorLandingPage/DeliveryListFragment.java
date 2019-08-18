@@ -3,11 +3,8 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Deliver
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -22,36 +19,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryQuickScan;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliverySummary_Model;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySCashReceive;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn.DeliverySReturnReceive;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupervisorDp2.DeliverySDp2;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -66,7 +41,7 @@ public class DeliveryListFragment extends Fragment {
 
     private ProgressDialog progress;
 
-    public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
+//    public static final String GET_DELIVERY_SUMMARY = "http://paperflybd.com/deliveryAppLandingPage.php";
 
     private List<DeliverySummary_Model> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -98,11 +73,11 @@ public class DeliveryListFragment extends Fragment {
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadDeliverySummary(username);
+//            loadDeliverySummary(username);
 
         }
         else {
-            getData(username);
+//            getData(username);
             Toast.makeText(getActivity().getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
         }
 
@@ -110,7 +85,7 @@ public class DeliveryListFragment extends Fragment {
         return viewGroup;
     }
 
-    private void loadDeliverySummary(final String user){
+   /* private void loadDeliverySummary(final String user){
         progress=new ProgressDialog(getActivity());
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -186,8 +161,8 @@ public class DeliveryListFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
-    }
-    private void getData(final String user)
+    }*/
+  /*  private void getData(final String user)
     {
         try{
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
@@ -305,7 +280,7 @@ public class DeliveryListFragment extends Fragment {
         {
             Toast.makeText(getActivity().getApplicationContext(), "Error! cm" ,Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 
 
 
