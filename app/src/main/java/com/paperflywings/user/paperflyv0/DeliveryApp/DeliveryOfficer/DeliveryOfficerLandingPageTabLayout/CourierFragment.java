@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.jackandphantom.blurimage.BlurImage;
+
 import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourier;
 import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourierDetails;
 import com.paperflywings.user.paperflyv0.R;
@@ -34,9 +34,6 @@ public class CourierFragment extends Fragment {
         //setHasOptionsMenu(true);
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_courier,container,false);
         Courier_receive = (CardView)viewGroup.findViewById(R.id.courier_receive_id);
-        //Courier_service_image = (ImageView)viewGroup.findViewById(R.id.courier_service);
-
-       // BlurImage.with(getActivity().getApplicationContext()).load(R.drawable.courier_services).intensity(5).Async(true).into(Courier_service_image);
 
         View_details = (CardView)viewGroup.findViewById(R.id.view_details_id);
 

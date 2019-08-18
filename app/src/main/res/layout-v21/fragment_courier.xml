@@ -92,7 +92,7 @@
             <ImageView
                 android:layout_width="360dp"
                 android:layout_height="160dp"
-                android:background="@drawable/view_detail_" />
+                android:background="@drawable/view_details" />
             <View
                 android:layout_width="360dp"
                 android:layout_height="160dp"
