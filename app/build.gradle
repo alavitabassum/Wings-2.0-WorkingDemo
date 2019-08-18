@@ -18,6 +18,9 @@ android {
         versionName "34.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true;
+
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -66,6 +69,9 @@ dependencies {
     // floating_action_bar library
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'com.squareup.okhttp:okhttp:2.0.0'
+
+    implementation 'com.jackandphantom.android:blurimage:1.2.0'
+
 }
 repositories {
     maven {

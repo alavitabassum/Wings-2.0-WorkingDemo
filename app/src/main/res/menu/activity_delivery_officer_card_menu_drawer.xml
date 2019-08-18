@@ -42,17 +42,17 @@
 
         <item
             android:title="Add New Expense"
-            android:icon="@drawable/cash"
+            android:icon="@drawable/coins"
             android:id="@+id/nav_new_expense"/>
 
         <item
             android:title="Search Cash Expense"
-            android:icon="@drawable/cash"
+            android:icon="@drawable/ic_search_expense"
             android:id="@+id/nav_cash_expense"/>
 
         <item
             android:title="Courier Receive"
-            android:icon="@drawable/cash"
+            android:icon="@drawable/courier_"
             android:id="@+id/nav_courier"/>
 
         <item
