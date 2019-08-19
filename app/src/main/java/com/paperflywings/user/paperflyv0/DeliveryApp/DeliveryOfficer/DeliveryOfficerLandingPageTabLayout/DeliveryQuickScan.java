@@ -403,6 +403,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                                                         if (cashAmt.isEmpty() ) {
                                                             tv1.setText("Enter cash amount");
+                                                        } else if(Integer.parseInt(cashAmt) < Integer.parseInt(packagePrice) || Integer.parseInt(cashAmt)> Integer.parseInt(packagePrice)+500){
+                                                            tv1.setText("Cash collection mismatch!");
                                                         } else if(cashComment.isEmpty()) {
                                                             tv1.setText("Please write some comment");
                                                         }else {
