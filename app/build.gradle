@@ -14,8 +14,8 @@ android {
         applicationId "com.paperflywings.user.paperflyv0"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 35
-        versionName "35.0"
+        versionCode 36
+        versionName "36.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true;
 
@@ -27,8 +27,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+            debuggable true
         }
         debug {
+
+            debuggable true
         }
     }
     lintOptions {
@@ -69,8 +72,6 @@ dependencies {
     // floating_action_bar library
     implementation 'com.github.clans:fab:1.6.4'
     implementation 'com.squareup.okhttp:okhttp:2.0.0'
-
-
 }
 repositories {
     maven {
