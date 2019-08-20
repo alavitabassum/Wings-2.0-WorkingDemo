@@ -98,10 +98,14 @@ public class LoginActivity extends AppCompatActivity {
             } else if(user_role_id.equals("6")){
                 Intent intent = new Intent(LoginActivity.this, ExecutiveCardMenu.class);
                 startActivity(intent);
-            }else if(user_role_id.equals("7")) {
+            } else if(user_role_id.equals("7")) {
                 Intent intent = new Intent(LoginActivity.this, DeliveryTablayout.class);
                 startActivity(intent);
             }
+            /*else if(user_role_id.equals("28")) {
+                Intent intent = new Intent(LoginActivity.this, DeliverySuperVisorTablayout.class);
+                startActivity(intent);
+            }*/
         }
     }
 
@@ -216,6 +220,12 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(),SupervisorCardMenu.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                         }
+                      /*  //delivery supervisor
+                        else if(user_role_id.equals("28")) {
+
+                            startActivity(new Intent(getApplicationContext(), DeliverySuperVisorTablayout.class));
+                            Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
+                        }*/
                         //delivery officer
                         else if(user_role_id.equals("7")) {
 
@@ -223,7 +233,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(LoginActivity.this, "Sorry, You are not registered as a pickup member in paperfly", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Sorry, You are not registered as a pickup or delivery member in paperfly", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

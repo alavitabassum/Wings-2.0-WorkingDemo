@@ -363,11 +363,12 @@ public class DeliveryTablayout extends AppCompatActivity
                     DeliveryCourier.class);
             startActivity(expenseIntent);
         }
-        else if (id == R.id.nav_delivery_supervisor) {
+       /* else if (id == R.id.nav_delivery_supervisor) {
                 Intent expenseIntent = new Intent(DeliveryTablayout.this,
                         DeliverySuperVisorTablayout.class);
                 startActivity(expenseIntent);
-        }else if (id == R.id.nav_logout) {
+        }*/
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

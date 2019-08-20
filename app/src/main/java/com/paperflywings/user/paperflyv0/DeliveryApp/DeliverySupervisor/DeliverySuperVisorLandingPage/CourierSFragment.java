@@ -1,7 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -12,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourier;
 import com.paperflywings.user.paperflyv0.R;
 
 
@@ -36,10 +34,20 @@ public class CourierSFragment extends Fragment {
             @Override
             public void onClick(View v) {
                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCourier.class);
-                startActivity(intent);
+               /* Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCourier.class);
+                startActivity(intent);*/
             }
         });
+
+        View_details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
+               /* Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCourier.class);
+                startActivity(intent);*/
+            }
+        });
+
 
         return viewGroup;
     }

@@ -144,10 +144,12 @@
     <string name="select_date">Select Date</string>
     <string name="select_exe">Select Executive</string>
     <string name="title_activity_executive_card_menu">Home</string>
-    <string name="pickup_executive">Pickup Executive</string>
+    <string name="pickup_executive">Pickup Officer</string>
     <string name="pickup_supervisor">Pickup Supervisor</string>
+    <string name="delivery_supervisor">Delivery Supervisor</string>
     <string name="exe_name">Tonoy Shaha</string>
     <string name="delivery_officer_name">Md. Asad</string>
+    <string name="delivery_supervisor_name">Md. Delivery Supervisor</string>
     <string name="title_activity_manager_card_menu">Home</string>
     <string name="title_activity_pickups_today__executive">Pickup Summary</string>
     <string name="title_activity_pickup_status__executive">Pickup Status</string>
