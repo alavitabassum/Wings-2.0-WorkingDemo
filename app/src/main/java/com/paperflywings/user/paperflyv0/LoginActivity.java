@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupManager.ManagerCardMenu;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.ExecutiveCardMenu;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupSupervisor.SupervisorCardMenu;
@@ -101,11 +102,10 @@ public class LoginActivity extends AppCompatActivity {
             } else if(user_role_id.equals("7")) {
                 Intent intent = new Intent(LoginActivity.this, DeliveryTablayout.class);
                 startActivity(intent);
-            }
-            /*else if(user_role_id.equals("28")) {
+            } else if(user_role_id.equals("28")) {
                 Intent intent = new Intent(LoginActivity.this, DeliverySuperVisorTablayout.class);
                 startActivity(intent);
-            }*/
+            }
         }
     }
 
@@ -220,12 +220,12 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(getApplicationContext(),SupervisorCardMenu.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                         }
-                      /*  //delivery supervisor
+                        //delivery supervisor
                         else if(user_role_id.equals("28")) {
 
                             startActivity(new Intent(getApplicationContext(), DeliverySuperVisorTablayout.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
-                        }*/
+                        }
                         //delivery officer
                         else if(user_role_id.equals("7")) {
 

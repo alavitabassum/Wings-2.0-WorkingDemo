@@ -21,6 +21,7 @@
     <string name="nav_header_title">Abu Haris</string>
     <string name="nav_header_subtitle">Pickup Manager</string>
     <string name="nav_header_delivery_officer">Delivery Officer</string>
+    <string name="nav_header_delivery_supervisor">Delivery Supervisor</string>
 
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
