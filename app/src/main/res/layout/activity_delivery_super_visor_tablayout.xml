@@ -20,6 +20,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_delivery_super_visor_tablayout"
-        app:menu="@menu/activity_delivery_scash_receive_drawer"/>
+        app:menu="@menu/activity_delivery_super_visor_tablayout_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>

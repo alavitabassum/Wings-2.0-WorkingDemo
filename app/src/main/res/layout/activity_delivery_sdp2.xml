@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_delivery_officer_card_menu"
-        app:menu="@menu/activity_delivery_officer_card_menu_drawer"/>
+        app:headerLayout="@layout/nav_header_delivery_super_visor_tablayout"
+        app:menu="@menu/activity_delivery_super_visor_tablayout_drawer"/>
 
 </android.support.v4.widget.DrawerLayout>
