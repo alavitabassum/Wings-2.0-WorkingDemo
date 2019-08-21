@@ -48,10 +48,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor"
+            android:label="@string/title_activity_return_receive_supervisor"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+        <activity
             android:name=".DeliveryApp.Courier.DeliveryCourierDetails"
             android:label="@string/title_activity_delivery_courier_details"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn.DeliverySReturnReceive"
             android:label="@string/title_activity_delivery_sreturn_receive"

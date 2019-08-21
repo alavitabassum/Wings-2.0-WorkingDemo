@@ -3,6 +3,7 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Deliver
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -23,6 +24,7 @@ import com.android.volley.RequestQueue;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliverySummary_Model;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -68,8 +70,17 @@ public class DeliveryListFragment extends Fragment {
         returnReqst_count = (TextView)viewGroup.findViewById(R.id.ReturnCount);
         cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
         returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
+        ReturnReceive = (CardView)viewGroup.findViewById(R.id.ReturnReceived_id);
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        ReturnReceive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), ReturnReceiveSupervisor.class);
+                startActivity(intent);
+            }
+        });
 
         if(nInfo!= null && nInfo.isConnected())
         {
@@ -84,6 +95,8 @@ public class DeliveryListFragment extends Fragment {
 
         return viewGroup;
     }
+
+
 
 
     @Override
