@@ -220,5 +220,6 @@
     <string name="title_activity_delivery_courier_details">DeliveryCourierDetails</string>
     <string name="title_activity_delivery_sup_unpicked">Unpicked</string>
     <string name="title_activity_delivery_sup_without_status">Without Status</string>
+    <string name="title_activity_delivery_sup_onhold">DeliverySupOnhold</string>
 
 </resources>

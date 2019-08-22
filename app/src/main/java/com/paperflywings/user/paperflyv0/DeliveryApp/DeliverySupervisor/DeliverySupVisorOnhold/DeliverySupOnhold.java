@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -6,16 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,9 +38,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatusModel;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -58,24 +52,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static android.Manifest.permission.CAMERA;
+public class DeliverySupOnhold extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener , SwipeRefreshLayout.OnRefreshListener{
 
-public class DeliverySupUnpicked extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener{
-
-    BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private DeliverySupUnpickedAdapter deliverySupUnpickedAdapter;
+    private DeliverySupOnHoldAdapter deliverySupOnHoldAdapter;
     private RecyclerView recyclerView_pul;
     private RecyclerView.LayoutManager layoutManager_pul;
-    private TextView sup_unpicked_text;
+    private TextView sup_without_status_text;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
 
     private static final int REQUEST_CAMERA = 1;
-
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
-    private List<DeliverySupUnpickedModel> list;
+    private List<DeliverySupOnHoldModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
@@ -86,14 +77,11 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db=new BarcodeDbHelper(getApplicationContext());
-        db.getWritableDatabase();
-
-        setContentView(R.layout.activity_delivery_sup_unpicked);
+        setContentView(R.layout.activity_delivery_sup_onhold);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        list = new ArrayList<DeliverySupUnpickedModel>();
+        list = new ArrayList<DeliverySupOnHoldModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -102,16 +90,13 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_sup_unpickup_list);
-        recyclerView_pul.setAdapter(deliverySupUnpickedAdapter);
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_sup_onhold_status);
+        recyclerView_pul.setAdapter(deliverySupOnHoldAdapter);
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        sup_unpicked_text = (TextView)findViewById(R.id.unpicks_sup);
-
-        list.clear();
-        sup_unpicked_text = (TextView)findViewById(R.id.unpicks_sup);
+        sup_without_status_text = (TextView)findViewById(R.id.onhold_sup);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -119,7 +104,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         swipeRefreshLayout.setRefreshing(true);
 
-        String flagReqst = "delivery_unpicked_orders";
+        String flagReqst = "delivery_onhold_orders";
 
         if(nInfo!= null && nInfo.isConnected())
         {
@@ -133,8 +118,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             }
         };
 
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_unpicked);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -145,9 +129,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_supervisor);
         navUsername.setText(user);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
-
     private void loadRecyclerView(final String username, final String flagReqst) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -161,8 +143,8 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                 {
                     @Override
                     public void onResponse(String response) {
-                     list.clear();
-                     progress.dismiss();
+                        list.clear();
+                        progress.dismiss();
                         int i;
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -171,7 +153,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                             for(i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliverySupUnpickedModel supUnpickedmodel = new  DeliverySupUnpickedModel(
+                                DeliverySupOnHoldModel supUnpickedmodels = new  DeliverySupOnHoldModel(
                                         o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
@@ -195,19 +177,23 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                                         o.getString("orderDate"),
                                         o.getString("DP2Time"),
                                         o.getString("DP2By"),
-                                        o.getInt("slaMiss"));
-
-                                list.add(supUnpickedmodel);
+                                        o.getString("onHoldSchedule"),
+                                        o.getString("onHoldReason"),
+                                        o.getInt("slaMiss")//onHoldSchedule,onHoldReason
+                                );
+                                list.add(supUnpickedmodels);
 
                             }
 
-                            deliverySupUnpickedAdapter = new DeliverySupUnpickedAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(deliverySupUnpickedAdapter);
+//
+
+                            deliverySupOnHoldAdapter = new DeliverySupOnHoldAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(deliverySupOnHoldAdapter);
                             swipeRefreshLayout.setRefreshing(false);
                             //deliverySupUnpickedAdapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
 
                             String str = String.valueOf(i);
-                            sup_unpicked_text.setText(str);
+                            sup_without_status_text.setText(str);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -218,9 +204,9 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progress.dismiss();
-                       // swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Server not connected"+error ,Toast.LENGTH_LONG).show();
+                    progress.dismiss();
+                        // swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Server not connected" , Toast.LENGTH_LONG).show();
 
                     }
                 })
@@ -236,7 +222,6 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         };
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
-
         }
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 50000,
@@ -245,21 +230,15 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         requestQueue.add(stringRequest);
     }
 
-
-
-
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_unpicked);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -270,22 +249,22 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         try{
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                deliverySupUnpickedAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    deliverySupOnHoldAdapter.getFilter().filter(newText);
+                    return false;
+                }
+            });
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(DeliverySupUnpicked.this, DeliverySupUnpicked.class);
+            Intent intent_stay = new Intent(DeliverySupOnhold.this, DeliverySupOnhold.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -315,7 +294,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-            Intent homeIntent = new Intent(DeliverySupUnpicked.this,
+            Intent homeIntent = new Intent(DeliverySupOnhold.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
         } else if (id == R.id.nav_logout) {
@@ -327,9 +306,9 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
 
-                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                         /*   SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.deleteAssignedList(sqLiteDatabase);
-
+*/
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -346,7 +325,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliverySupUnpicked.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliverySupOnhold.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -362,8 +341,10 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             //Showing the alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
+
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_unpicked);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -375,10 +356,10 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String flagReqst = "delivery_unpicked_orders";
+        String flagReqst = "delivery_onhold_orders";
         list.clear();
 
-        deliverySupUnpickedAdapter.notifyDataSetChanged();
+        deliverySupOnHoldAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username,flagReqst);
@@ -386,4 +367,3 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         }
     }
 }
-

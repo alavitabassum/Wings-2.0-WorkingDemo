@@ -31,6 +31,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -153,7 +154,7 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
                             for(i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliverySupWithoutStatusModel supUnpickedmodel = new  DeliverySupWithoutStatusModel(
+                                DeliverySupWithoutStatusModel supWithoutStatusModel = new  DeliverySupWithoutStatusModel(
                                         o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
@@ -178,7 +179,7 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
                                         o.getString("DP2Time"),
                                         o.getString("DP2By"),
                                         o.getInt("slaMiss"));
-                                list.add(supUnpickedmodel);
+                                list.add(supWithoutStatusModel);
 
                             }
 
@@ -220,6 +221,10 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
