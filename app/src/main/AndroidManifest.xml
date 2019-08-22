@@ -36,7 +36,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus"
+            android:label="@string/title_activity_delivery_sup_without_status"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked"
+            android:label="@string/title_activity_delivery_sup_unpicked"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
@@ -51,7 +58,7 @@
             android:name=".DeliveryApp.Courier.DeliveryCourierDetails"
             android:label="@string/title_activity_delivery_courier_details"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn.DeliverySReturnReceive"
             android:label="@string/title_activity_delivery_sreturn_receive"

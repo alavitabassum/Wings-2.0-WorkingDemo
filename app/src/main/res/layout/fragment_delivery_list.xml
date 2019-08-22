@@ -64,7 +64,7 @@
                         android:id="@+id/QuickDelivery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="140dp"
+                        android:layout_marginLeft="120dp"
                         android:layout_marginTop="60dp"
                         android:gravity="center"
                         android:text="DP2 Receive"
@@ -89,7 +89,7 @@
                 >
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/Unpicked_id"
+                    android:id="@+id/sup_unpicked_id"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="5dp"
@@ -140,7 +140,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/WithoutStatus_id"
+                    android:id="@+id/sup_withoutStatus_id"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="5dp"
@@ -201,7 +201,7 @@
                 >
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/OnHold_id"
+                    android:id="@+id/sup_onHold_id"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="5dp"
@@ -248,7 +248,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/ReturnRequest_id"
+                    android:id="@+id/sup_returnRequest_id"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="5dp"
@@ -307,7 +307,7 @@
                 >
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/ReturnList_id"
+                    android:id="@+id/sup_returnList_id"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="5dp"
@@ -355,7 +355,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/Cash_id"
+                    android:id="@+id/sup_cash_id"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="5dp"
@@ -413,7 +413,7 @@
                 >
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/ReturnReceived_id"
+                    android:id="@+id/sup_returnReceived_id"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="5dp"
@@ -461,7 +461,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/CashReceived_id"
+                    android:id="@+id/sup_cashReceived_id"
                     android:layout_width="160dp"
                     android:layout_height="160dp"
                     android:layout_margin="5dp"
