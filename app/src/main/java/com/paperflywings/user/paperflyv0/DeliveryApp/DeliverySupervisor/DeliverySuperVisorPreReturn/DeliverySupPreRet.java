@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -39,7 +39,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatusModel;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -52,21 +51,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliverySupOnhold extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , SwipeRefreshLayout.OnRefreshListener{
+public class DeliverySupPreRet extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
     public SwipeRefreshLayout swipeRefreshLayout;
-    private DeliverySupOnHoldAdapter deliverySupOnHoldAdapter;
+    private DeliverySupPretAdapter deliverySupPretAdapter;
     private RecyclerView recyclerView_pul;
     private RecyclerView.LayoutManager layoutManager_pul;
-    private TextView sup_on_hold_text;
+    private TextView sup_pre_ret_text;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
 
     private static final int REQUEST_CAMERA = 1;
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
-    private List<DeliverySupOnHoldModel> list;
+    private List<DeliverySupPretModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
@@ -76,12 +75,11 @@ public class DeliverySupOnhold extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_delivery_sup_onhold);
+        setContentView(R.layout.activity_delivery_sup_pre_ret);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        list = new ArrayList<DeliverySupOnHoldModel>();
+        list = new ArrayList<DeliverySupPretModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -90,13 +88,13 @@ public class DeliverySupOnhold extends AppCompatActivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_sup_onhold_status);
-        recyclerView_pul.setAdapter(deliverySupOnHoldAdapter);
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_sup_pre_ret_status);
+        recyclerView_pul.setAdapter(deliverySupPretAdapter);
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        sup_on_hold_text = (TextView)findViewById(R.id.onhold_sup);
+        sup_pre_ret_text = (TextView)findViewById(R.id.pre_ret_sup);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -104,7 +102,7 @@ public class DeliverySupOnhold extends AppCompatActivity
 
         swipeRefreshLayout.setRefreshing(true);
 
-        String flagReqst = "delivery_onhold_orders";
+        String flagReqst = "delivery_prereturn_orders";
 
         if(nInfo!= null && nInfo.isConnected())
         {
@@ -118,7 +116,7 @@ public class DeliverySupOnhold extends AppCompatActivity
             }
         };
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_preret);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -153,7 +151,7 @@ public class DeliverySupOnhold extends AppCompatActivity
                             for(i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliverySupOnHoldModel supOnHoldmodels = new  DeliverySupOnHoldModel(
+                                DeliverySupPretModel supPreRetmodels = new  DeliverySupPretModel(
                                         o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
@@ -177,23 +175,24 @@ public class DeliverySupOnhold extends AppCompatActivity
                                         o.getString("orderDate"),
                                         o.getString("DP2Time"),
                                         o.getString("DP2By"),
-                                        o.getString("onHoldSchedule"),
-                                        o.getString("onHoldReason"),
+                                        o.getString("retReason"),
+                                        o.getString("PreRetTime"),
+                                        o.getString("PreRetBy"),
                                         o.getInt("slaMiss")//onHoldSchedule,onHoldReason
                                 );
-                                list.add(supOnHoldmodels);
+                                list.add(supPreRetmodels);
 
                             }
 
 //
 
-                            deliverySupOnHoldAdapter = new DeliverySupOnHoldAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(deliverySupOnHoldAdapter);
+                            deliverySupPretAdapter = new DeliverySupPretAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(deliverySupPretAdapter);
                             swipeRefreshLayout.setRefreshing(false);
                             //deliverySupUnpickedAdapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
 
                             String str = String.valueOf(i);
-                            sup_on_hold_text.setText(str);
+                            sup_pre_ret_text.setText(str);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -232,7 +231,7 @@ public class DeliverySupOnhold extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_preret);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -256,7 +255,7 @@ public class DeliverySupOnhold extends AppCompatActivity
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    deliverySupOnHoldAdapter.getFilter().filter(newText);
+                    deliverySupPretAdapter.getFilter().filter(newText);
                     return false;
                 }
             });
@@ -264,7 +263,7 @@ public class DeliverySupOnhold extends AppCompatActivity
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(DeliverySupOnhold.this, DeliverySupOnhold.class);
+            Intent intent_stay = new Intent(DeliverySupPreRet.this, DeliverySupPreRet.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -279,7 +278,7 @@ public class DeliverySupOnhold extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
+        if (id == R.id.action_settings) {
             return true;
         }
 
@@ -294,7 +293,7 @@ public class DeliverySupOnhold extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-            Intent homeIntent = new Intent(DeliverySupOnhold.this,
+            Intent homeIntent = new Intent(DeliverySupPreRet.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
         } else if (id == R.id.nav_logout) {
@@ -325,7 +324,7 @@ public class DeliverySupOnhold extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliverySupOnhold.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliverySupPreRet.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -344,7 +343,7 @@ public class DeliverySupOnhold extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_preret);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -356,10 +355,10 @@ public class DeliverySupOnhold extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String flagReqst = "delivery_onhold_orders";
+        String flagReqst = "delivery_prereturn_orders";
         list.clear();
 
-        deliverySupOnHoldAdapter.notifyDataSetChanged();
+        deliverySupPretAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username,flagReqst);

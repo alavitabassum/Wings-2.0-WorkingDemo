@@ -221,5 +221,7 @@
     <string name="title_activity_delivery_sup_unpicked">Unpicked</string>
     <string name="title_activity_delivery_sup_without_status">Without Status</string>
     <string name="title_activity_delivery_sup_onhold">DeliverySupOnhold</string>
+    <string name="title_activity_delivery_super_visor_pre_ret">DeliverySuperVisorPreRet</string>
+    <string name="title_activity_delivery_sup_pre_ret">DeliverySupPreRet</string>
 
 </resources>

@@ -37,9 +37,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet"
+            android:label="@string/title_activity_delivery_sup_pre_ret"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold"
             android:label="@string/title_activity_delivery_sup_onhold"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus"
             android:label="@string/title_activity_delivery_sup_without_status"
@@ -64,7 +68,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn.DeliverySReturnReceive"
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive"
             android:label="@string/title_activity_delivery_sreturn_receive"
             android:theme="@style/AppTheme" />
         <activity

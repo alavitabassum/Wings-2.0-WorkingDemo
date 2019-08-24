@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -18,14 +18,14 @@ import com.paperflywings.user.paperflyv0.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOnHoldAdapter.ViewHolder>implements Filterable {
-    private List<DeliverySupOnHoldModel> listfull;
-    private List<DeliverySupOnHoldModel> list;
+public class DeliverySupPretAdapter extends RecyclerView.Adapter<DeliverySupPretAdapter.ViewHolder>implements Filterable {
+    private List<DeliverySupPretModel> listfull;
+    private List<DeliverySupPretModel> list;
 
     private int currentPosition = -1;
     private Context context;
 
-    public DeliverySupOnHoldAdapter(List<DeliverySupOnHoldModel>list, Context context){
+    public DeliverySupPretAdapter(List<DeliverySupPretModel>list, Context context){
         this.list = list;
         this.context = context;
         listfull = new ArrayList<>(list);
@@ -46,8 +46,9 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
         public TextView item_sla_miss;
        /* public TextView item_pickdropby;
         public TextView item_pickdropTime;*/
-       public TextView item_onHold_reason;
-        public TextView item_onHold_schedule;
+       public TextView item_pre_ret_reason;
+        public TextView item_pre_ret_schedule;
+        public TextView item_pre_ret_by;
         public CardView card_view;
 
         public ViewHolder(@NonNull View itemView) {
@@ -62,8 +63,9 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
             item_packagePrice=itemView.findViewById(R.id.price_without_status);
             item_productBrief=itemView.findViewById(R.id.package_brief_without_status);
             item_sla_miss = itemView.findViewById(R.id.sla_deliverytime);
-            item_onHold_schedule = itemView.findViewById(R.id.sup_onholdSchedule);
-            item_onHold_reason = itemView.findViewById(R.id.sup_onholdReason);
+            item_pre_ret_schedule = itemView.findViewById(R.id.sup_pre_ret_time);
+            item_pre_ret_by = itemView.findViewById(R.id.sup_pre_ret_by);
+            item_pre_ret_reason = itemView.findViewById(R.id.sup_returnReason);
           /*  itemStatus=itemView.findViewById(R.id.btn_status);
             card_view=itemView.findViewById(R.id.card_view_delivery_unpicked_list);*/
         }
@@ -72,7 +74,7 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.delivery_supervisor_onhold,viewGroup,false);
+        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.delivery_sup_pre_ret,viewGroup,false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
@@ -95,8 +97,9 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
         viewHolder.item_orderdate.setText("Order Date: "+list.get(i).getOrderDate());
         viewHolder.item_dp2_time.setText("Dp2 Time: "+list.get(i).getDp2Time());
         viewHolder.item_dp2_by.setText("Dp2 By: "+list.get(i).getDp2By());
-        viewHolder.item_onHold_schedule.setText("On Hold Schedule: "+list.get(i).getOnHoldSchedule());
-        viewHolder.item_onHold_reason.setText(list.get(i).getOnHoldReason());
+        viewHolder.item_pre_ret_schedule.setText("Return Request Time: "+list.get(i).getPreRetTime());
+        viewHolder.item_pre_ret_reason.setText(list.get(i).getRetReason());
+        viewHolder.item_pre_ret_by.setText("Return Request By: "+list.get(i).getPreRetBy());
         if(DeliveryTime<0) {
             viewHolder.item_sla_miss.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_sla_miss.setBackgroundResource(R.color.red);
@@ -132,12 +135,12 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
 
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<DeliverySupOnHoldModel>filteredList = new ArrayList<>();
+            List<DeliverySupPretModel>filteredList = new ArrayList<>();
             if (constraint == null || constraint.length() == 0){
                 filteredList.addAll(listfull);
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for(DeliverySupOnHoldModel item: listfull){
+                for(DeliverySupPretModel item: listfull){
                     if (item.getOrderid().toLowerCase().contains(filterPattern) || item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
