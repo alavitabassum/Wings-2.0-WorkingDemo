@@ -37,9 +37,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash"
+            android:label="@string/title_activity_delivery_sup_cash"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList"
+            android:label="@string/title_activity_delivery_sup_return_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet"
             android:label="@string/title_activity_delivery_sup_pre_ret"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold"
             android:label="@string/title_activity_delivery_sup_onhold"
@@ -72,7 +80,7 @@
             android:label="@string/title_activity_delivery_sreturn_receive"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySCashReceive"
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceive.DeliverySCashReceive"
             android:label="@string/title_activity_delivery_scash_receive"
             android:theme="@style/AppTheme" />
         <activity

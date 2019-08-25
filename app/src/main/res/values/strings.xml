@@ -223,5 +223,7 @@
     <string name="title_activity_delivery_sup_onhold">DeliverySupOnhold</string>
     <string name="title_activity_delivery_super_visor_pre_ret">DeliverySuperVisorPreRet</string>
     <string name="title_activity_delivery_sup_pre_ret">DeliverySupPreRet</string>
+    <string name="title_activity_delivery_sup_return_list">DeliverySupReturnList</string>
+    <string name="title_activity_delivery_sup_cash">DeliverySupCash</string>
 
 </resources>

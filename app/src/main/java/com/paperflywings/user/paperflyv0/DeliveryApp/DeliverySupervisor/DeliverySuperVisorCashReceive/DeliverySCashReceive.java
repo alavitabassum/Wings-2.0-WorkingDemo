@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceive;
 
 import android.content.Context;
 import android.content.DialogInterface;

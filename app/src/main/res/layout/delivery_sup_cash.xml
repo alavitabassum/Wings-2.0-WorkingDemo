@@ -2,9 +2,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_delivery_pre_ret_list"
+    android:id="@+id/card_view_delivery_cash_list"
     android:layout_width="match_parent"
-    android:layout_height="470dp"
+    android:layout_height="460dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -326,12 +326,12 @@
             android:background="?android:attr/listDivider" />
 
         <TextView
-                android:id="@+id/sup_pre_ret_time"
+                android:id="@+id/sup_cash_time"
                 android:layout_width="370dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="230dp"
+                android:layout_marginTop="260dp"
                 android:layout_marginEnd="4dp"
                 android:padding="3dp"
                 android:textAlignment="textStart"
@@ -339,12 +339,12 @@
                 android:textStyle="bold"
                 android:textSize="15sp" />
         <TextView
-            android:id="@+id/sup_pre_ret_by"
+            android:id="@+id/sup_cash_by"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="270dp"
+            android:layout_marginTop="295dp"
             android:layout_marginEnd="4dp"
             android:padding="3dp"
             android:textAlignment="textStart"
@@ -352,35 +352,32 @@
             android:textStyle="bold"
             android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/sup_ordertxt_onhold_reason"
+        <!--<TextView
+            android:id="@+id/sup_cash_comment_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="295dp"
+            android:layout_marginTop="330dp"
             android:lines="2"
             android:maxLines="2"
-            android:text="Reason: "
+            android:text="Comment: "
             android:textColor="#43A047"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold" />-->
 
         <TextView
-            android:id="@+id/sup_returnReason"
-            android:layout_width="279dp"
+            android:id="@+id/sup_cash_comment"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/sup_ordertxt_onhold_reason"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="330dp"
             android:layout_marginEnd="4dp"
-            android:layout_toEndOf="@+id/sup_ordertxt_onhold_reason"
-            android:lines="2"
-            android:maxLines="2"
+            android:padding="3dp"
             android:textAlignment="textStart"
             android:textColor="#43A047"
             android:textStyle="bold"
-            android:textSize="15sp"
             />
 
             <View
@@ -390,7 +387,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="340dp"
+                android:layout_marginTop="375dp"
                 android:background="?android:attr/listDivider" />
 
         <!--  <TextView
@@ -425,7 +422,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="350dp"
+            android:layout_marginTop="385dp"
             android:text="Package Price: "
             android:textColor="#000"
             style="@style/boldStyle"
@@ -446,16 +443,17 @@
             style="@style/boldStyle"/>
 
         <TextView
-            android:id="@+id/package_brief_without_status"
+            android:id="@+id/sup_cash_amount"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="380dp"
-            android:layout_marginEnd="6dp"
-            android:lines="2"
-            android:maxLines="2"
-            android:textColor="#000"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="230dp"
+            android:layout_marginEnd="4dp"
+            android:padding="3dp"
             android:textAlignment="textStart"
+            android:textColor="#43A047"
+            android:textStyle="bold"
             android:textSize="15sp" />
 
 
