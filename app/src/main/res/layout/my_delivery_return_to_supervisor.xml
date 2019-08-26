@@ -209,8 +209,8 @@
               android:textColor="#000"
               android:textSize="15sp" />-->
 
-        <!--<TextView
-            android:id="@+id/pick_m_name_without_status"
+        <TextView
+            android:id="@+id/pick_m_name_ret_to_sup"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -219,7 +219,7 @@
             android:textAlignment="textStart"
             android:layout_marginStart="0dp"
             android:textColor="#000"
-            android:textSize="15sp" />-->
+            android:textSize="15sp" />
 
         <View
             android:id="@+id/divider2"

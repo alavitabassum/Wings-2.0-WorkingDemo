@@ -16,9 +16,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupManager.FulfillmentAssignManager.Fulfillment_Assign_pickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupManager.LogisticAssignManager.AssignPickup_Manager;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupManager.Robishop.Robishop_Assign_pickup_manager;
@@ -242,7 +241,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     } while (cursorStatusRTS.moveToNext());
                 }
 
-                Cursor cursorStatusCTS = database2.getUnsyncedCTS();
+                /*Cursor cursorStatusCTS = database2.getUnsyncedCTS();
                 if (cursorStatusCTS.moveToFirst()) {
                     do {
                         sync_cts(
@@ -254,7 +253,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                 cursorStatusCTS.getString(2) // barcode
                         );
                     } while (cursorStatusCTS.moveToNext());
-                }
+                }*/
             }
         }
     }
@@ -347,7 +346,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     }
 
-    private void sync_cts(final int id,final String CTS,final String CTSTime, final String CTSBy, final String orderid, final String barcode) {
+    /*private void sync_cts(final int id,final String CTS,final String CTSTime, final String CTSBy, final String orderid, final String barcode) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryCTS.DELIVERY_CTS_UPDATE,
                 new Response.Listener<String>() {
                     @Override
@@ -385,7 +384,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
         }
         requestQueue.add(stringRequest);
     }
-
+*/
     private void sync_rts(final int id, final String RTS,final String RTSTime, final String RTSBy, final String orderid, final String barcode) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Delivery_ReturnToSupervisor.DELIVERY_RETURNR_UPDATE,
                 new Response.Listener<String>() {

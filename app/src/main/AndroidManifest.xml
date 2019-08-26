@@ -53,6 +53,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
         <activity
+            android:name=".DeliveryApp.DeliverySupervisor.BankDepositBySupervisor"
+            android:label="@string/title_activity_return_receive_supervisor"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+        <activity
             android:name=".DeliveryApp.Courier.DeliveryCourierDetails"
             android:label="@string/title_activity_delivery_courier_details"
             android:screenOrientation="portrait"
@@ -111,7 +116,7 @@
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS"
             android:label="@string/title_activity_delivery_cts"
-            android:screenOrientation="portrait"
+            android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor"

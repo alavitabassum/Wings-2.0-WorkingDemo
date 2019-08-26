@@ -1,15 +1,13 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -21,8 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.ViewHolder> implements Filterable {
-    private List<DeliveryCTSModel> listFull;
-    private List<DeliveryCTSModel> list;
+    private ArrayList<DeliveryCTSModel> listFull;
+    private ArrayList<DeliveryCTSModel> list;
+    public static ArrayList<DeliveryCTSModel> imageModelArrayList;
 
     private int currentPostion = -1;
 
@@ -33,8 +32,8 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
 
     public interface OnItemClickListtener {
-        void onItemClick_view (View view2, int position2);
-        void onItemClick_call (View view4, int position4);
+       // void onItemClick_view (View view2, int position2);
+        //void onItemClick_call (View view4, int position4);
     }
 
 
@@ -46,10 +45,11 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         this.touchListener = t_listener;
     }
 
-    public DeliveryCTSAdapter(java.util.List<DeliveryCTSModel> list, Context context) {
+    public DeliveryCTSAdapter(java.util.ArrayList<DeliveryCTSModel> list, Context context) {
         this.list = list;
         this.context = context;
         this.listFull = new ArrayList<>(list);
+        this.imageModelArrayList = new ArrayList<>(list);
     }
 
 
@@ -61,16 +61,17 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         public TextView item_merOrderRef_without_status;
         public TextView item_merchantName_without_status;
         public TextView item_pickMerchantName_without_status;
-        public TextView item_custname_without_status;
+        //public TextView item_custname_without_status;
         public TextView item_cashAmt_without_status;
         public TextView item_cashComment_without_status;
-        public TextView item_custphone_without_status;
+        //public TextView item_custphone_without_status;
         public TextView item_packagePrice_without_status;
         public TextView item_productBrief_without_status;
         public TextView item_partialreason_without_status;
-        public TextView item_deliveryTime_without_status;
-        public Button itemStatus_without_status;
+        //public TextView item_deliveryTime_without_status;
+        //public Button itemStatus_without_status;
         public CardView card_view_without_status;
+        protected CheckBox checkBox;
 
 
         public ViewHolder(View itemView, int i) {
@@ -80,22 +81,19 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
             item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
             item_partialreason_without_status = itemView.findViewById(R.id.partialReasonText);
-            item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
-            item_custname_without_status=itemView.findViewById(R.id.customer_name_without_status);
+            //item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
             item_cashAmt_without_status=itemView.findViewById(R.id.cashAmnt_without_status);
-            item_cashComment_without_status=itemView.findViewById(R.id.cashComment_without_status);
-            item_custphone_without_status=itemView.findViewById(R.id.m_phn_num_without_status);
+            //item_cashComment_without_status=itemView.findViewById(R.id.cashComment_without_status);
             item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
             item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
 
-            item_deliveryTime_without_status=itemView.findViewById(R.id.deliverytime);
-            itemStatus_without_status=itemView.findViewById(R.id.btn_status_cash_status);
             card_view_without_status=itemView.findViewById(R.id.card_view_delivery_without_status_list);
+            checkBox = (CheckBox) itemView.findViewById(R.id.cb);
 
 
-            item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            //item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-            item_custphone_without_status.setOnClickListener(new View.OnClickListener() {
+            /*item_custphone_without_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view4) {
                     if(mListner!=null){
@@ -105,9 +103,9 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
                         }
                     }
                 }
-            });
+            });*/
             
-            itemStatus_without_status.setOnClickListener(new View.OnClickListener() {
+           /* itemStatus_without_status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view2) {
                     if(mListner!=null){
@@ -118,7 +116,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
                     }
                 }
 
-            });
+            });*/
 
         }
 
@@ -131,126 +129,34 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         return viewHolder;
     }
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
         viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef_without_status.setText(list.get(i).getMerOrderRef());
-        //viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-        //viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
-        viewHolder.item_custname_without_status.setText("Name: "+list.get(i).getCustname());
-
-        viewHolder.item_cashAmt_without_status.setText("Cash Amount: "+list.get(i).getCashAmt()+" Taka");
-        viewHolder.item_custphone_without_status.setText(list.get(i).getCustphone());
+        viewHolder.item_cashAmt_without_status.setText(list.get(i).getCashAmt()+" Taka");
         viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+" Taka");
-        viewHolder.item_productBrief_without_status.setText("Product Brief: "+list.get(i).getProductBrief());
-        //viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
 
-        // viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
+        viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelected());
+        viewHolder.checkBox.setTag(i);
+        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        // String CustomerDistrict = list.get(i).getCustomerDistrict();
+                Integer pos = (Integer) viewHolder.checkBox.getTag();
 
-
-        String Pick_merchantName = list.get(i).getPickMerchantName();
-        String partialReason = list.get(i).getPartialReason();
-        String cash = list.get(i).getCash();
-        int DeliveryTime = Integer.parseInt(list.get(i).getSlaMiss());
-
-
-       /* if (partialReason != null) {
-            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getPartialReason());
-        }
-
-        if(partialReason.isEmpty()) {
-            viewHolder.item_partialreason_without_status.setText("No Reason: "+list.get(i).getPartialReason().substring(0,0));
-        }*/
-
-        String partial = list.get(i).getPartial();
-        String ret = list.get(i).getRet();
-
-        if(cash.equals("Y")){
-            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
-        }
-        else if (partial.equals("Y")) {
-            viewHolder.item_cashComment_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
-        }
-        else if (!(partial.equals("Y"))) {
-            viewHolder.item_cashComment_without_status.setText("Partial Reason: no reason");
-        }
-        else if (!(cash.equals("Y"))) {
-            viewHolder.item_cashComment_without_status.setText("Remarks: no remarks");
-        }
-
-       // viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+                if (imageModelArrayList.get(pos).getSelected()) {
+                    imageModelArrayList.get(pos).setSelected(false);
+                    //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " uncheckkkkkeeeeddd", Toast.LENGTH_SHORT).show();
 
 
-      /*  if(cashComment != "NULL"){
-            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
-        }
-        else if(partialReason != "NULL") {
-            viewHolder.item_cashComment_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
-        }
-        else {
-            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
-            viewHolder.item_cashComment_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
+                } else {
+                    imageModelArrayList.get(pos).setSelected(true);
+                    //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " clicked!", Toast.LENGTH_SHORT).show();
 
-        }*/
+                }
+            }
+        });
 
-      /*  else {
-            viewHolder.item_partialreason_without_status.setText("Partial Reason: "+list.get(i).getPartialReason());
-        }
-
-*/
-
-       /* else {
-            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
-        }*/
-
-       /* else {
-            viewHolder.item_cashComment_without_status.setText("Remarks: "+list.get(i).getCashComment());
-        }*/
-
-
-        if(DeliveryTime<0) {
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-
-        else if (DeliveryTime>=0){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getSlaMiss());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-
-        if (Pick_merchantName.isEmpty()) {
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-        }
-        else if(!Pick_merchantName.isEmpty()){
-            viewHolder.item_merchantName_without_status.setText(list.get(i).getMerchantName());
-            viewHolder.item_pickMerchantName_without_status.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
-        }
-
-      /*  if(CustomerDistrict.equals("1") && DeliveryTime > 2) {
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (!(CustomerDistrict.equals("1")) && DeliveryTime > 5){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.red);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-        else if (!(CustomerDistrict.equals("1")) && DeliveryTime < 5){
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-
-             else if (CustomerDistrict.equals("1") && DeliveryTime <2){
-            viewHolder.item_deliveryTime_without_status.setText(list.get(i).getDeliveryTime());
-            viewHolder.item_deliveryTime_without_status.setBackgroundResource(R.color.green);
-            viewHolder.item_deliveryTime_without_status.setTextColor(Color.WHITE);
-        }
-
-        }*/
 
     }
 

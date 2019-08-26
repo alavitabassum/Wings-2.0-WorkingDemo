@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -38,14 +37,14 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryPettyCash;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -63,22 +62,16 @@ public class DeliveryCashRS extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     BarcodeDbHelper db;
-//    public SwipeRefreshLayout swipeRefreshLayout;
     private DeliveryCashRSAdapter DeliveryCashRSAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
-    Button selectDate;
-    TextView dateShow;
     DatePickerDialog datePickerDialog;
     int year;
     int month;
     int dayOfMonth;
     Calendar calendar;
     private ProgressDialog progress;
-//    TextView totalCash;
-
-//    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCashRSupervisorApi.php";
     public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryCRS.php";
 
     private List<DeliveryCashRSModel> list;
@@ -110,11 +103,7 @@ public class DeliveryCashRS extends AppCompatActivity
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-     /*   swipeRefreshLayout = findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);*/
         list.clear();
-//        swipeRefreshLayout.setRefreshing(true);
 
         final Button selectDate = findViewById(R.id.searchUsingDate);
         selectDate.setOnClickListener(new View.OnClickListener() {
@@ -131,13 +120,11 @@ public class DeliveryCashRS extends AppCompatActivity
                         String yearselected  = Integer.toString(year) ;
                         String monthselected  = Integer.toString(month + 1);
                         String dayselected  = Integer.toString(day);
-                        /*2019-07-15 03:45:29*/
+
                         String dateTime = yearselected + "-" + monthselected + "-" + dayselected;
                         loadcashamt(username,dateTime);
                         loadRecyclerView(username,dateTime);
                         list.clear();
-                       /* pendingsummary_modelslist.clear();
-                        Toast.makeText(PendingSummary_Manager.this, dateTime, Toast.LENGTH_LONG);*/
 
                     }
                 },year,month,dayOfMonth );
@@ -146,7 +133,6 @@ public class DeliveryCashRS extends AppCompatActivity
             }
 
         });
-
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -159,20 +145,15 @@ public class DeliveryCashRS extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     private void loadcashamt(final String username, final String date_match){
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/DeliveryGetCashCount.php",
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
-//                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                        db.deleteList(sqLiteDatabase, "cash");
                         list.clear();
-//                        progress.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
@@ -180,38 +161,18 @@ public class DeliveryCashRS extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                            /*    DeliveryCashRSModel withoutStatus_model = new  DeliveryCashRSModel(
-                                        o.getInt("totalOrder"),
-                                        o.getInt("totalCollection"));*/
-
-                                /*list.add(withoutStatus_model);*/
-
                                 totalOrder.setText(o.getString("totalOrder"));
                                 totalCashCollection.setText(o.getString("totalCollection")+" Taka");
-
                             }
-
-
-
-
-                            /*DeliveryCashRSAdapter = new DeliveryCashRSAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(DeliveryCashRSAdapter);*/
-
-                            /*String totalCashCollection = String.valueOf();
-                            totalCash.setText(totalCashCollection+ "Taka");*/
-//                            swipeRefreshLayout.setRefreshing(false);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-//                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-//                        progress.dismiss();
-//                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
                     }
                 })
@@ -245,8 +206,6 @@ public class DeliveryCashRS extends AppCompatActivity
                 {
                     @Override
                     public void onResponse(String response) {
-                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                        db.deleteList(sqLiteDatabase, "cash");
                         list.clear();
                         progress.dismiss();
                         try {
@@ -309,13 +268,8 @@ public class DeliveryCashRS extends AppCompatActivity
                             DeliveryCashRSAdapter = new DeliveryCashRSAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(DeliveryCashRSAdapter);
 
-                            /*String totalCashCollection = String.valueOf();
-                            totalCash.setText(totalCashCollection+ "Taka");*/
-//                            swipeRefreshLayout.setRefreshing(false);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
-//                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 },
@@ -323,7 +277,6 @@ public class DeliveryCashRS extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                          progress.dismiss();
-//                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
                     }
                 })
@@ -355,8 +308,6 @@ public class DeliveryCashRS extends AppCompatActivity
             startActivity(homeIntent);
         }
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -394,12 +345,10 @@ public class DeliveryCashRS extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -491,30 +440,8 @@ public class DeliveryCashRS extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout_cash_rs);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-   /* @Override
-    public void onRefresh() {
-        ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
-        NetworkInfo nInfo = cManager.getActiveNetworkInfo();
-
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        list.clear();
-        DeliveryCashRSAdapter.notifyDataSetChanged();
-        Toast.makeText(this,"Select specific date",Toast.LENGTH_LONG).show();
-       *//* if(nInfo!= null && nInfo.isConnected())
-        {
-            loadRecyclerView(username);
-        }
-        else{
-            Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
-        }*//*
-    }*/
-
-
 }
