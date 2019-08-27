@@ -1,8 +1,9 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
-public class DeliverySupWithoutStatusModel {
+public class DeliverySupWithoutStatusModel implements Parcelable {
     private String username;
     private String empCode;
     private String barcode;
@@ -47,6 +48,70 @@ public class DeliverySupWithoutStatusModel {
     private String sup_pickDropTime;
     private String sup_pickDropBy;
 
+
+    protected DeliverySupWithoutStatusModel(Parcel in) {
+        username = in.readString();
+        empCode = in.readString();
+        barcode = in.readString();
+        orderid = in.readString();
+        merOrderRef = in.readString();
+        merchantName = in.readString();
+        dropPointEmp = in.readString();
+        pickDrop = in.readString();
+        pickDropTime = in.readString();
+        pickDropBy = in.readString();
+        productBrief = in.readString();
+        deliveryTime = in.readString();
+        Rea = in.readString();
+        ReaTime = in.readString();
+        ReaBy = in.readString();
+        PickDrop = in.readString();
+        PickDropTime = in.readString();
+        PickDropBy = in.readString();
+        dropAssignTime = in.readString();
+        dropAssignBy = in.readString();
+        dropPointCode = in.readString();
+        Cash = in.readString();
+        cashType = in.readString();
+        CashTime = in.readString();
+        CashBy = in.readString();
+        CashAmt = in.readString();
+        CashComment = in.readString();
+        partial = in.readString();
+        partialTime = in.readString();
+        partialBy = in.readString();
+        partialReceive = in.readString();
+        partialReturn = in.readString();
+        partialReason = in.readString();
+        onHoldSchedule = in.readString();
+        onHoldReason = in.readString();
+        slaMiss = in.readInt();
+        pickMerchantName = in.readString();
+        custname = in.readString();
+        custaddress = in.readString();
+        custphone = in.readString();
+        orderDate = in.readString();
+        sup_pickDropTime = in.readString();
+        sup_pickDropBy = in.readString();
+        dp2Time = in.readString();
+        dp2By = in.readString();
+        packagePrice = in.readString();
+        key_id = in.readInt();
+        status = in.readInt();
+        sql_primary_id = in.readInt();
+    }
+
+    public static final Creator<DeliverySupWithoutStatusModel> CREATOR = new Creator<DeliverySupWithoutStatusModel>() {
+        @Override
+        public DeliverySupWithoutStatusModel createFromParcel(Parcel in) {
+            return new DeliverySupWithoutStatusModel(in);
+        }
+
+        @Override
+        public DeliverySupWithoutStatusModel[] newArray(int size) {
+            return new DeliverySupWithoutStatusModel[size];
+        }
+    };
 
     public String getSup_pickDropTime() {
         return sup_pickDropTime;
@@ -587,5 +652,62 @@ public class DeliverySupWithoutStatusModel {
         this.status = status;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(username);
+        dest.writeString(empCode);
+        dest.writeString(barcode);
+        dest.writeString(orderid);
+        dest.writeString(merOrderRef);
+        dest.writeString(merchantName);
+        dest.writeString(dropPointEmp);
+        dest.writeString(pickDrop);
+        dest.writeString(pickDropTime);
+        dest.writeString(pickDropBy);
+        dest.writeString(productBrief);
+        dest.writeString(deliveryTime);
+        dest.writeString(Rea);
+        dest.writeString(ReaTime);
+        dest.writeString(ReaBy);
+        dest.writeString(PickDrop);
+        dest.writeString(PickDropTime);
+        dest.writeString(PickDropBy);
+        dest.writeString(dropAssignTime);
+        dest.writeString(dropAssignBy);
+        dest.writeString(dropPointCode);
+        dest.writeString(Cash);
+        dest.writeString(cashType);
+        dest.writeString(CashTime);
+        dest.writeString(CashBy);
+        dest.writeString(CashAmt);
+        dest.writeString(CashComment);
+        dest.writeString(partial);
+        dest.writeString(partialTime);
+        dest.writeString(partialBy);
+        dest.writeString(partialReceive);
+        dest.writeString(partialReturn);
+        dest.writeString(partialReason);
+        dest.writeString(onHoldSchedule);
+        dest.writeString(onHoldReason);
+        dest.writeInt(slaMiss);
+        dest.writeString(pickMerchantName);
+        dest.writeString(custname);
+        dest.writeString(custaddress);
+        dest.writeString(custphone);
+        dest.writeString(orderDate);
+        dest.writeString(sup_pickDropTime);
+        dest.writeString(sup_pickDropBy);
+        dest.writeString(dp2Time);
+        dest.writeString(dp2By);
+        dest.writeString(packagePrice);
+        dest.writeInt(key_id);
+        dest.writeInt(status);
+        dest.writeInt(sql_primary_id);
+    }
 }
 
