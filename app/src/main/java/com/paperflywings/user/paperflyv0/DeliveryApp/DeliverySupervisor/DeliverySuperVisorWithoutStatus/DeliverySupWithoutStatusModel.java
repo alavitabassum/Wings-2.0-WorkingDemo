@@ -1,5 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus;
 
+import android.os.Parcel;
+
 public class DeliverySupWithoutStatusModel {
     private String username;
     private String empCode;
@@ -44,6 +46,7 @@ public class DeliverySupWithoutStatusModel {
     private String orderDate;
     private String sup_pickDropTime;
     private String sup_pickDropBy;
+
 
     public String getSup_pickDropTime() {
         return sup_pickDropTime;
@@ -585,3 +588,4 @@ public class DeliverySupWithoutStatusModel {
     }
 
 }
+

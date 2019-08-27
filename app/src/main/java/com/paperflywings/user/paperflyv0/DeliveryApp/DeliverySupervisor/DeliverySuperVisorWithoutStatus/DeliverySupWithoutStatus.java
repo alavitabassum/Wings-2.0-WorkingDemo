@@ -41,6 +41,8 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.Expandable_sup_without_status.Company;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.Expandable_sup_without_status.ProductAdapters;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -58,6 +60,8 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
 
     public SwipeRefreshLayout swipeRefreshLayout;
     private DeliverySupWithoutStatusAdapter deliverySupWithoutStatusAdapter;
+
+    private ProductAdapters ProductAdapter;
     private RecyclerView recyclerView_pul;
     private RecyclerView.LayoutManager layoutManager_pul;
     private TextView sup_without_status_text;
@@ -68,6 +72,12 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     private List<DeliverySupWithoutStatusModel> list;
+
+    private DeliverySupWithoutStatusModel supWithoutStatusModel;
+    private ArrayList<Company> merchants;
+    private Company m1;
+    private JSONObject o;
+
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
@@ -146,51 +156,65 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
                     public void onResponse(String response) {
                         list.clear();
                         progress.dismiss();
-                        int i;
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("getData");
+                            merchants = new ArrayList<>();
 
-                            for(i =0;i<array.length();i++)
-                            {
-                                JSONObject o = array.getJSONObject(i);
-                                DeliverySupWithoutStatusModel supWithoutStatusModel = new  DeliverySupWithoutStatusModel(
-                                        o.getInt("sql_primary_id"),
-                                        o.getString("username"),
-                                        o.getString("merchEmpCode"),
-                                        o.getString("dropPointEmp"),
-                                        o.getString("barcode"),
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief"),
-                                        o.getString("deliveryTime"),
-                                        o.getString("dropAssignTime"),
-                                        o.getString("dropAssignBy"),
-                                        o.getString("PickDrop"),
-                                        o.getString("PickDropTime"),
-                                        o.getString("PickDropBy"),
-                                        o.getString("orderDate"),
-                                        o.getString("DP2Time"),
-                                        o.getString("DP2By"),
-                                        o.getInt("slaMiss"));
-                                list.add(supWithoutStatusModel);
 
-                            }
 
-//
+                                for (int j = 0; j < array.length(); j++) {
+                                    o = array.getJSONObject(j);
+                                    /*m1 = new Company(o.getString("orderid"), list);
+                                    merchants.add(m1);
+                                    for (int k = j; k < 1; k++) {*/
+                                     //   o = array.getJSONObject(k);
+
+                                            supWithoutStatusModel = new DeliverySupWithoutStatusModel(
+
+                                                    o.getInt("sql_primary_id"),
+                                                    o.getString("username"),
+                                                    o.getString("merchEmpCode"),
+                                                    o.getString("dropPointEmp"),
+                                                    o.getString("barcode"),
+                                                    o.getString("orderid"),
+                                                    o.getString("merOrderRef"),
+                                                    o.getString("merchantName"),
+                                                    o.getString("pickMerchantName"),
+                                                    o.getString("custname"),
+                                                    o.getString("custaddress"),
+                                                    o.getString("custphone"),
+                                                    o.getString("packagePrice"),
+                                                    o.getString("productBrief"),
+                                                    o.getString("deliveryTime"),
+                                                    o.getString("dropAssignTime"),
+                                                    o.getString("dropAssignBy"),
+                                                    o.getString("PickDrop"),
+                                                    o.getString("PickDropTime"),
+                                                    o.getString("PickDropBy"),
+                                                    o.getString("orderDate"),
+                                                    o.getString("DP2Time"),
+                                                    o.getString("DP2By"),
+                                                    o.getInt("slaMiss"));
+
+                                        list.add(supWithoutStatusModel);
+
+
+
+                                }
+
+                            //list.add(supWithoutStatusModel);
+
+
+                          /*  ProductAdapter = new ProductAdapters(merchants);
+                            recyclerView_pul.setAdapter(ProductAdapter);*/
 
                             deliverySupWithoutStatusAdapter = new DeliverySupWithoutStatusAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupWithoutStatusAdapter);
                             swipeRefreshLayout.setRefreshing(false);
                             //deliverySupUnpickedAdapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
 
-                            String str = String.valueOf(i);
+                            String str = String.valueOf(array.length());
                             sup_without_status_text.setText(str);
 
                         } catch (JSONException e) {
@@ -347,6 +371,7 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -364,4 +389,5 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
             list.clear();
         }
     }
+
 }
