@@ -78,8 +78,8 @@ public class DeliveryListFragment extends Fragment {
         sup_cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
         sup_returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
 
-        ReturnReceive = (CardView)viewGroup.findViewById(R.id.ReturnReceived_id);
-        CashReceive = (CardView)viewGroup.findViewById(R.id.CashReceived_id);
+        sup_ReturnReceive = (CardView)viewGroup.findViewById(R.id.sup_returnReceived_id);
+        sup_CashReceive = (CardView)viewGroup.findViewById(R.id.sup_cashReceived_id);
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -137,7 +137,7 @@ public class DeliveryListFragment extends Fragment {
             }
         });
 
-        ReturnReceive.setOnClickListener(new View.OnClickListener() {
+        sup_ReturnReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), ReturnReceiveSupervisor.class);
@@ -145,7 +145,7 @@ public class DeliveryListFragment extends Fragment {
             }
         });
 
-        CashReceive.setOnClickListener(new View.OnClickListener() {
+        sup_CashReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCashReceiveSupervisor.class);
