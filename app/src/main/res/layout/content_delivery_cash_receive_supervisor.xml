@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@color/light_grey"
-    tools:context=".DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor"
-    tools:showIn="@layout/app_bar_return_receive_supervisor">
+    tools:context=".DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
+    tools:showIn="@layout/app_bar_delivery_cash_receive_supervisor">
+
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -34,12 +33,11 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_return_receive_list"
+            android:id="@+id/recycler_view_cash_receive_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp"
+            android:paddingTop="30dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </android.support.v4.widget.SwipeRefreshLayout>
-
 
 </RelativeLayout>

@@ -49,7 +49,7 @@ public class BankDepositBySupervisor extends AppCompatActivity {
         tv = (TextView) findViewById(R.id.tv);
         orderIds = (TextView) findViewById(R.id.cash_amount);
         //EditText someInput = (EditText) findViewById(R.id.editText);
-        btnUpdate = (Button) findViewById(R.id.btn_update);
+        //btnUpdate = (Button) findViewById(R.id.btn_update);
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");

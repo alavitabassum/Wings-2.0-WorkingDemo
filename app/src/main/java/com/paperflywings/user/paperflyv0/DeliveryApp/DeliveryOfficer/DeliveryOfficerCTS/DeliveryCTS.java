@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,7 +46,6 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
@@ -122,9 +120,7 @@ public class DeliveryCTS extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
-        if(nInfo!= null && nInfo.isConnected())
+         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
         }
@@ -133,11 +129,6 @@ public class DeliveryCTS extends AppCompatActivity
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-        /*broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        };*/
 
         delivery_cts_recieved.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -426,7 +417,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         @Override
                                         public void onClick(View v) {
                                             if(tv.getText().equals("0 Orders have been selected for cash.")){
-                                                orderIds.setText("Please Select Orders First");
+                                                orderIds.setText("Please Select Orders First!!");
                                             } else {
                                                 UpdateBankInfo(item, username);
                                                 alertDialog.dismiss();
@@ -434,7 +425,6 @@ public class DeliveryCTS extends AppCompatActivity
                                                 //loadRecyclerView(username);
                                                 item = "";
                                             }
-
                                         }
                                     });
                                 }
@@ -525,7 +515,6 @@ public class DeliveryCTS extends AppCompatActivity
         if (id == R.id.action_search) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

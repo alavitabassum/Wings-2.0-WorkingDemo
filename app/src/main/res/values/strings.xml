@@ -219,5 +219,7 @@
     <string name="title_activity_delivery_sreturn_receive">DeliverySReturnReceive</string>
     <string name="title_activity_delivery_courier_details">DeliveryCourierDetails</string>
     <string name="title_activity_return_receive_supervisor">ReturnReceiveSupervisor</string>
+    <string name="title_activity_delivery_cash_receive_supervisor">DeliveryCashReceiveSupervisor
+    </string>
 
 </resources>

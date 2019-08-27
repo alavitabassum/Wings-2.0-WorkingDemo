@@ -55,21 +55,13 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView item_customerDistrict_without_status;
-        public TextView item_barcode_without_status;
         public TextView item_ordId_without_status;
         public TextView item_merOrderRef_without_status;
         public TextView item_merchantName_without_status;
-        public TextView item_pickMerchantName_without_status;
-        //public TextView item_custname_without_status;
         public TextView item_cashAmt_without_status;
-        public TextView item_cashComment_without_status;
-        //public TextView item_custphone_without_status;
         public TextView item_packagePrice_without_status;
         public TextView item_productBrief_without_status;
         public TextView item_partialreason_without_status;
-        //public TextView item_deliveryTime_without_status;
-        //public Button itemStatus_without_status;
         public CardView card_view_without_status;
         protected CheckBox checkBox;
 
@@ -81,9 +73,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
             item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
             item_partialreason_without_status = itemView.findViewById(R.id.partialReasonText);
-            //item_pickMerchantName_without_status=itemView.findViewById(R.id.pick_m_name_without_status);
             item_cashAmt_without_status=itemView.findViewById(R.id.cashAmnt_without_status);
-            //item_cashComment_without_status=itemView.findViewById(R.id.cashComment_without_status);
             item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
             item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
 
@@ -197,10 +187,5 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
             list.addAll((List) results.values);
             notifyDataSetChanged();
         }
-
-
     };
-
 }
-
-

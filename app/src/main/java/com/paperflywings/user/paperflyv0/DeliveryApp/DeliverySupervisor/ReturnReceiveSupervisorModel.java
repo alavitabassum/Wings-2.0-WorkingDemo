@@ -7,6 +7,7 @@ public class ReturnReceiveSupervisorModel {
     private String rtsBy;
     private String rtsTime;
     private Integer slaMiss;
+    private boolean isSelectedRts;
 
     public ReturnReceiveSupervisorModel(String orderid, String merOrderRef, String rts, String rtsTime, String rtsBy, int slaMiss) {
       this.orderid = orderid;
@@ -15,6 +16,14 @@ public class ReturnReceiveSupervisorModel {
       this.rtsTime = rtsTime;
       this.rtsBy = rtsBy;
       this.slaMiss = slaMiss;
+    }
+
+    public boolean getSelectedRts() {
+        return isSelectedRts;
+    }
+
+    public void setSelectedRts(boolean selectedRts) {
+        isSelectedRts = selectedRts;
     }
 
     public Integer getSlaMiss() {

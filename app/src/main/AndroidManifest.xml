@@ -48,15 +48,20 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
+            android:label="@string/title_activity_delivery_cash_receive_supervisor"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme"></activity>
+        <activity
             android:name=".DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor"
             android:label="@string/title_activity_return_receive_supervisor"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.BankDepositBySupervisor"
             android:label="@string/title_activity_return_receive_supervisor"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.Courier.DeliveryCourierDetails"
             android:label="@string/title_activity_delivery_courier_details"
@@ -65,18 +70,22 @@
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn.DeliverySReturnReceive"
             android:label="@string/title_activity_delivery_sreturn_receive"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySCashReceive"
             android:label="@string/title_activity_delivery_scash_receive"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySupervisorDp2.DeliverySDp2"
             android:label="@string/title_activity_delivery_sdp2"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout"
             android:label="@string/title_activity_delivery_super_visor_tablayout"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout"

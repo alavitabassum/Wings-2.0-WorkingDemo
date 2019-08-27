@@ -22,5 +22,4 @@
 
     <include layout="@layout/content_return_receive_supervisor" />
 
-
 </android.support.design.widget.CoordinatorLayout>
