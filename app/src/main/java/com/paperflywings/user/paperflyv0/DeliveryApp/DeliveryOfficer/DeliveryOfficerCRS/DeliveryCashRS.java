@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -66,6 +67,8 @@ public class DeliveryCashRS extends AppCompatActivity
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
+    Button selectDate;
+    TextView dateShow;
     DatePickerDialog datePickerDialog;
     int year;
     int month;

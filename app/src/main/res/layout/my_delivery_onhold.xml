@@ -192,18 +192,18 @@
               android:textColor="#000"
               android:textSize="15sp" />-->
 
-      <!--  <TextView
-            android:id="@+id/pick_m_name_on_hold"
-            android:layout_width="370dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="102dp"
-            android:layout_marginEnd="0dp"
-            android:textAlignment="textStart"
-            android:layout_marginStart="0dp"
-            android:textColor="#000"
-            android:textSize="15sp" />
--->
+        <!--  <TextView
+              android:id="@+id/pick_m_name_on_hold"
+              android:layout_width="370dp"
+              android:layout_height="wrap_content"
+              android:layout_alignParentEnd="true"
+              android:layout_marginTop="102dp"
+              android:layout_marginEnd="0dp"
+              android:textAlignment="textStart"
+              android:layout_marginStart="0dp"
+              android:textColor="#000"
+              android:textSize="15sp" />
+  -->
         <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"

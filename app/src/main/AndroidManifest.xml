@@ -36,7 +36,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash"
+            android:label="@string/title_activity_delivery_sup_cash"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList"
+            android:label="@string/title_activity_delivery_sup_return_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet"
+            android:label="@string/title_activity_delivery_sup_pre_ret"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold"
+            android:label="@string/title_activity_delivery_sup_onhold"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus"
+            android:label="@string/title_activity_delivery_sup_without_status"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked"
+            android:label="@string/title_activity_delivery_sup_unpicked"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
@@ -68,12 +91,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn.DeliverySReturnReceive"
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive"
             android:label="@string/title_activity_delivery_sreturn_receive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySCashReceive"
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceive.DeliverySCashReceive"
             android:label="@string/title_activity_delivery_scash_receive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />

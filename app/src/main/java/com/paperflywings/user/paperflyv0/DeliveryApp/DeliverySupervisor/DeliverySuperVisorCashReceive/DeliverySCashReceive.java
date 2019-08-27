@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceive;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,13 +20,13 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Delivery
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
-public class DeliverySReturnReceive extends AppCompatActivity
+public class DeliverySCashReceive extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delivery_sreturn_receive);
+        setContentView(R.layout.activity_delivery_scash_receive);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -52,7 +52,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.delivery_sreturn_receive, menu);
+        getMenuInflater().inflate(R.menu.delivery_scash_receive, menu);
         return true;
     }
 
@@ -78,7 +78,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(DeliverySReturnReceive.this,
+            Intent homeIntent = new Intent(DeliverySCashReceive.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
             // Handle the camera action
@@ -111,7 +111,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliverySReturnReceive.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliverySCashReceive.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });

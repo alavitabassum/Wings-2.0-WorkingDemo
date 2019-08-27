@@ -2,9 +2,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_delivery_without_status_list"
+    android:id="@+id/card_view_delivery_unpicked_list"
     android:layout_width="match_parent"
-    android:layout_height="490dp"
+    android:layout_height="430dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -71,20 +71,17 @@
 
         <TextView
             android:id="@+id/sup_orderId_without_status"
-            android:layout_width="279dp"
+            android:layout_width="215dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/sup_ordertxt"
-            android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="6dp"
             android:layout_toEndOf="@+id/sup_ordertxt"
             android:lines="1"
             android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="#000"
             android:textSize="15sp"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/sup_merchant_ref_txt"
@@ -244,14 +241,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="130dp"
             android:layout_marginEnd="4dp"
             android:padding="3dp"
             android:textAlignment="textStart"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorAccent2"
             android:textStyle="bold"
             android:textSize="15sp"
-        />
+            />
 
 
         <TextView
@@ -260,11 +257,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="170dp"
+            android:layout_marginTop="160dp"
             android:layout_marginEnd="4dp"
             android:padding="3dp"
             android:textAlignment="textStart"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorAccent2"
             android:textStyle="bold"
 
             android:textSize="15sp" />
@@ -286,9 +283,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="200dp"
-            android:textAlignment="textStart"
-            android:textColor="@color/colorAccent"
+            android:layout_marginTop="190dp"
+            android:layout_marginEnd="4dp"
+            android:padding="3dp"
+            android:textColor="@color/colorAccent2"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -316,18 +314,6 @@
                 android:textSize="15sp" />
 
     -->
-        <TextView
-            android:id="@+id/package_brief_without_status"
-            android:layout_width="370dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="335dp"
-            android:layout_marginEnd="6dp"
-            android:lines="2"
-            android:maxLines="2"
-            android:textColor="#000"
-            android:textAlignment="textStart"
-            android:textSize="15sp" />
 
         <View
             android:id="@+id/divider4"
@@ -336,32 +322,69 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="290dp"
+            android:layout_marginTop="220dp"
             android:background="?android:attr/listDivider" />
 
+            <TextView
+                android:id="@+id/sup_pickdropBy"
+                android:layout_width="370dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="230dp"
+                android:layout_marginEnd="4dp"
+                android:padding="3dp"
+                android:textAlignment="textStart"
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:textSize="15sp" />
 
-      <!--  <TextView
-            android:id="@+id/calltxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="170dp"
-            android:padding="3dp"
-            android:textColor="#000" />
+            <TextView
+                android:id="@+id/sup_pickdropTime"
+                android:layout_width="370dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="260dp"
+                android:layout_marginEnd="4dp"
+                android:padding="3dp"
+                android:textAlignment="textStart"
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/m_phn_num_without_status"
-            android:layout_width="333dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/calltxt"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_toEndOf="@+id/calltxt"
-            android:textAlignment="textStart"
-            android:textColor="@color/blue_link"
-            android:textSize="15sp" />-->
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="295dp"
+                android:background="?android:attr/listDivider" />
+
+        <!--  <TextView
+              android:id="@+id/calltxt"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentTop="true"
+              android:layout_marginStart="0dp"
+              android:layout_marginTop="170dp"
+              android:padding="3dp"
+              android:textColor="#000" />
+
+          <TextView
+              android:id="@+id/m_phn_num_without_status"
+              android:layout_width="333dp"
+              android:layout_height="wrap_content"
+              android:layout_alignBaseline="@+id/calltxt"
+              android:layout_alignParentEnd="true"
+              android:layout_marginTop="0dp"
+              android:layout_marginEnd="0dp"
+              android:layout_toEndOf="@+id/calltxt"
+              android:textAlignment="textStart"
+              android:textColor="@color/blue_link"
+              android:textSize="15sp" />-->
 
         <!--android:onClick="callMerchant"-->
 
@@ -372,9 +395,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="310dp"
+            android:layout_marginTop="305dp"
             android:text="Package Price: "
             android:textColor="#000"
+            style="@style/boldStyle"
             android:textSize="15sp" />
 
         <TextView
@@ -391,18 +415,32 @@
             android:textSize="15sp"
             style="@style/boldStyle"/>
 
+        <TextView
+            android:id="@+id/package_brief_without_status"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="330dp"
+            android:layout_marginEnd="6dp"
+            android:lines="2"
+            android:maxLines="2"
+            android:textColor="#000"
+            android:textAlignment="textStart"
+            android:textSize="15sp" />
+
+
         <!--<Button-->
-            <!--android:id="@+id/btn_status_without_status"-->
-            <!--android:layout_width="105dp"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:layout_below="@+id/price_txt"-->
-            <!--android:layout_marginLeft="180dp"-->
-            <!--android:layout_marginTop="58dp"-->
-            <!--android:background="@drawable/buttonstyle2"-->
-            <!--android:padding="10dp"-->
-            <!--android:text="Action"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:textSize="14sp" />-->
+        <!--android:id="@+id/btn_status_without_status"-->
+        <!--android:layout_width="105dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_below="@+id/price_txt"-->
+        <!--android:layout_marginLeft="180dp"-->
+        <!--android:layout_marginTop="58dp"-->
+        <!--android:background="@drawable/buttonstyle2"-->
+        <!--android:padding="10dp"-->
+        <!--android:text="Action"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="14sp" />-->
 
         <!--<Button-->
         <!--android:id="@+id/btn_scan"-->

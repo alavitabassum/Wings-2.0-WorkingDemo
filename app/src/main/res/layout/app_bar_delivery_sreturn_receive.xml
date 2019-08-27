@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturn.DeliverySReturnReceive">
+    tools:context=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

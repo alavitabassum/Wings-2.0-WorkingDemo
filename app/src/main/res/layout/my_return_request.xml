@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_delivery_returnr_request_list"
     android:layout_width="match_parent"
-    android:layout_height="390dp"
+    android:layout_height="405dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
@@ -333,7 +333,7 @@
             android:layout_marginTop="295dp"
             android:background="?android:attr/listDivider" />
 
-        <View
+      <!--  <View
             android:id="@+id/divider5"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -341,7 +341,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="365dp"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider" />-->
 
         <TextView
             android:id="@+id/calltxt"

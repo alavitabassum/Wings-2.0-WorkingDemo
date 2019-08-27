@@ -24,6 +24,12 @@ import com.android.volley.RequestQueue;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliverySummary_Model;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
@@ -38,8 +44,8 @@ import java.util.List;
 public class DeliveryListFragment extends Fragment {
 
     BarcodeDbHelper db;
-    private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery,Dp2Reciever,CashReceive,ReturnReceive;
-    private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
+    private CardView sup_unpicked_item,sup_without_Status,sup_on_Hold,sup_returnReqst,sup_return_List,sup_cashCollection,sup_quickDelivery,sup_Dp2Reciever,sup_CashReceive,sup_ReturnReceive;
+    private TextView sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count;
     private RequestQueue requestQueue;
 
     private ProgressDialog progress;
@@ -66,15 +72,70 @@ public class DeliveryListFragment extends Fragment {
         db = new BarcodeDbHelper(getActivity().getApplicationContext());
         db.getWritableDatabase();
 
-        withoutStatus_count = (TextView)viewGroup.findViewById(R.id.WithoutStatusCount);
-        onHold_count = (TextView)viewGroup.findViewById(R.id.OnHoldCount);
-        returnReqst_count = (TextView)viewGroup.findViewById(R.id.ReturnCount);
-        cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
-        returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
+        sup_withoutStatus_count = (TextView)viewGroup.findViewById(R.id.WithoutStatusCount);
+        sup_onHold_count = (TextView)viewGroup.findViewById(R.id.OnHoldCount);
+        sup_returnReqst_count = (TextView)viewGroup.findViewById(R.id.ReturnCount);
+        sup_cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
+        sup_returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
+
         ReturnReceive = (CardView)viewGroup.findViewById(R.id.ReturnReceived_id);
         CashReceive = (CardView)viewGroup.findViewById(R.id.CashReceived_id);
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        sup_unpicked_item = (CardView)viewGroup.findViewById(R.id.sup_unpicked_id);
+        sup_without_Status = (CardView)viewGroup.findViewById(R.id.sup_withoutStatus_id);
+        sup_on_Hold = (CardView)viewGroup.findViewById(R.id.sup_onHold_id);
+        sup_returnReqst = (CardView)viewGroup.findViewById(R.id.sup_returnRequest_id);
+        sup_return_List = (CardView)viewGroup.findViewById(R.id.sup_returnList_id);
+        sup_cashCollection = (CardView)viewGroup.findViewById(R.id.sup_cash_id);
+        // sup_quickDelivery = (CardView)getView().findViewById(R.id.sup_quickDelivery_id);
+
+        sup_unpicked_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupUnpicked.class);
+                startActivity(intent);
+            }
+        });
+
+        sup_without_Status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupWithoutStatus.class);
+                startActivity(intent);
+            }
+        });
+        sup_on_Hold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupOnhold.class);
+                startActivity(intent);
+            }
+        });
+        sup_returnReqst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupPreRet.class);
+                startActivity(intent);
+            }
+        });
+
+        sup_cashCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupCash.class);
+                startActivity(intent);
+            }
+        });
+
+        sup_return_List.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupReturnList.class);
+                startActivity(intent);
+            }
+        });
 
         ReturnReceive.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,8 +167,6 @@ public class DeliveryListFragment extends Fragment {
 
         return viewGroup;
     }
-
-
 
 
     @Override

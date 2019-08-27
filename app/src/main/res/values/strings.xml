@@ -212,14 +212,20 @@
     <string name="title_activity_delivery_home">DeliveryHome</string>
     <string name="title_activity_delivery_add_new_expense">Add New Expense</string>
     <string name="title_activity_delivery_tablayout">Home</string>
-    <string name="title_activity_delivery_super_visor_tablayout">DeliverySuperVisorTablayout
+    <string name="title_activity_delivery_super_visor_tablayout">Home
     </string>
     <string name="title_activity_delivery_sdp2">DeliverySDp2</string>
     <string name="title_activity_delivery_scash_receive">DeliverySCashReceive</string>
     <string name="title_activity_delivery_sreturn_receive">DeliverySReturnReceive</string>
     <string name="title_activity_delivery_courier_details">DeliveryCourierDetails</string>
+    <string name="title_activity_delivery_sup_unpicked">Unpicked</string>
+    <string name="title_activity_delivery_sup_without_status">Without Status</string>
+    <string name="title_activity_delivery_sup_onhold">DeliverySupOnhold</string>
+    <string name="title_activity_delivery_super_visor_pre_ret">DeliverySuperVisorPreRet</string>
+    <string name="title_activity_delivery_sup_pre_ret">DeliverySupPreRet</string>
+    <string name="title_activity_delivery_sup_return_list">DeliverySupReturnList</string>
+    <string name="title_activity_delivery_sup_cash">DeliverySupCash</string>
     <string name="title_activity_return_receive_supervisor">ReturnReceiveSupervisor</string>
-    <string name="title_activity_delivery_cash_receive_supervisor">DeliveryCashReceiveSupervisor
-    </string>
+    <string name="title_activity_delivery_cash_receive_supervisor">DeliveryCashReceiveSupervisor</string>
 
 </resources>
