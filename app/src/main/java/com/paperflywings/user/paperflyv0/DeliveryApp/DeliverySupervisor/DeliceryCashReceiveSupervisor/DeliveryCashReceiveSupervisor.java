@@ -182,9 +182,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                                     final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
                                     final Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, DeliveryCashReceiveSupervisor.class);
                                     android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(DeliveryCashReceiveSupervisor.this);
-                                    View mView = getLayoutInflater().inflate(R.layout.delivery_bank_orders_by_supervisor, null);
+                                    View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
                                     final TextView tv = mView.findViewById(R.id.tv);
-                                    final TextView  orderIds = mView.findViewById(R.id.error_msg);
+                                    final TextView  orderIds = mView.findViewById(R.id.cash_amount);
 
                                     for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
                                         if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelectedCts()) {
