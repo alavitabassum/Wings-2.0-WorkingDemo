@@ -23,6 +23,19 @@ public class DeliveryCTSModel {
     private String cashType;
     private String CashTime;
     private String CashBy;
+    private boolean isSelected;
+
+    public DeliveryCTSModel() {
+
+    }
+
+    public boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public int getSql_primary_id() {
         return sql_primary_id;

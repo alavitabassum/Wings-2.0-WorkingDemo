@@ -30,6 +30,8 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Delivery
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -76,13 +78,18 @@ public class DeliveryListFragment extends Fragment {
         sup_cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
         sup_returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
 
+        sup_ReturnReceive = (CardView)viewGroup.findViewById(R.id.sup_returnReceived_id);
+        sup_CashReceive = (CardView)viewGroup.findViewById(R.id.sup_cashReceived_id);
+
+        getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         sup_unpicked_item = (CardView)viewGroup.findViewById(R.id.sup_unpicked_id);
         sup_without_Status = (CardView)viewGroup.findViewById(R.id.sup_withoutStatus_id);
         sup_on_Hold = (CardView)viewGroup.findViewById(R.id.sup_onHold_id);
         sup_returnReqst = (CardView)viewGroup.findViewById(R.id.sup_returnRequest_id);
         sup_return_List = (CardView)viewGroup.findViewById(R.id.sup_returnList_id);
         sup_cashCollection = (CardView)viewGroup.findViewById(R.id.sup_cash_id);
-       // sup_quickDelivery = (CardView)getView().findViewById(R.id.sup_quickDelivery_id);
+        // sup_quickDelivery = (CardView)getView().findViewById(R.id.sup_quickDelivery_id);
 
         sup_unpicked_item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +137,22 @@ public class DeliveryListFragment extends Fragment {
             }
         });
 
-        getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        sup_ReturnReceive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), ReturnReceiveSupervisor.class);
+                startActivity(intent);
+            }
+        });
+
+        sup_CashReceive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCashReceiveSupervisor.class);
+                startActivity(intent);
+            }
+        });
+
 
         if(nInfo!= null && nInfo.isConnected())
         {

@@ -1718,6 +1718,28 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return count;
     }
 
+    public int getTotalCash(String flagReq) {
+
+        int sum = 0;
+        db = this.getReadableDatabase();
+        String sumQuery = String.format("SELECT SUM(" + CASH_AMT + ") as Total FROM " + TABLE_NAME_CTS + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
+        Cursor cursor = db.rawQuery(sumQuery, null);
+        if (cursor.moveToFirst())
+            sum = cursor.getInt(cursor.getColumnIndex("Total"));
+        return sum;
+    }
+
+    /* public int getPickedSumByOrderId(String sql_primary_id, String order_id) {
+
+        int sum = 0;
+        db = this.getReadableDatabase();
+        String sumQuery = String.format("SELECT SUM(" + PICKED_QTY + ") as Total FROM " + TABLE_NAME_2 + " WHERE " + SQL_PRIMARY_ID + " = '" + sql_primary_id + "'AND " + ORDER_ID + " = '" + order_id + "'");
+        Cursor cursor = db.rawQuery(sumQuery, null);
+        if (cursor.moveToFirst())
+            sum = cursor.getInt(cursor.getColumnIndex("Total"));
+        return sum;
+    }*/
+
     public int getReturnCount(String flagReq, String rts) {
         String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_RTS + " WHERE " + FLAG_REQ + " = '" + flagReq + "' AND " + RTS + " <> '" + rts + "'";
         SQLiteDatabase db = this.getReadableDatabase();
@@ -1925,5 +1947,6 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+
 }
 

@@ -1,30 +1,16 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,7 +21,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,31 +37,23 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCRS.DeliveryCashRS;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
-import com.paperflywings.user.paperflyv0.DeliveryApp.LocationService.GPStracker;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class DeliveryCTS extends AppCompatActivity
@@ -84,37 +61,30 @@ public class DeliveryCTS extends AppCompatActivity
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private TextView CashCount_text;
+    private TextView CashCount_text,totalCollection, btnselect, btndeselect;
     private DeliveryCTSAdapter DeliveryCTSAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
-
-    String lats,lngs,addrs,fullAddress;
-    String getlats,getlngs,getaddrs;
+    private Button btnnext, delivery_cts_recieved;
     ProgressDialog progressDialog;
-    LocationManager locationManager;
-    Geocoder geocoder;
-    List<Address> addresses;
 
-    private static final int REQUEST_LOCATION = 1;
+    String item = "";
 
-    private Button delivery_cts_recieved;
+    public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorCTSinBatch.php";
 
-    public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
+
     public static final String CTS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
-    public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
+    //public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
 
-    private List<DeliveryCTSModel> list;
-    public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    public static final int NAME_SYNCED_WITH_SERVER = 1;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
+    private ArrayList<DeliveryCTSModel> list;
+    //public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
+    //public static final int NAME_SYNCED_WITH_SERVER = 1;
 
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
+    //public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
     //Broadcast receiver to know the sync status
-    private BroadcastReceiver broadcastReceiver;
-
+    //private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +93,11 @@ public class DeliveryCTS extends AppCompatActivity
         db.getWritableDatabase();
 
         setContentView(R.layout.activity_delivery_cts);
+        btnselect = (TextView) findViewById(R.id.select);
+        btndeselect = (TextView) findViewById(R.id.deselect);
+        btnnext = (Button) findViewById(R.id.next);
         CashCount_text = (TextView)findViewById(R.id.CTS_id_);
+        totalCollection = (TextView)findViewById(R.id.CashCollection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view);
@@ -132,7 +106,6 @@ public class DeliveryCTS extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-
 
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -147,40 +120,7 @@ public class DeliveryCTS extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
-        // location enabled
-        isLocationEnabled();
-        if(!isLocationEnabled()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-            builder.setTitle("Turn on location!")
-                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
-                    .setPositiveButton("Settings",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-
-        int currentApiVersion = Build.VERSION.SDK_INT;
-
-        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
-        {
-            if(checkPermission())
-            {
-                // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                requestPermission();
-            }
-        }
-
-        if(nInfo!= null && nInfo.isConnected())
+         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
         }
@@ -189,11 +129,6 @@ public class DeliveryCTS extends AppCompatActivity
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        };
 
         delivery_cts_recieved.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,25 +153,6 @@ public class DeliveryCTS extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
     }
-
-    // Check for camera permission
-    private boolean checkPermission()
-    {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    // Request for camera permission
-    private void requestPermission()
-    {
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
-    }
-
-    protected boolean isLocationEnabled(){
-        String le = Context.LOCATION_SERVICE;
-        locationManager = (LocationManager) getSystemService(le);
-        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
 
     private void getData(String user){
         try{
@@ -314,7 +230,9 @@ public class DeliveryCTS extends AppCompatActivity
             e.printStackTrace();
         }
     }
+
     private void loadRecyclerView (final String user){
+        list = getModel(false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, CTS_LIST,
                 new Response.Listener<String>()
                 {
@@ -427,7 +345,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getInt("slaMiss"),
                                         "cts"
-                                        , NAME_SYNCED_WITH_SERVER );
+                                        , 1);
                                 list.add(withoutStatus_model);
                             }
 
@@ -436,9 +354,84 @@ public class DeliveryCTS extends AppCompatActivity
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
 
+                            btnselect.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    list = getModel(true);
+                                    DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
+                                    recyclerView_pul.setAdapter(DeliveryCTSAdapter);
+                                }
+                            });
+                            btndeselect.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    list = getModel(false);
+                                    DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
+                                    recyclerView_pul.setAdapter(DeliveryCTSAdapter);
+                                }
+                            });
+                            btnnext.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    int count=0;
+                                    SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                                    final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+                                    final Intent intent = new Intent(DeliveryCTS.this, DeliveryCTS.class);
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCTS.this);
+                                    View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
+                                    final TextView tv = mView.findViewById(R.id.tv);
+                                    final TextView  orderIds = mView.findViewById(R.id.cash_amount);
+
+                                    for (int i = 0; i < DeliveryCTSAdapter.imageModelArrayList.size(); i++){
+                                        if(DeliveryCTSAdapter.imageModelArrayList.get(i).getSelected()) {
+                                            count++;
+                                            item = item + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getOrderid();
+                                        }
+                                        tv.setText(count + " Orders have been selected for cash.");
+                                    }
+                                    //orderIds.setText(item);
+                                    count = 0;
+
+                                    alertDialogBuilder.setPositiveButton("Submit",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                                }
+                                            });
+
+                                    alertDialogBuilder.setNegativeButton("Cancel",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    item = "";
+                                                }
+                                            });
+                                    alertDialogBuilder.setCancelable(false);
+                                    alertDialogBuilder.setView(mView);
+
+                                    final AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+
+                                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(tv.getText().equals("0 Orders have been selected for cash.")){
+                                                orderIds.setText("Please Select Orders First!!");
+                                            } else {
+                                                UpdateBankInfo(item, username);
+                                                alertDialog.dismiss();
+                                                startActivity(intent);
+                                                //loadRecyclerView(username);
+                                                item = "";
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
                             String str = String.valueOf(db.getCashCount("cts", "Y"));
                             CashCount_text.setText(str);
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -482,7 +475,6 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -495,7 +487,6 @@ public class DeliveryCTS extends AppCompatActivity
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 DeliveryCTSAdapter.getFilter().filter(newText);
@@ -524,7 +515,6 @@ public class DeliveryCTS extends AppCompatActivity
         if (id == R.id.action_search) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -549,7 +539,7 @@ public class DeliveryCTS extends AppCompatActivity
                     DeliveryWithoutStatus.class);
             startActivity(homeIntent);
             // Handle the camera action
-        }  else if (id == R.id.nav_on_hold) {
+        } else if (id == R.id.nav_on_hold) {
             Intent homeIntent = new Intent(DeliveryCTS.this,
                     DeliveryOnHold.class);
             startActivity(homeIntent);
@@ -568,24 +558,17 @@ public class DeliveryCTS extends AppCompatActivity
             Intent expenseIntent = new Intent(DeliveryCTS.this,
                     DeliveryAddNewExpense.class);
             startActivity(expenseIntent);
-        }
-        else if (id == R.id.nav_cash) {
+        } else if (id == R.id.nav_cash) {
             Intent homeIntent = new Intent(DeliveryCTS.this,
                     DeliveryCTS.class);
             startActivity(homeIntent);
-            // Handle the camera action
-        }
-        else if (id == R.id.nav_logout) {
-            //Creating an alert dialog to confirm logout
+        } else if (id == R.id.nav_logout) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
             alertDialogBuilder.setPositiveButton("Yes",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-
-                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                            db.deleteAssignedList(sqLiteDatabase);
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -618,7 +601,6 @@ public class DeliveryCTS extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout_CTS);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -627,7 +609,7 @@ public class DeliveryCTS extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
+        //unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -638,6 +620,7 @@ public class DeliveryCTS extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         list.clear();
+
         DeliveryCTSAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
@@ -648,11 +631,9 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-    @Override
+   /* @Override
     public void onItemClick_view(View view2, int position2) {
-
         final DeliveryCTSModel clickedITem = list.get(position2);
-
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
@@ -669,37 +650,25 @@ public class DeliveryCTS extends AppCompatActivity
         final String sql_primary_id = String.valueOf(clickedITem.getSql_primary_id());
 
         CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "ctsOk");
-        try {
-            GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
-        } catch (Exception e) {
-            //Toast.makeText(DeliveryCTS.this, "No internet connection!", Toast.LENGTH_SHORT).show();
-        }
+            try {
+                GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
+            } catch (Exception e) {
+                //Toast.makeText(DeliveryCTS.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+            }
+        }*/
 
-        }
+    private void UpdateBankInfo(final String item,final String CTSBy) {
 
-    private void CashToS(final String CTS,final String CTSTime, final String CTSBy, final String barcode, final String orderid, final String flagReq) {
-        String str = String.valueOf(db.getCashCount("cts", "Y"));
-        CashCount_text.setText(str);
-        final Intent withoutstatuscount = new Intent(DeliveryCTS.this,
-                DeliveryCTS.class);
-        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid, flagReq, NAME_SYNCED_WITH_SERVER);
-                                Toast toast= Toast.makeText(DeliveryCTS.this,
-                                        "Successful", Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-                                toast.show();
-                                startActivity(withoutstatuscount);
+                                Toast.makeText(DeliveryCTS.this, "Successful", Toast.LENGTH_SHORT).show();
                             } else {
-                                //if there is some error
-                                //saving the name to sqlite with status unsynced
-                                db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+                                Toast.makeText(DeliveryCTS.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -709,19 +678,16 @@ public class DeliveryCTS extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cts_status(CTS,CTSTime,CTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
+                        Toast.makeText(DeliveryCTS.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("CTS", CTS);
-                params.put("CTSTime", CTSTime);
+                params.put("orderid", item);
                 params.put("CTSBy", CTSBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
+
                 return params;
             }
         };
@@ -735,92 +701,7 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-
-    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
-//        ActivityCompat.requestPermissions(DeliveryCTS.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
-        geocoder = new Geocoder(this, Locale.getDefault());
-
-        GPStracker g = new GPStracker(getApplicationContext());
-        Location LocationGps = g.getLocation();
-
-        if (LocationGps !=null)
-        {
-            double lati=LocationGps.getLatitude();
-            double longi=LocationGps.getLongitude();
-
-            lats=String.valueOf(lati);
-            lngs=String.valueOf(longi);
-
-            try {
-
-                addresses = geocoder.getFromLocation(lati,longi,1);
-                String addres = addresses.get(0).getAddressLine(0);
-                String area = addresses.get(0).getLocality();
-                String city = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalcode = addresses.get(0).getPostalCode();
-
-                fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            getlats = lats.trim();
-            getlngs = lngs.trim();
-            getaddrs = fullAddress.trim();
-            lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
-        }
-        else
-        {
-             Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String ServerResponse) {
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                      }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-
-                // Creating Map String Params.
-                Map<String, String> params = new HashMap<String, String>();
-
-                // Adding All values to Params.
-                params.put("sqlPrimaryKey", sql_primary_id);
-                params.put("actionType", action_type);
-                params.put("actionFor", action_for);
-                params.put("actionBy", username);
-                params.put("actionTime",currentDateTime);
-                params.put("latitude", lats);
-                params.put("longitude", longs);
-                params.put("Address", address);
-
-                return params;
-            }
-
-        };
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryCTS.this);
-            requestQueue.add(stringRequest);
-        } catch (Exception e) {
-//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
-        }
-    }
-
-
-
-
-    @Override
+    /*@Override
     public void onItemClick_call(View view4, int position4) {
         Intent callIntent =new Intent(Intent.ACTION_CALL);
         String phoneNumber = list.get(position4).getCustphone();
@@ -834,6 +715,42 @@ public class DeliveryCTS extends AppCompatActivity
             return;
         }
         view4.getContext().startActivity(callIntent);
+    }*/
+
+    private ArrayList<DeliveryCTSModel> getModel(boolean isSelect){
+        ArrayList<DeliveryCTSModel> listOfOrders = new ArrayList<>();
+        if(isSelect == true){
+            String totalCash = String.valueOf(db.getTotalCash("cts"));
+            totalCollection.setText(totalCash+" Taka");
+
+            for(int i = 0; i < list.size(); i++){
+                DeliveryCTSModel model = new DeliveryCTSModel();
+
+                model.setSelected(isSelect);
+                model.setOrderid(list.get(i).getOrderid());
+                model.setMerOrderRef(list.get(i).getMerOrderRef());
+                model.setCashAmt(list.get(i).getCashAmt());
+                model.setPackagePrice(list.get(i).getPackagePrice());
+
+                listOfOrders.add(model);
+            }
+
+        } else if(isSelect == false){
+            totalCollection.setText("0 Taka");
+
+            for(int i = 0; i < list.size(); i++){
+                DeliveryCTSModel model = new DeliveryCTSModel();
+
+                model.setSelected(isSelect);
+                model.setOrderid(list.get(i).getOrderid());
+                model.setMerOrderRef(list.get(i).getMerOrderRef());
+                model.setCashAmt(list.get(i).getCashAmt());
+                model.setPackagePrice(list.get(i).getPackagePrice());
+
+                listOfOrders.add(model);
+            }
+        }
+        return listOfOrders;
     }
 
 }
