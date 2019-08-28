@@ -191,9 +191,6 @@ public class DeliveryCashRS extends AppCompatActivity
 
                             }
 
-
-
-
                             /*DeliveryCashRSAdapter = new DeliveryCashRSAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(DeliveryCashRSAdapter);*/
 
