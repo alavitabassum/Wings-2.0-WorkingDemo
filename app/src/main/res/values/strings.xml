@@ -220,12 +220,16 @@
     <string name="title_activity_delivery_courier_details">DeliveryCourierDetails</string>
     <string name="title_activity_delivery_sup_unpicked">Unpicked</string>
     <string name="title_activity_delivery_sup_without_status">Without Status</string>
-    <string name="title_activity_delivery_sup_onhold">DeliverySupOnhold</string>
-    <string name="title_activity_delivery_super_visor_pre_ret">DeliverySuperVisorPreRet</string>
-    <string name="title_activity_delivery_sup_pre_ret">DeliverySupPreRet</string>
-    <string name="title_activity_delivery_sup_return_list">DeliverySupReturnList</string>
-    <string name="title_activity_delivery_sup_cash">DeliverySupCash</string>
-    <string name="title_activity_return_receive_supervisor">ReturnReceiveSupervisor</string>
-    <string name="title_activity_delivery_cash_receive_supervisor">DeliveryCashReceiveSupervisor</string>
+    <string name="title_activity_delivery_sup_onhold">Onhold</string>
+    <string name="title_activity_delivery_super_visor_pre_ret">Return Request</string>
+    <string name="title_activity_delivery_sup_pre_ret">Return Request</string>
+    <string name="title_activity_delivery_sup_return_list">Return List</string>
+    <string name="title_activity_delivery_sup_cash">Cash</string>
+
+    <string name="title_activity_delivery_cash_receive_supervisor">Cash Recieve</string>
+    <string name="title_activity_return_receive_supervisor">Supervisor Recieve</string>
+    <string name="title_activity_delivery_sup_bank_report">DeliverySupBankReport</string>
+    <string name="title_activity_delivery_re_attempt">DeliveryReAttempt</string>
+
 
 </resources>

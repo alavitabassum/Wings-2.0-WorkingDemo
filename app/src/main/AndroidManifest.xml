@@ -37,29 +37,43 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerReAttempt.DeliveryReAttempt"
+            android:label="@string/title_activity_delivery_re_attempt"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReport"
+            android:label="@string/title_activity_delivery_sup_bank_report"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash"
             android:label="@string/title_activity_delivery_sup_cash"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList"
             android:label="@string/title_activity_delivery_sup_return_list"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet"
             android:label="@string/title_activity_delivery_sup_pre_ret"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold"
             android:label="@string/title_activity_delivery_sup_onhold"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus"
             android:label="@string/title_activity_delivery_sup_without_status"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked"
             android:label="@string/title_activity_delivery_sup_unpicked"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"

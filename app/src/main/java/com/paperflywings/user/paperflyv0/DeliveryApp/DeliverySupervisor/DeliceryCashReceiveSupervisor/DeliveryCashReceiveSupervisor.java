@@ -104,6 +104,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cash_receive_list);
         recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+        layoutManager_pul = new LinearLayoutManager(this);
+        recyclerView_pul.setLayoutManager(layoutManager_pul);
+
         list = new ArrayList<DeliveryCashReceiveSupervisorModel>();
         eList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
         bankList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
@@ -115,8 +118,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         final NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
-        layoutManager_pul = new LinearLayoutManager(this);
-        recyclerView_pul.setLayoutManager(layoutManager_pul);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);

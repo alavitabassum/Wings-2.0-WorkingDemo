@@ -75,6 +75,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String CASH = "cash";
     private static final String RETURNREQUEST = "return_request";
     private static final String RETURNLIST = "return_list";
+    private static final String REATTEMPT = "reAttempt";
     public static final String DROP_POINT_EMP = "dropPointEmp";
     public static final String DROP_ASSIGN_TIME = "dropAssignTime";
     public static final String DROP_ASSIGN_BY = "dropAssignBy";
@@ -220,6 +221,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "cash TEXT, "
                 + "return_request TEXT, "
                 + "return_list TEXT, "
+                + "reAttempt TEXT, "
                 + "status INT, "
                 + "unique(id))";
 
@@ -932,7 +934,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     //////// Delivery Officer Database functionalities ///////
 
     // insert counts in delivery summary
-    public void insert_delivery_summary_count(String username, String unpicked, String without_status, String onhold, String cash, String return_request, String return_list, int status) {
+    public void insert_delivery_summary_count(String username, String unpicked, String without_status, String onhold, String cash, String return_request, String return_list,String reAttempt, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -943,6 +945,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(CASH, cash);
         values.put(RETURNREQUEST, return_request);
         values.put(RETURNLIST, return_list);
+        values.put(REATTEMPT, reAttempt);
         values.put(STATUS, status);
 
         db.insert(TABLE_NAME_7, null, values);
@@ -951,7 +954,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     // get the delivery summary
     public Cursor get_delivery_summary(SQLiteDatabase db, String user) {
-        String[] columns = {USERNAME, UNPICKED, WITHOUTSTATUS, ONHOLD, CASH, RETURNREQUEST, RETURNLIST};
+        String[] columns = {USERNAME, UNPICKED, WITHOUTSTATUS, ONHOLD, CASH, RETURNREQUEST, RETURNLIST ,REATTEMPT};
 
         String whereClause = USERNAME + "=?";
         String[] whereArgs = new String[]{
