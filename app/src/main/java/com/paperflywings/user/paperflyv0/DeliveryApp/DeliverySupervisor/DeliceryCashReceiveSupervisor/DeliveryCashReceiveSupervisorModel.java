@@ -8,8 +8,62 @@ public class DeliveryCashReceiveSupervisorModel {
     private String ctsTime;
     private String packagePrice;
     private String collection;
+    private String pointCode;
+    private String bankName;
+    private String empCode;
+    private String empName;
+    private Integer bankId;
     private Integer slaMiss;
+    private Integer empId;
     private boolean isSelectedCts;
+
+    public String getPointCode() {
+        return pointCode;
+    }
+
+    public void setPointCode(String pointCode) {
+        this.pointCode = pointCode;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getEmpCode() {
+        return empCode;
+    }
+
+    public void setEmpCode(String empCode) {
+        this.empCode = empCode;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public Integer getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(Integer bankId) {
+        this.bankId = bankId;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
 
     public DeliveryCashReceiveSupervisorModel(String orderid, String merOrderRef, String cts, String ctsTime, String ctsBy, int slaMiss, String packagePrice, String collection) {
         this.orderid = orderid;
@@ -24,6 +78,21 @@ public class DeliveryCashReceiveSupervisorModel {
 
     public DeliveryCashReceiveSupervisorModel() {
 
+    }
+
+    public DeliveryCashReceiveSupervisorModel(String pointCode) {
+        this.pointCode = pointCode;
+    }
+
+    public DeliveryCashReceiveSupervisorModel(Integer bankId, String bankName) {
+        this.bankId = bankId;
+        this.bankName = bankName;
+    }
+
+    public DeliveryCashReceiveSupervisorModel(Integer empId, String empCode, String empName) {
+        this.empId = empId;
+        this.empCode = empCode;
+        this.empName = empName;
     }
 
     public String getPackagePrice() {

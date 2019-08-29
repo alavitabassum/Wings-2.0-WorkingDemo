@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:foreground="?selectableItemBackground"
+    android:padding="50dp"
+    app:cardBackgroundColor="#fff"
+    tools:context=".DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+        android:id="@+id/create_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/pfColor"/>
+
+    <Button
+        android:id="@+id/select_deposite_date"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/create_tv"
+        android:autofillHints=""
+        android:ems="15"
+        android:inputType="text"
+        android:textSize="15sp"
+        android:text="Select date"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/employee_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/select_deposite_date"
+        android:layout_alignBaseline="@+id/employee_name"
+        android:layout_toEndOf="@+id/employee_name"/>
+
+    <TextView
+        android:id="@+id/employee_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/select_deposite_date"
+        android:text="Employee"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+
+
+    <Spinner
+        android:id="@+id/bank_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/employee_list"
+        android:layout_alignBaseline="@+id/bank_name_title"
+        android:layout_toEndOf="@+id/bank_name_title"/>
+
+    <TextView
+        android:id="@+id/bank_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/employee_name"
+        android:text="Bank Name"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/point_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bank_name_title"
+        android:layout_alignBaseline="@+id/point_code_title"
+        android:layout_toEndOf="@+id/point_code_title"/>
+
+    <TextView
+        android:id="@+id/point_code_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/bank_name"
+        android:text="Point Code"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/deposite_slip_number"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/point_code"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/light_grey"
+        android:hint="Enter Deposite Slip Number"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="5dp"
+        android:textAlignment="textStart"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/bank_deposite_comment"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/deposite_slip_number"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/light_grey"
+        android:hint="Comment"
+        android:lines="1"
+        android:maxLines="2"
+        android:padding="5dp"
+        android:textAlignment="textStart"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:text="Upload Image"
+        android:id="@+id/start"
+        android:layout_below="@id/bank_deposite_comment"/>
+
+    <TextView
+        android:id="@+id/error_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingBottom="10dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_below="@id/start"
+        android:textColor="@color/red"/>
+
+
+
+</RelativeLayout>

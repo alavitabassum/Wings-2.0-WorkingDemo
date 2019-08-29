@@ -24,6 +24,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_RETURN_REASONS = "Insert_Return_Reason";
     private static final String TABLE_NAME_EXPENSE_PURPOSE = "Insert_Expense_Purpose";
     private static final String TABLE_NAME_EMP_POINTCODE = "EmpPointCode";
+    private static final String TABLE_NAME_DELIVERY_EMP_LIST = "Table_delivery_employee_list";
+    private static final String TABLE_NAME_BANK_DETAILS = "Table_bank_details";
+
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
     private static final String MERCHANT_ID = "merchantId";
@@ -57,6 +60,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String USERNAME = "username";
     private static final String COMMENT = "comment";
 
+    // Bank details save
+    private static final String BANK_ID = "bankId";
+    private static final String BANK_NAME = "bankName";
+    private static final String BANK_CREATION_DATE = "creationDate";
+    private static final String BANK_CREATE_BY = "createdBy";
+    private static final String BANK_UPDATE_DATE = "updateDate";
+    private static final String BANK_UPDATE_BY = "updateBy";
 
     //delivery landing
     private static final String UNPICKED = "unpicked";
@@ -86,6 +96,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String PRODUCT_BRIEF = "productBrief";
     public static final String DELIVERY_TIME = "deliveryTime";
     public static final String EMPLOYEE_CODE = "empCode";
+    public static final String EMPLOYEE_NAME = "empName";
+    public static final String EMPLOYEE_ID = "empId";
     public static final String CASH_ACTION = "Cash";
     public static final String CASH_TYPE= "cashType";
     public static final String CASH_TIME = "CashTime";
@@ -122,7 +134,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public static final String REASON_ID = "reasonID";
     public static final String RETURN_REASON = "reason";
     public static final String RET_REMARKS = "retRemarks";
-    public static final String EMP_POINTCODE = "empPointCode";
+    public static final String EMP_POINTCODE = "pointCode";
     public static final String PURPOSE_ID = "purposeId";
     public static final String PURPOSE_REASON = "purpose";
 
@@ -426,10 +438,26 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
         String CREATION_TABLE_EMP_POINTCODE = "CREATE TABLE EmpPointCode ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "username TEXT, "
+                + "pointCode TEXT, "
+                + "unique(pointCode))";
+
+        String CREATION_TABLE_DELIVERY_EMP_LIST = "CREATE TABLE Table_delivery_employee_list ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "empId INTEGER, "
                 + "empCode TEXT, "
-                + "empPointCode TEXT, "
-                + "unique(empPointCode))";
+                + "empName TEXT, "
+                + "unique(empId,empCode,empName))";
+
+        String CREATION_TABLE_NAME_BANK_DETAILS = "CREATE TABLE Table_bank_details ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "bankId INTEGER, "
+                + "bankName TEXT, "
+                + "creationDate TEXT, "
+                + "createdBy TEXT, "
+                + "updateDate TEXT, "
+                + "updateBy TEXT, "
+                + "unique(bankId))";
+
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -445,7 +473,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE_RETURN_REQUEST);
         db.execSQL(CREATION_TABLE_EMP_POINTCODE);
         db.execSQL(CREATION_TABLE_EXPENSE_PURPOSE);
-
+        db.execSQL(CREATION_TABLE_DELIVERY_EMP_LIST);
+        db.execSQL(CREATION_TABLE_NAME_BANK_DETAILS);
     }
 
     @Override
@@ -464,6 +493,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RETURN_REASONS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EMP_POINTCODE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EXPENSE_PURPOSE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_DELIVERY_EMP_LIST);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_BANK_DETAILS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EMP_POINTCODE);
         this.onCreate(db);
     }
 
@@ -1675,6 +1707,86 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_EXPENSE_PURPOSE);
     }
 
+    public void addEmployeeList(int empId, String empCode, String empName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(EMPLOYEE_ID, empId);
+        values.put(EMPLOYEE_CODE, empCode);
+        values.put(EMPLOYEE_NAME, empName);
+        db.insert(TABLE_NAME_DELIVERY_EMP_LIST, null, values);
+        db.close();
+    }
+
+    public void deleteDeliveryEmpList(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_DELIVERY_EMP_LIST);
+    }
+
+    public Cursor get_employee_list(SQLiteDatabase db) {
+        String[] columns = {EMPLOYEE_ID,EMPLOYEE_CODE,EMPLOYEE_NAME};
+        return db.query(TABLE_NAME_DELIVERY_EMP_LIST, columns, null, null, null, null, null);
+    }
+
+    public String getSelectedEmpCode(String empName){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT " +  EMPLOYEE_CODE + " FROM " + TABLE_NAME_DELIVERY_EMP_LIST + " WHERE " + EMPLOYEE_NAME + " = '" + empName + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex(EMPLOYEE_CODE));
+            return selection;
+        }
+        return null;
+    }
+
+    public void addBankDetails(int bankId, String bankName, String creationDate, String createdBy, String updateDate, String updateBy) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(BANK_ID, bankId);
+        values.put(BANK_NAME, bankName);
+        values.put(BANK_CREATION_DATE, creationDate);
+        values.put(BANK_CREATE_BY, createdBy);
+        values.put(BANK_UPDATE_DATE, updateDate);
+        values.put(BANK_UPDATE_BY, updateBy);
+        db.insert(TABLE_NAME_BANK_DETAILS, null, values);
+        db.close();
+    }
+
+    public void deleteBankDetails(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_BANK_DETAILS);
+    }
+
+    public Cursor get_bank_details(SQLiteDatabase db) {
+        String[] columns = {BANK_ID,BANK_NAME};
+        return db.query(TABLE_NAME_BANK_DETAILS, columns, null, null, null, null, null);
+    }
+
+    public String getSelectedBankId(String bankName){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT " +  BANK_ID + " FROM " + TABLE_NAME_BANK_DETAILS + " WHERE " + BANK_NAME + " = '" + bankName + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex(BANK_ID));
+            return selection;
+        }
+        return null;
+    }
+
+    public void addEmpPointCodes(String pointCode) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(EMP_POINTCODE, pointCode);
+        db.insert(TABLE_NAME_EMP_POINTCODE, null, values);
+        db.close();
+    }
+
+    public void deleteEmpPointCodes(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_EMP_POINTCODE);
+    }
+
+    public Cursor get_pointCodes(SQLiteDatabase db) {
+        String[] columns = {EMP_POINTCODE};
+        return db.query(TABLE_NAME_EMP_POINTCODE, columns, null, null, null, null, null);
+    }
+
     // get scan count
     public int getUnpickedCount(String pickDrop) {
         String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_NAME_8 + " WHERE " + PICK_DROP + " != '" + pickDrop + "'";
@@ -1857,6 +1969,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         String[] columns = {REASON_ID, RETURN_REASON};
         return db.query(TABLE_NAME_RETURN_REASONS, columns, null, null, null, null, null);
     }
+
     public void addExpenselist(String purposeId, String purpose) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

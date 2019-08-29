@@ -73,7 +73,7 @@
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
             android:label="@string/title_activity_delivery_cash_receive_supervisor"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor"

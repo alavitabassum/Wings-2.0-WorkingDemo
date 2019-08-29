@@ -47,8 +47,10 @@ import com.paperflywings.user.paperflyv0.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +86,12 @@ public class DeliveryAddNewExpense extends AppCompatActivity
         final EditText cashAmt = findViewById(R.id.cashAmt);
         final EditText expense_comment = findViewById(R.id.expense_comment);
         final TextView error_msg = findViewById(R.id.error_msg);
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-M-d");
+        final String currentDateTimeString = df.format(c);
+
+        selectDate.setText(currentDateTimeString);
 
         // select date
         selectDate.setOnClickListener(new View.OnClickListener() {

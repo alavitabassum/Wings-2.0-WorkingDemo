@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -29,11 +30,24 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.Manifest.permission.CAMERA;
 
@@ -56,12 +70,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
 
     private BroadcastReceiver broadcastReceiver;
 
-    public static final String WITHOUT_STATUS_LIST = "http://paperflybd.com/DeliveryWithoutStatusApi.php";
-    public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
-    private static final String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
-    private static final String EXPENSE_PURPOSE_URL = "http://paperflybd.com/DeliveryLoadExpensePurpose.php";
-    private static final String GET_POINT_CODE = "http://paperflybd.com/deliveryEmpPoint.php";
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
+    public static final String GET_DATA = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
@@ -96,7 +105,9 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
 
         if(nInfo!= null && nInfo.isConnected())
         {
-
+            loadEmployeeList(username);
+            loadPointCodes(username);
+            loadBankDetails();
         }
         else {
 //            getData(username);
@@ -340,5 +351,160 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
         return true;
     }
 
+    public void loadEmployeeList(final String username){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteDeliveryEmpList(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getEmployeeList");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addEmployeeList(
+                                        o.getInt("empid"),
+                                        o.getString("empCode"),
+                                        o.getString("empName"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Employee List" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",username);
+                params1.put("flagreq","get_delivery_employee_list");
+                return params1;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
+    public void loadBankDetails(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteBankDetails(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getBankDetails");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addBankDetails(
+                                        o.getInt("bankID"),
+                                        o.getString("bankName"),
+                                        o.getString("creationDate"),
+                                        o.getString("createdBy"),
+                                        o.getString("updateDate"),
+                                        o.getString("updateBy"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Bank List" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("flagreq","get_bank_names");
+                return params1;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
+    public void loadPointCodes(final String username){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteEmpPointCodes(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getPointCodes");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addEmpPointCodes(
+                                        o.getString("pointCode"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Employee PointCode" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",username);
+                params1.put("flagreq","get_pointCodes");
+                return params1;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
 
 }
