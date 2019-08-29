@@ -77,7 +77,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private Button delivery_quick_pick;
+  //  private Button delivery_quick_pick;
     private TextView unpicked_text;
     private Delivery_unpicked_adapter Delivery_unpicked_adapter;
     private RecyclerView recyclerView_pul;
@@ -126,7 +126,7 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
 
-        delivery_quick_pick = (Button) findViewById(R.id.delivery_quick_pick);
+       // delivery_quick_pick = (Button) findViewById(R.id.delivery_quick_pick);
         unpicked_text = (TextView)findViewById(R.id.unpicks_);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
@@ -158,14 +158,14 @@ public class DeliveryOfficerUnpicked extends AppCompatActivity
         // registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
 
         // Redirect for quick pick by scanning barcode
-        delivery_quick_pick.setOnClickListener(new View.OnClickListener() {
+       /* delivery_quick_pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DeliveryOfficerUnpicked.this,
                         Delivery_quick_pick_scan.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliver_officer_unpicked);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

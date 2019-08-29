@@ -319,7 +319,8 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
             Intent homeIntent = new Intent(DeliverySupWithoutStatus.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
-        } else if (id == R.id.nav_logout) {
+        }
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");

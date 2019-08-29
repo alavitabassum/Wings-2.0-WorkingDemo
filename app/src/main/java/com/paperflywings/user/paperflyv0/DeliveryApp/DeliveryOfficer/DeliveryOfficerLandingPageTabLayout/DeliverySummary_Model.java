@@ -6,7 +6,29 @@ public class DeliverySummary_Model {
     private String withoutStatus;
     private String onHold;
     private String cash;
+
+    public String getReAttempt() {
+        return reAttempt;
+    }
+
+    public void setReAttempt(String reAttempt) {
+        this.reAttempt = reAttempt;
+    }
+
     private String returnRequest;
+    private String reAttempt;
+
+    public DeliverySummary_Model(String username, String unpicked, String withoutStatus, String onHold, String cash, String returnRequest, String returnList, String reAttempt, int status) {
+        this.username = username;
+        this.unpicked = unpicked;
+        this.withoutStatus = withoutStatus;
+        this.onHold = onHold;
+        this.cash = cash;
+        this.returnRequest = returnRequest;
+        this.returnList = returnList;
+        this.reAttempt = reAttempt;
+        this.status = status;
+    }
 
     public String getReturnID() {
         return returnID;

@@ -35,7 +35,9 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerReAttempt.DeliveryReAttempt;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.Delivery_quick_pick_scan;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
@@ -55,8 +57,8 @@ import java.util.Map;
 public class DeliveryFragment extends Fragment {
 
     BarcodeDbHelper db;
-    private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery;
-    private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count;
+    private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery,reAttempt,quickPick;
+    private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count,reAttempt_count;
     private RequestQueue requestQueue;
 
     private ProgressDialog progress;
@@ -88,6 +90,7 @@ public class DeliveryFragment extends Fragment {
         returnReqst_count = (TextView)viewGroup.findViewById(R.id.ReturnCount);
         cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
         returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
+        reAttempt_count = (TextView)viewGroup.findViewById(R.id.re_attempt_num);
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -100,7 +103,6 @@ public class DeliveryFragment extends Fragment {
             getData(username);
             Toast.makeText(getActivity().getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
         }
-
 
         return viewGroup;
     }
@@ -135,6 +137,7 @@ public class DeliveryFragment extends Fragment {
                                 o.getString("cash"),
                                 o.getString("returnRequest"),
                                 o.getString("returnList"),
+                                o.getString("reAttempt"),
                                 NAME_NOT_SYNCED_WITH_SERVER
                         );
 
@@ -146,6 +149,7 @@ public class DeliveryFragment extends Fragment {
                                 o.getString("cash"),
                                 o.getString("returnRequest"),
                                 o.getString("returnList"),
+                                o.getString("reAttempt"),
                                 NAME_NOT_SYNCED_WITH_SERVER
                         );
 //                            summaries.add(todaySummary);
@@ -199,6 +203,7 @@ public class DeliveryFragment extends Fragment {
                 String cash = c.getString(4);
                 String returnRequest = c.getString(5);
                 String returnList = c.getString(6);
+                String reAttemptList = c.getString(7);
 
                 unpicked_item = (CardView)getView().findViewById(R.id.Unpicked_id);
                 without_Status = (CardView)getView().findViewById(R.id.WithoutStatus_id);
@@ -207,6 +212,8 @@ public class DeliveryFragment extends Fragment {
                 return_List = (CardView)getView().findViewById(R.id.ReturnList_id);
                 cashCollection = (CardView)getView().findViewById(R.id.Cash_id);
                 quickDelivery = (CardView)getView().findViewById(R.id.QuickDelivery_id);
+                reAttempt = (CardView)getView().findViewById(R.id.re_attempt_id);
+                quickPick = (CardView)getView().findViewById(R.id.delivery_quick_pick_id);
 
                 unpicked_count = (TextView)getView().findViewById(R.id.UnpickedCount);
                 withoutStatus_count = (TextView)getView().findViewById(R.id.WithoutStatusCount);
@@ -214,6 +221,7 @@ public class DeliveryFragment extends Fragment {
                 returnReqst_count = (TextView)getView().findViewById(R.id.ReturnCount);
                 cashCollection_count = (TextView)getView().findViewById(R.id.CashCount);
                 returnList_count = (TextView)getView().findViewById(R.id.RTS);
+                reAttempt_count = (TextView)getView().findViewById(R.id.re_attempt_num);
 
                 unpicked_count.setText(String.valueOf(unpicked));
                 withoutStatus_count.setText(String.valueOf(withoutStatus));
@@ -221,8 +229,27 @@ public class DeliveryFragment extends Fragment {
                 returnReqst_count.setText(String.valueOf(returnRequest));
                 cashCollection_count.setText(String.valueOf(cash));
                 returnList_count.setText(String.valueOf(returnList));
+                reAttempt_count.setText(String.valueOf(reAttemptList));
 
 
+
+                reAttempt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity().getApplicationContext(),
+                                DeliveryReAttempt.class);
+                        startActivity(intent);
+                    }
+                });
+
+                quickPick.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity().getApplicationContext(),
+                                Delivery_quick_pick_scan.class);
+                        startActivity(intent);
+                    }
+                });
                 quickDelivery.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

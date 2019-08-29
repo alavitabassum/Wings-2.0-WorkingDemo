@@ -32,6 +32,9 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReport;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -290,6 +293,12 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
             startActivity(homeIntent);
             // Handle the camera action
         }
+        else if (id == R.id.nav_report) {
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
+                    DeliverySupBankReport.class);
+            startActivity(homeIntent);
+        }
+
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

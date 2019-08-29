@@ -1,6 +1,5 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,19 +8,23 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.view.View;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.MenuItem;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.TextView;
@@ -48,11 +51,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryCashReceiveSupervisor extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+public class DeliverySupBankReport extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener  {
+
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private DeliveryCashReceiveSupervisorAdapter deliveryCashReceiveSupervisorAdapter;
+    private DeliverySupBankReportAdapter deliverySupBankReportAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
@@ -63,7 +67,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
-    private List<DeliveryCashReceiveSupervisorModel> list;
+    private List<DeliverySupBankReportModel> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,25 +76,25 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        setContentView(R.layout.activity_delivery_cash_receive_supervisor);
-        btnselect = (TextView) findViewById(R.id.selectBank);
+        setContentView(R.layout.activity_delivery_sup_bank_report);
+     /*   btnselect = (TextView) findViewById(R.id.selectBank);
         btndeselect = (TextView) findViewById(R.id.deselectBank);
-        btnnext = (Button) findViewById(R.id.nextBank);
+        btnnext = (Button) findViewById(R.id.nextBank);*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_sup_cash_receive);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_sup_bank_report);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_cash_receive_list);
-        recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_bank_report_list);
+        recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        list = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        list = new ArrayList<DeliverySupBankReportModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -144,7 +148,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliveryCashReceiveSupervisorModel withoutStatus_model = new  DeliveryCashReceiveSupervisorModel(
+                                DeliverySupBankReportModel withoutStatus_model = new  DeliverySupBankReportModel(
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
                                         o.getString("CTS"),
@@ -156,41 +160,42 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                                 list.add(withoutStatus_model);
                             }
 
-                            deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+                            deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
 
-                            btnselect.setOnClickListener(new View.OnClickListener() {
+                         /*   btnselect.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     list = getModel(true);
-                                    deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-                                    recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+                                    deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
+                                    recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
                                 }
-                            });
-                            btndeselect.setOnClickListener(new View.OnClickListener() {
+                            });*/
+                          /*  btndeselect.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     list = getModel(false);
-                                    deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-                                    recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+                                    deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
+                                    recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
                                 }
-                            });
+                            });*/
+/*
                             btnnext.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     int count=0;
                                     SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                                     final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-                                    final Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, DeliveryCashReceiveSupervisor.class);
-                                    android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(DeliveryCashReceiveSupervisor.this);
+                                    final Intent intent = new Intent(DeliverySupBankReport.this, DeliverySupBankReport.class);
+                                    android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(DeliverySupBankReport.this);
                                     View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
                                     final TextView tv = mView.findViewById(R.id.tv);
                                     final TextView  orderIds = mView.findViewById(R.id.cash_amount);
 
-                                    for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
-                                        if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelectedCts()) {
+                                    for (int i = 0; i < DeliverySupBankReportAdapter.imageModelArrayList.size(); i++){
+                                        if(DeliverySupBankReportAdapter.imageModelArrayList.get(i).getSelectedCts()) {
                                             count++;
-                                            item = item + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderid();
+                                            item = item + "," + DeliverySupBankReportAdapter.imageModelArrayList.get(i).getOrderid();
                                         }
                                         tv.setText(count + " Orders have been selected for cash.");
                                     }
@@ -234,6 +239,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                                     });
                                 }
                             });
+*/
 
 
                         } catch (JSONException e) {
@@ -270,7 +276,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_sup_cash_receive);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_sup_bank_report);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -294,7 +300,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                deliveryCashReceiveSupervisorAdapter.getFilter().filter(newText);
+                deliverySupBankReportAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -302,7 +308,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(DeliveryCashReceiveSupervisor.this, DeliveryCashReceiveSupervisor.class);
+            Intent intent_stay = new Intent(DeliverySupBankReport.this, DeliverySupBankReport.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -331,7 +337,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
+            Intent homeIntent = new Intent(DeliverySupBankReport.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
             // Handle the camera action
@@ -364,7 +370,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliverySupBankReport.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -381,7 +387,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         }
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_sup_cash_receive);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_sup_bank_report);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -394,7 +400,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         list.clear();
-        deliveryCashReceiveSupervisorAdapter.notifyDataSetChanged();
+        deliverySupBankReportAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
            loadCashReceiveData(username);
@@ -404,6 +410,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         }
     }
 
+/*
     private void UpdateBankedOrders(final String item,final String CTSBy) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
@@ -413,9 +420,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                Toast.makeText(DeliveryCashReceiveSupervisor.this, "Successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DeliverySupBankReport.this, "Successful", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(DeliveryCashReceiveSupervisor.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DeliverySupBankReport.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -425,7 +432,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DeliveryCashReceiveSupervisor.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliverySupBankReport.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -445,19 +452,23 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryCashReceiveSupervisor.this, "Server Error! cts", Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliverySupBankReport.this, "Server Error! cts", Toast.LENGTH_LONG).show();
         }
     }
+*/
 
 
-    private ArrayList<DeliveryCashReceiveSupervisorModel> getModel(boolean isSelect){
-        ArrayList<DeliveryCashReceiveSupervisorModel> listOfOrders = new ArrayList<>();
+/*
+    private ArrayList<DeliverySupBankReportModel> getModel(boolean isSelect){
+        ArrayList<DeliverySupBankReportModel> listOfOrders = new ArrayList<>();
         if(isSelect == true){
-           /* String totalCash = String.valueOf(db.getTotalCash("cts"));
-            totalCollection.setText(totalCash+" Taka");*/
+           */
+/* String totalCash = String.valueOf(db.getTotalCash("cts"));
+            totalCollection.setText(totalCash+" Taka");*//*
+
 
             for(int i = 0; i < list.size(); i++){
-                DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
+                DeliverySupBankReportModel model = new DeliverySupBankReportModel();
 
                 model.setSelectedCts(isSelect);
                 model.setOrderid(list.get(i).getOrderid());
@@ -466,14 +477,14 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 model.setPackagePrice(list.get(i).getPackagePrice());
                 model.setCollection(list.get(i).getCollection());
 
-                listOfOrders.add(model);
+               // listOfOrders.add(model);
             }
 
         } else if(isSelect == false){
             // totalCollection.setText("0 Taka");
 
             for(int i = 0; i < list.size(); i++){
-                DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
+                DeliverySupBankReportModel model = new DeliverySupBankReportModel();
 
                 model.setSelectedCts(isSelect);
                 model.setOrderid(list.get(i).getOrderid());
@@ -487,6 +498,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         }
         return listOfOrders;
     }
+*/
 
 
 }

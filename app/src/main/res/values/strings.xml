@@ -226,4 +226,10 @@
     <string name="title_activity_delivery_sup_return_list">Return List</string>
     <string name="title_activity_delivery_sup_cash">Cash</string>
 
+    <string name="title_activity_delivery_cash_receive_supervisor">Cash Recieve</string>
+    <string name="title_activity_return_receive_supervisor">Supervisor Recieve</string>
+    <string name="title_activity_delivery_sup_bank_report">DeliverySupBankReport</string>
+    <string name="title_activity_delivery_re_attempt">DeliveryReAttempt</string>
+
+
 </resources>
