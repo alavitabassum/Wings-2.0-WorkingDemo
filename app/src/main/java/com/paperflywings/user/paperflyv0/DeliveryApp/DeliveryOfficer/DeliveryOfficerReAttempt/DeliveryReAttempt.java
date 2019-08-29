@@ -724,7 +724,7 @@ public class DeliveryReAttempt extends AppCompatActivity
         //final String retReason = clickedITem.getReason();
 
         final Intent DeliveryListIntent = new Intent(DeliveryReAttempt.this,
-                DeliveryWithoutStatus.class);
+                DeliveryReAttempt.class);
 
         final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(DeliveryReAttempt.this);
         spinnerBuilder.setTitle("Select Action: ");
@@ -1149,7 +1149,7 @@ public class DeliveryReAttempt extends AppCompatActivity
         String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"withoutStatus"));
         slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryReAttempt.this,
-                DeliveryWithoutStatus.class);
+                DeliveryReAttempt.class);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
@@ -1212,7 +1212,7 @@ public class DeliveryReAttempt extends AppCompatActivity
         String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"withoutStatus"));
         slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryReAttempt.this,
-                DeliveryWithoutStatus.class);
+                DeliveryReAttempt.class);
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
                 new Response.Listener<String>() {
@@ -1272,7 +1272,7 @@ public class DeliveryReAttempt extends AppCompatActivity
         String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"withoutStatus"));
         slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryReAttempt.this,
-                DeliveryWithoutStatus.class);
+                DeliveryReAttempt.class);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
@@ -1332,7 +1332,7 @@ public class DeliveryReAttempt extends AppCompatActivity
         String slaMiss = String.valueOf(db.getWithoutStatusSlaMissCount(0,"withoutStatus"));
         slamiss_text.setText(slaMiss);
         final Intent withoutstatuscount = new Intent(DeliveryReAttempt.this,
-                DeliveryWithoutStatus.class);
+                DeliveryReAttempt.class);
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_STATUS_UPDATE,
 
                 new Response.Listener<String>() {
