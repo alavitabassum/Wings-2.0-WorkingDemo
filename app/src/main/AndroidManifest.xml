@@ -37,9 +37,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor"
+            android:label="@string/title_activity_bank_details_upload_supervisor"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+        <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerReAttempt.DeliveryReAttempt"
             android:label="@string/title_activity_delivery_re_attempt"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReport"
             android:label="@string/title_activity_delivery_sup_bank_report"
@@ -88,7 +94,7 @@
             android:name=".DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
             android:label="@string/title_activity_delivery_cash_receive_supervisor"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor"
             android:label="@string/title_activity_return_receive_supervisor"

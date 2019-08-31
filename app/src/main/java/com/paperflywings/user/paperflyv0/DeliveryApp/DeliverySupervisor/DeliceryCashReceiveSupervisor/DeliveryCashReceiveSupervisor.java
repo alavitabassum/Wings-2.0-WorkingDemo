@@ -1,14 +1,11 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -26,10 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +35,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
@@ -49,10 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,19 +60,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     private ProgressDialog progress;
     private TextView btnselect, btndeselect;
     private Button btnnext;
-    DatePickerDialog datePickerDialog;
-    int year;
-    int month;
-    int dayOfMonth;
-    Calendar calendar;
-    String item = "";
-
+    private List<DeliveryCashReceiveSupervisorModel> list;
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
-    private List<DeliveryCashReceiveSupervisorModel> list;
-    private List<DeliveryCashReceiveSupervisorModel> eList;
-    private List<DeliveryCashReceiveSupervisorModel> bankList;
-    private List<DeliveryCashReceiveSupervisorModel> pointCodeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +90,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
         list = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        eList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        pointCodeList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -123,8 +102,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
         list.clear();
-        bankList.clear();
-        pointCodeList.clear();
+
 
         swipeRefreshLayout.setRefreshing(true);
 
@@ -138,9 +116,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-        getEmployeeList();
-        getBankDetails();
-        getPointCodes();
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -167,241 +143,12 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Toast.makeText(DeliveryCashReceiveSupervisor.this, "Ok", Toast.LENGTH_SHORT).show();
-                int count=0;
-                SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-                final Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, DeliveryCashReceiveSupervisor.class);
-                android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(DeliveryCashReceiveSupervisor.this);
-                View mView = getLayoutInflater().inflate(R.layout.delivery_bank_details, null);
-                final TextView create_tv = mView.findViewById(R.id.create_tv);
-                final TextView slipNo = mView.findViewById(R.id.deposite_slip_number);
-                final TextView depComm = mView.findViewById(R.id.bank_deposite_comment);
-                final Button selectDate = mView.findViewById(R.id.select_deposite_date);
-                final TextView  error_msg_show = mView.findViewById(R.id.error_msg);
-
-                Date c = Calendar.getInstance().getTime();
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-M-d");
-                final String currentDateTimeString = df.format(c);
-
-                selectDate.setText(currentDateTimeString);
-
-                // select date
-                selectDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        calendar = Calendar.getInstance();
-                        year = calendar.get(Calendar.YEAR);
-                        month = calendar.get(Calendar.MONTH);
-                        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                        datePickerDialog = new DatePickerDialog(DeliveryCashReceiveSupervisor.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                String yearselected  = Integer.toString(year) ;
-                                String monthselected  = Integer.toString(month + 1);
-                                String dayselected  = Integer.toString(day);
-                                String startdate = yearselected + "-" + monthselected + "-" + dayselected;
-                                selectDate.setText(startdate);
-                            }
-                        },year,month,dayOfMonth );
-                        datePickerDialog.show();
-
-                    }
-
-                });
-
-                // Employee List
-                final Spinner mEmployeeSpinner = (Spinner) mView.findViewById(R.id.employee_list);
-                List<String> empList = new ArrayList<String>();
-                empList.add(0,"Please select employee...");
-                for (int x = 0; x < eList.size(); x++) {
-                    empList.add(eList.get(x).getEmpName());
-                }
-
-                ArrayAdapter<String> adapterEmpListR = new ArrayAdapter<String>(DeliveryCashReceiveSupervisor.this,
-                        android.R.layout.simple_spinner_item,
-                        empList);
-                adapterEmpListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                mEmployeeSpinner.setAdapter(adapterEmpListR);
-
-                // Bank Details
-                final Spinner mBankNameSpinner = (Spinner) mView.findViewById(R.id.bank_name);
-                List<String> bankNames = new ArrayList<String>();
-                bankNames.add(0,"Please Select Bank...");
-                for (int y = 0; y < bankList.size(); y++) {
-                    bankNames.add(bankList.get(y).getBankName());
-                }
-
-                ArrayAdapter<String> adapterBankNameR = new ArrayAdapter<String>(DeliveryCashReceiveSupervisor.this,
-                        android.R.layout.simple_spinner_item,
-                        bankNames);
-                adapterBankNameR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                mBankNameSpinner.setAdapter(adapterBankNameR);
-
-
-
-                // pointCodes
-               /* final Spinner mPointCodeSpinner = (Spinner) mView.findViewById(R.id.point_code);
-                List<String> pointCodes = new ArrayList<String>();
-                pointCodes.add(0,"Please Select Point...");
-                for (int z = 0; z < pointCodeList.size(); z++) {
-                    pointCodes.add(pointCodeList.get(z).getPointCode());
-                }
-
-                ArrayAdapter<String> adapterPointCodeR = new ArrayAdapter<String>(DeliveryCashReceiveSupervisor.this,
-                        android.R.layout.simple_spinner_item,
-                        pointCodes);
-                adapterPointCodeR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                mPointCodeSpinner.setAdapter(adapterPointCodeR);*/
-
-                for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
-                    if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelectedCts()) {
-                        count++;
-                        item = item + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderid();
-                    }
-                    create_tv.setText(count + " Orders have been selected for cash.");
-                }
-                //orderIds.setText(item);
-                count = 0;
-
-                alertDialogBuilder.setPositiveButton("Submit",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-
-                            }
-                        });
-
-                alertDialogBuilder.setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                item = "";
-                            }
-                        });
-                alertDialogBuilder.setCancelable(false);
-                alertDialogBuilder.setView(mView);
-
-                final android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-                alertDialog.getButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String deposite_date = selectDate.getText().toString();
-
-                        String empName = mEmployeeSpinner.getSelectedItem().toString();
-                        String empCode = db.getSelectedEmpCode(empName);
-
-                        String bankName = mBankNameSpinner.getSelectedItem().toString();
-                        String bankId = db.getSelectedBankId(bankName);
-
-                        //String pointCode = mPointCodeSpinner.getSelectedItem().toString();
-                        String slipNumber = slipNo.getText().toString();
-                        String comment = depComm.getText().toString();
-
-
-
-                        if(create_tv.getText().equals("0 Orders have been selected for cash.")){
-                            error_msg_show.setText("Please Select Orders First!!");
-                        } else if(empName.equals("Please select employee...")){
-                            error_msg_show.setText("Please select employee!!");
-                        } else if(bankName.equals("Please Select Bank...")){
-                            error_msg_show.setText("Please select bank name!!");
-                        } else if(slipNumber.equals("")){
-                            error_msg_show.setText("Please enter slip number!!");
-                        } else if(comment.equals("")){
-                            error_msg_show.setText("Please write comment!!");
-                        }
-
-                        else {
-                            UpdateBankedOrders(item,deposite_date,empCode,bankId,slipNumber,comment,username);
-                            alertDialog.dismiss();
-                            startActivity(intent);
-                            //loadRecyclerView(username);
-                            item = "";
-                        }
-                    }
-                });
+                Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, BankDetails_upload_supervisor.class);
+                startActivity(intent);
             }
         });
+
     }
-
-    private void loadCashReceiveData (final String username){
-        progress=new ProgressDialog(this);
-        progress.setMessage("Loading Data");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setCancelable(false);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        list.clear();
-                        progress.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("getData");
-
-                            for(int i =0;i<array.length();i++)
-                            {
-                                JSONObject o = array.getJSONObject(i);
-                                DeliveryCashReceiveSupervisorModel withoutStatus_model = new  DeliveryCashReceiveSupervisorModel(
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("CTS"),
-                                        o.getString("CTSTime"),
-                                        o.getString("CTSBy"),
-                                        o.getInt("slaMiss"),
-                                        o.getString("packagePrice"),
-                                        o.getString("CashAmt"));
-                                list.add(withoutStatus_model);
-                            }
-
-                            deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progress.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "!!! "+error ,Toast.LENGTH_LONG).show();
-                    }
-                })
-        {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String,String> params1 = new HashMap<String,String>();
-                params1.put("username", username);
-                params1.put("flagreq", "delivery_cash_recv_orders");
-                return params1;
-            }
-        };
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(this);
-        }
-        /*stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                50000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
-        requestQueue.add(stringRequest);
-    }
-
-
 
 
     @Override
@@ -522,6 +269,79 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         return true;
     }
 
+    private void loadCashReceiveData (final String username){
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        list.clear();
+                        progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getData");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                DeliveryCashReceiveSupervisorModel withoutStatus_model = new  DeliveryCashReceiveSupervisorModel(
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
+                                        o.getInt("slaMiss"),
+                                        o.getString("packagePrice"),
+                                        o.getString("CashAmt"));
+                                list.add(withoutStatus_model);
+                            }
+
+                            deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "!!! "+error ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username", username);
+                params1.put("flagreq", "delivery_cash_recv_orders");
+                return params1;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        /*stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
+        requestQueue.add(stringRequest);
+    }
+
     @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -540,57 +360,54 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         }
     }
 
-    /*,deposite_date,empCode,bankId,pointCode,slipNumber,comment, username*/
-    private void UpdateBankedOrders(final String item,final String deposite_date, final String empCode, final String bankId, final String slipNumber, final String comment, final String username) {
-
-        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                Toast.makeText(DeliveryCashReceiveSupervisor.this, "Successful", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(DeliveryCashReceiveSupervisor.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DeliveryCashReceiveSupervisor.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("orderid", item);
-                params.put("depositDate", deposite_date);
-                params.put("depositedBy", empCode);
-                params.put("bankID",bankId);
-                //params.put("pointCode",pointCode);
-                params.put("depositSlip",slipNumber);
-                params.put("depositComment", comment);
-                params.put("username",username);
-                params.put("flagreq", "Delivery_complete_bank_orders_by_supervisor");
-
-                return params;
-            }
-        };
-        try {
-            if (requestQueue == null) {
-                requestQueue = Volley.newRequestQueue(this);
-            }
-            requestQueue.add(postRequest);
-        } catch (Exception e) {
-            Toast.makeText(DeliveryCashReceiveSupervisor.this, "Server Error! crss", Toast.LENGTH_LONG).show();
-        }
-    }
+//    private void loadCollectionInfo(final String orderids, final String username){
+//        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            JSONObject jsonObject = new JSONObject(response);
+//                            JSONArray array = jsonObject.getJSONArray("getData");
+//
+//                            for(int i =0;i<array.length();i++)
+//                            {
+//                                JSONObject o = array.getJSONObject(i);
+//                                TextView create_tv = findViewById(R.id.create_tv);
+//                                create_tv.setText(o.getString("collection")+" Taka");
+//                                //totalCashCollection.setText(o.getString("price")+" Taka");
+//                            }
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(DeliveryCashReceiveSupervisor.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//        ) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("orderid", orderids);
+//                params.put("username",username);
+//                params.put("flagreq", "total_cash");
+//
+//                return params;
+//            }
+//        };
+//        try {
+//            if (requestQueue == null) {
+//                requestQueue = Volley.newRequestQueue(this);
+//            }
+//            requestQueue.add(postRequest);
+//        } catch (Exception e) {
+//            Toast.makeText(DeliveryCashReceiveSupervisor.this, "Server Error! crss", Toast.LENGTH_LONG).show();
+//        }
+//    }
 
 
     private ArrayList<DeliveryCashReceiveSupervisorModel> getModel(boolean isSelect){
@@ -630,53 +447,4 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         }
         return listOfOrders;
     }
-
-    private void getEmployeeList() {
-        try {
-//            list.clear();
-            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_employee_list(sqLiteDatabase);
-            while (c.moveToNext()) {
-                Integer empId = c.getInt(0);
-                String empCode = c.getString(1);
-                String empName = c.getString(2);
-                DeliveryCashReceiveSupervisorModel employeeList = new DeliveryCashReceiveSupervisorModel(empId,empCode,empName);
-                eList.add(employeeList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void getBankDetails() {
-        try {
-//            list.clear();
-            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_bank_details(sqLiteDatabase);
-            while (c.moveToNext()) {
-                Integer bankId = c.getInt(0);
-                String bankName = c.getString(1);
-                DeliveryCashReceiveSupervisorModel bankDetails = new DeliveryCashReceiveSupervisorModel(bankId,bankName);
-                bankList.add(bankDetails);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void getPointCodes() {
-        try {
-            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
-            Cursor c = db.get_pointCodes(sqLiteDatabase);
-            while (c.moveToNext()) {
-                String pointCode = c.getString(0);
-                DeliveryCashReceiveSupervisorModel pointCodes = new DeliveryCashReceiveSupervisorModel(pointCode);
-                pointCodeList.add(pointCodes);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

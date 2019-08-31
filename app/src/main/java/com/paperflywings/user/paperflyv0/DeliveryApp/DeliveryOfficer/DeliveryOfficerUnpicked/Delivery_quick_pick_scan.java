@@ -111,11 +111,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
             barcode = result.getText();
             lastText = barcode.substring(0,11);
 
-           /* String dropPointCode = db.getDropPointCode(lastText);
-
-            boolean pointCodeExist = db.pointCodeMatch(dropPointCode);
-
-            if(pointCodeExist == true){*/
                 AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
 
                 builder.setTitle("Scanned for Barcode number: "+result.getText());
@@ -133,24 +128,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                 builder.setCancelable(false);
                 final AlertDialog alert1 = builder.create();
                 alert1.show();
-            /*} else {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
-
-                alertDialogBuilder.setMessage("No record found!");
-                alertDialogBuilder.setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                arg0.dismiss();
-                                onResume();
-                            }
-                        });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-                // Toast.makeText(DeliveryQuickScan.this, "No Data Matched", Toast.LENGTH_SHORT).show();
-            } onPause();*/
-
 
             db.close();
 
