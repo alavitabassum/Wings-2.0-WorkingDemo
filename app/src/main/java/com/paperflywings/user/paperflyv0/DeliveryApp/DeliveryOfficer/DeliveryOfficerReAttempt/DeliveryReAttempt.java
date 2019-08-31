@@ -23,25 +23,22 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -68,8 +65,6 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReportAdapter;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPretAdapter;
 import com.paperflywings.user.paperflyv0.DeliveryApp.LocationService.GPStracker;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
@@ -776,9 +771,13 @@ public class DeliveryReAttempt extends AppCompatActivity
 
                                         if (cashAmt.isEmpty() ) {
                                             tv1.setText("Enter cash amount");
-                                        } else if(Integer.parseInt(cashAmt) < Integer.parseInt(packagePrice) || Integer.parseInt(cashAmt)> Integer.parseInt(packagePrice)+500){
-                                            tv1.setText("Cash collection mismatch!");
+                                        }  else if(Double.parseDouble(cashAmt) < Double.parseDouble(packagePrice)){
+                                            tv1.setText("Cash collection cannot be less than package price!");
                                         }
+
+                                       /* else if(Integer.parseInt(cashAmt) < Integer.parseInt(packagePrice) || Integer.parseInt(cashAmt)> Integer.parseInt(packagePrice)+500){
+                                            tv1.setText("Cash collection mismatch!");
+                                        }*/
                                         else if(cashComment.isEmpty()) {
                                             tv1.setText("Please write some comment");
                                         }

@@ -408,7 +408,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            if(tv.getText().equals("0 Orders have been selected for cash.")){
+                                            if(tv.getText().equals("0 Orders have been selected for return.")){
                                                 orderIds.setText("Please Select Orders First!!");
                                             } else {
                                                 UpdateReturnYoS(item, username);

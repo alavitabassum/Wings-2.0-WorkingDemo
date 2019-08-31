@@ -772,8 +772,8 @@ public class DeliveryWithoutStatus extends AppCompatActivity
 
                                         if (cashAmt.isEmpty() ) {
                                             tv1.setText("Enter cash amount");
-                                        } else if(Integer.parseInt(cashAmt) < Integer.parseInt(packagePrice) || Integer.parseInt(cashAmt)> Integer.parseInt(packagePrice)+500){
-                                            tv1.setText("Cash collection mismatch!");
+                                        } else if(Double.parseDouble(cashAmt) < Double.parseDouble(packagePrice)){
+                                            tv1.setText("Cash collection cannot be less than package price!");
                                         }
                                         else if(cashComment.isEmpty()) {
                                             tv1.setText("Please write some comment");
