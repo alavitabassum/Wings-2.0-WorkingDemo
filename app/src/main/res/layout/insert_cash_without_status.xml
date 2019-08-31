@@ -150,7 +150,7 @@
             android:layout_toEndOf="@+id/textViewCollection"
             android:autofillHints=""
             android:ems="10"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textSize="15sp"
             android:textStyle="bold" />
 

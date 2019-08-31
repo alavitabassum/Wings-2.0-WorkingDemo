@@ -1,30 +1,15 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -35,7 +20,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,31 +37,24 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryPettyCash;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRBS.DeliveryReturnBySupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRBS.DeliveryReturnBySupervisor;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.LocationService.GPStracker;
 import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -86,36 +63,23 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private TextView ReturnRqst_text;
+    private TextView ReturnRqst_text,btnselect, btndeselect;
     private RequestQueue requestQueue;
-    private Button delivery_rts_recieved;
+    private Button btnnext,delivery_rts_recieved;
     private DeliveryReturnToSuperVisorAdapter DeliveryReturnToSuperVisorAdapter;
-
-    String lats,lngs,addrs,fullAddress;
-    String getlats,getlngs,getaddrs;
-    ProgressDialog progressDialog;
-    LocationManager locationManager;
-    Geocoder geocoder;
-    List<Address> addresses;
-
-    private static final int REQUEST_LOCATION = 1;
 
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
 
-    public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
     public static final String RETURN_LIST = "http://paperflybd.com/DeliveryReturnRequestApi.php";
     public static final String DELIVERY_RETURNR_UPDATE = "http://paperflybd.com/DeliveryReturnRequestUpdate.php";
 
     private List<DeliveryReturnToSuperVisorModel> list;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
+    String item = "";
 
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
-
-    //Broadcast receiver to know the sync status
-    private BroadcastReceiver broadcastReceiver;
+    public static final String DELIVERY_RTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorRTSinBatch.php";
 
 
     @Override
@@ -125,6 +89,9 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         db.getWritableDatabase();
 
         setContentView(R.layout.activity_delivery__return_to_supervisor);
+        btnselect = (TextView) findViewById(R.id.selectRTS);
+        btndeselect = (TextView) findViewById(R.id.deselectRTS);
+        btnnext = (Button) findViewById(R.id.nextRTS);
         ReturnRqst_text = (TextView)findViewById(R.id.Return_id_);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -150,39 +117,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
-        // location enabled
-        isLocationEnabled();
-        if(!isLocationEnabled()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-            builder.setTitle("Turn on location!")
-                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
-                    .setPositiveButton("Settings",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-
-        int currentApiVersion = Build.VERSION.SDK_INT;
-
-        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
-        {
-            if(checkPermission())
-            {
-                // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                requestPermission();
-            }
-        }
-
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -191,12 +125,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        };
 
         delivery_rts_recieved.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,30 +146,12 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
-    }
 
-    // Check for camera permission
-    private boolean checkPermission()
-    {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    // Request for camera permission
-    private void requestPermission()
-    {
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
-    }
-
-    protected boolean isLocationEnabled(){
-        String le = Context.LOCATION_SERVICE;
-        locationManager = (LocationManager) getSystemService(le);
-        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     private void getData(String user){
         try{
             list.clear();
-
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_delivery_RTS(sqLiteDatabase,user,"rts", "Y");
 
@@ -435,6 +345,83 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                             recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
                             swipeRefreshLayout.setRefreshing(false);
                             DeliveryReturnToSuperVisorAdapter.setOnItemClickListener(Delivery_ReturnToSupervisor.this);
+
+
+                            btnselect.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    list = getModel(true);
+                                    DeliveryReturnToSuperVisorAdapter = new DeliveryReturnToSuperVisorAdapter(list,getApplicationContext());
+                                    recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
+                                }
+                            });
+                            btndeselect.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    list = getModel(false);
+                                    DeliveryReturnToSuperVisorAdapter = new DeliveryReturnToSuperVisorAdapter(list,getApplicationContext());
+                                    recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
+                                }
+                            });
+                            btnnext.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    int count=0;
+                                    SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                                    final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+                                    final Intent intent = new Intent(Delivery_ReturnToSupervisor.this, Delivery_ReturnToSupervisor.class);
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Delivery_ReturnToSupervisor.this);
+                                    View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
+                                    final TextView tv = mView.findViewById(R.id.tv);
+                                    final TextView  orderIds = mView.findViewById(R.id.cash_amount);
+
+                                    for (int i = 0; i < DeliveryReturnToSuperVisorAdapter.imageModelArrayList1.size(); i++){
+                                        if(DeliveryReturnToSuperVisorAdapter.imageModelArrayList1.get(i).getSelected()) {
+                                            count++;
+                                            item = item + "," + DeliveryReturnToSuperVisorAdapter.imageModelArrayList1.get(i).getOrderid();
+                                        }
+                                        tv.setText(count + " Orders have been selected for cash.");
+                                    }
+                                    count = 0;
+
+                                    alertDialogBuilder.setPositiveButton("Submit",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                                }
+                                            });
+
+                                    alertDialogBuilder.setNegativeButton("Cancel",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    item = "";
+                                                }
+                                            });
+                                    alertDialogBuilder.setCancelable(false);
+                                    alertDialogBuilder.setView(mView);
+
+                                    final AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+
+                                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(tv.getText().equals("0 Orders have been selected for cash.")){
+                                                orderIds.setText("Please Select Orders First!!");
+                                            } else {
+                                                UpdateReturnYoS(item, username);
+                                                alertDialog.dismiss();
+                                                startActivity(intent);
+                                                item = "";
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+
+
                             String str = String.valueOf(db.getReturnCount("rts","Y"));
                             ReturnRqst_text.setText(str);
                         } catch (JSONException e) {
@@ -466,16 +453,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try{
-        unregisterReceiver(broadcastReceiver);
-        } catch (Exception e) {
-            Toast.makeText(this, "RTS"+e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout_deliveryreturn_to_supervisor);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -498,7 +475,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 DeliveryReturnToSuperVisorAdapter.getFilter().filter(newText);
@@ -527,7 +503,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         if (id == R.id.action_search) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -629,6 +604,13 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //unregisterReceiver(broadcastReceiver);
+    }
+
     @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -646,37 +628,8 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onItemClick_view(View view2, int position2) {
 
-        final DeliveryReturnToSuperVisorModel clickedITem = list.get(position2);
-
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        final String currentDateTime = df.format(c);
-
-
-        final String RTS = "Y";
-        final String RTSTime = currentDateTime;
-        final String RTSBy = username;
-        final String sql_primary_id = String.valueOf(clickedITem.getSql_primary_id());
-
-        String barcode = clickedITem.getBarcode();
-        String orderid = clickedITem.getOrderid();
-
-        ReturnToS(RTS,RTSTime,RTSBy,barcode,orderid, "rtsOk");
-        try {
-            GetValueFromEditText(sql_primary_id,"Delivery", "Return To Supervisor", username, currentDateTime);
-        } catch (Exception e) {
-            //Toast.makeText(Delivery_ReturnToSupervisor.this, "No internet connection!", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy, final String barcode, final String orderid, final String flagReq) {
+   /* private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy, final String barcode, final String orderid, final String flagReq) {
         String str = String.valueOf(db.getReturnCount("rts","Y"));
         ReturnRqst_text.setText(str);
         final Intent withoutstatuscount = new Intent(Delivery_ReturnToSupervisor.this,
@@ -735,104 +688,65 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             Toast.makeText(Delivery_ReturnToSupervisor.this, "Connection problem! rts", Toast.LENGTH_LONG).show();
         }
     }
+   */
+    private void UpdateReturnYoS(final String item,final String RTSBy) {
 
-    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
-//   ActivityCompat.requestPermissions(Delivery_ReturnToSupervisor.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
-        geocoder = new Geocoder(this, Locale.getDefault());
-
-        GPStracker g = new GPStracker(getApplicationContext());
-        Location LocationGps = g.getLocation();
-
-        if (LocationGps !=null)
-        {
-            double lati=LocationGps.getLatitude();
-            double longi=LocationGps.getLongitude();
-
-            lats=String.valueOf(lati);
-            lngs=String.valueOf(longi);
-
-            try {
-
-                addresses = geocoder.getFromLocation(lati,longi,1);
-                String addres = addresses.get(0).getAddressLine(0);
-                String area = addresses.get(0).getLocality();
-                String city = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalcode = addresses.get(0).getPostalCode();
-
-                fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            getlats = lats.trim();
-            getlngs = lngs.trim();
-            getaddrs = fullAddress.trim();
-            lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
-
-        }
-
-        else
-        {
-           Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_UPDATE_All,
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String ServerResponse) {
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                Toast.makeText(Delivery_ReturnToSupervisor.this, "Successful", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Delivery_ReturnToSupervisor.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError volleyError) {
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Delivery_ReturnToSupervisor.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
                     }
-                }) {
+                }
+        ) {
             @Override
             protected Map<String, String> getParams() {
-
-                // Creating Map String Params.
                 Map<String, String> params = new HashMap<String, String>();
-
-                // Adding All values to Params.
-                params.put("sqlPrimaryKey", sql_primary_id);
-                params.put("actionType", action_type);
-                params.put("actionFor", action_for);
-                params.put("actionBy", username);
-                params.put("actionTime",currentDateTime);
-                params.put("latitude", getlats);
-                params.put("longitude", getlngs);
-                params.put("Address", getaddrs);
+                params.put("orderid", item);
+                params.put("RTSBy", RTSBy);
 
                 return params;
             }
-
         };
         try {
-            RequestQueue requestQueue = Volley.newRequestQueue(Delivery_ReturnToSupervisor.this);
-            requestQueue.add(stringRequest);
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(postRequest);
         } catch (Exception e) {
-//           Toast.makeText(DeliveryQuickScan.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+            Toast.makeText(Delivery_ReturnToSupervisor.this, "Server Error! cts", Toast.LENGTH_LONG).show();
         }
     }
 
-    @Override
-    public void onItemClick_call(View view4, int position4) {
-        Intent callIntent =new Intent(Intent.ACTION_CALL);
-        String phoneNumber = list.get(position4).getCustphone();
-        String lastFourDigits = phoneNumber.substring(phoneNumber.length() - 10);
-        callIntent.setData(Uri.parse("tel: +880" +lastFourDigits));
-        if (ActivityCompat.checkSelfPermission(view4.getContext(),
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) view4.getContext(),
-                    new String[]{Manifest.permission.CALL_PHONE},
-                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
-            return;
-        }
-        view4.getContext().startActivity(callIntent);
+    private ArrayList<DeliveryReturnToSuperVisorModel> getModel(boolean isSelect){
+        ArrayList<DeliveryReturnToSuperVisorModel> listOfOrders = new ArrayList<>();
+            for(int i = 0; i < list.size(); i++){
+                DeliveryReturnToSuperVisorModel model = new DeliveryReturnToSuperVisorModel();
+
+                model.setSelected(isSelect);
+                model.setOrderid(list.get(i).getOrderid());
+                model.setMerOrderRef(list.get(i).getMerOrderRef());
+                model.setPackagePrice(list.get(i).getPackagePrice());
+                model.setRetReason(list.get(i).getRetReason());
+
+                listOfOrders.add(model);
+            }
+        return listOfOrders;
     }
 
 }

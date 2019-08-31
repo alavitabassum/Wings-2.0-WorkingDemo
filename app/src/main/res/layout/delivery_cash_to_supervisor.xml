@@ -5,7 +5,6 @@
     android:id="@+id/card_view_delivery_without_status_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:foreground="?selectableItemBackground"
     card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
