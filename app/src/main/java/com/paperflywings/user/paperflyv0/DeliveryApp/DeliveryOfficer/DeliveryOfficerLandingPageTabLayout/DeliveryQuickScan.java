@@ -346,6 +346,8 @@ public class DeliveryQuickScan extends AppCompatActivity{
                         final String merchantRef = merorderref;
                         final String packagePrice = packageprice;
 
+                        final String packagePrice1 = packagePrice.replaceAll(",", "");
+
                         final String merchantName = merchantname;
                         final String pickMerchantName = pickMerchantname;
 
@@ -371,7 +373,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                                                 OrderIdCollectiontv.setText(orderid);
                                                 MerchantReftv.setText(merchantRef);
-                                                PackagePriceTexttv.setText(packagePrice);
+                                                PackagePriceTexttv.setText(packagePrice1);
 
                                                 AlertDialog.Builder cashSpinnerBuilder = new AlertDialog.Builder(DeliveryQuickScan.this);
                                                 cashSpinnerBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -399,12 +401,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
                                                     public void onClick(View v) {
 
                                                         String cashAmt = et1.getText().toString().trim();
+                                                        //double collectionAmt = Math.round(Float.parseFloat(cashAmt));
                                                         String cashComment = et2.getText().toString().trim();
 
                                                         if (cashAmt.isEmpty() ) {
                                                             tv1.setText("Enter cash amount");
                                                         }
-                                                        else if(Double.parseDouble(cashAmt) < Double.parseDouble(packagePrice)){
+                                                        else if(Double.parseDouble(cashAmt) < Double.parseDouble(packagePrice1)){
                                                             tv1.setText("Cash collection cannot be less than package price!");
                                                         }
                                                        /* else if(Integer.parseInt(cashAmt) < Integer.parseInt(packagePrice) || Integer.parseInt(cashAmt)> Integer.parseInt(packagePrice)+500){

@@ -73,18 +73,10 @@ public class DeliveryCTS extends AppCompatActivity
 
     public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorCTSinBatch.php";
 
-
     public static final String CTS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
     //public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
 
     private ArrayList<DeliveryCTSModel> list;
-    //public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    //public static final int NAME_SYNCED_WITH_SERVER = 1;
-
-    //public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
-
-    //Broadcast receiver to know the sync status
-    //private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +142,6 @@ public class DeliveryCTS extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     private void getData(String user){

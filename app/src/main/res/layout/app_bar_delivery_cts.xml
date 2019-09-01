@@ -96,7 +96,10 @@
             android:paddingRight="10dp"
             android:layout_marginTop="50dp"
             android:layout_marginRight="-60dp"
-            android:text="Report" />
+            android:textColor="@color/white"
+            android:background="#1B5E20"
+            android:textStyle="bold"
+            android:text="Cash Received By Supervisor" />
 
 
     </LinearLayout>

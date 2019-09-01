@@ -63,6 +63,8 @@
             android:layout_marginTop="50dp"
             android:layout_marginRight="-60dp"
             android:background="@color/dark_red"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:paddingRight="10dp"
             android:text="Retun Received By Supervisor " />
 
