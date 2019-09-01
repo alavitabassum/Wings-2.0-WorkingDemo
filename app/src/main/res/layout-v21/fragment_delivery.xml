@@ -75,8 +75,8 @@
                 android:maxLines="1"
                 android:text="Re-attempt: "
                 android:textSize="18sp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
+                android:textColor="@color/white"
+
                 android:layout_marginStart="0dp"/>
 
             <TextView
@@ -88,8 +88,8 @@
                 android:text="0"
                 android:textStyle="bold"
                 android:textAlignment="center"
-                android:textColor="#000"
-                android:textSize="18sp" />
+                android:textColor="@color/white"
+                android:textSize="22sp" />
           </RelativeLayout>
 
         </android.support.v7.widget.CardView>
@@ -187,17 +187,18 @@
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content" />-->
           </RelativeLayout>
+
           <TextView
               android:id="@+id/delivery_quick_pick_text"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginTop="90dp"
               android:layout_marginLeft="35dp"
-              android:text="Quick pick"
-              android:textAlignment="center"
+              android:layout_marginTop="90dp"
               android:gravity="center"
-              android:textColor="@android:color/black"
-              android:textSize="18sp"
+              android:text="Quick Pick"
+              android:textAlignment="center"
+              android:textColor="@android:color/holo_blue_light"
+              android:textSize="16sp"
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
@@ -237,15 +238,15 @@
 
           <TextView
               android:id="@+id/QuickDelivery"
-              android:layout_width="wrap_content"
+              android:layout_width="180dp"
               android:layout_height="wrap_content"
+              android:layout_marginLeft="-5dp"
               android:layout_marginTop="90dp"
-              android:layout_marginLeft="20dp"
+              android:gravity="center"
               android:text="Quick Delivery"
               android:textAlignment="center"
-              android:gravity="center"
-              android:textColor="@android:color/black"
-              android:textSize="18sp"
+              android:textColor="#1B5E20"
+              android:textSize="16sp"
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
@@ -309,7 +310,7 @@
               android:textAlignment="center"
               android:gravity="center"
               android:textColor="@android:color/black"
-              android:textSize="18sp"
+              android:textSize="16sp"
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
@@ -356,24 +357,18 @@
               android:textAlignment="center"
               android:gravity="center"
               android:textColor="@android:color/black"
-              android:textSize="18sp"
+              android:textSize="16sp"
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
-
-
-
       </LinearLayout>
-
 
       <LinearLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:clipToPadding="false"
           android:gravity="center"
-          android:orientation="horizontal"
-
-          >
+          android:orientation="horizontal">
 
         <android.support.v7.widget.CardView
             android:id="@+id/OnHold_id"
@@ -417,7 +412,7 @@
               android:textAlignment="center"
               android:gravity="center"
               android:textColor="@android:color/black"
-              android:textSize="18sp"
+              android:textSize="16sp"
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
@@ -464,7 +459,7 @@
               android:textAlignment="center"
               android:gravity="center"
               android:textColor="@android:color/black"
-              android:textSize="18sp"
+              android:textSize="16sp"
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
@@ -522,9 +517,9 @@
               android:text="Return To Supervisor"
               android:textAlignment="center"
               android:gravity="center"
-              android:padding="3dp"
+              android:padding="2dp"
               android:textColor="@android:color/black"
-              android:textSize="17sp"
+              android:textSize="16sp"
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
@@ -569,10 +564,10 @@
               android:layout_marginLeft="4dp"
               android:text="Cash to Supervisor"
               android:textAlignment="center"
-              android:padding="3dp"
+              android:padding="2dp"
               android:gravity="center"
               android:textColor="@android:color/black"
-              android:textSize="17sp"
+              android:textSize="16sp"
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>

@@ -298,7 +298,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getInt("slaMiss"),
                                         o.getString("packagePrice"),
                                         o.getString("CashAmt"));
                                 list.add(withoutStatus_model);

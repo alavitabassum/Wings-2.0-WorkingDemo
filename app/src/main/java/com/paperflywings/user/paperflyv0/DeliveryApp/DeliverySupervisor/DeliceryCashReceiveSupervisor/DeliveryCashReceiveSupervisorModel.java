@@ -65,13 +65,12 @@ public class DeliveryCashReceiveSupervisorModel {
         this.empId = empId;
     }
 
-    public DeliveryCashReceiveSupervisorModel(String orderid, String merOrderRef, String cts, String ctsTime, String ctsBy, int slaMiss, String packagePrice, String collection) {
+    public DeliveryCashReceiveSupervisorModel(String orderid, String merOrderRef, String cts, String ctsTime, String ctsBy,String packagePrice, String collection) {
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
         this.cts = cts;
         this.ctsTime = ctsTime;
         this.ctsBy = ctsBy;
-        this.slaMiss = slaMiss;
         this.packagePrice = packagePrice;
         this.collection = collection;
     }
