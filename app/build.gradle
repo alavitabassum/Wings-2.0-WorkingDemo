@@ -14,8 +14,8 @@ android {
         applicationId "com.paperflywings.user.paperflyv0"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 37
-        versionName "37.0"
+        versionCode 38
+        versionName "38.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true;
 
@@ -27,10 +27,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-            debuggable true
+            //debuggable true
         }
         debug {
-            debuggable true
+            // debuggable true
         }
     }
     lintOptions {

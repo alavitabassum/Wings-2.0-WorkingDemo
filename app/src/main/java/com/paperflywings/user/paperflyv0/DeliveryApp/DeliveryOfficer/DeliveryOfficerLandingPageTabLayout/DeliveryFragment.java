@@ -97,17 +97,13 @@ public class DeliveryFragment extends Fragment {
         if(nInfo!= null && nInfo.isConnected())
         {
             loadDeliverySummary(username);
-
         }
         else {
             getData(username);
             Toast.makeText(getActivity().getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
         }
-
         return viewGroup;
     }
-
-
 
 
     private void loadDeliverySummary(final String user){
