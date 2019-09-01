@@ -1,6 +1,6 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage;
 
-public class DeliverySummary_Model {
+public class DeliverySuperVisorSummeryModel {
     private String username;
     private String unpicked;
     private String withoutStatus;
@@ -18,7 +18,7 @@ public class DeliverySummary_Model {
     private String returnRequest;
     private String reAttempt;
 
-    public DeliverySummary_Model(String username, String unpicked, String withoutStatus, String onHold, String cash, String returnRequest, String returnList, String reAttempt, int status) {
+    public DeliverySuperVisorSummeryModel(String username, String unpicked, String withoutStatus, String onHold, String cash, String returnRequest, String returnList, String reAttempt, int status) {
         this.username = username;
         this.unpicked = unpicked;
         this.withoutStatus = withoutStatus;
@@ -52,7 +52,7 @@ public class DeliverySummary_Model {
     int key_id;
     int status;
 
-    public DeliverySummary_Model(String username, String unpicked, String withoutStatus, String onHold, String cash, String returnRequest, String returnList, int status) {
+    public DeliverySuperVisorSummeryModel(String username, String unpicked, String withoutStatus, String onHold, String cash, String returnRequest, String returnList, int status) {
         this.username = username;
         this.unpicked = unpicked;
         this.withoutStatus = withoutStatus;
@@ -64,17 +64,18 @@ public class DeliverySummary_Model {
 
     }
 
-    public DeliverySummary_Model(String username, String unpicked, String withoutStatus, String onHold, String cash, String returnRequest, String returnList) {
+    public DeliverySuperVisorSummeryModel(String username, String unpicked, String withoutStatus, String onHold, String returnRequest, String returnList, String cash) {
         this.username = username;
         this.unpicked = unpicked;
         this.withoutStatus = withoutStatus;
         this.onHold = onHold;
-        this.cash = cash;
+
         this.returnRequest = returnRequest;
         this.returnList = returnList;
+        this.cash = cash;
     }
 
-    public DeliverySummary_Model(String returnID, String reason) {
+    public DeliverySuperVisorSummeryModel(String returnID, String reason) {
         this.returnID = returnID;
         this.reason = reason;
     }

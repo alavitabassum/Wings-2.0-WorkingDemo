@@ -380,7 +380,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                             count++;
                                             item = item + "," + DeliveryReturnToSuperVisorAdapter.imageModelArrayList1.get(i).getOrderid();
                                         }
-                                        tv.setText(count + " Orders have been selected for cash.");
+                                        tv.setText(count + " Orders have been selected for return.");
                                     }
                                     count = 0;
 
