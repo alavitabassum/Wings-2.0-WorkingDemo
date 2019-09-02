@@ -31,7 +31,7 @@
         android:lines="2"
         android:maxLines="2"
         android:textAlignment="center"
-        android:text="Shariful Islam"
+        android:text=""
         android:layout_toEndOf="@+id/assign_emp_title"
         android:textSize="18sp"
         android:textStyle="bold"

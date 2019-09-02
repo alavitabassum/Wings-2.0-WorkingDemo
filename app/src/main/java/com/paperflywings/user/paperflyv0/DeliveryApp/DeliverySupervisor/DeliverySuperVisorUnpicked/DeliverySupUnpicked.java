@@ -252,9 +252,8 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
         final View mViewReassign = getLayoutInflater().inflate(R.layout.delivery_supervisor_reassign_officer, null);
-        final TextView assign_emp_name = mViewReassign.findViewById(R.id.assign_emp_name);
+
         final TextView error_msg = mViewReassign.findViewById(R.id.error_msg1);
-        assign_emp_name.setText(previousAssign);
 
         getEmployeeList();
         // Employee List
@@ -270,25 +269,26 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         adapterR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mEmployeeSpinner.setAdapter(adapterR);
 
-        AlertDialog.Builder reassignBuilder = new AlertDialog.Builder(DeliverySupUnpicked.this);
-        reassignBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder assignBuilder = new AlertDialog.Builder(DeliverySupUnpicked.this);
+        assignBuilder.setMessage("Assign Delivery Officer:");
+        assignBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //dialog.dismiss();
             }
         });
 
-        reassignBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        assignBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i1) {
                 dialog.dismiss();
             }
         });
 
-        reassignBuilder.setCancelable(false);
-        reassignBuilder.setView(mViewReassign);
+        assignBuilder.setCancelable(false);
+        assignBuilder.setView(mViewReassign);
 
-        final AlertDialog dialogCash = reassignBuilder.create();
+        final AlertDialog dialogCash = assignBuilder.create();
         dialogCash.show();
 
         dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
