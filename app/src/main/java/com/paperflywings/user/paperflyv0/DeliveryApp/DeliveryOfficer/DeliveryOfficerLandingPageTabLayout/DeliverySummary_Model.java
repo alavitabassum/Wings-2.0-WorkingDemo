@@ -152,3 +152,4 @@ public class DeliverySummary_Model {
         this.status = status;
     }
 }
+

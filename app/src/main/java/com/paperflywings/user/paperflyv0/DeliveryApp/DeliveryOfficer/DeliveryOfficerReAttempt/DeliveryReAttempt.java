@@ -506,7 +506,9 @@ public class DeliveryReAttempt extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent homeIntent = new Intent(DeliveryReAttempt.this,
+                    DeliveryTablayout.class);
+            startActivity(homeIntent);
         }
     }
 
@@ -548,7 +550,7 @@ public class DeliveryReAttempt extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
         }
 
