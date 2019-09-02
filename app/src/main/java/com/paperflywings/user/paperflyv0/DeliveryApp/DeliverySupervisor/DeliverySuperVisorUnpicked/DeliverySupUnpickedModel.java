@@ -44,6 +44,30 @@ public class DeliverySupUnpickedModel {
     private String orderDate;
     private String sup_pickDropTime;
     private String sup_pickDropBy;
+    private Integer empId;
+    private String empName;
+
+    public DeliverySupUnpickedModel(Integer empId, String empCode, String empName) {
+        this.empId = empId;
+        this.empCode = empCode;
+        this.empName = empName;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
 
     public String getSup_pickDropTime() {
         return sup_pickDropTime;

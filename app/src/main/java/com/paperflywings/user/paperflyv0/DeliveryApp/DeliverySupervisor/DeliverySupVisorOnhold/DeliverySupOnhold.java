@@ -6,27 +6,28 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +39,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatusModel;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -53,8 +54,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DeliverySupOnhold extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener , SwipeRefreshLayout.OnRefreshListener{
-
+        implements NavigationView.OnNavigationItemSelectedListener , SwipeRefreshLayout.OnRefreshListener, DeliverySupOnHoldAdapter.OnItemClickListener{
+    BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private DeliverySupOnHoldAdapter deliverySupOnHoldAdapter;
     private RecyclerView recyclerView_pul;
@@ -72,6 +73,7 @@ public class DeliverySupOnhold extends AppCompatActivity
     private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
     private BroadcastReceiver broadcastReceiver;
+    private List<DeliverySupOnHoldModel> eList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +82,11 @@ public class DeliverySupOnhold extends AppCompatActivity
         setContentView(R.layout.activity_delivery_sup_onhold);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        db=new BarcodeDbHelper(getApplicationContext());
+        db.getWritableDatabase();
 
         list = new ArrayList<DeliverySupOnHoldModel>();
+        eList = new ArrayList<DeliverySupOnHoldModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -109,14 +114,10 @@ public class DeliverySupOnhold extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(user,flagReqst);
-            list.clear();
-        }
 
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        };
+            list.clear();
+            eList.clear();
+        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -130,6 +131,7 @@ public class DeliverySupOnhold extends AppCompatActivity
         navUsername.setText(user);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
     private void loadRecyclerView(final String username, final String flagReqst) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -182,15 +184,12 @@ public class DeliverySupOnhold extends AppCompatActivity
                                         o.getInt("slaMiss")//onHoldSchedule,onHoldReason
                                 );
                                 list.add(supOnHoldmodels);
-
                             }
-
-//
 
                             deliverySupOnHoldAdapter = new DeliverySupOnHoldAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupOnHoldAdapter);
                             swipeRefreshLayout.setRefreshing(false);
-                            //deliverySupUnpickedAdapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
+                            deliverySupOnHoldAdapter.setOnItemClickListener(DeliverySupOnhold.this);
 
                             String str = String.valueOf(i);
                             sup_on_hold_text.setText(str);
@@ -207,7 +206,6 @@ public class DeliverySupOnhold extends AppCompatActivity
                     progress.dismiss();
                         // swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Server not connected" , Toast.LENGTH_LONG).show();
-
                     }
                 })
         {
@@ -230,6 +228,123 @@ public class DeliverySupOnhold extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    @Override
+    public void onItemClick(View view, int position) {
+
+        String previousAssign = list.get(position).getUsername();
+        final int sql_primary_id = list.get(position).getSql_primary_id();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+
+        final View mViewReassign = getLayoutInflater().inflate(R.layout.delivery_supervisor_reassign_officer, null);
+        final TextView assign_emp_title = mViewReassign.findViewById(R.id.assign_emp_title);
+        final TextView assign_emp_name = mViewReassign.findViewById(R.id.assign_emp_name);
+        final TextView error_msg = mViewReassign.findViewById(R.id.error_msg1);
+        assign_emp_title.setText("Assigned Officer: ");
+        assign_emp_name.setText(previousAssign);
+
+        getEmployeeList();
+        // Employee List
+        final Spinner mEmployeeSpinner = (Spinner) mViewReassign.findViewById(R.id.employee_list_onhold);
+        List<String> empList = new ArrayList<String>();
+        empList.add(0,"Select employee...");
+        for (int x = 0; x < eList.size(); x++) {
+            empList.add(eList.get(x).getEmpName());
+        }
+        ArrayAdapter<String> adapterR = new ArrayAdapter<String>(DeliverySupOnhold.this,
+                android.R.layout.simple_spinner_item,
+                empList);
+        adapterR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mEmployeeSpinner.setAdapter(adapterR);
+
+        AlertDialog.Builder reassignBuilder = new AlertDialog.Builder(DeliverySupOnhold.this);
+        reassignBuilder.setPositiveButton("Re-assign", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //dialog.dismiss();
+            }
+        });
+
+        reassignBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i1) {
+                dialog.dismiss();
+            }
+        });
+
+        reassignBuilder.setCancelable(false);
+        reassignBuilder.setView(mViewReassign);
+
+        final AlertDialog dialogCash = reassignBuilder.create();
+        dialogCash.show();
+
+        dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String empName = mEmployeeSpinner.getSelectedItem().toString();
+                String empCode = db.getSelectedEmpCode(empName);
+
+                if(empName.equals("Select employee...")){
+                    error_msg.setText("Please select employee!!");
+                } else {
+                    ReassignOrderToAnotherDO(empCode, username, sql_primary_id);
+                    //startActivity(intent);
+                    dialogCash.dismiss();
+                }
+
+            }
+        });
+
+    }
+
+    private void ReassignOrderToAnotherDO(final String empCode,final String username, final int sql_primary_id) {
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+
+                                Toast.makeText(DeliverySupOnhold.this, "Successful", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(DeliverySupOnhold.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DeliverySupOnhold.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("empcode", empCode);
+                params.put("username", username);
+                params.put("sql_primary_id", String.valueOf(sql_primary_id));
+                params.put("flagreq", "Delivery_officer_reassign_by_supervisor");
+                return params;
+            }
+        };
+        try {
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliverySupOnhold.this, "Server Error", Toast.LENGTH_LONG).show();
+        }
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
@@ -308,7 +423,7 @@ public class DeliverySupOnhold extends AppCompatActivity
 
                          /*   SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                             db.deleteAssignedList(sqLiteDatabase);
-*/
+                        */
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -337,13 +452,10 @@ public class DeliverySupOnhold extends AppCompatActivity
 
                         }
                     });
-
             //Showing the alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
-
         }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -364,6 +476,23 @@ public class DeliverySupOnhold extends AppCompatActivity
         {
             loadRecyclerView(username,flagReqst);
             list.clear();
+        }
+    }
+
+    private void getEmployeeList() {
+        try {
+//            list.clear();
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_employee_list(sqLiteDatabase);
+            while (c.moveToNext()) {
+                Integer empId = c.getInt(0);
+                String empCode = c.getString(1);
+                String empName = c.getString(2);
+                DeliverySupOnHoldModel employeeList = new DeliverySupOnHoldModel(empId,empCode,empName);
+                eList.add(employeeList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

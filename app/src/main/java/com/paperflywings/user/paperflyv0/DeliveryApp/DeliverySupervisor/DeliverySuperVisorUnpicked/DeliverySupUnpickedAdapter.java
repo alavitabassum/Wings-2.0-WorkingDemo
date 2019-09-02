@@ -2,7 +2,6 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Deliver
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.R;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +28,15 @@ public class DeliverySupUnpickedAdapter extends RecyclerView.Adapter<DeliverySup
     private int currentPosition = -1;
     private Context context;
     BarcodeDbHelper db;
+    private OnItemClickListener mListner;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listner) {
+        this.mListner = listner;
+    }
 
     public DeliverySupUnpickedAdapter(List<DeliverySupUnpickedModel>list, Context context){
         this.list = list;
@@ -50,11 +57,12 @@ public class DeliverySupUnpickedAdapter extends RecyclerView.Adapter<DeliverySup
         public TextView item_packagePrice;
         public TextView item_productBrief;
         public TextView item_sla_miss;
+        public Button item_reassign_officer;
         public TextView item_pickdropby;
         public TextView item_pickdropTime;
         public CardView card_view;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             item_ordId=itemView.findViewById(R.id.sup_orderId_unpicked);
             item_merOrderRef=itemView.findViewById(R.id.m_order_ref_unpicked);
@@ -66,11 +74,20 @@ public class DeliverySupUnpickedAdapter extends RecyclerView.Adapter<DeliverySup
             item_packagePrice=itemView.findViewById(R.id.price_unpicked);
             item_productBrief=itemView.findViewById(R.id.package_brief_unpicked);
             item_sla_miss = itemView.findViewById(R.id.sla_deliverytime);
-          //  item_pickdropby = itemView.findViewById(R.id.sup_pickdropBY);
-           // item_pickdropTime = itemView.findViewById(R.id.sup_pickdropTime);
-          /*  itemStatus=itemView.findViewById(R.id.btn_status);
+            item_reassign_officer = itemView.findViewById(R.id.btn_assign_officer);
 
-            card_view=itemView.findViewById(R.id.card_view_delivery_unpicked_list);*/
+            item_reassign_officer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListner != null) {
+                        // Position of the item will be saved in this variable
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListner.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
 
 
         }
