@@ -62,6 +62,7 @@ public class DeliveryListFragment extends Fragment {
     private TextView sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count;
     private RequestQueue requestQueue;
     String username,unpicked,withoutStatus,onHold,cash,returnRequest,returnList;
+    TextView sup_Unpicked_count;
 
     private ProgressDialog progress;
 
@@ -96,6 +97,7 @@ public class DeliveryListFragment extends Fragment {
 
         sup_ReturnReceive = (CardView)viewGroup.findViewById(R.id.sup_returnReceived_id);
         sup_CashReceive = (CardView)viewGroup.findViewById(R.id.sup_cashReceived_id);
+        sup_Unpicked_count = (TextView)viewGroup.findViewById(R.id.UnpickedCount);
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -136,36 +138,17 @@ public class DeliveryListFragment extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray array = jsonObject.getJSONArray("getData");
                     for (int i = 0; i < array.length(); i++) {
-                        JSONObject o = array.getJSONObject(i);
-                        DeliverySuperVisorSummeryModel DeliverySuperVisorSummaryModel = new DeliverySuperVisorSummeryModel(
-                                username = o.getString("username"),
-                                unpicked = o.getString("unpicked"),
-                                withoutStatus = o.getString("withoutStatus"),
-                                onHold =  o.getString("onHold"),
-                                cash = o.getString("returnRequest"),
-                                returnRequest = o.getString("returnList"),
-                                returnList = o.getString("cash")
-                                //NAME_NOT_SYNCED_WITH_SERVER
-                        );
 
+                        JSONObject o = array.getJSONObject(i);
+                        sup_Unpicked_count.setText(o.getString("unpicked"));
+                        sup_withoutStatus_count.setText(o.getString("withoutStatus"));
+                        sup_onHold_count.setText(o.getString("onHold"));
+                        sup_returnReqst_count.setText(o.getString("returnRequest"));
+                        sup_returnList_count.setText(o.getString("returnList"));
+                        sup_cashCollection_count.setText(o.getString("cash"));
                     }
 
 
-                      /*  db.insert_delivery_summary_count(
-                                o.getString("username"),
-                                o.getString("unpicked"),
-                                o.getString("withoutStatus"),
-                                o.getString("onHold"),
-                                o.getString("cash"),
-                                o.getString("returnRequest"),
-                                o.getString("returnList"),
-                                o.getString("reAttempt"),
-                               // NAME_NOT_SYNCED_WITH_SERVER
-                        );*/
-//                            summaries.add(todaySummary);
-
-
-                    //getData(user);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -199,13 +182,6 @@ public class DeliveryListFragment extends Fragment {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
 
-       /* sup_unpicked_count.setText(username);
-        sup_withoutStatus_count.setText(withoutStatus);
-        sup_unpicked_count.setText(unpicked);
-        sup_onHold_count.setText(onHold);
-        sup_returnList_count.setText(returnList);
-        sup_returnReqst_count.setText(returnRequest);
-        sup_cashCollection_count.setText(cash);*/
     }
 
 
