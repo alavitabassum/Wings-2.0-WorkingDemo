@@ -36,6 +36,7 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Delivery
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
@@ -62,7 +63,7 @@ public class DeliveryListFragment extends Fragment {
     private TextView sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count;
     private RequestQueue requestQueue;
     String username,unpicked,withoutStatus,onHold,cash,returnRequest,returnList;
-    TextView sup_Unpicked_count;
+
 
     private ProgressDialog progress;
 
@@ -94,13 +95,78 @@ public class DeliveryListFragment extends Fragment {
         sup_returnReqst_count = (TextView)viewGroup.findViewById(R.id.ReturnCount);
         sup_cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
         sup_returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
+        sup_unpicked_count = (TextView)viewGroup.findViewById(R.id.UnpickedCount);
 
+
+
+        sup_unpicked_item = (CardView)viewGroup.findViewById(R.id.sup_unpicked_id);
+        sup_without_Status = (CardView)viewGroup.findViewById(R.id.sup_withoutStatus_id);
+        sup_on_Hold = (CardView)viewGroup.findViewById(R.id.sup_onHold_id);
+        sup_returnReqst = (CardView)viewGroup.findViewById(R.id.sup_returnRequest_id);
+        sup_return_List = (CardView)viewGroup.findViewById(R.id.sup_returnList_id);
+        sup_cashCollection = (CardView)viewGroup.findViewById(R.id.sup_cash_id) ;
         sup_ReturnReceive = (CardView)viewGroup.findViewById(R.id.sup_returnReceived_id);
         sup_CashReceive = (CardView)viewGroup.findViewById(R.id.sup_cashReceived_id);
-        sup_Unpicked_count = (TextView)viewGroup.findViewById(R.id.UnpickedCount);
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
+
+        sup_unpicked_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupUnpicked.class);
+                startActivity(intent);
+            }
+        });
+        sup_without_Status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupWithoutStatus.class);
+                startActivity(intent);
+            }
+        });
+        sup_on_Hold.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupOnhold.class);
+                startActivity(intent);
+            }
+        });
+        sup_returnReqst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupPreRet.class);
+                startActivity(intent);
+            }
+        });
+        sup_return_List.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupReturnList.class);
+                startActivity(intent);
+            }
+        });
+        sup_cashCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupCash.class);
+                startActivity(intent);
+            }
+        });
+        sup_ReturnReceive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySReturnReceive.class);
+                startActivity(intent);
+            }
+        });
+        sup_CashReceive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCashReceiveSupervisor.class);
+                startActivity(intent);
+            }
+        });
 
 
         if(nInfo!= null && nInfo.isConnected())
@@ -140,7 +206,7 @@ public class DeliveryListFragment extends Fragment {
                     for (int i = 0; i < array.length(); i++) {
 
                         JSONObject o = array.getJSONObject(i);
-                        sup_Unpicked_count.setText(o.getString("unpicked"));
+                        sup_unpicked_count.setText(o.getString("unpicked"));
                         sup_withoutStatus_count.setText(o.getString("withoutStatus"));
                         sup_onHold_count.setText(o.getString("onHold"));
                         sup_returnReqst_count.setText(o.getString("returnRequest"));
