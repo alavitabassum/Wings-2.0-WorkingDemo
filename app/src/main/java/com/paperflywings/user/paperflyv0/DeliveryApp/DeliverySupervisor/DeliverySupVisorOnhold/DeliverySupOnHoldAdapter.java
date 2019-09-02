@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -24,6 +25,15 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
 
     private int currentPosition = -1;
     private Context context;
+    private OnItemClickListener mListner;
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listner) {
+        this.mListner = listner;
+    }
 
     public DeliverySupOnHoldAdapter(List<DeliverySupOnHoldModel>list, Context context){
         this.list = list;
@@ -44,18 +54,16 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
         public TextView item_packagePrice;
         public TextView item_productBrief;
         public TextView item_sla_miss;
-       /* public TextView item_pickdropby;
-        public TextView item_pickdropTime;*/
-       public TextView item_onHold_reason;
+        public Button item_reassign_officer;
+        public TextView item_onHold_reason;
         public TextView item_onHold_schedule;
         public CardView card_view;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             item_ordId=itemView.findViewById(R.id.sup_orderId_without_status);
             item_merOrderRef=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName=itemView.findViewById(R.id.sup_m_name_without_status);
-//            item_pickMerchantName=itemView.findViewById(R.id.pick_m_name);
             item_orderdate=itemView.findViewById(R.id.sup_order_date);
             item_dp2_time=itemView.findViewById(R.id.sup_dp2_time);
             item_dp2_by=itemView.findViewById(R.id.sup_dp2_by);
@@ -64,8 +72,20 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
             item_sla_miss = itemView.findViewById(R.id.sla_deliverytime);
             item_onHold_schedule = itemView.findViewById(R.id.sup_onholdSchedule);
             item_onHold_reason = itemView.findViewById(R.id.sup_onholdReason);
-          /*  itemStatus=itemView.findViewById(R.id.btn_status);
-            card_view=itemView.findViewById(R.id.card_view_delivery_unpicked_list);*/
+            item_reassign_officer = itemView.findViewById(R.id.btn_reassign_officer);
+
+            item_reassign_officer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListner != null) {
+                        // Position of the item will be saved in this variable
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListner.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -91,7 +111,7 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
             viewHolder.item_merchantName.setText(list.get(i).getPickMerchantName());
         }
 
-        // viewHolder.item_pickMerchantName.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
+
         viewHolder.item_orderdate.setText("Order Date: "+list.get(i).getOrderDate());
         viewHolder.item_dp2_time.setText("Dp2 Time: "+list.get(i).getDp2Time());
         viewHolder.item_dp2_by.setText("Dp2 By: "+list.get(i).getDp2By());
@@ -113,6 +133,8 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
         }
         viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_productBrief.setText("Product Brief:  "+list.get(i).getProductBrief());
+
+
     }
 
 
