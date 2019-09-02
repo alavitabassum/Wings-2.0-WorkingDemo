@@ -289,7 +289,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(context, "Unable to connect to the server! Please ensure your internet is working! all"+error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Unable to connect to the server! Please ensure your internet is working! all", Toast.LENGTH_SHORT).show();
                         }
                     }) {
                 @Override
@@ -404,7 +404,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Unable to connect to the server! Please ensure your internet is working! rts " +error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Unable to connect to the server! Please ensure your internet is working! rts " , Toast.LENGTH_SHORT).show();
                     }
                 }) {
             @Override
