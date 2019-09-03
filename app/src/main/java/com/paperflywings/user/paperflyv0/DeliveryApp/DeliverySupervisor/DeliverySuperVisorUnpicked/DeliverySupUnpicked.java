@@ -129,7 +129,6 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             }
         };
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_unpicked);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

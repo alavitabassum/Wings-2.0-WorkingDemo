@@ -33,10 +33,11 @@
         >-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp">
+        android:layout_marginTop="120dp"
+        android:layout_height="75dp">
 
         <RelativeLayout
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="0dp"
             android:layout_width="300dp"
             android:layout_height="60dp"
             >
@@ -89,17 +90,7 @@
                 android:textSize="15sp" />
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/cash_recieved_by_supervisor"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingRight="10dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginRight="-60dp"
-            android:textColor="@color/white"
-            android:background="#1B5E20"
-            android:textStyle="bold"
-            android:text="Cash Received By Supervisor" />
+
 
 
     </LinearLayout>
@@ -107,7 +98,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="190dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:orientation="horizontal">
@@ -145,87 +136,105 @@
             android:textStyle="bold"
             android:visibility="visible" />
 
-
     </LinearLayout>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/without_Status_id"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="155dp"
-        android:gravity="center"
-        android:foregroundGravity="center|fill"
-        android:layout_gravity="center_horizontal"
-        app:cardElevation="4dp"
-        >
-        <RelativeLayout
+        android:layout_marginTop="60dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+    <Button
+        android:id="@+id/cash_recieved_by_supervisor"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textColor="@color/white"
+        android:background="@drawable/buttonstyle_cts"
+        android:textStyle="bold"
+        android:text="Cash Received By Supervisor" />
+    </LinearLayout>
+
+    <!--
+        <android.support.v7.widget.CardView
+            android:id="@+id/without_Status_id"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:background="#aaaaaa">
-            <TextView
-                android:id="@+id/ordertxt_order_cash_head"
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="Order ID"
-                android:textColor="#fff"
-                android:textSize="14sp"
-                android:textStyle="bold"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="155dp"
+            android:gravity="center"
+            android:foregroundGravity="center|fill"
+            android:layout_gravity="center_horizontal"
+            app:cardElevation="4dp"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:background="#aaaaaa">
+                <TextView
+                    android:id="@+id/ordertxt_order_cash_head"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Order ID"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
 
-            <TextView
-                android:id="@+id/merOrderRefId_head"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/ordertxt_order_cash_head"
-                android:layout_toEndOf="@+id/ordertxt_order_cash_head"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="Merchant Order Ref"
-                android:textAlignment="textStart"
-                android:textColor="#fff"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                />
+                <TextView
+                    android:id="@+id/merOrderRefId_head"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/ordertxt_order_cash_head"
+                    android:layout_toEndOf="@+id/ordertxt_order_cash_head"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Merchant Order Ref"
+                    android:textAlignment="textStart"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    />
 
-            <TextView
-                android:id="@+id/orderIdCash_head"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/merOrderRefId_head"
-                android:layout_toEndOf="@+id/merOrderRefId_head"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="Price"
-                android:paddingLeft="10dp"
-                android:textAlignment="textStart"
-                android:textColor="#fff"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                />
+                <TextView
+                    android:id="@+id/orderIdCash_head"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/merOrderRefId_head"
+                    android:layout_toEndOf="@+id/merOrderRefId_head"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Price"
+                    android:paddingLeft="10dp"
+                    android:textAlignment="textStart"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    />
 
-            <TextView
-                android:id="@+id/collectedCashAmt_head"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/orderIdCash_head"
-                android:layout_toEndOf="@+id/orderIdCash_head"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="Collection"
-                android:paddingLeft="10dp"
-                android:textAlignment="textStart"
-                android:textColor="#fff"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/collectedCashAmt_head"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/orderIdCash_head"
+                    android:layout_toEndOf="@+id/orderIdCash_head"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Collection"
+                    android:paddingLeft="10dp"
+                    android:textAlignment="textStart"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    -->
 
-    <include layout="@layout/content_delivery_cts"
-        android:layout_marginTop="150dp"
+    <include layout="@layout/content_delivery_cts_test"
+        android:layout_marginTop="230dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
