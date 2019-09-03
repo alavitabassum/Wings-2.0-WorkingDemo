@@ -1,5 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,9 +28,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -46,13 +49,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class DeliverySupBankReport extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener  {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
@@ -60,14 +66,20 @@ public class DeliverySupBankReport extends AppCompatActivity
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
+    Button selectDate;
+    TextView dateShow;
+    DatePickerDialog datePickerDialog;
+    int year;
+    int month;
+    int dayOfMonth;
+    Calendar calendar;
     private ProgressDialog progress;
     private TextView btnselect, btndeselect;
     private Button btnnext;
-    String item = "";
-
+    private List<DeliverySupBankReportModel> list;
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
-    private List<DeliverySupBankReportModel> list;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,20 +115,100 @@ public class DeliverySupBankReport extends AppCompatActivity
         final NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
 
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setRefreshing(true);
+       // swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+       // swipeRefreshLayout.setOnRefreshListener(this);
+//        swipeRefreshLayout.setRefreshing(true);
         list.clear();
-        swipeRefreshLayout.setRefreshing(true);
 
-        if(nInfo!= null && nInfo.isConnected())
+        final Button startDate = findViewById(R.id.startdate);
+        final Button endDate = findViewById(R.id.enddate);
+        final Button searchData = findViewById(R.id.search);
+
+
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-M-d");
+        final String currentDateTimeString = df.format(c);
+
+        startDate.setText(currentDateTimeString);
+
+
+        // start date
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                datePickerDialog = new DatePickerDialog(DeliverySupBankReport.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+//                        startDate.setText(day + "/" + (month+1) + "/" + year);
+                        String yearselected  = Integer.toString(year) ;
+                        String monthselected  = Integer.toString(month + 1);
+                        String dayselected  = Integer.toString(day);
+                        /*2019-07-15 03:45:29*/
+                        String startdate = yearselected + "-" + monthselected + "-" + dayselected;
+                        startDate.setText(startdate);
+                    }
+                },year,month,dayOfMonth );
+                datePickerDialog.show();
+
+            }
+
+        });
+
+        endDate.setText(currentDateTimeString);
+
+        // end date
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                datePickerDialog = new DatePickerDialog(DeliverySupBankReport.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+//                        endDate.setText(day + "/" + (month+1) + "/" + year);
+                        String yearselected  = Integer.toString(year) ;
+                        String monthselected  = Integer.toString(month + 1);
+                        String dayselected  = Integer.toString(day);
+                        /*2019-07-15 03:45:29*/
+                        String enddate = yearselected + "-" + monthselected + "-" + dayselected;
+                        endDate.setText(enddate);
+                    }
+                },year,month,dayOfMonth );
+                datePickerDialog.show();
+
+            }
+
+        });
+
+        searchData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String startdate = startDate.getText().toString();
+                String enddate = endDate.getText().toString();
+              //  loadcashamt(username,startdate,enddate);
+                loadCashReceiveData(username,startdate,enddate);
+                list.clear();
+            }
+        });
+
+
+      /*  if(nInfo!= null && nInfo.isConnected())
         {
             loadCashReceiveData(username);
+
         }
         else {
             // getData(username);
             Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
         }
+*/
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
@@ -125,153 +217,6 @@ public class DeliverySupBankReport extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadCashReceiveData (final String username){
-        progress=new ProgressDialog(this);
-        progress.setMessage("Loading Data");
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setCancelable(false);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        list.clear();
-                        progress.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("getData");
-
-                            for(int i =0;i<array.length();i++)
-                            {
-                                JSONObject o = array.getJSONObject(i);
-                                DeliverySupBankReportModel withoutStatus_model = new  DeliverySupBankReportModel(
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("CTS"),
-                                        o.getString("CTSTime"),
-                                        o.getString("CTSBy"),
-                                        o.getInt("slaMiss"),
-                                        o.getString("packagePrice"),
-                                        o.getString("CashAmt"));
-                                list.add(withoutStatus_model);
-                            }
-
-                            deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
-
-                         /*   btnselect.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    list = getModel(true);
-                                    deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
-                                    recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
-                                }
-                            });*/
-                          /*  btndeselect.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    list = getModel(false);
-                                    deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
-                                    recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
-                                }
-                            });*/
-/*
-                            btnnext.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int count=0;
-                                    SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                                    final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-                                    final Intent intent = new Intent(DeliverySupBankReport.this, DeliverySupBankReport.class);
-                                    android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(DeliverySupBankReport.this);
-                                    View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
-                                    final TextView tv = mView.findViewById(R.id.tv);
-                                    final TextView  orderIds = mView.findViewById(R.id.cash_amount);
-
-                                    for (int i = 0; i < DeliverySupBankReportAdapter.imageModelArrayList.size(); i++){
-                                        if(DeliverySupBankReportAdapter.imageModelArrayList.get(i).getSelectedCts()) {
-                                            count++;
-                                            item = item + "," + DeliverySupBankReportAdapter.imageModelArrayList.get(i).getOrderid();
-                                        }
-                                        tv.setText(count + " Orders have been selected for cash.");
-                                    }
-                                    //orderIds.setText(item);
-                                    count = 0;
-
-                                    alertDialogBuilder.setPositiveButton("Submit",
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface arg0, int arg1) {
-
-                                                }
-                                            });
-
-                                    alertDialogBuilder.setNegativeButton("Cancel",
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface arg0, int arg1) {
-                                                    item = "";
-                                                }
-                                            });
-                                    alertDialogBuilder.setCancelable(false);
-                                    alertDialogBuilder.setView(mView);
-
-                                    final android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
-                                    alertDialog.show();
-
-                                    alertDialog.getButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if(tv.getText().equals("0 Orders have been selected for cash.")){
-                                                orderIds.setText("Please Select Orders First!!");
-                                            } else {
-                                                UpdateBankedOrders(item, username);
-                                                alertDialog.dismiss();
-                                                startActivity(intent);
-                                                //loadRecyclerView(username);
-                                                item = "";
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-*/
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            swipeRefreshLayout.setRefreshing(false);
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        progress.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
-                    }
-                })
-        {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String,String> params1 = new HashMap<String,String>();
-                params1.put("username", username);
-                params1.put("flagreq", "delivery_cash_recv_orders");
-                return params1;
-            }
-        };
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(this);
-        }
-        requestQueue.add(stringRequest);
-    }
 
 
     @Override
@@ -300,7 +245,7 @@ public class DeliverySupBankReport extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                deliverySupBankReportAdapter.getFilter().filter(newText);
+               // deliverySupBankReportAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -392,7 +337,85 @@ public class DeliverySupBankReport extends AppCompatActivity
         return true;
     }
 
-    @Override
+    private void loadCashReceiveData (final String username,final String startdate, final String enddate){
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        list.clear();
+                        progress.dismiss();
+                       // swipeRefreshLayout.setRefreshing(false);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getData");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                DeliverySupBankReportModel withoutStatus_model = new  DeliverySupBankReportModel(
+                                        o.getString("orderid"),
+                                        o.getString("merOrderRef"),
+                                        o.getString("CTS"),
+                                        o.getString("CTSTime"),
+                                        o.getString("CTSBy"),
+                                        o.getString("packagePrice"),
+                                        o.getString("CashAmt"));
+                                list.add(withoutStatus_model);
+                            }
+
+                            deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
+
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                          //  swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
+                      //  swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username", username);
+                params1.put("startdate", startdate);
+                params1.put("enddate", enddate);
+                params1.put("flagreq", "delivery_cash_recv_orders");
+                return params1;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
+
+ /*   @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -403,12 +426,12 @@ public class DeliverySupBankReport extends AppCompatActivity
         deliverySupBankReportAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-           loadCashReceiveData(username);
+            loadCashReceiveData(username,startdate,enddate);
         }
         else{
             Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 
 /*
     private void UpdateBankedOrders(final String item,final String CTSBy) {
