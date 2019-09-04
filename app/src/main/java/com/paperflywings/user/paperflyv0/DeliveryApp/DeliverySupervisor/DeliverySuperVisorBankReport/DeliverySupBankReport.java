@@ -118,6 +118,7 @@ public class DeliverySupBankReport extends AppCompatActivity
        // swipeRefreshLayout = findViewById(R.id.swipe_refresh);
        // swipeRefreshLayout.setOnRefreshListener(this);
 //        swipeRefreshLayout.setRefreshing(true);
+
         list.clear();
 
         final Button startDate = findViewById(R.id.startdate);
@@ -192,7 +193,8 @@ public class DeliverySupBankReport extends AppCompatActivity
                 String startdate = startDate.getText().toString();
                 String enddate = endDate.getText().toString();
               //  loadcashamt(username,startdate,enddate);
-                loadCashReceiveData(username,startdate,enddate);
+                String flagReqst = "get_bank_invoice_list";
+                loadCashReceiveData(username,startdate,enddate,flagReqst);
                 list.clear();
             }
         });
@@ -337,7 +339,7 @@ public class DeliverySupBankReport extends AppCompatActivity
         return true;
     }
 
-    private void loadCashReceiveData (final String username,final String startdate, final String enddate){
+    private void loadCashReceiveData (final String username,final String startdate, final String enddate,final String flagReqst){
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -357,10 +359,10 @@ public class DeliverySupBankReport extends AppCompatActivity
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("getData");
 
-                            for(int i =0;i<array.length();i++)
+                            for(int i = 0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliverySupBankReportModel withoutStatus_model = new  DeliverySupBankReportModel(
+                                DeliverySupBankReportModel withoutStatus_models = new  DeliverySupBankReportModel(
                                         o.getString("orderid"),
                                         o.getString("merOrderRef"),
                                         o.getString("CTS"),
@@ -368,13 +370,11 @@ public class DeliverySupBankReport extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getString("packagePrice"),
                                         o.getString("CashAmt"));
-                                list.add(withoutStatus_model);
+                                list.add(withoutStatus_models);
                             }
 
                             deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
-
-
 
 
                         } catch (JSONException e) {
@@ -388,7 +388,7 @@ public class DeliverySupBankReport extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
                       //  swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Server not connected" ,Toast.LENGTH_LONG).show();
                     }
                 })
         {
@@ -397,9 +397,9 @@ public class DeliverySupBankReport extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username", username);
-                params1.put("startdate", startdate);
-                params1.put("enddate", enddate);
-                params1.put("flagreq", "delivery_cash_recv_orders");
+                params1.put("start_date", startdate);
+                params1.put("end_date", enddate);
+                params1.put("flagreq", flagReqst);
                 return params1;
             }
         };
@@ -407,10 +407,10 @@ public class DeliverySupBankReport extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+       /* stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 50000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
         requestQueue.add(stringRequest);
     }
 
@@ -433,95 +433,6 @@ public class DeliverySupBankReport extends AppCompatActivity
         }
     }*/
 
-/*
-    private void UpdateBankedOrders(final String item,final String CTSBy) {
-
-        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                Toast.makeText(DeliverySupBankReport.this, "Successful", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(DeliverySupBankReport.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DeliverySupBankReport.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("orderid", item);
-                params.put("CTSBy", CTSBy);
-                params.put("flagreq", "Delivery_complete_bank_orders_by_supervisor");
-
-                return params;
-            }
-        };
-        try {
-            if (requestQueue == null) {
-                requestQueue = Volley.newRequestQueue(this);
-            }
-            requestQueue.add(postRequest);
-        } catch (Exception e) {
-            Toast.makeText(DeliverySupBankReport.this, "Server Error! cts", Toast.LENGTH_LONG).show();
-        }
-    }
-*/
-
-
-/*
-    private ArrayList<DeliverySupBankReportModel> getModel(boolean isSelect){
-        ArrayList<DeliverySupBankReportModel> listOfOrders = new ArrayList<>();
-        if(isSelect == true){
-           */
-/* String totalCash = String.valueOf(db.getTotalCash("cts"));
-            totalCollection.setText(totalCash+" Taka");*//*
-
-
-            for(int i = 0; i < list.size(); i++){
-                DeliverySupBankReportModel model = new DeliverySupBankReportModel();
-
-                model.setSelectedCts(isSelect);
-                model.setOrderid(list.get(i).getOrderid());
-                model.setCtsBy(list.get(i).getCtsBy());
-                model.setCtsTime(list.get(i).getCtsTime());
-                model.setPackagePrice(list.get(i).getPackagePrice());
-                model.setCollection(list.get(i).getCollection());
-
-               // listOfOrders.add(model);
-            }
-
-        } else if(isSelect == false){
-            // totalCollection.setText("0 Taka");
-
-            for(int i = 0; i < list.size(); i++){
-                DeliverySupBankReportModel model = new DeliverySupBankReportModel();
-
-                model.setSelectedCts(isSelect);
-                model.setOrderid(list.get(i).getOrderid());
-                model.setCtsBy(list.get(i).getCtsBy());
-                model.setCtsTime(list.get(i).getCtsTime());
-                model.setPackagePrice(list.get(i).getPackagePrice());
-                model.setCollection(list.get(i).getCollection());
-
-                listOfOrders.add(model);
-            }
-        }
-        return listOfOrders;
-    }
-*/
 
 
 }

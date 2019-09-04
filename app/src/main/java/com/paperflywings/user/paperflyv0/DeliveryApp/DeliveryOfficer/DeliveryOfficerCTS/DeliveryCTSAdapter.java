@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.ViewHolder> implements Filterable {
     private ArrayList<DeliveryCTSModel> listFull;
-    private ArrayList<DeliveryCTSModel> list;
+    public ArrayList<DeliveryCTSModel> list;
     public static ArrayList<DeliveryCTSModel> imageModelArrayList;
 
     private int currentPostion = -1;
@@ -136,6 +136,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
         viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelected());
         viewHolder.checkBox.setTag(i);
+
         viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,6 +155,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
                 }
             }
         });
+
 
 
     }

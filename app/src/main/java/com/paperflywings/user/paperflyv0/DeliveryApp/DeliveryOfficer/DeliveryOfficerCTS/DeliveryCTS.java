@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,7 @@ public class DeliveryCTS extends AppCompatActivity
     ProgressDialog progressDialog;
 
     String item = "";
+    String totalCash = "";
 
     public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorCTSinBatch.php";
 
@@ -370,6 +372,9 @@ public class DeliveryCTS extends AppCompatActivity
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCTS.this);
                                     View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
                                     final TextView tv = mView.findViewById(R.id.tv);
+                                    final TextView tv1 = mView.findViewById(R.id.tv1);
+                                    final EditText totalcashes = mView.findViewById(R.id.cash_Collection_text);
+                                    final EditText cashComment = mView.findViewById(R.id.cash_comment_text);
                                     final TextView  orderIds = mView.findViewById(R.id.cash_amount);
 
                                     for (int i = 0; i < DeliveryCTSAdapter.imageModelArrayList.size(); i++){
@@ -381,6 +386,14 @@ public class DeliveryCTS extends AppCompatActivity
                                     }
                                     //orderIds.setText(item);
                                     count = 0;
+                                    float CashCount = 0.0f;
+                                        for (int i = 0; i <DeliveryCTSAdapter.imageModelArrayList.size(); i++) {
+                                            if(DeliveryCTSAdapter.list.get(i).getSelected()) {
+                                            totalCash = String.valueOf(db.getTotalCash("cts"));
+                                            CashCount = Float.parseFloat(totalCash);
+                                            tv1.setText(CashCount + " Taka needs to be collected.");
+                                        }
+                                    }
 
                                     alertDialogBuilder.setPositiveButton("Submit",
                                             new DialogInterface.OnClickListener() {
@@ -406,10 +419,25 @@ public class DeliveryCTS extends AppCompatActivity
                                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+                                            String totalCashs = tv1.getText().toString().trim();
+                                            String CashComments = cashComment.getText().toString().trim();
+                                            String CashCollected = totalcashes.getText().toString().trim();
+
                                             if(tv.getText().equals("0 Orders have been selected for cash.")){
                                                 orderIds.setText("Please Select Orders First!!");
-                                            } else {
-                                                UpdateBankInfo(item, username);
+                                            }
+                                            else if(totalCashs.isEmpty()){
+                                                orderIds.setText("Please enter required fields First!!");
+                                            }
+                                            else if(CashComments.isEmpty()){
+                                                orderIds.setText("Please enter required fields First!!");
+                                            }
+                                            else if(CashCollected.isEmpty()){
+                                                orderIds.setText("Please enter required fields First!!");
+                                            }
+                                            else {
+
+                                                UpdateBankInfo(item,username,totalCashs,CashCollected,CashComments);
                                                 alertDialog.dismiss();
                                                 startActivity(intent);
                                                 //loadRecyclerView(username);
@@ -434,7 +462,7 @@ public class DeliveryCTS extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         // progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Server not connected" ,Toast.LENGTH_LONG).show();
                     }
                 })
         {
@@ -475,6 +503,7 @@ public class DeliveryCTS extends AppCompatActivity
         try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 return false;
             }
             @Override
@@ -647,7 +676,7 @@ public class DeliveryCTS extends AppCompatActivity
             }
         }*/
 
-    private void UpdateBankInfo(final String item,final String CTSBy) {
+    private void UpdateBankInfo(final String item,final String CTSBy,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>() {
@@ -675,9 +704,11 @@ public class DeliveryCTS extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("orderid", item);
-                params.put("CTSBy", CTSBy);
-
+                params.put("orderidList", item);
+                params.put("createdBy", CTSBy);
+                params.put("submittedCashAmt", submittedCashAmt);
+                params.put("totalCashAmt", totalCashAmt);
+                params.put("comment", CashComment);
                 return params;
             }
         };
