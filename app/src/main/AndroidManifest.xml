@@ -168,7 +168,7 @@
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS"
             android:label="@string/title_activity_delivery_cts"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor"

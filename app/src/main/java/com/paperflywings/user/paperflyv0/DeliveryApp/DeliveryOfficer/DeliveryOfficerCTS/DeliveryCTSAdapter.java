@@ -38,6 +38,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
 
     public void setOnItemClickListener(DeliveryCTS listener) {
+
         this.mListner = listener;
     }
 
@@ -62,6 +63,8 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         public TextView item_packagePrice_without_status;
         public TextView item_productBrief_without_status;
         public TextView item_partialreason_without_status;
+        public TextView item_customers_name;
+        public TextView item_customers_address;
         public CardView card_view_without_status;
         protected CheckBox checkBox;
 
@@ -76,6 +79,8 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
             item_cashAmt_without_status=itemView.findViewById(R.id.cashAmnt_without_status);
             item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
             item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
+            item_customers_name = itemView.findViewById(R.id.customers_name);
+            item_customers_address = itemView.findViewById(R.id.customers_address);
 
             card_view_without_status=itemView.findViewById(R.id.card_view_delivery_without_status_list);
             checkBox = (CheckBox) itemView.findViewById(R.id.cb);
@@ -114,17 +119,20 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.delivery_cash_to_supervisor,viewGroup,false);
+        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.delivery_cash_to_supervisor_test,viewGroup,false);
         ViewHolder viewHolder = new ViewHolder(v,i);
         return viewHolder;
     }
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
-        viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
-        viewHolder.item_merOrderRef_without_status.setText(list.get(i).getMerOrderRef());
-        viewHolder.item_cashAmt_without_status.setText(list.get(i).getCashAmt()+" Taka");
-        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+" Taka");
+        viewHolder.item_ordId_without_status.setText("Order Id: "+list.get(i).getOrderid());
+        viewHolder.item_merOrderRef_without_status.setText("Merchant Order Ref : "+list.get(i).getMerOrderRef());
+        viewHolder.item_cashAmt_without_status.setText("Cash : "+list.get(i).getCashAmt()+" Taka");
+        viewHolder.item_packagePrice_without_status.setText("Price: "+list.get(i).getPackagePrice()+" Taka");
+        viewHolder.item_customers_name.setText("Customer Name: "+list.get(i).getCustname());
+        viewHolder.item_customers_address.setText("Customer Address: "+list.get(i).getCustaddress());
+
 
         viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelected());
         viewHolder.checkBox.setTag(i);
@@ -152,6 +160,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
     @Override
     public int getItemCount() {
+
         return list.size();
     }
 

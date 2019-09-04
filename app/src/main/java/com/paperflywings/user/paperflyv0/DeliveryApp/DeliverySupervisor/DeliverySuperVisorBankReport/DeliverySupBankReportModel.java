@@ -8,10 +8,20 @@ public class DeliverySupBankReportModel {
     private String ctsTime;
     private String packagePrice;
     private String collection;
+
+    public String getCashAmt() {
+        return cashAmt;
+    }
+
+    public void setCashAmt(String cashAmt) {
+        this.cashAmt = cashAmt;
+    }
+
+    private String cashAmt;
     private Integer slaMiss;
     private boolean isSelectedCts;
 
-    public DeliverySupBankReportModel(String orderid, String merOrderRef, String cts, String ctsTime, String ctsBy, int slaMiss, String packagePrice, String collection) {
+    public DeliverySupBankReportModel(String orderid, String merOrderRef, String cts, String ctsTime, String ctsBy, int slaMiss, String packagePrice, String CashAmt) {
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
         this.cts = cts;
@@ -19,11 +29,21 @@ public class DeliverySupBankReportModel {
         this.ctsBy = ctsBy;
         this.slaMiss = slaMiss;
         this.packagePrice = packagePrice;
-        this.collection = collection;
+        this.cashAmt = CashAmt;
     }
 
     public DeliverySupBankReportModel() {
 
+    }
+
+    public DeliverySupBankReportModel(String orderid, String merOrderRef, String CTS, String CTSTime, String CTSBy, String packagePrice, String CashAmt) {
+        this.orderid = orderid;
+        this.merOrderRef = merOrderRef;
+        this.cts = CTS;
+        this.ctsTime = CTSTime;
+        this.ctsBy = CTSBy;
+        this.packagePrice = packagePrice;
+        this.collection = CashAmt;
     }
 
     public String getPackagePrice() {

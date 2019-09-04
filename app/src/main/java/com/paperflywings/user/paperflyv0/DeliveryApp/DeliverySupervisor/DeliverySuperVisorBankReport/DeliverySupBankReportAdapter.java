@@ -44,7 +44,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public TextView item_ctsTime;
     public TextView item_price;
     public TextView item_collection;
-    protected CheckBox checkBox;
+    public TextView checkBox;
 
     public ViewHolder(View itemView, int i) {
         super(itemView);
@@ -53,7 +53,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         item_ctsTime=itemView.findViewById(R.id.invoice_no_reports);
         item_price=itemView.findViewById(R.id.amount_paid);
         item_collection=itemView.findViewById(R.id.amount_cash);
-       // checkBox = (CheckBox) itemView.findViewById(R.id.checkCts);
+        checkBox =  itemView.findViewById(R.id.accept_report);
     }
 }
 
@@ -67,11 +67,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.item_ordId.setText(list.get(i).getCtsTime());
+        viewHolder.item_ordId.setText(list.get(i).getOrderid());
         viewHolder.item_ctsBy.setText(list.get(i).getCtsBy());
         viewHolder.item_ctsTime.setText(list.get(i).getCtsTime());
         viewHolder.item_price.setText(list.get(i).getPackagePrice());
         viewHolder.item_collection.setText(list.get(i).getCollection());
+        viewHolder.checkBox.setText(list.get(i).getMerOrderRef());
 
 //        viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelectedCts());
     //    viewHolder.checkBox.setTag(i);

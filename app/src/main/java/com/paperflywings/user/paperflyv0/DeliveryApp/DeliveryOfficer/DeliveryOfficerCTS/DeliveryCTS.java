@@ -721,7 +721,8 @@ public class DeliveryCTS extends AppCompatActivity
                 model.setMerOrderRef(list.get(i).getMerOrderRef());
                 model.setCashAmt(list.get(i).getCashAmt());
                 model.setPackagePrice(list.get(i).getPackagePrice());
-
+                model.setCustname(list.get(i).getCustname());
+                model.setCustaddress(list.get(i).getCustaddress());
                 listOfOrders.add(model);
             }
 
@@ -736,7 +737,8 @@ public class DeliveryCTS extends AppCompatActivity
                 model.setMerOrderRef(list.get(i).getMerOrderRef());
                 model.setCashAmt(list.get(i).getCashAmt());
                 model.setPackagePrice(list.get(i).getPackagePrice());
-
+                model.setCustname(list.get(i).getCustname());
+                model.setCustaddress(list.get(i).getCustaddress());
                 listOfOrders.add(model);
             }
         }
