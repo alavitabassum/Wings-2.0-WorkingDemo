@@ -58,7 +58,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
-    private TextView btnselect, btndeselect;
+    private TextView btnselect, btndeselect, totalCashCollection;
     private Button btnnext;
     private List<DeliveryCashReceiveSupervisorModel> list;
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
@@ -72,6 +72,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         db.getWritableDatabase();
 
         setContentView(R.layout.activity_delivery_cash_receive_supervisor);
+        totalCashCollection = (TextView) findViewById(R.id.CashCollection);
         btnselect = (TextView) findViewById(R.id.selectBank);
         btndeselect = (TextView) findViewById(R.id.deselectBank);
         btnnext = (Button) findViewById(R.id.nextBank);
@@ -300,6 +301,10 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                                         o.getString("CTSBy"),
                                         o.getString("packagePrice"),
                                         o.getString("CashAmt"));
+
+                                db.insertCash(o.getString("packagePrice"),
+                                        o.getString("CashAmt"));
+
                                 list.add(withoutStatus_model);
                             }
 
@@ -412,8 +417,8 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     private ArrayList<DeliveryCashReceiveSupervisorModel> getModel(boolean isSelect){
         ArrayList<DeliveryCashReceiveSupervisorModel> listOfOrders = new ArrayList<>();
         if(isSelect == true){
-           /* String totalCash = String.valueOf(db.getTotalCash("cts"));
-            totalCollection.setText(totalCash+" Taka");*/
+            String totalCash = String.valueOf(db.getTotalCashSupervisor());
+            totalCashCollection.setText(totalCash+" Taka");
 
             for(int i = 0; i < list.size(); i++){
                 DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
@@ -429,7 +434,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             }
 
         } else if(isSelect == false){
-            // totalCollection.setText("0 Taka");
+            totalCashCollection.setText("0 Taka");
 
             for(int i = 0; i < list.size(); i++){
                 DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();

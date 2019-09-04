@@ -174,7 +174,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                 }
 
                //getting all the unsynced data
-                Cursor cursorOnhold = database2.getUnsyncedOnholdLog();
+            /*    Cursor cursorOnhold = database2.getUnsyncedOnholdLog();
                 if (cursorOnhold.moveToFirst()) {
                     do {
                         insertOnholdLog(cursorOnhold.getInt(0), // id
@@ -187,9 +187,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                 cursorOnhold.getString(7), // username
                                 cursorOnhold.getString(8)); // currentDateTime
                     } while (cursorOnhold.moveToNext());
-                }
+                }*/
 
-                Cursor cursorStatus1 = database2.getUnsyncedWithoutStatus();
+            /*    Cursor cursorStatus1 = database2.getUnsyncedWithoutStatus();
                 if (cursorStatus1.moveToFirst()) {
                     do {
                       status_sync_demo(
@@ -225,9 +225,9 @@ public class NetworkStateChecker extends BroadcastReceiver {
                        );
                     } while (cursorStatus1.moveToNext());
 
-                }
+                }*/
 
-                Cursor cursorStatusRTS = database2.getUnsyncedRTS();
+             /*   Cursor cursorStatusRTS = database2.getUnsyncedRTS();
                 if (cursorStatusRTS.moveToFirst()) {
                     do {
                         sync_rts(
@@ -239,7 +239,7 @@ public class NetworkStateChecker extends BroadcastReceiver {
                                 cursorStatusRTS.getString(2) // barcode
                         );
                     } while (cursorStatusRTS.moveToNext());
-                }
+                }*/
 
                 /*Cursor cursorStatusCTS = database2.getUnsyncedCTS();
                 if (cursorStatusCTS.moveToFirst()) {
@@ -346,45 +346,6 @@ public class NetworkStateChecker extends BroadcastReceiver {
 
     }
 
-    /*private void sync_cts(final int id,final String CTS,final String CTSTime, final String CTSBy, final String orderid, final String barcode) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DeliveryCTS.DELIVERY_CTS_UPDATE,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                database2.updateCTS(id, NAME_SYNCED_WITH_SERVER);
-                                context.sendBroadcast(new Intent(DATA_SAVED_BROADCAST));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Unable to connect to the server! Please ensure your internet is working! cts", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("CTS", CTS);
-                params.put("CTSTime", CTSTime);
-                params.put("CTSBy", CTSBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                return params;
-            }
-        };
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(context);
-        }
-        requestQueue.add(stringRequest);
-    }
-*/
     private void sync_rts(final int id, final String RTS,final String RTSTime, final String RTSBy, final String orderid, final String barcode) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Delivery_ReturnToSupervisor.DELIVERY_RETURNR_UPDATE,
                 new Response.Listener<String>() {

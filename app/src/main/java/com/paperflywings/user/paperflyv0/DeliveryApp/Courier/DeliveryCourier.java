@@ -353,20 +353,7 @@ public class DeliveryCourier extends AppCompatActivity {
                         if(statusCode.equals("200")){
                             Toast.makeText(DeliveryCourier.this, o.getString("responseMsg"), Toast.LENGTH_SHORT).show();
                             onResume();
-                            /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCourier.this);
 
-                            alertDialogBuilder.setMessage(o.getString("responseMsg"));
-
-                            alertDialogBuilder.setNegativeButton("OK",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface arg0, int arg1) {
-                                            arg0.dismiss();
-                                            onResume();
-                                        }
-                                    });
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-                            alertDialog.show();*/
                             Counter++;
                             scanCount.setText(String.valueOf(Counter));
 

@@ -1159,8 +1159,9 @@ public class DeliveryOnHold extends AppCompatActivity
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+                                /*db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid, flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);*/
+                                Toast.makeText(DeliveryOnHold.this, "Error Loading Data. Please Try again later!", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1171,8 +1172,9 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
+                       /* db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(withoutstatuscount);*/
+                        Toast.makeText(DeliveryOnHold.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1221,8 +1223,9 @@ public class DeliveryOnHold extends AppCompatActivity
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+                                /*db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);*/
+                                Toast.makeText(DeliveryOnHold.this, "Error Loading Data. Please Try again later!", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1233,8 +1236,9 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
+                       /* db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(withoutstatuscount);*/
+                        Toast.makeText(DeliveryOnHold.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1281,8 +1285,9 @@ public class DeliveryOnHold extends AppCompatActivity
                             } else {
                                 //if there is some error+12
                                 //saving the name to sqlite with status unsynced
-                                db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+                                /*db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid, flagReq,NAME_NOT_SYNCED_WITH_SERVER);
+                                startActivity(withoutstatuscount);*/
+                                Toast.makeText(DeliveryOnHold.this, "Error Loading Data. Please Try again later!", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1293,8 +1298,9 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
+                        /*db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        startActivity(withoutstatuscount);*/
+                        Toast.makeText(DeliveryOnHold.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1341,8 +1347,9 @@ public class DeliveryOnHold extends AppCompatActivity
                             } else {
                                 //if there is some error
                                 //saving the name to sqlite with status unsynced
-                                db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
+                                //db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                                //startActivity(withoutstatuscount);
+                                Toast.makeText(DeliveryOnHold.this, "Error Loading Data. Please Try again later!", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1353,8 +1360,10 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);}
+                        //db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
+                        //startActivity(withoutstatuscount);
+                        Toast.makeText(DeliveryOnHold.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                    }
                 }
         ) {
             @Override
@@ -1399,7 +1408,7 @@ public class DeliveryOnHold extends AppCompatActivity
 
                             } else {
                                 //if there is some error
-                                db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_NOT_SYNCED_WITH_SERVER );
+                                //db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_NOT_SYNCED_WITH_SERVER );
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1409,7 +1418,8 @@ public class DeliveryOnHold extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_NOT_SYNCED_WITH_SERVER );}
+                       // db.insert_Onhold_Log(orderid,barcode,merchantName,pickMerchantName,onHoldSchedule,onHoldReason,username,currentDateTime,NAME_NOT_SYNCED_WITH_SERVER );
+                    }
                 }
         ) {
             @Override

@@ -1,16 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_height="match_parent"
     android:foreground="?selectableItemBackground"
-    android:padding="50dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor"
     tools:showIn="@layout/app_bar_bank_details_upload_supervisor">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="30dp">
+    <TextView
+        android:id="@+id/total_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:textSize="16sp"
+        android:text="hello world"
+        android:textStyle="bold"
+        android:textColor="@color/red"/>
 
     <TextView
         android:id="@+id/create_tv"
@@ -18,8 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="25dp"
         android:textAlignment="center"
+        android:layout_below="@+id/total_cash"
         android:textSize="16sp"
         android:text="0 Orders have been selected for cash."
         android:textStyle="bold"
@@ -165,14 +182,6 @@
         android:layout_below="@+id/error_msg"
         android:layout_centerHorizontal="true" />
 
-  <!--  android:id="@+id/update_btn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Bank Deposite"
-    android:padding="10px"
-    android:textColor="@color/white"
-    android:background="@color/colorPrimary"
-    android:layout_below="@+id/error_msg"
-    android:layout_centerHorizontal="true"-->
+    </RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>

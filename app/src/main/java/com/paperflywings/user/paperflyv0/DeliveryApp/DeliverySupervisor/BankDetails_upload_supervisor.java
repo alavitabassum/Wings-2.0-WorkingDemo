@@ -33,6 +33,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -47,6 +48,7 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Delivery
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,6 +79,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
     int month;
     int dayOfMonth;
     Calendar calendar;
+    TextView total_Cash_collection;
 
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
@@ -106,6 +109,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         final TextView depComm = findViewById(R.id.bank_deposite_comment);
         final Button selectDate = findViewById(R.id.select_deposite_date);
         final TextView  error_msg_show = findViewById(R.id.error_msg);
+        total_Cash_collection = findViewById(R.id.total_cash);
 
         eList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
         bankList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
@@ -209,7 +213,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
             create_tv.setText(count + " Orders have been selected for cash.");
         }
         //orderIds.setText(item);
-        //loadCollectionInfo(item, username);
+        getTotalCashColleciton(item);
         count = 0;
 
         ChooseBn.setOnClickListener(new View.OnClickListener() {
@@ -309,7 +313,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         }
     }
 
-    private void getBankDetails() {
+   private void getBankDetails() {
         try {
 //            list.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
@@ -325,7 +329,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         }
     }
 
-    private void getPointCodes() {
+   private void getPointCodes() {
         try {
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_pointCodes(sqLiteDatabase);
@@ -338,6 +342,72 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
             e.printStackTrace();
         }
     }
+
+   private void getTotalCashColleciton(final String item){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray array = jsonObject.getJSONArray("getData");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject o = array.getJSONObject(i);
+                        String statusCode = o.getString("responseCode");
+                        if(statusCode.equals("200")){
+                            Toast.makeText(BankDetails_upload_supervisor.this, o.getString("responseMsg"), Toast.LENGTH_SHORT).show();
+
+                            total_Cash_collection.setText(o.getString("collection"));
+
+                        } else if(statusCode.equals("404")){
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BankDetails_upload_supervisor.this);
+                            alertDialogBuilder.setCancelable(false);
+                            alertDialogBuilder.setMessage(o.getString("unsuccessful"));
+                            alertDialogBuilder.setNegativeButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+                                            arg0.dismiss();
+
+                                        }
+                                    });
+
+                            AlertDialog alertDialog = alertDialogBuilder.create();
+                            alertDialog.show();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
+
+                    }
+                }){
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("orderid", item);
+                params.put("flagreq", "total_cash");
+                return params;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
 
     private void UpdateBankedOrders(final String item,final String deposite_date, final String empCode, final String bankId, final String slipNumber, final String comment, final String username) {
 

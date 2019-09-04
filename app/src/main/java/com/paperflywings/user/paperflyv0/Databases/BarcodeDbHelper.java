@@ -26,6 +26,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME_EMP_POINTCODE = "EmpPointCode";
     private static final String TABLE_NAME_DELIVERY_EMP_LIST = "Table_delivery_employee_list";
     private static final String TABLE_NAME_BANK_DETAILS = "Table_bank_details";
+    private static final String TABLE_CASH_MANAGEMENT = "Table_cash_management";
 
     private static final String KEY_ID = "id";
     private static final String SQL_PRIMARY_ID = "sql_primary_id";
@@ -461,6 +462,13 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "unique(bankId))";
 
 
+        String CREATION_TABLE_CASH_MANAGEMENT = "CREATE TABLE Table_cash_management ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "packagePrice TEXT, "
+                + "CashAmt TEXT, "
+                + "unique(id))";
+
+
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
         db.execSQL(CREATION_TABLE2);
@@ -477,6 +485,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE_EXPENSE_PURPOSE);
         db.execSQL(CREATION_TABLE_DELIVERY_EMP_LIST);
         db.execSQL(CREATION_TABLE_NAME_BANK_DETAILS);
+        db.execSQL(CREATION_TABLE_CASH_MANAGEMENT);
     }
 
     @Override
@@ -498,6 +507,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_DELIVERY_EMP_LIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_BANK_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EMP_POINTCODE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CASH_MANAGEMENT);
         this.onCreate(db);
     }
 
@@ -2062,6 +2072,27 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
             cursor.close();
             return false;
         }
+    }
+
+    public void insertCash(String packagePrice, String CashAmt) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(PACKAGE_PRICE, packagePrice);
+        values.put(CASH_AMT, CashAmt);
+        db.insert(TABLE_CASH_MANAGEMENT, null, values);
+        db.close();
+    }
+
+    public int getTotalCashSupervisor() {
+
+        int sum = 0;
+        db = this.getReadableDatabase();
+        String sumQuery = String.format("SELECT SUM(" + CASH_AMT + ") as Total FROM " + TABLE_CASH_MANAGEMENT);
+        Cursor cursor = db.rawQuery(sumQuery, null);
+        if (cursor.moveToFirst())
+            sum = cursor.getInt(cursor.getColumnIndex("Total"));
+        return sum;
     }
 
 }

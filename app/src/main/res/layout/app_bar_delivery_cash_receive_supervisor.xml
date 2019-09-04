@@ -23,6 +23,66 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <RelativeLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            >
+            <TextView
+                android:id="@+id/CTSText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="20dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Total Cash Order: "
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="0dp"/>
+
+            <TextView
+                android:id="@+id/CTS_id_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/CTSText"
+                android:layout_toEndOf="@+id/CTSText"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/CashCollectionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingLeft="20dp"
+                android:text="Cash Collection: "
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="0dp"/>
+
+            <TextView
+                android:id="@+id/CashCollection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/CashCollectionText"
+                android:layout_toEndOf="@+id/CashCollectionText"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:paddingLeft="5dp"
         android:paddingRight="10dp"

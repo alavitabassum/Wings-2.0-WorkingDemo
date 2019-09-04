@@ -197,7 +197,7 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
         final String currentDateTimeString = df.format(date);
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/update_ordertrack_for_app.php",
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/test_update_ordertrack_for_app.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
