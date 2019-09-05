@@ -12,11 +12,11 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -38,14 +38,12 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +56,8 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
     public String lastText;
     public String barcode;
     private Button done;
+    private int Counter = 0;
+    private TextView scanCount,scanCountText;
 
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
@@ -76,6 +76,8 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
         registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.continuous_scan_quick_delivery_pick);
+        scanCountText = (TextView) findViewById(R.id.scanCountTitle);
+        scanCount = (TextView) findViewById(R.id.scanCount);
 
         notificationManager = NotificationManagerCompat.from(this);
 
@@ -110,6 +112,12 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
 
             barcode = result.getText();
             lastText = barcode.substring(0,11);
+
+            barcodeView.setStatusText("Barcode"+result.getText());
+            //pickedfordelivery(lastText, username, empcode, "PickAndAssignFromApp");
+
+
+//            dialog.dismiss();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
 
@@ -190,20 +198,110 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
         return barcodeView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), DeliveryTablayout.class);
+        startActivity(intent);
+    }
+
     //API HIT
     private void pickedfordelivery(final String barcode, final String username, final String empcode, final String flagReq) {
 
-        Date date = Calendar.getInstance().getTime();
+      /*  Date date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
-        final String currentDateTimeString = df.format(date);
-
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/update_ordertrack_for_app.php",
-                new Response.Listener<String>() {
+        final String currentDateTimeString = df.format(date);*/
+        StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/test_update_ordertrack_for_app.php", new Response.Listener<String>()
+                 {
                     @Override
                     public void onResponse(String response) {
 
                         try {
-                            JSONObject obj = new JSONObject(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                String statusCode = o.getString("responseCode");
+                                if(statusCode.equals("200")){
+                                    Toast.makeText(Delivery_quick_pick_scan.this, o.getString("success"), Toast.LENGTH_SHORT).show();
+                                    onResume();
+
+                                    Counter++;
+                                    scanCount.setText(String.valueOf(Counter));
+
+                                } else if(statusCode.equals("404")){
+                                    onPause();
+                                    AlertDialog.Builder alertDialogBuilder404 = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+                                    alertDialogBuilder404.setCancelable(false);
+                                    alertDialogBuilder404.setMessage(o.getString("unsuccess"));
+                                    alertDialogBuilder404.setNegativeButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    arg0.dismiss();
+                                                    onResume();
+                                                }
+                                            });
+
+                                    AlertDialog alertDialog404 = alertDialogBuilder404.create();
+                                    alertDialog404.show();
+                                }  else if(statusCode.equals("100")){
+                                    onPause();
+                                    /*Toast.makeText(Delivery_quick_pick_scan.this, o.getString("alreadyPicked"), Toast.LENGTH_SHORT).show();
+                                    onResume();*/
+                                    AlertDialog.Builder alertDialogBuilder100 = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+                                    alertDialogBuilder100.setCancelable(false);
+                                    alertDialogBuilder100.setMessage(o.getString("alreadyPicked"));
+                                    alertDialogBuilder100.setNegativeButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    arg0.dismiss();
+                                                    onResume();
+                                                }
+                                            });
+
+                                    AlertDialog alertDialog100 = alertDialogBuilder100.create();
+                                    alertDialog100.show();
+                                } else if(statusCode.equals("405")){
+                                    onPause();
+                                    /*Toast.makeText(Delivery_quick_pick_scan.this, o.getString("noData"), Toast.LENGTH_SHORT).show();
+                                    onResume();*/
+                                    AlertDialog.Builder alertDialogBuilder405 = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+                                    alertDialogBuilder405.setCancelable(false);
+                                    alertDialogBuilder405.setMessage(o.getString("noData"));
+                                    alertDialogBuilder405.setNegativeButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    arg0.dismiss();
+                                                    onResume();
+                                                }
+                                            });
+
+                                    AlertDialog alertDialog405 = alertDialogBuilder405.create();
+                                    alertDialog405.show();
+                                } else if(statusCode.equals("409")){
+                                    onPause();
+                                    /*Toast.makeText(Delivery_quick_pick_scan.this, o.getString("dp2Error"), Toast.LENGTH_SHORT).show();
+                                    onResume();*/
+                                    AlertDialog.Builder alertDialogBuilder409 = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+                                    alertDialogBuilder409.setCancelable(false);
+                                    alertDialogBuilder409.setMessage(o.getString("dp2Error"));
+                                    alertDialogBuilder409.setNegativeButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    arg0.dismiss();
+                                                    onResume();
+                                                }
+                                            });
+
+                                    AlertDialog alertDialog409 = alertDialogBuilder409.create();
+                                    alertDialog409.show();
+                                }
+                            }
+                         /*   JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
                                 //if there is a success
                                 //storing the name to sqlite with status synced
@@ -217,7 +315,7 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                                 //saving the name to sqlite with status unsynced
                                 db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
                                 Toast.makeText(Delivery_quick_pick_scan.this, "Already Picked Order" ,  Toast.LENGTH_LONG).show();
-                            }
+                            }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -226,7 +324,7 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
+                       // db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
                     }
                 }
         ) {

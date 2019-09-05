@@ -1,16 +1,27 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -45,6 +56,7 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
+import com.paperflywings.user.paperflyv0.DeliveryApp.LocationService.GPStracker;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -52,14 +64,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class DeliveryCTS extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,DeliveryCTSAdapter.OnItemClickListtener, SwipeRefreshLayout.OnRefreshListener {
 
     BarcodeDbHelper db;
+    private long mLastClickTime = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
     private TextView CashCount_text,totalCollection, btnselect, btndeselect;
     private DeliveryCTSAdapter DeliveryCTSAdapter;
@@ -67,12 +83,18 @@ public class DeliveryCTS extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
     private Button btnnext, delivery_cts_recieved;
+    LocationManager locationManager;
     ProgressDialog progressDialog;
+    String lats,lngs,addrs,fullAddress;
+    String getlats,getlngs,getaddrs;
+    Geocoder geocoder;
+    List<Address> addresses;
 
     String item = "";
+    private static final int REQUEST_LOCATION = 1;
 
     public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorCTSinBatch.php";
-
+    public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
     public static final String CTS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
     //public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
 
@@ -142,6 +164,55 @@ public class DeliveryCTS extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
+
+        isLocationEnabled();
+        if(!isLocationEnabled()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setTitle("Turn on location!")
+                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        // Location perssion
+        int currentApiVersion = Build.VERSION.SDK_INT;
+
+        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
+        {
+            if(checkPermission())
+            {
+                // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
+            }
+            else
+            {
+                requestPermission();
+            }
+        }
+    }
+
+    // Check for camera permission
+    private boolean checkPermission()
+    {
+        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
+    }
+
+    // Request for camera permission
+    private void requestPermission()
+    {
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+    }
+
+    protected boolean isLocationEnabled(){
+        String le = Context.LOCATION_SERVICE;
+        locationManager = (LocationManager) getSystemService(le);
+        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     private void getData(String user){
@@ -363,6 +434,12 @@ public class DeliveryCTS extends AppCompatActivity
                             btnnext.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    // mis-clicking prevention, using threshold of 500 ms
+                                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                                        return;
+                                    }
+                                    mLastClickTime = SystemClock.elapsedRealtime();
+
                                     int count=0;
                                     SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                                     final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -406,10 +483,19 @@ public class DeliveryCTS extends AppCompatActivity
                                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+
+                                            // mis-clicking prevention, using threshold of 500 ms
+                                            if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                                                return;
+                                            }
+                                            mLastClickTime = SystemClock.elapsedRealtime();
+
                                             if(tv.getText().equals("0 Orders have been selected for cash.")){
-                                                orderIds.setText("Please Select Orders First!!");
+                                                orderIds.setText("Please Select All Orders!!");
                                             } else {
                                                 UpdateBankInfo(item, username);
+                                                //GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
+
                                                 alertDialog.dismiss();
                                                 startActivity(intent);
                                                 //loadRecyclerView(username);
@@ -744,5 +830,97 @@ public class DeliveryCTS extends AppCompatActivity
         }
         return listOfOrders;
     }
+
+    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+// ActivityCompat.requestPermissions(DeliveryWithoutStatus.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+//            MyLocationService g = new MyLocationService(getApplicationContext());
+        GPStracker g = new GPStracker(getApplicationContext());
+        Location LocationGps = g.getLocation();
+
+        if (LocationGps !=null)
+        {
+            double lati=LocationGps.getLatitude();
+            double longi=LocationGps.getLongitude();
+
+            lats=String.valueOf(lati);
+            lngs=String.valueOf(longi);
+
+            try {
+
+                addresses = geocoder.getFromLocation(lati,longi,1);
+                String addres = addresses.get(0).getAddressLine(0);
+                String area = addresses.get(0).getLocality();
+                String city = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalcode = addresses.get(0).getPostalCode();
+
+                fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            getlats = lats.trim();
+            getlngs = lngs.trim();
+            getaddrs = fullAddress.trim();
+
+            lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
+        }
+
+        else
+        {
+            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
+//       GetValueFromEditText();
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String ServerResponse) {
+                        // Hiding the progress dialog after all task complete.
+
+                        // Showing response message coming from server.
+                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        // Hiding the progress dialog after all task complete.
+
+                        // Showing error message if something goes wrong.
+//                       Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                // Creating Map String Params.
+                Map<String, String> params = new HashMap<String, String>();
+
+                // Adding All values to Params.
+                params.put("sqlPrimaryKey", sql_primary_id);
+                params.put("actionType", action_type);
+                params.put("actionFor", action_for);
+                params.put("actionBy", username);
+                params.put("actionTime",currentDateTime);
+                params.put("latitude", lats);
+                params.put("longitude", longs);
+                params.put("Address", address);
+
+                return params;
+            }
+
+        };
+        try {
+            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryCTS.this);
+            requestQueue.add(stringRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryCTS.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 }

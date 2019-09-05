@@ -682,8 +682,14 @@ public class DeliveryQuickScan extends AppCompatActivity{
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, DeliveryTablayout.class);
+        startActivity(intent);
+    }
 
-   public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
+    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
 //        ActivityCompat.requestPermissions(DeliveryQuickScan.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
         geocoder = new Geocoder(this, Locale.getDefault());
         GPStracker g = new GPStracker(getApplicationContext());
@@ -807,7 +813,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                     public void onErrorResponse(VolleyError error) {
                        // db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
 //                        startActivity(withoutstatuscount);
-                        Toast.makeText(DeliveryQuickScan.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryQuickScan.this, "Unsuccessful! No Internert connection.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -868,7 +874,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                     public void onErrorResponse(VolleyError error) {
                         //db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
 //                        startActivity(withoutstatuscount);
-                        Toast.makeText(DeliveryQuickScan.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryQuickScan.this, "Unsuccessful! No Internert connection.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -926,7 +932,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                     public void onErrorResponse(VolleyError error) {
                         //db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
 //                        startActivity(withoutstatuscount);
-                        Toast.makeText(DeliveryQuickScan.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryQuickScan.this, "Unsuccessful! No Internert connection.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -985,7 +991,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
                     public void onErrorResponse(VolleyError error) {
                         //db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
 //                        startActivity(withoutstatuscount);
-                        Toast.makeText(DeliveryQuickScan.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryQuickScan.this, "Unsuccessful! No Internert connection.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1066,7 +1072,7 @@ public class DeliveryQuickScan extends AppCompatActivity{
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryQuickScan.this, "No Internet! olq", Toast.LENGTH_LONG).show();
+            //Toast.makeText(DeliveryQuickScan.this, "No Internet! olq", Toast.LENGTH_LONG).show();
         }
     }
 }

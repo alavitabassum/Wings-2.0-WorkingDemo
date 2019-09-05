@@ -1,6 +1,7 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -131,29 +132,40 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         viewHolder.item_cashAmt_without_status.setText("Cash : "+list.get(i).getCashAmt()+" Taka");
         viewHolder.item_packagePrice_without_status.setText("Price: "+list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_customers_name.setText("Customer Name: "+list.get(i).getCustname());
-        viewHolder.item_customers_address.setText("Customer Address: "+list.get(i).getCustaddress());
+        viewHolder.item_customers_address.setText("Address: "+list.get(i).getCustaddress());
 
 
         viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelected());
         viewHolder.checkBox.setTag(i);
-        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+
+        final boolean b = imageModelArrayList.get(i).getSelected();
+
+
+        if(b == false){
+            viewHolder.checkBox.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+
+        if (b == true){
+            viewHolder.checkBox.setButtonDrawable(R.drawable.ic_check_box_black_24dp);
+        }
+     /*   viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Integer pos = (Integer) viewHolder.checkBox.getTag();
 
-                if (imageModelArrayList.get(pos).getSelected()) {
-                    imageModelArrayList.get(pos).setSelected(false);
+                if (imageModelArrayList.get(pos).getSelected() == false) {
+                    //imageModelArrayList.get(pos).setSelected(false);
                     //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " uncheckkkkkeeeeddd", Toast.LENGTH_SHORT).show();
 
 
                 } else {
-                    imageModelArrayList.get(pos).setSelected(true);
+                    //imageModelArrayList.get(pos).setSelected(true);
                     //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " clicked!", Toast.LENGTH_SHORT).show();
 
                 }
             }
-        });
+        });*/
 
 
     }

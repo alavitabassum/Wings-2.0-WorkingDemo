@@ -23,7 +23,7 @@ public class DeliveryCTSModel {
     private String cashType;
     private String CashTime;
     private String CashBy;
-    private boolean isSelected;
+    private boolean isSelected = false;
 
     public DeliveryCTSModel() {
 

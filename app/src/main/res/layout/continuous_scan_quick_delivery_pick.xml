@@ -106,8 +106,33 @@
         android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="@color/pfColor" />
+    <TextView
+        android:id="@+id/scanCountTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/barcode_scanner"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="11dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginTop="-100dp"
+        android:textColor="@color/red"
+        android:padding="10dp"
+        android:textSize="20dp"
+        android:text="Scan Count :"
+        android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/scanCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/scanCountTitle"
+        android:layout_alignBaseline="@+id/scanCountTitle"
+        android:textColor="@color/red"
+        android:textSize="20dp"
+        android:text="0"
+        android:textStyle="bold" />
+
+    <!--<TextView
         android:id="@+id/sub_merchant_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -118,9 +143,9 @@
         android:layout_marginTop="-90dp"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:textColor="@color/pfColor" />
+        android:textColor="@color/pfColor" />-->
 
-    <TextView
+    <!--<TextView
         android:id="@+id/product_name"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -131,7 +156,7 @@
         android:layout_marginEnd="11dp"
         android:textColor="@color/pfColor"
         android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textStyle="bold" />-->
 
     <TextView
         android:id="@+id/scan_count"

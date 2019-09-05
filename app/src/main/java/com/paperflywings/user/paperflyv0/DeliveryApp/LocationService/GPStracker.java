@@ -28,7 +28,7 @@ public class GPStracker implements LocationListener {
 
 
         if(isGPSEnabled){
-            lm.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,1000,10,this);
+            lm.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,0,0,this);
             Location l = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
             return l;
 

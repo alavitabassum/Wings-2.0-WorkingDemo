@@ -9,6 +9,7 @@
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
     android:paddingBottom="50dp"
+    card_view_assign:cardCornerRadius="5dp"
     card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
@@ -67,13 +68,13 @@
 
         <TextView
             android:id="@+id/cashAmnt_without_status"
-            android:layout_width="150dp"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/price_without_status"
             android:layout_toEndOf="@+id/price_without_status"
             android:lines="1"
             android:maxLines="1"
-            android:paddingLeft="30dp"
+            android:paddingLeft="15dp"
             android:textAlignment="textStart"
             android:textColor="#1E88E5"
             android:textSize="15sp"
@@ -99,7 +100,7 @@
             android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="#5E35B1"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textStyle="italic|bold"
             />
 
@@ -112,7 +113,7 @@
             android:maxLines="2"
             android:textAlignment="textStart"
             android:textColor="#5E35B1"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="italic|bold"
             />
 
@@ -120,6 +121,7 @@
             android:id="@+id/cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:layout_alignParentRight="true"/>
 
     </RelativeLayout>

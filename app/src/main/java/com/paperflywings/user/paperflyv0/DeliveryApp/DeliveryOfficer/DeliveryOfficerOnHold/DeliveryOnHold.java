@@ -1174,7 +1174,7 @@ public class DeliveryOnHold extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                        /* db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);*/
-                        Toast.makeText(DeliveryOnHold.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryOnHold.this, "Unsuccessful! No Internert connection.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1238,7 +1238,7 @@ public class DeliveryOnHold extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                        /* db.update_retR_status(retRemarks,retReason,preRet,preRetTime,preRetBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);*/
-                        Toast.makeText(DeliveryOnHold.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryOnHold.this, "Unsuccessful! No Internert connection.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1300,7 +1300,7 @@ public class DeliveryOnHold extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         /*db.update_onhold_status(onHoldSchedule,onHoldReason,Rea,ReaTime,ReaBy,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                         startActivity(withoutstatuscount);*/
-                        Toast.makeText(DeliveryOnHold.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryOnHold.this, "Unsuccessful! No Internert connection.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1362,7 +1362,7 @@ public class DeliveryOnHold extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         //db.update_partial_status(partial,partialsCash,partialTime,partialBy,partialsReceive,partialReason,partialReturn,orderid,flagReq, NAME_NOT_SYNCED_WITH_SERVER);
                         //startActivity(withoutstatuscount);
-                        Toast.makeText(DeliveryOnHold.this, "Server Not Connected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryOnHold.this, "Unsuccessful! No Internert connection.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1441,7 +1441,7 @@ public class DeliveryOnHold extends AppCompatActivity
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryOnHold.this, "Internet connection problem! oh", Toast.LENGTH_LONG).show();
+            //Toast.makeText(DeliveryOnHold.this, "Internet connection problem! oh", Toast.LENGTH_LONG).show();
         }
     }
 }
