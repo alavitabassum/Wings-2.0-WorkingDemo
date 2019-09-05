@@ -66,7 +66,7 @@ public class DeliverySupBankReport extends AppCompatActivity
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
-    Button selectDate;
+    private Button startDate,endDate,searchData;
     TextView dateShow;
     DatePickerDialog datePickerDialog;
     int year;
@@ -121,9 +121,9 @@ public class DeliverySupBankReport extends AppCompatActivity
 
         list.clear();
 
-        final Button startDate = findViewById(R.id.startdate);
-        final Button endDate = findViewById(R.id.enddate);
-        final Button searchData = findViewById(R.id.search);
+        startDate = findViewById(R.id.startdate);
+        endDate = findViewById(R.id.enddate);
+        searchData = findViewById(R.id.search);
 
 
         Date c = Calendar.getInstance().getTime();
@@ -339,7 +339,7 @@ public class DeliverySupBankReport extends AppCompatActivity
         return true;
     }
 
-    private void loadCashReceiveData (final String username,final String startdate, final String enddate,final String flagReqst){
+    private void loadCashReceiveData (final String username, final String startdate, final String enddate,final String flagReqst){
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -354,32 +354,36 @@ public class DeliverySupBankReport extends AppCompatActivity
                     public void onResponse(String response) {
                         list.clear();
                         progress.dismiss();
-                       // swipeRefreshLayout.setRefreshing(false);
                         try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("getData");
+                            JSONObject jsonObject = new JSONObject(response);//getData,getInvoiceList
+                            JSONArray array = jsonObject.getJSONArray("getInvoiceList");
 
-                            for(int i = 0;i<array.length();i++)
+                            for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliverySupBankReportModel withoutStatus_models = new  DeliverySupBankReportModel(
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("CTS"),
-                                        o.getString("CTSTime"),
-                                        o.getString("CTSBy"),
-                                        o.getString("packagePrice"),
-                                        o.getString("CashAmt"));
-                                list.add(withoutStatus_models);
+                                DeliverySupBankReportModel expense_model = new  DeliverySupBankReportModel(
+                                        o.getString("batchNo"),
+                                        o.getString("totalOrder"),
+                                        o.getString("dropDP2depositSlip"),
+                                        o.getString("depositComment"),
+                                        o.getString("dropDP2Comments"),
+                                        o.getString("depositedBy"),
+                                        o.getString("depositDate"),
+                                        o.getString("totalPackagePrice"),
+                                        o.getString("totalCashAmt"),
+                                        o.getString("bankName")
+                                );
+                                list.add(expense_model);
                             }
 
                             deliverySupBankReportAdapter = new DeliverySupBankReportAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupBankReportAdapter);
+                           // deliverySupBankReportAdapter.notifyDataSetChanged();
 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                          //  swipeRefreshLayout.setRefreshing(false);
+//                            swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 },
@@ -387,7 +391,7 @@ public class DeliverySupBankReport extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
-                      //  swipeRefreshLayout.setRefreshing(false);
+//                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Server not connected" ,Toast.LENGTH_LONG).show();
                     }
                 })
@@ -407,10 +411,6 @@ public class DeliverySupBankReport extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
-       /* stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                50000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
         requestQueue.add(stringRequest);
     }
 

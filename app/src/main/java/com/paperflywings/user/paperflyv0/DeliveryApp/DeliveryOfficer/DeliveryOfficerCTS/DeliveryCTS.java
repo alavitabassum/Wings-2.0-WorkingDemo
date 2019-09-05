@@ -391,7 +391,7 @@ public class DeliveryCTS extends AppCompatActivity
                                             if(DeliveryCTSAdapter.list.get(i).getSelected()) {
                                             totalCash = String.valueOf(db.getTotalCash("cts"));
                                             CashCount = Float.parseFloat(totalCash);
-                                            tv1.setText(CashCount + " Taka needs to be collected.");
+                                            tv1.setText(""+CashCount);
                                         }
                                     }
 
