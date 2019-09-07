@@ -1,23 +1,17 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.Settings;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -60,11 +54,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class DeliveryCTS extends AppCompatActivity
@@ -463,10 +454,10 @@ public class DeliveryCTS extends AppCompatActivity
                                                 String flagReqst = "delivery_officer_CTS";
                                                 UpdateBankInfo(username,flagReqst,item,totalCashs,CashCollected,CashComments);
                                                 orderIds.setText("Please Select All Orders!!");
-                                            } else {
+                                            /*} else {
                                                 UpdateBankInfo(item, username);
                                                 //GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
-
+*/
                                                 alertDialog.dismiss();
                                                 startActivity(intent);
                                                 //loadRecyclerView(username);

@@ -165,7 +165,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
                 }
             }
-        });
+        }); */
 
 
     }
