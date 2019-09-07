@@ -76,6 +76,11 @@
         <item>Customer request</item>
     </string-array>
 
+    <string-array name="bankList">
+        <item value="1">Eastern Bank Ltd.</item>
+        <item value="2">The City Bank Limited</item>
+        <item value="3">Dutch-Bangla Bank Ltd</item>
+    </string-array>
 
     <!--  <string-array name="returnreasonsAll">
         <item>Please select an option..</item>

@@ -60,6 +60,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     private ProgressDialog progress;
     private TextView btnselect, btndeselect, totalCashCollection;
     private Button btnnext;
+    public static final String TOTAL_CASH = "total_cash";
     private List<DeliveryCashReceiveSupervisorModel> list;
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
@@ -145,8 +146,12 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String totalCash = String.valueOf(db.getTotalCashSupervisor());
                 Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, BankDetails_upload_supervisor.class);
+
+                intent.putExtra(TOTAL_CASH, totalCash);
                 startActivity(intent);
+
             }
         });
 

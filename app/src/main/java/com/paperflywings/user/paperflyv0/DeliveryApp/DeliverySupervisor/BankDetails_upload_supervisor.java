@@ -62,14 +62,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor.TOTAL_CASH;
+
 public class BankDetails_upload_supervisor extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Button UploadBn, ChooseBn;
+    private Button UploadBn, ChooseBn, ChooseBn1, ChooseBn2, selectBankId;
     //private EditText Name;
-    private ImageView imgView;
-    private Bitmap bitmap;
+    private ImageView imgView, imgView1, imgView2;
+    private Bitmap bitmap, bitmap1, bitmap2;
     private final int IMG_REQUEST = 10;
+    private final int IMG_REQUEST_MULTIPLE = 20;
+    private final int IMG_REQUEST_TRIPLE = 30;
 
     String item = "";
     private RequestQueue requestQueue;
@@ -80,6 +84,10 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
     int dayOfMonth;
     Calendar calendar;
     TextView total_Cash_collection;
+
+    String[] bankListItems;
+    boolean[] bankCheckedItems;
+    ArrayList<Integer> mUserItem = new ArrayList<>();
 
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
@@ -101,15 +109,21 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         db.getWritableDatabase();
 
         UploadBn = (Button)findViewById(R.id.uploadBn);
-        ChooseBn = (Button)findViewById(R.id.chooseBn);
-        //Name = (EditText) findViewById(R.id.name);
+        selectBankId = (Button)findViewById(R.id.bank_name_title);
         imgView = (ImageView) findViewById(R.id.imageView);
+        imgView1 = (ImageView) findViewById(R.id.imageView1);
+        imgView2 = (ImageView) findViewById(R.id.imageView2);
         final TextView create_tv = findViewById(R.id.create_tv);
         final TextView slipNo = findViewById(R.id.deposite_slip_number);
         final TextView depComm = findViewById(R.id.bank_deposite_comment);
         final Button selectDate = findViewById(R.id.select_deposite_date);
         final TextView  error_msg_show = findViewById(R.id.error_msg);
         total_Cash_collection = findViewById(R.id.total_cash);
+
+        Intent intent1 = getIntent();
+        String total_cash_collecction = intent1.getStringExtra(TOTAL_CASH);
+
+        total_Cash_collection.setText("Total Cash: " +total_cash_collecction+" Taka");
 
         eList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
         bankList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
@@ -142,6 +156,73 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         eList.clear();
         bankList.clear();
         pointCodeList.clear();
+
+        bankListItems = getResources().getStringArray(R.array.bankList);
+        bankCheckedItems = new boolean[bankListItems.length];
+
+        selectBankId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(BankDetails_upload_supervisor.this);
+                mBuilder.setTitle("Bank List");
+                mBuilder.setMultiChoiceItems(bankListItems, bankCheckedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
+                        if(isChecked){
+                            try {
+                                if (!mUserItem.contains(position)) {
+                                    mUserItem.add(position);
+                                } else {
+                                    mUserItem.remove(position);
+                                }
+                            } catch (IndexOutOfBoundsException e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+
+                mBuilder.setCancelable(false);
+                mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                         String bankItems = "";
+
+                         for (int i = 0; i < mUserItem.size(); i++){
+                             bankItems = bankItems + bankListItems[mUserItem.get(i)];
+                             if ( i != mUserItem.size() - 1){
+                                 bankItems = bankItems + ",";
+                             }
+                         }
+
+                        selectBankId.setText(bankItems);
+
+                    }
+                });
+
+                mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                mBuilder.setNeutralButton("Clear all", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        for(int i = 0; i<bankCheckedItems.length; i++){
+                            bankCheckedItems[i] = false;
+                            mUserItem.clear();
+                            selectBankId.setText("Select Bank");
+                        }
+                    }
+                });
+
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+
 
         getEmployeeList();
         getBankDetails();
@@ -191,24 +272,15 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         adapterEmpListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mEmployeeSpinner.setAdapter(adapterEmpListR);
 
-        // Bank Details
-        final Spinner mBankNameSpinner = (Spinner) findViewById(R.id.bank_name);
-        List<String> bankNames = new ArrayList<String>();
-        bankNames.add(0,"Select Bank...");
-        for (int y = 0; y < bankList.size(); y++) {
-            bankNames.add(bankList.get(y).getBankName());
-        }
-
-        ArrayAdapter<String> adapterBankNameR = new ArrayAdapter<String>(BankDetails_upload_supervisor.this,
-                android.R.layout.simple_spinner_item,
-                bankNames);
-        adapterBankNameR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mBankNameSpinner.setAdapter(adapterBankNameR);
-
         for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
             if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelectedCts()) {
                 count++;
                 item = item + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderid();
+
+                /*if ( i != DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size() - 1){
+                    item = item + ",";
+                }*/
+
             }
             create_tv.setText(count + " Orders have been selected for cash.");
         }
@@ -216,10 +288,22 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         getTotalCashColleciton(item);
         count = 0;
 
-        ChooseBn.setOnClickListener(new View.OnClickListener() {
+        imgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
+            }
+        });
+        imgView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage1();
+            }
+        });
+        imgView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage2();
             }
         });
 
@@ -231,7 +315,8 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
                 String empName = mEmployeeSpinner.getSelectedItem().toString();
                 String empCode = db.getSelectedEmpCode(empName);
 
-                String bankName = mBankNameSpinner.getSelectedItem().toString();
+                //String bankName = mBankNameSpinner.getSelectedItem().toString();
+                String bankName = "Eastern Bank Ltd.";
                 String bankId = db.getSelectedBankId(bankName);
 
                 //String pointCode = mPointCodeSpinner.getSelectedItem().toString();
@@ -263,32 +348,92 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
     }
 
     private void selectImage(){
+       startActivityForResult(Intent.createChooser(new Intent()
+               .setAction(Intent.ACTION_GET_CONTENT)
+               .setType("image/*"), "Select one image"),
+                IMG_REQUEST);
+    }
+
+    private void selectImage1(){
         Intent intent = new Intent();
         intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, IMG_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, "Select 2nd image"),  IMG_REQUEST_MULTIPLE);
     }
+    private void selectImage2(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select 3rd image"),  IMG_REQUEST_TRIPLE);
+
+    }
+
+//    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+//        int width = bm.getWidth();
+//        int height = bm.getHeight();
+//        float scaleWidth = ((float) newWidth) / width;
+//        float scaleHeight = ((float) newHeight) / height;
+//        // CREATE A MATRIX FOR THE MANIPULATION
+//        Matrix matrix = new Matrix();
+//        // RESIZE THE BIT MAP
+//        matrix.postScale(scaleWidth, scaleHeight);
+//
+//        // "RECREATE" THE NEW BITMAP
+//        Bitmap resizedBitmap = Bitmap.createBitmap(
+//                bm, 0, 0, width, height, matrix, false);
+//        bm.recycle();
+//        return resizedBitmap;
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null){
             Uri path = data.getData();
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),path);
-                imgView.setImageBitmap(bitmap);
-                //imgView.setVisibility(View.VISIBLE);
-                //Name.setVisibility(View.VISIBLE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
+            if(path != null){
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                imgView.setImageBitmap(bitmap);
+
+            }
+        } else if(requestCode == IMG_REQUEST_MULTIPLE && resultCode == RESULT_OK){
+
+            Uri path1 = data.getData();
+
+            if(path1 != null){
+                try {
+                    bitmap1 = MediaStore.Images.Media.getBitmap(getContentResolver(),path1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                imgView1.setImageBitmap(bitmap1);
+
+            }
+        } else if(requestCode == IMG_REQUEST_TRIPLE && resultCode == RESULT_OK) {
+
+            Uri path2 = data.getData();
+
+            if(path2 != null){
+                try {
+                    bitmap2 = MediaStore.Images.Media.getBitmap(getContentResolver(),path2);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                imgView2.setImageBitmap(bitmap2);
+
+            }
         }
     }
 
     private String imageToString(Bitmap bitmap){
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50,outputStream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 40/100,outputStream);
         byte[] imageBytes = outputStream.toByteArray();
 
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
@@ -327,7 +472,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+   }
 
    private void getPointCodes() {
         try {
@@ -442,16 +587,20 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<String, String>();
+                String img1 = imageToString(bitmap);
+                String img2 = imageToString(bitmap1);
+                String img3 = imageToString(bitmap2);
 
                 params.put("orderid", item);
                 params.put("depositDate", deposite_date);
                 params.put("depositedBy", empCode);
                 params.put("bankID",bankId);
-                //params.put("pointCode",pointCode);
                 params.put("depositSlip",slipNumber);
                 params.put("depositComment", comment);
                 params.put("username",username);
-                params.put("image",imageToString(bitmap));
+                params.put("image",img1);
+                params.put("image1",img2);
+                params.put("image2",img3);
                 params.put("flagreq", "Delivery_complete_bank_orders_by_supervisor");
 
                 return params;

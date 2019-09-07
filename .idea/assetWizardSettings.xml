@@ -28,10 +28,13 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="08ff59" />
-                            <entry key="outputName" value="ic_check_box_black_24dp" />
+                            <entry key="height" value="64" />
+                            <entry key="outputName" value="ic_add_image" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Hp\Desktop\file.svg" />
+                            <entry key="sourceFile" value="C:\Users\Hp\Downloads\add-image.svg" />
+                            <entry key="width" value="64" />
                           </map>
                         </option>
                       </PersistentState>

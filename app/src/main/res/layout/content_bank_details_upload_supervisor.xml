@@ -22,11 +22,10 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
         android:textAlignment="center"
-        android:layout_centerHorizontal="true"
         android:textSize="16sp"
         android:text="hello world"
         android:textStyle="bold"
-        android:textColor="@color/red"/>
+        android:textColor="@color/green"/>
 
     <TextView
         android:id="@+id/create_tv"
@@ -49,12 +48,10 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/create_tv"
-        android:autofillHints=""
-        android:ems="15"
         android:inputType="text"
-        android:textSize="15sp"
-        android:text="Select date"
+        android:text="SELECT DATE"
         android:textStyle="bold" />
+
     <Spinner
         android:id="@+id/employee_list"
         android:layout_width="match_parent"
@@ -71,12 +68,19 @@
         android:layout_below="@id/select_deposite_date"
         android:text="Employee"
         android:textAlignment="textStart"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
+       <Button
+           android:id="@+id/bank_name_title"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/employee_list"
+           android:layout_marginTop="20dp"
+           android:text="Select Bank"
+           />
 
-
-    <Spinner
+  <!--  <Spinner
         android:id="@+id/bank_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,7 +97,7 @@
         android:text="Bank Name"
         android:textAlignment="textStart"
         android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textStyle="bold" />-->
 
     <EditText
         android:id="@+id/deposite_slip_number"
@@ -103,7 +107,7 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="20dp"
         android:background="@color/light_grey"
-        android:hint="Enter Deposite Slip Number"
+        android:hint="Enter Deposite Slip Number..."
         android:lines="1"
         android:maxLines="1"
         android:padding="5dp"
@@ -118,9 +122,9 @@
         android:layout_height="40dp"
         android:layout_below="@id/deposite_slip_number"
         android:layout_marginStart="2dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:background="@color/light_grey"
-        android:hint="Comment"
+        android:hint="Enter Comment..."
         android:lines="1"
         android:maxLines="2"
         android:padding="5dp"
@@ -129,7 +133,7 @@
         android:textSize="15sp"
         android:textStyle="bold" />
 
-    <ImageView
+  <!--  <ImageView
         android:id="@+id/imageView"
 
 
@@ -140,22 +144,46 @@
         android:layout_marginTop="23dp"
         android:layout_toEndOf="@+id/chooseBn"
 
-        />
+        />-->
 
-    <!--<EditText
-        android:id="@+id/name"
+    <LinearLayout
+        android:id="@+id/imageStack"
+        android:layout_below="@+id/bank_deposite_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:visibility="gone"/>
--->
-    <Button
-        android:id="@+id/chooseBn"
-        android:text="Choose Image"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_below="@id/bank_deposite_comment"
-        android:layout_marginTop="26dp"/>
+        android:layout_marginTop="20dp"
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="78dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/chooseBn"
+            android:src="@drawable/ic_add_image"
+            />
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="100dp"
+            android:layout_height="78dp"
+            android:layout_below="@id/imageView"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/chooseBn"
+            android:src="@drawable/ic_add_image"
+            />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="100dp"
+            android:layout_height="78dp"
+            android:layout_below="@id/imageView1"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/chooseBn"
+            android:src="@drawable/ic_add_image"
+            />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/error_msg"
@@ -166,9 +194,8 @@
         android:textAlignment="center"
         android:textSize="12sp"
         android:textStyle="bold"
-        android:layout_below="@id/chooseBn"
-        android:textColor="@color/red"
-        />
+        android:layout_below="@id/imageStack"
+        android:textColor="@color/red"/>
 
     <Button
         android:id="@+id/uploadBn"
