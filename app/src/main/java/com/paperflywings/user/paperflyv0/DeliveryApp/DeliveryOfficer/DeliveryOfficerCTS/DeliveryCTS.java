@@ -73,7 +73,7 @@ public class DeliveryCTS extends AppCompatActivity
     String item = "";
     String totalCash = "";
 
-    public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorCTSinBatch.php";
+    public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     public static final String CTS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
     //public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
@@ -383,6 +383,7 @@ public class DeliveryCTS extends AppCompatActivity
                                             item = item + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getOrderid();
                                         }
                                         tv.setText(count + " Orders have been selected for cash.");
+                                        //tv.setText(item);
                                     }
                                     //orderIds.setText(item);
                                     count = 0;
@@ -436,8 +437,8 @@ public class DeliveryCTS extends AppCompatActivity
                                                 orderIds.setText("Please enter required fields First!!");
                                             }
                                             else {
-
-                                                UpdateBankInfo(item,username,totalCashs,CashCollected,CashComments);
+                                                String flagReqst = "delivery_officer_CTS";
+                                                UpdateBankInfo(username,flagReqst,item,totalCashs,CashCollected,CashComments);
                                                 alertDialog.dismiss();
                                                 startActivity(intent);
                                                 //loadRecyclerView(username);
@@ -676,7 +677,7 @@ public class DeliveryCTS extends AppCompatActivity
             }
         }*/
 
-    private void UpdateBankInfo(final String item,final String CTSBy,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
+    private void UpdateBankInfo(final String createdBy,final String flagReqst,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>() {
@@ -704,10 +705,11 @@ public class DeliveryCTS extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("orderidList", item);
-                params.put("createdBy", CTSBy);
-                params.put("submittedCashAmt", submittedCashAmt);
+                params.put("username", createdBy);
+                params.put("flagreq", flagReqst);
+                params.put("orderid", items);
                 params.put("totalCashAmt", totalCashAmt);
+                params.put("submittedCashAmt", submittedCashAmt);
                 params.put("comment", CashComment);
                 return params;
             }
