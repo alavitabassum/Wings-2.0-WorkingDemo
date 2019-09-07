@@ -60,7 +60,7 @@ public class DeliverySupCRS extends AppCompatActivity
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private TextView TotalCash,SubmittedCash;
+    private TextView TotalCash,SubmittedCash,errormsg;
     private EditText CashReceived,CommentBySupervisor;
     private Button SupCashReceived;
     private DeliverySupCRSAdapter deliverySupCRSAdapter;
@@ -216,61 +216,59 @@ public class DeliverySupCRS extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-        final View mViewReassign = getLayoutInflater().inflate(R.layout.delivery_supervisor_reassign_officer, null);
-        final TextView assign_emp_title = mViewReassign.findViewById(R.id.assign_emp_title);
-        final TextView assign_emp_name = mViewReassign.findViewById(R.id.assign_emp_name);
-        final TextView error_msg = mViewReassign.findViewById(R.id.error_msg1);
-        assign_emp_title.setText("Assigned Officer: ");
+        final View mViewcrs = getLayoutInflater().inflate(R.layout.activity_crs_next, null);
+        TotalCash = mViewcrs.findViewById(R.id.total_cash_amount);
+        SubmittedCash = mViewcrs.findViewById(R.id.submitted_cash_text);
+        CashReceived = mViewcrs.findViewById(R.id.cash_Collection_text);
+        CommentBySupervisor = mViewcrs.findViewById(R.id.cash_comment_text);
+        errormsg = mViewcrs.findViewById(R.id.error);
+
+        TotalCash.setText(list.get(position).getTotalCashAmt());
+        SubmittedCash.setText(list.get(position).getSubmittedCashAmt());
         //assign_emp_name.setText(previousAssign);
 
         //getEmployeeList();
         // Employee List
-        final Spinner mEmployeeSpinner = (Spinner) mViewReassign.findViewById(R.id.employee_list_onhold);
-        List<String> empList = new ArrayList<String>();
-        empList.add(0,"Select employee...");
-       /* for (int x = 0; x < eList.size(); x++) {
-            empList.add(eList.get(x).getEmpName());
-        }*/
-        ArrayAdapter<String> adapterR = new ArrayAdapter<String>(DeliverySupCRS.this,
-                android.R.layout.simple_spinner_item,
-                empList);
-        adapterR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mEmployeeSpinner.setAdapter(adapterR);
 
-        AlertDialog.Builder reassignBuilder = new AlertDialog.Builder(DeliverySupCRS.this);
-        reassignBuilder.setPositiveButton("Re-assign", new DialogInterface.OnClickListener() {
+
+        AlertDialog.Builder crsBuilder = new AlertDialog.Builder(DeliverySupCRS.this);
+        crsBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //dialog.dismiss();
             }
         });
 
-        reassignBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        crsBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i1) {
                 dialog.dismiss();
             }
         });
 
-        reassignBuilder.setCancelable(false);
-        reassignBuilder.setView(mViewReassign);
+        crsBuilder.setCancelable(false);
+        crsBuilder.setView(mViewcrs);
 
-        final AlertDialog dialogCash = reassignBuilder.create();
-        dialogCash.show();
+        final AlertDialog dialogCashR = crsBuilder.create();
+        dialogCashR.show();
 
-        dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        dialogCashR.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String empName = mEmployeeSpinner.getSelectedItem().toString();
-                String empCode = db.getSelectedEmpCode(empName);
+                String cashReceivedAmt = CashReceived.getText().toString().trim();
+                String cashCommentBySupervisor = CommentBySupervisor.getText().toString().trim();
 
-                if(empName.equals("Select employee...")){
-                    error_msg.setText("Please select employee!!");
-                } else {
+               if(cashReceivedAmt.isEmpty()){
+                   errormsg.setText("Please select every field!!");
+                }
+               else if(cashCommentBySupervisor.isEmpty()){
+                   errormsg.setText("Please select every field!!");
+               }
+               else {
                    // ReassignOrderToAnotherDO(empCode, username, sql_primary_id);
                     //startActivity(intent);
-                    dialogCash.dismiss();
+                   dialogCashR.dismiss();
                 }
 
             }

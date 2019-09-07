@@ -14,8 +14,20 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:padding="10dp"
+        android:layout_marginStart="10dp"
+        android:text="Total cash"
+        android:textStyle="bold|italic"
+        android:id="@+id/total_cash"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="10dp"
         android:layout_centerHorizontal="true"
         android:text="Total cash"
+        android:layout_toEndOf="@+id/total_cash"
         android:textStyle="bold|italic"
         android:textColor="#000"
         android:id="@+id/total_cash_amount"/>
@@ -42,7 +54,7 @@
         android:layout_toEndOf="@+id/submitted_cash"
         android:textStyle="bold|italic"
         android:textColor="#000"
-        android:id="@+id/tv1"/>
+        android:id="@+id/submitted_cash_text"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,7 +63,7 @@
         android:padding="10dp"
         android:layout_marginStart="10dp"
         android:text="Cash Received"
-        android:layout_below="@+id/tv1"
+        android:layout_below="@+id/submitted_cash_text"
         android:textStyle="bold"
         android:id="@+id/et"/>
 
@@ -106,7 +118,7 @@
         android:text=""
         android:textColor="@color/red"
         android:layout_centerHorizontal="true"
-        android:id="@+id/cash_amount"/>
+        android:id="@+id/error"/>
 
 
 </RelativeLayout>
