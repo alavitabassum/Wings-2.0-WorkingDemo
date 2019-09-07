@@ -21,7 +21,7 @@ import java.util.List;
 
 public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.ViewHolder> implements Filterable {
     private ArrayList<DeliveryCTSModel> listFull;
-    private ArrayList<DeliveryCTSModel> list;
+    public ArrayList<DeliveryCTSModel> list;
     public static ArrayList<DeliveryCTSModel> imageModelArrayList;
 
     private int currentPostion = -1;
@@ -154,18 +154,18 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
                 Integer pos = (Integer) viewHolder.checkBox.getTag();
 
-                if (imageModelArrayList.get(pos).getSelected() == false) {
-                    //imageModelArrayList.get(pos).setSelected(false);
+                if (imageModelArrayList.get(pos).getSelected()) {
+                    imageModelArrayList.get(pos).setSelected(false);
                     //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " uncheckkkkkeeeeddd", Toast.LENGTH_SHORT).show();
 
 
                 } else {
-                    //imageModelArrayList.get(pos).setSelected(true);
+                    imageModelArrayList.get(pos).setSelected(true);
                     //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " clicked!", Toast.LENGTH_SHORT).show();
 
                 }
             }
-        });*/
+        });
 
 
     }

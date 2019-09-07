@@ -9,10 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -37,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,7 +53,6 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
-import com.paperflywings.user.paperflyv0.DeliveryApp.LocationService.GPStracker;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -83,20 +79,15 @@ public class DeliveryCTS extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
     private Button btnnext, delivery_cts_recieved;
-    LocationManager locationManager;
     ProgressDialog progressDialog;
-    String lats,lngs,addrs,fullAddress;
-    String getlats,getlngs,getaddrs;
-    Geocoder geocoder;
-    List<Address> addresses;
 
     String item = "";
-    private static final int REQUEST_LOCATION = 1;
+    String totalCash = "";
 
-    public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorCTSinBatch.php";
-    public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
+    public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorAPI.php";
+
     public static final String CTS_LIST = "http://paperflybd.com/DeliveryCashToSuperVisor.php";
-    //public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliveryCashToSuperVisorUpdate.php";
+    //public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliverySupervisorCTSinBatch.php";
 
     private ArrayList<DeliveryCTSModel> list;
 
@@ -164,55 +155,6 @@ public class DeliveryCTS extends AppCompatActivity
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
-
-        isLocationEnabled();
-        if(!isLocationEnabled()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setCancelable(false);
-            builder.setTitle("Turn on location!")
-                    .setMessage("This application needs location permission.Please turn on the location service from Settings. .")
-                    .setPositiveButton("Settings",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-
-        // Location perssion
-        int currentApiVersion = Build.VERSION.SDK_INT;
-
-        if(currentApiVersion >=  Build.VERSION_CODES.KITKAT)
-        {
-            if(checkPermission())
-            {
-                // Toast.makeText(getApplicationContext(), "Camera Permission already granted!", Toast.LENGTH_LONG).show();
-            }
-            else
-            {
-                requestPermission();
-            }
-        }
-    }
-
-    // Check for camera permission
-    private boolean checkPermission()
-    {
-        return (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED);
-    }
-
-    // Request for camera permission
-    private void requestPermission()
-    {
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
-    }
-
-    protected boolean isLocationEnabled(){
-        String le = Context.LOCATION_SERVICE;
-        locationManager = (LocationManager) getSystemService(le);
-        return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     private void getData(String user){
@@ -447,6 +389,9 @@ public class DeliveryCTS extends AppCompatActivity
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCTS.this);
                                     View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
                                     final TextView tv = mView.findViewById(R.id.tv);
+                                    final TextView tv1 = mView.findViewById(R.id.tv1);
+                                    final EditText totalcashes = mView.findViewById(R.id.cash_Collection_text);
+                                    final EditText cashComment = mView.findViewById(R.id.cash_comment_text);
                                     final TextView  orderIds = mView.findViewById(R.id.cash_amount);
 
                                     for (int i = 0; i < DeliveryCTSAdapter.imageModelArrayList.size(); i++){
@@ -458,6 +403,14 @@ public class DeliveryCTS extends AppCompatActivity
                                     }
                                     //orderIds.setText(item);
                                     count = 0;
+                                    float CashCount = 0.0f;
+                                        for (int i = 0; i <DeliveryCTSAdapter.imageModelArrayList.size(); i++) {
+                                            if(DeliveryCTSAdapter.list.get(i).getSelected()) {
+                                            totalCash = String.valueOf(db.getTotalCash("cts"));
+                                            CashCount = Float.parseFloat(totalCash);
+                                            tv1.setText(""+CashCount);
+                                        }
+                                    }
 
                                     alertDialogBuilder.setPositiveButton("Submit",
                                             new DialogInterface.OnClickListener() {
@@ -490,7 +443,25 @@ public class DeliveryCTS extends AppCompatActivity
                                             }
                                             mLastClickTime = SystemClock.elapsedRealtime();
 
+                                            String totalCashs = tv1.getText().toString().trim();
+                                            String CashComments = cashComment.getText().toString().trim();
+                                            String CashCollected = totalcashes.getText().toString().trim();
+
                                             if(tv.getText().equals("0 Orders have been selected for cash.")){
+                                                orderIds.setText("Please Select Orders First!!");
+                                            }
+                                            else if(totalCashs.isEmpty()){
+                                                orderIds.setText("Please enter required fields First!!");
+                                            }
+                                            else if(CashComments.isEmpty()){
+                                                orderIds.setText("Please enter required fields First!!");
+                                            }
+                                            else if(CashCollected.isEmpty()){
+                                                orderIds.setText("Please enter required fields First!!");
+                                            }
+                                            else {
+                                                String flagReqst = "delivery_officer_CTS";
+                                                UpdateBankInfo(username,flagReqst,item,totalCashs,CashCollected,CashComments);
                                                 orderIds.setText("Please Select All Orders!!");
                                             } else {
                                                 UpdateBankInfo(item, username);
@@ -520,7 +491,7 @@ public class DeliveryCTS extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         // progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Server not connected" ,Toast.LENGTH_LONG).show();
                     }
                 })
         {
@@ -561,6 +532,7 @@ public class DeliveryCTS extends AppCompatActivity
         try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
                 return false;
             }
             @Override
@@ -733,7 +705,7 @@ public class DeliveryCTS extends AppCompatActivity
             }
         }*/
 
-    private void UpdateBankInfo(final String item,final String CTSBy) {
+    private void UpdateBankInfo(final String createdBy,final String flagReqst,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>() {
@@ -761,9 +733,12 @@ public class DeliveryCTS extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("orderid", item);
-                params.put("CTSBy", CTSBy);
-
+                params.put("username", createdBy);
+                params.put("flagreq", flagReqst);
+                params.put("orderid", items);
+                params.put("totalCashAmt", totalCashAmt);
+                params.put("submittedCashAmt", submittedCashAmt);
+                params.put("comment", CashComment);
                 return params;
             }
         };
@@ -830,97 +805,5 @@ public class DeliveryCTS extends AppCompatActivity
         }
         return listOfOrders;
     }
-
-    public void GetValueFromEditText(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime){
-// ActivityCompat.requestPermissions(DeliveryWithoutStatus.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_LOCATION);
-        geocoder = new Geocoder(this, Locale.getDefault());
-
-//            MyLocationService g = new MyLocationService(getApplicationContext());
-        GPStracker g = new GPStracker(getApplicationContext());
-        Location LocationGps = g.getLocation();
-
-        if (LocationGps !=null)
-        {
-            double lati=LocationGps.getLatitude();
-            double longi=LocationGps.getLongitude();
-
-            lats=String.valueOf(lati);
-            lngs=String.valueOf(longi);
-
-            try {
-
-                addresses = geocoder.getFromLocation(lati,longi,1);
-                String addres = addresses.get(0).getAddressLine(0);
-                String area = addresses.get(0).getLocality();
-                String city = addresses.get(0).getAdminArea();
-                String country = addresses.get(0).getCountryName();
-                String postalcode = addresses.get(0).getPostalCode();
-
-                fullAddress = "\n"+addres+"\n"+area+"\n"+city+"\n"+country+"\n"+postalcode;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            getlats = lats.trim();
-            getlngs = lngs.trim();
-            getaddrs = fullAddress.trim();
-
-            lat_long_store(sql_primary_id, action_type, action_for, username, currentDateTime, getlats, getlngs, getaddrs);
-        }
-
-        else
-        {
-            Toast.makeText(this, "Can't Get Your Location", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public void lat_long_store(final String sql_primary_id, final String action_type, final String action_for, final String username, final String currentDateTime, final String lats, final String longs, final String address){
-//       GetValueFromEditText();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_lOCATION,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String ServerResponse) {
-                        // Hiding the progress dialog after all task complete.
-
-                        // Showing response message coming from server.
-                        //Toast.makeText(DeliveryWithoutStatus.this, ServerResponse, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        // Hiding the progress dialog after all task complete.
-
-                        // Showing error message if something goes wrong.
-//                       Toast.makeText(DeliveryQuickScan.this, volleyError.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-
-                // Creating Map String Params.
-                Map<String, String> params = new HashMap<String, String>();
-
-                // Adding All values to Params.
-                params.put("sqlPrimaryKey", sql_primary_id);
-                params.put("actionType", action_type);
-                params.put("actionFor", action_for);
-                params.put("actionBy", username);
-                params.put("actionTime",currentDateTime);
-                params.put("latitude", lats);
-                params.put("longitude", longs);
-                params.put("Address", address);
-
-                return params;
-            }
-
-        };
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(DeliveryCTS.this);
-            requestQueue.add(stringRequest);
-        } catch (Exception e) {
-            Toast.makeText(DeliveryCTS.this, "Request Queue" + e, Toast.LENGTH_LONG).show();
-        }
-    }
-
 
 }

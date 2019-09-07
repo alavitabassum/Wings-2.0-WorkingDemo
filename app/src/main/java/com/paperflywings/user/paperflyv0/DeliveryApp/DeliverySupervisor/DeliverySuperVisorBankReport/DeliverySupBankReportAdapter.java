@@ -39,21 +39,21 @@ public class DeliverySupBankReportAdapter extends RecyclerView.Adapter<DeliveryS
 
 public class ViewHolder extends RecyclerView.ViewHolder {
 
-    public TextView item_ordId;
-    public TextView item_ctsBy;
-    public TextView item_ctsTime;
-    public TextView item_price;
-    public TextView item_collection;
-    public TextView checkBox;
+    public TextView item_date_reports;
+    public TextView item_batch_num_report;
+    public TextView item_invoice_no_reports;
+    public TextView item_amount_paid;
+    public TextView item_amount_cash;
+    public TextView item_accept_report;
 
     public ViewHolder(View itemView, int i) {
         super(itemView);
-        item_ordId=itemView.findViewById(R.id.date_reports);
-        item_ctsBy=itemView.findViewById(R.id.batch_num_report);
-        item_ctsTime=itemView.findViewById(R.id.invoice_no_reports);
-        item_price=itemView.findViewById(R.id.amount_paid);
-        item_collection=itemView.findViewById(R.id.amount_cash);
-        checkBox =  itemView.findViewById(R.id.accept_report);
+        item_date_reports=itemView.findViewById(R.id.date_reports);
+        item_batch_num_report=itemView.findViewById(R.id.batch_num_report);
+        item_invoice_no_reports=itemView.findViewById(R.id.invoice_no_reports);
+        item_amount_paid=itemView.findViewById(R.id.amount_paid);
+        item_amount_cash=itemView.findViewById(R.id.amount_cash);
+        item_accept_report =  itemView.findViewById(R.id.accept_report);
     }
 }
 
@@ -67,12 +67,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.item_ordId.setText(list.get(i).getOrderid());
-        viewHolder.item_ctsBy.setText(list.get(i).getCtsBy());
-        viewHolder.item_ctsTime.setText(list.get(i).getCtsTime());
-        viewHolder.item_price.setText(list.get(i).getPackagePrice());
-        viewHolder.item_collection.setText(list.get(i).getCollection());
-        viewHolder.checkBox.setText(list.get(i).getMerOrderRef());
+        viewHolder.item_date_reports.setText(list.get(i).getDepositDate());
+        viewHolder.item_batch_num_report.setText(list.get(i).getBatchNo());
+        viewHolder.item_invoice_no_reports.setText(list.get(i).getTotalOrder());
+        viewHolder.item_amount_paid.setText(list.get(i).getTotalPackagePrice());
+        viewHolder.item_amount_cash.setText(list.get(i).getTotalCashAmt());
+        viewHolder.item_accept_report.setText(list.get(i).getBankName());
 
 //        viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelectedCts());
     //    viewHolder.checkBox.setTag(i);
@@ -101,11 +101,13 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     @Override
     public int getItemCount() {
+
         return list.size();
     }
 
     @Override
     public Filter getFilter() {
+
         return NamesFilter;
     }
 
