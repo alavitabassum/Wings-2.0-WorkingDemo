@@ -41,6 +41,7 @@ import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReport;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
@@ -309,6 +310,12 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
                     DeliverySupBankReport.class);
             startActivity(homeIntent);
         }
+        else if (id == R.id.nav_crs) {
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
+                    DeliverySupCRS.class);
+            startActivity(homeIntent);
+        }
+
 
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout

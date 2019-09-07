@@ -232,6 +232,7 @@
     <string name="title_activity_delivery_re_attempt">DeliveryReAttempt</string>
     <string name="title_activity_bank_details_upload_supervisor">Bank Details
     </string>
+    <string name="title_activity_delivery_sup_crs">DeliverySupCRS</string>
 
 
 </resources>

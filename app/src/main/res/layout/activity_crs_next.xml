@@ -15,31 +15,31 @@
         android:textSize="15sp"
         android:padding="10dp"
         android:layout_centerHorizontal="true"
-        android:text="Please select orders first"
+        android:text="Total cash"
         android:textStyle="bold|italic"
         android:textColor="#000"
-        android:id="@+id/tv"/>
+        android:id="@+id/total_cash_amount"/>
 
     <TextView
-        android:layout_width="120dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:padding="10dp"
         android:layout_marginStart="10dp"
-        android:text="Total Cash"
-        android:layout_below="@+id/tv"
+        android:text="Submitted cash"
+        android:layout_below="@+id/total_cash_amount"
         android:textStyle="bold|italic"
-        android:id="@+id/totalcash"/>
+        android:id="@+id/submitted_cash"/>
 
     <TextView
-        android:layout_width="290dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:padding="10dp"
         android:layout_centerHorizontal="true"
-        android:text="Select total cash"
-        android:layout_below="@+id/tv"
-        android:layout_toEndOf="@+id/totalcash"
+        android:text="Submitted cash"
+        android:layout_below="@+id/total_cash_amount"
+        android:layout_toEndOf="@+id/submitted_cash"
         android:textStyle="bold|italic"
         android:textColor="#000"
         android:id="@+id/tv1"/>
@@ -50,7 +50,7 @@
         android:textSize="15sp"
         android:padding="10dp"
         android:layout_marginStart="10dp"
-        android:text="Cash Collection"
+        android:text="Cash Received"
         android:layout_below="@+id/tv1"
         android:textStyle="bold"
         android:id="@+id/et"/>
@@ -76,7 +76,7 @@
         android:textSize="15sp"
         android:padding="10dp"
         android:layout_marginStart="10dp"
-        android:text="Cash Comment"
+        android:text="Comment"
         android:textStyle="bold"
         android:layout_below="@+id/et"
         android:id="@+id/et1"/>

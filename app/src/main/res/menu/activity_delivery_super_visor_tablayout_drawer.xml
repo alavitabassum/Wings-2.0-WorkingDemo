@@ -14,12 +14,12 @@
             android:title="Bank Report"
             android:icon="@drawable/box"
             android:id="@+id/nav_report"/>
-<!--
-        <item
-            android:title="Unpicked"
-            android:icon="@drawable/box"
-            android:id="@+id/nav_unpicked"/>
 
+        <item
+            android:title="Cash Receive"
+            android:icon="@drawable/box"
+            android:id="@+id/nav_crs"/>
+<!--
         <item
             android:title="Without Status"
             android:icon="@drawable/withoutstatus"
