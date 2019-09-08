@@ -33,7 +33,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -42,13 +41,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisorAdapter;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisorModel;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,7 +59,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor.CTS_BY;
+import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor.SERIAL_NO;
 import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor.TOTAL_CASH;
+import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor.TOTAL_ORDER;
 
 public class BankDetails_upload_supervisor extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -122,8 +122,12 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
 
         Intent intent1 = getIntent();
         String total_cash_collecction = intent1.getStringExtra(TOTAL_CASH);
+        String total_order = intent1.getStringExtra(TOTAL_ORDER);
+        final String serial_no = intent1.getStringExtra(SERIAL_NO);
+        final String cts_by = intent1.getStringExtra(CTS_BY);
 
         total_Cash_collection.setText("Total Cash: " +total_cash_collecction+" Taka");
+        create_tv.setText("Total Orders: "+total_order+"  ||  Serial No: "+serial_no);
 
         eList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
         bankList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
@@ -170,14 +174,16 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
                     public void onClick(DialogInterface dialogInterface, int position, boolean isChecked) {
                         if(isChecked){
                             try {
-                                if (!mUserItem.contains(position)) {
+//                                if (!mUserItem.contains(position)) {
                                     mUserItem.add(position);
-                                } else {
-                                    mUserItem.remove(position);
-                                }
+                               /* } else {
+                                    mUserItem.remove((Integer) position);
+                                }*/
                             } catch (IndexOutOfBoundsException e){
                                 e.printStackTrace();
                             }
+                        } else {
+                            mUserItem.remove((Integer) position);
                         }
                     }
                 });
@@ -272,20 +278,20 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         adapterEmpListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mEmployeeSpinner.setAdapter(adapterEmpListR);
 
-        for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
+       /* for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
             if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelectedCts()) {
                 count++;
                 item = item + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderid();
 
-                /*if ( i != DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size() - 1){
+                *//*if ( i != DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size() - 1){
                     item = item + ",";
-                }*/
+                }*//*
 
             }
             create_tv.setText(count + " Orders have been selected for cash.");
-        }
+        }*/
         //orderIds.setText(item);
-        getTotalCashColleciton(item);
+        //getTotalCashColleciton(item);
         count = 0;
 
         imgView.setOnClickListener(new View.OnClickListener() {
@@ -316,19 +322,20 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
                 String empCode = db.getSelectedEmpCode(empName);
 
                 //String bankName = mBankNameSpinner.getSelectedItem().toString();
-                String bankName = "Eastern Bank Ltd.";
-                String bankId = db.getSelectedBankId(bankName);
+                /*String bankName = "Eastern Bank Ltd.";*/
+                String bankItems = selectBankId.getText().toString();
 
                 //String pointCode = mPointCodeSpinner.getSelectedItem().toString();
                 String slipNumber = slipNo.getText().toString();
                 String comment = depComm.getText().toString();
 
 
-                if(create_tv.getText().equals("0 Orders have been selected for cash.")){
+              /*  if(create_tv.getText().equals("0 Orders have been selected for cash.")){
                     error_msg_show.setText("Please Select Orders First!!");
-                } else if(empName.equals("Select employee...")){
+                } else*/
+                if(empName.equals("Select employee...")){
                     error_msg_show.setText("Please select employee!!");
-                } else if(bankName.equals("Select Bank...")){
+                } else if(bankItems.equals("Select Bank") || bankItems.equals("") || bankItems.equals("SELECT BANK")){
                     error_msg_show.setText("Please select bank name!!");
                 } else if(slipNumber.equals("")){
                     error_msg_show.setText("Please enter slip number!!");
@@ -337,11 +344,11 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
                 }
 
                 else {
-                    UpdateBankedOrders(item,deposite_date,empCode,bankId,slipNumber,comment,username);
+                    UpdateBankedOrders(serial_no,cts_by,deposite_date,empCode,bankItems,slipNumber,comment,username);
 
                     startActivity(intent);
                     //loadRecyclerView(username);
-                    item = "";
+                    //item = "";
                 }
             }
         });
@@ -443,7 +450,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
 
     private void getEmployeeList() {
         try {
-//            list.clear();
+            eList.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_employee_list(sqLiteDatabase);
             while (c.moveToNext()) {
@@ -460,7 +467,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
 
    private void getBankDetails() {
         try {
-//            list.clear();
+            bankList.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_bank_details(sqLiteDatabase);
             while (c.moveToNext()) {
@@ -476,6 +483,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
 
    private void getPointCodes() {
         try {
+            pointCodeList.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_pointCodes(sqLiteDatabase);
             while (c.moveToNext()) {
@@ -488,73 +496,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         }
     }
 
-   private void getTotalCashColleciton(final String item){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray array = jsonObject.getJSONArray("getData");
-                    for (int i = 0; i < array.length(); i++) {
-                        JSONObject o = array.getJSONObject(i);
-                        String statusCode = o.getString("responseCode");
-                        if(statusCode.equals("200")){
-                            Toast.makeText(BankDetails_upload_supervisor.this, o.getString("responseMsg"), Toast.LENGTH_SHORT).show();
-
-                            total_Cash_collection.setText(o.getString("collection"));
-
-                        } else if(statusCode.equals("404")){
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BankDetails_upload_supervisor.this);
-                            alertDialogBuilder.setCancelable(false);
-                            alertDialogBuilder.setMessage(o.getString("unsuccessful"));
-                            alertDialogBuilder.setNegativeButton("OK",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface arg0, int arg1) {
-                                            arg0.dismiss();
-
-                                        }
-                                    });
-
-                            AlertDialog alertDialog = alertDialogBuilder.create();
-                            alertDialog.show();
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
-
-                    }
-                }){
-
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("orderid", item);
-                params.put("flagreq", "total_cash");
-                return params;
-            }
-        };
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(this);
-        }
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(stringRequest);
-    }
-
-
-    private void UpdateBankedOrders(final String item,final String deposite_date, final String empCode, final String bankId, final String slipNumber, final String comment, final String username) {
+    private void UpdateBankedOrders(final String serial_no, final String cts_by, final String deposite_date, final String empCode, final String bankNames, final String slipNumber, final String comment, final String username) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
                 new Response.Listener<String>() {
@@ -591,10 +533,11 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
                 String img2 = imageToString(bitmap1);
                 String img3 = imageToString(bitmap2);
 
-                params.put("orderid", item);
+                params.put("serialNo", serial_no);
+                params.put("ctsBy", cts_by);
                 params.put("depositDate", deposite_date);
                 params.put("depositedBy", empCode);
-                params.put("bankID",bankId);
+                params.put("bankID",bankNames);
                 params.put("depositSlip",slipNumber);
                 params.put("depositComment", comment);
                 params.put("username",username);

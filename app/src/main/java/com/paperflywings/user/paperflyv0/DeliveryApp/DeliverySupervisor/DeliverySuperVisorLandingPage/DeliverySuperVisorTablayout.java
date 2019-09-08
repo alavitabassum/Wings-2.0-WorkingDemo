@@ -39,10 +39,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReport;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -310,11 +307,11 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
                     DeliverySupBankReport.class);
             startActivity(homeIntent);
         }
-        else if (id == R.id.nav_crs) {
+      /*  else if (id == R.id.nav_crs) {
             Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliverySupCRS.class);
             startActivity(homeIntent);
-        }
+        }*/
 
 
         else if (id == R.id.nav_logout) {
@@ -368,6 +365,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
     }
 
     public void loadEmployeeList(final String username){
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
                 new Response.Listener<String>()
                 {

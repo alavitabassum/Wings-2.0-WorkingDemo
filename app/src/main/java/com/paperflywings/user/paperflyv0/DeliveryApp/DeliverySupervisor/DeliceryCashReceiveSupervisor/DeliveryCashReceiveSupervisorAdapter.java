@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -22,9 +22,9 @@ public class DeliveryCashReceiveSupervisorAdapter extends RecyclerView.Adapter<D
 
     private List<DeliveryCashReceiveSupervisorModel> list;
     private List<DeliveryCashReceiveSupervisorModel> listFull;
-    public static ArrayList<DeliveryCashReceiveSupervisorModel> imageModelArrayList;
 
     private Context context;
+    private OnItemClickListener mListner;
 
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
@@ -34,7 +34,14 @@ public class DeliveryCashReceiveSupervisorAdapter extends RecyclerView.Adapter<D
         this.list = list;
         this.context = context;
         this.listFull = new ArrayList<>(list);
-        this.imageModelArrayList = new ArrayList<>(list);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick_view (View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListner = listener;
     }
 
 
@@ -45,16 +52,32 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public TextView item_ctsTime;
     public TextView item_price;
     public TextView item_collection;
-    protected CheckBox checkBox;
+    public TextView item_received;
+    public TextView item_serial_no;
+    public Button item_bankDeposite_btn;
 
     public ViewHolder(View itemView, int i) {
         super(itemView);
-        item_ordId=itemView.findViewById(R.id.orderid);
-        item_ctsBy=itemView.findViewById(R.id.cashBy);
-        item_ctsTime=itemView.findViewById(R.id.cashTime);
-        item_price=itemView.findViewById(R.id.price);
-        item_collection=itemView.findViewById(R.id.collection);
-        checkBox = (CheckBox) itemView.findViewById(R.id.checkCts);
+        item_serial_no=itemView.findViewById(R.id.serialNo);
+        item_ctsBy=itemView.findViewById(R.id.empName);
+        item_ctsTime=itemView.findViewById(R.id.submitDate);
+        item_price=itemView.findViewById(R.id.totalCash);
+        item_collection=itemView.findViewById(R.id.submittedCash);
+        item_received=itemView.findViewById(R.id.receivedCash);
+        item_bankDeposite_btn=itemView.findViewById(R.id.bankDeposite);
+
+        item_bankDeposite_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mListner!=null){
+                    int position = getAdapterPosition();
+                    if(position!=RecyclerView.NO_POSITION){
+                        mListner.onItemClick_view(view, position);
+                    }
+                }
+            }
+        });
+
     }
 }
 
@@ -68,33 +91,12 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
-        viewHolder.item_ordId.setText(list.get(i).getOrderid());
+        viewHolder.item_serial_no.setText(list.get(i).getSerialNo());
         viewHolder.item_ctsBy.setText(list.get(i).getCtsBy());
         viewHolder.item_ctsTime.setText(list.get(i).getCtsTime());
-        viewHolder.item_price.setText(list.get(i).getPackagePrice());
-        viewHolder.item_collection.setText(list.get(i).getCollection());
-
-        viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelectedCts());
-        viewHolder.checkBox.setTag(i);
-        viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Integer pos = (Integer) viewHolder.checkBox.getTag();
-
-                if (imageModelArrayList.get(pos).getSelectedCts()) {
-                    imageModelArrayList.get(pos).setSelectedCts(false);
-                    //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " uncheckkkkkeeeeddd", Toast.LENGTH_SHORT).show();
-
-
-                } else {
-                    imageModelArrayList.get(pos).setSelectedCts(true);
-                    //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " clicked!", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });
-
+        viewHolder.item_price.setText(list.get(i).getTotalCashAmt()+" Taka");
+        viewHolder.item_collection.setText(list.get(i).getSubmittedCashAmt()+" Taka");
+        viewHolder.item_received.setText(list.get(i).getTotalCashReceive()+" Taka");
     }
 
     @Override

@@ -15,7 +15,105 @@ public class DeliveryCashReceiveSupervisorModel {
     private Integer bankId;
     private Integer slaMiss;
     private Integer empId;
-    private boolean isSelectedCts;
+    private String totalCashAmt;
+    private String submittedCashAmt;
+    private String totalCashReceive;
+    private String serialNo;
+    private String totalOrders;
+    private String dropPointEmp;
+    private String dropPointCode;
+    private String cashAmt;
+    private String partialReceive;
+    private String crsTime;
+    private String crsBy;
+
+    public String getTotalCashAmt() {
+        return totalCashAmt;
+    }
+
+    public void setTotalCashAmt(String totalCashAmt) {
+        this.totalCashAmt = totalCashAmt;
+    }
+
+    public String getSubmittedCashAmt() {
+        return submittedCashAmt;
+    }
+
+    public void setSubmittedCashAmt(String submittedCashAmt) {
+        this.submittedCashAmt = submittedCashAmt;
+    }
+
+    public String getTotalCashReceive() {
+        return totalCashReceive;
+    }
+
+    public void setTotalCashReceive(String totalCashReceive) {
+        this.totalCashReceive = totalCashReceive;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
+
+    public String getTotalOrders() {
+        return totalOrders;
+    }
+
+    public void setTotalOrders(String totalOrders) {
+        this.totalOrders = totalOrders;
+    }
+
+    public String getDropPointEmp() {
+        return dropPointEmp;
+    }
+
+    public void setDropPointEmp(String dropPointEmp) {
+        this.dropPointEmp = dropPointEmp;
+    }
+
+    public String getDropPointCode() {
+        return dropPointCode;
+    }
+
+    public void setDropPointCode(String dropPointCode) {
+        this.dropPointCode = dropPointCode;
+    }
+
+    public String getCashAmt() {
+        return cashAmt;
+    }
+
+    public void setCashAmt(String cashAmt) {
+        this.cashAmt = cashAmt;
+    }
+
+    public String getPartialReceive() {
+        return partialReceive;
+    }
+
+    public void setPartialReceive(String partialReceive) {
+        this.partialReceive = partialReceive;
+    }
+
+    public String getCrsTime() {
+        return crsTime;
+    }
+
+    public void setCrsTime(String crsTime) {
+        this.crsTime = crsTime;
+    }
+
+    public String getCrsBy() {
+        return crsBy;
+    }
+
+    public void setCrsBy(String crsBy) {
+        this.crsBy = crsBy;
+    }
 
     public String getPointCode() {
         return pointCode;
@@ -73,6 +171,28 @@ public class DeliveryCashReceiveSupervisorModel {
         this.ctsBy = ctsBy;
         this.packagePrice = packagePrice;
         this.collection = collection;
+    }
+
+    public DeliveryCashReceiveSupervisorModel(String totalCashReceive, String serialNo, String totalOrders, String totalCashAmt, String submittedCashAmt, String dropPointEmp, String dropPointCode, String cashAmt, String partialReceive, String packagePrice, String cts, String ctsTime, String ctsBy, String crsTime, String crsBy) {
+
+        this.totalCashReceive = totalCashReceive;
+        this.serialNo = serialNo;
+        this.totalOrders = totalOrders;
+        this.totalCashAmt = totalCashAmt;
+        this.submittedCashAmt = submittedCashAmt;
+        this.dropPointEmp = dropPointEmp;
+        this.dropPointCode = dropPointCode;
+        this.cashAmt = cashAmt;
+        this.partialReceive = partialReceive;
+
+        this.packagePrice = packagePrice;
+        this.cts = cts;
+        this.ctsTime = ctsTime;
+        this.ctsBy = ctsBy;
+        this.crsTime = crsTime;
+        this.crsBy = crsBy;
+
+
     }
 
     public DeliveryCashReceiveSupervisorModel() {
@@ -158,11 +278,4 @@ public class DeliveryCashReceiveSupervisorModel {
         this.slaMiss = slaMiss;
     }
 
-    public boolean getSelectedCts() {
-        return isSelectedCts;
-    }
-
-    public void setSelectedCts(boolean selectedCts) {
-        isSelectedCts = selectedCts;
-    }
 }
