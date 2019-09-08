@@ -15,23 +15,6 @@ public class DeliverySupCRSModel {
     private String serialNo;
     private String totalOrders;
 
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getOrderidList() {
-        return orderidList;
-    }
-
-    public void setOrderidList(String orderidList) {
-        this.orderidList = orderidList;
-    }
-
     public String getTotalCashAmt() {
         return totalCashAmt;
     }
@@ -55,6 +38,40 @@ public class DeliverySupCRSModel {
     public void setTotalCashReceive(String totalCashReceive) {
         this.totalCashReceive = totalCashReceive;
     }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
+
+    public String getTotalOrders() {
+        return totalOrders;
+    }
+
+    public void setTotalOrders(String totalOrders) {
+        this.totalOrders = totalOrders;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getOrderidList() {
+        return orderidList;
+    }
+
+    public void setOrderidList(String orderidList) {
+        this.orderidList = orderidList;
+    }
+
+
 
     public String getComment() {
         return comment;
@@ -88,21 +105,7 @@ public class DeliverySupCRSModel {
         this.createdAt = createdAt;
     }
 
-    public String getSerialNo() {
-        return serialNo;
-    }
 
-    public void setSerialNo(String serialNo) {
-        this.serialNo = serialNo;
-    }
-
-    public String getTotalOrders() {
-        return totalOrders;
-    }
-
-    public void setTotalOrders(String totalOrders) {
-        this.totalOrders = totalOrders;
-    }
 
 
 

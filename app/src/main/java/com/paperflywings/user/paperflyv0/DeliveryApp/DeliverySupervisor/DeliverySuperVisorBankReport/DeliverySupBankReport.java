@@ -41,6 +41,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
@@ -289,6 +290,17 @@ public class DeliverySupBankReport extends AppCompatActivity
             startActivity(homeIntent);
             // Handle the camera action
         }
+        else if (id == R.id.nav_report) {
+            Intent homeIntent = new Intent(DeliverySupBankReport.this,
+                    DeliverySupBankReport.class);
+            startActivity(homeIntent);
+        }
+        else if (id == R.id.nav_crs) {
+            Intent homeIntent = new Intent(DeliverySupBankReport.this,
+                    DeliverySupCRS.class);
+            startActivity(homeIntent);
+        }
+
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

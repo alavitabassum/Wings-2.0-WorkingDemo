@@ -43,6 +43,8 @@ public class DeliverySupCRSAdapter extends RecyclerView.Adapter<DeliverySupCRSAd
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+
+        public TextView item_serial_no;
         public TextView item_total_order;
         public TextView item_delivery_officer_name;
         public TextView item_total_cash_amount;
@@ -54,6 +56,8 @@ public class DeliverySupCRSAdapter extends RecyclerView.Adapter<DeliverySupCRSAd
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
+            //SerialNo_id_text
+            item_serial_no = itemView.findViewById(R.id.serialNo_id_text);
             item_total_order=itemView.findViewById(R.id.TotalOrder_text);
             item_delivery_officer_name=itemView.findViewById(R.id.delivery_officer_name_text);
             item_total_cash_amount=itemView.findViewById(R.id.total_cash_amount);
@@ -87,6 +91,7 @@ public class DeliverySupCRSAdapter extends RecyclerView.Adapter<DeliverySupCRSAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        viewHolder.item_serial_no.setText(list.get(i).getSerialNo());
         viewHolder.item_total_order.setText(list.get(i).getTotalOrders());
         viewHolder.item_delivery_officer_name.setText(list.get(i).getCreatedBy());
 
@@ -100,27 +105,22 @@ public class DeliverySupCRSAdapter extends RecyclerView.Adapter<DeliverySupCRSAd
         }
 
 */
-        viewHolder.item_total_cash_amount.setText("Total Cash: "+list.get(i).getTotalCashAmt());
-        viewHolder.item_submitted_cash_amount.setText("Submitted Cash: "+list.get(i).getSubmittedCashAmt());
+       if(Double.parseDouble(list.get(i).getTotalCashAmt())>Double.parseDouble(list.get(i).getSubmittedCashAmt())){
+           viewHolder.item_total_cash_amount.setText("Total Cash: "+list.get(i).getTotalCashAmt());
+           viewHolder.item_submitted_cash_amount.setText("Submitted Cash: "+list.get(i).getSubmittedCashAmt());
+           viewHolder.item_total_cash_amount.setTextColor(Color.RED);
+           viewHolder.item_submitted_cash_amount.setTextColor(Color.RED);
+       }
+       else{
+           viewHolder.item_total_cash_amount.setText("Total Cash: "+list.get(i).getTotalCashAmt());
+           viewHolder.item_submitted_cash_amount.setText("Submitted Cash: "+list.get(i).getSubmittedCashAmt());
+           viewHolder.item_total_cash_amount.setTextColor(Color.GREEN);
+           viewHolder.item_submitted_cash_amount.setTextColor(Color.GREEN);
+       }
+
+
         viewHolder.item_cts_time.setText(list.get(i).getCreatedAt());
-        viewHolder.item_cts_comment.setText("Comment: "+list.get(i).getComment());
-      //  viewHolder.item_onHold_reason.setText(list.get(i).getOnHoldReason());
-       /* if(DeliveryTime<0) {
-            viewHolder.item_sla_miss.setText(String.valueOf(list.get(i).getSlaMiss()));
-            viewHolder.item_sla_miss.setBackgroundResource(R.color.red);
-            viewHolder.item_sla_miss.setTextColor(Color.WHITE);
-        }
-        else if (DeliveryTime>=0){
-            try{
-                viewHolder.item_sla_miss.setText(String.valueOf(list.get(i).getSlaMiss()));
-                viewHolder.item_sla_miss.setBackgroundResource(R.color.green);
-                viewHolder.item_sla_miss.setTextColor(Color.WHITE); }
-            catch (Exception e){
-                Toast.makeText(context, "DeliveryOnholdAdapter "+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }*/
-       /* viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice()+" Taka");
-        viewHolder.item_productBrief.setText("Product Brief:  "+list.get(i).getProductBrief());*/
+        viewHolder.item_cts_comment.setText(" "+list.get(i).getComment());
 
 
     }
