@@ -19,7 +19,6 @@
         android:textStyle="bold|italic"
         android:id="@+id/total_cash"/>
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,10 +26,22 @@
         android:padding="10dp"
         android:layout_centerHorizontal="true"
         android:text="Total cash"
+        android:layout_marginStart="35dp"
         android:layout_toEndOf="@+id/total_cash"
         android:textStyle="bold|italic"
         android:textColor="#000"
         android:id="@+id/total_cash_amount"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Taka"
+        android:layout_toEndOf="@+id/total_cash_amount"
+        android:textStyle="bold|italic"
+        android:textColor="#000"
+        android:id="@+id/total_cash_in_taka"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -61,6 +72,19 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:padding="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Taka"
+        android:layout_toEndOf="@+id/submitted_cash_text"
+        android:layout_below="@+id/total_cash_amount"
+        android:textStyle="bold|italic"
+        android:textColor="#000"
+        android:id="@+id/submitted_cash_in_taka"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="10dp"
         android:layout_marginStart="10dp"
         android:text="Cash Received"
         android:layout_below="@+id/submitted_cash_text"
@@ -77,6 +101,7 @@
         android:layout_marginEnd="4dp"
         android:layout_toEndOf="@+id/et"
         android:textAlignment="textStart"
+        android:layout_marginStart="3dp"
         android:textColor="#000"
         android:textSize="15sp"
         style="@style/boldStyle"/>
@@ -103,6 +128,7 @@
         android:layout_marginEnd="4dp"
         android:layout_toEndOf="@+id/et1"
         android:textAlignment="textStart"
+        android:layout_marginStart="38dp"
         android:lines="2"
         android:maxLines="2"
         android:textColor="#000"

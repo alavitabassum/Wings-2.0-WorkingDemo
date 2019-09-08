@@ -523,7 +523,6 @@ public class DeliveryCTS extends AppCompatActivity
         try{  searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 return false;
             }
             @Override
@@ -554,6 +553,7 @@ public class DeliveryCTS extends AppCompatActivity
         if (id == R.id.action_search) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

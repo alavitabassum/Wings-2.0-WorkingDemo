@@ -42,6 +42,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReport;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
@@ -69,7 +71,7 @@ public class DeliverySupCRS extends AppCompatActivity
     private RequestQueue requestQueue;
     ProgressDialog progress;
 
-    public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorAPI.php";
+    public static final String DELIVERY_CRS = "http://paperflybd.com/DeliverySupervisorAPI.php";
     private ArrayList<DeliverySupCRSModel> list;
 
     @Override
@@ -134,7 +136,7 @@ public class DeliverySupCRS extends AppCompatActivity
         progress.setIndeterminate(true);
         progress.setProgress(0);
         progress.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_CRS,
                 new Response.Listener<String>()
                 {
                     @Override
@@ -208,10 +210,9 @@ public class DeliverySupCRS extends AppCompatActivity
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemClick(View view, final int position) {
 
-       /* String previousAssign = list.get(position).getUsername();
-        final int sql_primary_id = list.get(position).getSql_primary_id();*/
+
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -225,6 +226,7 @@ public class DeliverySupCRS extends AppCompatActivity
 
         TotalCash.setText(list.get(position).getTotalCashAmt());
         SubmittedCash.setText(list.get(position).getSubmittedCashAmt());
+        final Intent intent = new Intent(DeliverySupCRS.this, DeliverySupCRS.class);
         //assign_emp_name.setText(previousAssign);
 
         //getEmployeeList();
@@ -256,18 +258,33 @@ public class DeliverySupCRS extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-                String cashReceivedAmt = CashReceived.getText().toString().trim();
-                String cashCommentBySupervisor = CommentBySupervisor.getText().toString().trim();
+                String cashReceivedBySup = CashReceived.getText().toString().trim();
+                String commentBySup = CommentBySupervisor.getText().toString().trim();
 
-               if(cashReceivedAmt.isEmpty()){
+                String orderIdList = list.get(position).getOrderidList();
+
+                String createdBy = list.get(position).getCreatedBy();
+                String serialNo = list.get(position).getSerialNo();
+
+               // String comment = list.get(position).getComment();
+               /* cashReceivedBySup = list.get(position).getTotalCashReceive();
+                commentBySup = list.get(position).getComment_by_supervisor();*/
+
+
+
+
+
+               if(cashReceivedBySup.isEmpty()){
                    errormsg.setText("Please select every field!!");
                 }
-               else if(cashCommentBySupervisor.isEmpty()){
+               else if(commentBySup.isEmpty()){
                    errormsg.setText("Please select every field!!");
                }
                else {
-                   // ReassignOrderToAnotherDO(empCode, username, sql_primary_id);
-                    //startActivity(intent);
+
+                   String flagreqst = "delivery_supervisor_CRS";
+                   supervisorCrs(username,flagreqst,serialNo,orderIdList,cashReceivedBySup,commentBySup,createdBy);
+                   startActivity(intent);
                    dialogCashR.dismiss();
                 }
 
@@ -276,10 +293,10 @@ public class DeliverySupCRS extends AppCompatActivity
 
     }
 
-/*
-    private void ReassignOrderToAnotherDO(final String empCode,final String username, final int sql_primary_id) {
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST,DELIVERY_CTS_UPDATE_All ,
+    private void supervisorCrs(final String username, final String flagreqst,final String serialNo,final String orderIdList,final String cashReceivedBySup,final String commentBySup,final String createdBy) {
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CRS,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -307,10 +324,15 @@ public class DeliverySupCRS extends AppCompatActivity
             protected Map<String, String> getParams() {
 
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("empcode", empCode);
+
                 params.put("username", username);
-                params.put("sql_primary_id", String.valueOf(sql_primary_id));
-                params.put("flagreq", "Delivery_officer_reassign_by_supervisor");
+                params.put("flagreq", flagreqst);
+                params.put("serialNo", serialNo);
+                params.put("orderid", orderIdList);
+                params.put("totalCashReceive", cashReceivedBySup);
+                params.put("comment_by_supervisor", commentBySup);
+                params.put("createdBy", createdBy);
+
                 return params;
             }
         };
@@ -323,14 +345,17 @@ public class DeliverySupCRS extends AppCompatActivity
             Toast.makeText(DeliverySupCRS.this, "Server Error", Toast.LENGTH_LONG).show();
         }
     }
-*/
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_crs);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            Intent homeIntentSuper = new Intent(DeliverySupCRS.this,
+                    DeliveryTablayout.class);
+            startActivity(homeIntentSuper);
         }
     }
 
@@ -347,7 +372,6 @@ public class DeliverySupCRS extends AppCompatActivity
                 public boolean onQueryTextSubmit(String query) {
                     return false;
                 }
-
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     deliverySupCRSAdapter.getFilter().filter(newText);
@@ -373,7 +397,7 @@ public class DeliverySupCRS extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
         }
 
@@ -387,11 +411,24 @@ public class DeliverySupCRS extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
             Intent homeIntent = new Intent(DeliverySupCRS.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
-        } else if (id == R.id.nav_logout) {
+            // Handle the camera action
+        }
+        else if (id == R.id.nav_report) {
+            Intent homeIntent = new Intent(DeliverySupCRS.this,
+                    DeliverySupBankReport.class);
+            startActivity(homeIntent);
+        }
+        else if (id == R.id.nav_crs) {
+            Intent homeIntent = new Intent(DeliverySupCRS.this,
+                    DeliverySupCRS.class);
+            startActivity(homeIntent);
+        }
+
+
+        else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
@@ -435,9 +472,17 @@ public class DeliverySupCRS extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
+
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_crs);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -447,7 +492,7 @@ public class DeliverySupCRS extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String flagReqst = "delivery_supervisor_CRS_list";
+        String flagReqst = "delivery_supervisor_CRS";
         list.clear();
 
         deliverySupCRSAdapter.notifyDataSetChanged();
