@@ -323,7 +323,7 @@ public class DeliverySupCash extends AppCompatActivity
                     DeliverySupBankReport.class);
             startActivity(homeIntent);
         }
-        else if (id == R.id.nav_crs) {
+        else if (id == R.id.nav_crs_sup) {
             Intent homeIntent = new Intent(DeliverySupCash.this,
                     DeliverySupCRS.class);
             startActivity(homeIntent);
