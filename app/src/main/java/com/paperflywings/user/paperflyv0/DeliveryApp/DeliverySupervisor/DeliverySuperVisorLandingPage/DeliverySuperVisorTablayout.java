@@ -365,14 +365,14 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
     }
 
     public void loadEmployeeList(final String username){
-
+                SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                db.deleteDeliveryEmpList(sqLiteDatabase);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
-                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-                        db.deleteDeliveryEmpList(sqLiteDatabase);
+
 
                         try {
                             JSONObject jsonObject = new JSONObject(response);

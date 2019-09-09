@@ -18,7 +18,7 @@
         <item
             android:title="Cash Receive"
             android:icon="@drawable/box"
-            android:id="@+id/nav_crs"/>
+            android:id="@+id/nav_crs_sup"/>
 <!--
         <item
             android:title="Without Status"
