@@ -313,7 +313,6 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
             startActivity(homeIntent);
         }*/
 
-
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

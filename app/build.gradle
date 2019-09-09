@@ -30,7 +30,7 @@ android {
             debuggable true
         }
         debug {
-             debuggable true
+            debuggable true
         }
     }
     lintOptions {
