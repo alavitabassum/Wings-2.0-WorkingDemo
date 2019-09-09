@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -32,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliverySummary_Model;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet;
@@ -39,8 +39,6 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Delivery
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ReturnReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -195,7 +193,7 @@ public class DeliveryListFragment extends Fragment {
         progress.setProgress(0);
         progress.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DELIVERY_SUMMARY, new Response.Listener<String>() {
-            @Override
+        /*    @Override
             public void onResponse(String response) {
                 SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                 db.deleteSummeryList(sqLiteDatabase);
@@ -220,6 +218,35 @@ public class DeliveryListFragment extends Fragment {
                     e.printStackTrace();
                 }
 
+            }*/
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                    db.deleteSummeryList(sqLiteDatabase);
+                    progress.dismiss();
+                    JSONObject jsonObject = new JSONObject(response);
+                    JSONArray array = jsonObject.getJSONArray("getData");
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject o = array.getJSONObject(i);
+                        String statusCode = o.getString("responseCode");
+                        if(statusCode.equals("200")){
+
+                            sup_unpicked_count.setText(o.getString("unpicked"));
+                            sup_withoutStatus_count.setText(o.getString("withoutStatus"));
+                            sup_onHold_count.setText(o.getString("onHold"));
+                            sup_returnReqst_count.setText(o.getString("returnRequest"));
+                            sup_returnList_count.setText(o.getString("returnList"));
+                            sup_cashCollection_count.setText(o.getString("cash"));
+
+                        } else if(statusCode.equals("404")){
+                            Toast.makeText(getActivity().getApplicationContext(), o.getString("notFound"), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         },
                 new Response.ErrorListener() {
@@ -227,7 +254,6 @@ public class DeliveryListFragment extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
                         Toast.makeText(getActivity().getApplicationContext(), "Check Your Internet Connection" ,Toast.LENGTH_SHORT).show();
-
                     }
                 }){
 
