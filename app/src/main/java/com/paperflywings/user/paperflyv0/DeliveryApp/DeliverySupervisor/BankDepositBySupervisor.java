@@ -36,7 +36,6 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisorAdapter;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisorModel;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -195,13 +194,13 @@ public class BankDepositBySupervisor extends AppCompatActivity {
                 adapterPointCodeR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mPointCodeSpinner.setAdapter(adapterPointCodeR);*/
 
-        for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
+       /* for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
             if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelectedCts()) {
                 count++;
                 item = item + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderid();
             }
             create_tv.setText(count + " Orders have been selected for cash.");
-        }
+        }*/
         //orderIds.setText(item);
         //loadCollectionInfo(item, username);
         count = 0;

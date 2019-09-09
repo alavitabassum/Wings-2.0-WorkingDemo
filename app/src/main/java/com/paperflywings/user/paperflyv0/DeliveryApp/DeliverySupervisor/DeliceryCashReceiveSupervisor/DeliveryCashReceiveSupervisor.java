@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DeliveryCashReceiveSupervisor extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener,DeliveryCashReceiveSupervisorAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
     private DeliveryCashReceiveSupervisorAdapter deliveryCashReceiveSupervisorAdapter;
@@ -60,7 +60,10 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     private ProgressDialog progress;
     private TextView btnselect, btndeselect, totalCashCollection;
     private Button btnnext;
+    public static final String CTS_BY = "cts_by";
     public static final String TOTAL_CASH = "total_cash";
+    public static final String SERIAL_NO = "serial_no";
+    public static final String TOTAL_ORDER= "total_order";
     private List<DeliveryCashReceiveSupervisorModel> list;
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
@@ -75,9 +78,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
         setContentView(R.layout.activity_delivery_cash_receive_supervisor);
         totalCashCollection = (TextView) findViewById(R.id.CashCollection);
-        btnselect = (TextView) findViewById(R.id.selectBank);
+       /* btnselect = (TextView) findViewById(R.id.selectBank);
         btndeselect = (TextView) findViewById(R.id.deselectBank);
-        btnnext = (Button) findViewById(R.id.nextBank);
+        btnnext = (Button) findViewById(R.id.nextBank);*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -127,7 +130,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
-        btnselect.setOnClickListener(new View.OnClickListener() {
+     /*   btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 list = getModel(true);
@@ -153,7 +156,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 startActivity(intent);
 
             }
-        });
+        });*/
 
     }
 
@@ -296,26 +299,36 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("getData");
 
+
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
                                 DeliveryCashReceiveSupervisorModel withoutStatus_model = new  DeliveryCashReceiveSupervisorModel(
-                                        o.getString("orderid"),
-                                        o.getString("merOrderRef"),
+                                        o.getString("totalCashReceive"),
+                                        o.getString("serialNo"),
+                                        o.getString("totalOrders"),
+                                        o.getString("totalCashAmt"),
+                                        o.getString("submittedCashAmt"),
+                                        o.getString("dropPointEmp"),
+                                        o.getString("dropPointCode"),
+                                        o.getString("CashAmt"),
+                                        o.getString("partialReceive"),
+                                        o.getString("packagePrice"),
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getString("packagePrice"),
-                                        o.getString("CashAmt"));
+                                        o.getString("CRSTime"),
+                                        o.getString("CRSBy"));
 
-                                db.insertCash(o.getString("packagePrice"),
-                                        o.getString("CashAmt"));
+                               /* db.insertCash(o.getString("packagePrice"),
+                                        o.getString("CashAmt"));*/
 
                                 list.add(withoutStatus_model);
                             }
 
                             deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+                            deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -370,6 +383,20 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onItemClick_view(View view, int position) {
+        DeliveryCashReceiveSupervisorModel clickedItem = list.get(position);
+        //String totalCash = String.valueOf(db.getTotalCashSupervisor());
+        Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, BankDetails_upload_supervisor.class);
+
+        intent.putExtra(SERIAL_NO, clickedItem.getSerialNo());
+        intent.putExtra(CTS_BY, clickedItem.getCtsBy());
+        intent.putExtra(TOTAL_CASH, clickedItem.getTotalCashReceive());
+        intent.putExtra(TOTAL_ORDER, clickedItem.getTotalOrders());
+
+        startActivity(intent);
+    }
+
 //    private void loadCollectionInfo(final String orderids, final String username){
 //        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
 //                new Response.Listener<String>() {
@@ -420,7 +447,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 //    }
 
 
-    private ArrayList<DeliveryCashReceiveSupervisorModel> getModel(boolean isSelect){
+   /* private ArrayList<DeliveryCashReceiveSupervisorModel> getModel(boolean isSelect){
         ArrayList<DeliveryCashReceiveSupervisorModel> listOfOrders = new ArrayList<>();
         if(isSelect == true){
             String totalCash = String.valueOf(db.getTotalCashSupervisor());
@@ -456,5 +483,5 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             }
         }
         return listOfOrders;
-    }
+    }*/
 }
