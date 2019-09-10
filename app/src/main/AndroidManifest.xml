@@ -36,10 +36,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.ComingSoonSupPage"></activity>
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS"
             android:label="@string/title_activity_delivery_sup_crs"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor"
             android:label="@string/title_activity_bank_details_upload_supervisor"

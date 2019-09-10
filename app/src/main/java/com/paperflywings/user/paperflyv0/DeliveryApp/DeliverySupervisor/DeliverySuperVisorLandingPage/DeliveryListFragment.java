@@ -34,6 +34,7 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
@@ -112,42 +113,42 @@ public class DeliveryListFragment extends Fragment {
         sup_unpicked_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupUnpicked.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intent);
             }
         });
         sup_without_Status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupWithoutStatus.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intent);
             }
         });
         sup_on_Hold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupOnhold.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intent);
             }
         });
         sup_returnReqst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupPreRet.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intent);
             }
         });
         sup_return_List.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupReturnList.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intent);
             }
         });
         sup_cashCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupCash.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intent);
             }
         });
@@ -161,7 +162,7 @@ public class DeliveryListFragment extends Fragment {
         sup_CashReceive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCashReceiveSupervisor.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupCRS.class);
                 startActivity(intent);
             }
         });
