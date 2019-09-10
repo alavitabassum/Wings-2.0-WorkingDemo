@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,7 +14,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -50,7 +48,6 @@ import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatusModel;
 import com.paperflywings.user.paperflyv0.DeliveryApp.LocationService.GPStracker;
-import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONException;
@@ -96,13 +93,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
     public static final String URL_lOCATION = "http://paperflybd.com/GetLatlong.php";
     public static final String DELIVERY_STATUS_UPDATE = "http://paperflybd.com/update_ordertrack_for_app.php";
     public static final String INSERT_ONHOLD_LOG = "http://paperflybd.com/DeliveryOnholdLog.php";
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
+   // public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
     //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+     //   registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.delivery_quick_barcode_scan);
         returnReasons = new ArrayList<>();
@@ -142,13 +139,13 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
         beepManager = new BeepManager(this);
         //the broadcast receiver to update sync status
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        };
+//        broadcastReceiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//            }
+//        };
         //registering the broadcast receiver to update sync status
-        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
+       // registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
     }
 
     protected boolean isLocationEnabled(){

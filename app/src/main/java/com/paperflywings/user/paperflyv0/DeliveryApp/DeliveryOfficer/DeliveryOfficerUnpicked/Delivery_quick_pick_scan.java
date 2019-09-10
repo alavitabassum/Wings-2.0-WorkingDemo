@@ -65,9 +65,9 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
 
     //a broadcast to know weather the data is synced or not
     public static final String UPDATE_SCAN_AND_PICKED= "http://paperflybd.com/updatePickScanCount.php";
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
+    //public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
-    //Broadcast receiver to know the sync status
+   // //Broadcast receiver to know the sync status
     private BroadcastReceiver broadcastReceiver;
 
 
@@ -97,45 +97,49 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
             }
         };
         //registering the broadcast receiver to update sync status
-        registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
+       // registerReceiver(broadcastReceiver, new IntentFilter(DATA_SAVED_BROADCAST));
     }
 
     private BarcodeCallback callback = new BarcodeCallback()  {
         @Override
-        public void barcodeResult(BarcodeResult result)  {
+        public void barcodeResult(BarcodeResult result) {
             //Fetching email from shared preferences
             SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-            final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-            final String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"Not Available");
+            final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+            final String empcode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF, "Not Available");
 
             db = new BarcodeDbHelper(Delivery_quick_pick_scan.this);
 
             barcode = result.getText();
-            lastText = barcode.substring(0,11);
+            lastText = barcode.substring(0, 11);
 
-            barcodeView.setStatusText("Barcode"+result.getText());
+            barcodeView.setStatusText("Barcode" + result.getText());
             //pickedfordelivery(lastText, username, empcode, "PickAndAssignFromApp");
 
 
 //            dialog.dismiss();
+         try{
+            AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
+            builder.setTitle("Scanned for Barcode number: " + result.getText());
+            onPause();
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                builder.setTitle("Scanned for Barcode number: "+result.getText());
-                onPause();
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    pickedfordelivery(lastText, username, empcode, "PickAndAssignFromApp");
+                    dialog.dismiss();
+                    onResume();
+                }
+            });
 
-                        pickedfordelivery(lastText, username, empcode, "PickAndAssignFromApp");
-                        dialog.dismiss();
-                        onResume();
-                    }
-                });
+            builder.setCancelable(false);
+            final AlertDialog alert1 = builder.create();
+            alert1.show();
 
-                builder.setCancelable(false);
-                final AlertDialog alert1 = builder.create();
-                alert1.show();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
             db.close();
 
@@ -208,9 +212,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
     //API HIT
     private void pickedfordelivery(final String barcode, final String username, final String empcode, final String flagReq) {
 
-      /*  Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
-        final String currentDateTimeString = df.format(date);*/
         StringRequest postRequest = new StringRequest(Request.Method.POST, "http://paperflybd.com/test_update_ordertrack_for_app.php", new Response.Listener<String>()
                  {
                     @Override
@@ -247,8 +248,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                                     alertDialog404.show();
                                 }  else if(statusCode.equals("100")){
                                     onPause();
-                                    /*Toast.makeText(Delivery_quick_pick_scan.this, o.getString("alreadyPicked"), Toast.LENGTH_SHORT).show();
-                                    onResume();*/
                                     AlertDialog.Builder alertDialogBuilder100 = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
                                     alertDialogBuilder100.setCancelable(false);
                                     alertDialogBuilder100.setMessage(o.getString("alreadyPicked"));
@@ -265,8 +264,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                                     alertDialog100.show();
                                 } else if(statusCode.equals("405")){
                                     onPause();
-                                    /*Toast.makeText(Delivery_quick_pick_scan.this, o.getString("noData"), Toast.LENGTH_SHORT).show();
-                                    onResume();*/
                                     AlertDialog.Builder alertDialogBuilder405 = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
                                     alertDialogBuilder405.setCancelable(false);
                                     alertDialogBuilder405.setMessage(o.getString("noData"));
@@ -283,8 +280,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                                     alertDialog405.show();
                                 } else if(statusCode.equals("409")){
                                     onPause();
-                                    /*Toast.makeText(Delivery_quick_pick_scan.this, o.getString("dp2Error"), Toast.LENGTH_SHORT).show();
-                                    onResume();*/
                                     AlertDialog.Builder alertDialogBuilder409 = new AlertDialog.Builder(Delivery_quick_pick_scan.this);
                                     alertDialogBuilder409.setCancelable(false);
                                     alertDialogBuilder409.setMessage(o.getString("dp2Error"));
@@ -301,21 +296,6 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                                     alertDialog409.show();
                                 }
                             }
-                         /*   JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                //if there is a success
-                                //storing the name to sqlite with status synced
-                                db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_SYNCED_WITH_SERVER);
-                                Toast toast= Toast.makeText(Delivery_quick_pick_scan.this,
-                                        "Product Picked Successful", Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-                                toast.show();
-                            } else {
-                                //if there is some error
-                                //saving the name to sqlite with status unsynced
-                                db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
-                                Toast.makeText(Delivery_quick_pick_scan.this, "Already Picked Order" ,  Toast.LENGTH_LONG).show();
-                            }*/
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -324,7 +304,7 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                       // db.getUnpickedOrderData(barcode,username,empcode,"Y",currentDateTimeString, username,NAME_NOT_SYNCED_WITH_SERVER);
+                        Toast.makeText(Delivery_quick_pick_scan.this, "Internet Connection Error! Try again later.", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {

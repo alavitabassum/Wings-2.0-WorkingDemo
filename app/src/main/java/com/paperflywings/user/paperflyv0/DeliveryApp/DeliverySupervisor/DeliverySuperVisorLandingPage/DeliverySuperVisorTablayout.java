@@ -73,9 +73,6 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
 
     public static final String GET_DATA = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
-    public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    public static final int NAME_SYNCED_WITH_SERVER = 1;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +106,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
             loadEmployeeList(username);
             loadPointCodes(username);
             loadBankDetails();
+            loadCourierDetails();
         }
         else {
 //            getData(username);
@@ -457,6 +455,56 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("flagreq","get_bank_names");
+                return params1;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
+    public void loadCourierDetails(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteCourierDetails(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getCourier");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addCourierDetails(
+                                        o.getInt("courier_id"),
+                                        o.getString("courier_name"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Courier List." ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("flagreq","get_courier_names");
                 return params1;
             }
         };

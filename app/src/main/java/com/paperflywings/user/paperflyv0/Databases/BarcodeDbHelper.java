@@ -7,140 +7,143 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 24;
+    private static final int DATABASE_VERSION = 25;
     private static final String DATABASE_NAME = "WingsDB";
-    private static final String TABLE_NAME = "Barcode";
-    private static final String TABLE_NAME_1 = "My_pickups";
-    private static final String TABLE_NAME_2 = "Barcode_Fulfillment";
-    private static final String TABLE_NAME_4 = "Insert_Pickup_Action";
-    private static final String TABLE_NAME_6 = "pickups_today_executive";
-    private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
-    private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
-    private static final String TABLE_NAME_9 = "All_delivery_data";
-    private static final String TABLE_NAME_RTS = "Delivery_RTS";
-    private static final String TABLE_NAME_CTS = "Delivery_CTS";
-    private static final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
-    private static final String TABLE_NAME_ONHOLD_LOG = "Insert_Onhold_Log";
-    private static final String TABLE_NAME_RETURN_REASONS = "Insert_Return_Reason";
-    private static final String TABLE_NAME_EXPENSE_PURPOSE = "Insert_Expense_Purpose";
-    private static final String TABLE_NAME_EMP_POINTCODE = "EmpPointCode";
-    private static final String TABLE_NAME_DELIVERY_EMP_LIST = "Table_delivery_employee_list";
-    private static final String TABLE_NAME_BANK_DETAILS = "Table_bank_details";
-    private static final String TABLE_CASH_MANAGEMENT = "Table_cash_management";
+    private  final String TABLE_NAME = "Barcode";
+    private  final String TABLE_NAME_1 = "My_pickups";
+    private  final String TABLE_NAME_2 = "Barcode_Fulfillment";
+    private  final String TABLE_NAME_4 = "Insert_Pickup_Action";
+    private  final String TABLE_NAME_6 = "pickups_today_executive";
+    private  final String TABLE_NAME_7 = "Insert_Delivery_Summary";
+    private  final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
+    private  final String TABLE_NAME_9 = "All_delivery_data";
+    private  final String TABLE_NAME_RTS = "Delivery_RTS";
+    private  final String TABLE_NAME_CTS = "Delivery_CTS";
+    private  final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
+    private  final String TABLE_NAME_ONHOLD_LOG = "Insert_Onhold_Log";
+    private  final String TABLE_NAME_RETURN_REASONS = "Insert_Return_Reason";
+    private  final String TABLE_NAME_EXPENSE_PURPOSE = "Insert_Expense_Purpose";
+    private  final String TABLE_NAME_EMP_POINTCODE = "EmpPointCode";
+    private  final String TABLE_NAME_DELIVERY_EMP_LIST = "Table_delivery_employee_list";
+    private  final String TABLE_NAME_BANK_DETAILS = "Table_bank_details";
+    private  final String TABLE_NAME_COURIER_DETAILS = "Table_courier_details";
+    private  final String TABLE_CASH_MANAGEMENT = "Table_cash_management";
 
-    private static final String KEY_ID = "id";
-    private static final String SQL_PRIMARY_ID = "sql_primary_id";
-    private static final String MERCHANT_ID = "merchantId";
-    private static final String KEY_NAME = "barcodeNumber";
-    private static final String MERCHANT_NAME = "merchant_name";
-    private static final String EXECUTIVE_NAME = "executive_name";
-    private static final String ASSIGNED_QTY = "assined_qty";
-    private static final String PICKED_QTY = "picked_qty";
-    private static final String SCAN_COUNT = "scan_count";
-    private static final String PHONE_NO = "phone_no";
-    private static final String ASSIGNED_BY = "assigned_by";
-    private static final String CREATED_AT = "created_at";
-    private static final String UPDATED_BY = "updated_by";
-    private static final String UPDATED_AT = "updated_at";
-    private static final String RECEIVED_QTY = "received_qty";
-    private static final String STATE = "state";
-    private static final String STATUS = "status";
-    private static final String COMPLETE_STATUS = "complete_status";
-    private static final String PICK_M_NAME = "p_m_name";
-    private static final String PICK_M_ADD = "p_m_add";
-    private static final String SUB_MERCHANT_NAME = "sub_merchant_name";
-    private static final String ORDER_ID = "order_id";
-    private static final String PRODUCT_NAME = "product_name";
-    private static final String APIORDERID = "apiOrderID";
-    private static final String DEMO = "demo";
-    private static final String MERCHANT_CODE = "merchant_code";
-    private static final String PICKED_STATUS = "pick_from_merchant_status";
-    private static final String RECEIVED_STATUS = "received_from_HQ_status";
-    private static final String STATUS_ID = "status_id";
-    private static final String STATUS_NAME = "status_name";
-    private static final String USERNAME = "username";
-    private static final String COMMENT = "comment";
+    private  final String KEY_ID = "id";
+    private  final String SQL_PRIMARY_ID = "sql_primary_id";
+    private  final String MERCHANT_ID = "merchantId";
+    private  final String KEY_NAME = "barcodeNumber";
+    private  final String MERCHANT_NAME = "merchant_name";
+    private  final String EXECUTIVE_NAME = "executive_name";
+    private  final String ASSIGNED_QTY = "assined_qty";
+    private  final String PICKED_QTY = "picked_qty";
+    private  final String SCAN_COUNT = "scan_count";
+    private  final String PHONE_NO = "phone_no";
+    private  final String ASSIGNED_BY = "assigned_by";
+    private  final String CREATED_AT = "created_at";
+    private  final String UPDATED_BY = "updated_by";
+    private  final String UPDATED_AT = "updated_at";
+    private  final String RECEIVED_QTY = "received_qty";
+    private  final String STATE = "state";
+    private  final String STATUS = "status";
+    private  final String COMPLETE_STATUS = "complete_status";
+    private  final String PICK_M_NAME = "p_m_name";
+    private  final String PICK_M_ADD = "p_m_add";
+    private  final String SUB_MERCHANT_NAME = "sub_merchant_name";
+    private  final String ORDER_ID = "order_id";
+    private  final String PRODUCT_NAME = "product_name";
+    private  final String APIORDERID = "apiOrderID";
+    private  final String DEMO = "demo";
+    private  final String MERCHANT_CODE = "merchant_code";
+    private  final String PICKED_STATUS = "pick_from_merchant_status";
+    private  final String RECEIVED_STATUS = "received_from_HQ_status";
+    private final String STATUS_ID = "status_id";
+    private final String STATUS_NAME = "status_name";
+    private final String USERNAME = "username";
+    private final String COMMENT = "comment";
+    private final int COURIER_ID = 0;
+    private final String COURIER_NAME = "courierName";
 
     // Bank details save
-    private static final String BANK_ID = "bankId";
-    private static final String BANK_NAME = "bankName";
-    private static final String BANK_CREATION_DATE = "creationDate";
-    private static final String BANK_CREATE_BY = "createdBy";
-    private static final String BANK_UPDATE_DATE = "updateDate";
-    private static final String BANK_UPDATE_BY = "updateBy";
+    private  final String BANK_ID = "bankId";
+    private  final String BANK_NAME = "bankName";
+    private  final String BANK_CREATION_DATE = "creationDate";
+    private  final String BANK_CREATE_BY = "createdBy";
+    private  final String BANK_UPDATE_DATE = "updateDate";
+    private  final String BANK_UPDATE_BY = "updateBy";
 
     //delivery landing
-    private static final String UNPICKED = "unpicked";
-    private static final String WITHOUTSTATUS = "without_status";
-    private static final String ONHOLD = "onhold";
-    private static final String CASH = "cash";
-    private static final String RETURNREQUEST = "return_request";
-    private static final String RETURNLIST = "return_list";
-    private static final String REATTEMPT = "reAttempt";
-    public static final String DROP_POINT_EMP = "dropPointEmp";
-    public static final String DROP_ASSIGN_TIME = "dropAssignTime";
-    public static final String DROP_ASSIGN_BY = "dropAssignBy";
-    public static final String PICK_DROP = "pickDrop";
-    public static final String PICK_DROP_TIME = "pickDropTime";
-    public static final String PICK_DROP_BY = "pickDropBy";
+    private  final String UNPICKED = "unpicked";
+    private  final String WITHOUTSTATUS = "without_status";
+    private  final String ONHOLD = "onhold";
+    private  final String CASH = "cash";
+    private  final String RETURNREQUEST = "return_request";
+    private  final String RETURNLIST = "return_list";
+    private  final String REATTEMPT = "reAttempt";
+    public  final String DROP_POINT_EMP = "dropPointEmp";
+    public  final String DROP_ASSIGN_TIME = "dropAssignTime";
+    public  final String DROP_ASSIGN_BY = "dropAssignBy";
+    public  final String PICK_DROP = "pickDrop";
+    public  final String PICK_DROP_TIME = "pickDropTime";
+    public  final String PICK_DROP_BY = "pickDropBy";
 
     // delivery actions
-    public static final String DROPPOINTCODE = "dropPointCode";
-    public static final String BARCODE_NO = "barcode";
-    public static final String ORDERID = "orderid";
-    public static final String MERCHANT_ORDER_REF = "merOrderRef";
-    public static final String MERCHANTS_NAME = "merchantName";
-    public static final String PICK_MERCHANTS_NAME = "pickMerchantName";
-    public static final String CUSTOMER_NAME = "custname";
-    public static final String CUSTOMER_PHONE = "custphone";
-    public static final String CUSTOMER_ADDRESS = "custaddress";
-    public static final String PACKAGE_PRICE = "packagePrice";
-    public static final String PRODUCT_BRIEF = "productBrief";
-    public static final String DELIVERY_TIME = "deliveryTime";
-    public static final String EMPLOYEE_CODE = "empCode";
-    public static final String EMPLOYEE_NAME = "empName";
-    public static final String EMPLOYEE_ID = "empId";
-    public static final String CASH_ACTION = "Cash";
-    public static final String CASH_TYPE= "cashType";
-    public static final String CASH_TIME = "CashTime";
-    public static final String CASH_BY = "CashBy";
-    public static final String CASH_AMT= "CashAmt";
-    public static final String CASH_COMMENT = "CashComment";
-    public static final String PARTIAL = "partial";
-    public static final String PARTIAL_TIME = "partialTime";
-    public static final String PARTIAL_BY = "partialBy";
-    public static final String PARTIAL_RECEIVE = "partialReceive";
-    public static final String PARTIAL_RETURN = "partialReturn";
-    public static final String PARTIAL_RETURN_REASON = "partialReason";
-    public static final String ONHOLD_SCHEDULE = "onHoldSchedule";
-    public static final String ONHOLD_REASON = "onHoldReason";
-    public static final String REA = "Rea";
-    public static final String REA_TIME = "ReaTime";
-    public static final String REA_BY = "ReaBy";
-    public static final String RET = "Ret";
-    public static final String RET_TIME = "RetTime";
-    public static final String RET_BY = "RetBy";
-    public static final String RET_REASON = "retReason";
-    public static final String RTS = "RTS";
-    public static final String RTS_TIME = "RTSTime";
-    public static final String RTS_BY = "RTSBy";
-    public static final String PRERET = "PreRet";
-    public static final String PRERET_TIME = "PreRetTime";
-    public static final String PRERET_BY = "PreRetBy";
-    public static final String CTS_CASH = "CTS";
-    public static final String CTSTIME_CASH = "CTSTime";
-    public static final String CTSBY_CASH = "CTSBy";
-    public static final String  SLAMISS = "slaMiss";
-    public static final String FLAG_REQ = "flagReq";
-    public static final String CURRENT_DATE = "currentDateTime";
-    public static final String REASON_ID = "reasonID";
-    public static final String RETURN_REASON = "reason";
-    public static final String RET_REMARKS = "retRemarks";
-    public static final String EMP_POINTCODE = "pointCode";
-    public static final String PURPOSE_ID = "purposeId";
-    public static final String PURPOSE_REASON = "purpose";
+    public  final String DROPPOINTCODE = "dropPointCode";
+    public  final String BARCODE_NO = "barcode";
+    public  final String ORDERID = "orderid";
+    public  final String MERCHANT_ORDER_REF = "merOrderRef";
+    public  final String MERCHANTS_NAME = "merchantName";
+    public  final String PICK_MERCHANTS_NAME = "pickMerchantName";
+    public  final String CUSTOMER_NAME = "custname";
+    public  final String CUSTOMER_PHONE = "custphone";
+    public  final String CUSTOMER_ADDRESS = "custaddress";
+    public  final String PACKAGE_PRICE = "packagePrice";
+    public  final String PRODUCT_BRIEF = "productBrief";
+    public  final String DELIVERY_TIME = "deliveryTime";
+    public  final String EMPLOYEE_CODE = "empCode";
+    public  final String EMPLOYEE_NAME = "empName";
+    public  final String EMPLOYEE_ID = "empId";
+    public  final String CASH_ACTION = "Cash";
+    public  final String CASH_TYPE= "cashType";
+    public  final String CASH_TIME = "CashTime";
+    public  final String CASH_BY = "CashBy";
+    public  final String CASH_AMT= "CashAmt";
+    public  final String CASH_COMMENT = "CashComment";
+    public  final String PARTIAL = "partial";
+    public  final String PARTIAL_TIME = "partialTime";
+    public  final String PARTIAL_BY = "partialBy";
+    public  final String PARTIAL_RECEIVE = "partialReceive";
+    public  final String PARTIAL_RETURN = "partialReturn";
+    public  final String PARTIAL_RETURN_REASON = "partialReason";
+    public  final String ONHOLD_SCHEDULE = "onHoldSchedule";
+    public  final String ONHOLD_REASON = "onHoldReason";
+    public  final String REA = "Rea";
+    public  final String REA_TIME = "ReaTime";
+    public  final String REA_BY = "ReaBy";
+    public  final String RET = "Ret";
+    public  final String RET_TIME = "RetTime";
+    public  final String RET_BY = "RetBy";
+    public  final String RET_REASON = "retReason";
+    public  final String RTS = "RTS";
+    public  final String RTS_TIME = "RTSTime";
+    public  final String RTS_BY = "RTSBy";
+    public  final String PRERET = "PreRet";
+    public  final String PRERET_TIME = "PreRetTime";
+    public  final String PRERET_BY = "PreRetBy";
+    public  final String CTS_CASH = "CTS";
+    public  final String CTSTIME_CASH = "CTSTime";
+    public  final String CTSBY_CASH = "CTSBy";
+    public  final String  SLAMISS = "slaMiss";
+    public  final String FLAG_REQ = "flagReq";
+    public  final String CURRENT_DATE = "currentDateTime";
+    public  final String REASON_ID = "reasonID";
+    public  final String RETURN_REASON = "reason";
+    public  final String RET_REMARKS = "retRemarks";
+    public  final String EMP_POINTCODE = "pointCode";
+    public  final String PURPOSE_ID = "purposeId";
+    public  final String PURPOSE_REASON = "purpose";
 
-    private static final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
+    private  final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
 
     public BarcodeDbHelper(Context context) {
@@ -449,7 +452,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "empId INTEGER, "
                 + "empCode TEXT, "
                 + "empName TEXT, "
-                + "unique(empId,empCode,empName))";
+                + "unique(empCode))";
 
         String CREATION_TABLE_NAME_BANK_DETAILS = "CREATE TABLE Table_bank_details ( "
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -468,6 +471,12 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "CashAmt TEXT, "
                 + "unique(id))";
 
+        String CREATION_TABLE_COURIER_DETAILS = "CREATE TABLE Table_courier_details ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "courierId INTEGER, "
+                + "courierName TEXT, "
+                + "unique(courierId,courierName))";
+
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -485,6 +494,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE_EXPENSE_PURPOSE);
         db.execSQL(CREATION_TABLE_DELIVERY_EMP_LIST);
         db.execSQL(CREATION_TABLE_NAME_BANK_DETAILS);
+        db.execSQL(CREATION_TABLE_COURIER_DETAILS);
         db.execSQL(CREATION_TABLE_CASH_MANAGEMENT);
     }
 
@@ -506,6 +516,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EXPENSE_PURPOSE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_DELIVERY_EMP_LIST);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_BANK_DETAILS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_COURIER_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EMP_POINTCODE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CASH_MANAGEMENT);
         this.onCreate(db);
@@ -1765,6 +1776,35 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     public void deleteBankDetails(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_BANK_DETAILS);
+    }
+
+    public void addCourierDetails(int courierId, String courierName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(String.valueOf(COURIER_ID), courierId);
+        values.put(COURIER_NAME, courierName);
+        db.insert(TABLE_NAME_COURIER_DETAILS, null, values);
+        db.close();
+    }
+
+    public void deleteCourierDetails(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_COURIER_DETAILS);
+    }
+
+    public Cursor get_courier_details(SQLiteDatabase db) {
+        String[] columns = {String.valueOf(COURIER_ID),COURIER_NAME};
+        return db.query(TABLE_NAME_COURIER_DETAILS, columns, null, null, null, null, null);
+    }
+
+    public String getSelectedCourierId(String courierName){
+        String selection = "Error";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT " +  COURIER_ID + " FROM " + TABLE_NAME_COURIER_DETAILS + " WHERE " + COURIER_NAME + " = '" + courierName + "'", null);
+        if(c.moveToFirst()){
+            selection = c.getString(c.getColumnIndex(String.valueOf(COURIER_ID)));
+            return selection;
+        }
+        return null;
     }
 
     public Cursor get_bank_details(SQLiteDatabase db) {

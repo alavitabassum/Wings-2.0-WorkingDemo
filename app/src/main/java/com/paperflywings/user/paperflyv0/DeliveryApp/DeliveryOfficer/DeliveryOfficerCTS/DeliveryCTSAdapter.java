@@ -34,8 +34,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
 
     public interface OnItemClickListtener {
-        void onItemClick_view (View view2, int position2);
-        //void onItemClick_call (View view4, int position4);
+        void onItemClick_view (View view, int position);
     }
 
 
