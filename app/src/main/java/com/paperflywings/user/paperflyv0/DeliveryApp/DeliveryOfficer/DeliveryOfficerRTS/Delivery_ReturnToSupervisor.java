@@ -371,9 +371,9 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                     final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
                                     final Intent intent = new Intent(Delivery_ReturnToSupervisor.this, Delivery_ReturnToSupervisor.class);
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Delivery_ReturnToSupervisor.this);
-                                    View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
+                                    View mView = getLayoutInflater().inflate(R.layout.activity_next_for_return, null);
                                     final TextView tv = mView.findViewById(R.id.tv);
-                                    final TextView  orderIds = mView.findViewById(R.id.cash_amount);
+                                    final TextView orderIds = mView.findViewById(R.id.error_msg_return);
 
                                     for (int i = 0; i < DeliveryReturnToSuperVisorAdapter.imageModelArrayList1.size(); i++){
                                         if(DeliveryReturnToSuperVisorAdapter.imageModelArrayList1.get(i).getSelected()) {
@@ -628,67 +628,6 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         }
     }
 
-
-   /* private void ReturnToS(final String RTS,final String RTSTime, final String RTSBy, final String barcode, final String orderid, final String flagReq) {
-        String str = String.valueOf(db.getReturnCount("rts","Y"));
-        ReturnRqst_text.setText(str);
-        final Intent withoutstatuscount = new Intent(Delivery_ReturnToSupervisor.this,
-                Delivery_ReturnToSupervisor.class);
-        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RETURNR_UPDATE,
-
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                db.update_rts_status(RTS,RTSTime,RTSBy,barcode,orderid,flagReq,NAME_SYNCED_WITH_SERVER);
-                                Toast toast= Toast.makeText(Delivery_ReturnToSupervisor.this,
-                                        "Successful", Toast.LENGTH_SHORT);
-                                toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
-                                toast.show();
-                                startActivity(withoutstatuscount);
-                            } else {
-                                //if there is some error
-                                //saving the name to sqlite with status unsynced
-                                db.update_rts_status(RTS,RTSTime,RTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                                startActivity(withoutstatuscount);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        db.update_rts_status(RTS,RTSTime,RTSBy,barcode,orderid,flagReq,NAME_NOT_SYNCED_WITH_SERVER);
-                        startActivity(withoutstatuscount);
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("RTS", RTS);
-                params.put("RTSTime", RTSTime);
-                params.put("RTSBy", RTSBy);
-                params.put("orderid", orderid);
-                params.put("barcode", barcode);
-                return params;
-            }
-        };
-        try {
-            if (requestQueue == null) {
-                requestQueue = Volley.newRequestQueue(this);
-            }
-            requestQueue.add(postRequest);
-        } catch (Exception e) {
-            Toast.makeText(Delivery_ReturnToSupervisor.this, "Connection problem! rts", Toast.LENGTH_LONG).show();
-        }
-    }
-   */
     private void UpdateReturnYoS(final String item,final String RTSBy) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_UPDATE_All,
