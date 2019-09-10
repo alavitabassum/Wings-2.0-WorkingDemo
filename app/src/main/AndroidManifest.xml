@@ -135,7 +135,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.Courier.CourierSend.DeliveryReturnManagementCourierSend"
+            android:name=".DeliveryApp.Courier.CourierSend.CourierResenByScan.DeliveryReturnManagementCourierSend"
             android:label="Send Courier"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />

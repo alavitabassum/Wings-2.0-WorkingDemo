@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -33,7 +34,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
 
     public interface OnItemClickListtener {
-       // void onItemClick_view (View view2, int position2);
+        void onItemClick_view (View view2, int position2);
         //void onItemClick_call (View view4, int position4);
     }
 
@@ -67,6 +68,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         public TextView item_customers_name;
         public TextView item_customers_address;
         public CardView card_view_without_status;
+        public Button item_cash_dispute;
         protected CheckBox checkBox;
 
 
@@ -82,6 +84,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
             item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
             item_customers_name = itemView.findViewById(R.id.customers_name);
             item_customers_address = itemView.findViewById(R.id.customers_address);
+            item_cash_dispute = itemView.findViewById(R.id.disputeBtn);
 
             card_view_without_status=itemView.findViewById(R.id.card_view_delivery_without_status_list);
             checkBox = (CheckBox) itemView.findViewById(R.id.cb);
@@ -101,18 +104,18 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
                 }
             });*/
             
-           /* itemStatus_without_status.setOnClickListener(new View.OnClickListener() {
+            item_cash_dispute.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view2) {
+                public void onClick(View view) {
                     if(mListner!=null){
-                        int position2 = getAdapterPosition();
-                        if(position2!=RecyclerView.NO_POSITION){
-                            mListner.onItemClick_view(view2, position2);
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            mListner.onItemClick_view(view, position);
                         }
                     }
                 }
 
-            });*/
+            });
 
         }
 

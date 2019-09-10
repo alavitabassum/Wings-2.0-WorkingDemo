@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.Courier.CourierSend;
+package com.paperflywings.user.paperflyv0.DeliveryApp.Courier.CourierSend.CourierResenByScan;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

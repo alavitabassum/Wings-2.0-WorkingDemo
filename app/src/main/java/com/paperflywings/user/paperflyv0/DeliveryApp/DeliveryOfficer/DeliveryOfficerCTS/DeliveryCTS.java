@@ -670,32 +670,6 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-   /* @Override
-    public void onItemClick_view(View view2, int position2) {
-        final DeliveryCTSModel clickedITem = list.get(position2);
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-
-        Date c = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        final String currentDateTime = df.format(c);
-
-        final String CTS = "Y";
-        final String CTSTime = currentDateTime;
-        final String CTSBy = username;
-
-        String barcode = clickedITem.getBarcode();
-        String orderid = clickedITem.getOrderid();
-        final String sql_primary_id = String.valueOf(clickedITem.getSql_primary_id());
-
-        CashToS(CTS,CTSTime,CTSBy,barcode,orderid, "ctsOk");
-            try {
-                GetValueFromEditText(sql_primary_id,"Delivery", "Cash To Supervisor", username, currentDateTime);
-            } catch (Exception e) {
-                //Toast.makeText(DeliveryCTS.this, "No internet connection!", Toast.LENGTH_SHORT).show();
-            }
-        }*/
-
     private void UpdateBankInfo(final String createdBy,final String flagReqst,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
@@ -743,22 +717,6 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-    /*@Override
-    public void onItemClick_call(View view4, int position4) {
-        Intent callIntent =new Intent(Intent.ACTION_CALL);
-        String phoneNumber = list.get(position4).getCustphone();
-        String lastFourDigits = phoneNumber.substring(phoneNumber.length() - 10);
-        callIntent.setData(Uri.parse("tel: +880" +lastFourDigits));
-        if (ActivityCompat.checkSelfPermission(view4.getContext(),
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions((Activity) view4.getContext(),
-                    new String[]{Manifest.permission.CALL_PHONE},
-                    MY_PERMISSIONS_REQUEST_CALL_PHONE);
-            return;
-        }
-        view4.getContext().startActivity(callIntent);
-    }*/
-
     private ArrayList<DeliveryCTSModel> getModel(boolean isSelect){
         ArrayList<DeliveryCTSModel> listOfOrders = new ArrayList<>();
         if(isSelect == true){
@@ -797,4 +755,141 @@ public class DeliveryCTS extends AppCompatActivity
         return listOfOrders;
     }
 
+    @Override
+    public void onItemClick_view(View view, int position) {
+        // mis-clicking prevention, using threshold of 500 ms
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final Intent intent = new Intent(DeliveryCTS.this, DeliveryCTS.class);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCTS.this);
+        View mView1 = getLayoutInflater().inflate(R.layout.dispute_cash_from_delivery_officer, null);
+
+        DeliveryCTSModel clickedItem = list.get(position);
+
+        final int sql_primary_id = clickedItem.getSql_primary_id();
+        String orderId = clickedItem.getOrderid();
+        String cashAmt = clickedItem.getCashAmt();
+
+        final TextView tv = mView1.findViewById(R.id.tv);
+        final TextView tv1 = mView1.findViewById(R.id.tv1);
+        final EditText disputeComment = mView1.findViewById(R.id.dispute_comment_text);
+        final TextView disputeError = mView1.findViewById(R.id.dispute_error);
+
+        tv.setText("Dispute Order Id: "+orderId);
+        tv1.setText(cashAmt+" Taka");
+
+
+
+        alertDialogBuilder.setPositiveButton("Dispute",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setView(mView1);
+
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                String DisputeComments = disputeComment.getText().toString().trim();
+
+                if(DisputeComments.isEmpty()){
+                    disputeError.setText("Please write dispute reason!!");
+                }
+                else {
+                    disputeForCash(username, DisputeComments, sql_primary_id);
+
+                    alertDialog.dismiss();
+                    startActivity(intent);
+
+                }
+
+
+            }
+        });
+    }
+
+    private void disputeForCash (final String username, final String disputeComment, final int sql_primary_id){
+        list = getModel(false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+                                String statusCode = o.getString("responseCode");
+                                if(statusCode.equals("200")){
+                                    Toast.makeText(DeliveryCTS.this, o.getString("success"), Toast.LENGTH_SHORT).show();
+
+                                } else if(statusCode.equals("404")){
+                                    Toast.makeText(DeliveryCTS.this, o.getString("unsuccess"), Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+
+                            String str = String.valueOf(db.getCashCount("cts", "Y"));
+                            CashCount_text.setText(str);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // progress.dismiss();
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Server Error!!" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",username);
+                params1.put("disputeComment",disputeComment);
+                params1.put("sqlPrimaryId", String.valueOf(sql_primary_id));
+                params1.put("flagreq","dispute_raised_by_DO");
+                return params1;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        requestQueue.add(stringRequest);
+    }
 }
