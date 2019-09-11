@@ -323,11 +323,13 @@ public class DeliverySReturnReceive extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-
+                                String statusCode = o.getString("responseCode");
+                                if(statusCode.equals("200")){
+                                    returnedorders.setText(o.getString("returnReceiveCount"));
+                                } else if(statusCode.equals("404")){
+                                    Toast.makeText(DeliverySReturnReceive.this, o.getString("responseMsg"), Toast.LENGTH_SHORT).show();
+                                }
                             }
-
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                             swipeRefreshLayout.setRefreshing(false);

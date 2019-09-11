@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:foreground="?selectableItemBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor"
-    tools:showIn="@layout/app_bar_bank_details_upload_supervisor">
+    tools:context=".DeliveryApp.DeliveryOfficer.Bank_details_upload_by_DO"
+    tools:showIn="@layout/app_bar_bank_details_upload_by__do">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -98,53 +98,14 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="100dp"
-            android:layout_height="78dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/bank_deposite_comment"
             android:layout_toEndOf="@+id/chooseBn"
             android:src="@drawable/ic_add_image"
             />
 
-
-        <!-- <LinearLayout
-             android:id="@+id/imageStack"
-             android:layout_below="@+id/bank_deposite_comment"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_marginTop="20dp"
-             >
-
-             <ImageView
-                 android:id="@+id/imageView"
-                 android:layout_width="100dp"
-                 android:layout_height="78dp"
-                 android:layout_marginTop="10dp"
-                 android:layout_toEndOf="@+id/chooseBn"
-                 android:src="@drawable/ic_add_image"
-                 />
-
-             <ImageView
-                 android:id="@+id/imageView1"
-                 android:layout_width="100dp"
-                 android:layout_height="78dp"
-                 android:layout_below="@id/imageView"
-                 android:layout_marginTop="10dp"
-                 android:layout_toEndOf="@+id/chooseBn"
-                 android:src="@drawable/ic_add_image"
-                 />
-
-             <ImageView
-                 android:id="@+id/imageView2"
-                 android:layout_width="100dp"
-                 android:layout_height="78dp"
-                 android:layout_below="@id/imageView1"
-                 android:layout_marginTop="10dp"
-                 android:layout_toEndOf="@+id/chooseBn"
-                 android:src="@drawable/ic_add_image"
-                 />
-         </LinearLayout>
-
- -->
         <TextView
             android:id="@+id/error_msg"
             android:layout_width="wrap_content"
@@ -154,7 +115,7 @@
             android:textAlignment="center"
             android:textSize="12sp"
             android:textStyle="bold"
-            android:layout_below="@id/imageStack"
+            android:layout_below="@id/imageView"
             android:textColor="@color/red"/>
 
         <Button

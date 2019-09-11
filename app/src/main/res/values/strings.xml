@@ -238,6 +238,7 @@
     <string name="title_activity_bank_details_upload_supervisor">Bank Details
     </string>
     <string name="title_activity_delivery_sup_crs">DeliverySupCRS</string>
+    <string name="title_activity_bank_details_upload_by__do">Bank_details_upload_by_DO</string>
 
 
 </resources>
