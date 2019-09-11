@@ -67,7 +67,7 @@ import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.D
 public class BankDetails_upload_supervisor extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Button UploadBn, ChooseBn, ChooseBn1, ChooseBn2, selectBankId;
+    private Button UploadBn, selectBankId;
     //private EditText Name;
     private ImageView imgView, imgView1, imgView2;
     private Bitmap bitmap, bitmap1, bitmap2;

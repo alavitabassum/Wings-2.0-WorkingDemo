@@ -26,8 +26,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DeliverySReturnReceive extends AppCompatActivity
@@ -57,7 +60,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
     BarcodeDbHelper db;
     private long mLastClickTime = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private TextView btnselect, btndeselect;
+    private TextView btnselect, btndeselect, returnedorders;
     private DeliverySupervisorReturnRcvAdapter deliverySupervisorReturnRcvAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
@@ -80,6 +83,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         setContentView(R.layout.activity_delivery_sreturn_receive);
         btnselect = (TextView) findViewById(R.id.select);
         btndeselect = (TextView) findViewById(R.id.deselect);
+        returnedorders = (TextView) findViewById(R.id.RTS_id_);
         btnnext = (Button) findViewById(R.id.next);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -106,14 +110,15 @@ public class DeliverySReturnReceive extends AppCompatActivity
 
         if(nInfo!= null && nInfo.isConnected())
         {
-
+            getCourierDetails();
             loadRecyclerView(username);
+            loadReturnNumber(username);
         }
         else{
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-        getCourierDetails();
+
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -195,12 +200,25 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                     final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
                                     final Intent intent = new Intent(DeliverySReturnReceive.this, DeliverySReturnReceive.class);
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliverySReturnReceive.this);
-                                    View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
-                                    final TextView tv = mView.findViewById(R.id.tv);
-                                    final TextView tv1 = mView.findViewById(R.id.tv1);
-                                    final EditText totalcashes = mView.findViewById(R.id.cash_Collection_text);
-                                    final EditText cashComment = mView.findViewById(R.id.cash_comment_text);
-                                    final TextView  orderIds = mView.findViewById(R.id.cash_amount);
+                                    View mView = getLayoutInflater().inflate(R.layout.delivery_activity_next_return_courier_by_sup, null);
+
+                                    final TextView tv = mView.findViewById(R.id.tv_bulk);
+
+                                    final TextView disputeError = mView.findViewById(R.id.dispute_error_return_bulk);
+
+                                    // Courier List
+                                    final Spinner mCourierSpinner = (Spinner) mView.findViewById(R.id.courier_list_bulk);
+                                    List<String> crList = new ArrayList<String>();
+                                    crList.add(0,"Select courier...");
+                                    for (int x = 0; x < courierList.size(); x++) {
+                                        crList.add(courierList.get(x).getCourierName());
+                                    }
+
+                                    ArrayAdapter<String> adapterCourierListR = new ArrayAdapter<String>(DeliverySReturnReceive.this,
+                                            android.R.layout.simple_spinner_item,
+                                            crList);
+                                    adapterCourierListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    mCourierSpinner.setAdapter(adapterCourierListR);
 
                                     for (int i = 0; i < DeliverySupervisorReturnRcvAdapter.imageModelArrayList.size(); i++){
                                         if(DeliverySupervisorReturnRcvAdapter.imageModelArrayList.get(i).getSelected()) {
@@ -211,7 +229,6 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                     }
                                     //orderIds.setText(item);
                                     count = 0;
-
 
                                     alertDialogBuilder.setPositiveButton("Submit",
                                             new DialogInterface.OnClickListener() {
@@ -238,39 +255,23 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                         @Override
                                         public void onClick(View v) {
 
-                                            // mis-clicking prevention, using threshold of 500 ms
                                             if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
                                                 return;
                                             }
                                             mLastClickTime = SystemClock.elapsedRealtime();
 
-                                            String totalCashs = tv1.getText().toString().trim();
-                                            String CashComments = cashComment.getText().toString().trim();
-                                            String CashCollected = totalcashes.getText().toString().trim();
+                                            String courierName = mCourierSpinner.getSelectedItem().toString();
+                                            String carrierId = db.getSelectedCourierId(courierName);
 
                                             if(tv.getText().equals("0 Orders have been selected for cash.")){
-                                                orderIds.setText("Please Select Orders First!!");
-                                            }
-                                            else if(totalCashs.isEmpty()){
-                                                orderIds.setText("Please enter required fields First!!");
-                                            }
-                                            else if(CashComments.isEmpty()){
-                                                orderIds.setText("Please enter required fields First!!");
-                                            }
-                                            else if(CashCollected.isEmpty()){
-                                                orderIds.setText("Please enter required fields First!!");
-                                            }
-                                            else {
-                                                String flagReqst = "delivery_officer_CTS";
-                                                UpdateBankInfo(username,flagReqst,item,totalCashs,CashCollected,CashComments);
-                                                orderIds.setText("Please Select All Orders!!");
-                                            /*} else {
-                                                UpdateBankInfo(item, username);
-                                                //GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
-*/
+                                                disputeError.setText("Please Select Orders First!!");
+                                            }else if(courierName.equals("Select courier...")){
+                                                disputeError.setText("Please select courier name!!");
+                                            } else {
+                                                UpdateCourierResend(username,item,carrierId);
+
                                                 alertDialog.dismiss();
                                                 startActivity(intent);
-                                                //loadRecyclerView(username);
                                                 item = "";
                                             }
                                         }
@@ -287,7 +288,6 @@ public class DeliverySReturnReceive extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Server not connected" ,Toast.LENGTH_LONG).show();
                     }
@@ -309,6 +309,54 @@ public class DeliverySReturnReceive extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    private void loadReturnNumber (final String user){
+        //list = getModel(false);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getData");
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+
+                            }
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Server not connected" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",user);
+                params1.put("flagreq","return_list_count_for_supervisor");
+                return params1;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        requestQueue.add(stringRequest);
+    }
 
     @Override
     public void onBackPressed() {
@@ -427,7 +475,6 @@ public class DeliverySReturnReceive extends AppCompatActivity
         return true;
     }
 
-
     @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -447,7 +494,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         }
     }
 
-    private void UpdateBankInfo(final String createdBy,final String flagReqst,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
+    private void UpdateCourierResend(final String courierReturnBy,final String items,final String carrierId) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
                 new Response.Listener<String>() {
@@ -475,12 +522,10 @@ public class DeliverySReturnReceive extends AppCompatActivity
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("username", createdBy);
-                params.put("flagreq", flagReqst);
+                params.put("username", courierReturnBy);
                 params.put("orderid", items);
-                params.put("totalCashAmt", totalCashAmt);
-                params.put("submittedCashAmt", submittedCashAmt);
-                params.put("comment", CashComment);
+                params.put("carrierId", carrierId);
+                params.put("flagreq", "delivery_courier_resend_by_supervisor");
                 return params;
             }
         };
@@ -490,7 +535,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliverySReturnReceive.this, "Server Error! cts", Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliverySReturnReceive.this, "Internet Connection Error!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -535,7 +580,6 @@ public class DeliverySReturnReceive extends AppCompatActivity
         }
         mLastClickTime = SystemClock.elapsedRealtime();
 
-
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final Intent intent = new Intent(DeliverySReturnReceive.this, DeliverySReturnReceive.class);
@@ -546,14 +590,30 @@ public class DeliverySReturnReceive extends AppCompatActivity
 
         final int sql_primary_id = clickedItem.getId();
         String orderId = clickedItem.getOrderid();
+        String merOrdRef = clickedItem.getMerOrderRef();
 
 
         final TextView tv = mView1.findViewById(R.id.tv);
-        final TextView tv1 = mView1.findViewById(R.id.tv1);
+        final TextView merOrderRef = mView1.findViewById(R.id.mer_order_ref_no);
         final EditText disputeComment = mView1.findViewById(R.id.dispute_comment_text);
-        final TextView disputeError = mView1.findViewById(R.id.dispute_error);
+        final TextView disputeError = mView1.findViewById(R.id.dispute_error_return);
 
         tv.setText("Dispute Order Id: "+orderId);
+        merOrderRef.setText(merOrdRef);
+
+        // Courier List
+        final Spinner mCourierSpinner = (Spinner) mView1.findViewById(R.id.courier_list);
+        List<String> crList = new ArrayList<String>();
+        crList.add(0,"Select courier...");
+        for (int x = 0; x < courierList.size(); x++) {
+            crList.add(courierList.get(x).getCourierName());
+        }
+
+        ArrayAdapter<String> adapterCourierListR = new ArrayAdapter<String>(DeliverySReturnReceive.this,
+                android.R.layout.simple_spinner_item,
+                crList);
+        adapterCourierListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCourierSpinner.setAdapter(adapterCourierListR);
 
 
         alertDialogBuilder.setPositiveButton("Dispute",
@@ -585,13 +645,17 @@ public class DeliverySReturnReceive extends AppCompatActivity
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
 
+                String courierName = mCourierSpinner.getSelectedItem().toString();
+                String carrierId = db.getSelectedCourierId(courierName);
+
                 String DisputeComments = disputeComment.getText().toString().trim();
 
-                if(DisputeComments.isEmpty()){
+                if(courierName.equals("Select courier...")){
+                    disputeError.setText("Please select courier name!!");
+                } else if(DisputeComments.isEmpty()){
                     disputeError.setText("Please write dispute reason!!");
-                }
-                else {
-                   // disputeForReturn(username, DisputeComments,carrierId, sql_primary_id);
+                } else {
+                    disputeForReturn(username, DisputeComments,carrierId, sql_primary_id);
                     alertDialog.dismiss();
                     startActivity(intent);
                 }
@@ -674,6 +738,5 @@ public class DeliverySReturnReceive extends AppCompatActivity
         }
         requestQueue.add(stringRequest);
     }
-
 
 }

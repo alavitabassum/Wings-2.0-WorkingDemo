@@ -109,10 +109,10 @@ public class DeliverySupervisorReturnRcvAdapter extends RecyclerView.Adapter<Del
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
         viewHolder.item_ordId.setText("Order Id: "+list.get(i).getOrderid());
-        viewHolder.item_merorder_ref.setText("Order Id: "+list.get(i).getMerOrderRef());
-        viewHolder.item_ret_by.setText("Order Id: "+list.get(i).getRTSBy());
-        viewHolder.item_ret_time.setText("Order Id: "+list.get(i).getRTSTime());
-        viewHolder.item_ret_reason.setText("Order Id: "+list.get(i).getRetReason());
+        viewHolder.item_merorder_ref.setText("MerOrderRef: "+list.get(i).getMerOrderRef());
+        viewHolder.item_ret_by.setText("Return By: "+list.get(i).getRTSBy());
+        viewHolder.item_ret_time.setText("Return Time: "+list.get(i).getRTSTime());
+        viewHolder.item_ret_reason.setText("Reason: "+list.get(i).getRetReason());
 
 
 

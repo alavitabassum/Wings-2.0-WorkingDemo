@@ -18,12 +18,25 @@ public class DeliverySupervisorReturnRcvModel {
     private String partial;
     private String partialBy;
     private String retRem;
-    private String rts;
-    private String rtsTime;
-    private String rtsBy;
     private boolean isSelected = false;
 
-    public DeliverySupervisorReturnRcvModel(int sql_primary_id, String orderid,String barcode, String merOrderRef, String packagePrice, String partial, String partialBy, String partialReason, String retRem, String retReason, String rts, String rtsTime, String rtsBy) {
+    public DeliverySupervisorReturnRcvModel(int sql_primary_id, String orderid, String barcode, String merOrderRef, String packagePrice, String partial, String partialBy, String partialReason, String retRem, String retReason, String rts, String rtsTime, String rtsBy) {
+        this.id = sql_primary_id;
+        this.orderid = orderid;
+        this.barcode = barcode;
+        this.merOrderRef = merOrderRef;
+        this.packagePrice = packagePrice;
+        this.partial = partial;
+        this.partialBy = partialBy;
+        this.partialReason = partialReason;
+        this.retRem = retRem;
+        this.retReason = retReason;
+        this.RTS = rts;
+        this.RTSTime = rtsTime;
+        this.RTSBy = rtsBy;
+    }
+
+    /*   public DeliverySupervisorReturnRcvModel(int sql_primary_id, String orderid, String barcode, String merOrderRef, String packagePrice, String partial, String partialBy, String partialReason, String retRem, String retReason, String rts, String rtsTime, String rtsBy) {
         this.id = sql_primary_id;
         this.orderid = orderid;
         this.barcode = barcode;
@@ -37,7 +50,48 @@ public class DeliverySupervisorReturnRcvModel {
         this.rts = rts;
         this.rtsTime = rtsTime;
         this.rtsBy = rtsBy;
+    }*/
+
+    public int getCourierId() {
+        return courierId;
     }
+
+    public void setCourierId(int courierId) {
+        this.courierId = courierId;
+    }
+
+    public String getCourierName() {
+        return courierName;
+    }
+
+    public void setCourierName(String courierName) {
+        this.courierName = courierName;
+    }
+
+    public String getPartial() {
+        return partial;
+    }
+
+    public void setPartial(String partial) {
+        this.partial = partial;
+    }
+
+    public String getPartialBy() {
+        return partialBy;
+    }
+
+    public void setPartialBy(String partialBy) {
+        this.partialBy = partialBy;
+    }
+
+    public String getRetRem() {
+        return retRem;
+    }
+
+    public void setRetRem(String retRem) {
+        this.retRem = retRem;
+    }
+
 
     public DeliverySupervisorReturnRcvModel() {
 

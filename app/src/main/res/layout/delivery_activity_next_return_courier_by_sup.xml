@@ -10,7 +10,7 @@
     tools:context="com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive">
 
     <TextView
-        android:id="@+id/tv"
+        android:id="@+id/tv_bulk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
@@ -21,55 +21,31 @@
         android:textColor="#000"
         />
 
-    <TextView
-        android:id="@+id/mer_order_ref"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:paddingTop="10dp"
-        android:layout_marginStart="10dp"
-        android:text="MerOrderRef: "
-        android:layout_below="@+id/tv"
-        android:textStyle="bold|italic"
-        />
 
     <Spinner
-        android:id="@+id/courier_list"
+        android:id="@+id/courier_list_bulk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/mer_order_ref"
-        android:layout_alignBaseline="@+id/courier_name"
-        android:layout_toEndOf="@+id/courier_name"/>
+        android:layout_alignBaseline="@+id/courier_name_bulk"
+        android:layout_toEndOf="@+id/courier_name_bulk"/>
 
     <TextView
-        android:id="@+id/courier_name"
+        android:id="@+id/courier_name_bulk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
-        android:layout_below="@id/mer_order_ref"
+        android:layout_below="@id/tv_bulk"
         android:text="Courier"
         android:textAlignment="textStart"
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/mer_order_ref_no"
-        android:layout_width="290dp"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_centerHorizontal="true"
-        android:text=""
-        android:paddingTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_below="@+id/tv"
-        android:layout_toEndOf="@+id/mer_order_ref"
-        android:textStyle="bold|italic"
-        android:textColor="#000"
-        />
 
-    <TextView
-        android:id="@+id/et1"
+
+   <!-- <TextView
+        android:id="@+id/et1_bulk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -77,30 +53,30 @@
         android:text="Comment"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/courier_list"
+        android:layout_below="@+id/courier_list_bulk"
         />
 
     <EditText
-        android:id="@+id/dispute_comment_text"
+        android:id="@+id/dispute_comment_text_bulk"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/et1"
+        android:layout_alignBaseline="@+id/et1_bulk"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="4dp"
-        android:layout_toEndOf="@+id/et1"
+        android:layout_toEndOf="@+id/et1_bulk"
         android:textAlignment="textStart"
         android:lines="2"
         android:maxLines="2"
         android:textColor="#000"
         android:textSize="15sp"
-        style="@style/boldStyle"/>
+        style="@style/boldStyle"/>-->
 
     <TextView
-        android:id="@+id/dispute_error_return"
+        android:id="@+id/dispute_error_return_bulk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/et1"
+        android:layout_below="@+id/courier_name_bulk"
         android:textSize="16sp"
         android:layout_marginTop="15dp"
         android:text=""
