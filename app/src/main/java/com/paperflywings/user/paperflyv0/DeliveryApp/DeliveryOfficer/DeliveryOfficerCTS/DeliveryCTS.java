@@ -438,7 +438,7 @@ public class DeliveryCTS extends AppCompatActivity
                                             String CashComments = cashComment.getText().toString().trim();
                                             String CashCollected = totalcashes.getText().toString().trim();
 
-                                            if(tv.getText().equals("0 Orders have been selected for cash.")){
+                                            if(tv.getText().equals("0 Orders have been selected for cash.") || tv.getText().equals("Please select orders first") ){
                                                 orderIds.setText("Please Select Orders First!!");
                                             }
                                             else if(totalCashs.isEmpty()){
@@ -453,7 +453,7 @@ public class DeliveryCTS extends AppCompatActivity
                                             else {
                                                 String flagReqst = "delivery_officer_CTS";
                                                 UpdateBankInfo(username,flagReqst,item,totalCashs,CashCollected,CashComments);
-                                                orderIds.setText("Please Select All Orders!!");
+                                                //orderIds.setText("Please Select All Orders!!");
                                             /*} else {
                                                 UpdateBankInfo(item, username);
                                                 //GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
