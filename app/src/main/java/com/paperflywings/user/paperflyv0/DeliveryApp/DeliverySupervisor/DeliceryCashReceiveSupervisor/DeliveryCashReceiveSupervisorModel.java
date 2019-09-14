@@ -2,16 +2,35 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Delicer
 
 public class DeliveryCashReceiveSupervisorModel {
     private String orderid;
+    private String orderidList;
     private String merOrderRef;
     private String cts;
     private String ctsBy;
     private String ctsTime;
     private String packagePrice;
+
+    public String getOrderidList() {
+        return orderidList;
+    }
+
+    public void setOrderidList(String orderidList) {
+        this.orderidList = orderidList;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     private String collection;
     private String pointCode;
     private String bankName;
     private String empCode;
     private String empName;
+    private Integer id;
     private Integer bankId;
     private Integer slaMiss;
     private Integer empId;
@@ -26,6 +45,15 @@ public class DeliveryCashReceiveSupervisorModel {
     private String partialReceive;
     private String crsTime;
     private String crsBy;
+    private boolean isSelected;
+
+    public boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getTotalCashAmt() {
         return totalCashAmt;
@@ -173,8 +201,10 @@ public class DeliveryCashReceiveSupervisorModel {
         this.collection = collection;
     }
 
-    public DeliveryCashReceiveSupervisorModel(String totalCashReceive, String serialNo, String totalOrders, String totalCashAmt, String submittedCashAmt, String dropPointEmp, String dropPointCode, String cashAmt, String partialReceive, String packagePrice, String cts, String ctsTime, String ctsBy, String crsTime, String crsBy) {
+    public DeliveryCashReceiveSupervisorModel(int id ,String orderidList,String totalCashReceive, String serialNo, String totalOrders, String totalCashAmt, String submittedCashAmt, String dropPointEmp, String dropPointCode, String cashAmt, String partialReceive, String packagePrice, String cts, String ctsTime, String ctsBy, String crsTime, String crsBy) {
 
+        this.id = id;
+        this.orderidList = orderidList;
         this.totalCashReceive = totalCashReceive;
         this.serialNo = serialNo;
         this.totalOrders = totalOrders;

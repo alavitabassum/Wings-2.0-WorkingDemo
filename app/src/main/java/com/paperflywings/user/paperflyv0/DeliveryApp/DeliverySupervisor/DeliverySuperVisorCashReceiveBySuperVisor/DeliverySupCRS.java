@@ -97,11 +97,9 @@ public class DeliverySupCRS extends AppCompatActivity
 
         swipeRefreshLayout.setRefreshing(true);
 
-        String flagReqst = "delivery_supervisor_CRS_list";
-
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username,flagReqst);
+            loadRecyclerView(username);
 
             list.clear();
 
@@ -121,7 +119,7 @@ public class DeliverySupCRS extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadRecyclerView(final String username, final String flagReqst) {
+    private void loadRecyclerView(final String username) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -154,7 +152,7 @@ public class DeliverySupCRS extends AppCompatActivity
                                         o.getString("comment_by_supervisor"),
                                         o.getString("createdBy"),
                                         o.getString("createdAt"),
-                                        o.getString("serialNo"),
+                                        o.getString("serialNoCTRS"),
                                         o.getString("totalOrders")
                                 );
                                 list.add(supCRSModel);
@@ -188,7 +186,7 @@ public class DeliverySupCRS extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
-                params1.put("flagreq",flagReqst);
+                params1.put("flagreq","delivery_supervisor_CRS_list");
                 return params1;
             }
         };
@@ -205,8 +203,6 @@ public class DeliverySupCRS extends AppCompatActivity
     @Override
     public void onItemClick(View view, final int position) {
 
-
-
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
@@ -220,11 +216,6 @@ public class DeliverySupCRS extends AppCompatActivity
         TotalCash.setText(list.get(position).getTotalCashAmt());
         SubmittedCash.setText(list.get(position).getSubmittedCashAmt());
         final Intent intent = new Intent(DeliverySupCRS.this, DeliverySupCRS.class);
-        //assign_emp_name.setText(previousAssign);
-
-        //getEmployeeList();
-        // Employee List
-
 
         AlertDialog.Builder crsBuilder = new AlertDialog.Builder(DeliverySupCRS.this);
         crsBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
@@ -259,14 +250,6 @@ public class DeliverySupCRS extends AppCompatActivity
                 String createdBy = list.get(position).getCreatedBy();
                 String serialNo = list.get(position).getSerialNo();
 
-               // String comment = list.get(position).getComment();
-               /* cashReceivedBySup = list.get(position).getTotalCashReceive();
-                commentBySup = list.get(position).getComment_by_supervisor();*/
-
-
-
-
-
                if(cashReceivedBySup.isEmpty()){
                    errormsg.setText("Please select every field!!");
                 }
@@ -274,21 +257,15 @@ public class DeliverySupCRS extends AppCompatActivity
                    errormsg.setText("Please select every field!!");
                }
                else {
-
-                   String flagreqst = "delivery_supervisor_CRS";
-                   supervisorCrs(username,flagreqst,serialNo,orderIdList,cashReceivedBySup,commentBySup,createdBy);
+                   supervisorCrs(username,serialNo,orderIdList,cashReceivedBySup,commentBySup,createdBy);
                    startActivity(intent);
                    dialogCashR.dismiss();
                 }
-
             }
         });
-
     }
 
-
-    private void supervisorCrs(final String username, final String flagreqst,final String serialNo,final String orderIdList,final String cashReceivedBySup,final String commentBySup,final String createdBy) {
-
+    private void supervisorCrs(final String username,final String serialNo,final String orderIdList,final String cashReceivedBySup,final String commentBySup,final String createdBy) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CRS,
                 new Response.Listener<String>() {
                     @Override
@@ -319,8 +296,8 @@ public class DeliverySupCRS extends AppCompatActivity
                 Map<String, String> params = new HashMap<String, String>();
 
                 params.put("username", username);
-                params.put("flagreq", flagreqst);
-                params.put("serialNo", serialNo);
+                params.put("flagreq", "delivery_supervisor_CRS");
+                params.put("serialNoCTRS", serialNo);
                 params.put("orderid", orderIdList);
                 params.put("totalCashReceive", cashReceivedBySup);
                 params.put("comment_by_supervisor", commentBySup);
@@ -485,13 +462,13 @@ public class DeliverySupCRS extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String flagReqst = "delivery_supervisor_CRS";
+
         list.clear();
 
         deliverySupCRSAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username,flagReqst);
+            loadRecyclerView(username);
             list.clear();
         }
     }

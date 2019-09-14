@@ -278,14 +278,14 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         adapterEmpListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mEmployeeSpinner.setAdapter(adapterEmpListR);
 
-       /* for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
+      /*  for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
             if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelectedCts()) {
                 count++;
                 item = item + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderid();
 
-                *//*if ( i != DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size() - 1){
+                if ( i != DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size() - 1){
                     item = item + ",";
-                }*//*
+                }
 
             }
             create_tv.setText(count + " Orders have been selected for cash.");
@@ -447,7 +447,6 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         return encodedImage;
     }
 
-
     private void getEmployeeList() {
         try {
             eList.clear();
@@ -533,7 +532,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
                 String img2 = imageToString(bitmap1);
                 String img3 = imageToString(bitmap2);
 
-                params.put("serialNo", serial_no);
+                params.put("serialNoCTRS", serial_no);
                 params.put("ctsBy", cts_by);
                 params.put("depositDate", deposite_date);
                 params.put("depositedBy", empCode);
@@ -558,7 +557,6 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
             Toast.makeText(BankDetails_upload_supervisor.this, "Server Error", Toast.LENGTH_LONG).show();
         }
     }
-
 
     @Override
     public void onBackPressed() {

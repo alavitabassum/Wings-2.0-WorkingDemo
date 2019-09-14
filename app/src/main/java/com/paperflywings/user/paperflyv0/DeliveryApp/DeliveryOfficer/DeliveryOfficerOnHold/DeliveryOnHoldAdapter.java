@@ -143,10 +143,7 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         viewHolder.item_date_on_hold_onHold.setText("OnHold Schedule: "+list.get(i).getOnHoldSchedule().substring(0,11));
         viewHolder.item_onHold_reason.setText(list.get(i).getOnHoldReason());
         viewHolder.item_ordId_onHold.setText(list.get(i).getOrderid());
-//        viewHolder.item_merOrderRef_onHold.setText(list.get(i).getMerOrderRef());
-
-      /*  viewHolder.item_merchantName_onHold.setText(list.get(i).getMerchantName());
-        viewHolder.item_pickMerchantName_onHold.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());*/
+        viewHolder.card_view_onHold.setCardBackgroundColor(Color.WHITE);
         viewHolder.item_custname_onHold.setText("Name: "+list.get(i).getCustname());
         viewHolder.item_custaddress_onHold.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_custphone_onHold.setText(list.get(i).getCustphone());
@@ -157,16 +154,14 @@ public class DeliveryOnHoldAdapter extends RecyclerView.Adapter<DeliveryOnHoldAd
         int DeliveryTime = list.get(i).getSlaMiss();
 
         String PreRetBY = list.get(i).getPreRetBy();
-        if(PreRetBY == null && PreRetBY.isEmpty() && PreRetBY.equals("null")){
-//            viewHolder.card_view_without_status.setCardBackgroundColor(Color.RED);
-            // viewHolder.item_ordId_without_status.setTextColor(Integer.parseInt("#bbbbbb"));
+      /*  if(PreRetBY == null && PreRetBY.isEmpty() && PreRetBY.equals("null")){
+
             viewHolder.card_view_onHold.setCardBackgroundColor(Color.WHITE);
 
         }
         if(PreRetBY != null && !PreRetBY.isEmpty() && !PreRetBY.equals("null")) {
             viewHolder.card_view_onHold.setCardBackgroundColor(Color.LTGRAY);
-//            viewHolder.card_view_without_status.setBackgroundColor(Color.RED);
-        }
+        }*/
 
         if(DeliveryTime<0) {
             viewHolder.item_deliveryTime_onHold.setText(String.valueOf(list.get(i).getSlaMiss()));

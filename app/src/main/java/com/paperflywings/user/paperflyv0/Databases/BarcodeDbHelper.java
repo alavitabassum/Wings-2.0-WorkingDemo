@@ -28,6 +28,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     private  final String TABLE_NAME_BANK_DETAILS = "Table_bank_details";
     private  final String TABLE_NAME_COURIER_DETAILS = "Table_courier_details";
     private  final String TABLE_CASH_MANAGEMENT = "Table_cash_management";
+    private  final String TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR = "Table_cash_to_bank_by_supervisor";
+
 
     private final String KEY_ID = "id";
     private final String SQL_PRIMARY_ID = "sql_primary_id";
@@ -142,6 +144,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public  final String EMP_POINTCODE = "pointCode";
     public  final String PURPOSE_ID = "purposeId";
     public  final String PURPOSE_REASON = "purpose";
+    public  final String TOTAL_CASH_RECIEVE = "totalCashReceive";
+    public  final String SERIAL_NO = "serialNo";
+    public  final String SUBMITTED_CASH = "submittedCashAmt";
 
     private  final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
@@ -477,6 +482,17 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "courierName TEXT, "
                 + "unique(courierId,courierName))";
 
+        String CREATION_TABLE_BANK_SUBMISSION_SUP= "CREATE TABLE Table_cash_to_bank_by_supervisor ( "
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + "sql_primary_id INTEGER, "
+                + "totalCashReceive TEXT, "
+                + "serialNo TEXT, "
+                + "submittedCashAmt TEXT, "
+                + "dropPointEmp TEXT, "
+                + "dropPointCode TEXT, "
+                + "CashAmt TEXT, "
+                + "unique(sql_primary_id))";
+
 
         db.execSQL(CREATION_TABLE);
         db.execSQL(CREATION_TABLE1);
@@ -496,6 +512,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL(CREATION_TABLE_NAME_BANK_DETAILS);
         db.execSQL(CREATION_TABLE_COURIER_DETAILS);
         db.execSQL(CREATION_TABLE_CASH_MANAGEMENT);
+        db.execSQL(CREATION_TABLE_BANK_SUBMISSION_SUP);
     }
 
     @Override
@@ -519,6 +536,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_COURIER_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_EMP_POINTCODE);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CASH_MANAGEMENT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR);
         this.onCreate(db);
     }
 
@@ -1415,6 +1433,24 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         return (db.query(TABLE_NAME_CTS, columns, whereClause, whereArgs, null, null, null));
     }
 
+
+    public void insert_delivery_Cash_to_bank(int sql_primary_id,String totalCashReceive, String serialNo, String submittedCashAmt, String dropPointEmp,String dropPointCode, String CashAmt) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(SQL_PRIMARY_ID, sql_primary_id);
+        values.put(TOTAL_CASH_RECIEVE, totalCashReceive);
+        values.put(SERIAL_NO, serialNo);
+        values.put(SUBMITTED_CASH, submittedCashAmt);
+        values.put(DROP_POINT_EMP, dropPointEmp);
+        values.put(DROPPOINTCODE, dropPointCode);
+        values.put(CASH_AMT, CashAmt);
+
+
+        db.insert(TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR, null, values);
+        db.close();
+    }
+
     public void insert_delivery_crs_status(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointCode,String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason,String Rea,String ReaTime,String ReaBy, String Ret,String RetTime,String RetBy,String retReason,String rts,String RTSTime,String RTSBy,String PreRet,String PreRetTime,String PreRetBy,String CTS,String CTSTime,String CTSBy,String slaMiss, int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -1711,6 +1747,9 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_8);
     }
 
+    public void deleteBannkDepositeList(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("delete from " + TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR);
+    }
 
     public void deleteList(SQLiteDatabase sqLiteDatabase, String flagReq) {
         sqLiteDatabase.execSQL("delete from " + TABLE_NAME_9 + " WHERE " + FLAG_REQ + " = '" + flagReq + "'");
@@ -1893,6 +1932,18 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
             sum = cursor.getInt(cursor.getColumnIndex("Total"));
         return sum;
     }
+
+    public int getTotalReceivedCash() {
+
+        int sum = 0;
+        db = this.getReadableDatabase();
+        String sumQuery = String.format("SELECT SUM(" + TOTAL_CASH_RECIEVE + ") as Total FROM " + TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR);
+        Cursor cursor = db.rawQuery(sumQuery, null);
+        if (cursor.moveToFirst())
+            sum = cursor.getInt(cursor.getColumnIndex("Total"));
+        return sum;
+    }
+
 
     /* public int getPickedSumByOrderId(String sql_primary_id, String order_id) {
 

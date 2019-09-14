@@ -111,7 +111,12 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
             db = new BarcodeDbHelper(Delivery_quick_pick_scan.this);
 
             barcode = result.getText();
-            lastText = barcode.substring(0, 11);
+            try {
+                lastText = barcode.substring(0, 11);
+            } catch (StringIndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+
 
             barcodeView.setStatusText("Barcode" + result.getText());
             //pickedfordelivery(lastText, username, empcode, "PickAndAssignFromApp");

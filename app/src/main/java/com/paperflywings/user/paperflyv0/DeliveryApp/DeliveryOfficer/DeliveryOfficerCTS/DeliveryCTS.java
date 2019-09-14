@@ -39,6 +39,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.Bank_details_upload_by_DO;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCRS.DeliveryCashRS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
@@ -72,8 +73,10 @@ public class DeliveryCTS extends AppCompatActivity
     private Button btnnext, delivery_cts_recieved;
     ProgressDialog progressDialog;
 
-    String item = "";
+    String itemOrders = "";
     String totalCash = "";
+    public final String TOTAL_CASH = "total_cash";
+    public final String TOTAL_ORDER= "total_order";
 
     public static final String DELIVERY_CTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
@@ -365,20 +368,17 @@ public class DeliveryCTS extends AppCompatActivity
                                 }
                             });
                             btnnext.setOnClickListener(new View.OnClickListener() {
+
+
                                 @Override
                                 public void onClick(View v) {
-                                    // mis-clicking prevention, using threshold of 500 ms
-                                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
-                                        return;
-                                    }
-                                    mLastClickTime = SystemClock.elapsedRealtime();
-
-                                    int count=0;
+                                    final CharSequence [] values = {"Cash To Supervisor","Bank Deposite"};
+                                    int count = 0;
                                     SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                                     final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
                                     final Intent intent = new Intent(DeliveryCTS.this, DeliveryCTS.class);
-                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCTS.this);
-                                    View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
+                                    final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCTS.this);
+                                    final View mView = getLayoutInflater().inflate(R.layout.activity_next, null);
                                     final TextView tv = mView.findViewById(R.id.tv);
                                     final TextView tv1 = mView.findViewById(R.id.tv1);
                                     final EditText totalcashes = mView.findViewById(R.id.cash_Collection_text);
@@ -388,83 +388,127 @@ public class DeliveryCTS extends AppCompatActivity
                                     for (int i = 0; i < DeliveryCTSAdapter.imageModelArrayList.size(); i++){
                                         if(DeliveryCTSAdapter.imageModelArrayList.get(i).getSelected()) {
                                             count++;
-                                            item = item + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getOrderid();
+                                            itemOrders = itemOrders + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getOrderid();
                                         }
                                         tv.setText(count + " Orders have been selected for cash.");
                                     }
-                                    //orderIds.setText(item);
+                                    //orderIds.setText(itemOrders);
                                     count = 0;
                                     float CashCount = 0.0f;
-                                        for (int i = 0; i <DeliveryCTSAdapter.imageModelArrayList.size(); i++) {
-                                            if(DeliveryCTSAdapter.list.get(i).getSelected()) {
+                                    for (int i = 0; i <DeliveryCTSAdapter.imageModelArrayList.size(); i++) {
+                                        if(DeliveryCTSAdapter.list.get(i).getSelected()) {
                                             totalCash = String.valueOf(db.getTotalCash("cts"));
                                             CashCount = Float.parseFloat(totalCash);
                                             tv1.setText(""+CashCount);
                                         }
                                     }
 
-                                    alertDialogBuilder.setPositiveButton("Submit",
-                                            new DialogInterface.OnClickListener() {
+                                    final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(DeliveryCTS.this);
+                                    spinnerBuilder.setTitle("Select Action: ");
+
+                                    spinnerBuilder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                public void onClick(DialogInterface dialog, int item) {
 
-                                                }
-                                            });
+                                                    switch (item) {
+                                                        case 0:
+                                                            // mis-clicking prevention, using threshold of 500 ms
+                                                            if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                                                                return;
+                                                            }
+                                                            mLastClickTime = SystemClock.elapsedRealtime();
 
-                                    alertDialogBuilder.setNegativeButton("Cancel",
-                                            new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface arg0, int arg1) {
-                                                    item = "";
-                                                }
-                                            });
-                                    alertDialogBuilder.setCancelable(false);
-                                    alertDialogBuilder.setView(mView);
+                                                           // int count=0;
 
-                                    final AlertDialog alertDialog = alertDialogBuilder.create();
-                                    alertDialog.show();
+                                                           AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCTS.this);
 
-                                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
 
-                                            // mis-clicking prevention, using threshold of 500 ms
-                                            if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
-                                                return;
-                                            }
-                                            mLastClickTime = SystemClock.elapsedRealtime();
+                                                            alertDialogBuilder.setPositiveButton("Submit",
+                                                                    new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface arg0, int arg1) {
 
-                                            String totalCashs = tv1.getText().toString().trim();
-                                            String CashComments = cashComment.getText().toString().trim();
-                                            String CashCollected = totalcashes.getText().toString().trim();
+                                                                        }
+                                                                    });
 
-                                            if(tv.getText().equals("0 Orders have been selected for cash.") || tv.getText().equals("Please select orders first") ){
-                                                orderIds.setText("Please Select Orders First!!");
-                                            }
-                                            else if(totalCashs.isEmpty()){
-                                                orderIds.setText("Please enter required fields First!!");
-                                            }
-                                            else if(CashComments.isEmpty()){
-                                                orderIds.setText("Please enter required fields First!!");
-                                            }
-                                            else if(CashCollected.isEmpty()){
-                                                orderIds.setText("Please enter required fields First!!");
-                                            }
-                                            else {
-                                                String flagReqst = "delivery_officer_CTS";
-                                                UpdateBankInfo(username,flagReqst,item,totalCashs,CashCollected,CashComments);
-                                                //orderIds.setText("Please Select All Orders!!");
+                                                            alertDialogBuilder.setNegativeButton("Cancel",
+                                                                    new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface arg0, int arg1) {
+                                                                            itemOrders = "";
+                                                                        }
+                                                                    });
+                                                            alertDialogBuilder.setCancelable(false);
+                                                            alertDialogBuilder.setView(mView);
+
+                                                            final AlertDialog alertDialog = alertDialogBuilder.create();
+                                                            alertDialog.show();
+
+                                                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View v) {
+
+                                                                    // mis-clicking prevention, using threshold of 500 ms
+                                                                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                                                                        return;
+                                                                    }
+                                                                    mLastClickTime = SystemClock.elapsedRealtime();
+
+                                                                    String totalCashs = tv1.getText().toString().trim();
+                                                                    String CashComments = cashComment.getText().toString().trim();
+                                                                    String CashCollected = totalcashes.getText().toString().trim();
+
+                                                                    if(tv.getText().equals("0 Orders have been selected for cash.") || tv.getText().equals("Please select orders first") ){
+                                                                        orderIds.setText("Please Select Orders First!!");
+                                                                    }
+                                                                    else if(totalCashs.isEmpty()){
+                                                                        orderIds.setText("Please enter required fields First!!");
+                                                                    }
+                                                                    else if(CashComments.isEmpty()){
+                                                                        orderIds.setText("Please enter required fields First!!");
+                                                                    }
+                                                                    else if(CashCollected.isEmpty()){
+                                                                        orderIds.setText("Please enter required fields First!!");
+                                                                    }
+                                                                    else {
+                                                                        String flagReqst = "delivery_officer_CTS";
+                                                                        UpdateBankInfo(username,flagReqst,itemOrders,totalCashs,CashCollected,CashComments);
+                                                                        //orderIds.setText("Please Select All Orders!!");
                                             /*} else {
                                                 UpdateBankInfo(item, username);
                                                 //GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
 */
-                                                alertDialog.dismiss();
-                                                startActivity(intent);
-                                                //loadRecyclerView(username);
-                                                item = "";
+                                                                        alertDialog.dismiss();
+                                                                        startActivity(intent);
+                                                                        //loadRecyclerView(username);
+                                                                        itemOrders = "";
+                                                                    }
+                                                                }
+                                                            });
+
+                                                            break;
+                                                        case 1:
+                                                            Intent intentBankDeposite = new Intent(DeliveryCTS.this, Bank_details_upload_by_DO.class);
+                                                            intentBankDeposite.putExtra(TOTAL_CASH, tv1.getText().toString());
+                                                            intentBankDeposite.putExtra(TOTAL_ORDER, tv.getText().toString());
+                                                            startActivity(intentBankDeposite);
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
                                             }
+                                    );
+                                    spinnerBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int i1) {
+                                            dialog.dismiss();
                                         }
                                     });
+
+                                    spinnerBuilder.setCancelable(false);
+                                    final AlertDialog dialog2 = spinnerBuilder.create();
+                                    dialog2.show();
                                 }
                             });
 
