@@ -60,7 +60,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
-    private TextView btnselect, btndeselect, totalCashCollection;
+    private TextView btnselect, btndeselect, totalCashCollection, totalOrdersSelected;
     private Button btnnext;
     public static final String CTS_BY = "cts_by";
     public static final String TOTAL_CASH = "total_cash";
@@ -80,6 +80,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
         setContentView(R.layout.activity_delivery_cash_receive_supervisor);
         totalCashCollection = (TextView) findViewById(R.id.CashCollectionForBank);
+        totalOrdersSelected = (TextView) findViewById(R.id.CTS_id_);
         btnselect = (TextView) findViewById(R.id.selectForBank);
         btndeselect = (TextView) findViewById(R.id.deselectForBank);
         btnnext = (Button) findViewById(R.id.nextForBank);
@@ -135,6 +136,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 list = getModel(true);
                 deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
                 recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+                deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
             }
         });
 
@@ -144,13 +146,14 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 list = getModel(false);
                 deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
                 recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+                deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
             }
         });
 
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String totalCash = String.valueOf(db.getTotalCashSupervisor());
+                String totalCash = String.valueOf(db.getTotalReceivedCash());
                 Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, BankDetails_upload_supervisor.class);
 
                 intent.putExtra(TOTAL_CASH, totalCash);
@@ -167,6 +170,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         //int totalCash = 0;
         if(isSelect == true){
 
+            int totalOrders = db.getTotalOrders();
+            totalOrdersSelected.setText(totalOrders+"");
+
             int totalCash = db.getTotalReceivedCash();
             totalCashCollection.setText(totalCash+" Taka");
 
@@ -176,6 +182,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 model.setSelected(isSelect);
                 model.setOrderidList(list.get(i).getOrderidList());
                 model.setSerialNo(list.get(i).getSerialNo());
+                model.setTotalOrders(list.get(i).getTotalOrders());
                 model.setCtsBy(list.get(i).getCtsBy());
                 model.setCtsTime(list.get(i).getCtsTime());
                 model.setTotalCashAmt(list.get(i).getTotalCashAmt());
@@ -187,12 +194,14 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         } else if(isSelect == false){
 
         totalCashCollection.setText("0 Taka");
+        totalOrdersSelected.setText("0");
             for(int i = 0; i < list.size(); i++){
                 DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
 
                 model.setSelected(isSelect);
                 model.setOrderidList(list.get(i).getOrderidList());
                 model.setSerialNo(list.get(i).getSerialNo());
+                model.setTotalOrders(list.get(i).getTotalOrders());
                 model.setCtsBy(list.get(i).getCtsBy());
                 model.setCtsTime(list.get(i).getCtsTime());
                 model.setTotalCashAmt(list.get(i).getTotalCashAmt());
@@ -281,9 +290,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-
-//                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                            db.deleteAssignedList(sqLiteDatabase);
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -376,6 +382,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                                         o.getInt("id"),
                                         o.getString("totalCashReceive"),
                                         o.getString("serialNoCTRS"),
+                                        o.getString("totalOrders"),
                                         o.getString("submittedCashAmt"),
                                         o.getString("dropPointEmp"),
                                         o.getString("dropPointCode"),
@@ -437,6 +444,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         {
            loadCashReceiveData(username);
            totalCashCollection.setText("0");
+           totalOrdersSelected.setText("0");
         }
         else{
             Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();

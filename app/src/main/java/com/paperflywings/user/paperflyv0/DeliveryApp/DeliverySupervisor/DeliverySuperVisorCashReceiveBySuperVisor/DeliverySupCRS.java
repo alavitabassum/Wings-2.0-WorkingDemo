@@ -273,7 +273,6 @@ public class DeliverySupCRS extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-
                                 Toast.makeText(DeliverySupCRS.this, "Successful", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(DeliverySupCRS.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
@@ -292,7 +291,6 @@ public class DeliverySupCRS extends AppCompatActivity
         ) {
             @Override
             protected Map<String, String> getParams() {
-
                 Map<String, String> params = new HashMap<String, String>();
 
                 params.put("username", username);

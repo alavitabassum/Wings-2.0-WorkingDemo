@@ -3,6 +3,7 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Deliver
 public class DeliverySupervisorReturnRcvModel {
 
     private String barcode;
+    private String nextPageToken;
     private String orderid;
     private String merOrderRef;
     private String packagePrice;
@@ -51,6 +52,14 @@ public class DeliverySupervisorReturnRcvModel {
         this.rtsTime = rtsTime;
         this.rtsBy = rtsBy;
     }*/
+
+    public String getNextPageToken() {
+        return nextPageToken;
+    }
+
+    public void setNextPageToken(String nextPageToken) {
+        this.nextPageToken = nextPageToken;
+    }
 
     public int getCourierId() {
         return courierId;

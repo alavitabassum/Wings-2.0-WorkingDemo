@@ -64,9 +64,13 @@ public class DeliverySReturnReceive extends AppCompatActivity
     private DeliverySupervisorReturnRcvAdapter deliverySupervisorReturnRcvAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
+    //LinearLayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
     private Button btnnext;
     ProgressDialog progressDialog;
+    Boolean isScrolling = false;
+    String token = "";
+    //int currentItems, totalItems, scrolledItems;
 
     String item = "";
 
@@ -93,13 +97,16 @@ public class DeliverySReturnReceive extends AppCompatActivity
         courierList = new ArrayList<DeliverySupervisorReturnRcvModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
+
+        /*LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+         */
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -117,6 +124,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         else{
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
+
 
 
 

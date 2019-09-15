@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_delivery_cashrs_list"
+    android:id="@+id/card_view_delivery_cash_to_bank_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -96,13 +96,19 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/totalOrderCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/submitDateTitle"/>
+
+        <TextView
             android:id="@+id/totalCashTitle"
             android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:lines="1"
             android:maxLines="1"
             android:layout_marginRight="5dp"
-            android:layout_below="@+id/submitDateTitle"
+            android:layout_below="@+id/totalOrderCount"
             android:layout_marginTop="10dp"
             android:text="Total Cash Amount: "
             android:textColor="#000"
@@ -117,7 +123,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/totalCashTitle"
-            android:layout_below="@+id/submitDateTitle"
+            android:layout_below="@+id/totalOrderCount"
             android:text="1000 Taka"
             android:textColor="#000"
             android:textSize="14sp" />
@@ -177,18 +183,6 @@
             android:textColor="#000"
             android:textSize="16sp"
             android:textStyle="bold"/>
-
-        <Button
-            android:id="@+id/bankDepositeBtn"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/wallet_holo_blue_light"
-            android:layout_below="@+id/receivedCash"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text="Bank Deposite"/>
 
         <CheckBox
             android:id="@+id/checkBoxBank"

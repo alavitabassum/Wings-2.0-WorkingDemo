@@ -7,28 +7,28 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 25;
+    private static final int DATABASE_VERSION = 26;
     private static final String DATABASE_NAME = "WingsDB";
-    private  final String TABLE_NAME = "Barcode";
-    private  final String TABLE_NAME_1 = "My_pickups";
-    private  final String TABLE_NAME_2 = "Barcode_Fulfillment";
-    private  final String TABLE_NAME_4 = "Insert_Pickup_Action";
-    private  final String TABLE_NAME_6 = "pickups_today_executive";
-    private  final String TABLE_NAME_7 = "Insert_Delivery_Summary";
-    private  final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
-    private  final String TABLE_NAME_9 = "All_delivery_data";
-    private  final String TABLE_NAME_RTS = "Delivery_RTS";
-    private  final String TABLE_NAME_CTS = "Delivery_CTS";
-    private  final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
-    private  final String TABLE_NAME_ONHOLD_LOG = "Insert_Onhold_Log";
-    private  final String TABLE_NAME_RETURN_REASONS = "Insert_Return_Reason";
-    private  final String TABLE_NAME_EXPENSE_PURPOSE = "Insert_Expense_Purpose";
-    private  final String TABLE_NAME_EMP_POINTCODE = "EmpPointCode";
-    private  final String TABLE_NAME_DELIVERY_EMP_LIST = "Table_delivery_employee_list";
-    private  final String TABLE_NAME_BANK_DETAILS = "Table_bank_details";
-    private  final String TABLE_NAME_COURIER_DETAILS = "Table_courier_details";
-    private  final String TABLE_CASH_MANAGEMENT = "Table_cash_management";
-    private  final String TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR = "Table_cash_to_bank_by_supervisor";
+    private static final String TABLE_NAME = "Barcode";
+    private static final String TABLE_NAME_1 = "My_pickups";
+    private static final String TABLE_NAME_2 = "Barcode_Fulfillment";
+    private static final String TABLE_NAME_4 = "Insert_Pickup_Action";
+    private static final String TABLE_NAME_6 = "pickups_today_executive";
+    private static final String TABLE_NAME_7 = "Insert_Delivery_Summary";
+    private static final String TABLE_NAME_8 = "Insert_Delivery_Unpicked";
+    private static final String TABLE_NAME_9 = "All_delivery_data";
+    private static final String TABLE_NAME_RTS = "Delivery_RTS";
+    private static final String TABLE_NAME_CTS = "Delivery_CTS";
+    private static final String TABLE_NAME_10 = "Insert_Delivery_OnHold";
+    private static final String TABLE_NAME_ONHOLD_LOG = "Insert_Onhold_Log";
+    private static final String TABLE_NAME_RETURN_REASONS = "Insert_Return_Reason";
+    private static final String TABLE_NAME_EXPENSE_PURPOSE = "Insert_Expense_Purpose";
+    private static final String TABLE_NAME_EMP_POINTCODE = "EmpPointCode";
+    private static final String TABLE_NAME_DELIVERY_EMP_LIST = "Table_delivery_employee_list";
+    private static final String TABLE_NAME_BANK_DETAILS = "Table_bank_details";
+    private static final String TABLE_NAME_COURIER_DETAILS = "Table_courier_details";
+    private static final String TABLE_CASH_MANAGEMENT = "Table_cash_management";
+    private static final String TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR = "Table_cash_to_bank_by_supervisor";
 
 
     private final String KEY_ID = "id";
@@ -147,6 +147,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public  final String TOTAL_CASH_RECIEVE = "totalCashReceive";
     public  final String SERIAL_NO = "serialNo";
     public  final String SUBMITTED_CASH = "submittedCashAmt";
+    public  final String TOTAL_ORDERS = "totalOrders";
 
     private  final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
@@ -487,6 +488,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "sql_primary_id INTEGER, "
                 + "totalCashReceive TEXT, "
                 + "serialNo TEXT, "
+                + "totalOrders TEXT, "
                 + "submittedCashAmt TEXT, "
                 + "dropPointEmp TEXT, "
                 + "dropPointCode TEXT, "
@@ -1434,13 +1436,14 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insert_delivery_Cash_to_bank(int sql_primary_id,String totalCashReceive, String serialNo, String submittedCashAmt, String dropPointEmp,String dropPointCode, String CashAmt) {
+    public void insert_delivery_Cash_to_bank(int sql_primary_id,String totalCashReceive, String serialNo,String totalOrders,String submittedCashAmt, String dropPointEmp,String dropPointCode, String CashAmt) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(SQL_PRIMARY_ID, sql_primary_id);
         values.put(TOTAL_CASH_RECIEVE, totalCashReceive);
         values.put(SERIAL_NO, serialNo);
+        values.put(TOTAL_ORDERS, totalOrders);
         values.put(SUBMITTED_CASH, submittedCashAmt);
         values.put(DROP_POINT_EMP, dropPointEmp);
         values.put(DROPPOINTCODE, dropPointCode);
@@ -1934,13 +1937,22 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     }
 
     public int getTotalReceivedCash() {
-
         int sum = 0;
         db = this.getReadableDatabase();
         String sumQuery = String.format("SELECT SUM(" + TOTAL_CASH_RECIEVE + ") as Total FROM " + TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR);
         Cursor cursor = db.rawQuery(sumQuery, null);
         if (cursor.moveToFirst())
             sum = cursor.getInt(cursor.getColumnIndex("Total"));
+        return sum;
+    }
+
+    public int getTotalOrders() {
+        int sum = 0;
+        db = this.getReadableDatabase();
+        String sumQuery = String.format("SELECT SUM(" + TOTAL_ORDERS + ") as TotalOrders FROM " + TABLE_NAME_CASH_TO_BANK_BY_SUPERVISOR);
+        Cursor cursor = db.rawQuery(sumQuery, null);
+        if (cursor.moveToFirst())
+            sum = cursor.getInt(cursor.getColumnIndex("TotalOrders"));
         return sum;
     }
 

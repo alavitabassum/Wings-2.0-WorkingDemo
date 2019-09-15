@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -30,12 +29,9 @@ public class DeliveryCashReceiveSupervisorAdapter extends RecyclerView.Adapter<D
     private Context context;
     private OnItemClickListener mListner;
     DeliveryCashReceiveSupervisor deliveryCashReceiveSupervisor;
-    int cashCollection = 0;
 
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
-
-    //int cashCollection = db.getTotalReceivedCash();
 
     public DeliveryCashReceiveSupervisorAdapter(List<DeliveryCashReceiveSupervisorModel> list, Context context) {
         this.list = list;
@@ -63,7 +59,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public TextView item_collection;
     public TextView item_received;
     public TextView item_serial_no;
-    public Button item_bankDeposite_btn;
+    public TextView item_total_order_count;
     public CheckBox item_bank_check;
     public CardView item_cardview;
 
@@ -77,9 +73,9 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         item_price=itemView.findViewById(R.id.totalCash);
         item_collection=itemView.findViewById(R.id.submittedCash);
         item_received=itemView.findViewById(R.id.receivedCash);
-        item_bankDeposite_btn=itemView.findViewById(R.id.bankDepositeBtn);
         item_bank_check=itemView.findViewById(R.id.checkBoxBank);
-        item_cardview=itemView.findViewById(R.id.card_view_delivery_cashrs_list);
+        item_total_order_count=itemView.findViewById(R.id.totalOrderCount);
+        item_cardview=itemView.findViewById(R.id.card_view_delivery_cash_to_bank_list);
         this.deliveryCashReceiveSupervisor = deliveryCashReceiveSupervisor;
 
         item_cardview.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +106,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         viewHolder.item_serial_no.setText(list.get(i).getSerialNo());
         viewHolder.item_ctsBy.setText(list.get(i).getCtsBy());
         viewHolder.item_ctsTime.setText(list.get(i).getCtsTime());
+        viewHolder.item_total_order_count.setText("Total Orders: "+list.get(i).getTotalOrders());
         viewHolder.item_price.setText(list.get(i).getTotalCashAmt()+" Taka");
         viewHolder.item_collection.setText(list.get(i).getSubmittedCashAmt()+" Taka");
         viewHolder.item_received.setText(list.get(i).getTotalCashReceive()+" Taka");
