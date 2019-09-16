@@ -39,6 +39,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTSAdapter;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisorModel;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
@@ -64,12 +65,10 @@ import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.D
 public class Bank_details_upload_by_DO extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Button UploadBn, selectBankId;
+    private Button UploadBn, selectBankId,selectDate;
     private ImageView imgView;
-    private Bitmap bitmap, bitmap1, bitmap2;
+    private Bitmap bitmap;
     private final int IMG_REQUEST = 10;
-    private final int IMG_REQUEST_MULTIPLE = 20;
-    private final int IMG_REQUEST_TRIPLE = 30;
 
     String item = "";
     private RequestQueue requestQueue;
@@ -79,7 +78,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
     int month;
     int dayOfMonth;
     Calendar calendar;
-    TextView total_Cash_collection;
+    TextView total_Cash_collection, create_tv,slipNo,depComm,error_msg_show;
 
     String[] bankListItems;
     boolean[] bankCheckedItems;
@@ -107,11 +106,11 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
         selectBankId = (Button)findViewById(R.id.bank_name_title);
         imgView = (ImageView) findViewById(R.id.imageView);
 
-        final TextView create_tv = findViewById(R.id.create_tv);
-        final TextView slipNo = findViewById(R.id.deposite_slip_number);
-        final TextView depComm = findViewById(R.id.bank_deposite_comment);
-        final Button selectDate = findViewById(R.id.select_deposite_date);
-        final TextView  error_msg_show = findViewById(R.id.error_msg);
+        create_tv = findViewById(R.id.create_tv);
+        slipNo = findViewById(R.id.deposite_slip_number);
+        depComm = findViewById(R.id.bank_deposite_comment);
+        selectDate = findViewById(R.id.select_deposite_date);
+        error_msg_show = findViewById(R.id.error_msg);
         total_Cash_collection = findViewById(R.id.total_cash);
 
         Intent intent1 = getIntent();
@@ -388,7 +387,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
                             if (!obj.getBoolean("error")) {
                                 imgView.setImageResource(0);
                                 imgView.setVisibility(View.GONE);
-                                //create_tv.setText("0 Orders have been selected for cash.");
+                                create_tv.setText("0 Orders have been selected for cash.");
 
                                 Toast.makeText(Bank_details_upload_by_DO.this, "Successful", Toast.LENGTH_SHORT).show();
                             } else {
@@ -443,6 +442,8 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Intent intent = new Intent(Bank_details_upload_by_DO.this, DeliveryCTS.class);
+            startActivity(intent);
         }
     }
 

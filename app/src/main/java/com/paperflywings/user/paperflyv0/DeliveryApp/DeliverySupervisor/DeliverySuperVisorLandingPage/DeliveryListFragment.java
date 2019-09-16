@@ -33,6 +33,7 @@ import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliverySummary_Model;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupervisorDp2.DeliverySDp2;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -52,7 +53,7 @@ public class DeliveryListFragment extends Fragment {
 
     BarcodeDbHelper db;
     private CardView sup_unpicked_item,sup_without_Status,sup_on_Hold,sup_returnReqst,sup_return_List,sup_cashCollection,sup_quickDelivery,sup_Dp2Reciever,sup_CashReceive,sup_ReturnReceive;
-    private TextView sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count;
+    private TextView sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count,sup_CashReceive_count,sup_ReturnReceive_count;
     private RequestQueue requestQueue;
     String username,unpicked,withoutStatus,onHold,cash,returnRequest,returnList;
 
@@ -86,9 +87,12 @@ public class DeliveryListFragment extends Fragment {
         sup_cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
         sup_returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
         sup_unpicked_count = (TextView)viewGroup.findViewById(R.id.UnpickedCount);
+        sup_ReturnReceive_count = (TextView)viewGroup.findViewById(R.id.RTReceived);
+        sup_CashReceive_count = (TextView)viewGroup.findViewById(R.id.CashR);
 
 
 
+        sup_Dp2Reciever = (CardView)viewGroup.findViewById(R.id.Dp2_id);
         sup_unpicked_item = (CardView)viewGroup.findViewById(R.id.sup_unpicked_id);
         sup_without_Status = (CardView)viewGroup.findViewById(R.id.sup_withoutStatus_id);
         sup_on_Hold = (CardView)viewGroup.findViewById(R.id.sup_onHold_id);
@@ -100,6 +104,13 @@ public class DeliveryListFragment extends Fragment {
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
+        sup_Dp2Reciever.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySDp2.class);
+                startActivity(intent);
+            }
+        });
 
         sup_unpicked_item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,13 +235,15 @@ public class DeliveryListFragment extends Fragment {
                         JSONObject o = array.getJSONObject(i);
                         String statusCode = o.getString("responseCode");
                         if(statusCode.equals("200")){
-
+                            sup_ReturnReceive_count.setText(o.getString("returnRcv"));
+                            sup_CashReceive_count.setText(o.getString("cashRcv"));
                             sup_unpicked_count.setText(o.getString("unpicked"));
                             sup_withoutStatus_count.setText(o.getString("withoutStatus"));
                             sup_onHold_count.setText(o.getString("onHold"));
-                            sup_returnReqst_count.setText(o.getString("returnRequest"));
-                            sup_returnList_count.setText(o.getString("returnList"));
+                            sup_returnReqst_count.setText(o.getString("preReturn"));
+                            sup_returnList_count.setText(o.getString("return"));
                             sup_cashCollection_count.setText(o.getString("cash"));
+
 
                         } else if(statusCode.equals("404")){
                             Toast.makeText(getActivity().getApplicationContext(), o.getString("notFound"), Toast.LENGTH_SHORT).show();
