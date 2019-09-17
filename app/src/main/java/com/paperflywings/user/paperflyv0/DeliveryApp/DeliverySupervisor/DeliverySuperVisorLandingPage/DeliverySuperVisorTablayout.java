@@ -240,7 +240,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
                         }
                     }
                 }
-                break;
+            break;
         }
     }
 
@@ -305,11 +305,6 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
                     DeliverySupBankReport.class);
             startActivity(homeIntent);
         }
-      /*  else if (id == R.id.nav_crs) {
-            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
-                    DeliverySupCRS.class);
-            startActivity(homeIntent);
-        }*/
 
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
@@ -319,9 +314,6 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
-
-//                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                            db.deleteAssignedList(sqLiteDatabase);
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
