@@ -221,6 +221,8 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Intent intent = new Intent(getApplicationContext(), DeliverySuperVisorTablayout.class);
+            startActivity(intent);
         }
     }
 

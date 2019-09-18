@@ -1,7 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -70,11 +69,6 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     private List<DeliverySupUnpickedModel> list;
-    public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    public static final int NAME_SYNCED_WITH_SERVER = 1;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
-    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,20 +108,12 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         swipeRefreshLayout.setRefreshing(true);
 
-        String flagReqst = "delivery_unpicked_orders";
-
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user,flagReqst);
+            loadRecyclerView(user);
             list.clear();
             eList.clear();
         }
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        };
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_unpicked);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -140,10 +126,9 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_supervisor);
         navUsername.setText(user);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
-    private void loadRecyclerView(final String username, final String flagReqst) {
+    private void loadRecyclerView(final String username) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -207,7 +192,6 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            //swipeRefreshLayout.setRefreshing(false);
                         }
                     }
                 },
@@ -215,8 +199,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
-                       // swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "Server not connected"+error ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Server not connected." ,Toast.LENGTH_LONG).show();
 
                     }
                 })
@@ -226,7 +209,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
-                params1.put("flagreq",flagReqst);
+                params1.put("flagreq","delivery_unpicked_orders");
                 return params1;
             }
         };
@@ -251,7 +234,6 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
         final View mViewReassign = getLayoutInflater().inflate(R.layout.delivery_supervisor_reassign_officer, null);
-
         final TextView error_msg = mViewReassign.findViewById(R.id.error_msg1);
 
         getEmployeeList();
@@ -293,7 +275,6 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String empName = mEmployeeSpinner.getSelectedItem().toString();
                 String empCode = db.getSelectedEmpCode(empName);
 
@@ -309,18 +290,42 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
     }
 
     private void AssignOrderToDO(final String empCode,final String username, final int sql_primary_id) {
-
         StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
 
-                                Toast.makeText(DeliverySupUnpicked.this, "Successful", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(DeliverySupUnpicked.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                                String statusCode = o.getString("responseCode");
+
+                                if(statusCode.equals("200")){
+                                    Toast.makeText(DeliverySupUnpicked.this, "Successful.", Toast.LENGTH_SHORT).show();
+                                    String username = o.getString("username");
+                                    loadRecyclerView(username);
+                                } else if(statusCode.equals("404")) {
+                                    String unsuccess = o.getString("unsuccess");
+                                    Toast.makeText(DeliverySupUnpicked.this, unsuccess, Toast.LENGTH_SHORT).show();
+
+                                } else if(statusCode.equals("405")) {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliverySupUnpicked.this);
+                                    alertDialogBuilder.setCancelable(false);
+                                    alertDialogBuilder.setMessage(o.getString("noData"));
+
+                                    alertDialogBuilder.setNegativeButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    arg0.dismiss();
+                                                    onResume();
+                                                }
+                                            });
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -336,7 +341,6 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         ) {
             @Override
             protected Map<String, String> getParams() {
-
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("empcode", empCode);
                 params.put("username", username);
@@ -362,6 +366,8 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Intent unpickedIntent = new Intent(DeliverySupUnpicked.this, DeliverySuperVisorTablayout.class);
+            startActivity(unpickedIntent);
         }
     }
 
@@ -479,13 +485,13 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String flagReqst = "delivery_unpicked_orders";
+
         list.clear();
 
         deliverySupUnpickedAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username,flagReqst);
+            loadRecyclerView(username);
             list.clear();
         }
     }

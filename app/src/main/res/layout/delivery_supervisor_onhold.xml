@@ -294,10 +294,9 @@
 
         <Button
         android:id="@+id/btn_reassign_officer"
-        android:layout_width="105dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/package_brief_without_status"
-        android:layout_marginLeft="180dp"
         android:layout_marginTop="10dp"
         android:background="@color/wallet_holo_blue_light"
         android:padding="10dp"

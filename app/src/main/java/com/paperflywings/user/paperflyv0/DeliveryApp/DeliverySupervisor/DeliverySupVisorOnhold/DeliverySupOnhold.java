@@ -1,7 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,15 +63,9 @@ public class DeliverySupOnhold extends AppCompatActivity
     private RequestQueue requestQueue;
     private ProgressDialog progress;
 
-    private static final int REQUEST_CAMERA = 1;
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     private List<DeliverySupOnHoldModel> list;
-    public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    public static final int NAME_SYNCED_WITH_SERVER = 1;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
-    private BroadcastReceiver broadcastReceiver;
     private List<DeliverySupOnHoldModel> eList;
 
     @Override
@@ -109,14 +102,14 @@ public class DeliverySupOnhold extends AppCompatActivity
 
         swipeRefreshLayout.setRefreshing(true);
 
-        String flagReqst = "delivery_onhold_orders";
-
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user,flagReqst);
+            loadRecyclerView(user);
 
             list.clear();
             eList.clear();
+        } else {
+            Toast.makeText(this, "Internet Connection Failed!", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
@@ -132,7 +125,7 @@ public class DeliverySupOnhold extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadRecyclerView(final String username, final String flagReqst) {
+    private void loadRecyclerView(final String username) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -181,7 +174,7 @@ public class DeliverySupOnhold extends AppCompatActivity
                                         o.getString("DP2By"),
                                         o.getString("onHoldSchedule"),
                                         o.getString("onHoldReason"),
-                                        o.getInt("slaMiss")//onHoldSchedule,onHoldReason
+                                        o.getInt("slaMiss")
                                 );
                                 list.add(supOnHoldmodels);
                             }
@@ -214,7 +207,7 @@ public class DeliverySupOnhold extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
-                params1.put("flagreq",flagReqst);
+                params1.put("flagreq","delivery_onhold_orders");
                 return params1;
             }
         };
@@ -352,6 +345,9 @@ public class DeliverySupOnhold extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Intent homeIntent = new Intent(DeliverySupOnhold.this,
+                    DeliverySuperVisorTablayout.class);
+            startActivity(homeIntent);
         }
     }
 
@@ -468,14 +464,16 @@ public class DeliverySupOnhold extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String flagReqst = "delivery_onhold_orders";
+
         list.clear();
 
         deliverySupOnHoldAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username,flagReqst);
+            loadRecyclerView(username);
             list.clear();
+        } else {
+            Toast.makeText(this, "Internet Connection Lost!", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -46,6 +46,8 @@ public class DeliverySCashReceive extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Intent intent = new Intent(getApplicationContext(), DeliverySuperVisorTablayout.class);
+            startActivity(intent);
         }
     }
 

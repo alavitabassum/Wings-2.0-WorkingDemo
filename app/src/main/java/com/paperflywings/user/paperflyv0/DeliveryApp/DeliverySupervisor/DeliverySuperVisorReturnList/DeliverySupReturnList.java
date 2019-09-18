@@ -1,7 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList;
 
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,23 +8,20 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,16 +57,9 @@ public class DeliverySupReturnList extends AppCompatActivity
     private TextView sup_pre_ret_text;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
-
-    private static final int REQUEST_CAMERA = 1;
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     private List<DeliverySupReturnListModel> list;
-    public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
-    public static final int NAME_SYNCED_WITH_SERVER = 1;
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE = 2;
-    public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
-    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,19 +91,14 @@ public class DeliverySupReturnList extends AppCompatActivity
 
         swipeRefreshLayout.setRefreshing(true);
 
-        String flagReqst = "delivery_return_orders";
-
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user,flagReqst);
+            loadRecyclerView(user);
             list.clear();
+        } else {
+            Toast.makeText(this, "Internet Connection Failed!", Toast.LENGTH_SHORT).show();
         }
 
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-            }
-        };
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_ret_list);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -127,7 +111,7 @@ public class DeliverySupReturnList extends AppCompatActivity
         navUsername.setText(user);
         navigationView.setNavigationItemSelectedListener(this);
     }
-    private void loadRecyclerView(final String username, final String flagReqst) {
+    private void loadRecyclerView(final String username) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -198,13 +182,10 @@ public class DeliverySupReturnList extends AppCompatActivity
                                         o.getString("CTS"),
                                         o.getString("CTSTime"),
                                         o.getString("CTSBy"),
-                                        o.getInt("slaMiss")//onHoldSchedule,onHoldReason
+                                        o.getInt("slaMiss")
                                 );
                                 list.add(supRetmodels);
-
                             }
-
-//
 
                             deliverySupReturnListAdapter = new DeliverySupReturnListAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupReturnListAdapter);
@@ -235,7 +216,7 @@ public class DeliverySupReturnList extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
-                params1.put("flagreq",flagReqst);
+                params1.put("flagreq","delivery_return_orders");
                 return params1;
             }
         };
@@ -256,6 +237,9 @@ public class DeliverySupReturnList extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            Intent homeIntent = new Intent(DeliverySupReturnList.this,
+                    DeliverySuperVisorTablayout.class);
+            startActivity(homeIntent);
         }
     }
 
@@ -375,14 +359,15 @@ public class DeliverySupReturnList extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        String flagReqst = "delivery_return_orders";
         list.clear();
 
         deliverySupReturnListAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username,flagReqst);
+            loadRecyclerView(username);
             list.clear();
+        } else {
+            Toast.makeText(this, "Internet Connection Failed!", Toast.LENGTH_SHORT).show();
         }
     }
 }

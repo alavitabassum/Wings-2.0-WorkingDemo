@@ -31,8 +31,14 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliverySummary_Model;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupervisorDp2.DeliverySDp2;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
@@ -90,8 +96,6 @@ public class DeliveryListFragment extends Fragment {
         sup_ReturnReceive_count = (TextView)viewGroup.findViewById(R.id.RTReceived);
         sup_CashReceive_count = (TextView)viewGroup.findViewById(R.id.CashR);
 
-
-
         sup_Dp2Reciever = (CardView)viewGroup.findViewById(R.id.Dp2_id);
         sup_unpicked_item = (CardView)viewGroup.findViewById(R.id.sup_unpicked_id);
         sup_without_Status = (CardView)viewGroup.findViewById(R.id.sup_withoutStatus_id);
@@ -115,42 +119,46 @@ public class DeliveryListFragment extends Fragment {
         sup_unpicked_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupUnpicked.class);
                 startActivity(intent);
             }
         });
+
         sup_without_Status.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupWithoutStatus.class);
                 startActivity(intent);
             }
         });
+
         sup_on_Hold.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupOnhold.class);
                 startActivity(intent);
             }
         });
+
         sup_returnReqst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupPreRet.class);
                 startActivity(intent);
             }
         });
+
         sup_return_List.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupReturnList.class);
                 startActivity(intent);
             }
         });
         sup_cashCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupCash.class);
                 startActivity(intent);
             }
         });

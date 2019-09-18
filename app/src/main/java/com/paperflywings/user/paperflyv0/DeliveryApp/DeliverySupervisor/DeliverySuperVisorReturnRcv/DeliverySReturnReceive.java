@@ -184,6 +184,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                     list = getModel(true);
                                     deliverySupervisorReturnRcvAdapter = new DeliverySupervisorReturnRcvAdapter(list,getApplicationContext());
                                     recyclerView_pul.setAdapter(deliverySupervisorReturnRcvAdapter);
+                                    deliverySupervisorReturnRcvAdapter.setOnItemClickListener(DeliverySReturnReceive.this);
                                 }
                             });
                             btndeselect.setOnClickListener(new View.OnClickListener() {
@@ -192,6 +193,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                     list = getModel(false);
                                     deliverySupervisorReturnRcvAdapter = new DeliverySupervisorReturnRcvAdapter(list,getApplicationContext());
                                     recyclerView_pul.setAdapter(deliverySupervisorReturnRcvAdapter);
+                                    deliverySupervisorReturnRcvAdapter.setOnItemClickListener(DeliverySReturnReceive.this);
                                 }
                             });
                             btnnext.setOnClickListener(new View.OnClickListener() {
@@ -233,7 +235,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                             count++;
                                             item = item + "," + DeliverySupervisorReturnRcvAdapter.imageModelArrayList.get(i).getOrderid();
                                         }
-                                        tv.setText(count + " Orders have been selected for cash.");
+                                        tv.setText(count + " Orders have been selected to return.");
                                     }
                                     //orderIds.setText(item);
                                     count = 0;
@@ -271,7 +273,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                             String courierName = mCourierSpinner.getSelectedItem().toString();
                                             String carrierId = db.getSelectedCourierId(courierName);
 
-                                            if(tv.getText().equals("0 Orders have been selected for cash.")){
+                                            if(tv.getText().equals("0 Orders have been selected for return.")){
                                                 disputeError.setText("Please Select Orders First!!");
                                             }else if(courierName.equals("Select courier...")){
                                                 disputeError.setText("Please select courier name!!");

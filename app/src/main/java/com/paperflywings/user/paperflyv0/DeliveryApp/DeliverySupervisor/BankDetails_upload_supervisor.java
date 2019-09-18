@@ -131,7 +131,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
         //final String serial_no = intent1.getStringExtra(SERIAL_NO);
         //final String cts_by = intent1.getStringExtra(CTS_BY);
 
-        total_Cash_collection.setText("Total Cash: " +total_cash_collecction+" Taka");
+        total_Cash_collection.setText("Total Cash: " +total_cash_collecction+ " Taka");
         //create_tv.setText("Total Orders: "+total_order+"  ||  Serial No: "+serial_no);
 
         eList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
