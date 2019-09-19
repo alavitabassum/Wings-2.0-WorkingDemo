@@ -262,9 +262,6 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
         }
         //orderIds.setText(itemOrders);
 
-
-
-
         count = 0;
 
         imgView.setOnClickListener(new View.OnClickListener() {
@@ -300,7 +297,6 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
                     UpdateBankedOrdersByDO(item,deposited_amt,deposite_date,bankItems,slipNumber,comment,username);
 
                     startActivity(intent);
-                    //loadRecyclerView(username);
                     item = "";
                     order_count = "0";
                 }
@@ -314,7 +310,6 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
                         .setType("image/*"), "Select one image"),
                 IMG_REQUEST);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -336,7 +331,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
     private String imageToString(Bitmap bitmap){
         if(bitmap != null){
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 50/100,outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100,outputStream);
             byte[] imageBytes = outputStream.toByteArray();
 
             String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);

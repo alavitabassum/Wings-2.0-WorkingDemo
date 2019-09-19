@@ -37,6 +37,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Bank_DepositeSlip_Image;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
@@ -188,6 +189,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 model.setTotalCashAmt(list.get(i).getTotalCashAmt());
                 model.setSubmittedCashAmt(list.get(i).getSubmittedCashAmt());
                 model.setTotalCashReceive(list.get(i).getTotalCashReceive());
+                model.setCts(list.get(i).getCts());
                 listOfOrders.add(model);
             }
 
@@ -208,6 +210,8 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 model.setTotalCashAmt(list.get(i).getTotalCashAmt());
                 model.setSubmittedCashAmt(list.get(i).getSubmittedCashAmt());
                 model.setTotalCashReceive(list.get(i).getTotalCashReceive());
+                model.setTotalCashReceive(list.get(i).getTotalCashReceive());
+                model.setCts(list.get(i).getCts());
                 listOfOrders.add(model);
             }
         }
@@ -470,5 +474,16 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
+    }
+
+    @Override
+    public void onItemClick_view_image(View view1, int position1) {
+
+        DeliveryCashReceiveSupervisorModel clickedItem1 = list.get(position1);
+
+        String serialNo = clickedItem1.getSerialNo();
+        Intent intent = new Intent(getApplication(), Bank_DepositeSlip_Image.class);
+        intent.putExtra(SERIAL_NO, serialNo);
+        startActivity(intent);
     }
 }
