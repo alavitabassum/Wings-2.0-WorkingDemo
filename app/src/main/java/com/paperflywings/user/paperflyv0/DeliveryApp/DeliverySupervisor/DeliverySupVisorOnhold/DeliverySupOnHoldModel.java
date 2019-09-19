@@ -69,7 +69,7 @@ public class DeliverySupOnHoldModel {
         this.sup_pickDropBy = sup_pickDropBy;
     }
 
-    public DeliverySupOnHoldModel(int sql_primary_id, String username, String merchEmpCode, String dropPointEmp, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropAssignTime, String dropAssignBy, String PickDrop, String PickDropTime, String PickDropBy, String orderDate, String dp2Time, String dp2By,String onHoldSchedule,String onHoldReason, int slaMiss) {
+    public DeliverySupOnHoldModel(int sql_primary_id, String username, String merchEmpCode, String dropPointEmp, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropAssignTime, String dropAssignBy, String PickDrop, String PickDropTime, String PickDropBy, String orderDate, String dp2Time, String dp2By,String onHoldSchedule,String onHoldReason,String ReaBy, int slaMiss) {
         this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = merchEmpCode;
@@ -95,6 +95,7 @@ public class DeliverySupOnHoldModel {
         this.orderDate = orderDate;
         this.onHoldSchedule = onHoldSchedule;
         this.onHoldReason = onHoldReason;
+        this.ReaBy = ReaBy;
         this.slaMiss = slaMiss;
     }
 

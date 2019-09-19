@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_delivery_unpicked_list"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="360dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
     android:paddingBottom="50dp"
+    card_view_assign:cardCornerRadius="5dp"
     card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
