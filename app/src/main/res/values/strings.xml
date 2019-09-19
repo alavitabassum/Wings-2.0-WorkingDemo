@@ -210,19 +210,19 @@
     <string name="title_activity_return_request">Return Request</string>
     <string name="title_activity_delivery_cash_rs">Cash Received List</string>
     <string name="title_activity_delivery_return_by_supervisor">Return Received List</string>
-    <string name="title_activity_delivery_petty_cash">DeliveryPettyCash</string>
+    <string name="title_activity_delivery_petty_cash">Delivery Petty Cash</string>
     <string name="title_activity_delivery_courier">Courier Receive</string>
     <string name="title_activity_delivery_main_page">Home</string>
     <string name="tab_text_3">Tab 3</string>
-    <string name="title_activity_delivery_home">DeliveryHome</string>
+    <string name="title_activity_delivery_home">Home</string>
     <string name="title_activity_delivery_add_new_expense">Add New Expense</string>
     <string name="title_activity_delivery_tablayout">Home</string>
     <string name="title_activity_delivery_super_visor_tablayout">Home
     </string>
     <string name="title_activity_delivery_sdp2">DeliverySDp2</string>
-    <string name="title_activity_delivery_scash_receive">DeliverySCashReceive</string>
-    <string name="title_activity_delivery_sreturn_receive">DeliverySReturnReceive</string>
-    <string name="title_activity_delivery_courier_details">DeliveryCourierDetails</string>
+    <string name="title_activity_delivery_scash_receive">Cash Receive</string>
+    <string name="title_activity_delivery_sreturn_receive">Return Receive</string>
+    <string name="title_activity_delivery_courier_details">Delivery Courier Details</string>
     <string name="title_activity_delivery_sup_unpicked">Unpicked</string>
     <string name="title_activity_delivery_sup_without_status">Without Status</string>
     <string name="title_activity_delivery_sup_onhold">Onhold</string>
@@ -233,14 +233,15 @@
 
     <string name="title_activity_delivery_cash_receive_supervisor">Cash Recieve</string>
     <string name="title_activity_return_receive_supervisor">Supervisor Recieve</string>
-    <string name="title_activity_delivery_sup_bank_report">DeliverySupBankReport</string>
-    <string name="title_activity_delivery_re_attempt">DeliveryReAttempt</string>
+    <string name="title_activity_bank_deposite_supervisor">Supervisor Bank Deposite</string>
+    <string name="title_activity_delivery_sup_bank_report">Bank Report</string>
+    <string name="title_activity_delivery_re_attempt">Delivery Re-Attempt</string>
     <string name="title_activity_bank_details_upload_supervisor">Bank Details
     </string>
-    <string name="title_activity_delivery_sup_crs">DeliverySupCRS</string>
-    <string name="title_activity_bank_details_upload_by__do">Bank_details_upload_by_DO</string>
-    <string name="title_activity_delivery_sup_dp2_done">DeliverySupDp2Done</string>
-    <string name="title_activity_delivery_sup_dp2_not_done">DeliverySupDp2NotDone</string>
+    <string name="title_activity_delivery_sup_crs">Cash Receive</string>
+    <string name="title_activity_bank_details_upload_by__do">Bank Deposite</string>
+    <string name="title_activity_delivery_sup_dp2_done">Received Percels</string>
+    <string name="title_activity_delivery_sup_dp2_not_done">Percels Not-Received</string>
 
 
 </resources>

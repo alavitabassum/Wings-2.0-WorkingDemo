@@ -62,7 +62,7 @@
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2Done.DeliverySupDp2Done"
             android:label="@string/title_activity_delivery_sup_dp2_done"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
+
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS"
             android:label="@string/title_activity_delivery_sup_crs"
@@ -125,7 +125,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.BankDepositBySupervisor"
-            android:label="@string/title_activity_return_receive_supervisor"
+            android:label="@string/title_activity_bank_deposite_supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
