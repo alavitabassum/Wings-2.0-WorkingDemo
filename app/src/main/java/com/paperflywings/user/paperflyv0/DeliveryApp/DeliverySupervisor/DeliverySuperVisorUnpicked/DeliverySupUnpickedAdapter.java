@@ -31,7 +31,7 @@ public class DeliverySupUnpickedAdapter extends RecyclerView.Adapter<DeliverySup
     private OnItemClickListener mListner;
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+       // void onItemClick(View view, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {
@@ -74,9 +74,9 @@ public class DeliverySupUnpickedAdapter extends RecyclerView.Adapter<DeliverySup
             item_packagePrice=itemView.findViewById(R.id.price_unpicked);
             item_productBrief=itemView.findViewById(R.id.package_brief_unpicked);
             item_sla_miss = itemView.findViewById(R.id.sla_deliverytime);
-            item_reassign_officer = itemView.findViewById(R.id.btn_assign_officer);
+            //item_reassign_officer = itemView.findViewById(R.id.btn_assign_officer);
 
-            item_reassign_officer.setOnClickListener(new View.OnClickListener() {
+         /*   item_reassign_officer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(mListner != null) {
@@ -87,7 +87,7 @@ public class DeliverySupUnpickedAdapter extends RecyclerView.Adapter<DeliverySup
                         }
                     }
                 }
-            });
+            });*/
 
 
         }

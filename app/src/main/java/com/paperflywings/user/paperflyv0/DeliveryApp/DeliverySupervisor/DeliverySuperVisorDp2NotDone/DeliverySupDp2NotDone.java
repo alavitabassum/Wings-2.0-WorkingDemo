@@ -25,8 +25,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,9 +37,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2Done.DeliverySupDp2DoneAdapter;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpickedAdapter;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -228,8 +224,14 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
 
     @Override
     public void onItemClick(View view, int position) {
+        final int sql_primary_id = list.get(position).getSql_primary_id();
 
-        String previousAssign = list.get(position).getUsername();
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+
+        deliveryDP2Receive(username,sql_primary_id);
+
+       /* String previousAssign = list.get(position).getUsername();
         final int sql_primary_id = list.get(position).getSql_primary_id();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -288,10 +290,13 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
                     dialogCash.dismiss();
                 }
             }
-        });
+        });*/
     }
 
-    private void AssignOrderToDO(final String empCode,final String username, final int sql_primary_id) {
+
+
+
+    private void deliveryDP2Receive(final String username, final int sql_primary_id) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>() {
                     @Override
@@ -305,9 +310,10 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
                                 String statusCode = o.getString("responseCode");
 
                                 if(statusCode.equals("200")){
-                                    Toast.makeText(DeliverySupDp2NotDone.this, "Successful.", Toast.LENGTH_SHORT).show();
-                                    String username = o.getString("username");
                                     loadRecyclerView(username);
+                                    Toast.makeText(DeliverySupDp2NotDone.this, "Successful.", Toast.LENGTH_SHORT).show();
+
+
                                 } else if(statusCode.equals("404")) {
                                     String unsuccess = o.getString("unsuccess");
                                     Toast.makeText(DeliverySupDp2NotDone.this, unsuccess, Toast.LENGTH_SHORT).show();
@@ -344,10 +350,9 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("empcode", empCode);
                 params.put("username", username);
                 params.put("sql_primary_id", String.valueOf(sql_primary_id));
-                params.put("flagreq", "Delivery_officer_assign_by_supervisor");
+                params.put("flagreq", "Delivery_supervisor_DP2_receive_action");
                 return params;
             }
         };

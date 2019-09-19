@@ -253,7 +253,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/buttonstyle_done"
             android:padding="10dp"
-            android:text="Dp2"
+            android:text="DP2 Receive"
             android:textColor="@color/white"
             android:textSize="14sp" />
 

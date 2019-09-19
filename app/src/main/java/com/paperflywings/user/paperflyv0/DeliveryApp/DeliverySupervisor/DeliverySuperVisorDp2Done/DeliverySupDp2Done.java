@@ -40,7 +40,6 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpickedAdapter;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -232,7 +231,7 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-        final View mViewReassign = getLayoutInflater().inflate(R.layout.delivery_supervisor_reassign_officer, null);
+        final View mViewReassign = getLayoutInflater().inflate(R.layout.delivery_supervisor_assign_officer, null);
         final TextView error_msg = mViewReassign.findViewById(R.id.error_msg1);
 
         getEmployeeList();
@@ -303,7 +302,6 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
 
                                 if(statusCode.equals("200")){
                                     Toast.makeText(DeliverySupDp2Done.this, "Successful.", Toast.LENGTH_SHORT).show();
-                                    String username = o.getString("username");
                                     loadRecyclerView(username);
                                 } else if(statusCode.equals("404")) {
                                     String unsuccess = o.getString("unsuccess");
@@ -494,7 +492,6 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
             list.clear();
         }
     }
-
 
     private void getEmployeeList() {
         try {
