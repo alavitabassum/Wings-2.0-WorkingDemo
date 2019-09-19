@@ -196,11 +196,11 @@ public class Delivery_quick_pick_scan  extends AppCompatActivity {
         barcodeView.decodeSingle(callback);
     }
 
-    @Override
+  /*  @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
-    }
+    }*/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="5dp"
+    android:foreground="?selectableItemBackground"
+    android:padding="50dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold">
+
+    <TextView
+        android:id="@+id/assign_emp_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textSize="16sp"
+        android:text="Select employee:"
+        android:textColor="@color/pfColor"/>
+
+    <Spinner
+        android:id="@+id/employee_list_onhold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/assign_emp_title"
+        android:layout_alignBaseline="@+id/employee_name"
+        android:layout_toEndOf="@+id/employee_name"/>
+
+    <TextView
+        android:id="@+id/employee_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/assign_emp_title"
+        android:text="Employee"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/error_msg1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_below="@id/employee_list_onhold"
+        android:textColor="@color/red"
+        />
+</RelativeLayout>

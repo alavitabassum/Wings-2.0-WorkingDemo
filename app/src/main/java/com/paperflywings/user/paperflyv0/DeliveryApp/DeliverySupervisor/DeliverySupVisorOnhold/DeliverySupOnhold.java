@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -62,6 +63,7 @@ public class DeliverySupOnhold extends AppCompatActivity
     private TextView sup_on_hold_text;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
+    private long mLastClickTime = 0;
 
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
@@ -223,6 +225,11 @@ public class DeliverySupOnhold extends AppCompatActivity
 
     @Override
     public void onItemClick(View view, int position) {
+        // mis-clicking prevention, using threshold of 500 ms
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
 
         String previousAssign = list.get(position).getUsername();
         final int sql_primary_id = list.get(position).getSql_primary_id();
@@ -234,7 +241,7 @@ public class DeliverySupOnhold extends AppCompatActivity
         final TextView assign_emp_title = mViewReassign.findViewById(R.id.assign_emp_title);
         final TextView assign_emp_name = mViewReassign.findViewById(R.id.assign_emp_name);
         final TextView error_msg = mViewReassign.findViewById(R.id.error_msg1);
-        assign_emp_title.setText("Assigned Officer: ");
+        assign_emp_title.setText("Re-assigned Officer: ");
         assign_emp_name.setText(previousAssign);
 
         getEmployeeList();
@@ -275,7 +282,12 @@ public class DeliverySupOnhold extends AppCompatActivity
         dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // mis-clicking prevention, using threshold of 500 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                    return;
+                }
 
+                mLastClickTime = SystemClock.elapsedRealtime();
                 String empName = mEmployeeSpinner.getSelectedItem().toString();
                 String empCode = db.getSelectedEmpCode(empName);
 
@@ -286,25 +298,47 @@ public class DeliverySupOnhold extends AppCompatActivity
                     //startActivity(intent);
                     dialogCash.dismiss();
                 }
-
             }
         });
-
     }
 
     private void ReassignOrderToAnotherDO(final String empCode,final String username, final int sql_primary_id) {
-
         StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
 
-                                Toast.makeText(DeliverySupOnhold.this, "Successful", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(DeliverySupOnhold.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                                String statusCode = o.getString("responseCode");
+
+                                if(statusCode.equals("200")){
+                                    loadRecyclerView(username);
+                                    Toast.makeText(DeliverySupOnhold.this, "Successful.", Toast.LENGTH_SHORT).show();
+
+                                } else if(statusCode.equals("404")) {
+                                    String unsuccess = o.getString("unsuccess");
+                                    Toast.makeText(DeliverySupOnhold.this, unsuccess, Toast.LENGTH_SHORT).show();
+
+                                } else if(statusCode.equals("405")) {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliverySupOnhold.this);
+                                    alertDialogBuilder.setCancelable(false);
+                                    alertDialogBuilder.setMessage(o.getString("unsuccess"));
+
+                                    alertDialogBuilder.setNegativeButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    arg0.dismiss();
+                                                    onResume();
+                                                }
+                                            });
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -338,6 +372,7 @@ public class DeliverySupOnhold extends AppCompatActivity
             Toast.makeText(DeliverySupOnhold.this, "Server Error", Toast.LENGTH_LONG).show();
         }
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_onhold);
@@ -393,7 +428,6 @@ public class DeliverySupOnhold extends AppCompatActivity
         if (id == R.id.action_search) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
