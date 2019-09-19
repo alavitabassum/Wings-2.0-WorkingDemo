@@ -36,9 +36,17 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2NotDone.DeliverySupDp2NotDone"
+            android:label="@string/title_activity_delivery_sup_dp2_not_done"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2Done.DeliverySupDp2Done"
+            android:label="@string/title_activity_delivery_sup_dp2_done"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".DeliveryApp.DeliveryOfficer.Bank_details_upload_by_DO"
             android:label="@string/title_activity_bank_details_upload_by__do"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.ComingSoonSupPage" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS"
@@ -321,7 +329,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
-
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.Delivery_quick_pick_scan"
             android:parentActivityName=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked"

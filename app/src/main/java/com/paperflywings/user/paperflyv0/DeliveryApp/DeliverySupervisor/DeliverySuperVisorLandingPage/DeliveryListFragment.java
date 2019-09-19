@@ -34,6 +34,8 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2Done.DeliverySupDp2Done;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2NotDone.DeliverySupDp2NotDone;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
@@ -58,8 +60,8 @@ import java.util.Map;
 public class DeliveryListFragment extends Fragment {
 
     BarcodeDbHelper db;
-    private CardView sup_unpicked_item,sup_without_Status,sup_on_Hold,sup_returnReqst,sup_return_List,sup_cashCollection,sup_quickDelivery,sup_Dp2Reciever,sup_CashReceive,sup_ReturnReceive;
-    private TextView sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count,sup_CashReceive_count,sup_ReturnReceive_count;
+    private CardView sup_unpicked_item,sup_without_Status,sup_on_Hold,sup_returnReqst,sup_return_List,sup_cashCollection,sup_dp2_done,sup_dp2_not_done,sup_Dp2Reciever,sup_CashReceive,sup_ReturnReceive;
+    private TextView sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count,sup_CashReceive_count,sup_ReturnReceive_count,sup_dp2_done_count,sup_dp2_not_done_count;
     private RequestQueue requestQueue;
     String username,unpicked,withoutStatus,onHold,cash,returnRequest,returnList;
 
@@ -95,6 +97,8 @@ public class DeliveryListFragment extends Fragment {
         sup_unpicked_count = (TextView)viewGroup.findViewById(R.id.UnpickedCount);
         sup_ReturnReceive_count = (TextView)viewGroup.findViewById(R.id.RTReceived);
         sup_CashReceive_count = (TextView)viewGroup.findViewById(R.id.CashR);
+        sup_dp2_done_count = (TextView)viewGroup.findViewById(R.id.afterDp2receive_count);
+        sup_dp2_not_done_count = (TextView)viewGroup.findViewById(R.id.beforeDp2receive_count);
 
         sup_Dp2Reciever = (CardView)viewGroup.findViewById(R.id.Dp2_id);
         sup_unpicked_item = (CardView)viewGroup.findViewById(R.id.sup_unpicked_id);
@@ -105,6 +109,8 @@ public class DeliveryListFragment extends Fragment {
         sup_cashCollection = (CardView)viewGroup.findViewById(R.id.sup_cash_id) ;
         sup_ReturnReceive = (CardView)viewGroup.findViewById(R.id.sup_returnReceived_id);
         sup_CashReceive = (CardView)viewGroup.findViewById(R.id.sup_cashReceived_id);
+        sup_dp2_done = (CardView)viewGroup.findViewById(R.id.afterDp2receive);
+        sup_dp2_not_done = (CardView)viewGroup.findViewById(R.id.beforeDp2receive);
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -177,6 +183,21 @@ public class DeliveryListFragment extends Fragment {
             }
         });
 
+        sup_dp2_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupDp2Done.class);
+                startActivity(intent);
+            }
+        });
+        sup_dp2_not_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), DeliverySupDp2NotDone.class);
+                startActivity(intent);
+            }
+        });
+
 
         if(nInfo!= null && nInfo.isConnected())
         {
@@ -245,6 +266,8 @@ public class DeliveryListFragment extends Fragment {
                         if(statusCode.equals("200")){
                             sup_ReturnReceive_count.setText(o.getString("returnRcv"));
                             sup_CashReceive_count.setText(o.getString("cashRcv"));
+                            sup_dp2_done_count.setText(o.getString("dp2Done"));
+                            sup_dp2_not_done_count.setText(o.getString("dp2NotDone"));
                             sup_unpicked_count.setText(o.getString("unpicked"));
                             sup_withoutStatus_count.setText(o.getString("withoutStatus"));
                             sup_onHold_count.setText(o.getString("onHold"));

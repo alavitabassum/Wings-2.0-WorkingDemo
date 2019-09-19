@@ -123,7 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="110dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="15dp"
                         android:text="Return Receive"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -173,6 +173,110 @@
                         android:layout_marginTop="110dp"
                         android:layout_marginLeft="20dp"
                         android:text="Cash Receive"
+                        android:textAlignment="center"
+                        android:padding="3dp"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/beforeDp2receive"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="3dp"
+                    >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/cercleshape"
+                            />
+                        <TextView
+                            android:id="@+id/beforeDp2receive_count"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:layout_gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp"
+                            android:textStyle="bold"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/beforeDp2receive_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="110dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="Dp2 Not Received"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:padding="3dp"
+                        android:textColor="@android:color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/afterDp2receive"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="3dp"
+                    >
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:background="@drawable/cercleshape"
+                            />
+                        <TextView
+                            android:id="@+id/afterDp2receive_count"
+                            android:text="0"
+                            android:textAlignment="center"
+                            android:layout_gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textSize="25sp"
+                            android:textStyle="bold"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/afterDp2receive_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="110dp"
+                        android:layout_marginLeft="22dp"
+                        android:text="Dp2 Received"
                         android:textAlignment="center"
                         android:padding="3dp"
                         android:gravity="center"
