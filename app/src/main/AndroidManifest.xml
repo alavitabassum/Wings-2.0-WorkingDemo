@@ -54,14 +54,15 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".DeliveryApp.DeliverySupervisor.Bank_DepositeSlip_Image"
             android:label="Deposite Slip"
-            android:screenOrientation="portrait"/><activity
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2NotDone.DeliverySupDp2NotDone"
             android:label="@string/title_activity_delivery_sup_dp2_not_done"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2Done.DeliverySupDp2Done"
             android:label="@string/title_activity_delivery_sup_dp2_done"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS"

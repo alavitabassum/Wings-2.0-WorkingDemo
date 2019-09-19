@@ -308,12 +308,37 @@ public class DeliverySupOnhold extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                loadRecyclerView(username);
-                                Toast.makeText(DeliverySupOnhold.this, "Successful", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(DeliverySupOnhold.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+
+                                String statusCode = o.getString("responseCode");
+
+                                if(statusCode.equals("200")){
+                                    loadRecyclerView(username);
+                                    Toast.makeText(DeliverySupOnhold.this, "Successful.", Toast.LENGTH_SHORT).show();
+
+                                } else if(statusCode.equals("404")) {
+                                    String unsuccess = o.getString("unsuccess");
+                                    Toast.makeText(DeliverySupOnhold.this, unsuccess, Toast.LENGTH_SHORT).show();
+
+                                } else if(statusCode.equals("405")) {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliverySupOnhold.this);
+                                    alertDialogBuilder.setCancelable(false);
+                                    alertDialogBuilder.setMessage(o.getString("unsuccess"));
+
+                                    alertDialogBuilder.setNegativeButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    arg0.dismiss();
+                                                    onResume();
+                                                }
+                                            });
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -245,7 +245,6 @@
             android:layout_height="40dp"
             android:layout_below="@+id/package_brief_dp2_done"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="180dp"
             android:layout_marginTop="10dp"
             android:background="@color/put_hd_color_green"
             android:padding="10dp"
