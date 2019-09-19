@@ -54,7 +54,15 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".DeliveryApp.DeliverySupervisor.Bank_DepositeSlip_Image"
             android:label="Deposite Slip"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"/><activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2NotDone.DeliverySupDp2NotDone"
+            android:label="@string/title_activity_delivery_sup_dp2_not_done"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2Done.DeliverySupDp2Done"
+            android:label="@string/title_activity_delivery_sup_dp2_done"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS"
             android:label="@string/title_activity_delivery_sup_crs"
@@ -328,7 +336,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.MyPickupList_Executive" />
         </activity>
-
         <activity
             android:name=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.Delivery_quick_pick_scan"
             android:parentActivityName=".DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked"

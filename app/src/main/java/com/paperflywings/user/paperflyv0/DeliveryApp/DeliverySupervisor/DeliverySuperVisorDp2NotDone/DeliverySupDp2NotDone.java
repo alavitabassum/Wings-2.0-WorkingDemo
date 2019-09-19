@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2NotDone;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -39,7 +39,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2Done.DeliverySupDp2DoneAdapter;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpickedAdapter;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -52,23 +54,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliverySupUnpicked extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener,DeliverySupUnpickedAdapter.OnItemClickListener{
+
+public class DeliverySupDp2NotDone extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener,DeliverySupDp2NotDoneAdapter.OnItemClickListener {
+
 
     BarcodeDbHelper db;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private DeliverySupUnpickedAdapter deliverySupUnpickedAdapter;
+    private DeliverySupDp2NotDoneAdapter deliverySupDp2NotDoneAdapter;
     private RecyclerView recyclerView_pul;
     private RecyclerView.LayoutManager layoutManager_pul;
-    private TextView sup_unpicked_text;
+    private TextView sup_dp2_not_done_text;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
-    private List<DeliverySupUnpickedModel> eList;
+    private List<DeliverySupDp2NotDoneModel> eList;
 
     private static final int REQUEST_CAMERA = 1;
 
-    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySuperVisorApiTest.php";
+    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
-    private List<DeliverySupUnpickedModel> list;
+    private List<DeliverySupDp2NotDoneModel> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +81,12 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        setContentView(R.layout.activity_delivery_sup_unpicked);
+        setContentView(R.layout.activity_delivery_sup_dp2_not_done);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        list = new ArrayList<DeliverySupUnpickedModel>();
-        eList = new ArrayList<DeliverySupUnpickedModel>();
+        list = new ArrayList<DeliverySupDp2NotDoneModel>();
+        eList = new ArrayList<DeliverySupDp2NotDoneModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -91,16 +95,14 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_sup_unpickup_list);
-        recyclerView_pul.setAdapter(deliverySupUnpickedAdapter);
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_dp2_not_done_list);
+        recyclerView_pul.setAdapter(deliverySupDp2NotDoneAdapter);
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        sup_unpicked_text = (TextView)findViewById(R.id.unpicks_sup);
-
-
-        sup_unpicked_text = (TextView)findViewById(R.id.unpicks_sup);
+        sup_dp2_not_done_text = (TextView)findViewById(R.id.sup_Dp2_not_done_count);
+        sup_dp2_not_done_text = (TextView)findViewById(R.id.sup_Dp2_not_done_count);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -115,7 +117,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             eList.clear();
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_unpicked);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_dp2_not_done);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -151,7 +153,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                             for(i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliverySupUnpickedModel supUnpickedmodel = new  DeliverySupUnpickedModel(
+                                DeliverySupDp2NotDoneModel supUnpickedmodel = new  DeliverySupDp2NotDoneModel(
                                         o.getInt("sql_primary_id"),
                                         o.getString("username"),
                                         o.getString("merchEmpCode"),
@@ -181,14 +183,14 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
                             }
 
-                            deliverySupUnpickedAdapter = new DeliverySupUnpickedAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(deliverySupUnpickedAdapter);
+                            deliverySupDp2NotDoneAdapter = new DeliverySupDp2NotDoneAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(deliverySupDp2NotDoneAdapter);
                             swipeRefreshLayout.setRefreshing(false);
-                            deliverySupUnpickedAdapter.setOnItemClickListener(DeliverySupUnpicked.this);
+                            deliverySupDp2NotDoneAdapter.setOnItemClickListener(DeliverySupDp2NotDone.this);
                             //deliverySupUnpickedAdapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
 
                             String str = String.valueOf(i);
-                            sup_unpicked_text.setText(str);
+                            sup_dp2_not_done_text.setText(str);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -209,7 +211,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
-                params1.put("flagreq","delivery_unpicked_orders");
+                params1.put("flagreq","delivery_Dp2_not_done");
                 return params1;
             }
         };
@@ -244,13 +246,13 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         for (int x = 0; x < eList.size(); x++) {
             empList.add(eList.get(x).getEmpName());
         }
-        ArrayAdapter<String> adapterR = new ArrayAdapter<String>(DeliverySupUnpicked.this,
+        ArrayAdapter<String> adapterR = new ArrayAdapter<String>(DeliverySupDp2NotDone.this,
                 android.R.layout.simple_spinner_item,
                 empList);
         adapterR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mEmployeeSpinner.setAdapter(adapterR);
 
-        AlertDialog.Builder assignBuilder = new AlertDialog.Builder(DeliverySupUnpicked.this);
+        AlertDialog.Builder assignBuilder = new AlertDialog.Builder(DeliverySupDp2NotDone.this);
         assignBuilder.setMessage("Assign Delivery Officer:");
         assignBuilder.setPositiveButton("Assign", new DialogInterface.OnClickListener() {
             @Override
@@ -303,15 +305,15 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                                 String statusCode = o.getString("responseCode");
 
                                 if(statusCode.equals("200")){
-                                    Toast.makeText(DeliverySupUnpicked.this, "Successful.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DeliverySupDp2NotDone.this, "Successful.", Toast.LENGTH_SHORT).show();
                                     String username = o.getString("username");
                                     loadRecyclerView(username);
                                 } else if(statusCode.equals("404")) {
                                     String unsuccess = o.getString("unsuccess");
-                                    Toast.makeText(DeliverySupUnpicked.this, unsuccess, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DeliverySupDp2NotDone.this, unsuccess, Toast.LENGTH_SHORT).show();
 
                                 } else if(statusCode.equals("405")) {
-                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliverySupUnpicked.this);
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliverySupDp2NotDone.this);
                                     alertDialogBuilder.setCancelable(false);
                                     alertDialogBuilder.setMessage(o.getString("noData"));
 
@@ -335,7 +337,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DeliverySupUnpicked.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliverySupDp2NotDone.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -355,18 +357,18 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliverySupUnpicked.this, "Server Error", Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliverySupDp2NotDone.this, "Server Error", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_unpicked);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_dp2_not_done);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent unpickedIntent = new Intent(DeliverySupUnpicked.this, DeliverySuperVisorTablayout.class);
+            Intent unpickedIntent = new Intent(DeliverySupDp2NotDone.this, DeliverySuperVisorTablayout.class);
             startActivity(unpickedIntent);
         }
     }
@@ -387,7 +389,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                deliverySupUnpickedAdapter.getFilter().filter(newText);
+                deliverySupDp2NotDoneAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -395,7 +397,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(DeliverySupUnpicked.this, DeliverySupUnpicked.class);
+            Intent intent_stay = new Intent(DeliverySupDp2NotDone.this, DeliverySupDp2NotDone.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -425,7 +427,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-            Intent homeIntent = new Intent(DeliverySupUnpicked.this,
+            Intent homeIntent = new Intent(DeliverySupDp2NotDone.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
         } else if (id == R.id.nav_logout) {
@@ -456,7 +458,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliverySupUnpicked.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliverySupDp2NotDone.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -473,7 +475,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_unpicked);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_dp2_receive);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -488,7 +490,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         list.clear();
 
-        deliverySupUnpickedAdapter.notifyDataSetChanged();
+        deliverySupDp2NotDoneAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -506,7 +508,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
                 Integer empId = c.getInt(0);
                 String empCode = c.getString(1);
                 String empName = c.getString(2);
-                DeliverySupUnpickedModel employeeList = new DeliverySupUnpickedModel(empId,empCode,empName);
+                DeliverySupDp2NotDoneModel employeeList = new DeliverySupDp2NotDoneModel(empId,empCode,empName);
                 eList.add(employeeList);
             }
         } catch (Exception e) {
@@ -514,4 +516,3 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         }
     }
 }
-
