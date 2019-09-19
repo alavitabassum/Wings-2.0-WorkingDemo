@@ -191,6 +191,19 @@
             android:layout_alignParentRight="true"
             android:enabled="false"/>
 
+        <TextView
+            android:id="@+id/imageViewItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/receivedCash"
+            android:text=""
+            android:paddingRight="10dp"
+            android:textColor="@color/green"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"
+            />
+
 
       <!--  <TextView
             android:id="@+id/cashBy"

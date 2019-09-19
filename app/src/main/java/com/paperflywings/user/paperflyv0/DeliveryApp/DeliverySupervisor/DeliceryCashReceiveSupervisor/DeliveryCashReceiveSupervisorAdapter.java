@@ -42,6 +42,7 @@ public class DeliveryCashReceiveSupervisorAdapter extends RecyclerView.Adapter<D
 
     public interface OnItemClickListener {
         void onItemClick_view (View view, int position);
+        void onItemClick_view_image (View view1, int position1);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -60,6 +61,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public TextView item_received;
     public TextView item_serial_no;
     public TextView item_total_order_count;
+    public TextView item_view_image;
     public CheckBox item_bank_check;
     public CardView item_cardview;
 
@@ -75,16 +77,29 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         item_received=itemView.findViewById(R.id.receivedCash);
         item_bank_check=itemView.findViewById(R.id.checkBoxBank);
         item_total_order_count=itemView.findViewById(R.id.totalOrderCount);
+        item_view_image=itemView.findViewById(R.id.imageViewItem);
         item_cardview=itemView.findViewById(R.id.card_view_delivery_cash_to_bank_list);
         this.deliveryCashReceiveSupervisor = deliveryCashReceiveSupervisor;
 
-        item_cardview.setOnClickListener(new View.OnClickListener() {
+        item_serial_no.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mListner!=null){
                     int position = getAdapterPosition();
                     if(position!=RecyclerView.NO_POSITION){
                         mListner.onItemClick_view(view, position);
+                    }
+                }
+            }
+        });
+
+        item_view_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view1) {
+                if(mListner!=null){
+                    int position1 = getAdapterPosition();
+                    if(position1!=RecyclerView.NO_POSITION){
+                        mListner.onItemClick_view_image(view1, position1);
                     }
                 }
             }
@@ -115,6 +130,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         viewHolder.item_bank_check.setTag(i);
 
         final boolean b = imageModelArrayList.get(i).getSelected();
+        final String cts = list.get(i).getCts();
 
 
         if(b == false){
@@ -127,30 +143,13 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             viewHolder.item_bank_check.setButtonDrawable(R.drawable.ic_check_box_black_24dp);
         }
 
-       // final String cashCollectionList = list.get(i).getTotalCashReceive();
-       /* viewHolder.item_bank_check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Integer pos = (Integer) viewHolder.item_bank_check.getTag();
-
-                if (imageModelArrayList.get(pos).getSelected()) {
-                    imageModelArrayList.get(pos).setSelected(false);
-                    cashCollection = cashCollection - Integer.parseInt(cashCollectionList);
-
-                    //viewHolder.item_bank_check.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                    Toast.makeText(context, "Removed: "+cashCollection + " Taka", Toast.LENGTH_SHORT).show();
-
-
-                } else {
-                    imageModelArrayList.get(pos).setSelected(true);
-                    cashCollection = cashCollection + Integer.parseInt(cashCollectionList);
-                    //viewHolder.item_bank_check.setButtonDrawable(R.drawable.ic_check_box_black_24dp);
-                    Toast.makeText(context, "Added: "+cashCollection + " Taka", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        });*/
+        if(cts.equals("B")){
+            viewHolder.item_view_image.setText("View Image");
+        }
+        if (cts.equals("S")){
+            viewHolder.item_view_image.setText("");
+        }
     }
 
     @Override
