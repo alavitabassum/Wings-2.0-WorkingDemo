@@ -35,6 +35,7 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
     public interface OnItemClickListtener {
         void onItemClick_view (View view, int position);
+        void onItemClick_view_details (View view1, int position1);
     }
 
 
@@ -74,34 +75,14 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
         public ViewHolder(View itemView, int i) {
             super(itemView);
 
-            item_ordId_without_status=itemView.findViewById(R.id.orderId_without_status);
-            item_merOrderRef_without_status=itemView.findViewById(R.id.m_order_ref_without_status);
-            item_merchantName_without_status=itemView.findViewById(R.id.m_name_without_status);
-            item_partialreason_without_status = itemView.findViewById(R.id.partialReasonText);
-            item_cashAmt_without_status=itemView.findViewById(R.id.cashAmnt_without_status);
-            item_packagePrice_without_status=itemView.findViewById(R.id.price_without_status);
-            item_productBrief_without_status=itemView.findViewById(R.id.package_brief_without_status);
-            item_customers_name = itemView.findViewById(R.id.customers_name);
-            item_customers_address = itemView.findViewById(R.id.customers_address);
+            item_ordId_without_status=itemView.findViewById(R.id.orderId_cash);
+            item_cashAmt_without_status=itemView.findViewById(R.id.cashAmnt_cash);
+            item_packagePrice_without_status=itemView.findViewById(R.id.price_cash);
             item_cash_dispute = itemView.findViewById(R.id.disputeBtn);
 
-            card_view_without_status=itemView.findViewById(R.id.card_view_delivery_without_status_list);
+            card_view_without_status=itemView.findViewById(R.id.card_view_delivery_cash_to_supervisor_list);
             checkBox = (CheckBox) itemView.findViewById(R.id.cb);
 
-
-            //item_custphone_without_status.setPaintFlags(item_custphone_without_status.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-            /*item_custphone_without_status.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view4) {
-                    if(mListner!=null){
-                        int position4 = getAdapterPosition();
-                        if(position4!=RecyclerView.NO_POSITION){
-                            mListner.onItemClick_call(view4, position4);
-                        }
-                    }
-                }
-            });*/
             
             item_cash_dispute.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -110,6 +91,19 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
                         int position = getAdapterPosition();
                         if(position!=RecyclerView.NO_POSITION){
                             mListner.onItemClick_view(view, position);
+                        }
+                    }
+                }
+
+            });
+
+            item_ordId_without_status.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view1) {
+                    if(mListner!=null){
+                        int position1 = getAdapterPosition();
+                        if(position1!=RecyclerView.NO_POSITION){
+                            mListner.onItemClick_view_details(view1, position1);
                         }
                     }
                 }
@@ -129,12 +123,10 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
 
-        viewHolder.item_ordId_without_status.setText("Order Id: "+list.get(i).getOrderid());
-        viewHolder.item_merOrderRef_without_status.setText("Merchant Order Ref : "+list.get(i).getMerOrderRef());
-        viewHolder.item_cashAmt_without_status.setText("Cash : "+list.get(i).getCashAmt()+" Taka");
-        viewHolder.item_packagePrice_without_status.setText("Price: "+list.get(i).getPackagePrice()+" Taka");
-        viewHolder.item_customers_name.setText("Customer Name: "+list.get(i).getCustname());
-        viewHolder.item_customers_address.setText("Address: "+list.get(i).getCustaddress());
+        viewHolder.item_ordId_without_status.setText(list.get(i).getOrderid());
+        viewHolder.item_cashAmt_without_status.setText(list.get(i).getCashAmt()+" Tk");
+        viewHolder.item_packagePrice_without_status.setText(list.get(i).getPackagePrice()+" Tk");
+
 
 
         viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelected());

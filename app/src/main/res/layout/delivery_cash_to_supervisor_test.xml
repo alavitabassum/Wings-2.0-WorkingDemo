@@ -2,36 +2,33 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view_delivery_cash_to_supervisor_test"
+    android:id="@+id/card_view_delivery_cash_to_supervisor_list"
     android:layout_width="match_parent"
-    android:layout_height="255dp"
-    android:layout_margin="5dp"
+    android:layout_height="wrap_content"
     android:foreground="?selectableItemBackground"
-    android:paddingTop="50dp"
-    android:paddingBottom="50dp"
-    card_view_assign:cardCornerRadius="5dp"
     card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="238dp"
-        android:padding="10dp">
+        android:layout_height="wrap_content"
+        android:padding="4dp">
 
         <TextView
-            android:id="@+id/orderId_without_status"
-            android:layout_width="300dp"
-            android:layout_marginTop="10dp"
+            android:id="@+id/orderId_cash"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="7dp"
             android:lines="1"
             android:maxLines="1"
+            android:text="201902-2200-A1-D1"
             android:textColor="#000"
             android:textStyle="bold"
-            android:textSize="15sp" />
+            android:textSize="10sp" />
 
-        <TextView
+        <!--<TextView
             android:id="@+id/m_order_ref_without_status"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -41,9 +38,9 @@
             android:textAlignment="textStart"
             android:textColor="#000"
             android:textSize="15sp"
-            />
+            />-->
 
-        <View
+       <!-- <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -51,36 +48,37 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="70dp"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider" />-->
 
         <TextView
-            android:id="@+id/price_without_status"
-            android:layout_width="150dp"
+            android:id="@+id/price_cash"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/orderId_cash"
             android:lines="1"
             android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="#1E88E5"
-            android:textSize="15sp"
+            android:textSize="10sp"
             style="@style/boldStyle"
             />
 
         <TextView
-            android:id="@+id/cashAmnt_without_status"
-            android:layout_width="160dp"
+            android:id="@+id/cashAmnt_cash"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/price_without_status"
-            android:layout_toEndOf="@+id/price_without_status"
+            android:layout_toEndOf="@+id/price_cash"
             android:lines="1"
             android:maxLines="1"
+            android:layout_marginTop="7dp"
             android:paddingLeft="15dp"
             android:textAlignment="textStart"
             android:textColor="#1E88E5"
-            android:textSize="15sp"
+            android:textSize="10sp"
             style="@style/boldStyle"
             />
-
+<!--
         <View
             android:id="@+id/divider1"
             android:layout_width="match_parent"
@@ -89,9 +87,9 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginTop="110dp"
-            android:background="?android:attr/listDivider" />
+            android:background="?android:attr/listDivider" />-->
 
-        <TextView
+     <!--   <TextView
             android:id="@+id/customers_name"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -102,9 +100,9 @@
             android:textColor="#5E35B1"
             android:textSize="14sp"
             android:textStyle="italic|bold"
-            />
+            />-->
 
-        <TextView
+     <!--   <TextView
             android:id="@+id/customers_address"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -115,23 +113,26 @@
             android:textColor="#5E35B1"
             android:textSize="14sp"
             android:textStyle="italic|bold"
-            />
+            />-->
 
         <CheckBox
             android:id="@+id/cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
-            android:layout_alignParentRight="true"/>
+            android:layout_toEndOf="@+id/cashAmnt_cash"
+            />
 
         <Button
             android:id="@+id/disputeBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/cb"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="2dp"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/customers_address"
             android:background="@color/red"
             android:text="Dispute"
+            android:textSize="10sp"
             android:textColor="@color/white"
             android:textStyle="bold"/>
 

@@ -357,6 +357,8 @@ public class DeliveryCTS extends AppCompatActivity
                                     list = getModel(true);
                                     DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
                                     recyclerView_pul.setAdapter(DeliveryCTSAdapter);
+                                    DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
+
                                 }
                             });
                             btndeselect.setOnClickListener(new View.OnClickListener() {
@@ -365,6 +367,8 @@ public class DeliveryCTS extends AppCompatActivity
                                     list = getModel(false);
                                     DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
                                     recyclerView_pul.setAdapter(DeliveryCTSAdapter);
+                                    DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
+
                                 }
                             });
                             btnnext.setOnClickListener(new View.OnClickListener() {
@@ -876,6 +880,25 @@ public class DeliveryCTS extends AppCompatActivity
 
             }
         });
+    }
+
+    @Override
+    public void onItemClick_view_details(View view1, int position1) {
+        DeliveryCTSModel clickedItem = list.get(position1);
+
+        //String
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        //alertDialogBuilder.setMessage("Order Ids: "+orderIdList);
+        alertDialogBuilder.setNegativeButton("Close",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
     }
 
     private void disputeForCash (final String username, final String disputeComment, final int sql_primary_id){

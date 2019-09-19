@@ -172,12 +172,11 @@
         android:text="Cash Received By Supervisor" />
     </LinearLayout>
 
-    <!--
         <android.support.v7.widget.CardView
-            android:id="@+id/without_Status_id"
+            android:id="@+id/Cash_Status_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="155dp"
+            android:layout_marginTop="245dp"
             android:gravity="center"
             android:foregroundGravity="center|fill"
             android:layout_gravity="center_horizontal"
@@ -190,48 +189,48 @@
                 android:background="#aaaaaa">
                 <TextView
                     android:id="@+id/ordertxt_order_cash_head"
-                    android:layout_width="190dp"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:lines="1"
-                    android:maxLines="1"
-                    android:text="Order ID"
+                    android:maxLines="2"
+                    android:text="OrderID"
                     android:textColor="#fff"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/merOrderRefId_head"
-                    android:layout_width="130dp"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/ordertxt_order_cash_head"
                     android:layout_toEndOf="@+id/ordertxt_order_cash_head"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:text="Merchant Order Ref"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:text="Package   Price"
                     android:textAlignment="textStart"
                     android:textColor="#fff"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
                     />
 
                 <TextView
                     android:id="@+id/orderIdCash_head"
-                    android:layout_width="110dp"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/merOrderRefId_head"
                     android:layout_toEndOf="@+id/merOrderRefId_head"
-                    android:lines="1"
-                    android:maxLines="1"
-                    android:text="Price"
+                    android:lines="2"
+                    android:maxLines="2"
+                    android:text="Cash Amount"
                     android:paddingLeft="10dp"
                     android:textAlignment="textStart"
                     android:textColor="#fff"
-                    android:textSize="14sp"
+                    android:textSize="11sp"
                     android:textStyle="bold"
                     />
 
-                <TextView
+               <!-- <TextView
                     android:id="@+id/collectedCashAmt_head"
                     android:layout_width="110dp"
                     android:layout_height="wrap_content"
@@ -245,13 +244,12 @@
                     android:textColor="#fff"
                     android:textSize="14sp"
                     android:textStyle="bold"
-                    />
+                    />-->
             </RelativeLayout>
         </android.support.v7.widget.CardView>
-    -->
 
     <include layout="@layout/content_delivery_cts_test"
-        android:layout_marginTop="230dp"
+        android:layout_marginTop="270dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
