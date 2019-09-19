@@ -70,7 +70,7 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
 
     private static final int REQUEST_CAMERA = 1;
 
-    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySuperVisorApiTest.php";
+    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     private List<DeliverySupDp2NotDoneModel> list;
 

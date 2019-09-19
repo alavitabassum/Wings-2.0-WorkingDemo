@@ -46,7 +46,7 @@ public class DeliverySupDp2DoneAdapter extends RecyclerView.Adapter<DeliverySupD
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView item_barcode;
+
         public TextView item_ordId;
         public TextView item_merOrderRef;
         public TextView item_merchantName;
@@ -57,9 +57,7 @@ public class DeliverySupDp2DoneAdapter extends RecyclerView.Adapter<DeliverySupD
         public TextView item_packagePrice;
         public TextView item_productBrief;
         public TextView item_sla_miss;
-        public Button item_reassign_officer;
-        public TextView item_pickdropby;
-        public TextView item_pickdropTime;
+        public Button item_dp2_done_button;
         public CardView card_view;
 
         public ViewHolder(@NonNull final View itemView) {
@@ -74,9 +72,9 @@ public class DeliverySupDp2DoneAdapter extends RecyclerView.Adapter<DeliverySupD
             item_packagePrice=itemView.findViewById(R.id.price_dp2_done);
             item_productBrief=itemView.findViewById(R.id.package_brief_dp2_done);
             item_sla_miss = itemView.findViewById(R.id.sla_deliverytime);
-            item_reassign_officer = itemView.findViewById(R.id.btn_dp2_done);
+            item_dp2_done_button = itemView.findViewById(R.id.btn_dp2_done);
 
-            item_reassign_officer.setOnClickListener(new View.OnClickListener() {
+            item_dp2_done_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(mListner != null) {
@@ -119,8 +117,7 @@ public class DeliverySupDp2DoneAdapter extends RecyclerView.Adapter<DeliverySupD
         viewHolder.item_orderdate.setText(" Order Date: "+list.get(i).getOrderDate());
         viewHolder.item_dp2_time.setText(" Dp2 Time: "+list.get(i).getDp2Time());
         viewHolder.item_dp2_by.setText(" Dp2 By: "+list.get(i).getDp2By());
-        //  viewHolder.item_pickdropby.setText(" Pickdrop By: "+list.get(i).getSup_pickDropBy());
-        // viewHolder.item_pickdropTime.setText(" Pickdrop Time: "+list.get(i).getSup_pickDropTime());
+
         if(DeliveryTime<0) {
             viewHolder.item_sla_miss.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_sla_miss.setBackgroundResource(R.color.red);

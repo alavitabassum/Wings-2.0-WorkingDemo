@@ -60,14 +60,14 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
     private DeliverySupDp2DoneAdapter deliverySupDp2DoneAdapter;
     private RecyclerView recyclerView_pul;
     private RecyclerView.LayoutManager layoutManager_pul;
-    private TextView sup_unpicked_text;
+    private TextView sup_dp2_done_text;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
     private List<DeliverySupDp2DoneModel> eList;
 
     private static final int REQUEST_CAMERA = 1;
 
-    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySuperVisorApiTest.php";
+    public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     private List<DeliverySupDp2DoneModel> list;
 
@@ -98,8 +98,8 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        sup_unpicked_text = (TextView)findViewById(R.id.sup_Dp2_done_count);
-        sup_unpicked_text = (TextView)findViewById(R.id.sup_Dp2_done_count);
+        sup_dp2_done_text = (TextView)findViewById(R.id.sup_Dp2_done_count);
+        sup_dp2_done_text = (TextView)findViewById(R.id.sup_Dp2_done_count);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -187,7 +187,7 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
                             //deliverySupUnpickedAdapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
 
                             String str = String.valueOf(i);
-                            sup_unpicked_text.setText(str);
+                            sup_dp2_done_text.setText(str);
 
                         } catch (JSONException e) {
                             e.printStackTrace();

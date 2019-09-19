@@ -115,7 +115,7 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
         viewHolder.item_orderdate.setText("Order Date: "+list.get(i).getOrderDate());
         viewHolder.item_dp2_time.setText("Dp2 Time: "+list.get(i).getDp2Time());
         viewHolder.item_dp2_by.setText("Dp2 By: "+list.get(i).getDp2By());
-        viewHolder.item_onHold_schedule.setText("On Hold Schedule: "+list.get(i).getOnHoldSchedule());
+        viewHolder.item_onHold_schedule.setText("On Hold Schedule: "+list.get(i).getOnHoldSchedule().substring(0,11));
         viewHolder.item_onHold_reason.setText(list.get(i).getOnHoldReason());
         if(DeliveryTime<0) {
             viewHolder.item_sla_miss.setText(String.valueOf(list.get(i).getSlaMiss()));
@@ -133,7 +133,6 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
         }
         viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_productBrief.setText("Product Brief:  "+list.get(i).getProductBrief());
-
 
     }
 
