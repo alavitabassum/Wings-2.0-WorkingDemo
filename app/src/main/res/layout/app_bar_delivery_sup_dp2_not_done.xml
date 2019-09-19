@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey"
     tools:context=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2NotDone.DeliverySupDp2NotDone">
 
     <android.support.design.widget.AppBarLayout
@@ -20,7 +21,53 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_delivery_sup_dp2_not_done" />
+    <android.support.v7.widget.CardView
+        android:id="@+id/sup_Dp2_Not_done_id"
+        android:layout_width="320dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:foregroundGravity="center|fill"
+        android:layout_gravity="center_horizontal"
+        app:cardElevation="4dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:id="@+id/sup_Dp2_done_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/compltcounttxt"
+                android:layout_alignStart="@+id/compltcounttxt"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Dp2 Not Done count: "
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="0dp"/>
+
+            <TextView
+                android:id="@+id/sup_Dp2_not_done_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/sup_Dp2_done_txt"
+                android:layout_toEndOf="@+id/sup_Dp2_done_txt"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="15sp" />
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <include layout="@layout/content_delivery_sup_dp2_not_done"
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
 </android.support.design.widget.CoordinatorLayout>
