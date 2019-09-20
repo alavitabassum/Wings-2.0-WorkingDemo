@@ -38,9 +38,9 @@ public class DeliverySupCashAdapter extends RecyclerView.Adapter<DeliverySupCash
         public TextView item_merOrderRef;
         public TextView item_merchantName;
         public TextView item_pickMerchantName;
-        public TextView item_orderdate;
+    /*    public TextView item_orderdate;
         public TextView item_dp2_time;
-        public TextView item_dp2_by;
+        public TextView item_dp2_by;*/
         public TextView item_packagePrice;
         public TextView item_productBrief;
         public TextView item_sla_miss;
@@ -58,9 +58,9 @@ public class DeliverySupCashAdapter extends RecyclerView.Adapter<DeliverySupCash
             item_merOrderRef=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName=itemView.findViewById(R.id.sup_m_name_without_status);
 //            item_pickMerchantName=itemView.findViewById(R.id.pick_m_name);
-            item_orderdate=itemView.findViewById(R.id.sup_order_date);
+       /*     item_orderdate=itemView.findViewById(R.id.sup_order_date);
             item_dp2_time=itemView.findViewById(R.id.sup_dp2_time);
-            item_dp2_by=itemView.findViewById(R.id.sup_dp2_by);
+            item_dp2_by=itemView.findViewById(R.id.sup_dp2_by);*/
             item_packagePrice=itemView.findViewById(R.id.price_without_status);
             item_productBrief=itemView.findViewById(R.id.package_brief_without_status);
             item_sla_miss = itemView.findViewById(R.id.sla_deliverytime);
@@ -96,9 +96,9 @@ public class DeliverySupCashAdapter extends RecyclerView.Adapter<DeliverySupCash
         }
 
         // viewHolder.item_pickMerchantName.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
-        viewHolder.item_orderdate.setText("Order Date: "+list.get(i).getOrderDate());
+     /*   viewHolder.item_orderdate.setText("Order Date: "+list.get(i).getOrderDate());
         viewHolder.item_dp2_time.setText("Dp2 Time: "+list.get(i).getDp2Time());
-        viewHolder.item_dp2_by.setText("Dp2 By: "+list.get(i).getDp2By());
+        viewHolder.item_dp2_by.setText("Dp2 By: "+list.get(i).getDp2By());*/
         viewHolder.item_cash_amount.setText("Cash Amount: "+list.get(i).getCashAmt());
         viewHolder.item_cash_time.setText("Cash Time: "+list.get(i).getCashTime());
         viewHolder.item_cash_by.setText("Cash By: "+list.get(i).getCashBy());

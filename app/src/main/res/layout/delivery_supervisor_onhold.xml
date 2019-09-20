@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_delivery_onHold_list"
     android:layout_width="match_parent"
-    android:layout_height="470dp"
+    android:layout_height="430dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
     android:paddingBottom="50dp"
+    card_view_assign:cardCornerRadius="5dp"
     card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
@@ -144,7 +145,7 @@
             android:layout_marginTop="120dp"
             android:background="?android:attr/listDivider" />
 
-        <TextView
+      <!--  <TextView
             android:id="@+id/sup_order_date"
             android:layout_width="370dp"
             android:layout_height="wrap_content"
@@ -173,29 +174,29 @@
             android:textStyle="bold"
 
             android:textSize="15sp" />
-
+-->
 
         <TextView
-            android:id="@+id/sup_dp2_by"
+            android:id="@+id/sup_onHold_by"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="190dp"
+            android:layout_marginTop="130dp"
             android:layout_marginEnd="4dp"
             android:padding="3dp"
             android:textColor="@color/colorAccent2"
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <View
+      <!--  <View
             android:id="@+id/divider4"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="220dp"
-            android:background="?android:attr/listDivider" />
+            android:layout_marginTop="180dp"
+            android:background="?android:attr/listDivider" />-->
 
             <TextView
                 android:id="@+id/sup_onholdSchedule"
@@ -203,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="230dp"
+                android:layout_marginTop="165dp"
                 android:layout_marginEnd="4dp"
                 android:padding="3dp"
                 android:textAlignment="textStart"
@@ -217,7 +218,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="260dp"
+            android:layout_marginTop="200dp"
             android:lines="2"
             android:maxLines="2"
             android:text="Reason: "
@@ -249,7 +250,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="295dp"
+                android:layout_marginTop="250dp"
                 android:background="?android:attr/listDivider" />
 
         <TextView
@@ -258,7 +259,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="305dp"
+            android:layout_marginTop="260dp"
             android:text="Package Price: "
             android:textColor="#000"
             style="@style/boldStyle"
@@ -283,7 +284,7 @@
             android:layout_width="370dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="330dp"
+            android:layout_marginTop="290dp"
             android:layout_marginEnd="6dp"
             android:lines="2"
             android:maxLines="2"

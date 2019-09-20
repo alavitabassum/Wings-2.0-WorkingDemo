@@ -176,6 +176,7 @@ public class DeliverySupOnhold extends AppCompatActivity
                                         o.getString("DP2By"),
                                         o.getString("onHoldSchedule"),
                                         o.getString("onHoldReason"),
+                                        o.getString("ReaBy"),
                                         o.getInt("slaMiss")
                                 );
                                 list.add(supOnHoldmodels);

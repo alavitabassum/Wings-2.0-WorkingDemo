@@ -116,9 +116,9 @@ public class DeliverySupUnpickedAdapter extends RecyclerView.Adapter<DeliverySup
         }
 
         // viewHolder.item_pickMerchantName.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
-        viewHolder.item_orderdate.setText(" Order Date: "+list.get(i).getOrderDate());
-        viewHolder.item_dp2_time.setText(" Dp2 Time: "+list.get(i).getDp2Time());
-        viewHolder.item_dp2_by.setText(" Dp2 By: "+list.get(i).getDp2By());
+        viewHolder.item_orderdate.setText(" Assign To: "+list.get(i).getDropPointEmp());
+        viewHolder.item_dp2_time.setText(" Assign Time: "+list.get(i).getDropAssignTime());
+        viewHolder.item_dp2_by.setText(" Assign By: "+list.get(i).getDropAssignBy());
       //  viewHolder.item_pickdropby.setText(" Pickdrop By: "+list.get(i).getSup_pickDropBy());
        // viewHolder.item_pickdropTime.setText(" Pickdrop Time: "+list.get(i).getSup_pickDropTime());
         if(DeliveryTime<0) {
