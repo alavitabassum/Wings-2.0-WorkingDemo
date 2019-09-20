@@ -2,6 +2,7 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,9 +26,11 @@ import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +70,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
 
     private Button UploadBn, selectBankId,selectDate;
     private ImageView imgView;
+    private ProgressDialog progress;
     private Bitmap bitmap;
     private final int IMG_REQUEST = 10;
 
@@ -80,9 +84,9 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
     Calendar calendar;
     TextView total_Cash_collection, create_tv,slipNo,depComm,error_msg_show;
 
-    String[] bankListItems;
+   /* String[] bankListItems;
     boolean[] bankCheckedItems;
-    ArrayList<Integer> mUserItem = new ArrayList<>();
+    ArrayList<Integer> mUserItem = new ArrayList<>();*/
 
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
@@ -103,7 +107,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
         db.getWritableDatabase();
 
         UploadBn = (Button)findViewById(R.id.uploadBn);
-        selectBankId = (Button)findViewById(R.id.bank_name_title);
+        //selectBankId = (Button)findViewById(R.id.bank_name_title);
         imgView = (ImageView) findViewById(R.id.imageView);
 
         create_tv = findViewById(R.id.create_tv);
@@ -150,10 +154,14 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
         bankList.clear();
         pointCodeList.clear();
 
-        bankListItems = getResources().getStringArray(R.array.bankList);
-        bankCheckedItems = new boolean[bankListItems.length];
+        //getEmployeeList();
+        getBankDetails();
+        getPointCodes();
 
-        selectBankId.setOnClickListener(new View.OnClickListener() {
+      /*  bankListItems = getResources().getStringArray(R.array.bankList);
+        bankCheckedItems = new boolean[bankListItems.length];*/
+
+        /*selectBankId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(Bank_details_upload_by_DO.this);
@@ -165,9 +173,9 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
                             try {
 //                                if (!mUserItem.contains(position)) {
                                 mUserItem.add(position);
-                               /* } else {
+                               *//* } else {
                                     mUserItem.remove((Integer) position);
-                                }*/
+                                }*//*
                             } catch (IndexOutOfBoundsException e){
                                 e.printStackTrace();
                             }
@@ -216,12 +224,21 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
                 AlertDialog mDialog = mBuilder.create();
                 mDialog.show();
             }
-        });
+        });*/
 
+        // Bank List
+        final Spinner mBankNameSpinner = (Spinner) findViewById(R.id.bank_name);
+        List<String> bankLists = new ArrayList<String>();
+        bankLists.add(0,"Select Bank...");
+        for (int x = 0; x < bankList.size(); x++) {
+            bankLists.add(bankList.get(x).getBankName());
+        }
 
-        //getEmployeeList();
-        getBankDetails();
-        getPointCodes();
+        ArrayAdapter<String> adapterBankListR = new ArrayAdapter<String>(Bank_details_upload_by_DO.this,
+                android.R.layout.simple_spinner_item,
+                bankLists);
+        adapterBankListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBankNameSpinner.setAdapter(adapterBankListR);
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-M-d");
@@ -276,16 +293,17 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
             public void onClick(View v) {
                 String deposite_date = selectDate.getText().toString();
 
-                String bankItems = selectBankId.getText().toString();
-                String order_count = create_tv.getText().toString();
+                //String bankItems = selectBankId.getText().toString();
 
+                String order_count = create_tv.getText().toString();
+                String bankItems = mBankNameSpinner.getSelectedItem().toString();
                 String slipNumber = slipNo.getText().toString();
                 String comment = depComm.getText().toString();
                 String deposited_amt = total_cash_collecction;
 
                 if(order_count.equals("0 Orders have been selected for cash.")){
                     error_msg_show.setText("Please select orders first!!");
-                } else if(bankItems.equals("Select Bank") || bankItems.equals("") || bankItems.equals("SELECT BANK")){
+                } else if(bankItems.equals("Select Bank...") || bankItems.equals("") || bankItems.equals("SELECT BANK")){
                     error_msg_show.setText("Please select bank name!!");
                 } else if(slipNumber.equals("")){
                     error_msg_show.setText("Please enter slip number!!");
@@ -373,16 +391,27 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
     }
 
     private void UpdateBankedOrdersByDO(final String item,final String cashAmtDeposite,final String deposite_date, final String bankNames, final String slipNumber, final String comment, final String username) {
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        progress.dismiss();
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
                                 imgView.setImageResource(0);
                                 imgView.setVisibility(View.GONE);
                                 create_tv.setText("0 Orders have been selected for cash.");
+                                total_Cash_collection.setText("0 Taka");
+                                slipNo.setText("");
+                                depComm.setText("");
 
                                 Toast.makeText(Bank_details_upload_by_DO.this, "Successful", Toast.LENGTH_SHORT).show();
                             } else {
@@ -396,6 +425,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
                         Toast.makeText(Bank_details_upload_by_DO.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -426,6 +456,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
+            progress.dismiss();
             Toast.makeText(Bank_details_upload_by_DO.this, "Server Error", Toast.LENGTH_LONG).show();
         }
     }
@@ -526,4 +557,3 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
         return true;
     }
 }
-

@@ -85,6 +85,7 @@ public class DeliveryTablayout extends AppCompatActivity
     public static final String ONHOLD_LIST = "http://paperflybd.com/DeliveryOnHoldsApi.php";
     private static final String RETURN_REASON_URL = "http://paperflybd.com/DeliveryLoadReturnReasons.php";
     private static final String EXPENSE_PURPOSE_URL = "http://paperflybd.com/DeliveryLoadExpensePurpose.php";
+    public static final String GET_DATA = "http://paperflybd.com/DeliverySupervisorAPI.php";
     private static final String GET_POINT_CODE = "http://paperflybd.com/deliveryEmpPoint.php";
     public static final String DATA_SAVED_BROADCAST = "net.simplifiedcoding.datasaved";
 
@@ -129,6 +130,7 @@ public class DeliveryTablayout extends AppCompatActivity
             loadOnHoldList(username);
             loadReturnReason();
             loadExpenseReason();
+            loadBankDetails();
         }
         else {
 //            getData(username);
@@ -507,6 +509,60 @@ public class DeliveryTablayout extends AppCompatActivity
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
+    public void loadBankDetails(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+                        db.deleteBankDetails(sqLiteDatabase);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getBankDetails");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addBankDetails(
+                                        o.getInt("bankID"),
+                                        o.getString("bankName"),
+                                        o.getString("creationDate"),
+                                        o.getString("createdBy"),
+                                        o.getString("updateDate"),
+                                        o.getString("updateBy"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Bank List" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("flagreq","get_bank_names");
+                return params1;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                3000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
+
 
     private void loadOnHoldList (final String user){
 

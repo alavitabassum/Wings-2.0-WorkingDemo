@@ -1,7 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +28,7 @@ public class DeliveryCashReceiveSupervisorAdapter extends RecyclerView.Adapter<D
     private Context context;
     private OnItemClickListener mListner;
     DeliveryCashReceiveSupervisor deliveryCashReceiveSupervisor;
+    int totalCash = 0;
 
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
@@ -43,6 +43,7 @@ public class DeliveryCashReceiveSupervisorAdapter extends RecyclerView.Adapter<D
     public interface OnItemClickListener {
         void onItemClick_view (View view, int position);
         void onItemClick_view_image (View view1, int position1);
+        void onItemClick_view_cashCount (View view2, int position2);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
@@ -105,6 +106,18 @@ public class ViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+//        item_bank_check.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view2) {
+//                if(mListner!=null){
+//                    int position2 = getAdapterPosition();
+//                    if(position2!=RecyclerView.NO_POSITION){
+//                        mListner.onItemClick_view_image(view2, position2);
+//                    }
+//                }
+//            }
+//        });
+
     }
 }
 
@@ -126,23 +139,10 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         viewHolder.item_collection.setText(list.get(i).getSubmittedCashAmt()+" Taka");
         viewHolder.item_received.setText(list.get(i).getTotalCashReceive()+" Taka");
 
-        viewHolder.item_bank_check.setChecked(imageModelArrayList.get(i).getSelected());
-        viewHolder.item_bank_check.setTag(i);
 
-        final boolean b = imageModelArrayList.get(i).getSelected();
+
+        //final boolean b = imageModelArrayList.get(i).getSelected();
         final String cts = list.get(i).getCts();
-
-
-        if(b == false){
-            //getModel(false);
-            viewHolder.item_bank_check.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        }
-
-        if (b == true){
-            //getModel(true);
-            viewHolder.item_bank_check.setButtonDrawable(R.drawable.ic_check_box_black_24dp);
-        }
-
 
         if(cts.equals("B")){
             viewHolder.item_view_image.setText("View Image");
@@ -150,6 +150,52 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         if (cts.equals("S")){
             viewHolder.item_view_image.setText("");
         }
+        /*if(b == false){
+            //getModel(false);
+            viewHolder.item_bank_check.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+
+        if (b == true){
+            //getModel(true);
+            viewHolder.item_bank_check.setButtonDrawable(R.drawable.ic_check_box_black_24dp);
+        }*/
+        viewHolder.item_bank_check.setChecked(imageModelArrayList.get(i).getSelected());
+        viewHolder.item_bank_check.setTag(i);
+
+        viewHolder.item_bank_check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                  if(mListner!=null){
+                    //int i = getAdapterPosition();
+                    if(i!=RecyclerView.NO_POSITION){
+                        mListner.onItemClick_view_cashCount(v, i);
+                    }
+                }
+
+               /* Integer pos = (Integer) viewHolder.item_bank_check.getTag();
+                if (imageModelArrayList.get(pos).getSelected()) {
+                    imageModelArrayList.get(pos).setSelected(false);
+                    if(totalCash == 0){
+                        totalCash = 0;
+
+                    } else {
+                        totalCash = totalCash - Integer.parseInt(imageModelArrayList.get(pos).getTotalCashReceive());
+
+                    }
+
+                    Toast.makeText(context,totalCash + " remove clicked!", Toast.LENGTH_SHORT).show();
+
+
+                } else {
+                    imageModelArrayList.get(pos).setSelected(true);
+                    totalCash = totalCash + Integer.parseInt(imageModelArrayList.get(pos).getTotalCashReceive());
+
+                    Toast.makeText(context, totalCash + " clicked!", Toast.LENGTH_SHORT).show();
+                }*/
+            }
+        });
+
+
     }
 
     @Override

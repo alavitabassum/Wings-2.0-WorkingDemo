@@ -52,14 +52,33 @@
             android:text="SELECT DATE"
             android:textStyle="bold" />
 
-        <Button
+     <!--   <Button
             android:id="@+id/bank_name_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/select_deposite_date"
             android:layout_marginTop="20dp"
             android:text="Select Bank"
-            />
+            />-->
+
+        <Spinner
+            android:id="@+id/bank_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/select_deposite_date"
+            android:layout_alignBaseline="@+id/bank_name_title"
+            android:layout_toEndOf="@+id/bank_name_title"/>
+
+        <TextView
+            android:id="@+id/bank_name_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_below="@id/select_deposite_date"
+            android:text="Bank Name"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
 
 
         <EditText
@@ -68,7 +87,7 @@
             android:layout_height="40dp"
             android:layout_below="@id/bank_name_title"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="25dp"
             android:background="@color/light_grey"
             android:hint="Enter Deposite Slip Number..."
             android:lines="1"
@@ -95,6 +114,13 @@
             android:textColor="#000"
             android:textSize="15sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/uploadImageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="Upload slip image -->"
+            android:layout_below="@+id/bank_deposite_comment"/>
 
         <ImageView
             android:id="@+id/imageView"
@@ -102,7 +128,7 @@
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/bank_deposite_comment"
-            android:layout_toEndOf="@+id/chooseBn"
+            android:layout_toEndOf="@+id/uploadImageTitle"
             android:src="@drawable/ic_add_image"
             />
 
@@ -118,7 +144,7 @@
             android:layout_below="@id/imageView"
             android:textColor="@color/red"/>
 
-        <Button
+           <Button
             android:id="@+id/uploadBn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

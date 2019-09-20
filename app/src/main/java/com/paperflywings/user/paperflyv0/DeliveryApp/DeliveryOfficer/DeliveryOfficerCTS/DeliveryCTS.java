@@ -886,9 +886,38 @@ public class DeliveryCTS extends AppCompatActivity
     public void onItemClick_view_details(View view1, int position1) {
         DeliveryCTSModel clickedItem = list.get(position1);
 
+        String orderId = clickedItem.getOrderid();
+        String merRef = clickedItem.getMerOrderRef();
+        String cashType = clickedItem.getCashType();
+        String packagePrice = clickedItem.getPackagePrice();
+        String cashAmt = clickedItem.getCashAmt();
+        String dateCollection = clickedItem.getCashTime();
+        String collectionRemarks = clickedItem.getCashComment();
+        String customerName = clickedItem.getCustname();
+        String customerAddress = clickedItem.getCustaddress();
+
+        final View mViewDetails = getLayoutInflater().inflate(R.layout.delivery_cash_details, null);
+        final TextView merOrderRef = mViewDetails.findViewById(R.id.merorderRef);
+        final TextView transactionType = mViewDetails.findViewById(R.id.transactionType);
+        final TextView packagePriceTitle = mViewDetails.findViewById(R.id.packagePrice);
+        final TextView collectionAmt = mViewDetails.findViewById(R.id.collectionAmt);
+        final TextView collectionDate = mViewDetails.findViewById(R.id.collectionDate);
+        final TextView  remarks = mViewDetails.findViewById(R.id.remarks);
+        final TextView  custName = mViewDetails.findViewById(R.id.custName);
+        final TextView  custAddress = mViewDetails.findViewById(R.id.custAddress);
+
+        merOrderRef.setText(merRef);
+        transactionType.setText(cashType);
+        packagePriceTitle.setText(packagePrice+ " Taka");
+        collectionAmt.setText(cashAmt+ " Taka");
+        collectionDate.setText(dateCollection);
+        remarks.setText(collectionRemarks);
+        custName.setText(customerName);
+        custAddress.setText(customerAddress);
+
         //String
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        //alertDialogBuilder.setMessage("Order Ids: "+orderIdList);
+        alertDialogBuilder.setMessage(orderId);
         alertDialogBuilder.setNegativeButton("Close",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -896,6 +925,10 @@ public class DeliveryCTS extends AppCompatActivity
 
                     }
                 });
+
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setView(mViewDetails);
+
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 

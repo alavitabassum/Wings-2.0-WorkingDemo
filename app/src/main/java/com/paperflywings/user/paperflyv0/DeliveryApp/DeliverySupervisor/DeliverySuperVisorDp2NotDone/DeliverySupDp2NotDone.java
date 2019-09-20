@@ -231,6 +231,8 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
 
         deliveryDP2Receive(username,sql_primary_id);
 
+        //Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
+
        /* String previousAssign = list.get(position).getUsername();
         final int sql_primary_id = list.get(position).getSql_primary_id();
 
@@ -293,9 +295,6 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
         });*/
     }
 
-
-
-
     private void deliveryDP2Receive(final String username, final int sql_primary_id) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>() {
@@ -314,11 +313,11 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
                                     Toast.makeText(DeliverySupDp2NotDone.this, "Successful.", Toast.LENGTH_SHORT).show();
 
 
-                                } else if(statusCode.equals("404")) {
+                                } else if(statusCode.equals("405")) {
                                     String unsuccess = o.getString("unsuccess");
                                     Toast.makeText(DeliverySupDp2NotDone.this, unsuccess, Toast.LENGTH_SHORT).show();
 
-                                } else if(statusCode.equals("405")) {
+                                } else if(statusCode.equals("404")) {
                                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliverySupDp2NotDone.this);
                                     alertDialogBuilder.setCancelable(false);
                                     alertDialogBuilder.setMessage(o.getString("noData"));
