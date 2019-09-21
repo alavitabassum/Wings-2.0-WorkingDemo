@@ -40,7 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.DeliverySuperVisorBankReport.DeliverySupBankReport;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -83,6 +83,8 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+       // Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
 
         // check internet connectivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -101,6 +103,8 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
         pageAdapter = new PageAdapterSupervisor(getSupportFragmentManager(), tabLayout.getTabCount());
 
         viewPager.setAdapter(pageAdapter);
+
+        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
 
         if(nInfo!= null && nInfo.isConnected())
         {
@@ -262,7 +266,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
         } else {
            // super.onBackPressed();
             Intent homeIntentSuper = new Intent(DeliverySuperVisorTablayout.this,
-                    LoginActivity.class);
+                    DeliverySelectPoint.class);
             startActivity(homeIntentSuper);
         }
     }
@@ -304,11 +308,6 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
         else if (id == R.id.nav_report) {
             Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliverySupBankReport.class);
-            startActivity(homeIntent);
-        }
-        else if (id == R.id.nav_return_dispute_report) {
-            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
-                    DeliverySupReturnDispute.class);
             startActivity(homeIntent);
         }
 
