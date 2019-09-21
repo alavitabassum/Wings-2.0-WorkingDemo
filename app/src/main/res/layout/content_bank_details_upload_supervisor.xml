@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:foreground="?selectableItemBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor"
+    tools:context=".DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDetails_upload_supervisor"
     tools:showIn="@layout/app_bar_bank_details_upload_supervisor">
 
     <RelativeLayout

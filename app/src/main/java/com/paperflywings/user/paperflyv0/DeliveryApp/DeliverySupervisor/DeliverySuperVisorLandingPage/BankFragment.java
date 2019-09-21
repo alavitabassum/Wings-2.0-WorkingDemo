@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.R;
 
 
@@ -28,10 +28,10 @@ public class BankFragment extends Fragment {
         //setHasOptionsMenu(true);
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_bank,container,false);
 
-        CardView addExpense = (CardView)viewGroup.findViewById(R.id.add_new_expense);
-        CardView searchExpense = (CardView)viewGroup.findViewById(R.id.search_expense);
+        CardView bankDeposit = (CardView)viewGroup.findViewById(R.id.bank_deposit);
+        CardView viewBankDetails = (CardView)viewGroup.findViewById(R.id.view_bank_details);
 
-        addExpense.setOnClickListener(new View.OnClickListener() {
+        bankDeposit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
@@ -40,7 +40,7 @@ public class BankFragment extends Fragment {
             }
         });
 
-        searchExpense.setOnClickListener(new View.OnClickListener() {
+        viewBankDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();

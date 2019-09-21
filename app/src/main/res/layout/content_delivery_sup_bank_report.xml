@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@color/light_grey"
-    tools:context=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReport"
+    tools:context=".DeliveryApp.DeliverySupervisor.BankFragmentContent.DeliverySuperVisorBankReport.DeliverySupBankReport"
     tools:showIn="@layout/app_bar_delivery_sup_bank_report">
 
 

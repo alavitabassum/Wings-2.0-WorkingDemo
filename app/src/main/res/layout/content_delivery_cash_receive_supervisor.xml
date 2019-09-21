@@ -7,7 +7,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/light_grey"
-    tools:context=".DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
+    tools:context=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
     tools:showIn="@layout/app_bar_delivery_cash_receive_supervisor">
 
 

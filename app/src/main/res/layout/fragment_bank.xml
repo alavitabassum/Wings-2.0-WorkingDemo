@@ -29,7 +29,7 @@
             android:orientation="horizontal">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/add_new_expense"
+                android:id="@+id/bank_deposit"
                 android:layout_width="match_parent"
                 android:layout_height="185dp"
                 android:layout_margin="10dp"
@@ -78,7 +78,7 @@
             >
 
             <android.support.v7.widget.CardView
-                android:id="@+id/search_expense"
+                android:id="@+id/view_bank_details"
                 android:layout_width="match_parent"
                 android:layout_height="185dp"
                 android:layout_margin="10dp"

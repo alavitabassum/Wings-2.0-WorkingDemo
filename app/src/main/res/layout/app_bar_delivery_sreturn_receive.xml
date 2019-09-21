@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
-    tools:context=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive">
+    tools:context=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnRcv.DeliverySReturnReceive">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -213,7 +213,7 @@
     -->
 
     <include layout="@layout/content_delivery_sreturn_receive"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="155dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

@@ -52,25 +52,25 @@
             android:theme="@style/AppTheme"></activity>
         <activity android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.ComingSoonSupPage"
             android:screenOrientation="portrait"/>
-        <activity android:name=".DeliveryApp.DeliverySupervisor.Bank_DepositeSlip_Image"
+        <activity android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.Bank_DepositeSlip_Image"
             android:label="Deposite Slip"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2NotDone.DeliverySupDp2NotDone"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorDp2NotDone.DeliverySupDp2NotDone"
             android:label="@string/title_activity_delivery_sup_dp2_not_done"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorDp2Done.DeliverySupDp2Done"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorDp2Done.DeliverySupDp2Done"
             android:label="@string/title_activity_delivery_sup_dp2_done"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS"
             android:label="@string/title_activity_delivery_sup_crs"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor"
+            android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDetails_upload_supervisor"
             android:label="@string/title_activity_bank_details_upload_supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -80,42 +80,42 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorBankReport.DeliverySupBankReport"
+            android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.DeliverySuperVisorBankReport.DeliverySupBankReport"
             android:label="@string/title_activity_delivery_sup_bank_report"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCash.DeliverySupCash"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCash.DeliverySupCash"
             android:label="@string/title_activity_delivery_sup_cash"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnList.DeliverySupReturnList"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnList.DeliverySupReturnList"
             android:label="@string/title_activity_delivery_sup_return_list"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorPreReturn.DeliverySupPreRet"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorPreReturn.DeliverySupPreRet"
             android:label="@string/title_activity_delivery_sup_pre_ret"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySupVisorOnhold.DeliverySupOnhold"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupVisorOnhold.DeliverySupOnhold"
             android:label="@string/title_activity_delivery_sup_onhold"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorWithoutStatus.DeliverySupWithoutStatus"
             android:label="@string/title_activity_delivery_sup_without_status"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorUnpicked.DeliverySupUnpicked"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorUnpicked.DeliverySupUnpicked"
             android:label="@string/title_activity_delivery_sup_unpicked"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor"
             android:label="@string/title_activity_delivery_cash_receive_supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -125,7 +125,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.BankDepositBySupervisor"
+            android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositBySupervisor"
             android:label="@string/title_activity_bank_deposite_supervisor"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
@@ -135,17 +135,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorReturnRcv.DeliverySReturnReceive"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnRcv.DeliverySReturnReceive"
             android:label="@string/title_activity_delivery_sreturn_receive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorCashReceive.DeliverySCashReceive"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCashReceive.DeliverySCashReceive"
             android:label="@string/title_activity_delivery_scash_receive"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".DeliveryApp.DeliverySupervisor.DeliverySupervisorDp2.DeliverySDp2"
+            android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorDp2.DeliverySDp2"
             android:label="@string/title_activity_delivery_sdp2"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeliveryApp.DeliverySupervisor.BankDetails_upload_supervisor">
+    tools:context=".DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDetails_upload_supervisor">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

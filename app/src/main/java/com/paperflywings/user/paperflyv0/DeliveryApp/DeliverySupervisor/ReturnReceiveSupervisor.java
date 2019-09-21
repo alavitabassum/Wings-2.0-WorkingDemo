@@ -113,15 +113,12 @@ public class ReturnReceiveSupervisor extends AppCompatActivity
             Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_supervisor);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
     }
-
 
     private void loadReturnReceiveData (final String username){
         progress=new ProgressDialog(this);

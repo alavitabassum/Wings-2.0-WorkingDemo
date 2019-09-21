@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DeliveryApp.DeliverySupervisor.DeliverySupervisorDp2.DeliverySDp2">
+    tools:context=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorDp2.DeliverySDp2">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

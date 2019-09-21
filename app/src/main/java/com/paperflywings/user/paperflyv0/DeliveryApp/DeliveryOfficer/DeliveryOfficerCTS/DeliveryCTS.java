@@ -354,6 +354,7 @@ public class DeliveryCTS extends AppCompatActivity
                             btnselect.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+
                                     list = getModel(true);
                                     DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
                                     recyclerView_pul.setAdapter(DeliveryCTSAdapter);
