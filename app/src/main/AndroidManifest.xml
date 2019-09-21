@@ -55,6 +55,10 @@
         <activity android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.Bank_DepositeSlip_Image"
             android:label="Deposite Slip"
             android:screenOrientation="portrait"/>
+        <activity android:name=".DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint"
+            android:label="Select Point"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorDp2NotDone.DeliverySupDp2NotDone"
             android:label="@string/title_activity_delivery_sup_dp2_not_done"

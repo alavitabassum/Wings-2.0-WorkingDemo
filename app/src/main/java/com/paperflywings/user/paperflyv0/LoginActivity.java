@@ -104,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             } else if(user_role_id.equals("28")) {
                 Intent intent = new Intent(LoginActivity.this, DeliverySuperVisorTablayout.class);
+                //Intent intent = new Intent(LoginActivity.this, DeliverySelectPoint.class);
                 startActivity(intent);
             }
         }
