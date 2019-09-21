@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.R;
@@ -165,22 +166,16 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         viewHolder.item_bank_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  if(mListner!=null){
-                    //int i = getAdapterPosition();
-                    if(i!=RecyclerView.NO_POSITION){
-                        mListner.onItemClick_view_cashCount(v, i);
-                    }
-                }
 
-               /* Integer pos = (Integer) viewHolder.item_bank_check.getTag();
+
+                Integer pos = (Integer) viewHolder.item_bank_check.getTag();
                 if (imageModelArrayList.get(pos).getSelected()) {
                     imageModelArrayList.get(pos).setSelected(false);
-                    if(totalCash == 0){
-                        totalCash = 0;
-
-                    } else {
-                        totalCash = totalCash - Integer.parseInt(imageModelArrayList.get(pos).getTotalCashReceive());
-
+                    if(mListner!=null){
+                        //int i = getAdapterPosition();
+                        if(i!=RecyclerView.NO_POSITION){
+                            mListner.onItemClick_view_cashCount(v, i);
+                        }
                     }
 
                     Toast.makeText(context,totalCash + " remove clicked!", Toast.LENGTH_SHORT).show();
@@ -188,10 +183,15 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
                 } else {
                     imageModelArrayList.get(pos).setSelected(true);
-                    totalCash = totalCash + Integer.parseInt(imageModelArrayList.get(pos).getTotalCashReceive());
+                    if(mListner!=null){
+                        //int i = getAdapterPosition();
+                        if(i!=RecyclerView.NO_POSITION){
+                            mListner.onItemClick_view_cashCount(v, i);
+                        }
+                    }
 
                     Toast.makeText(context, totalCash + " clicked!", Toast.LENGTH_SHORT).show();
-                }*/
+                }
             }
         });
 

@@ -29,6 +29,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -120,7 +121,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             loadCashReceiveData(username);
         }
         else {
-            // getData(username);
             Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
         }
 
@@ -184,7 +184,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             int totalOrders = db.getTotalOrders();
             totalOrdersSelected.setText(totalOrders+"");
 
-            for(int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
+            for(int i = 0; i < list.size(); i++){
                 DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
 
                 model.setSelected(isSelect);
@@ -205,7 +205,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
         } else if(isSelect == false){
 
-            for(int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
+            for(int i = 0; i < list.size(); i++){
                 DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
 
                 model.setSelected(isSelect);
@@ -407,7 +407,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                                         o.getString("dropPointEmp"),
                                         o.getString("dropPointCode"),
                                         o.getString("CashAmt"));
-                                //list.add(withoutStatus_model);
 
                                 list.add(withoutStatus_model);
                             }
@@ -427,7 +426,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "!!! "+error ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Internet Connection lost!" ,Toast.LENGTH_LONG).show();
                     }
                 })
         {
@@ -444,10 +443,10 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
-        /*stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
                 50000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));*/
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
@@ -505,53 +504,21 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
     @Override
     public void onItemClick_view_cashCount(View view2, int i) {
+        DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
         if(((CheckBox)view2).isChecked()){
-            DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
+            if (!list.contains(i)) {
+                totalCash = totalCash + Integer.parseInt(String.valueOf(list.get(i).getTotalCashReceive()));
+            }else {
 
-            model.setSelected(true);
-            model.setOrderidList(list.get(i).getOrderidList());
-            model.setSerialNo(list.get(i).getSerialNo());
-            model.setTotalOrders(list.get(i).getTotalOrders());
-            model.setCtsBy(list.get(i).getCtsBy());
-            model.setCtsTime(list.get(i).getCtsTime());
-            model.setTotalCashAmt(list.get(i).getTotalCashAmt());
-            model.setSubmittedCashAmt(list.get(i).getSubmittedCashAmt());
-            model.setTotalCashReceive(String.valueOf(list.get(i).getTotalCashReceive()));
-            model.setCts(list.get(i).getCts());
-            list.add(model);
-
-            deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
-            deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
-
-            totalCash = totalCash + Integer.parseInt(String.valueOf(list.get(i).getTotalCashReceive()));
-
+            }
         } else {
-            DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
-
-            model.setSelected(false);
-            model.setOrderidList(list.get(i).getOrderidList());
-            model.setSerialNo(list.get(i).getSerialNo());
-            model.setTotalOrders(list.get(i).getTotalOrders());
-            model.setCtsBy(list.get(i).getCtsBy());
-            model.setCtsTime(list.get(i).getCtsTime());
-            model.setTotalCashAmt(list.get(i).getTotalCashAmt());
-            model.setSubmittedCashAmt(list.get(i).getSubmittedCashAmt());
-            model.setTotalCashReceive(String.valueOf(list.get(i).getTotalCashReceive()));
-            model.setCts(list.get(i).getCts());
-            list.add(model);
-
-            deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-            recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
-            deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
-
             if(totalCash != 0){
                 totalCash = totalCash - Integer.parseInt(String.valueOf(list.get(i).getTotalCashReceive()));
             } else {
                 totalCash = 0;
             }
         }
-        totalCashCollection.setText(totalCash+" Taka");
 
+        totalCashCollection.setText(totalCash+" Taka");
     }
 }

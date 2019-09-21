@@ -811,7 +811,6 @@ public class DeliveryCTS extends AppCompatActivity
         }
         mLastClickTime = SystemClock.elapsedRealtime();
 
-
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final Intent intent = new Intent(DeliveryCTS.this, DeliveryCTS.class);
@@ -832,13 +831,10 @@ public class DeliveryCTS extends AppCompatActivity
         tv.setText("Dispute Order Id: "+orderId);
         tv1.setText(cashAmt+" Taka");
 
-
-
         alertDialogBuilder.setPositiveButton("Dispute",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-
                     }
                 });
 
@@ -846,7 +842,6 @@ public class DeliveryCTS extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-
                     }
                 });
         alertDialogBuilder.setCancelable(false);
@@ -863,7 +858,6 @@ public class DeliveryCTS extends AppCompatActivity
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
-
                 String DisputeComments = disputeComment.getText().toString().trim();
 
                 if(DisputeComments.isEmpty()){
@@ -871,13 +865,9 @@ public class DeliveryCTS extends AppCompatActivity
                 }
                 else {
                     disputeForCash(username, DisputeComments, sql_primary_id);
-
                     alertDialog.dismiss();
                     startActivity(intent);
-
                 }
-
-
             }
         });
     }
@@ -922,16 +912,13 @@ public class DeliveryCTS extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-
                     }
                 });
-
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setView(mViewDetails);
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
     }
 
     private void disputeForCash (final String username, final String disputeComment, final int sql_primary_id){
@@ -953,7 +940,6 @@ public class DeliveryCTS extends AppCompatActivity
 
                                 } else if(statusCode.equals("404")){
                                     Toast.makeText(DeliveryCTS.this, o.getString("unsuccess"), Toast.LENGTH_SHORT).show();
-
                                 }
                             }
 

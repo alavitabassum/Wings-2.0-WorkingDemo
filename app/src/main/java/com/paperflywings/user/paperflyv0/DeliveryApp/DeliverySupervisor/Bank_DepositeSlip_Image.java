@@ -1,5 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.D
 public class Bank_DepositeSlip_Image extends AppCompatActivity {
 
     ImageView image;
+    private ProgressDialog progress;
     public static final String LOAD_URL = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     @Override
@@ -44,11 +46,19 @@ public class Bank_DepositeSlip_Image extends AppCompatActivity {
 
     private void loadImageUrl(final String serialNo)
     {
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, LOAD_URL,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
+                        progress.dismiss();
                        try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("getImage");
@@ -62,7 +72,10 @@ public class Bank_DepositeSlip_Image extends AppCompatActivity {
                                 if(statusCode.equals("200")){
                                     String url = o.getString("imagePath");
 
-                                    Picasso.with(getApplicationContext()).load(url).into(image);
+                                    Picasso.with(getApplicationContext())
+                                            .load(url)
+                                            .fit()
+                                            .into(image);
 
                                 } else if(statusCode.equals("404")){
                                     Toast.makeText(Bank_DepositeSlip_Image.this, o.getString("unsuccess"), Toast.LENGTH_SHORT).show();
@@ -70,6 +83,7 @@ public class Bank_DepositeSlip_Image extends AppCompatActivity {
                             }
 
                         } catch (JSONException e) {
+
                             e.printStackTrace();
                             //swipeRefreshLayout.setRefreshing(false);
                         }
@@ -78,6 +92,7 @@ public class Bank_DepositeSlip_Image extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
                         //swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
 
