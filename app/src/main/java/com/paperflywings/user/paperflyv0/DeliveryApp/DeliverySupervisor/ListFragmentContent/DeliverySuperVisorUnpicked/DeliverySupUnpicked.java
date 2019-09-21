@@ -111,7 +111,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user);
+            loadRecyclerView(user, pointCode);
             list.clear();
             eList.clear();
         }
@@ -129,7 +129,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadRecyclerView(final String username) {
+    private void loadRecyclerView(final String username, final String pointCode) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -210,6 +210,7 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
+                params1.put("pointCode",pointCode);
                 params1.put("flagreq","delivery_unpicked_orders");
                 return params1;
             }
@@ -351,13 +352,14 @@ public class DeliverySupUnpicked extends AppCompatActivity implements Navigation
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
 
         list.clear();
 
         deliverySupUnpickedAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+            loadRecyclerView(username, pointCode);
             list.clear();
         }
     }

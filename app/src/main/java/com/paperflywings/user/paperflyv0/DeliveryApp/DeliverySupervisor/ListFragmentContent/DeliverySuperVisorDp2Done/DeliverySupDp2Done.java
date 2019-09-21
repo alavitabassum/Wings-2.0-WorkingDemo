@@ -111,7 +111,7 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user);
+            loadRecyclerView(user, pointCode);
             list.clear();
             eList.clear();
         }
@@ -129,7 +129,7 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadRecyclerView(final String username) {
+    private void loadRecyclerView(final String username, final String pointCode) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -210,6 +210,7 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
+                params1.put("pointCode",pointCode);
                 params1.put("flagreq","delivery_Dp2_done");
                 return params1;
             }
@@ -291,6 +292,9 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
     }
 
     private void AssignOrderToDO(final String empCode,final String username, final int sql_primary_id) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
         StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>() {
                     @Override
@@ -305,7 +309,7 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
 
                                 if(statusCode.equals("200")){
                                     Toast.makeText(DeliverySupDp2Done.this, "Successful.", Toast.LENGTH_SHORT).show();
-                                    loadRecyclerView(username);
+                                    loadRecyclerView(username, pointCode);
                                 } else if(statusCode.equals("404")) {
                                     String unsuccess = o.getString("unsuccess");
                                     Toast.makeText(DeliverySupDp2Done.this, unsuccess, Toast.LENGTH_SHORT).show();
@@ -485,13 +489,15 @@ public class DeliverySupDp2Done extends AppCompatActivity implements NavigationV
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
 
+        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
         list.clear();
 
         deliverySupDp2DoneAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+            loadRecyclerView(username, pointCode);
             list.clear();
         }
     }

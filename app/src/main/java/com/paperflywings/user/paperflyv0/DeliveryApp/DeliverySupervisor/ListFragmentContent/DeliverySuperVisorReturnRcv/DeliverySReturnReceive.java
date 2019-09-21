@@ -121,7 +121,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             getCourierDetails();
-            loadRecyclerView(username);
+            loadRecyclerView(username, pointCode);
             //loadReturnNumber(username);
         }
         else{
@@ -144,7 +144,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
     }
 
 
-    private void loadRecyclerView (final String user){
+    private void loadRecyclerView (final String user, final String pointCode){
         list = getModel(false);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
@@ -316,6 +316,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",user);
+                params1.put("pointCode",pointCode);
                 params1.put("flagreq","return_list_supervisor");
                 return params1;
             }
@@ -502,12 +503,14 @@ public class DeliverySReturnReceive extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+
         list.clear();
 
        deliverySupervisorReturnRcvAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+            loadRecyclerView(username, pointCode);
         }
         else{
             Toast.makeText(this, "Internet Connection lost!", Toast.LENGTH_SHORT).show();

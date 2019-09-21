@@ -111,7 +111,7 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user);
+            loadRecyclerView(user, pointCode);
             list.clear();
             eList.clear();
         }
@@ -129,7 +129,7 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadRecyclerView(final String username) {
+    private void loadRecyclerView(final String username, final String pointCode) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -210,6 +210,7 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
+                params1.put("pointCode",pointCode);
                 params1.put("flagreq","delivery_Dp2_not_done");
                 return params1;
             }
@@ -299,6 +300,9 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
     }
 
     private void deliveryDP2Receive(final String username, final int sql_primary_id) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+
         StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>() {
                     @Override
@@ -312,7 +316,7 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
                                 String statusCode = o.getString("responseCode");
 
                                 if(statusCode.equals("200")){
-                                    loadRecyclerView(username);
+                                    loadRecyclerView(username, pointCode);
                                     Toast.makeText(DeliverySupDp2NotDone.this, "Successful.", Toast.LENGTH_SHORT).show();
 
 
@@ -494,13 +498,14 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
 
         list.clear();
 
         deliverySupDp2NotDoneAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+            loadRecyclerView(username, pointCode);
             list.clear();
         }
     }
