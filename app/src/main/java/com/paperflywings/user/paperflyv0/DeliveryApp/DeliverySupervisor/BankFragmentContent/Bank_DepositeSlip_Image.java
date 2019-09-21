@@ -1,7 +1,9 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -13,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.R;
 import com.squareup.picasso.Picasso;
 
@@ -35,6 +38,12 @@ public class Bank_DepositeSlip_Image extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coming_soon_sup_page);
+
+        SharedPreferences sharedPreferences = this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
+
 
         Intent intent = getIntent();
         String serialNo = intent.getStringExtra(SERIAL_NO);

@@ -20,7 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.Databases.Database;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupManager.ManagerCardMenu;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupOfficer.ExecutiveCardMenu;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupSupervisor.SupervisorCardMenu;
@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private String user_role_id;
     private String zoneAssigned;
     private String empCode;
+    private String pointCode;
     Button tempButton;
     BarcodeDbHelper barcodedb;
     Database db;
@@ -86,6 +87,9 @@ public class LoginActivity extends AppCompatActivity {
         zoneAssigned = sharedPreferences.getString(Config.USER_ZONE_SHARED_PREF,"");
         user_role_id = sharedPreferences.getString(Config.USER_ROLE_ID_SHARED_PREF,"");
         empCode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"");
+        pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF,"");
+
+        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
 
         //If we will get true
         if(loggedIn ){
@@ -103,8 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, DeliveryTablayout.class);
                 startActivity(intent);
             } else if(user_role_id.equals("28")) {
-                Intent intent = new Intent(LoginActivity.this, DeliverySuperVisorTablayout.class);
-                //Intent intent = new Intent(LoginActivity.this, DeliverySelectPoint.class);
+                //Intent intent = new Intent(LoginActivity.this, DeliverySuperVisorTablayout.class);
+                Intent intent = new Intent(LoginActivity.this, DeliverySelectPoint.class);
                 startActivity(intent);
             }
         }
@@ -134,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                         String userRole = jObj.getString("userRole");
                         String user_role_id = jObj.getString("user_role_id");
                         String emp_code = jObj.getString("empCode");
+                        //String pointCode = jObj.getString("pointCode");
 //                        String zoneAssigned = jObj.getString("zoneAssigned");
 
                         //Creating a shared preference
@@ -224,7 +229,8 @@ public class LoginActivity extends AppCompatActivity {
                         //delivery supervisor
                         else if(user_role_id.equals("28")) {
 
-                            startActivity(new Intent(getApplicationContext(), DeliverySuperVisorTablayout.class));
+                            //startActivity(new Intent(getApplicationContext(), DeliverySuperVisorTablayout.class));
+                            startActivity(new Intent(getApplicationContext(), DeliverySelectPoint.class));
                             Toast.makeText(getApplicationContext(),"Successfully Logged In",Toast.LENGTH_SHORT).show();
                         }
                         //delivery officer
@@ -271,11 +277,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Volley.newRequestQueue(this).add(request);
     }
-
-
-
-
-
 
 
     @Override

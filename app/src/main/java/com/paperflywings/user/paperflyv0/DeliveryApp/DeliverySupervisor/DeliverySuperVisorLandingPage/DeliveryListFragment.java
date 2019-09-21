@@ -83,6 +83,8 @@ public class DeliveryListFragment extends Fragment {
 
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+        Toast.makeText(this.getActivity(), "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
 
         ConnectivityManager cManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -201,7 +203,7 @@ public class DeliveryListFragment extends Fragment {
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadDeliverySummary(username);
+            loadDeliverySummary(username, pointCode);
 
         }
         else {
@@ -216,7 +218,7 @@ public class DeliveryListFragment extends Fragment {
 
 
 
-    private void loadDeliverySummary(final String user){
+    private void loadDeliverySummary(final String user, final String pointCode){
         progress=new ProgressDialog(getActivity());
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -274,8 +276,6 @@ public class DeliveryListFragment extends Fragment {
                             sup_returnReqst_count.setText(o.getString("preReturn"));
                             sup_returnList_count.setText(o.getString("return"));
                             sup_cashCollection_count.setText(o.getString("cash"));
-
-
                         } else if(statusCode.equals("404")){
                             Toast.makeText(getActivity().getApplicationContext(), o.getString("notFound"), Toast.LENGTH_SHORT).show();
                         }
@@ -297,6 +297,7 @@ public class DeliveryListFragment extends Fragment {
             protected Map<String, String> getParams() {
                 Map<String, String> params1 = new HashMap<String, String>();
                 params1.put("username", user);
+                params1.put("pointCode", pointCode);
                 return params1;
             }
         };
