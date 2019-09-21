@@ -16,6 +16,11 @@
             android:id="@+id/nav_report"/>
 
         <item
+            android:title="Return Dispute Report"
+            android:icon="@drawable/box"
+            android:id="@+id/nav_return_dispute_report"/>
+
+        <item
             android:title="Cash Receive"
             android:icon="@drawable/box"
             android:id="@+id/nav_crs_sup"/>
