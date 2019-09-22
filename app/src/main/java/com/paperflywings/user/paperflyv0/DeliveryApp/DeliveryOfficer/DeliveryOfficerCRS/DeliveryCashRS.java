@@ -109,7 +109,8 @@ public class DeliveryCashRS extends AppCompatActivity
         list.clear();
 
         final Button selectDate = findViewById(R.id.searchUsingDate);
-        selectDate.setOnClickListener(new View.OnClickListener() {
+        selectDate.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calendar = Calendar.getInstance();

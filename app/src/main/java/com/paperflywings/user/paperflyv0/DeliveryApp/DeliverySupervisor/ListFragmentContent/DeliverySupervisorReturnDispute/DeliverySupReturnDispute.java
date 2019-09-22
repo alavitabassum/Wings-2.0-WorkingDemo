@@ -116,7 +116,7 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
                         int i;
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray("getData");
+                            JSONArray array = jsonObject.getJSONArray("getReturnDisputeList");
 
                             for(i =0;i<array.length();i++)
                             {
@@ -139,22 +139,6 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
 
                             }
 
-
-                            /*
-
-                             "ordId": "928696",
-            "orderid": "200719-2690-A3-G1",
-            "barcode": "19104426001",
-            "RTS": "D",
-            "RTSTime": "2019-09-18 23:50:43",
-            "RTSBy": "1234",
-            "Courier": "D",
-            "courierRetTime": "2019-09-22 11:23:52",
-            "courierRetBy": "ds1",
-            "courier_name": "AJR Express",
-            "disputeComment": "dis"
-
-                            */
                             deliverySupReturnDisputeAdapter = new DeliverySupReturnDisputeAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupReturnDisputeAdapter);
                           //  swipeRefreshLayout.setRefreshing(false);
@@ -185,7 +169,7 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
                 params1.put("pointCode",pointCode);
-                params1.put("flagreq","delivery_prereturn_orders");
+                params1.put("flagreq","delivery_return_dispute_list");
                 return params1;
             }
         };
