@@ -144,7 +144,6 @@ public class DeliverySReturnReceive extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
     private void loadRecyclerView (final String user, final String pointCode){
         list = getModel(false);
 
@@ -290,7 +289,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                                 UpdateCourierResend(username,item,carrierId);
 
                                                 alertDialog.dismiss();
-                                                startActivity(intent);
+                                                loadRecyclerView(username, pointCode);
                                                 item = "";
                                             }
                                         }
@@ -522,51 +521,8 @@ public class DeliverySReturnReceive extends AppCompatActivity
         }
     }
 
-    private void UpdateCourierResend(final String courierReturnBy,final String items,final String carrierId) {
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject obj = new JSONObject(response);
-                            if (!obj.getBoolean("error")) {
-                                Toast.makeText(DeliverySReturnReceive.this, "Successful", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(DeliverySReturnReceive.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DeliverySReturnReceive.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", courierReturnBy);
-                params.put("orderid", items);
-                params.put("carrierId", carrierId);
-                params.put("flagreq", "delivery_courier_resend_by_supervisor");
-                return params;
-            }
-        };
-        try {
-            if (requestQueue == null) {
-                requestQueue = Volley.newRequestQueue(this);
-            }
-            requestQueue.add(postRequest);
-        } catch (Exception e) {
-            Toast.makeText(DeliverySReturnReceive.this, "Internet Connection Error!", Toast.LENGTH_LONG).show();
-        }
-    }
-
+    // Select and unselect all
     private ArrayList<DeliverySupervisorReturnRcvModel> getModel(boolean isSelect){
         ArrayList<DeliverySupervisorReturnRcvModel> listOfOrders = new ArrayList<>();
         if(isSelect == true){
@@ -600,6 +556,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         return listOfOrders;
     }
 
+    // Submit dispute
     @Override
     public void onItemClick_view(View view, int position) {
         // mis-clicking prevention, using threshold of 500 ms
@@ -707,8 +664,57 @@ public class DeliverySReturnReceive extends AppCompatActivity
         }
     }
 
+    private void UpdateCourierResend(final String courierReturnBy,final String items,final String carrierId) {
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                Toast.makeText(DeliverySReturnReceive.this, "Successful", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(DeliverySReturnReceive.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DeliverySReturnReceive.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", courierReturnBy);
+                params.put("orderid", items);
+                params.put("carrierId", carrierId);
+                params.put("flagreq", "delivery_courier_resend_by_supervisor");
+                return params;
+            }
+        };
+        try {
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliverySReturnReceive.this, "Internet Connection Error!", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void disputeForReturn (final String username, final String disputeComment,final String carrierId, final int sql_primary_id){
-        list = getModel(false);
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
+
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
                 new Response.Listener<String>()
                 {
@@ -722,17 +728,13 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                 JSONObject o = array.getJSONObject(i);
                                 String statusCode = o.getString("responseCode");
                                 if(statusCode.equals("200")){
+                                    loadRecyclerView(username, pointCode);
                                     Toast.makeText(DeliverySReturnReceive.this, o.getString("success"), Toast.LENGTH_SHORT).show();
 
                                 } else if(statusCode.equals("404")){
                                     Toast.makeText(DeliverySReturnReceive.this, o.getString("unsuccess"), Toast.LENGTH_SHORT).show();
-
                                 }
                             }
-
-                            /*String str = String.valueOf(db.getCashCount("cts", "Y"));
-                            Retin.setText(str);*/
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                             swipeRefreshLayout.setRefreshing(false);
