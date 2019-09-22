@@ -86,10 +86,10 @@ public class DeliverySelectPoint extends AppCompatActivity implements DeliverySe
             public void onClick(View v) {
 
                 //Creating a shared preference
-                /*SharedPreferences sharedPreferences1 = DeliverySelectPoint.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                SharedPreferences sharedPreferences1 = DeliverySelectPoint.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editorPointCode = sharedPreferences1.edit();
                 editorPointCode.putString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
-                editorPointCode.commit();*/
+                editorPointCode.commit();
 
                 Intent intent = new Intent(DeliverySelectPoint.this, DeliverySuperVisorTablayout.class);
                 startActivity(intent);

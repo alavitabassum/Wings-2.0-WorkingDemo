@@ -108,7 +108,7 @@ public class ReturnReceiveSupervisor extends AppCompatActivity
         toggle.syncState();*/
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadReturnReceiveData(username);
+            loadReturnReceiveData(username, pointCode);
         }
         else {
 //            getData(username);
@@ -122,7 +122,7 @@ public class ReturnReceiveSupervisor extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadReturnReceiveData (final String username){
+    private void loadReturnReceiveData (final String username, final String pointCode){
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -179,6 +179,7 @@ public class ReturnReceiveSupervisor extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username", username);
+                params1.put("pointCode", pointCode);
                 params1.put("flagreq", "delivery_return_recv_orders");
                 return params1;
             }
@@ -314,11 +315,12 @@ public class ReturnReceiveSupervisor extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
         list.clear();
         returnReceiveSupervisorAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-           loadReturnReceiveData(username);
+           loadReturnReceiveData(username,pointCode);
         }
         else{
             Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();

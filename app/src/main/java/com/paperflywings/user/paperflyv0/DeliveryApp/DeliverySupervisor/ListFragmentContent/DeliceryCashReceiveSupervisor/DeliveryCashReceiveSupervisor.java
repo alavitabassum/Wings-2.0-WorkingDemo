@@ -120,7 +120,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadCashReceiveData(username);
+            loadCashReceiveData(username,pointCode);
         }
         else {
             Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
@@ -351,7 +351,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         return true;
     }
 
-    private void loadCashReceiveData (final String username){
+    private void loadCashReceiveData (final String username,final String pointCode){
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -437,6 +437,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username", username);
+                params1.put("pointCode", pointCode);
                 params1.put("flagreq", "delivery_cash_recv_orders");
                 return params1;
             }
@@ -459,11 +460,13 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+
         list.clear();
         deliveryCashReceiveSupervisorAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-           loadCashReceiveData(username);
+           loadCashReceiveData(username,pointCode);
            totalCashCollection.setText("0");
            totalOrdersSelected.setText("0");
            totalCash = 0;

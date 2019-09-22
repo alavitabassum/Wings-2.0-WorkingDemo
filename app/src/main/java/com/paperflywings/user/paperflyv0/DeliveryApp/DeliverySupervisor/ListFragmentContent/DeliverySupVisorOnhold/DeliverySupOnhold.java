@@ -105,13 +105,13 @@ public class DeliverySupOnhold extends AppCompatActivity
         swipeRefreshLayout.setRefreshing(true);
 
         swipeRefreshLayout.setRefreshing(true);
-
+        list.clear();
+        eList.clear();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user);
+            loadRecyclerView(user,pointCode);
 
-            list.clear();
-            eList.clear();
+
         } else {
             Toast.makeText(this, "Internet Connection Failed!", Toast.LENGTH_SHORT).show();
         }
@@ -129,7 +129,7 @@ public class DeliverySupOnhold extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void loadRecyclerView(final String username) {
+    private void loadRecyclerView(final String username, final String pointCode) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -212,6 +212,7 @@ public class DeliverySupOnhold extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
+                params1.put("pointCode",pointCode);
                 params1.put("flagreq","delivery_onhold_orders");
                 return params1;
             }
@@ -306,6 +307,9 @@ public class DeliverySupOnhold extends AppCompatActivity
     }
 
     private void ReassignOrderToAnotherDO(final String empCode,final String username, final int sql_primary_id) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+
         StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
                 new Response.Listener<String>() {
                     @Override
@@ -319,7 +323,7 @@ public class DeliverySupOnhold extends AppCompatActivity
                                 String statusCode = o.getString("responseCode");
 
                                 if(statusCode.equals("200")){
-                                    loadRecyclerView(username);
+                                    loadRecyclerView(username,pointCode);
                                     Toast.makeText(DeliverySupOnhold.this, "Successful.", Toast.LENGTH_SHORT).show();
 
                                 } else if(statusCode.equals("404")) {
@@ -501,13 +505,14 @@ public class DeliverySupOnhold extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
 
         list.clear();
 
         deliverySupOnHoldAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+            loadRecyclerView(username,pointCode);
             list.clear();
         } else {
             Toast.makeText(this, "Internet Connection Lost!", Toast.LENGTH_SHORT).show();

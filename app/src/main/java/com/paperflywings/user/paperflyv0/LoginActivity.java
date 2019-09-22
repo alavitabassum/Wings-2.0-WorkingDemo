@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private String user_role_id;
     private String zoneAssigned;
     private String empCode;
-    private String pointCode;
+    //private String pointCode;
     Button tempButton;
     BarcodeDbHelper barcodedb;
     Database db;
@@ -87,9 +87,9 @@ public class LoginActivity extends AppCompatActivity {
         zoneAssigned = sharedPreferences.getString(Config.USER_ZONE_SHARED_PREF,"");
         user_role_id = sharedPreferences.getString(Config.USER_ROLE_ID_SHARED_PREF,"");
         empCode = sharedPreferences.getString(Config.EMP_CODE_SHARED_PREF,"");
-        pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF,"");
+       // pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF,"");
 
-        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
 
         //If we will get true
         if(loggedIn ){

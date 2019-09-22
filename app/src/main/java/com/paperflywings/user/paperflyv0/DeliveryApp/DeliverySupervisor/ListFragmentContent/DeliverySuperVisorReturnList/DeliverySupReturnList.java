@@ -96,7 +96,7 @@ public class DeliverySupReturnList extends AppCompatActivity
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user);
+            loadRecyclerView(user, pointCode);
             list.clear();
         } else {
             Toast.makeText(this, "Internet Connection Failed!", Toast.LENGTH_SHORT).show();
@@ -114,7 +114,7 @@ public class DeliverySupReturnList extends AppCompatActivity
         navUsername.setText(user);
         navigationView.setNavigationItemSelectedListener(this);
     }
-    private void loadRecyclerView(final String username) {
+    private void loadRecyclerView(final String username, final String pointCode) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -219,6 +219,7 @@ public class DeliverySupReturnList extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
+                params1.put("pointCode",pointCode);
                 params1.put("flagreq","delivery_return_orders");
                 return params1;
             }
@@ -362,12 +363,14 @@ public class DeliverySupReturnList extends AppCompatActivity
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+
         list.clear();
 
         deliverySupReturnListAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(username);
+            loadRecyclerView(username,pointCode);
             list.clear();
         } else {
             Toast.makeText(this, "Internet Connection Failed!", Toast.LENGTH_SHORT).show();
