@@ -1,6 +1,6 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput;
 
-public class DeliverySupReturnDisputeModel {
+public class DeliverySupCashDisputeModel {
     private String username;
     private String empCode;
     private String barcode;
@@ -19,101 +19,6 @@ public class DeliverySupReturnDisputeModel {
     private String PickDrop;
     private String PickDropTime;
     private String PickDropBy;
-    private int ordId;
-    private String RTS;
-    private String RTSTime;
-    private String RTSBy;
-    private String Courier;
-    private String courierRetTime;
-    private String courierRetBy;
-    private String courier_name;
-    private String disputeComment;
-
-    public int getOrdId() {
-        return ordId;
-    }
-
-    public void setOrdId(int ordId) {
-        this.ordId = ordId;
-    }
-
-    public String getRTS() {
-        return RTS;
-    }
-
-    public void setRTS(String RTS) {
-        this.RTS = RTS;
-    }
-
-    public String getRTSTime() {
-        return RTSTime;
-    }
-
-    public void setRTSTime(String RTSTime) {
-        this.RTSTime = RTSTime;
-    }
-
-    public String getRTSBy() {
-        return RTSBy;
-    }
-
-    public void setRTSBy(String RTSBy) {
-        this.RTSBy = RTSBy;
-    }
-
-    public String getCourier() {
-        return Courier;
-    }
-
-    public void setCourier(String courier) {
-        Courier = courier;
-    }
-
-    public String getCourierRetTime() {
-        return courierRetTime;
-    }
-
-    public void setCourierRetTime(String courierRetTime) {
-        this.courierRetTime = courierRetTime;
-    }
-
-    public String getCourierRetBy() {
-        return courierRetBy;
-    }
-
-    public void setCourierRetBy(String courierRetBy) {
-        this.courierRetBy = courierRetBy;
-    }
-
-    public String getCourier_name() {
-        return courier_name;
-    }
-
-    public void setCourier_name(String courier_name) {
-        this.courier_name = courier_name;
-    }
-
-    public String getDisputeComment() {
-        return disputeComment;
-    }
-
-    public void setDisputeComment(String disputeComment) {
-        this.disputeComment = disputeComment;
-    }
-
-    public DeliverySupReturnDisputeModel(int ordId, String orderid, String barcode, String RTS, String RTSTime, String RTSBy, String Courier, String courierRetTime, String courierRetBy, String courier_name, String disputeComment) {
-        this.ordId = ordId;
-        this.orderid = orderid;
-        this.barcode = barcode;
-        this.RTS = RTS;
-        this.RTSTime = RTSTime;
-        this.RTSBy = RTSBy;
-        this.Courier = Courier;
-        this.courierRetTime = courierRetTime;
-        this.courierRetBy = courierRetBy;
-        this.courier_name = courier_name;
-        this.disputeComment = disputeComment;
-    }
 
     public String getRetReason() {
         return retReason;
@@ -169,7 +74,7 @@ public class DeliverySupReturnDisputeModel {
     private String PreRetBy;
 
 
-    public DeliverySupReturnDisputeModel(int sql_primary_id, String username, String merchEmpCode, String dropPointEmp, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropAssignTime, String dropAssignBy, String PickDrop, String PickDropTime, String PickDropBy, String orderDate, String dp2Time, String dp2By, String reason, String PreRetTime, String PreRetBy, int slaMiss) {
+    public DeliverySupCashDisputeModel(int sql_primary_id, String username, String merchEmpCode, String dropPointEmp, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropAssignTime, String dropAssignBy, String PickDrop, String PickDropTime, String PickDropBy, String orderDate, String dp2Time, String dp2By, String reason, String PreRetTime, String PreRetBy, int slaMiss) {
         this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = merchEmpCode;
@@ -215,7 +120,7 @@ public class DeliverySupReturnDisputeModel {
         this.sup_pickDropBy = sup_pickDropBy;
     }
 
-    public DeliverySupReturnDisputeModel(int sql_primary_id, String username, String merchEmpCode, String dropPointEmp, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropAssignTime, String dropAssignBy, String PickDrop, String PickDropTime, String PickDropBy, String orderDate, String dp2Time, String dp2By,String onHoldSchedule,String onHoldReason, int slaMiss) {
+    public DeliverySupCashDisputeModel(int sql_primary_id, String username, String merchEmpCode, String dropPointEmp, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropAssignTime, String dropAssignBy, String PickDrop, String PickDropTime, String PickDropBy, String orderDate, String dp2Time, String dp2By,String onHoldSchedule,String onHoldReason, int slaMiss) {
         this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = merchEmpCode;
@@ -292,7 +197,7 @@ public class DeliverySupReturnDisputeModel {
     int status;
     int sql_primary_id;
 
-    public DeliverySupReturnDisputeModel(int sql_primary_id, String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointEmp, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy) {
+    public DeliverySupCashDisputeModel(int sql_primary_id, String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropPointEmp, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy) {
         this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = empCode;
@@ -315,7 +220,7 @@ public class DeliverySupReturnDisputeModel {
         this.pickDropBy = pickDropBy;
     }
 
-    public DeliverySupReturnDisputeModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime) {
+    public DeliverySupCashDisputeModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime) {
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
@@ -329,7 +234,7 @@ public class DeliverySupReturnDisputeModel {
         this.deliveryTime = deliveryTime;
     }
 
-    public DeliverySupReturnDisputeModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Rea, String ReaTime, String ReaBy, String PickDrop, String PickDropTime, String PickDropBy, String dropAssignTime, String dropAssignBy, String dropPointCode, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
+    public DeliverySupCashDisputeModel(String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String Rea, String ReaTime, String ReaBy, String PickDrop, String PickDropTime, String PickDropBy, String dropAssignTime, String dropAssignBy, String dropPointCode, String Cash, String cashType, String CashTime, String CashBy, String CashAmt, String CashComment, String partial, String partialTime, String partialBy, String partialReceive, String partialReturn, String partialReason, String onHoldSchedule, String onHoldReason, String slaMiss) {
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
@@ -371,7 +276,7 @@ public class DeliverySupReturnDisputeModel {
         //this.slaMiss = slaMiss;
     }
 
-    public DeliverySupReturnDisputeModel(int key_id,String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime) {
+    public DeliverySupCashDisputeModel(int key_id,String barcode,String orderid, String merOrderRef,String merchantName,String pickMerchantName, String custname, String custaddress,String custphone, String packagePrice, String productBrief, String deliveryTime) {
         this.barcode = barcode;
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
@@ -386,7 +291,7 @@ public class DeliverySupReturnDisputeModel {
         this.key_id = key_id;
     }
 
-    public DeliverySupReturnDisputeModel(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime) {
+    public DeliverySupCashDisputeModel(String username, String empCode, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime) {
         this.username = username;
         this.empCode = empCode;
         this.barcode = barcode;
@@ -402,7 +307,7 @@ public class DeliverySupReturnDisputeModel {
         this.deliveryTime = deliveryTime;
     }
 
-    public DeliverySupReturnDisputeModel(int sql_primary_id, String username, String empCode, String dropPointEmp, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy, String slaMiss) {
+    public DeliverySupCashDisputeModel(int sql_primary_id, String username, String empCode, String dropPointEmp, String barcode, String orderid, String merOrderRef, String merchantName, String pickMerchantName, String custname, String custaddress, String custphone, String packagePrice, String productBrief, String deliveryTime, String dropAssignTime, String dropAssignBy, String pickDrop, String pickDropTime, String pickDropBy, String slaMiss) {
         this.sql_primary_id = sql_primary_id;
         this.username = username;
         this.empCode = empCode;
@@ -741,3 +646,4 @@ public class DeliverySupReturnDisputeModel {
     }
 
 }
+

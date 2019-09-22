@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,14 +16,14 @@ import com.paperflywings.user.paperflyv0.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<DeliverySupReturnDisputeAdapter.ViewHolder>{
-    private List<DeliverySupReturnDisputeModel> listfull;
-    private List<DeliverySupReturnDisputeModel> list;
+public class DeliverySupCashDisputeAdapter extends RecyclerView.Adapter<DeliverySupCashDisputeAdapter.ViewHolder>{
+    private List<DeliverySupCashDisputeModel> listfull;
+    private List<DeliverySupCashDisputeModel> list;
 
     private int currentPosition = -1;
     private Context context;
 
-    public DeliverySupReturnDisputeAdapter(List<DeliverySupReturnDisputeModel>list, Context context){
+    public DeliverySupCashDisputeAdapter(List<DeliverySupCashDisputeModel>list, Context context){
         this.list = list;
         this.context = context;
         listfull = new ArrayList<>(list);
@@ -73,40 +72,38 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.delivery_sup_return_dispute,viewGroup,false);
+        View v  = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.delivery_sup_cash_dispute,viewGroup,false);
         ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.item_ordId.setText(list.get(i).getRTSBy());
-        viewHolder.item_merOrderRef.setText(list.get(i).getRTSTime());
+        viewHolder.item_ordId.setText(list.get(i).getOrderid());
+        viewHolder.item_merOrderRef.setText(list.get(i).getMerOrderRef());
 
-       /* String pickMerchantName = list.get(i).getPickMerchantName();
-       // int DeliveryTime = list.get(i).getSlaMiss();
+        String pickMerchantName = list.get(i).getPickMerchantName();
+        int DeliveryTime = list.get(i).getSlaMiss();
 
         if(pickMerchantName.equals("")){
             viewHolder.item_merchantName.setText(list.get(i).getMerchantName());
         } else if (!pickMerchantName.equals("")) {
             viewHolder.item_merchantName.setText(list.get(i).getPickMerchantName());
-        }*/
+        }
 
         // viewHolder.item_pickMerchantName.setText("Pick Merchant Name: "+list.get(i).getPickMerchantName());
       /*  viewHolder.item_orderdate.setText("Order Date: "+list.get(i).getOrderDate());
         viewHolder.item_dp2_time.setText("Dp2 Time: "+list.get(i).getDp2Time());
         viewHolder.item_dp2_by.setText("Dp2 By: "+list.get(i).getDp2By());*/
-        viewHolder.item_pre_ret_schedule.setText("Courier name: "+list.get(i).getCourier_name());
-        viewHolder.item_pre_ret_reason.setText("Courier By: "+list.get(i).getCourierRetBy());
-        viewHolder.item_pre_ret_by.setText("Dispute Comment: "+list.get(i).getDisputeComment());
-/*
+        viewHolder.item_pre_ret_schedule.setText("Return Request Time: "+list.get(i).getPreRetTime());
+        viewHolder.item_pre_ret_reason.setText(list.get(i).getRetReason());
+        viewHolder.item_pre_ret_by.setText("Return Request By: "+list.get(i).getPreRetBy());
         if(DeliveryTime<0) {
             viewHolder.item_sla_miss.setText(String.valueOf(list.get(i).getSlaMiss()));
             viewHolder.item_sla_miss.setBackgroundResource(R.color.red);
             viewHolder.item_sla_miss.setTextColor(Color.WHITE);
         }
-*/
-       /* else if (DeliveryTime>=0){
+        else if (DeliveryTime>=0){
             try{
                 viewHolder.item_sla_miss.setText(String.valueOf(list.get(i).getSlaMiss()));
                 viewHolder.item_sla_miss.setBackgroundResource(R.color.green);
@@ -114,7 +111,7 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
             catch (Exception e){
                 Toast.makeText(context, "DeliveryOnholdAdapter "+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        }*/
+        }
         viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_productBrief.setText("Product Brief:  "+list.get(i).getProductBrief());
     }

@@ -72,6 +72,10 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         final String user = username;
 
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
+
+
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
@@ -87,14 +91,14 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadRecyclerView(user);
+            loadRecyclerView(user,pointCode);
             list.clear();
         } else {
             Toast.makeText(this, "Internet Connection Lost!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void loadRecyclerView(final String username) {
+    private void loadRecyclerView(final String username, final String pointCode) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -117,39 +121,40 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
                             for(i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliverySupReturnDisputeModel supPreRetmodels = new  DeliverySupReturnDisputeModel(
-                                        o.getInt("sql_primary_id"),
-                                        o.getString("username"),
-                                        o.getString("merchEmpCode"),
-                                        o.getString("dropPointEmp"),
-                                        o.getString("barcode"),
+                                DeliverySupReturnDisputeModel supRetDisputeModel = new  DeliverySupReturnDisputeModel(
+                                        o.getInt("ordId"),
                                         o.getString("orderid"),
-                                        o.getString("merOrderRef"),
-                                        o.getString("merchantName"),
-                                        o.getString("pickMerchantName"),
-                                        o.getString("custname"),
-                                        o.getString("custaddress"),
-                                        o.getString("custphone"),
-                                        o.getString("packagePrice"),
-                                        o.getString("productBrief"),
-                                        o.getString("deliveryTime"),
-                                        o.getString("dropAssignTime"),
-                                        o.getString("dropAssignBy"),
-                                        o.getString("PickDrop"),
-                                        o.getString("PickDropTime"),
-                                        o.getString("PickDropBy"),
-                                        o.getString("orderDate"),
-                                        o.getString("DP2Time"),
-                                        o.getString("DP2By"),
-                                        o.getString("reason"),
-                                        o.getString("PreRetTime"),
-                                        o.getString("PreRetBy"),
-                                        o.getInt("slaMiss")//onHoldSchedule,onHoldReason
+                                        o.getString("barcode"),
+                                        o.getString("RTS"),
+                                        o.getString("RTSTime"),
+                                        o.getString("RTSBy"),
+                                        o.getString("Courier"),
+                                        o.getString("courierRetTime"),
+                                        o.getString("courierRetBy"),
+                                        o.getString("courier_name"),
+                                        o.getString("disputeComment")
+                                        //onHoldSchedule,onHoldReason
                                 );
-                                list.add(supPreRetmodels);
+                                list.add(supRetDisputeModel);
 
                             }
 
+
+                            /*
+
+                             "ordId": "928696",
+            "orderid": "200719-2690-A3-G1",
+            "barcode": "19104426001",
+            "RTS": "D",
+            "RTSTime": "2019-09-18 23:50:43",
+            "RTSBy": "1234",
+            "Courier": "D",
+            "courierRetTime": "2019-09-22 11:23:52",
+            "courierRetBy": "ds1",
+            "courier_name": "AJR Express",
+            "disputeComment": "dis"
+
+                            */
                             deliverySupReturnDisputeAdapter = new DeliverySupReturnDisputeAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupReturnDisputeAdapter);
                           //  swipeRefreshLayout.setRefreshing(false);
@@ -179,6 +184,7 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
+                params1.put("pointCode",pointCode);
                 params1.put("flagreq","delivery_prereturn_orders");
                 return params1;
             }
