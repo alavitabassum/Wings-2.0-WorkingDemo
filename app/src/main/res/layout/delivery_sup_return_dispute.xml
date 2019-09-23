@@ -17,7 +17,7 @@
         android:padding="4dp">
 
         <TextView
-            android:id="@+id/sup_courier_name"
+            android:id="@+id/sup_courier_orderID"
             android:layout_width="170dp"
             android:layout_height="30dp"
             android:layout_alignParentTop="true"
@@ -31,8 +31,8 @@
             android:id="@+id/sup_courier_time"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:layout_alignBaseline="@+id/sup_courier_name"
-            android:layout_toEndOf="@+id/sup_courier_name"
+            android:layout_alignBaseline="@+id/sup_courier_orderID"
+            android:layout_toEndOf="@+id/sup_courier_orderID"
             android:lines="2"
             android:maxLines="2"
             android:textAlignment="textStart"

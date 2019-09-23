@@ -53,7 +53,7 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            item_courier_name=itemView.findViewById(R.id.sup_courier_name);
+            item_courier_name=itemView.findViewById(R.id.sup_courier_orderID);
             item_courier_time=itemView.findViewById(R.id.sup_courier_time);
             item_courier_by=itemView.findViewById(R.id.sup_courier_by);
             detailCardView = itemView.findViewById(R.id.card_view_delivery_sup_ret_dispute_list);
@@ -88,7 +88,6 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_courier_name.setText(list.get(i).getOrderid());
         viewHolder.item_courier_time.setText(list.get(i).getCourierRetTime().substring(0,11));
-
         viewHolder.item_courier_by.setText(list.get(i).getDisputeComment());
        // viewHolder.detailCardView.findViewById(R.id.card_view_delivery_without_status_list);
 

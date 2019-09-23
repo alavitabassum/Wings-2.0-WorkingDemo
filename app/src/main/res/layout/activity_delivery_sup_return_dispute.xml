@@ -61,7 +61,7 @@
                     android:textStyle="bold"/>
 
                 <TextView
-                    android:id="@+id/merOrderRefId_head"
+                    android:id="@+id/dispute_date"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:layout_alignBaseline="@+id/ordertxt_order_cash_head"
@@ -77,11 +77,11 @@
                     />
 
                 <TextView
-                    android:id="@+id/orderIdCash_head"
+                    android:id="@+id/dispute_comment"
                     android:layout_width="80dp"
                     android:layout_height="30dp"
-                    android:layout_alignBaseline="@+id/merOrderRefId_head"
-                    android:layout_toEndOf="@+id/merOrderRefId_head"
+                    android:layout_alignBaseline="@+id/dispute_date"
+                    android:layout_toEndOf="@+id/dispute_date"
                     android:lines="1"
                     android:maxLines="1"
                     android:text="Comments"

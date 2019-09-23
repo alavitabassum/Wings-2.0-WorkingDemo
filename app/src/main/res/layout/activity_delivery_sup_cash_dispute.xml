@@ -5,10 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:background="@color/light_grey"
     tools:context=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute">
 
@@ -21,22 +17,105 @@
         android:fitsSystemWindows="true"
         tools:context=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCash.DeliverySupCash"/>
 
-    <android.support.design.widget.AppBarLayout
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
         tools:ignore="MissingConstraints" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
         app:layout_behavior = "@string/appbar_scrolling_view_behavior">
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cash_dispute_Status_id"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:foregroundGravity="center|fill"
+            android:layout_gravity="center_horizontal"
+            app:cardElevation="4dp"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:background="#aaaaaa">
+                <TextView
+                    android:id="@+id/ordertxt_order_cash_head"
+                    android:layout_width="170dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Order ID"
+                    android:paddingLeft="10dp"
+                    android:textColor="#fff"
+                    android:textSize="13sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/dispute_date"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_alignBaseline="@+id/ordertxt_order_cash_head"
+                    android:layout_toEndOf="@+id/ordertxt_order_cash_head"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Date"
+                    android:textAlignment="textStart"
+                    android:textColor="#fff"
+                    android:paddingLeft="5dp"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/dispute_comment"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_alignBaseline="@+id/dispute_date"
+                    android:layout_toEndOf="@+id/dispute_date"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Comments"
+                    android:textAlignment="textStart"
+                    android:textColor="#fff"
+                    android:paddingLeft="5dp"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    />
+               <!-- <TextView
+                    android:id="@+id/orderIdCash_heads"
+                    android:layout_width="90dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/orderIdCash_head"
+                    android:layout_toEndOf="@+id/orderIdCash_head"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="Details"
+                    android:paddingLeft="10dp"
+                    android:textAlignment="textStart"
+                    android:textColor="#fff"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    />
+-->
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_sup_cash_dispute_status"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp"
+            android:paddingTop="25dp"
+            android:paddingBottom="@dimen/activity_vertical_margin"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </RelativeLayout>
 

@@ -20,6 +20,53 @@ public class DeliverySupCashDisputeModel {
     private String PickDropTime;
     private String PickDropBy;
 
+    private int ordId;
+    private String CTS;
+
+    public int getOrdId() {
+        return ordId;
+    }
+
+    public void setOrdId(int ordId) {
+        this.ordId = ordId;
+    }
+
+    public String getCTS() {
+        return CTS;
+    }
+
+    public void setCTS(String CTS) {
+        this.CTS = CTS;
+    }
+
+    public String getCTSTime() {
+        return CTSTime;
+    }
+
+    public void setCTSTime(String CTSTime) {
+        this.CTSTime = CTSTime;
+    }
+
+    public String getDisputeComment() {
+        return disputeComment;
+    }
+
+    public void setDisputeComment(String disputeComment) {
+        this.disputeComment = disputeComment;
+    }
+
+    private String CTSTime;
+    private String disputeComment;
+
+
+    public DeliverySupCashDisputeModel(int ordId, String orderid, String barcode, String CTS, String CTSTime, String disputeComment) {
+        this.ordId = ordId;
+        this.orderid = orderid;
+        this.CTS = CTS;
+        this.CTSTime = CTSTime;
+        this.disputeComment = disputeComment;
+    }
+
     public String getRetReason() {
         return retReason;
     }
