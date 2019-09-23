@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.nex3z.notificationbadge.NotificationBadge;
+import com.paperflywings.user.paperflyv0.AppUpdateChecker;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.PickupModule.PickupManager.AjkerdealdirectdeliveryManager.AjkerDealOther_Assign_Pickup_manager;
@@ -73,6 +74,9 @@ public class ManagerCardMenu extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_m);
         setSupportActionBar(toolbar);
+
+        AppUpdateChecker appUpdateChecker=new AppUpdateChecker(this);  //pass the activity in constructure
+        appUpdateChecker.checkForUpdate(false); //mannual check false here
 
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);

@@ -229,21 +229,23 @@ public class DeliveryCTS extends AppCompatActivity
     }
 
     private void loadRecyclerView (final String user){
+        list.clear();
         list = getModel(false);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, CTS_LIST,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
+                        int i1 =0;
                         SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                         db.deleteListCTS(sqLiteDatabase, "cts");
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
 
-                            for(int i =0;i<array.length();i++)
+                            for(i1 =0;i1<array.length();i1++)
                             {
-                                JSONObject o = array.getJSONObject(i);
+                                JSONObject o = array.getJSONObject(i1);
                                 DeliveryCTSModel withoutStatus_model = new  DeliveryCTSModel(
                                         o.getInt("sql_primary_id"),
                                         o.getString("username"),
@@ -517,7 +519,8 @@ public class DeliveryCTS extends AppCompatActivity
                                 }
                             });
 
-                            String str = String.valueOf(db.getCashCount("cts", "Y"));
+                            //String str = String.valueOf(db.getCashCount("cts", "Y"));
+                            String str = String.valueOf(i1);
                             CashCount_text.setText(str);
 
                         } catch (JSONException e) {
@@ -867,7 +870,7 @@ public class DeliveryCTS extends AppCompatActivity
                 else {
                     disputeForCash(username, DisputeComments, sql_primary_id);
                     alertDialog.dismiss();
-                    startActivity(intent);
+                    //startActivity(intent);
                 }
             }
         });
@@ -923,20 +926,21 @@ public class DeliveryCTS extends AppCompatActivity
     }
 
     private void disputeForCash (final String username, final String disputeComment, final int sql_primary_id){
-        list = getModel(false);
+
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
-
+                        int i = 0;
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             JSONArray array = jsonObject.getJSONArray("summary");
-                            for (int i = 0; i < array.length(); i++) {
+                            for (i = 0; i < array.length(); i++) {
                                 JSONObject o = array.getJSONObject(i);
                                 String statusCode = o.getString("responseCode");
                                 if(statusCode.equals("200")){
+                                    loadRecyclerView(username);
                                     Toast.makeText(DeliveryCTS.this, o.getString("success"), Toast.LENGTH_SHORT).show();
 
                                 } else if(statusCode.equals("404")){
@@ -944,7 +948,8 @@ public class DeliveryCTS extends AppCompatActivity
                                 }
                             }
 
-                            String str = String.valueOf(db.getCashCount("cts", "Y"));
+                            //String str = String.valueOf(db.getCashCount("cts", "Y"));
+                            String str = String.valueOf(i);
                             CashCount_text.setText(str);
 
                         } catch (JSONException e) {

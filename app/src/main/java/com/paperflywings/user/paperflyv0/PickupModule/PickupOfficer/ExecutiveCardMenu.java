@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.paperflywings.user.paperflyv0.AppUpdateChecker;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.LoginActivity;
@@ -46,6 +47,9 @@ public class ExecutiveCardMenu extends AppCompatActivity
         setContentView(R.layout.activity_executive_card_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        AppUpdateChecker appUpdateChecker=new AppUpdateChecker(this);  //pass the activity in constructure
+        appUpdateChecker.checkForUpdate(false); //mannual check false here
         //Fetching email from shared preferences
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");

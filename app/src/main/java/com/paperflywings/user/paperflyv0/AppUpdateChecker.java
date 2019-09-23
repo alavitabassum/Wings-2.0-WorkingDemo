@@ -61,7 +61,7 @@ public class AppUpdateChecker {
                 } else if (!currentVersion.equals(latestVersion) && latestVersion != null) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                     builder.setTitle("An Update is Available");
-                    builder.setMessage("Its better to update now");
+                    builder.setMessage("Its better to update now!");
                     builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -70,12 +70,12 @@ public class AppUpdateChecker {
                             dialog.dismiss();
                         }
                     });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    /*builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             //Cancel button action
                         }
-                    });
+                    });*/
                     builder.setCancelable(false);
                     builder.show();
                 } else {

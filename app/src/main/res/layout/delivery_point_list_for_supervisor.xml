@@ -11,22 +11,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:layout_gravity="center"
-    android:background="@color/light_grey">
+    android:background="@drawable/supervisor_background">
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:src="@drawable/pflogotranss"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp" />
+
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/image"
+        android:textSize="20dp"
+        android:layout_centerHorizontal="true"
+        />
 
     <TextView
         android:id="@+id/aaaa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
+
         android:layout_marginTop="20dp"
-        android:textSize="30dp"
+        android:textSize="16dp"
+        android:layout_below="@+id/welcome"
         android:layout_centerHorizontal="true"
-        android:text="Select Point"/>
+        android:text="Select ALL or a single point!"/>
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view_all_delivery_points"
         android:layout_width="300dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/aaaa"
         android:layout_margin="15dp"
         android:layout_gravity="center">
@@ -47,7 +69,7 @@
                 android:layout_centerVertical="true"
                 android:text="ALL"
                 android:textColor="#fff"
-                android:textSize="40dp"
+                android:textSize="20dp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
@@ -66,9 +88,7 @@
         android:id="@+id/recycler_view_pointcodes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="140dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:paddingTop="265dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.AppBarLayout

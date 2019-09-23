@@ -37,6 +37,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.paperflywings.user.paperflyv0.AppUpdateChecker;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.DeliverySuperVisorBankReport.DeliverySupBankReport;
@@ -80,6 +81,9 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
         setContentView(R.layout.activity_delivery_super_visor_tablayout);
        /* Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
+
+        AppUpdateChecker appUpdateChecker=new AppUpdateChecker(this);  //pass the activity in constructure
+        appUpdateChecker.checkForUpdate(false); //mannual check false here
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -299,7 +303,12 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_point) {
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
+                    DeliverySelectPoint.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else  if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);

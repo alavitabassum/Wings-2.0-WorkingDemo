@@ -17,6 +17,8 @@ import android.view.MenuItem;
 
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCash.DeliverySupCash;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -79,7 +81,12 @@ public class DeliverySCashReceive extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_point) {
+            Intent homeIntent = new Intent(DeliverySCashReceive.this,
+                    DeliverySelectPoint.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(DeliverySCashReceive.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);

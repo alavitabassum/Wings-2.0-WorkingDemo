@@ -13,6 +13,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -22,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.paperflywings.user.paperflyv0.AppUpdateChecker;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
@@ -45,6 +47,7 @@ public class DeliverySelectPoint extends AppCompatActivity implements DeliverySe
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     CardView all_point;
+    TextView welcomeuser;
 
     public static final String LOAD_URL = "http://paperflybd.com/DeliverySupervisorAPI.php";
     @Override
@@ -55,7 +58,11 @@ public class DeliverySelectPoint extends AppCompatActivity implements DeliverySe
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
+        AppUpdateChecker appUpdateChecker=new AppUpdateChecker(this);  //pass the activity in constructure
+        appUpdateChecker.checkForUpdate(false); //mannual check false here
+
         all_point = (CardView)findViewById(R.id.card_view_all_delivery_points);
+        welcomeuser = (TextView) findViewById(R.id.welcome);
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_pointcodes);
         recyclerView_pul.setAdapter(deliverySelectPointAdapter);
         list = new ArrayList<DeliverySelectPointModel>();
@@ -63,10 +70,13 @@ public class DeliverySelectPoint extends AppCompatActivity implements DeliverySe
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
+
         list.clear();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+
+        welcomeuser.setText("Welcome Supervisor: " +username);
 
         // check internet connectivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);

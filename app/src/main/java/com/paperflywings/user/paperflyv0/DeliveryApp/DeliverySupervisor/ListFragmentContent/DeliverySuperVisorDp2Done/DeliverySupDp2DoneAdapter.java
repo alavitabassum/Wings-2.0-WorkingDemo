@@ -57,6 +57,8 @@ public class DeliverySupDp2DoneAdapter extends RecyclerView.Adapter<DeliverySupD
         public TextView item_packagePrice;
         public TextView item_productBrief;
         public TextView item_sla_miss;
+        public TextView item_cust_name;
+        public TextView item_cust_address;
         public Button item_dp2_done_button;
         public CardView card_view;
 
@@ -73,6 +75,8 @@ public class DeliverySupDp2DoneAdapter extends RecyclerView.Adapter<DeliverySupD
             item_productBrief=itemView.findViewById(R.id.package_brief_dp2_done);
             item_sla_miss = itemView.findViewById(R.id.sla_deliverytime);
             item_dp2_done_button = itemView.findViewById(R.id.btn_dp2_done);
+            item_cust_name = itemView.findViewById(R.id.custname);
+            item_cust_address = itemView.findViewById(R.id.custAddress);
 
             item_dp2_done_button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,6 +106,9 @@ public class DeliverySupDp2DoneAdapter extends RecyclerView.Adapter<DeliverySupD
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_ordId.setText(list.get(i).getOrderid());
+        viewHolder.item_merOrderRef.setText(list.get(i).getMerOrderRef());
+        viewHolder.item_cust_name.setText("Customer Name: "+list.get(i).getCustname());
+        viewHolder.item_cust_address.setText("Address: "+list.get(i).getCustaddress());
         viewHolder.item_merOrderRef.setText(list.get(i).getMerOrderRef());
 
         String pickMerchantName = list.get(i).getPickMerchantName();
