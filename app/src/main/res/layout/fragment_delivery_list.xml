@@ -26,11 +26,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp">
 
+                <TextView
+                    android:id="@+id/point_code"
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
                 <ImageView
                     android:src="@drawable/pflogotranss"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/point_code"
                     android:layout_height="60dp" />
             </RelativeLayout>
 

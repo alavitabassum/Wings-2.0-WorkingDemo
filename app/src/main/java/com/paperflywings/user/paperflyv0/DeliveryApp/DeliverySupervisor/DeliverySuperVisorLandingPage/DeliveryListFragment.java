@@ -61,7 +61,7 @@ public class DeliveryListFragment extends Fragment {
 
     BarcodeDbHelper db;
     private CardView sup_unpicked_item,sup_without_Status,sup_on_Hold,sup_returnReqst,sup_return_List,sup_cashCollection,sup_dp2_done,sup_dp2_not_done,sup_Dp2Reciever,sup_CashReceive,sup_ReturnReceive;
-    private TextView sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count,sup_CashReceive_count,sup_ReturnReceive_count,sup_dp2_done_count,sup_dp2_not_done_count;
+    private TextView selected_points,sup_unpicked_count,sup_withoutStatus_count,sup_onHold_count,sup_returnReqst_count,sup_returnList_count,sup_cashCollection_count,sup_CashReceive_count,sup_ReturnReceive_count,sup_dp2_done_count,sup_dp2_not_done_count;
     private RequestQueue requestQueue;
     String username,unpicked,withoutStatus,onHold,cash,returnRequest,returnList;
 
@@ -101,6 +101,7 @@ public class DeliveryListFragment extends Fragment {
         sup_CashReceive_count = (TextView)viewGroup.findViewById(R.id.CashR);
         sup_dp2_done_count = (TextView)viewGroup.findViewById(R.id.afterDp2receive_count);
         sup_dp2_not_done_count = (TextView)viewGroup.findViewById(R.id.beforeDp2receive_count);
+        selected_points = (TextView)viewGroup.findViewById(R.id.point_code);
 
         sup_Dp2Reciever = (CardView)viewGroup.findViewById(R.id.Dp2_id);
         sup_unpicked_item = (CardView)viewGroup.findViewById(R.id.sup_unpicked_id);
@@ -113,6 +114,8 @@ public class DeliveryListFragment extends Fragment {
         sup_CashReceive = (CardView)viewGroup.findViewById(R.id.sup_cashReceived_id);
         sup_dp2_done = (CardView)viewGroup.findViewById(R.id.afterDp2receive);
         sup_dp2_not_done = (CardView)viewGroup.findViewById(R.id.beforeDp2receive);
+
+        selected_points.setText("Result for "+pointCode+" Point");
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -214,9 +217,6 @@ public class DeliveryListFragment extends Fragment {
 
         return viewGroup;
     }
-
-
-
 
     private void loadDeliverySummary(final String user, final String pointCode){
         progress=new ProgressDialog(getActivity());
