@@ -20,9 +20,20 @@ import java.util.List;
 public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<DeliverySupReturnDisputeAdapter.ViewHolder>{
     private List<DeliverySupReturnDisputeModel> listfull;
     private List<DeliverySupReturnDisputeModel> list;
-
+    private OnItemClickListener mListner;
     private int currentPosition = -1;
     private Context context;
+
+    public interface OnItemClickListener {
+
+        void onItemClick_view (View view2, int position2);
+        void onItemClick_call (View view4, int position4);
+    }
+
+   public void setOnItemClickListener(OnItemClickListener listener){
+        this.mListner = listener;
+    }
+
 
     public DeliverySupReturnDisputeAdapter(List<DeliverySupReturnDisputeModel>list, Context context){
         this.list = list;
@@ -36,6 +47,7 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
         public TextView item_courier_time;
         public TextView item_courier_by;
         public TextView item_rts_by;
+        public CardView detailCardView;
        // public TextView item_dispute_comment;
 
 
@@ -44,6 +56,20 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
             item_courier_name=itemView.findViewById(R.id.sup_courier_name);
             item_courier_time=itemView.findViewById(R.id.sup_courier_time);
             item_courier_by=itemView.findViewById(R.id.sup_courier_by);
+            detailCardView = itemView.findViewById(R.id.card_view_delivery_sup_ret_dispute_list);
+
+            detailCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view2) {
+                    if(mListner!=null){
+                        int position2 = getAdapterPosition();
+                        if(position2!=RecyclerView.NO_POSITION){
+                            mListner.onItemClick_view(view2, position2);
+                        }
+                    }
+                }
+            });
+
             //item_rts_by=itemView.findViewById(R.id.sup_rts_by);
            // item_dispute_comment=itemView.findViewById(R.id.sup_dispute_comment);
 
@@ -64,7 +90,10 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
         viewHolder.item_courier_time.setText(list.get(i).getCourierRetTime().substring(0,11));
 
         viewHolder.item_courier_by.setText(list.get(i).getDisputeComment());
-       // viewHolder.item_rts_by.setText(list.get(i).getRTSBy());
+       // viewHolder.detailCardView.findViewById(R.id.card_view_delivery_without_status_list);
+
+
+        // viewHolder.item_rts_by.setText(list.get(i).getRTSBy());
       //  viewHolder.item_dispute_comment.setText("Dispute Comment: "+list.get(i).getDisputeComment());
 
     }
@@ -72,6 +101,7 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
 
     @Override
     public int getItemCount() {
+
         return list.size();
     }
 

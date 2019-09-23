@@ -1,5 +1,6 @@
 package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,14 +17,21 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +43,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCash.DeliverySupCash;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorPreReturn.DeliverySupPreRet;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -42,17 +54,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliverySupReturnDispute extends AppCompatActivity{
+public class DeliverySupReturnDispute extends AppCompatActivity implements DeliverySupReturnDisputeAdapter.OnItemClickListener {
 
    // public SwipeRefreshLayout swipeRefreshLayout;
     private DeliverySupReturnDisputeAdapter deliverySupReturnDisputeAdapter;
     private RecyclerView recyclerView_pul;
-    private RecyclerView.LayoutManager layoutManager_pul;
+    private RecyclerView.LayoutManager layoutManager_pul; //detailCardView
+
     private TextView sup_pre_ret_text;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
@@ -84,6 +100,8 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
 
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
+
+
 
        /* swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -142,7 +160,7 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
                             deliverySupReturnDisputeAdapter = new DeliverySupReturnDisputeAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupReturnDisputeAdapter);
                           //  swipeRefreshLayout.setRefreshing(false);
-                            //deliverySupUnpickedAdapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
+                            deliverySupReturnDisputeAdapter.setOnItemClickListener(DeliverySupReturnDispute.this);
 
                            // String str = String.valueOf(i);
                           //  sup_pre_ret_text.setText(str);
@@ -183,4 +201,73 @@ public class DeliverySupReturnDispute extends AppCompatActivity{
         requestQueue.add(stringRequest);
     }
 
+    @Override
+    public void onItemClick_view(View view2, int position2) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String user = username;
+
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+       // Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
+        final View mView = getLayoutInflater().inflate(R.layout.delivery_sup_return_dispute_details, null);
+        final TextView CourierName = mView.findViewById(R.id.courier_name);
+        final TextView courierTime = mView.findViewById(R.id.courier_time);
+        final TextView courierBy = mView.findViewById(R.id.courier_by);
+        final TextView returnBy = mView.findViewById(R.id.return_by);
+        final TextView remarks = mView.findViewById(R.id.remarks);
+
+        DeliverySupReturnDisputeModel clickedItem = list.get(position2);
+
+        String orderId = clickedItem.getOrderid();
+        String courier_Name = clickedItem.getCourier_name();
+        String courier_Time = clickedItem.getCourierRetTime();
+        String courier_By = clickedItem.getCourierRetBy();
+        String return_By = clickedItem.getRTSBy();
+        String disputeComments = clickedItem.getDisputeComment();
+
+        CourierName.setText(" "+courier_Name);
+        courierTime.setText(" "+" "+courier_Time);
+        courierBy.setText(" "+courier_By);
+        returnBy.setText(" "+return_By);
+        remarks.setText(" "+disputeComments);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DeliverySupReturnDispute.this);
+
+        // Set a title for alert dialog
+        builder.setTitle("Order Id: "+" "+orderId);
+        builder.setView(mView);
+        // Ask the final question
+       // builder.setMessage("Want to apply big font size?");
+
+        // Set click listener for alert dialog buttons
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                   /* case DialogInterface.BUTTON_POSITIVE:
+                        // User clicked the Yes button
+                        // tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
+                        break;
+*/
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // User clicked the No button
+                        break;
+                }
+            }
+        };
+       // builder.setPositiveButton("Yes", dialogClickListener);
+
+        // Set the alert dialog no button click listener
+        builder.setNegativeButton("Close",dialogClickListener);
+
+        AlertDialog dialog = builder.create();
+        // Display the alert dialog on interface
+        dialog.show();
+    }
+
+    @Override
+    public void onItemClick_call(View view4, int position4) {
+
+    }
 }
