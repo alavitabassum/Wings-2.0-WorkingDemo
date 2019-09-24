@@ -140,7 +140,7 @@ public class DeliverySupWithoutStatusAdapter extends RecyclerView.Adapter<Delive
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for(DeliverySupWithoutStatusModel item: listfull){
-                    if (item.getOrderid().toLowerCase().contains(filterPattern) || item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
+                    if (item.getOrderid().toLowerCase().contains(filterPattern) || item.getPickDropBy().toLowerCase().contains(filterPattern) || item.getMerchantName().toLowerCase().contains(filterPattern) || item.getPickMerchantName().toLowerCase().contains(filterPattern) || item.getCustname().toLowerCase().contains(filterPattern) || item.getMerOrderRef().toLowerCase().contains(filterPattern) || item.getCustphone().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }

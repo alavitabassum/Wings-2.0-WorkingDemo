@@ -74,6 +74,7 @@ public class DeliveryCTS extends AppCompatActivity
     ProgressDialog progressDialog;
 
     String itemOrders = "";
+    String itemPrimaryIds = "";
     String totalCash = "";
     public final String TOTAL_CASH = "total_cash";
     public final String TOTAL_ORDER= "total_order";
@@ -396,6 +397,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         if(DeliveryCTSAdapter.imageModelArrayList.get(i).getSelected()) {
                                             count++;
                                             itemOrders = itemOrders + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getOrderid();
+                                            itemPrimaryIds = itemPrimaryIds + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getSql_primary_id();
                                         }
                                         tv.setText(count + " Orders have been selected for cash.");
                                     }
@@ -443,6 +445,7 @@ public class DeliveryCTS extends AppCompatActivity
                                                                         @Override
                                                                         public void onClick(DialogInterface arg0, int arg1) {
                                                                             itemOrders = "";
+                                                                            itemPrimaryIds = "";
                                                                         }
                                                                     });
                                                             alertDialogBuilder.setCancelable(false);
@@ -478,17 +481,14 @@ public class DeliveryCTS extends AppCompatActivity
                                                                         orderIds.setText("Please enter required fields First!!");
                                                                     }
                                                                     else {
-                                                                        String flagReqst = "delivery_officer_CTS";
-                                                                        UpdateBankInfo(username,flagReqst,itemOrders,totalCashs,CashCollected,CashComments);
-                                                                        //orderIds.setText("Please Select All Orders!!");
-                                            /*} else {
-                                                UpdateBankInfo(item, username);
-                                                //GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
-*/
+
+                                                                        UpdateCashInfo(username,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments);
+
                                                                         alertDialog.dismiss();
                                                                         startActivity(intent);
                                                                         //loadRecyclerView(username);
                                                                         itemOrders = "";
+                                                                        itemPrimaryIds = "";
                                                                     }
                                                                 }
                                                             });
@@ -722,8 +722,7 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-    private void UpdateBankInfo(final String createdBy,final String flagReqst,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
-
+    private void UpdateCashInfo(final String createdBy,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>() {
                     @Override
@@ -751,7 +750,9 @@ public class DeliveryCTS extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", createdBy);
-                params.put("flagreq", flagReqst);
+                params.put("cashSubmissionType", "C");
+                params.put("sqlPrimaryId", sqlPrimaryIds);
+                params.put("flagreq", "delivery_officer_CTS");
                 params.put("orderid", items);
                 params.put("totalCashAmt", totalCashAmt);
                 params.put("submittedCashAmt", submittedCashAmt);
@@ -780,6 +781,7 @@ public class DeliveryCTS extends AppCompatActivity
 
                 model.setSelected(isSelect);
                 model.setOrderid(list.get(i).getOrderid());
+                model.setSql_primary_id(list.get(i).getSql_primary_id());
                 model.setMerOrderRef(list.get(i).getMerOrderRef());
                 model.setCashAmt(list.get(i).getCashAmt());
                 model.setPackagePrice(list.get(i).getPackagePrice());
@@ -796,6 +798,7 @@ public class DeliveryCTS extends AppCompatActivity
 
                 model.setSelected(isSelect);
                 model.setOrderid(list.get(i).getOrderid());
+                model.setSql_primary_id(list.get(i).getSql_primary_id());
                 model.setMerOrderRef(list.get(i).getMerOrderRef());
                 model.setCashAmt(list.get(i).getCashAmt());
                 model.setPackagePrice(list.get(i).getPackagePrice());
@@ -807,6 +810,57 @@ public class DeliveryCTS extends AppCompatActivity
         return listOfOrders;
     }
 
+    // Click listner for details
+    @Override
+    public void onItemClick_view_details(View view1, int position1) {
+        DeliveryCTSModel clickedItem = list.get(position1);
+
+        String orderId = clickedItem.getOrderid();
+        String merRef = clickedItem.getMerOrderRef();
+        String cashType = clickedItem.getCashType();
+        String packagePrice = clickedItem.getPackagePrice();
+        String cashAmt = clickedItem.getCashAmt();
+        String dateCollection = clickedItem.getCashTime();
+        String collectionRemarks = clickedItem.getCashComment();
+        String customerName = clickedItem.getCustname();
+        String customerAddress = clickedItem.getCustaddress();
+
+        final View mViewDetails = getLayoutInflater().inflate(R.layout.delivery_cash_details, null);
+        final TextView merOrderRef = mViewDetails.findViewById(R.id.merorderRef);
+        final TextView transactionType = mViewDetails.findViewById(R.id.transactionType);
+        final TextView packagePriceTitle = mViewDetails.findViewById(R.id.packagePrice);
+        final TextView collectionAmt = mViewDetails.findViewById(R.id.collectionAmt);
+        final TextView collectionDate = mViewDetails.findViewById(R.id.collectionDate);
+        final TextView  remarks = mViewDetails.findViewById(R.id.remarks);
+        final TextView  custName = mViewDetails.findViewById(R.id.custName);
+        final TextView  custAddress = mViewDetails.findViewById(R.id.custAddress);
+
+        merOrderRef.setText(merRef);
+        transactionType.setText(cashType);
+        packagePriceTitle.setText(packagePrice+ " Taka");
+        collectionAmt.setText(cashAmt+ " Taka");
+        collectionDate.setText(dateCollection);
+        remarks.setText(collectionRemarks);
+        custName.setText(customerName);
+        custAddress.setText(customerAddress);
+
+        //String
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(orderId);
+        alertDialogBuilder.setNegativeButton("Close",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                });
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setView(mViewDetails);
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    // Dispute raise functionality
     @Override
     public void onItemClick_view(View view, int position) {
         // mis-clicking prevention, using threshold of 500 ms
@@ -874,55 +928,6 @@ public class DeliveryCTS extends AppCompatActivity
                 }
             }
         });
-    }
-
-    @Override
-    public void onItemClick_view_details(View view1, int position1) {
-        DeliveryCTSModel clickedItem = list.get(position1);
-
-        String orderId = clickedItem.getOrderid();
-        String merRef = clickedItem.getMerOrderRef();
-        String cashType = clickedItem.getCashType();
-        String packagePrice = clickedItem.getPackagePrice();
-        String cashAmt = clickedItem.getCashAmt();
-        String dateCollection = clickedItem.getCashTime();
-        String collectionRemarks = clickedItem.getCashComment();
-        String customerName = clickedItem.getCustname();
-        String customerAddress = clickedItem.getCustaddress();
-
-        final View mViewDetails = getLayoutInflater().inflate(R.layout.delivery_cash_details, null);
-        final TextView merOrderRef = mViewDetails.findViewById(R.id.merorderRef);
-        final TextView transactionType = mViewDetails.findViewById(R.id.transactionType);
-        final TextView packagePriceTitle = mViewDetails.findViewById(R.id.packagePrice);
-        final TextView collectionAmt = mViewDetails.findViewById(R.id.collectionAmt);
-        final TextView collectionDate = mViewDetails.findViewById(R.id.collectionDate);
-        final TextView  remarks = mViewDetails.findViewById(R.id.remarks);
-        final TextView  custName = mViewDetails.findViewById(R.id.custName);
-        final TextView  custAddress = mViewDetails.findViewById(R.id.custAddress);
-
-        merOrderRef.setText(merRef);
-        transactionType.setText(cashType);
-        packagePriceTitle.setText(packagePrice+ " Taka");
-        collectionAmt.setText(cashAmt+ " Taka");
-        collectionDate.setText(dateCollection);
-        remarks.setText(collectionRemarks);
-        custName.setText(customerName);
-        custAddress.setText(customerAddress);
-
-        //String
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(orderId);
-        alertDialogBuilder.setNegativeButton("Close",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                    }
-                });
-        alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setView(mViewDetails);
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 
     private void disputeForCash (final String username, final String disputeComment, final int sql_primary_id){

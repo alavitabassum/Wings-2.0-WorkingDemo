@@ -75,6 +75,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
     private final int IMG_REQUEST = 10;
 
     String item = "";
+    String sqlPrimaryIds = "";
     private RequestQueue requestQueue;
     int count=0;
     DatePickerDialog datePickerDialog;
@@ -274,6 +275,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
             if(DeliveryCTSAdapter.imageModelArrayList.get(i).getSelected()) {
                 count++;
                 item = item + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getOrderid();
+                sqlPrimaryIds = sqlPrimaryIds + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getSql_primary_id();
             }
             create_tv.setText(count + " Orders have been selected for cash.");
         }
@@ -312,10 +314,11 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
                 }
 
                 else {
-                    UpdateBankedOrdersByDO(item,deposited_amt,deposite_date,bankItems,slipNumber,comment,username);
+                    UpdateBankedOrdersByDO(item,sqlPrimaryIds,deposited_amt,deposite_date,bankItems,slipNumber,comment,username);
 
                     startActivity(intent);
                     item = "";
+                    sqlPrimaryIds = "";
                     order_count = "0";
                 }
             }
@@ -390,7 +393,7 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
         }
     }
 
-    private void UpdateBankedOrdersByDO(final String item,final String cashAmtDeposite,final String deposite_date, final String bankNames, final String slipNumber, final String comment, final String username) {
+    private void UpdateBankedOrdersByDO(final String item,final String sqlPrimaryIds,final String cashAmtDeposite,final String deposite_date, final String bankNames, final String slipNumber, final String comment, final String username) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -439,6 +442,8 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
 
                 params.put("depositDate", deposite_date);
                 params.put("cashAmtDeposite", cashAmtDeposite);
+                params.put("cashSubmissionType", "B");
+                params.put("sqlPrimaryId", sqlPrimaryIds);
                 params.put("orderid", item);
                 params.put("bankID",bankNames);
                 params.put("depositSlip",slipNumber);
@@ -446,6 +451,12 @@ public class Bank_details_upload_by_DO extends AppCompatActivity
                 params.put("username",username);
                 params.put("image",img1);
                 params.put("flagreq", "Delivery_complete_bank_orders_by_DO");
+
+               /*INSERT INTO tbl_cash_to_supervisor_by_officer
+               (orderidList,ordPrimaryKey,cashSubmissionType, totalCashAmt,
+               submittedCashAmt, comment, createdBy, createdAt, serialNoCTRS)
+               VALUES ('$orderIds','$sqlPrimaryIds','$cashSubmissionType','$totalCashAmt',
+               '$submittedCashAmt','$comment','$username', NOW()+INTERVAL 6 HOUR, '$serialNoCTRS')"*/
 
                 return params;
             }

@@ -166,28 +166,15 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
 
         fabmenu = (FloatingActionMenu) findViewById(R.id.menu);
         fab1 = (FloatingActionButton) findViewById(R.id.menu_item1);
-        /*     fab2 = (FloatingActionButton) findViewById(R.id.menu_item2);*/
 
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             /*   Snackbar.make(view, "Coming soon", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-
                 Intent intentorder = new Intent(FulfillmentAssignPickup_Supervisor.this,
                         NewOrderEntry_Supervisor_ful.class);
                 startActivity(intentorder);
             }
         });
-
-       /* fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentorderupdate = new Intent(AssignPickup_Manager.this,
-                        NewOrder.class);
-                startActivity(intentorderupdate);
-            }
-        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -202,7 +189,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    //Load executive from api
     private void loadexecutivelist(final String user) {
 
         StringRequest postRequest1 = new StringRequest(Request.Method.POST, EXECUTIVE_URL,
@@ -251,7 +237,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         requestQueue.add(postRequest1);
     }
 
-
     //Merchant List API hit
     private void loadmainmerchantlist() {
 
@@ -294,7 +279,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         requestQueue.add(postRequest1);
     }
 
-
     private void loadSuppliermerchantlist() {
         StringRequest postRequest1 = new StringRequest(Request.Method.GET, SUPPLIER_NAME_URL,
                 new Response.Listener<String>() {
@@ -332,14 +316,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
     }
 
     private void loadProductlist() {
-       /* progress=new ProgressDialog(this);
-        progress.setMessage("Loading Data");
-        progress.setCancelable(false);
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setIndeterminate(true);
-        progress.setProgress(0);
-        progress.show();*/
-
         StringRequest postRequest1 = new StringRequest(Request.Method.GET, PRODUCT_LIST_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -378,7 +354,6 @@ public class FulfillmentAssignPickup_Supervisor extends AppCompatActivity
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(postRequest1);
     }
-
 
     //Get Executive List from sqlite
     private void getallexecutives() {
