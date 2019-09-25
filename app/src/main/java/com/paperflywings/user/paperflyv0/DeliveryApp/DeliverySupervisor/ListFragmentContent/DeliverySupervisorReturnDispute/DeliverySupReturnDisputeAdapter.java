@@ -87,6 +87,8 @@ public class DeliverySupReturnDisputeAdapter extends RecyclerView.Adapter<Delive
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_courier_name.setText(list.get(i).getOrderid());
+
+
         viewHolder.item_courier_time.setText(list.get(i).getCourierRetTime().substring(0,11));
         viewHolder.item_courier_by.setText(list.get(i).getDisputeComment());
        // viewHolder.detailCardView.findViewById(R.id.card_view_delivery_without_status_list);

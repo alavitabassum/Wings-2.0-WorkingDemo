@@ -53,6 +53,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -203,24 +205,32 @@ public class DeliverySupCashDispute extends AppCompatActivity implements Deliver
        // Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
         final View mView = getLayoutInflater().inflate(R.layout.delivery_sup_cash_dispute_details, null);
       /*  final TextView CourierName = mView.findViewById(R.id.courier_name);
-        final TextView courierTime = mView.findViewById(R.id.courier_time);
-        final TextView courierBy = mView.findViewById(R.id.courier_by);*/
-        final TextView returnBy = mView.findViewById(R.id.return_by);
+        final TextView courierTime = mView.findViewById(R.id.courier_time);*/
+        final TextView CTSDate = mView.findViewById(R.id.cts_date);
+        final TextView CTSTime = mView.findViewById(R.id.cts_time);
         final TextView remarks = mView.findViewById(R.id.remarks);
 
         DeliverySupCashDisputeModel clickedItem = list.get(position2);
 
         String orderId = clickedItem.getOrderid();
       /*  String courier_Name = clickedItem.getCourier_name();
-        String courier_Time = clickedItem.getCourierRetTime();
-        String courier_By = clickedItem.getCourierRetBy();*/
-        String return_By = clickedItem.getCTSTime();
+        String courier_Time = clickedItem.getCourierRetTime();*/
+        String cts_date = clickedItem.getCTSTime().substring(0,11);
+        String cts_time = clickedItem.getCTSTime();
         String disputeComments = clickedItem.getDisputeComment();
 
       /*  CourierName.setText(" "+courier_Name);
-        courierTime.setText(" "+" "+courier_Time);
-        courierBy.setText(" "+courier_By);*/
-        returnBy.setText(" "+return_By);
+        courierTime.setText(" "+" "+courier_Time);*/
+        CTSDate.setText(" "+cts_date);
+
+        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy KK:mm:ss a");
+        try {
+            CTSTime.setText(" "+" "+outputFormat.format(inputFormat.parse(cts_time)).substring(11,22));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         remarks.setText(" "+disputeComments);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DeliverySupCashDispute.this);

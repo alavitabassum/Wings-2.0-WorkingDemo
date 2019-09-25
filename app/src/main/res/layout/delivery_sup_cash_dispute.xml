@@ -8,6 +8,7 @@
     android:foreground="?selectableItemBackground"
     card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
+    card_view_assign:cardCornerRadius="5dp"
     card_view_assign:contentPadding="4dp">
 
     <RelativeLayout

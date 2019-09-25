@@ -54,6 +54,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -212,6 +214,7 @@ public class DeliverySupReturnDispute extends AppCompatActivity implements Deliv
        // Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
         final View mView = getLayoutInflater().inflate(R.layout.delivery_sup_return_dispute_details, null);
         final TextView CourierName = mView.findViewById(R.id.courier_name);
+        final TextView courierDate = mView.findViewById(R.id.courier_date);
         final TextView courierTime = mView.findViewById(R.id.courier_time);
         final TextView courierBy = mView.findViewById(R.id.courier_by);
         final TextView returnBy = mView.findViewById(R.id.return_by);
@@ -221,48 +224,46 @@ public class DeliverySupReturnDispute extends AppCompatActivity implements Deliv
 
         String orderId = clickedItem.getOrderid();
         String courier_Name = clickedItem.getCourier_name();
-        String courier_Time = clickedItem.getCourierRetTime();
+        String courier_date = clickedItem.getCourierRetTime().substring(0,11);
+        String courier_time = clickedItem.getCourierRetTime();
         String courier_By = clickedItem.getCourierRetBy();
         String return_By = clickedItem.getRTSBy();
         String disputeComments = clickedItem.getDisputeComment();
 
         CourierName.setText(" "+courier_Name);
-        courierTime.setText(" "+" "+courier_Time);
+        courierDate.setText(" "+" "+courier_date);
+
+        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy KK:mm:ss a");
+        try {
+            courierTime.setText(" "+" "+outputFormat.format(inputFormat.parse(courier_time)).substring(11,22));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         courierBy.setText(" "+courier_By);
         returnBy.setText(" "+return_By);
         remarks.setText(" "+disputeComments);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DeliverySupReturnDispute.this);
 
-        // Set a title for alert dialog
-        builder.setTitle("Order Id: "+" "+orderId);
+            builder.setTitle("Order Id: "+" "+orderId);
         builder.setView(mView);
-        // Ask the final question
-       // builder.setMessage("Want to apply big font size?");
 
-        // Set click listener for alert dialog buttons
         DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
-                   /* case DialogInterface.BUTTON_POSITIVE:
-                        // User clicked the Yes button
-                        // tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
-                        break;
-*/
+
                     case DialogInterface.BUTTON_NEGATIVE:
-                        // User clicked the No button
+
                         break;
                 }
             }
         };
-       // builder.setPositiveButton("Yes", dialogClickListener);
 
-        // Set the alert dialog no button click listener
         builder.setNegativeButton("Close",dialogClickListener);
 
         AlertDialog dialog = builder.create();
-        // Display the alert dialog on interface
         dialog.show();
     }
 

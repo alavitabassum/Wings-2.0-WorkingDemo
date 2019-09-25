@@ -88,7 +88,7 @@ public class DeliverySupCashDisputeAdapter extends RecyclerView.Adapter<Delivery
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_courier_name.setText(list.get(i).getOrderid());
-        viewHolder.item_courier_time.setText(list.get(i).getCTSTime());
+        viewHolder.item_courier_time.setText(list.get(i).getCTSTime().substring(0,11));
         viewHolder.item_sup_dispute_comment.setText(list.get(i).getDisputeComment());
        // viewHolder.detailCardView.findViewById(R.id.card_view_delivery_without_status_list);
 
