@@ -20,8 +20,10 @@ public class PageAdapter extends FragmentPagerAdapter {
             case 0:
                 return new DeliveryFragment();
             case 1:
-                return new ExpenseFragment();
+                return new BankFragmentDO();
             case 2:
+                return new ExpenseFragment();
+            case 3:
                 return new CourierFragment();
             default:
                 return null;

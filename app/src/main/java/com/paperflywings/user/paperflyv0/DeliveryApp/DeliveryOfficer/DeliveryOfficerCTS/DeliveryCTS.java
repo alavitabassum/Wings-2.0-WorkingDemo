@@ -39,7 +39,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.Bank_details_upload_by_DO;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCRS.DeliveryCashRS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
@@ -76,6 +76,7 @@ public class DeliveryCTS extends AppCompatActivity
     String itemOrders = "";
     String itemPrimaryIds = "";
     String totalCash = "";
+    String totalCash1 = "";
     public final String TOTAL_CASH = "total_cash";
     public final String TOTAL_ORDER= "total_order";
 
@@ -100,6 +101,7 @@ public class DeliveryCTS extends AppCompatActivity
         totalCollection = (TextView)findViewById(R.id.CashCollection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view);
         recyclerView_pul.setAdapter(DeliveryCTSAdapter);
         list = new ArrayList<DeliveryCTSModel>();
@@ -120,7 +122,7 @@ public class DeliveryCTS extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
-         if(nInfo!= null && nInfo.isConnected())
+        if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
         }
@@ -481,9 +483,7 @@ public class DeliveryCTS extends AppCompatActivity
                                                                         orderIds.setText("Please enter required fields First!!");
                                                                     }
                                                                     else {
-
-                                                                        UpdateCashInfo(username,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments);
-
+                                                                        UpdateCashInfo(username,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments, "C");
                                                                         alertDialog.dismiss();
                                                                         startActivity(intent);
                                                                         //loadRecyclerView(username);
@@ -494,11 +494,30 @@ public class DeliveryCTS extends AppCompatActivity
                                                             });
 
                                                             break;
-                                                        case 1:
+                                                        /*case 1:
                                                             Intent intentBankDeposite = new Intent(DeliveryCTS.this, Bank_details_upload_by_DO.class);
                                                             intentBankDeposite.putExtra(TOTAL_CASH, tv1.getText().toString());
                                                             intentBankDeposite.putExtra(TOTAL_ORDER, tv.getText().toString());
                                                             startActivity(intentBankDeposite);
+                                                            break;*/
+                                                        case 1:
+                                                            /*intentBankDeposite.putExtra(TOTAL_CASH, tv1.getText().toString());
+                                                            intentBankDeposite.putExtra(TOTAL_ORDER, tv.getText().toString());*/
+                                                            /*float CashCount = 0.0f;
+                                                            totalCash1 = String.valueOf(db.getTotalCash("cts"));
+                                                            CashCount = Float.parseFloat(totalCash1);
+                                                            intentBankDeposite.putExtra(TOTAL_CASH, CashCount);*/
+                                                            float CashCount = 0.0f;
+                                                            totalCash1 = String.valueOf(db.getTotalCash("cts"));
+                                                            CashCount = Float.parseFloat(totalCash1);
+                                                            if (itemOrders.equals("")){
+                                                                Toast.makeText(DeliveryCTS.this, "Select all orders!", Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                UpdateBankInfo(username,itemPrimaryIds,itemOrders, String.valueOf(CashCount), String.valueOf(CashCount),"","P");
+
+                                                            }
+
+                                                            //startActivity(intentBankDeposite);
                                                             break;
                                                         default:
                                                             break;
@@ -722,7 +741,7 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-    private void UpdateCashInfo(final String createdBy,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
+    private void UpdateCashInfo(final String createdBy,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment, final String type) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>() {
                     @Override
@@ -750,7 +769,7 @@ public class DeliveryCTS extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", createdBy);
-                params.put("cashSubmissionType", "C");
+                params.put("cashSubmissionType", type);
                 params.put("sqlPrimaryId", sqlPrimaryIds);
                 params.put("flagreq", "delivery_officer_CTS");
                 params.put("orderid", items);
@@ -769,6 +788,57 @@ public class DeliveryCTS extends AppCompatActivity
             Toast.makeText(DeliveryCTS.this, "Server Error! cts", Toast.LENGTH_LONG).show();
         }
     }
+
+    private void UpdateBankInfo(final String createdBy,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment, final String type) {
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                Intent intentBankDeposite = new Intent(DeliveryCTS.this, DeliveryOfficerBankInfoAdd.class);
+                                startActivity(intentBankDeposite);
+                                Toast.makeText(DeliveryCTS.this, "Successful", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(DeliveryCTS.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DeliveryCTS.this, "Server disconnected! "+error, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", createdBy);
+                params.put("cashSubmissionType", type);
+                params.put("sqlPrimaryId", sqlPrimaryIds);
+                params.put("flagreq", "delivery_officer_bank_orders");
+                params.put("orderid", items);
+                params.put("totalCashAmt", totalCashAmt);
+                params.put("submittedCashAmt", submittedCashAmt);
+                params.put("comment", CashComment);
+                return params;
+            }
+        };
+        try {
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryCTS.this, "Server Error! cts", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     private ArrayList<DeliveryCTSModel> getModel(boolean isSelect){
         ArrayList<DeliveryCTSModel> listOfOrders = new ArrayList<>();

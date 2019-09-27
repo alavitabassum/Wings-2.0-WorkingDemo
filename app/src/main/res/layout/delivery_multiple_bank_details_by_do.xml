@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/red"
+        android:gravity="center"
+        android:layout_gravity="center">
+        <TextView
+            android:id="@+id/total_cash_to_bank"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="Total: 200000 tk"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#ddd"
+        android:gravity="center"
+        android:layout_gravity="center">
+        <Button
+            android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bank Deposite"
+            android:padding="10dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            />
+    </RelativeLayout>
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/footer"
+        android:layout_below="@+id/header"
+        android:fillViewport="true">
+        <LinearLayout
+            android:id="@+id/myLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eeeeee"
+            android:fillViewport="true">
+            <!--   <TextView
+                   android:id="@+id/bodytext"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/body_msg"
+                   android:textColor="#F44336"
+                   android:gravity="center"
+                   android:textSize="25sp"/>-->
+            <!--Bank details 1-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/bank_id_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="3dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="30dp">
+                        <TextView
+                            android:id="@+id/text1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_marginTop="-15dp"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="16dp"
+                            android:text="Slip Number 1"/>
+
+                        <Button
+                            android:id="@+id/select_deposite_date1"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/text1"
+                            android:inputType="text"
+                            android:text="SELECT DATE"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/bank_name1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/select_deposite_date1"
+                            android:layout_alignBaseline="@+id/bank_name_title1"
+                            android:layout_toEndOf="@+id/bank_name_title1"/>
+
+                        <TextView
+                            android:id="@+id/bank_name_title1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_below="@id/select_deposite_date1"
+                            android:text="Bank Name"
+                            android:textAlignment="textStart"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <EditText
+                            android:id="@+id/deposite_slip_number1"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/bank_name_title1"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="25dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Slip Number..."
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/bank_deposite_comment1"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/deposite_slip_number1"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Amount..."
+                            android:inputType="numberDecimal"
+                            android:lines="1"
+                            android:maxLines="2"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/uploadImageTitle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:text="Upload slip image -->"
+                            android:layout_below="@+id/bank_deposite_comment1"/>
+
+                        <ImageView
+                            android:id="@+id/imageView1"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_below="@+id/bank_deposite_comment1"
+                            android:layout_toEndOf="@+id/uploadImageTitle1"
+                            android:src="@drawable/ic_add_image"
+                            />
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <!--Bank details 2-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/bank_id_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="3dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="30dp">
+
+                        <TextView
+                            android:id="@+id/text2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_marginTop="-15dp"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="16dp"
+                            android:text="Slip Number 2"/>
+
+                        <Button
+                            android:id="@+id/select_deposite_date2"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_below="@+id/text2"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:inputType="text"
+                            android:text="SELECT DATE"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/bank_name2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/select_deposite_date2"
+                            android:layout_alignBaseline="@+id/bank_name_title2"
+                            android:layout_toEndOf="@+id/bank_name_title2"/>
+
+                        <TextView
+                            android:id="@+id/bank_name_title2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_below="@id/select_deposite_date2"
+                            android:text="Bank Name"
+                            android:textAlignment="textStart"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <EditText
+                            android:id="@+id/deposite_slip_number2"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/bank_name_title2"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="25dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Slip Number..."
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/bank_deposite_comment2"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/deposite_slip_number2"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Amount..."
+                            android:inputType="numberDecimal"
+                            android:lines="1"
+                            android:maxLines="2"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/uploadImageTitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="60dp"
+                            android:text="Upload slip image -->"
+                            android:layout_below="@+id/bank_deposite_comment2"/>
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_below="@+id/bank_deposite_comment2"
+                            android:layout_toEndOf="@+id/uploadImageTitle2"
+                            android:src="@drawable/ic_add_image"
+                            />
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+
+            </LinearLayout>
+
+            <!--Bank details 3-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/bank_id_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="3dp"
+                    >
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="30dp">
+
+                        <TextView
+                            android:id="@+id/text3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_marginTop="-15dp"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="16dp"
+                            android:text="Slip Number 3"/>
+
+                        <Button
+                            android:id="@+id/select_deposite_date3"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/text3"
+                            android:layout_centerHorizontal="true"
+                            android:inputType="text"
+                            android:text="SELECT DATE"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/bank_name3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/select_deposite_date3"
+                            android:layout_alignBaseline="@+id/bank_name_title3"
+                            android:layout_toEndOf="@+id/bank_name_title3"/>
+
+                        <TextView
+                            android:id="@+id/bank_name_title3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_below="@id/select_deposite_date3"
+                            android:text="Bank Name"
+                            android:textAlignment="textStart"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <EditText
+                            android:id="@+id/deposite_slip_number3"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/bank_name_title3"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="25dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Slip Number..."
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/bank_deposite_comment3"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/deposite_slip_number3"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Amount..."
+                            android:inputType="numberDecimal"
+                            android:lines="1"
+                            android:maxLines="2"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/uploadImageTitle3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="60dp"
+                            android:text="Upload slip image -->"
+                            android:layout_below="@+id/bank_deposite_comment3"/>
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_below="@+id/bank_deposite_comment3"
+                            android:layout_toEndOf="@+id/uploadImageTitle3"
+                            android:src="@drawable/ic_add_image"
+                            />
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <!--Bank details 4-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/bank_id_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="3dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="30dp">
+
+                        <TextView
+                            android:id="@+id/text4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_marginTop="-15dp"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="16dp"
+                            android:text="Slip Number 4"/>
+
+                        <Button
+                            android:id="@+id/select_deposite_date4"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/text4"
+                            android:inputType="text"
+                            android:text="SELECT DATE"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/bank_name4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/select_deposite_date4"
+                            android:layout_alignBaseline="@+id/bank_name_title4"
+                            android:layout_toEndOf="@+id/bank_name_title4"/>
+
+                        <TextView
+                            android:id="@+id/bank_name_title4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_below="@id/select_deposite_date4"
+                            android:text="Bank Name"
+                            android:textAlignment="textStart"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <EditText
+                            android:id="@+id/deposite_slip_number4"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/bank_name_title4"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="25dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Slip Number..."
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/bank_deposite_comment4"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/deposite_slip_number4"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Amount..."
+                            android:inputType="numberDecimal"
+                            android:lines="1"
+                            android:maxLines="2"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/uploadImageTitle4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="60dp"
+                            android:text="Upload slip image -->"
+                            android:layout_below="@+id/bank_deposite_comment4"/>
+
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_below="@+id/bank_deposite_comment4"
+                            android:layout_toEndOf="@+id/uploadImageTitle4"
+                            android:src="@drawable/ic_add_image"
+                            />
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <!--Bank details 5-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <android.support.v7.widget.CardView
+                    android:id="@+id/bank_id_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_margin="10dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="3dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:padding="30dp">
+
+                        <TextView
+                            android:id="@+id/text5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:layout_marginTop="-15dp"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="16dp"
+                            android:text="Slip Number 5"/>
+
+                        <Button
+                            android:id="@+id/select_deposite_date5"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@+id/text5"
+                            android:inputType="text"
+                            android:text="SELECT DATE"
+                            android:textStyle="bold" />
+
+                        <Spinner
+                            android:id="@+id/bank_name5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/select_deposite_date5"
+                            android:layout_alignBaseline="@+id/bank_name_title5"
+                            android:layout_toEndOf="@+id/bank_name_title5"/>
+
+                        <TextView
+                            android:id="@+id/bank_name_title5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_below="@id/select_deposite_date5"
+                            android:text="Bank Name"
+                            android:textAlignment="textStart"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+
+                        <EditText
+                            android:id="@+id/deposite_slip_number5"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/bank_name_title5"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="25dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Slip Number..."
+                            android:lines="1"
+                            android:maxLines="1"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/bank_deposite_comment5"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/deposite_slip_number5"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@color/light_grey"
+                            android:hint="Enter Deposite Amount..."
+                            android:inputType="numberDecimal"
+                            android:lines="1"
+                            android:maxLines="2"
+                            android:padding="5dp"
+                            android:textAlignment="textStart"
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/uploadImageTitle5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="60dp"
+                            android:text="Upload slip image -->"
+                            android:layout_below="@+id/bank_deposite_comment5"/>
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_below="@+id/bank_deposite_comment5"
+                            android:layout_toEndOf="@+id/uploadImageTitle5"
+                            android:src="@drawable/ic_add_image"
+                            />
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -476,7 +476,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         // progress.dismiss();
                         swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getApplicationContext(), "No network! ws" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "No network! ws"+error ,Toast.LENGTH_LONG).show();
                     }
                 })
         {
