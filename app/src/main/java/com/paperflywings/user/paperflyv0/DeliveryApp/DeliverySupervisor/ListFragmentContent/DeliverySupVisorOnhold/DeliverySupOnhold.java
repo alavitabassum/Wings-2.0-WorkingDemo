@@ -74,7 +74,6 @@ public class DeliverySupOnhold extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_delivery_sup_onhold);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

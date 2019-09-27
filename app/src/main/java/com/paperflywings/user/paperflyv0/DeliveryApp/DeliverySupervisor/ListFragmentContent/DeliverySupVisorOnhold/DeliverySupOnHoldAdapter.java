@@ -139,6 +139,7 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
 
     @Override
     public int getItemCount() {
+
         return list.size();
     }
 

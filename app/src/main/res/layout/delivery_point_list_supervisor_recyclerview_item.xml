@@ -3,7 +3,7 @@
     xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_delivery_point_codes"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_margin="15dp"
     android:layout_gravity="center"
@@ -12,11 +12,11 @@
 
     <RelativeLayout
         android:id="@+id/pointcode"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/buttonstyle_updatelist"
         android:padding="10dp">
         <TextView
             android:id="@+id/pointCodes"

@@ -41,6 +41,8 @@ import com.paperflywings.user.paperflyv0.AppUpdateChecker;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.DeliverySuperVisorBankReport.DeliverySupBankReport;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput.DeliverySupCashDispute;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
@@ -319,6 +321,20 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
                     DeliverySupBankReport.class);
             startActivity(homeIntent);
         }
+
+        else if (id == R.id.nav_return_dispute_report) {
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
+                    DeliverySupReturnDispute.class);
+            startActivity(homeIntent);
+        }
+
+        else if (id == R.id.nav_cash_dispute_report) {
+            Intent homeIntent = new Intent(DeliverySuperVisorTablayout.this,
+                    DeliverySupCashDispute.class);
+            startActivity(homeIntent);
+        }
+
+
 
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout

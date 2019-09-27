@@ -35,6 +35,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput.DeliverySupCashDispute"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
