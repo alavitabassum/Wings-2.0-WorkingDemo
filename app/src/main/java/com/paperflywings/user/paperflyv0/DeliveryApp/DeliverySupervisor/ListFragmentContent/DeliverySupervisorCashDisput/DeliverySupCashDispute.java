@@ -3,35 +3,15 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFra
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -42,11 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCash.DeliverySupCash;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorPreReturn.DeliverySupPreRet;
-import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
 import org.json.JSONArray;
@@ -54,11 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -203,12 +175,12 @@ public class DeliverySupCashDispute extends AppCompatActivity implements Deliver
 
         final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
        // Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
-        final View mView = getLayoutInflater().inflate(R.layout.delivery_sup_cash_dispute_details, null);
+       // final View mView = getLayoutInflater().inflate(R.layout.delivery_sup_cash_dispute_details, null);
       /*  final TextView CourierName = mView.findViewById(R.id.courier_name);
         final TextView courierTime = mView.findViewById(R.id.courier_time);*/
-        final TextView CTSDate = mView.findViewById(R.id.cts_date);
-        final TextView CTSTime = mView.findViewById(R.id.cts_time);
-        final TextView remarks = mView.findViewById(R.id.remarks);
+        //final TextView CTSDate = mView.findViewById(R.id.cts_date);
+        //final TextView CTSTime = mView.findViewById(R.id.cts_time);
+        //final TextView remarks = mView.findViewById(R.id.remarks);
 
         DeliverySupCashDisputeModel clickedItem = list.get(position2);
 
@@ -221,23 +193,23 @@ public class DeliverySupCashDispute extends AppCompatActivity implements Deliver
 
       /*  CourierName.setText(" "+courier_Name);
         courierTime.setText(" "+" "+courier_Time);*/
-        CTSDate.setText(" "+cts_date);
+       // CTSDate.setText(" "+cts_date);
 
         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy KK:mm:ss a");
-        try {
+        /*try {
             CTSTime.setText(" "+" "+outputFormat.format(inputFormat.parse(cts_time)).substring(11,22));
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        remarks.setText(" "+disputeComments);
+        //remarks.setText(" "+disputeComments);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DeliverySupCashDispute.this);
 
         // Set a title for alert dialog
         builder.setTitle("Order Id: "+" "+orderId);
-        builder.setView(mView);
+       // builder.setView(mView);
         // Ask the final question
        // builder.setMessage("Want to apply big font size?");
 
