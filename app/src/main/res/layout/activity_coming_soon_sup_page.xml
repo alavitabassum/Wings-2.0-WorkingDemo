@@ -9,10 +9,10 @@
     tools:context=".DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.ComingSoonSupPage">
 
     <RelativeLayout
-        android:layout_width="403dp"
-        android:layout_height="725dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="0dp">
+        android:layout_width="400dp"
+        android:layout_height="700dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/imageInLarge"

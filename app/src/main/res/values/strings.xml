@@ -243,6 +243,8 @@
     <string name="title_activity_delivery_sup_dp2_done">Received Percels</string>
     <string name="title_activity_delivery_sup_dp2_not_done">Percels Not-Received</string>
     <string name="title_activity_delivery_officer_bank_info_add">DeliveryOfficerBankInfoAdd</string>
+    <string name="title_activity_bank_deposite">BankDepositeDP2</string>
+    <string name="title_activity_multiple_bank_deposite_by_sup">MultipleBankDepositeBySUP</string>
 
 
 </resources>

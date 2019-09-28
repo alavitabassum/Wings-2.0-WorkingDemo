@@ -839,7 +839,6 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-
     private ArrayList<DeliveryCTSModel> getModel(boolean isSelect){
         ArrayList<DeliveryCTSModel> listOfOrders = new ArrayList<>();
         if(isSelect == true){

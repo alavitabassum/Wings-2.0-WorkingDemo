@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -35,14 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.Bank_details_of_multiple_bank_by_DO;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -54,14 +47,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener ,DeliveryOfficerDepositeInfoAddAdapter.OnItemClickListtener, SwipeRefreshLayout.OnRefreshListener{
+public class MultipleBankDepositeBySUP extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener ,MultipleBankDepositeByAdapter.OnItemClickListtener, SwipeRefreshLayout.OnRefreshListener {
 
     BarcodeDbHelper db;
     private long mLastClickTime = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
     private TextView CashCount_text,totalCollection, btnselect, btndeselect;
-    private DeliveryOfficerDepositeInfoAddAdapter deliveryOfficerDepositeInfoAddAdapter;
+    private MultipleBankDepositeByAdapter multipleBankDepositeByAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
@@ -75,7 +68,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
 
     public static final String DELIVERY_BANK_DETAILS_UPLOAD_BY_DO = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
-    private ArrayList<DeliveryOfficerDepositeInfoAddModel> list;
+    private ArrayList<MultipleBankDepositeBySUPModel> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +80,9 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_bank_deposite_info_add);
-        recyclerView_pul.setAdapter(deliveryOfficerDepositeInfoAddAdapter);
-        list = new ArrayList<DeliveryOfficerDepositeInfoAddModel>();
+        recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_bank_deposite_info_add_by_sup);
+        recyclerView_pul.setAdapter(multipleBankDepositeByAdapter);
+        list = new ArrayList<MultipleBankDepositeBySUPModel>();
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -114,7 +107,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_officer_name);
+        TextView navUsername = (TextView) headerView.findViewById(R.id.delivery_supervisor);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -147,7 +140,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
 
                                 String statusCode = o.getString("responseCode");
                                 if(statusCode.equals("200")){
-                                            DeliveryOfficerDepositeInfoAddModel get_bank_orderlist = new  DeliveryOfficerDepositeInfoAddModel(
+                                            MultipleBankDepositeBySUPModel get_bank_orderlist = new  MultipleBankDepositeBySUPModel(
                                             o.getInt("id"),
                                             o.getString("orderidList"),
                                             o.getString("totalCashAmt"),
@@ -157,14 +150,14 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
                                     list.add(get_bank_orderlist);
 
                                 } else if(statusCode.equals("404")) {
-                                    Toast.makeText(DeliveryOfficerBankInfoAdd.this, o.getString("unsuccess"), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MultipleBankDepositeBySUP.this, o.getString("unsuccess"), Toast.LENGTH_SHORT).show();
                                 }
                             }
 
-                            deliveryOfficerDepositeInfoAddAdapter = new DeliveryOfficerDepositeInfoAddAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(deliveryOfficerDepositeInfoAddAdapter);
+                            multipleBankDepositeByAdapter = new MultipleBankDepositeByAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(multipleBankDepositeByAdapter);
                             swipeRefreshLayout.setRefreshing(false);
-                            deliveryOfficerDepositeInfoAddAdapter.setOnItemClickListener(DeliveryOfficerBankInfoAdd.this);
+                            multipleBankDepositeByAdapter.setOnItemClickListener(MultipleBankDepositeBySUP.this);
 
 
                             //String str = String.valueOf(db.getCashCount("cts", "Y"));
@@ -191,7 +184,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",user);
-                params1.put("flagreq","delivery_officer_bank_recipt_submit");
+                params1.put("flagreq","delivery_supervisor_bank_recipt_submit");
                 return params1;
             }
         };
@@ -211,7 +204,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent intent = new Intent(DeliveryOfficerBankInfoAdd.this, DeliveryTablayout.class);
+            Intent intent = new Intent(MultipleBankDepositeBySUP.this, DeliverySuperVisorTablayout.class);
             startActivity(intent);
         }
     }
@@ -230,7 +223,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                deliveryOfficerDepositeInfoAddAdapter.getFilter().filter(newText);
+                multipleBankDepositeByAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -238,7 +231,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(DeliveryOfficerBankInfoAdd.this, DeliveryOfficerBankInfoAdd.class);
+            Intent intent_stay = new Intent(MultipleBankDepositeBySUP.this, MultipleBankDepositeBySUP.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -267,50 +260,22 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(DeliveryOfficerBankInfoAdd.this,
-                    DeliveryTablayout.class);
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
             // Handle the camera action
-        } else if (id == R.id.nav_unpicked) {
-            Intent homeIntent = new Intent(DeliveryOfficerBankInfoAdd.this,
-                    DeliveryOfficerUnpicked.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_without_status) {
-            Intent homeIntent = new Intent(DeliveryOfficerBankInfoAdd.this,
-                    DeliveryWithoutStatus.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_on_hold) {
-            Intent homeIntent = new Intent(DeliveryOfficerBankInfoAdd.this,
-                    DeliveryOnHold.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_return_request) {
-            Intent homeIntent = new Intent(DeliveryOfficerBankInfoAdd.this,
-                    ReturnRequest.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_return) {
-            Intent homeIntent = new Intent(DeliveryOfficerBankInfoAdd.this,
-                    Delivery_ReturnToSupervisor.class);
-            startActivity(homeIntent);
-            // Handle the camera action
-        } else if (id == R.id.nav_new_expense) {
-            Intent expenseIntent = new Intent(DeliveryOfficerBankInfoAdd.this,
-                    DeliveryAddNewExpense.class);
-            startActivity(expenseIntent);
-        } else if (id == R.id.nav_cash) {
-            Intent homeIntent = new Intent(DeliveryOfficerBankInfoAdd.this,
-                    DeliveryCTS.class);
-            startActivity(homeIntent);
-        } else if (id == R.id.nav_logout) {
+        }
+        else if (id == R.id.nav_logout) {
+            //Creating an alert dialog to confirm logout
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
             alertDialogBuilder.setPositiveButton("Yes",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
+
+//                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+//                            db.deleteAssignedList(sqLiteDatabase);
 
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -328,7 +293,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliveryOfficerBankInfoAdd.this, LoginActivity.class);
+                            Intent intent = new Intent(MultipleBankDepositeBySUP.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -343,11 +308,12 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+
+        DrawerLayout drawer = findViewById(R.id.drawer_deliver_supervisor_tablayout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
@@ -357,7 +323,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
         list.clear();
 
-        deliveryOfficerDepositeInfoAddAdapter.notifyDataSetChanged();
+        multipleBankDepositeByAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
@@ -371,9 +337,9 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
 
     @Override
     public void onItemClick_view(View view, int position) {
-        DeliveryOfficerDepositeInfoAddModel clickedItem = list.get(position);
+        MultipleBankDepositeBySUPModel clickedItem = list.get(position);
 
-        Intent intentBankDeposite = new Intent(DeliveryOfficerBankInfoAdd.this, Bank_details_of_multiple_bank_by_DO.class);
+        Intent intentBankDeposite = new Intent(MultipleBankDepositeBySUP.this, Bank_details_of_multiple_bank_by_DO.class);
 
         String totCashAmt = clickedItem.getTotalCashAmt();
         int primaryKey = clickedItem.getId();
@@ -387,7 +353,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
 
     @Override
     public void onItemClick_view_details(View view1, int position1) {
-        DeliveryOfficerDepositeInfoAddModel clickedItem = list.get(position1);
+        MultipleBankDepositeBySUPModel clickedItem = list.get(position1);
 
         String orderIdList = clickedItem.getOrderidList();
         //String

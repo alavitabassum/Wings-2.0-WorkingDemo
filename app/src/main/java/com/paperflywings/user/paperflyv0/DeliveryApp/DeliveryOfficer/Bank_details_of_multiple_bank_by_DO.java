@@ -644,7 +644,7 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
 
         int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
 
-        double ratio = (originalSize > 100) ? (originalSize / 100) : 1.0;
+        double ratio = (originalSize > 400) ? (originalSize / 400) : 1.0;
 
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
         bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);

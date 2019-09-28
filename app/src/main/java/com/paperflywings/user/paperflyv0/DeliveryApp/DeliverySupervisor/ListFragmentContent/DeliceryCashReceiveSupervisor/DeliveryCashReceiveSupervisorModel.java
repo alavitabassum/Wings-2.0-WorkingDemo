@@ -8,6 +8,7 @@ public class DeliveryCashReceiveSupervisorModel {
     private String ctsBy;
     private String ctsTime;
     private String packagePrice;
+    private String ordPrimaryKey;
 
     public String getOrderidList() {
         return orderidList;
@@ -201,11 +202,12 @@ public class DeliveryCashReceiveSupervisorModel {
         this.collection = collection;
     }
 
-    public DeliveryCashReceiveSupervisorModel(int id ,String orderidList,String totalCashReceive, String serialNo, String totalOrders, String totalCashAmt, String submittedCashAmt, String dropPointEmp, String dropPointCode, String cashAmt, String partialReceive, String packagePrice, String cts, String ctsTime, String ctsBy, String crsTime, String crsBy) {
+    public DeliveryCashReceiveSupervisorModel(int id ,String orderidList,String totalCashReceive,String ordPrimaryKey, String serialNo, String totalOrders, String totalCashAmt, String submittedCashAmt, String dropPointEmp, String dropPointCode, String cashAmt, String partialReceive, String packagePrice, String cts, String ctsTime, String ctsBy, String crsTime, String crsBy) {
 
         this.id = id;
         this.orderidList = orderidList;
         this.totalCashReceive = totalCashReceive;
+        this.ordPrimaryKey = ordPrimaryKey;
         this.serialNo = serialNo;
         this.totalOrders = totalOrders;
         this.totalCashAmt = totalCashAmt;
@@ -223,6 +225,14 @@ public class DeliveryCashReceiveSupervisorModel {
         this.crsBy = crsBy;
 
 
+    }
+
+    public String getOrdPrimaryKey() {
+        return ordPrimaryKey;
+    }
+
+    public void setOrdPrimaryKey(String ordPrimaryKey) {
+        this.ordPrimaryKey = ordPrimaryKey;
     }
 
     public DeliveryCashReceiveSupervisorModel() {
