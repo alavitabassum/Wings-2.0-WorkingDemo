@@ -41,6 +41,7 @@ import com.paperflywings.user.paperflyv0.AppUpdateChecker;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourier;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHoldModel;
@@ -69,9 +70,7 @@ public class DeliveryTablayout extends AppCompatActivity
     TabLayout tabLayout;
     ViewPager viewPager;
     PageAdapter pageAdapter;
-    TabItem tabChats;
-    TabItem tabStatus;
-    TabItem tabCalls;
+    TabItem tabChats, tabBank,tabStatus,tabCalls;
 
     BarcodeDbHelper db;
     private RequestQueue requestQueue;
@@ -116,6 +115,7 @@ public class DeliveryTablayout extends AppCompatActivity
 */
         tabLayout = findViewById(R.id.tablayout);
         tabChats = findViewById(R.id.tabChats);
+        tabBank = findViewById(R.id.tabBank);
         tabStatus = findViewById(R.id.tabStatus);
         tabCalls = findViewById(R.id.tabCalls);
         viewPager = findViewById(R.id.viewPager);
@@ -131,6 +131,7 @@ public class DeliveryTablayout extends AppCompatActivity
             loadReturnReason();
             loadExpenseReason();
             loadBankDetails();
+            loadBankDepositePending(username);
         }
         else {
 //            getData(username);
@@ -194,6 +195,16 @@ public class DeliveryTablayout extends AppCompatActivity
                                 R.color.colorAccent2));
                     }
                 } else if (tab.getPosition() == 2) {
+                    toolbar.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
+                            R.color.black_overlay));
+                    tabLayout.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
+                            R.color.black_overlay));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        getWindow().setStatusBarColor(ContextCompat.getColor(DeliveryTablayout.this,
+                                R.color.black_overlay));
+                    }
+                }
+                else if (tab.getPosition() == 3) {
                     toolbar.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
                             R.color.colorAccent3));
                     tabLayout.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
@@ -563,6 +574,76 @@ public class DeliveryTablayout extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    private void loadBankDepositePending (final String user){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+//                        int i1 =0;
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+
+                                String statusCode = o.getString("responseCode");
+                                if(statusCode.equals("200")){
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryTablayout.this);
+                                    alertDialogBuilder.setMessage("You have pending Bank Deposit Record Slip Entry left.Update with deposite date, bank name, slip number, deposite amount and deposit slip image.");
+                                    alertDialogBuilder.setPositiveButton("Click to update-->",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    Intent intent = new Intent(DeliveryTablayout.this, DeliveryOfficerBankInfoAdd.class);
+                                                    startActivity(intent);
+                                                }
+                                            });
+
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+
+                                } else if(statusCode.equals("404")) {
+                                    Toast.makeText(DeliveryTablayout.this, "All files are up-to-date", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            //String str = String.valueOf(db.getCashCount("cts", "Y"));
+                           /* String str = String.valueOf(i1);
+                            CashCount_text.setText(str);*/
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            //swipeRefreshLayout.setRefreshing(false);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // progress.dismiss();
+                        //swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Server not connected" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",user);
+                params1.put("flagreq","delivery_officer_bank_recipt_submit");
+                return params1;
+            }
+        };
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        requestQueue.add(stringRequest);
+    }
 
     private void loadOnHoldList (final String user){
 

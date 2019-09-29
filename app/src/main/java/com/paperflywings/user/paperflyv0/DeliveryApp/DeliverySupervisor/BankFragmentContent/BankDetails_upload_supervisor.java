@@ -451,7 +451,7 @@ public class BankDetails_upload_supervisor extends AppCompatActivity
                 imgView2.setImageBitmap(bitmap2);
 
             } else {
-                bitmap = null;
+                bitmap2 = null;
             }
         }
     }

@@ -32,6 +32,12 @@
             android:text="Delivery" />
 
         <android.support.design.widget.TabItem
+            android:id="@+id/tabBank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bank" />
+
+        <android.support.design.widget.TabItem
             android:id="@+id/tabStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

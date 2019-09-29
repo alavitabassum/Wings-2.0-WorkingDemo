@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor.SERIAL_NO;
+import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeByDOAcceptBySup.BankDepositeA.PRIMARY_KEY;
 
 public class Bank_DepositeSlip_Image extends AppCompatActivity {
 
@@ -46,14 +46,14 @@ public class Bank_DepositeSlip_Image extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String serialNo = intent.getStringExtra(SERIAL_NO);
+        String primary_key = intent.getStringExtra(PRIMARY_KEY);
 
         image = findViewById(R.id.imageInLarge) ;
 
-        loadImageUrl(serialNo);
+        loadImageUrl(primary_key);
     }
 
-    private void loadImageUrl(final String serialNo)
+    private void loadImageUrl(final String primary_key)
     {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -112,7 +112,7 @@ public class Bank_DepositeSlip_Image extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String,String> params1 = new HashMap<String,String>();
-                params1.put("serialNo",serialNo);
+                params1.put("primary_key",primary_key);
                 params1.put("flagreq","load_image_url");
                 return params1;
             }

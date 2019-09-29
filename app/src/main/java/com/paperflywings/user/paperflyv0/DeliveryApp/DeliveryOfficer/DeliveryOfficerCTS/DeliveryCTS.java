@@ -39,7 +39,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.Bank_details_upload_by_DO;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCRS.DeliveryCashRS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
@@ -74,7 +74,9 @@ public class DeliveryCTS extends AppCompatActivity
     ProgressDialog progressDialog;
 
     String itemOrders = "";
+    String itemPrimaryIds = "";
     String totalCash = "";
+    String totalCash1 = "";
     public final String TOTAL_CASH = "total_cash";
     public final String TOTAL_ORDER= "total_order";
 
@@ -99,6 +101,7 @@ public class DeliveryCTS extends AppCompatActivity
         totalCollection = (TextView)findViewById(R.id.CashCollection);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view);
         recyclerView_pul.setAdapter(DeliveryCTSAdapter);
         list = new ArrayList<DeliveryCTSModel>();
@@ -119,7 +122,7 @@ public class DeliveryCTS extends AppCompatActivity
         list.clear();
         swipeRefreshLayout.setRefreshing(true);
 
-         if(nInfo!= null && nInfo.isConnected())
+        if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(username);
         }
@@ -396,6 +399,7 @@ public class DeliveryCTS extends AppCompatActivity
                                         if(DeliveryCTSAdapter.imageModelArrayList.get(i).getSelected()) {
                                             count++;
                                             itemOrders = itemOrders + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getOrderid();
+                                            itemPrimaryIds = itemPrimaryIds + "," + DeliveryCTSAdapter.imageModelArrayList.get(i).getSql_primary_id();
                                         }
                                         tv.setText(count + " Orders have been selected for cash.");
                                     }
@@ -443,6 +447,7 @@ public class DeliveryCTS extends AppCompatActivity
                                                                         @Override
                                                                         public void onClick(DialogInterface arg0, int arg1) {
                                                                             itemOrders = "";
+                                                                            itemPrimaryIds = "";
                                                                         }
                                                                     });
                                                             alertDialogBuilder.setCancelable(false);
@@ -478,27 +483,41 @@ public class DeliveryCTS extends AppCompatActivity
                                                                         orderIds.setText("Please enter required fields First!!");
                                                                     }
                                                                     else {
-                                                                        String flagReqst = "delivery_officer_CTS";
-                                                                        UpdateBankInfo(username,flagReqst,itemOrders,totalCashs,CashCollected,CashComments);
-                                                                        //orderIds.setText("Please Select All Orders!!");
-                                            /*} else {
-                                                UpdateBankInfo(item, username);
-                                                //GetValueFromEditText(sql_primary_id, "Delivery", "Cash", username, currentDateTime);
-*/
+                                                                        UpdateCashInfo(username,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments, "C");
                                                                         alertDialog.dismiss();
                                                                         startActivity(intent);
                                                                         //loadRecyclerView(username);
                                                                         itemOrders = "";
+                                                                        itemPrimaryIds = "";
                                                                     }
                                                                 }
                                                             });
 
                                                             break;
-                                                        case 1:
+                                                        /*case 1:
                                                             Intent intentBankDeposite = new Intent(DeliveryCTS.this, Bank_details_upload_by_DO.class);
                                                             intentBankDeposite.putExtra(TOTAL_CASH, tv1.getText().toString());
                                                             intentBankDeposite.putExtra(TOTAL_ORDER, tv.getText().toString());
                                                             startActivity(intentBankDeposite);
+                                                            break;*/
+                                                        case 1:
+                                                            /*intentBankDeposite.putExtra(TOTAL_CASH, tv1.getText().toString());
+                                                            intentBankDeposite.putExtra(TOTAL_ORDER, tv.getText().toString());*/
+                                                            /*float CashCount = 0.0f;
+                                                            totalCash1 = String.valueOf(db.getTotalCash("cts"));
+                                                            CashCount = Float.parseFloat(totalCash1);
+                                                            intentBankDeposite.putExtra(TOTAL_CASH, CashCount);*/
+                                                            float CashCount = 0.0f;
+                                                            totalCash1 = String.valueOf(db.getTotalCash("cts"));
+                                                            CashCount = Float.parseFloat(totalCash1);
+                                                            if (itemOrders.equals("")){
+                                                                Toast.makeText(DeliveryCTS.this, "Select all orders!", Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                UpdateBankInfo(username,itemPrimaryIds,itemOrders, String.valueOf(CashCount), String.valueOf(CashCount),"","P");
+
+                                                            }
+
+                                                            //startActivity(intentBankDeposite);
                                                             break;
                                                         default:
                                                             break;
@@ -722,8 +741,7 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-    private void UpdateBankInfo(final String createdBy,final String flagReqst,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment) {
-
+    private void UpdateCashInfo(final String createdBy,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment, final String type) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>() {
                     @Override
@@ -751,7 +769,59 @@ public class DeliveryCTS extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", createdBy);
-                params.put("flagreq", flagReqst);
+                params.put("cashSubmissionType", type);
+                params.put("sqlPrimaryId", sqlPrimaryIds);
+                params.put("flagreq", "delivery_officer_CTS");
+                params.put("orderid", items);
+                params.put("totalCashAmt", totalCashAmt);
+                params.put("submittedCashAmt", submittedCashAmt);
+                params.put("comment", CashComment);
+                return params;
+            }
+        };
+        try {
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliveryCTS.this, "Server Error! cts", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void UpdateBankInfo(final String createdBy,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment, final String type) {
+        StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject obj = new JSONObject(response);
+                            if (!obj.getBoolean("error")) {
+                                Intent intentBankDeposite = new Intent(DeliveryCTS.this, DeliveryOfficerBankInfoAdd.class);
+                                startActivity(intentBankDeposite);
+                                Toast.makeText(DeliveryCTS.this, "Successful", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(DeliveryCTS.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DeliveryCTS.this, "Server disconnected! "+error, Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("username", createdBy);
+                params.put("cashSubmissionType", type);
+                params.put("sqlPrimaryId", sqlPrimaryIds);
+                params.put("flagreq", "delivery_officer_bank_orders");
                 params.put("orderid", items);
                 params.put("totalCashAmt", totalCashAmt);
                 params.put("submittedCashAmt", submittedCashAmt);
@@ -780,6 +850,7 @@ public class DeliveryCTS extends AppCompatActivity
 
                 model.setSelected(isSelect);
                 model.setOrderid(list.get(i).getOrderid());
+                model.setSql_primary_id(list.get(i).getSql_primary_id());
                 model.setMerOrderRef(list.get(i).getMerOrderRef());
                 model.setCashAmt(list.get(i).getCashAmt());
                 model.setPackagePrice(list.get(i).getPackagePrice());
@@ -796,6 +867,7 @@ public class DeliveryCTS extends AppCompatActivity
 
                 model.setSelected(isSelect);
                 model.setOrderid(list.get(i).getOrderid());
+                model.setSql_primary_id(list.get(i).getSql_primary_id());
                 model.setMerOrderRef(list.get(i).getMerOrderRef());
                 model.setCashAmt(list.get(i).getCashAmt());
                 model.setPackagePrice(list.get(i).getPackagePrice());
@@ -807,6 +879,57 @@ public class DeliveryCTS extends AppCompatActivity
         return listOfOrders;
     }
 
+    // Click listner for details
+    @Override
+    public void onItemClick_view_details(View view1, int position1) {
+        DeliveryCTSModel clickedItem = list.get(position1);
+
+        String orderId = clickedItem.getOrderid();
+        String merRef = clickedItem.getMerOrderRef();
+        String cashType = clickedItem.getCashType();
+        String packagePrice = clickedItem.getPackagePrice();
+        String cashAmt = clickedItem.getCashAmt();
+        String dateCollection = clickedItem.getCashTime();
+        String collectionRemarks = clickedItem.getCashComment();
+        String customerName = clickedItem.getCustname();
+        String customerAddress = clickedItem.getCustaddress();
+
+        final View mViewDetails = getLayoutInflater().inflate(R.layout.delivery_cash_details, null);
+        final TextView merOrderRef = mViewDetails.findViewById(R.id.merorderRef);
+        final TextView transactionType = mViewDetails.findViewById(R.id.transactionType);
+        final TextView packagePriceTitle = mViewDetails.findViewById(R.id.packagePrice);
+        final TextView collectionAmt = mViewDetails.findViewById(R.id.collectionAmt);
+        final TextView collectionDate = mViewDetails.findViewById(R.id.collectionDate);
+        final TextView  remarks = mViewDetails.findViewById(R.id.remarks);
+        final TextView  custName = mViewDetails.findViewById(R.id.custName);
+        final TextView  custAddress = mViewDetails.findViewById(R.id.custAddress);
+
+        merOrderRef.setText(merRef);
+        transactionType.setText(cashType);
+        packagePriceTitle.setText(packagePrice+ " Taka");
+        collectionAmt.setText(cashAmt+ " Taka");
+        collectionDate.setText(dateCollection);
+        remarks.setText(collectionRemarks);
+        custName.setText(customerName);
+        custAddress.setText(customerAddress);
+
+        //String
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(orderId);
+        alertDialogBuilder.setNegativeButton("Close",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                });
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setView(mViewDetails);
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    // Dispute raise functionality
     @Override
     public void onItemClick_view(View view, int position) {
         // mis-clicking prevention, using threshold of 500 ms
@@ -874,55 +997,6 @@ public class DeliveryCTS extends AppCompatActivity
                 }
             }
         });
-    }
-
-    @Override
-    public void onItemClick_view_details(View view1, int position1) {
-        DeliveryCTSModel clickedItem = list.get(position1);
-
-        String orderId = clickedItem.getOrderid();
-        String merRef = clickedItem.getMerOrderRef();
-        String cashType = clickedItem.getCashType();
-        String packagePrice = clickedItem.getPackagePrice();
-        String cashAmt = clickedItem.getCashAmt();
-        String dateCollection = clickedItem.getCashTime();
-        String collectionRemarks = clickedItem.getCashComment();
-        String customerName = clickedItem.getCustname();
-        String customerAddress = clickedItem.getCustaddress();
-
-        final View mViewDetails = getLayoutInflater().inflate(R.layout.delivery_cash_details, null);
-        final TextView merOrderRef = mViewDetails.findViewById(R.id.merorderRef);
-        final TextView transactionType = mViewDetails.findViewById(R.id.transactionType);
-        final TextView packagePriceTitle = mViewDetails.findViewById(R.id.packagePrice);
-        final TextView collectionAmt = mViewDetails.findViewById(R.id.collectionAmt);
-        final TextView collectionDate = mViewDetails.findViewById(R.id.collectionDate);
-        final TextView  remarks = mViewDetails.findViewById(R.id.remarks);
-        final TextView  custName = mViewDetails.findViewById(R.id.custName);
-        final TextView  custAddress = mViewDetails.findViewById(R.id.custAddress);
-
-        merOrderRef.setText(merRef);
-        transactionType.setText(cashType);
-        packagePriceTitle.setText(packagePrice+ " Taka");
-        collectionAmt.setText(cashAmt+ " Taka");
-        collectionDate.setText(dateCollection);
-        remarks.setText(collectionRemarks);
-        custName.setText(customerName);
-        custAddress.setText(customerAddress);
-
-        //String
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(orderId);
-        alertDialogBuilder.setNegativeButton("Close",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                    }
-                });
-        alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setView(mViewDetails);
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
     }
 
     private void disputeForCash (final String username, final String disputeComment, final int sql_primary_id){
