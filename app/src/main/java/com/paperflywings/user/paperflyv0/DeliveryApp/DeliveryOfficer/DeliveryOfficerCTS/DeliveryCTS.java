@@ -481,9 +481,11 @@ public class DeliveryCTS extends AppCompatActivity
                                                                     }
                                                                     else if(CashCollected.isEmpty()){
                                                                         orderIds.setText("Please enter required fields First!!");
+                                                                    } else if (!totalCashs.equals(""+CashCollected)){
+                                                                        orderIds.setText("Total cash and cash-collection amount mismatch! Remove the dispute order and try again!");
                                                                     }
                                                                     else {
-                                                                        UpdateCashInfo(username,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments, "C");
+                                                                        UpdateCashInfo(username,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments, "P");
                                                                         alertDialog.dismiss();
                                                                         startActivity(intent);
                                                                         //loadRecyclerView(username);

@@ -999,7 +999,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 params.put("depositAmt5", depositeAmt5);
                 params.put("image5",img5);
 
-                params.put("flagreq", "Delivery_complete_bank_deposite_slip_by_DO1");
+                params.put("flagreq", "Delivery_complete_bank_deposite_slip_by_SUP");
 
                 return params;
             }

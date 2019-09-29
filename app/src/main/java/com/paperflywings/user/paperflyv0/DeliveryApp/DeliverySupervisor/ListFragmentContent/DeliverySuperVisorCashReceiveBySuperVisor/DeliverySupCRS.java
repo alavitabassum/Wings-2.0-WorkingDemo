@@ -480,4 +480,23 @@ public class DeliverySupCRS extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onItemClick_view_ordList(View view1, int position1) {
+        DeliverySupCRSModel clickedItem = list.get(position1);
+
+        String orderIdList = clickedItem.getOrderidList();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Order Ids: "+orderIdList);
+        alertDialogBuilder.setNegativeButton("Close",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
+
 }

@@ -27,6 +27,7 @@ public class DeliverySupCRSAdapter extends RecyclerView.Adapter<DeliverySupCRSAd
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
+        void onItemClick_view_ordList(View view1, int position1);
     }
 
     public void setOnItemClickListener(OnItemClickListener listner) {
@@ -72,6 +73,19 @@ public class DeliverySupCRSAdapter extends RecyclerView.Adapter<DeliverySupCRSAd
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             mListner.onItemClick(itemView, position);
+                        }
+                    }
+                }
+            });
+
+            item_serial_no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListner != null) {
+                        // Position of the item will be saved in this variable
+                        int position1 = getAdapterPosition();
+                        if (position1 != RecyclerView.NO_POSITION) {
+                            mListner.onItemClick_view_ordList(itemView, position1);
                         }
                     }
                 }

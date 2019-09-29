@@ -72,7 +72,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
     String itemOrders = "";
     String itemPrimaryIds = "";
+    String serialNo = "";
     int count = 0;
+    int clickCount = 0;
     String totalCash1 = "";
     public static final String CTS_BY = "cts_by";
     public static final String TOTAL_CASH = "total_cash";
@@ -84,7 +86,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db=new BarcodeDbHelper(getApplicationContext());
+        db = new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
         setContentView(R.layout.activity_delivery_cash_receive_supervisor);
@@ -112,7 +114,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
         final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
-        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "PointCode: " + pointCode, Toast.LENGTH_SHORT).show();
 
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         final NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -124,12 +126,10 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
         swipeRefreshLayout.setRefreshing(true);
 
-        if(nInfo!= null && nInfo.isConnected())
-        {
-            loadCashReceiveData(username,pointCode);
-        }
-        else {
-            Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+        if (nInfo != null && nInfo.isConnected()) {
+            loadCashReceiveData(username, pointCode);
+        } else {
+            Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
         }
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -141,21 +141,28 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                list = getModel(true);
-                deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-                recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
-                deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
-                } catch (NullPointerException e){
+
+                try {
+
+                    list = getModel(true);
+                    deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list, getApplicationContext());
+                    recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+                    deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
+                } catch (NullPointerException e) {
                     Toast.makeText(DeliveryCashReceiveSupervisor.this, "Nothing to select", Toast.LENGTH_SHORT).show();
                 }
+                btndeselect.setEnabled(true);
+                btnselect.setEnabled(false);
             }
         });
+
+
 
         btndeselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
+
                 list = getModel(false);
                 deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
                 recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
@@ -163,6 +170,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 } catch (NullPointerException e){
                     Toast.makeText(DeliveryCashReceiveSupervisor.this, "Nothing to select", Toast.LENGTH_SHORT).show();
                 }
+
+                btndeselect.setEnabled(false);
+                btnselect.setEnabled(true);
             }
         });
 
@@ -174,6 +184,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                         count++;
                         itemOrders = itemOrders + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderidList();
                         itemPrimaryIds = itemPrimaryIds + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrdPrimaryKey();
+                        serialNo = serialNo + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSerialNo();
                     }
                     // tv.setText(count + " Orders have been selected for cash.");
                 }
@@ -187,8 +198,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 if (itemOrders.equals("")){
                     Toast.makeText(DeliveryCashReceiveSupervisor.this, "Select all orders!", Toast.LENGTH_SHORT).show();
                 } else {
-                    UpdateBankInfo(username,itemPrimaryIds,itemOrders, totalCash, totalCash,"C","P");
-
+                    UpdateBankInfo(username,itemPrimaryIds,serialNo,itemOrders, totalCash, totalCash,"C","P");
                 }
                 intent.putExtra(TOTAL_CASH, totalCash);
                 startActivity(intent);
@@ -201,7 +211,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         });
     }
 
-    private void UpdateBankInfo(final String createdBy,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment, final String type) {
+    private void UpdateBankInfo(final String createdBy,final String sqlPrimaryIds,final String serialNo,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment, final String type) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
                 new Response.Listener<String>() {
                     @Override
@@ -233,6 +243,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 params.put("username", createdBy);
                 params.put("cashSubmissionType", type);
                 params.put("sqlPrimaryId", sqlPrimaryIds);
+                params.put("serialNo", serialNo);
                 params.put("flagreq", "delivery_supervisor_bank_orders");
                 params.put("orderid", items);
                 params.put("totalCashAmt", totalCashAmt);
@@ -276,11 +287,13 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 model.setCts(list.get(i).getCts());
                 listOfOrders.add(model);
 
-                if (!list.contains(list.get(i).getTotalCashReceive())) {
-                        totalCash = totalCash + Integer.parseInt(String.valueOf(list.get(i).getTotalCashReceive()));
-                } else {
-
-                }
+//                if (!listOfOrders.contains(list.get(i).getSerialNo())) {
+//                      totalCash = totalCash + Integer.parseInt(String.valueOf(list.get(i).getTotalCashReceive()));
+//                    Toast.makeText(this, ""+listOfOrders, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(this, ""+totalCash, Toast.LENGTH_SHORT).show();
+//                    //  totalCash = totalCash + Integer.parseInt(String.valueOf(list.get(i).getTotalCashReceive()));
+//                }
 
                 //totalCashCollection.setText(totalCash+" Taka");
             }
@@ -309,15 +322,33 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 model.setCts(list.get(i).getCts());
                 listOfOrders.add(model);
 
-                if(totalCash != 0){
+                totalCash = 0;
+
+                /*if(totalCash != 0){
                     totalCash = totalCash - Integer.parseInt(String.valueOf(list.get(i).getTotalCashReceive()));
+                } else {
+                    totalCash = 0;
+                }*/
+            }
+        }
+
+        for (int i = 0; i < listOfOrders.size(); i++){
+            if(listOfOrders.get(i).getSelected() == true) {
+                if (!listOfOrders.contains(i)) {
+                    totalCash = totalCash + Integer.parseInt(String.valueOf(listOfOrders.get(i).getTotalCashReceive()));
+                }else {
+                    totalCash = totalCash + 0;
+                }
+            } else {
+                if(totalCash != 0){
+                    totalCash = totalCash - Integer.parseInt(String.valueOf(listOfOrders.get(i).getTotalCashReceive()));
                 } else {
                     totalCash = 0;
                 }
             }
-
-
+            // tv.setText(count + " Orders have been selected for cash.");
         }
+
         totalCashCollection.setText(totalCash+" Taka");
         return listOfOrders;
     }
