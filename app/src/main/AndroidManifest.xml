@@ -37,8 +37,14 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP"
+            android:label="@string/title_activity_multiple_bank_deposite_by_DO"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.Bank_details_of_multiple_bank_by_SUP"
             android:label="@string/title_activity_multiple_bank_deposite_by_sup"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"

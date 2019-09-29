@@ -232,19 +232,20 @@
     <string name="title_activity_delivery_sup_cash">Cash</string>
 
     <string name="title_activity_delivery_cash_receive_supervisor">Cash Recieve</string>
-    <string name="title_activity_return_receive_supervisor">Supervisor Recieve</string>
+    <string name="title_activity_return_receive_supervisor">Return Recieve</string>
     <string name="title_activity_bank_deposite_supervisor">Supervisor Bank Deposite</string>
     <string name="title_activity_delivery_sup_bank_report">Bank Report</string>
     <string name="title_activity_delivery_re_attempt">Delivery Re-Attempt</string>
     <string name="title_activity_bank_details_upload_supervisor">Bank Details
     </string>
     <string name="title_activity_delivery_sup_crs">Cash Receive</string>
-    <string name="title_activity_bank_details_upload_by__do">Bank Deposite</string>
+    <string name="title_activity_bank_details_upload_by__do">Delivery-Officer Bank Deposite</string>
     <string name="title_activity_delivery_sup_dp2_done">Received Percels</string>
     <string name="title_activity_delivery_sup_dp2_not_done">Percels Not-Received</string>
-    <string name="title_activity_delivery_officer_bank_info_add">DeliveryOfficerBankInfoAdd</string>
-    <string name="title_activity_bank_deposite">BankDepositeDP2</string>
-    <string name="title_activity_multiple_bank_deposite_by_sup">MultipleBankDepositeBySUP</string>
+    <string name="title_activity_delivery_officer_bank_info_add">Delivery-Officer Bank Deposite</string>
+    <string name="title_activity_bank_deposite">DP2 Management</string>
+    <string name="title_activity_multiple_bank_deposite_by_DO">Delivery-Officer Bank Deposite</string>
+    <string name="title_activity_multiple_bank_deposite_by_sup">Supervisor Bank Deposite</string>
 
 
 </resources>

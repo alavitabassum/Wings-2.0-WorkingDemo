@@ -138,26 +138,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
-            if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelected()) {
-                count++;
-                itemOrders = itemOrders + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderid();
-                itemPrimaryIds = itemPrimaryIds + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrdPrimaryKey();
-            }
-           // tv.setText(count + " Orders have been selected for cash.");
-        }
-        //orderIds.setText(itemOrders);
-        count = 0;
-      /*  float CashCount = 0.0f;
-        for (int i = 0; i <DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++) {
-            if(DeliveryCashReceiveSupervisorAdapter.list.get(i).getSelected()) {
-                totalCash = String.valueOf(db.getTotalCash("cts"));
-                CashCount = Float.parseFloat(totalCash);
-                //tv1.setText(""+CashCount);
-            }
-        }*/
-
         btnselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,7 +169,16 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
+                    if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelected()) {
+                        count++;
+                        itemOrders = itemOrders + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderidList();
+                        itemPrimaryIds = itemPrimaryIds + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrdPrimaryKey();
+                    }
+                    // tv.setText(count + " Orders have been selected for cash.");
+                }
 
+                count = 0;
 
             try{
                 String totalCash = String.valueOf(db.getTotalReceivedCash());
@@ -204,15 +193,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 intent.putExtra(TOTAL_CASH, totalCash);
                 startActivity(intent);
 
-                /*float CashCount = 0.0f;
-                                                            totalCash1 = String.valueOf(db.getTotalCash("cts"));
-                                                            CashCount = Float.parseFloat(totalCash1);
-                                                            if (itemOrders.equals("")){
-                                                                Toast.makeText(DeliveryCTS.this, "Select all orders!", Toast.LENGTH_SHORT).show();
-                                                            } else {
-                                                                UpdateBankInfo(username,itemPrimaryIds,itemOrders, String.valueOf(CashCount), String.valueOf(CashCount),"","P");
 
-                                                            }*/
             } catch (NullPointerException e){
                 Toast.makeText(DeliveryCashReceiveSupervisor.this, "Nothing to bank", Toast.LENGTH_SHORT).show();
             }

@@ -11,7 +11,6 @@ import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.R;
@@ -143,14 +142,14 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
 
         //final boolean b = imageModelArrayList.get(i).getSelected();
-        final String cts = list.get(i).getCts();
+      /*  final String cts = list.get(i).getCts();
 
         if(cts.equals("B")){
             viewHolder.item_view_image.setText("View Image");
         }
         if (cts.equals("S")){
             viewHolder.item_view_image.setText("");
-        }
+        }*/
         /*if(b == false){
             //getModel(false);
             viewHolder.item_bank_check.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -178,7 +177,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
                         }
                     }
 
-                    Toast.makeText(context,totalCash + " remove clicked!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,totalCash + " remove clicked!", Toast.LENGTH_SHORT).show();
 
 
                 } else {
@@ -190,7 +189,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
                         }
                     }
 
-                    Toast.makeText(context, totalCash + " clicked!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, totalCash + " clicked!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

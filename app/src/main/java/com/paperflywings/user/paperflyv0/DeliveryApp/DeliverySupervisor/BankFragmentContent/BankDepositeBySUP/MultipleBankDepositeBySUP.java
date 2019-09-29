@@ -34,8 +34,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.Bank_details_of_multiple_bank_by_DO;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Bank_details_of_multiple_bank_by_SUP;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -53,7 +54,6 @@ public class MultipleBankDepositeBySUP extends AppCompatActivity
     BarcodeDbHelper db;
     private long mLastClickTime = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
-    private TextView CashCount_text,totalCollection, btnselect, btndeselect;
     private MultipleBankDepositeByAdapter multipleBankDepositeByAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
@@ -63,8 +63,6 @@ public class MultipleBankDepositeBySUP extends AppCompatActivity
     public static final String TOTAL_C_AMT = "Total C Amt";
     public static final String SERIAL_NO = "Serial No";
     public static final String PRIMARY_KEY = "Primary Key";
-    //public static final String APIORDERID = "Api Order ID";
-
 
     public static final String DELIVERY_BANK_DETAILS_UPLOAD_BY_DO = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
@@ -76,7 +74,7 @@ public class MultipleBankDepositeBySUP extends AppCompatActivity
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        setContentView(R.layout.activity_delivery_officer_bank_info_add);
+        setContentView(R.layout.activity_multiple_bank_deposite_by_sup);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -204,7 +202,7 @@ public class MultipleBankDepositeBySUP extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent intent = new Intent(MultipleBankDepositeBySUP.this, DeliverySuperVisorTablayout.class);
+            Intent intent = new Intent(MultipleBankDepositeBySUP.this, DeliveryCashReceiveSupervisor.class);
             startActivity(intent);
         }
     }
@@ -339,7 +337,7 @@ public class MultipleBankDepositeBySUP extends AppCompatActivity
     public void onItemClick_view(View view, int position) {
         MultipleBankDepositeBySUPModel clickedItem = list.get(position);
 
-        Intent intentBankDeposite = new Intent(MultipleBankDepositeBySUP.this, Bank_details_of_multiple_bank_by_DO.class);
+        Intent intentBankDeposite = new Intent(MultipleBankDepositeBySUP.this, Bank_details_of_multiple_bank_by_SUP.class);
 
         String totCashAmt = clickedItem.getTotalCashAmt();
         int primaryKey = clickedItem.getId();
