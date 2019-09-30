@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -175,12 +177,12 @@ public class DeliverySupCashDispute extends AppCompatActivity implements Deliver
 
         final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
        // Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
-       // final View mView = getLayoutInflater().inflate(R.layout.delivery_sup_cash_dispute_details, null);
+        final View mView = getLayoutInflater().inflate(R.layout.delivery_sup_cash_dispute_details, null);
       /*  final TextView CourierName = mView.findViewById(R.id.courier_name);
         final TextView courierTime = mView.findViewById(R.id.courier_time);*/
-        //final TextView CTSDate = mView.findViewById(R.id.cts_date);
-        //final TextView CTSTime = mView.findViewById(R.id.cts_time);
-        //final TextView remarks = mView.findViewById(R.id.remarks);
+        final TextView CTSDate = mView.findViewById(R.id.cts_date);
+        final TextView CTSTime = mView.findViewById(R.id.cts_time);
+        final TextView remarks = mView.findViewById(R.id.remarks);
 
         DeliverySupCashDisputeModel clickedItem = list.get(position2);
 
@@ -193,23 +195,23 @@ public class DeliverySupCashDispute extends AppCompatActivity implements Deliver
 
       /*  CourierName.setText(" "+courier_Name);
         courierTime.setText(" "+" "+courier_Time);*/
-       // CTSDate.setText(" "+cts_date);
+        CTSDate.setText(" "+cts_date);
 
         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy KK:mm:ss a");
-        /*try {
+        try {
             CTSTime.setText(" "+" "+outputFormat.format(inputFormat.parse(cts_time)).substring(11,22));
         } catch (ParseException e) {
             e.printStackTrace();
-        }*/
+        }
 
-        //remarks.setText(" "+disputeComments);
+        remarks.setText(" "+disputeComments);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DeliverySupCashDispute.this);
 
         // Set a title for alert dialog
         builder.setTitle("Order Id: "+" "+orderId);
-       // builder.setView(mView);
+        builder.setView(mView);
         // Ask the final question
        // builder.setMessage("Want to apply big font size?");
 
@@ -218,11 +220,11 @@ public class DeliverySupCashDispute extends AppCompatActivity implements Deliver
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
-                   /* case DialogInterface.BUTTON_POSITIVE:
+                    case DialogInterface.BUTTON_POSITIVE:
                         // User clicked the Yes button
                         // tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 35);
                         break;
-*/
+
                     case DialogInterface.BUTTON_NEGATIVE:
                         // User clicked the No button
                         break;
