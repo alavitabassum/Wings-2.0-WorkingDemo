@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.paperflywings.user.paperflyv0.Config;
-import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.CourierSend.CourierResenByScan.DeliveryReturnManagementCourierSend;
 import com.paperflywings.user.paperflyv0.R;
 
 
@@ -25,7 +24,7 @@ import com.paperflywings.user.paperflyv0.R;
  */
 public class CourierSFragment extends Fragment {
 
-    private CardView Courier_send,View_details;
+    private CardView Courier_send,View_details,Courier_receive;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,6 +38,7 @@ public class CourierSFragment extends Fragment {
         //setHasOptionsMenu(true);
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.fragment_supervisor_courier,container,false);
         Courier_send = (CardView)viewGroup.findViewById(R.id.courier_send_id);
+        Courier_receive = (CardView)viewGroup.findViewById(R.id.courier_receive_id);
         View_details = (CardView)viewGroup.findViewById(R.id.view_details_id);
 
         /*Courier_send.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +52,17 @@ public class CourierSFragment extends Fragment {
         Courier_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryReturnManagementCourierSend.class);
+                //Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryReturnManagementCourierSend.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                startActivity(intent);
+            }
+        });
+
+        Courier_receive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryReturnManagementCourierSend.class);
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intent);
             }
         });
@@ -62,8 +72,8 @@ public class CourierSFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
-               /* Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCourier.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                startActivity(intent);
             }
         });
 

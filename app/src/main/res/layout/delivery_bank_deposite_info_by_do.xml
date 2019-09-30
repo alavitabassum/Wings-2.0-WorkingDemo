@@ -116,8 +116,8 @@ card_view_assign:contentPadding="4dp">
         android:layout_marginTop="120dp"
         android:lines="13"
         android:maxLines="15"
-        android:text="নির্দেশণা :\n\t1. Serial No-এর উপর ক্লিক করে অর্ডার গুলো দেখে নেই.
-        \n\t2. এই Serial No-এর অর্ডার গুলোর টাকা এক বা একাধিক ব্যাংকে জমা করা হয়ে থাকলে Bank Deposite Slip এ ক্লিক পরের পেজ এ যাবো.
+        android:text="নির্দেশণা :\n\t1. Serial No-এর উপর ক্লিক করে অর্ডার গুলো দেখে নেই.\n
+        \n\t2. এই Serial No-এর অর্ডার গুলোর টাকা এক বা একাধিক ব্যাংকে জমা করা হয়ে থাকলে Bank Deposite Slip এ ক্লিক পরের পেজ এ যাবো.\n
         \n\t3. এই Serial No-এর অর্ডারগুলোর মোট টাকা কত তারিখে, কোন ব্যাংকে, স্লিপ নম্বর, টাকার পরিমাণ এবং স্লিপ এর ১ টি ছবি সহ ব্যাঙ্ক ডিপোজিট করা হয়েছে তার রেকর্ড এক এ এক এ দিয়ে Bank Depostie চাপ দিয়ে Submit করে দিবো."
         android:textAlignment="textStart"
         android:textColor="#5E35B1"

@@ -12,8 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourier;
-import com.paperflywings.user.paperflyv0.DeliveryApp.Courier.DeliveryCourierDetails;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.ComingSoonSupPage;
 import com.paperflywings.user.paperflyv0.R;
 
 
@@ -39,7 +38,8 @@ public class CourierFragment extends Fragment {
             @Override
             public void onClick(View v) {
                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
-                Intent intentCourierReceive = new Intent(getActivity().getApplicationContext(), DeliveryCourier.class);
+                //Intent intentCourierReceive = new Intent(getActivity().getApplicationContext(), DeliveryCourier.class);
+                Intent intentCourierReceive = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intentCourierReceive);
             }
         });
@@ -48,7 +48,8 @@ public class CourierFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
-                Intent intentCourierDetails = new Intent(getActivity().getApplicationContext(), DeliveryCourierDetails.class);
+                //Intent intentCourierDetails = new Intent(getActivity().getApplicationContext(), DeliveryCourierDetails.class);
+                Intent intentCourierDetails = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
                 startActivity(intentCourierDetails);
             }
         });

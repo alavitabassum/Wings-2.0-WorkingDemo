@@ -133,7 +133,7 @@
             android:background="#aaaaaa">
             <TextView
                 android:id="@+id/ordertxt_order_return_head"
-                android:layout_width="160dp"
+                android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:lines="1"
@@ -160,7 +160,7 @@
 
             <TextView
                 android:id="@+id/orderIdCash_head"
-                android:layout_width="110dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@+id/merOrderRefId_head"
                 android:layout_toEndOf="@+id/merOrderRefId_head"

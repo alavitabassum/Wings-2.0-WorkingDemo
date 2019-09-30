@@ -603,6 +603,7 @@ public class DeliveryTablayout extends AppCompatActivity
                                             });
 
                                     AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.setCancelable(false);
                                     alertDialog.show();
 
                                 } else if(statusCode.equals("404")) {

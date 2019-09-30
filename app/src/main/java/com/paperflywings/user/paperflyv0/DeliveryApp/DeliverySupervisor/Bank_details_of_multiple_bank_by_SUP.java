@@ -188,10 +188,9 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         final Spinner mBankNameSpinner2 = (Spinner) findViewById(R.id.bank_name2);
         List<String> bankLists2 = new ArrayList<String>();
         bankLists2.add(0,"Select Bank...");
-        for (int x2 = 0; x2 < bankList2.size(); x2++) {
+        for (int x2 = 0; x2 < bankList3.size(); x2++) {
             bankLists2.add(bankList2.get(x2).getBankName());
         }
-
         ArrayAdapter<String> adapterBankListR2 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
                 android.R.layout.simple_spinner_item,
                 bankLists2);
@@ -217,7 +216,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         final Spinner mBankNameSpinner4 = (Spinner) findViewById(R.id.bank_name4);
         List<String> bankLists4 = new ArrayList<String>();
         bankLists4.add(0,"Select Bank...");
-        for (int x4 = 0; x4 < bankList4.size(); x4++) {
+        for (int x4 = 0; x4 < bankList3.size(); x4++) {
             bankLists4.add(bankList4.get(x4).getBankName());
         }
         ArrayAdapter<String> adapterBankListR4 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
@@ -601,14 +600,29 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
 
+                        String bankName1 = mBankNameSpinner1.getSelectedItem().toString();
+                        String bankItm1 = db.getSelectedBankId(bankName1);
+
+                        String bankName2 = mBankNameSpinner2.getSelectedItem().toString();
+                        String bankItm2 = db.getSelectedBankId(bankName2);
+
+                        String bankName3 = mBankNameSpinner3.getSelectedItem().toString();
+                        String bankItm3 = db.getSelectedBankId(bankName3);
+
+                        String bankName4 = mBankNameSpinner4.getSelectedItem().toString();
+                        String bankItm4 = db.getSelectedBankId(bankName4);
+
+                        String bankName5 = mBankNameSpinner5.getSelectedItem().toString();
+                        String bankItm5 = db.getSelectedBankId(bankName5);
+
                         if(Integer.parseInt(total_cash_collecction) != totalSumission){
                             error_message_display.setText("Total Cash and Deposit Cash Amount Mismatch! Please Check correctly!!!");
                         } else {
 
-                            insertBankDetails(primary_key,username,serial_no,deposite_date1,bankItems1,slipNumber1,comment1,
-                                    deposite_date2,bankItems2,slipNumber2,comment2,deposite_date3,bankItems3,
-                                    slipNumber3,comment3,deposite_date4,bankItems4,slipNumber4,comment4
-                                    ,deposite_date5,bankItems5,slipNumber5,comment5);
+                            insertBankDetails(primary_key,username,serial_no,deposite_date1,bankItm1,slipNumber1,comment1,
+                                    deposite_date2,bankItm2,slipNumber2,comment2,deposite_date3,bankItm3,
+                                    slipNumber3,comment3,deposite_date4,bankItm4,slipNumber4,comment4
+                                    ,deposite_date5,bankItm5,slipNumber5,comment5);
 
                             totalSumission = 0;
                             //Toast.makeText(Bank_details_of_multiple_bank_by_DO.this, "Submit", Toast.LENGTH_SHORT).show();

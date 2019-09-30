@@ -10,6 +10,6 @@ public class ComingSoonSupPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coming_soon_sup_page);
+        setContentView(R.layout.coming_soon);
     }
 }

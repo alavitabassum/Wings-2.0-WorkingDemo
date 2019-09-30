@@ -577,6 +577,12 @@ public class DeliveryQuickScan extends AppCompatActivity{
 
                                                 final Button bt1 = mViewOnHold.findViewById(R.id.datepicker);
                                                 final TextView error_msg_onhold = findViewById(R.id.error_msg_onhold);
+                                                Date c = Calendar.getInstance().getTime();
+                                                SimpleDateFormat df = new SimpleDateFormat("yyyy-M-d");
+                                                final String currentDateTimeString = df.format(c);
+
+                                                bt1.setText(currentDateTimeString);
+
                                                 bt1.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View view) {
