@@ -17,6 +17,14 @@ card_view_assign:cardBackgroundColor="#fff">
     android:layout_height="match_parent"
     android:padding="20dp">
 
+    <CheckBox
+        android:id="@+id/cb_bank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:layout_alignParentRight="true"
+        />
+
     <TextView
         android:id="@+id/serialNoText"
         android:layout_width="115dp"
@@ -200,7 +208,7 @@ card_view_assign:cardBackgroundColor="#fff">
         android:layout_alignParentLeft="true"
         />
 
-    <Button
+<!--    <Button
         android:id="@+id/btn_accept"
         android:textAllCaps="false"
         android:layout_width="wrap_content"
@@ -214,7 +222,7 @@ card_view_assign:cardBackgroundColor="#fff">
         android:textStyle="bold"
         android:background="@color/green"
         android:layout_alignParentRight="true"
-        />
+        />-->
 
 </RelativeLayout>
 

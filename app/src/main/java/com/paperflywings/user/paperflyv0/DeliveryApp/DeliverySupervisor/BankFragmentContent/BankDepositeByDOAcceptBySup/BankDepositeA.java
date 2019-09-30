@@ -23,9 +23,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -54,6 +56,7 @@ public class BankDepositeA extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,BankDepositeAAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     BarcodeDbHelper db;
+    private long mLastClickTime = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
     private BankDepositeAAdapter bankDepositeAAdapter;
     RecyclerView recyclerView_pul;
@@ -64,6 +67,9 @@ public class BankDepositeA extends AppCompatActivity
     private List<BankDepositeAModel> list;
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
     private TextView btnselect, btndeselect;
+    private Button btnnext;
+    String itemOrders = "";
+    String itemPrimaryIds = "";
     public static final String PRIMARY_KEY = "Primary Key";
 
 
@@ -71,6 +77,9 @@ public class BankDepositeA extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank_deposite);
+        btnselect = (TextView) findViewById(R.id.select);
+        btndeselect = (TextView) findViewById(R.id.deselect);
+        btnnext = (Button) findViewById(R.id.next);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -96,7 +105,10 @@ public class BankDepositeA extends AppCompatActivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         final NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
-
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        //swipeRefreshLayout.setRefreshing(true);
+        list.clear();
         // swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         // swipeRefreshLayout.setOnRefreshListener(this);
 //        swipeRefreshLayout.setRefreshing(true);
@@ -291,10 +303,94 @@ public class BankDepositeA extends AppCompatActivity
                             bankDepositeAAdapter = new BankDepositeAAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(bankDepositeAAdapter);
                             //bankDepositeAAdapter.notifyDataSetChanged();
-                            //swipeRefreshLayout.setRefreshing(false);
+                            swipeRefreshLayout.setRefreshing(false);
                             bankDepositeAAdapter.setOnItemClickListener(BankDepositeA.this);
 
+                            btnselect.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    itemPrimaryIds = "";
 
+                                    list = getModel(true);
+                                    bankDepositeAAdapter = new BankDepositeAAdapter(list,getApplicationContext());
+                                    recyclerView_pul.setAdapter(bankDepositeAAdapter);
+                                    bankDepositeAAdapter.setOnItemClickListener(BankDepositeA.this);
+                                }
+                            });
+
+                            btndeselect.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    list = getModel(false);
+                                    bankDepositeAAdapter = new BankDepositeAAdapter(list,getApplicationContext());
+                                    recyclerView_pul.setAdapter(bankDepositeAAdapter);
+                                    bankDepositeAAdapter.setOnItemClickListener(BankDepositeA.this);
+
+                                }
+                            });
+
+                            btnnext.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    int count = 0;
+                                    itemPrimaryIds = "";
+
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(BankDepositeA.this);
+                                    final View mView = getLayoutInflater().inflate(R.layout.bank_deposite_accept_by_sup, null);
+
+                                    final TextView tv = mView.findViewById(R.id.tv);
+                                    final TextView error_msg = mView.findViewById(R.id.error_msg111);
+
+                                    for (int i = 0; i < BankDepositeAAdapter.imageModelArrayList.size(); i++){
+                                        if(BankDepositeAAdapter.imageModelArrayList.get(i).getSelected()) {
+                                            count++;
+                                            //itemOrders = itemOrders + "," + BankDepositeAAdapter.imageModelArrayList.get(i).getOrdPrimaryKey();
+                                            itemPrimaryIds = itemPrimaryIds + "," + BankDepositeAAdapter.imageModelArrayList.get(i).getTransactionId();
+                                        }
+                                        tv.setText(count + " batches have been selected.");
+                                    }
+
+                                    alertDialogBuilder.setMessage("Are you sure you want to DP2 all these batches?");
+                                    alertDialogBuilder.setPositiveButton("Yes",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                                }
+                                            });
+
+                                    alertDialogBuilder.setNegativeButton("No",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+
+                                                }
+                                            });
+
+                                    alertDialogBuilder.setCancelable(false);
+                                    alertDialogBuilder.setView(mView);
+
+                                    final AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+
+                                    alertDialog.getButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if(tv.getText().equals("0 batches have been selected.")){
+                                                error_msg.setText("Please Select All First!!");
+                                            } else {
+                                                UpdateTableForDropDP2(itemPrimaryIds, username);
+                                                alertDialog.dismiss();
+                                                Intent intentt = new Intent(BankDepositeA.this, BankDepositeA.class);
+                                                startActivity(intentt);
+                                                itemPrimaryIds = "";
+                                            }
+                                        }
+                                    });
+
+
+                                }
+                            });
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -306,7 +402,7 @@ public class BankDepositeA extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
-//                        swipeRefreshLayout.setRefreshing(false);
+                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getApplicationContext(), "Server not connected" ,Toast.LENGTH_LONG).show();
                     }
                 })
@@ -325,8 +421,51 @@ public class BankDepositeA extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
+
+    private ArrayList<BankDepositeAModel> getModel(boolean isSelect){
+        ArrayList<BankDepositeAModel> listOfOrders = new ArrayList<>();
+        if(isSelect == true){
+
+            for(int i = 0; i < list.size(); i++){
+                BankDepositeAModel model = new BankDepositeAModel();
+
+                model.setSelected(isSelect);
+                model.setSerialNo(list.get(i).getSerialNo());
+                model.setTransactionId(list.get(i).getTransactionId());
+                model.setCreatedBy(list.get(i).getCreatedBy());
+                model.setDepositeDate(list.get(i).getDepositeDate());
+                model.setDepositeAmt(list.get(i).getDepositeAmt());
+                model.setDepositSlip(list.get(i).getDepositSlip());
+                model.setBankName(list.get(i).getBankName());
+                listOfOrders.add(model);
+            }
+
+        } else if(isSelect == false){
+
+            for(int i = 0; i < list.size(); i++){
+                BankDepositeAModel model = new BankDepositeAModel();
+
+                model.setSelected(isSelect);
+                model.setSerialNo(list.get(i).getSerialNo());
+                model.setTransactionId(list.get(i).getTransactionId());
+                model.setCreatedBy(list.get(i).getCreatedBy());
+                model.setDepositeDate(list.get(i).getDepositeDate());
+                model.setDepositeAmt(list.get(i).getDepositeAmt());
+                model.setDepositSlip(list.get(i).getDepositSlip());
+                model.setBankName(list.get(i).getBankName());
+                listOfOrders.add(model);
+            }
+            itemPrimaryIds = "";
+        }
+        return listOfOrders;
+    }
+
 
     @Override
     public void onRefresh() {
@@ -352,7 +491,7 @@ public class BankDepositeA extends AppCompatActivity
 
     @Override
     public void onItemClick_view(View view, int position) {
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        /*SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
         BankDepositeAModel clickedItem1 = list.get(position);
@@ -360,7 +499,7 @@ public class BankDepositeA extends AppCompatActivity
         String serialNo = clickedItem1.getSerialNo();
         String createdBy = clickedItem1.getCreatedBy();
 
-        updateDropDP2(username, primary_key, serialNo, createdBy);
+        updateDropDP2(username, primary_key, serialNo, createdBy);*/
     }
 
     @Override
@@ -373,7 +512,73 @@ public class BankDepositeA extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void updateDropDP2(final String username, final String primary_key, final String serialNo, final String createdBy)
+    private void UpdateTableForDropDP2(final String orderPrimaryKey ,final String username)
+    {
+        progress=new ProgressDialog(this);
+        progress.setMessage("Loading Data");
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progress.setCancelable(false);
+        progress.setIndeterminate(true);
+        progress.setProgress(0);
+        progress.show();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_SUPERVISOR_API,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        progress.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getData");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                String statusCode = o.getString("responseCode");
+
+                                if(statusCode.equals("200")){
+                                    loadRecyclerView(username,pointCode);
+
+                                    itemPrimaryIds = "";
+                                    Toast.makeText(BankDepositeA.this, o.getString("success"), Toast.LENGTH_SHORT).show();
+                                } else if(statusCode.equals("404")){
+                                    Toast.makeText(BankDepositeA.this, o.getString("unsuccess"), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        progress.dismiss();
+                        //swipeRefreshLayout.setRefreshing(false);
+                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",username);
+                params1.put("orderPrimaryKey", orderPrimaryKey);
+                params1.put("flagreq","update_dp2_confirm_by_Sup");
+                return params1;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+
+   /* private void updateDropDP2(final String username, final String primary_key, final String serialNo, final String createdBy)
     {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -442,5 +647,5 @@ public class BankDepositeA extends AppCompatActivity
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-    }
+    }*/
 }

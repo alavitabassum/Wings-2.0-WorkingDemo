@@ -101,7 +101,11 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
 
-    private List<DeliveryCashReceiveSupervisorModel> bankList;
+    private List<DeliveryCashReceiveSupervisorModel> bankList1;
+    private List<DeliveryCashReceiveSupervisorModel> bankList2;
+    private List<DeliveryCashReceiveSupervisorModel> bankList3;
+    private List<DeliveryCashReceiveSupervisorModel> bankList4;
+    private List<DeliveryCashReceiveSupervisorModel> bankList5;
     private List<DeliveryCashReceiveSupervisorModel> pointCodeList;
 
     BarcodeDbHelper db;
@@ -121,7 +125,11 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        bankList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        bankList1 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        bankList2 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        bankList3 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        bankList4 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        bankList5 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
         pointCodeList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -130,7 +138,11 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
 
-        bankList.clear();
+        bankList1.clear();
+        bankList2.clear();
+        bankList3.clear();
+        bankList4.clear();
+        bankList5.clear();
         pointCodeList.clear();
 
         getBankDetails();
@@ -159,26 +171,75 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
 
         // Bank List
         final Spinner mBankNameSpinner1 = (Spinner) findViewById(R.id.bank_name1);
-        final Spinner mBankNameSpinner2 = (Spinner) findViewById(R.id.bank_name2);
-        final Spinner mBankNameSpinner3 = (Spinner) findViewById(R.id.bank_name3);
-        final Spinner mBankNameSpinner4 = (Spinner) findViewById(R.id.bank_name4);
-        final Spinner mBankNameSpinner5 = (Spinner) findViewById(R.id.bank_name5);
-
-        List<String> bankLists = new ArrayList<String>();
-        bankLists.add(0,"Select Bank...");
-        for (int x = 0; x < bankList.size(); x++) {
-            bankLists.add(bankList.get(x).getBankName());
+        List<String> bankLists1 = new ArrayList<String>();
+        bankLists1.add(0,"Select Bank...");
+        for (int x1 = 0; x1 < bankList1.size(); x1++) {
+            bankLists1.add(bankList1.get(x1).getBankName());
         }
 
-        ArrayAdapter<String> adapterBankListR = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+        ArrayAdapter<String> adapterBankListR1 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
                 android.R.layout.simple_spinner_item,
-                bankLists);
-        adapterBankListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mBankNameSpinner1.setAdapter(adapterBankListR);
-        mBankNameSpinner2.setAdapter(adapterBankListR);
-        mBankNameSpinner3.setAdapter(adapterBankListR);
-        mBankNameSpinner4.setAdapter(adapterBankListR);
-        mBankNameSpinner5.setAdapter(adapterBankListR);
+                bankLists1);
+        adapterBankListR1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBankNameSpinner1.setAdapter(adapterBankListR1);
+
+
+
+        final Spinner mBankNameSpinner2 = (Spinner) findViewById(R.id.bank_name2);
+        List<String> bankLists2 = new ArrayList<String>();
+        bankLists2.add(0,"Select Bank...");
+        for (int x2 = 0; x2 < bankList2.size(); x2++) {
+            bankLists2.add(bankList2.get(x2).getBankName());
+        }
+
+        ArrayAdapter<String> adapterBankListR2 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+                android.R.layout.simple_spinner_item,
+                bankLists2);
+        adapterBankListR2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBankNameSpinner2.setAdapter(adapterBankListR2);
+
+
+
+        final Spinner mBankNameSpinner3 = (Spinner) findViewById(R.id.bank_name3);
+        List<String> bankLists3 = new ArrayList<String>();
+        bankLists3.add(0,"Select Bank...");
+        for (int x3 = 0; x3 < bankList3.size(); x3++) {
+            bankLists3.add(bankList3.get(x3).getBankName());
+        }
+        ArrayAdapter<String> adapterBankListR3 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+                android.R.layout.simple_spinner_item,
+                bankLists3);
+        adapterBankListR3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBankNameSpinner3.setAdapter(adapterBankListR3);
+
+
+
+        final Spinner mBankNameSpinner4 = (Spinner) findViewById(R.id.bank_name4);
+        List<String> bankLists4 = new ArrayList<String>();
+        bankLists4.add(0,"Select Bank...");
+        for (int x4 = 0; x4 < bankList4.size(); x4++) {
+            bankLists4.add(bankList4.get(x4).getBankName());
+        }
+        ArrayAdapter<String> adapterBankListR4 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+                android.R.layout.simple_spinner_item,
+                bankLists4);
+        adapterBankListR4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBankNameSpinner4.setAdapter(adapterBankListR4);
+
+
+
+        final Spinner mBankNameSpinner5 = (Spinner) findViewById(R.id.bank_name5);
+        List<String> bankLists5 = new ArrayList<String>();
+        bankLists5.add(0,"Select Bank...");
+        for (int x5 = 0; x5 < bankList5.size(); x5++) {
+            bankLists5.add(bankList5.get(x5).getBankName());
+        }
+
+        ArrayAdapter<String> adapterBankListR5 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+                android.R.layout.simple_spinner_item,
+                bankLists5);
+        adapterBankListR5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBankNameSpinner5.setAdapter(adapterBankListR5);
 
 
         selectDate1 = findViewById(R.id.select_deposite_date1);
@@ -784,14 +845,23 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
 
     private void getBankDetails() {
         try {
-            bankList.clear();
+            bankList1.clear();
+            bankList2.clear();
+            bankList3.clear();
+            bankList4.clear();
+            bankList5.clear();
             SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
             Cursor c = db.get_bank_details(sqLiteDatabase);
             while (c.moveToNext()) {
                 Integer bankId = c.getInt(0);
                 String bankName = c.getString(1);
                 DeliveryCashReceiveSupervisorModel bankDetails = new DeliveryCashReceiveSupervisorModel(bankId,bankName);
-                bankList.add(bankDetails);
+                bankList1.add(bankDetails);
+                bankList2.add(bankDetails);
+                bankList3.add(bankDetails);
+                bankList4.add(bankDetails);
+                bankList5.add(bankDetails);
+
             }
         } catch (Exception e) {
             e.printStackTrace();

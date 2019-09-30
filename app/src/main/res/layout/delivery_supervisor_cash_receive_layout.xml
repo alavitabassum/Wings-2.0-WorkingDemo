@@ -25,7 +25,7 @@
             android:lines="1"
             android:maxLines="1"
             android:layout_marginRight="5dp"
-            android:text="Serial No: "
+            android:text="Batch No: "
             android:textColor="#000"
             android:textSize="14sp" />
 

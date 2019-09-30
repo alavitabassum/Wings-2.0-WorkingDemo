@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -59,6 +60,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
     BarcodeDbHelper db;
     public int totalCash = 0;
+    private long mLastClickTime = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
     boolean is_in_Action = false;
     private DeliveryCashReceiveSupervisorAdapter deliveryCashReceiveSupervisorAdapter;
@@ -156,8 +158,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             }
         });
 
-
-
         btndeselect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,6 +179,25 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                // mis-clicking prevention, using threshold of 500 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                    return;
+                }
+                mLastClickTime = SystemClock.elapsedRealtime();
+
+                int count=0;
+                SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+                final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCashReceiveSupervisor.this);
+                final View mView = getLayoutInflater().inflate(R.layout.bank_deposite_accept_by_sup, null);
+                final TextView tv = mView.findViewById(R.id.tv);
+                final TextView error_msg = mView.findViewById(R.id.error_msg111);
+
+
+
                 for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
                     if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelected()) {
                         count++;
@@ -186,27 +205,61 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                         itemPrimaryIds = itemPrimaryIds + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrdPrimaryKey();
                         serialNo = serialNo + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSerialNo();
                     }
-                    // tv.setText(count + " Orders have been selected for cash.");
+                    tv.setText(count + " batch selected.");
                 }
-
+                //orderIds.setText(item);
                 count = 0;
 
-            try{
-                String totalCash = String.valueOf(db.getTotalReceivedCash());
-                //Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, BankDetails_upload_supervisor.class);
-                Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, MultipleBankDepositeBySUP.class);
-                if (itemOrders.equals("")){
-                    Toast.makeText(DeliveryCashReceiveSupervisor.this, "Select all orders!", Toast.LENGTH_SHORT).show();
-                } else {
-                    UpdateBankInfo(username,itemPrimaryIds,serialNo,itemOrders, totalCash, totalCash,"C","P");
-                }
-                intent.putExtra(TOTAL_CASH, totalCash);
-                startActivity(intent);
+                alertDialogBuilder.setPositiveButton("Submit",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
 
+                            }
+                        });
 
-            } catch (NullPointerException e){
-                Toast.makeText(DeliveryCashReceiveSupervisor.this, "Nothing to bank", Toast.LENGTH_SHORT).show();
-            }
+                alertDialogBuilder.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                itemOrders = "";
+                                itemPrimaryIds = "";
+                                serialNo = "";
+                            }
+                        });
+                alertDialogBuilder.setCancelable(false);
+                alertDialogBuilder.setView(mView);
+
+                final AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                            return;
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime();
+
+                        try{
+                            String totalCash = String.valueOf(db.getTotalReceivedCash());
+                            Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, MultipleBankDepositeBySUP.class);
+                            if (itemOrders.equals("")){
+                                error_msg.setText("Please Select Batch First!!");
+                            } else if(tv.getText().equals("0 batches have been selected.")){
+                                error_msg.setText("Please Select Batch First!!");
+                            } else {
+                                UpdateBankInfo(username,itemPrimaryIds,serialNo,itemOrders, totalCash, totalCash,"C","P");
+                            }
+                            intent.putExtra(TOTAL_CASH, totalCash);
+
+                        } catch (NullPointerException e){
+                            Toast.makeText(DeliveryCashReceiveSupervisor.this, "Nothing to bank", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
             }
         });
     }
@@ -649,7 +702,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 totalCash = 0;
             }
         }
-
+        btnselect.setEnabled(false);
         totalCashCollection.setText(totalCash+" Taka");
     }
 }

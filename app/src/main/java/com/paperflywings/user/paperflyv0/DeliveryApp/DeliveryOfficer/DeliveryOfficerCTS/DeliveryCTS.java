@@ -496,19 +496,7 @@ public class DeliveryCTS extends AppCompatActivity
                                                             });
 
                                                             break;
-                                                        /*case 1:
-                                                            Intent intentBankDeposite = new Intent(DeliveryCTS.this, Bank_details_upload_by_DO.class);
-                                                            intentBankDeposite.putExtra(TOTAL_CASH, tv1.getText().toString());
-                                                            intentBankDeposite.putExtra(TOTAL_ORDER, tv.getText().toString());
-                                                            startActivity(intentBankDeposite);
-                                                            break;*/
                                                         case 1:
-                                                            /*intentBankDeposite.putExtra(TOTAL_CASH, tv1.getText().toString());
-                                                            intentBankDeposite.putExtra(TOTAL_ORDER, tv.getText().toString());*/
-                                                            /*float CashCount = 0.0f;
-                                                            totalCash1 = String.valueOf(db.getTotalCash("cts"));
-                                                            CashCount = Float.parseFloat(totalCash1);
-                                                            intentBankDeposite.putExtra(TOTAL_CASH, CashCount);*/
                                                             float CashCount = 0.0f;
                                                             totalCash1 = String.valueOf(db.getTotalCash("cts"));
                                                             CashCount = Float.parseFloat(totalCash1);
@@ -516,10 +504,7 @@ public class DeliveryCTS extends AppCompatActivity
                                                                 Toast.makeText(DeliveryCTS.this, "Select all orders!", Toast.LENGTH_SHORT).show();
                                                             } else {
                                                                 UpdateBankInfo(username,itemPrimaryIds,itemOrders, String.valueOf(CashCount), String.valueOf(CashCount),"","P");
-
                                                             }
-
-                                                            //startActivity(intentBankDeposite);
                                                             break;
                                                         default:
                                                             break;

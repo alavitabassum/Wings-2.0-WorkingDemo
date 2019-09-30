@@ -2,6 +2,7 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFra
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -29,7 +31,6 @@ public class BankDepositeAAdapter extends RecyclerView.Adapter<BankDepositeAAdap
     private Context context;
     private OnItemClickListener mListner;
     BankDepositeA bankDepositeA;
-    int totalCash = 0;
 
     private RecyclerView.OnItemTouchListener touchListener;
     BarcodeDbHelper db;
@@ -63,6 +64,7 @@ public class BankDepositeAAdapter extends RecyclerView.Adapter<BankDepositeAAdap
         public TextView item_bank;
         public CardView item_cardview;
         public Button item_dp2_complete;
+        protected CheckBox checkBox;
 
         public ViewHolder(View itemView, BankDepositeA bankDepositeA) {
             super(itemView);
@@ -73,13 +75,14 @@ public class BankDepositeAAdapter extends RecyclerView.Adapter<BankDepositeAAdap
             item_deposited_amt=itemView.findViewById(R.id.totalCash);
             item_deposite_slip_name=itemView.findViewById(R.id.submittedCash);
             item_bank=itemView.findViewById(R.id.receivedCash);
-            item_dp2_complete=itemView.findViewById(R.id.btn_accept);
+           // item_dp2_complete=itemView.findViewById(R.id.btn_accept);
+            checkBox = (CheckBox) itemView.findViewById(R.id.cb_bank);
 
 
             item_cardview=itemView.findViewById(R.id.card_view_delivery_bank_details_accept_by_do);
             this.bankDepositeA = bankDepositeA;
 
-            item_dp2_complete.setOnClickListener(new View.OnClickListener() {
+          /*  item_dp2_complete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(mListner!=null){
@@ -89,7 +92,7 @@ public class BankDepositeAAdapter extends RecyclerView.Adapter<BankDepositeAAdap
                         }
                     }
                 }
-            });
+            });*/
 
             item_view_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +127,37 @@ public class BankDepositeAAdapter extends RecyclerView.Adapter<BankDepositeAAdap
        viewHolder.item_deposite_slip_name.setText(list.get(i).getDepositSlip());
        viewHolder.item_bank.setText(list.get(i).getBankName());
 
+        viewHolder.checkBox.setChecked(imageModelArrayList.get(i).getSelected());
+        viewHolder.checkBox.setTag(i);
 
+        final boolean b = imageModelArrayList.get(i).getSelected();
+
+
+        if(b == false){
+            viewHolder.checkBox.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
+
+        if (b == true){
+            viewHolder.checkBox.setButtonDrawable(R.drawable.ic_check_box_black_24dp);
+        }
+     /*   viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Integer pos = (Integer) viewHolder.checkBox.getTag();
+
+                if (imageModelArrayList.get(pos).getSelected()) {
+                    imageModelArrayList.get(pos).setSelected(false);
+                    //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " uncheckkkkkeeeeddd", Toast.LENGTH_SHORT).show();
+
+
+                } else {
+                    imageModelArrayList.get(pos).setSelected(true);
+                    //Toast.makeText(context, imageModelArrayList.get(pos).getOrderid() + " clicked!", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }); */
 
 
     }
@@ -150,7 +183,7 @@ public class BankDepositeAAdapter extends RecyclerView.Adapter<BankDepositeAAdap
             }else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for(BankDepositeAModel item: listFull){
-                    if (item.getSerialNo().toLowerCase().contains(filterPattern) || item.getCreatedBy().toLowerCase().contains(filterPattern) || item.getDepositSlip().toLowerCase().contains(filterPattern)){
+                    if (item.getDepositeAmt().toLowerCase().contains(filterPattern) || item.getBankDepositeBy().toLowerCase().contains(filterPattern) || item.getDepositeDate().toLowerCase().contains(filterPattern) || item.getDepositSlip().toLowerCase().contains(filterPattern) || item.getCreatedBy().toLowerCase().contains(filterPattern) || item.getBankName().toLowerCase().contains(filterPattern) || item.getSerialNo().toLowerCase().contains(filterPattern) || item.getCreatedBy().toLowerCase().contains(filterPattern) || item.getDepositSlip().toLowerCase().contains(filterPattern)){
                         filteredList.add(item);
                     }
                 }

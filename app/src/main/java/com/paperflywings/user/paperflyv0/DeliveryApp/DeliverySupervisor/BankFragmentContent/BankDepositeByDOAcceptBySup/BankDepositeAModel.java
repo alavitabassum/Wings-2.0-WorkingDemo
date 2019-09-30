@@ -15,6 +15,26 @@ public class BankDepositeAModel {
     private String ordPrimaryKey;
     private String bankName;
     private String imagePath;
+    private boolean isSelected = false;
+
+    public BankDepositeAModel() {
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    public boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public BankDepositeAModel(String id, String transactionId, String depositeDate, String bankId, String depositeAmt, String depositSlip, String bankDepositeBy, String serialNo, String imagePath, String createdBy, String createdAt, String ordPrimaryKey, String bankName) {
        this.id = id;

@@ -166,7 +166,6 @@ public class DeliveryCTSAdapter extends RecyclerView.Adapter<DeliveryCTSAdapter.
 
     @Override
     public int getItemCount() {
-
         return list.size();
     }
 
