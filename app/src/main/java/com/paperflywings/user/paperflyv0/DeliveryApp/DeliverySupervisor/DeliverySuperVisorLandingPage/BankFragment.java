@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeByDOAcceptBySup.BankDepositeA;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP;
 import com.paperflywings.user.paperflyv0.R;
 
 
@@ -45,7 +45,8 @@ public class BankFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
-                Intent intentAdd = new Intent(getActivity().getApplicationContext(), DeliveryCashReceiveSupervisor.class);
+                //Intent intentAdd = new Intent(getActivity().getApplicationContext(), DeliveryCashReceiveSupervisor.class);
+                Intent intentAdd = new Intent(getActivity().getApplicationContext(), MultipleBankDepositeBySUP.class);
                 startActivity(intentAdd);
             }
         });

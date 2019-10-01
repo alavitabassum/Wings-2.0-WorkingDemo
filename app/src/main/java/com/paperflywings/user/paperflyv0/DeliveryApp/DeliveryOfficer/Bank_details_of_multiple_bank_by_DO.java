@@ -538,7 +538,7 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
                     date2.setText("Date: "+deposite_date2);
                     bankName2.setText("Bank Name: "+bankItems2);
                     depositeSlip2.setText("Slip No: "+slipNumber2);
-                    depositedAmount2.setText("Deposite: "+comment2+ "Taka");
+                    depositedAmount2.setText("Deposite: "+comment2+ " Taka");
 
                 }
 
@@ -548,7 +548,7 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
                     date3.setText("Date: "+deposite_date3);
                     bankName3.setText("Bank Name: "+bankItems3);
                     depositeSlip3.setText("Slip No: "+slipNumber3);
-                    depositedAmount3.setText("Deposite: "+comment3+ "Taka");
+                    depositedAmount3.setText("Deposite: "+comment3+ " Taka");
 
                 }
 
@@ -558,7 +558,7 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
                     date4.setText("Date: "+deposite_date4);
                     bankName4.setText("Bank Name: "+bankItems4);
                     depositeSlip4.setText("Slip No: "+slipNumber4);
-                    depositedAmount4.setText("Deposite: "+comment4+ "Taka");
+                    depositedAmount4.setText("Deposite: "+comment4+ " Taka");
                 }
 
                 if(!bankItems5.equals("Select Bank...") || !slipNumber5.equals("") || !comment5.equals("")){
@@ -567,7 +567,7 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
                     date5.setText("Date: "+deposite_date5);
                     bankName5.setText("Bank Name: "+bankItems5);
                     depositeSlip5.setText("Slip No: "+slipNumber5);
-                    depositedAmount5.setText("Deposite: "+comment5+ "Taka");
+                    depositedAmount5.setText("Deposite: "+comment5+ " Taka");
 
                 }
 
@@ -603,21 +603,45 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
 
+                        String bankItm1,bankItm2,bankItm3, bankItm4, bankItm5;
+
                         String bankName1 = mBankNameSpinner1.getSelectedItem().toString();
-                        String bankItm1 = db.getSelectedBankId(bankName1);
+                        if(bankName1.equals("Select Bank...")){
+                            bankItm1 = bankName1;
+                        } else {
+                            bankItm1 = db.getSelectedBankId(bankName1);
+                        }
 
                         String bankName2 = mBankNameSpinner2.getSelectedItem().toString();
-                        String bankItm2 = db.getSelectedBankId(bankName2);
+
+                        if(bankName2.equals("Select Bank...")){
+                            bankItm2 = bankName2;
+                        } else {
+                            bankItm2 = db.getSelectedBankId(bankName2);
+                        }
 
                         String bankName3 = mBankNameSpinner3.getSelectedItem().toString();
-                        String bankItm3 = db.getSelectedBankId(bankName3);
+
+                        if(bankName3.equals("Select Bank...")){
+                            bankItm3 = bankName3;
+                        } else {
+                            bankItm3 = db.getSelectedBankId(bankName3);
+                        }
 
                         String bankName4 = mBankNameSpinner4.getSelectedItem().toString();
-                        String bankItm4 = db.getSelectedBankId(bankName4);
+                        if(bankName4.equals("Select Bank...")){
+                            bankItm4 = bankName4;
+                        } else {
+                            bankItm4 = db.getSelectedBankId(bankName4);
+                        }
+
 
                         String bankName5 = mBankNameSpinner5.getSelectedItem().toString();
-                        String bankItm5 = db.getSelectedBankId(bankName5);
-
+                        if(bankName5.equals("Select Bank...")){
+                            bankItm5 = bankName5;
+                        } else {
+                            bankItm5 = db.getSelectedBankId(bankName5);
+                        }
 
 
                         if(Integer.parseInt(total_cash_collecction) != totalSumission){

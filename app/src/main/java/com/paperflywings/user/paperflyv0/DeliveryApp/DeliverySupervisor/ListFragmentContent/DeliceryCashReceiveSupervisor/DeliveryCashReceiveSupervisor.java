@@ -196,8 +196,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 final TextView tv = mView.findViewById(R.id.tv);
                 final TextView error_msg = mView.findViewById(R.id.error_msg111);
 
-
-
                 for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
                     if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelected()) {
                         count++;

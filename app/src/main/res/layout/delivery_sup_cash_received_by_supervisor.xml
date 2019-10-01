@@ -15,18 +15,18 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="wrap_content"
         android:padding="10dp">
 
         <TextView
             android:id="@+id/serialNo_id"
-            android:layout_width="wrap_content"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
             android:lines="1"
             android:maxLines="1"
-            android:text="Serial No:"
+            android:text="Serial ID:"
             android:textColor="#000"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -37,18 +37,18 @@
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/serialNo_id"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/serialNo_id"
             android:lines="1"
             android:maxLines="1"
-            android:paddingLeft="30dp"
+            android:paddingLeft="10dp"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/TotalOrder_id"
-            android:layout_width="wrap_content"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginTop="40dp"
@@ -65,18 +65,18 @@
             android:layout_width="260dp"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/TotalOrder_id"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/TotalOrder_id"
             android:lines="1"
             android:maxLines="1"
-            android:paddingLeft="30dp"
+            android:paddingLeft="10dp"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
         <TextView
             android:id="@+id/delivery_officer_name_id"
-            android:layout_width="wrap_content"
+            android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
             android:lines="1"
@@ -93,7 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/delivery_officer_name_id"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="10dp"
+            android:paddingLeft="10dp"
             android:layout_toEndOf="@+id/delivery_officer_name_id"
             android:lines="1"
             android:maxLines="1"
@@ -116,25 +117,25 @@
             style="@style/boldStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="115dp"
+            android:layout_marginTop="110dp"
             android:lines="1"
             android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/submitted_cash_amount"
             style="@style/boldStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="145dp"
+            android:layout_marginTop="140dp"
             android:lines="1"
             android:maxLines="1"
             android:paddingLeft="0dp"
             android:textAlignment="textStart"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="16dp" />
 
         <View
             android:id="@+id/divider1"
@@ -143,14 +144,14 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="175dp"
+            android:layout_marginTop="170dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
             android:id="@+id/receive_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="185dp"
+            android:layout_marginTop="180dp"
             android:lines="1"
             android:maxLines="1"
             android:text="Date and Time:"
@@ -162,28 +163,28 @@
         <TextView
             android:id="@+id/receive_time_text"
             style="@style/boldStyle"
-            android:layout_width="330dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/receive_time"
             android:layout_toEndOf="@+id/receive_time"
             android:lines="1"
             android:maxLines="1"
-            android:paddingLeft="30dp"
+            android:paddingLeft="10dp"
             android:textAlignment="textStart"
             android:textColor="#1E88E5"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/comment_by_supervisor_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="215dp"
+            android:layout_marginTop="204dp"
             android:lines="1"
             android:maxLines="1"
             android:text="Comment:"
             android:textAlignment="textStart"
             android:textColor="#5E35B1"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -192,16 +193,17 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/comment_by_supervisor_id"
             android:layout_toEndOf="@+id/comment_by_supervisor_id"
-            android:lines="2"
-            android:maxLines="2"
+            android:lines="3"
+            android:maxLines="3"
             android:textAlignment="textStart"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="10dp"
             android:textColor="#5E35B1"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/cash_receive_sup"
+            android:textAllCaps="false"
             android:layout_width="105dp"
             android:layout_height="40dp"
             android:layout_below="@+id/price_txt"

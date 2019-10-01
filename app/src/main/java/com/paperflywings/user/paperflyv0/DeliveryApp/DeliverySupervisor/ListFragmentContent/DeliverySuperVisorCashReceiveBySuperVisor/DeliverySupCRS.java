@@ -108,7 +108,6 @@ public class DeliverySupCRS extends AppCompatActivity
 
         }
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_crs);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -256,7 +255,9 @@ public class DeliverySupCRS extends AppCompatActivity
 
                if(cashReceivedBySup.isEmpty()){
                    errormsg.setText("Please select every field!!");
-                }
+               } else if (!cashReceivedBySup.equals(list.get(position).getSubmittedCashAmt())){
+                   errormsg.setText("Cash amount mismatch!!");
+               }
                else if(commentBySup.isEmpty()){
                    errormsg.setText("Please select every field!!");
                }
@@ -268,6 +269,9 @@ public class DeliverySupCRS extends AppCompatActivity
             }
         });
     }
+
+
+
 
     private void supervisorCrs(final String username,final String serialNo,final String orderIdList,final String cashReceivedBySup,final String commentBySup,final String createdBy) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CRS,
@@ -486,7 +490,7 @@ public class DeliverySupCRS extends AppCompatActivity
 
         String orderIdList = clickedItem.getOrderidList();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("Order Ids: "+orderIdList);
+        alertDialogBuilder.setMessage("Order Ids:\n "+orderIdList);
         alertDialogBuilder.setNegativeButton("Close",
                 new DialogInterface.OnClickListener() {
                     @Override
