@@ -111,10 +111,10 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="75dp"
             android:text="Merchant Name: "
-            android:maxLines="2"
-            android:lines="2"
+            android:maxLines="1"
+            android:lines="1"
             android:textColor="#000"
-            android:textSize="13sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/sup_m_name_without_status"
@@ -126,11 +126,11 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="0dp"
             android:layout_toEndOf="@+id/sup_merchant_name_txt"
-            android:lines="2"
-            android:maxLines="2"
+            android:lines="1"
+            android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="15sp"
+            android:textSize="12sp"
             style="@style/boldStyle"
             />
 
@@ -142,7 +142,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="2dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="100dp"
             android:background="?android:attr/listDivider" />
 
       <!--  <TextView
@@ -181,11 +181,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="110dp"
             android:layout_marginEnd="4dp"
             android:padding="3dp"
             android:textColor="@color/colorAccent2"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
       <!--  <View
@@ -204,13 +204,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="165dp"
+                android:layout_marginTop="132dp"
                 android:layout_marginEnd="4dp"
                 android:padding="3dp"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorAccent2"
                 android:textStyle="bold"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         <TextView
             android:id="@+id/sup_ordertxt_onhold_reason"
@@ -218,12 +218,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="200dp"
-            android:lines="2"
-            android:maxLines="2"
+            android:layout_marginTop="156dp"
+            android:lines="1"
+            android:maxLines="1"
             android:text="Reason: "
             android:textColor="@color/colorAccent2"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
@@ -235,13 +235,56 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="4dp"
             android:layout_toEndOf="@+id/sup_ordertxt_onhold_reason"
-            android:lines="2"
-            android:maxLines="2"
+            android:lines="1"
+            android:maxLines="1"
             android:textAlignment="textStart"
             android:textColor="@color/colorAccent2"
             android:textStyle="bold"
-            android:textSize="15sp"
+            android:textSize="12sp"
             />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="185dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/custname"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+
+            android:layout_marginEnd="4dp"
+            android:layout_below="@+id/divider3"
+            android:padding="3dp"
+            android:paddingTop="5dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="12sp" />
+        <TextView
+            android:id="@+id/custname_address"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
+
+            android:layout_marginEnd="4dp"
+            android:layout_below="@+id/custname"
+            android:padding="3dp"
+            android:paddingTop="5dp"
+            android:lines="3"
+            android:maxLines="3"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:textSize="12sp" />
 
             <View
                 android:id="@+id/divider5"
@@ -250,7 +293,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="250dp"
+                android:layout_marginTop="265dp"
                 android:background="?android:attr/listDivider" />
 
         <TextView
@@ -259,11 +302,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="260dp"
+            android:layout_marginTop="270dp"
             android:text="Package Price: "
             android:textColor="#000"
             style="@style/boldStyle"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/price_without_status"
@@ -276,7 +319,7 @@
             android:layout_toEndOf="@+id/price_txt"
             android:textAlignment="textStart"
             android:textColor="#000"
-            android:textSize="15sp"
+            android:textSize="12sp"
             style="@style/boldStyle"/>
 
         <TextView
@@ -290,7 +333,7 @@
             android:maxLines="2"
             android:textColor="#000"
             android:textAlignment="textStart"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
 
         <Button
@@ -304,7 +347,7 @@
         android:text="Re-Assign"
         android:layout_alignParentRight="true"
         android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:textSize="12sp" />
 
 
 

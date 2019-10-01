@@ -34,9 +34,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeByDOAcceptBySup.BankDepositeA;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.Bank_details_of_multiple_bank_by_SUP;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput.DeliverySupCashDispute;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -257,11 +263,45 @@ public class MultipleBankDepositeBySUP extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_point) {
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    DeliverySelectPoint.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
             // Handle the camera action
+        }
+        else if (id == R.id.nav_crs_sup) {
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    DeliverySupCRS.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_return_receive) {
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    DeliverySReturnReceive.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_sup) {
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    DeliveryCashReceiveSupervisor.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_sup_pending) {
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    MultipleBankDepositeBySUP.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_do) {
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    BankDepositeA.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_return_dispute_report) {
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    DeliverySupReturnDispute.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_cash_dispute_report) {
+            Intent homeIntent = new Intent(MultipleBankDepositeBySUP.this,
+                    DeliverySupCashDispute.class);
+            startActivity(homeIntent);
         }
         else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout
@@ -308,7 +348,7 @@ public class MultipleBankDepositeBySUP extends AppCompatActivity
         }
 
 
-        DrawerLayout drawer = findViewById(R.id.drawer_deliver_supervisor_tablayout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -765,8 +765,6 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         if(requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null){
             Uri path1 = data.getData();
 
-
-
             if(path1 != null){
 //                try {
 //                    bitmap1 = MediaStore.Images.Media.getBitmap(getContentResolver(),path1);
@@ -900,7 +898,6 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 bankList3.add(bankDetails);
                 bankList4.add(bankDetails);
                 bankList5.add(bankDetails);
-
             }
         } catch (Exception e) {
             e.printStackTrace();

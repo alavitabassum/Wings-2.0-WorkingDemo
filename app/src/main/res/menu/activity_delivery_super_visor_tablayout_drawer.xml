@@ -16,25 +16,47 @@
             android:icon="@drawable/home"
             android:title="Home"/>
 
-        <item
-            android:title="Bank Report"
-            android:icon="@drawable/box"
-            android:id="@+id/nav_report"/>
-
-        <item
-            android:title="Return Dispute Report"
-            android:icon="@drawable/box"
-            android:id="@+id/nav_return_dispute_report"/>
-
-        <item
-            android:title="Cash Dispute Report"
-            android:icon="@drawable/box"
-            android:id="@+id/nav_cash_dispute_report"/>
+        <!--<item
+            android:id="@+id/nav_bank_report"
+            android:icon="@drawable/home"
+            android:title="Bank Report"/>-->
 
         <item
             android:title="Cash Receive"
             android:icon="@drawable/box"
             android:id="@+id/nav_crs_sup"/>
+
+        <item
+            android:title="Return Receive"
+            android:icon="@drawable/box"
+            android:id="@+id/nav_return_receive"/>
+
+        <item
+            android:title="Bank Deposite "
+            android:icon="@drawable/box"
+            android:id="@+id/nav_bank_deposite_by_sup"/>
+
+        <item
+            android:title="Bank Deposite Pending "
+            android:icon="@drawable/box"
+            android:id="@+id/nav_bank_deposite_by_sup_pending"/>
+
+        <item
+            android:title="Bank Deposite by DO"
+            android:icon="@drawable/box"
+            android:id="@+id/nav_bank_deposite_by_do"/>
+
+        <item
+            android:title="Return Dispute List"
+            android:icon="@drawable/box"
+            android:id="@+id/nav_return_dispute_report"/>
+
+        <item
+            android:title="Cash Dispute List"
+            android:icon="@drawable/box"
+            android:id="@+id/nav_cash_dispute_report"/>
+
+
 <!--
         <item
             android:title="Without Status"

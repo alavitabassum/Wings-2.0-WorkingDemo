@@ -34,7 +34,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeByDOAcceptBySup.BankDepositeA;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput.DeliverySupCashDispute;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
@@ -290,6 +297,34 @@ public class DeliverySupPreRet extends AppCompatActivity
             // Handle the camera action
             Intent homeIntent = new Intent(DeliverySupPreRet.this,
                     DeliverySuperVisorTablayout.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_crs_sup) {
+            Intent homeIntent = new Intent(DeliverySupPreRet.this,
+                    DeliverySupCRS.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_return_receive) {
+            Intent homeIntent = new Intent(DeliverySupPreRet.this,
+                    DeliverySReturnReceive.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_sup) {
+            Intent homeIntent = new Intent(DeliverySupPreRet.this,
+                    DeliveryCashReceiveSupervisor.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_sup_pending) {
+            Intent homeIntent = new Intent(DeliverySupPreRet.this,
+                    MultipleBankDepositeBySUP.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_do) {
+            Intent homeIntent = new Intent(DeliverySupPreRet.this,
+                    BankDepositeA.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_return_dispute_report) {
+            Intent homeIntent = new Intent(DeliverySupPreRet.this,
+                    DeliverySupReturnDispute.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_cash_dispute_report) {
+            Intent homeIntent = new Intent(DeliverySupPreRet.this,
+                    DeliverySupCashDispute.class);
             startActivity(homeIntent);
         } else if (id == R.id.nav_logout) {
             //Creating an alert dialog to confirm logout

@@ -48,8 +48,8 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
         public TextView item_merOrderRef;
         public TextView item_merchantName;
         public TextView item_pickMerchantName;
-      /*  public TextView item_orderdate;
-        public TextView item_dp2_time;*/
+        public TextView item_custname;
+        public TextView item_custaddress;
         public TextView item_onHold_by;
         public TextView item_packagePrice;
         public TextView item_productBrief;
@@ -64,8 +64,8 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
             item_ordId=itemView.findViewById(R.id.sup_orderId_without_status);
             item_merOrderRef=itemView.findViewById(R.id.m_order_ref_without_status);
             item_merchantName=itemView.findViewById(R.id.sup_m_name_without_status);
-          /*  item_orderdate=itemView.findViewById(R.id.sup_order_date);
-            item_dp2_time=itemView.findViewById(R.id.sup_dp2_time);*/
+            item_custname=itemView.findViewById(R.id.custname);
+            item_custaddress=itemView.findViewById(R.id.custname_address);
             item_onHold_by=itemView.findViewById(R.id.sup_onHold_by);
             item_packagePrice=itemView.findViewById(R.id.price_without_status);
             item_productBrief=itemView.findViewById(R.id.package_brief_without_status);
@@ -101,6 +101,8 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.item_ordId.setText(list.get(i).getOrderid());
         viewHolder.item_merOrderRef.setText(list.get(i).getMerOrderRef());
+        viewHolder.item_custname.setText("Customer Name: "+list.get(i).getCustname());
+        viewHolder.item_custaddress.setText("Address: "+list.get(i).getCustaddress());
 
         String pickMerchantName = list.get(i).getPickMerchantName();
         int DeliveryTime = list.get(i).getSlaMiss();

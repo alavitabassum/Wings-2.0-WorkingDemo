@@ -132,11 +132,8 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
         bankList5 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
         pointCodeList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
 
-        final Intent intent = new Intent(Bank_details_of_multiple_bank_by_DO.this, Bank_details_upload_by_DO.class);
-
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
-        final String user = username.toString();
 
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
         NetworkInfo nInfo = cManager.getActiveNetworkInfo();
@@ -642,7 +639,6 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
                         } else {
                             bankItm5 = db.getSelectedBankId(bankName5);
                         }
-
 
                         if(Integer.parseInt(total_cash_collecction) != totalSumission){
                             error_message_display.setText("Total Cash and Deposit Cash Amount Mismatch! Please Check correctly!!!");

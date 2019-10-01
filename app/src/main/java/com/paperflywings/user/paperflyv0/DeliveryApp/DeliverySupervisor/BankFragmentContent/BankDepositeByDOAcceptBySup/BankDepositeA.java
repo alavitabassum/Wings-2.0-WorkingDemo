@@ -36,11 +36,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.Bank_DepositeSlip_Image;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.DeliverySuperVisorBankReport.DeliverySupBankReport;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.BankFragment;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput.DeliverySupCashDispute;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -140,7 +144,7 @@ public class BankDepositeA extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent intent = new Intent(BankDepositeA.this, BankFragment.class);
+            Intent intent = new Intent(BankDepositeA.this, DeliverySuperVisorTablayout.class);
             startActivity(intent);
         }
     }
@@ -196,20 +200,49 @@ public class BankDepositeA extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_point) {
+            Intent homeIntent = new Intent(BankDepositeA.this,
+                    DeliverySelectPoint.class);
+            startActivity(homeIntent);
+            // Handle the camera action
+        } else if (id == R.id.nav_home) {
             Intent homeIntent = new Intent(BankDepositeA.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
             // Handle the camera action
         }
-        else if (id == R.id.nav_report) {
+       /* else if (id == R.id.nav_report) {
             Intent homeIntent = new Intent(BankDepositeA.this,
                     DeliverySupBankReport.class);
             startActivity(homeIntent);
-        }
+        }*/
         else if (id == R.id.nav_crs_sup) {
             Intent homeIntent = new Intent(BankDepositeA.this,
                     DeliverySupCRS.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_return_receive) {
+            Intent homeIntent = new Intent(BankDepositeA.this,
+                    DeliverySReturnReceive.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_sup) {
+            Intent homeIntent = new Intent(BankDepositeA.this,
+                    DeliveryCashReceiveSupervisor.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_sup_pending) {
+            Intent homeIntent = new Intent(BankDepositeA.this,
+                    MultipleBankDepositeBySUP.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_bank_deposite_by_do) {
+            Intent homeIntent = new Intent(BankDepositeA.this,
+                    BankDepositeA.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_return_dispute_report) {
+            Intent homeIntent = new Intent(BankDepositeA.this,
+                    DeliverySupReturnDispute.class);
+            startActivity(homeIntent);
+        } else if (id == R.id.nav_cash_dispute_report) {
+            Intent homeIntent = new Intent(BankDepositeA.this,
+                    DeliverySupCashDispute.class);
             startActivity(homeIntent);
         }
 
