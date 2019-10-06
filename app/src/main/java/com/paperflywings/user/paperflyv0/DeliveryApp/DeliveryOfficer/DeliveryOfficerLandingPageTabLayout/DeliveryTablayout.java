@@ -131,6 +131,7 @@ public class DeliveryTablayout extends AppCompatActivity
             loadReturnReason();
             loadExpenseReason();
             loadBankDetails();
+            loadEmployeeList(username);
             loadBankDepositePending(username);
         }
         else {
@@ -433,6 +434,58 @@ public class DeliveryTablayout extends AppCompatActivity
         return true;
     }
 
+    public void loadEmployeeList(final String username){
+        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+        db.deleteDeliveryEmpList(sqLiteDatabase);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("getEmployeeList");
+
+                            for(int i =0;i<array.length();i++)
+                            {
+                                JSONObject o = array.getJSONObject(i);
+                                db.addEmployeeList(
+                                        o.getInt("empid"),
+                                        o.getString("empCode"),
+                                        o.getString("empName"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Problem Loading Employee List" ,Toast.LENGTH_LONG).show();
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String,String> params1 = new HashMap<String,String>();
+                params1.put("username",username);
+                params1.put("flagreq","get_delivery_employee_list_for_DO");
+                return params1;
+            }
+        };
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(this);
+        }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(stringRequest);
+    }
 
     public void loadExpenseReason(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, EXPENSE_PURPOSE_URL,
@@ -474,8 +527,6 @@ public class DeliveryTablayout extends AppCompatActivity
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
-
-
     public void loadReturnReason(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, RETURN_REASON_URL,
                 new Response.Listener<String>()

@@ -23,10 +23,42 @@ public class DeliveryCTSModel {
     private String cashType;
     private String CashTime;
     private String CashBy;
+    private int empId;
+    private String empName;
     private boolean isSelected = false;
 
     public DeliveryCTSModel() {
 
+    }
+
+    public DeliveryCTSModel(Integer empId, String empCode, String empName) {
+            this.empId = empId;
+            this.empCode = empCode;
+            this.empName = empName;
+    }
+
+    public int getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(int empId) {
+        this.empId = empId;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public String getRetRem() {
+        return RetRem;
+    }
+
+    public void setRetRem(String retRem) {
+        RetRem = retRem;
     }
 
     public boolean getSelected() {

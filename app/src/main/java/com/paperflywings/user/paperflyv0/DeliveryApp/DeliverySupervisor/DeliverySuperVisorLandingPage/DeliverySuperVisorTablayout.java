@@ -118,7 +118,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
 
         if(nInfo!= null && nInfo.isConnected())
         {
-            loadEmployeeList(username);
+            loadEmployeeList(username, pointCode);
             loadPointCodes(username);
             loadBankDetails();
             loadCourierDetails();
@@ -402,7 +402,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
         return true;
     }
 
-    public void loadEmployeeList(final String username){
+    public void loadEmployeeList(final String username, final String pointCode){
                 SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
                 db.deleteDeliveryEmpList(sqLiteDatabase);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, GET_DATA ,
@@ -441,6 +441,7 @@ public class DeliverySuperVisorTablayout extends AppCompatActivity
             {
                 Map<String,String> params1 = new HashMap<String,String>();
                 params1.put("username",username);
+                params1.put("pointCode",pointCode);
                 params1.put("flagreq","get_delivery_employee_list");
                 return params1;
             }

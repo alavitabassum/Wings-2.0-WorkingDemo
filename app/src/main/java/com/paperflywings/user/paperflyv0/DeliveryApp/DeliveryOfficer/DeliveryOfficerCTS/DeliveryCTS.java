@@ -26,8 +26,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +59,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DeliveryCTS extends AppCompatActivity
@@ -86,6 +89,7 @@ public class DeliveryCTS extends AppCompatActivity
     //public static final String DELIVERY_CTS_UPDATE = "http://paperflybd.com/DeliverySupervisorCTSinBatch.php";
 
     private ArrayList<DeliveryCTSModel> list;
+    private ArrayList<DeliveryCTSModel> eList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +109,7 @@ public class DeliveryCTS extends AppCompatActivity
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view);
         recyclerView_pul.setAdapter(DeliveryCTSAdapter);
         list = new ArrayList<DeliveryCTSModel>();
+        eList = new ArrayList<DeliveryCTSModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -120,6 +125,8 @@ public class DeliveryCTS extends AppCompatActivity
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
         list.clear();
+        eList.clear();
+
         swipeRefreshLayout.setRefreshing(true);
 
         if(nInfo!= null && nInfo.isConnected())
@@ -130,7 +137,6 @@ public class DeliveryCTS extends AppCompatActivity
             getData(username);
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
-
 
         delivery_cts_recieved.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -364,9 +370,9 @@ public class DeliveryCTS extends AppCompatActivity
                                     DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
                                     recyclerView_pul.setAdapter(DeliveryCTSAdapter);
                                     DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
-
                                 }
                             });
+
                             btndeselect.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -374,12 +380,10 @@ public class DeliveryCTS extends AppCompatActivity
                                     DeliveryCTSAdapter = new DeliveryCTSAdapter(list,getApplicationContext());
                                     recyclerView_pul.setAdapter(DeliveryCTSAdapter);
                                     DeliveryCTSAdapter.setOnItemClickListener(DeliveryCTS.this);
-
                                 }
                             });
+
                             btnnext.setOnClickListener(new View.OnClickListener() {
-
-
                                 @Override
                                 public void onClick(View v) {
                                     final CharSequence [] values = {"Cash To Supervisor","Bank Deposite"};
@@ -394,6 +398,21 @@ public class DeliveryCTS extends AppCompatActivity
                                     final EditText totalcashes = mView.findViewById(R.id.cash_Collection_text);
                                     final EditText cashComment = mView.findViewById(R.id.cash_comment_text);
                                     final TextView  orderIds = mView.findViewById(R.id.cash_amount);
+
+                                    // Employee List
+                                    getEmployeeList();
+                                    final Spinner mEmployeeSpinner = (Spinner) mView.findViewById(R.id.employee_name);
+                                    List<String> empList = new ArrayList<String>();
+                                    empList.add(0,"Select employee...");
+                                    for (int x = 0; x < eList.size(); x++) {
+                                        empList.add(eList.get(x).getEmpName());
+                                    }
+                                    ArrayAdapter<String> adapterEmpListR = new ArrayAdapter<String>(DeliveryCTS.this,
+                                            android.R.layout.simple_spinner_item,
+                                            empList);
+                                    adapterEmpListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    mEmployeeSpinner.setAdapter(adapterEmpListR);
+
 
                                     for (int i = 0; i < DeliveryCTSAdapter.imageModelArrayList.size(); i++){
                                         if(DeliveryCTSAdapter.imageModelArrayList.get(i).getSelected()) {
@@ -419,7 +438,7 @@ public class DeliveryCTS extends AppCompatActivity
 
                                     spinnerBuilder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
                                                 @Override
-                                                public void onClick(DialogInterface dialog, int item) {
+                                                public void onClick(final DialogInterface dialog, int item) {
 
                                                     switch (item) {
                                                         case 0:
@@ -470,11 +489,16 @@ public class DeliveryCTS extends AppCompatActivity
                                                                     String CashComments = cashComment.getText().toString().trim();
                                                                     String CashCollected = totalcashes.getText().toString().trim();
 
+                                                                    String empName = mEmployeeSpinner.getSelectedItem().toString();
+                                                                    String empCode = db.getSelectedEmpCode(empName);
+
                                                                     if(tv.getText().equals("0 Orders have been selected for cash.") || tv.getText().equals("Please select orders first") ){
                                                                         orderIds.setText("Please Select Orders First!!");
                                                                     }
                                                                     else if(totalCashs.isEmpty()){
                                                                         orderIds.setText("Please enter required fields First!!");
+                                                                    } else if(empName.equals("Select employee...")){
+                                                                        orderIds.setText("Please select employee!!");
                                                                     }
                                                                     else if(CashComments.isEmpty()){
                                                                         orderIds.setText("Please enter required fields First!!");
@@ -485,7 +509,7 @@ public class DeliveryCTS extends AppCompatActivity
                                                                         orderIds.setText("Total cash and cash-collection amount mismatch! Remove the dispute order and try again!");
                                                                     }
                                                                     else {
-                                                                        UpdateCashInfo(username,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments, "P");
+                                                                        UpdateCashInfo(username,empCode,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments, "P");
                                                                         alertDialog.dismiss();
                                                                         startActivity(intent);
                                                                         //loadRecyclerView(username);
@@ -497,14 +521,45 @@ public class DeliveryCTS extends AppCompatActivity
 
                                                             break;
                                                         case 1:
+
+                                                            dialog.dismiss();
+
+                                                            AlertDialog.Builder alertDialogBuilderBank = new AlertDialog.Builder(DeliveryCTS.this);
+
                                                             float CashCount = 0.0f;
                                                             totalCash1 = String.valueOf(db.getTotalCash("cts"));
                                                             CashCount = Float.parseFloat(totalCash1);
-                                                            if (itemOrders.equals("")){
+                                                            alertDialogBuilderBank.setMessage("Are you sure you want to bank these orders: "+itemOrders);
+                                                            final float finalCashCount = CashCount;
+                                                            alertDialogBuilderBank.setPositiveButton("Yes",
+                                                                    new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface arg0, int arg1) {
+                                                                            //itemOrders = "";
+                                                                            if (itemOrders.equals("")){
+                                                                                Toast.makeText(DeliveryCTS.this, "Select all orders first!", Toast.LENGTH_SHORT).show();
+                                                                            } else {
+                                                                                UpdateBankInfo(username,itemPrimaryIds,itemOrders, String.valueOf(finalCashCount), String.valueOf(finalCashCount),"","P");
+                                                                            }
+                                                                            dialog.dismiss();
+                                                                        }
+                                                                    });
+
+                                                            alertDialogBuilderBank.setNegativeButton("No",
+                                                                    new DialogInterface.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(DialogInterface arg0, int arg1) {
+                                                                            itemOrders = "";
+                                                                        }
+                                                                    });
+                                                            AlertDialog alertDialogBank = alertDialogBuilderBank.create();
+                                                            alertDialogBank.show();
+
+                                                            /*if (itemOrders.equals("")){
                                                                 Toast.makeText(DeliveryCTS.this, "Select all orders!", Toast.LENGTH_SHORT).show();
                                                             } else {
                                                                 UpdateBankInfo(username,itemPrimaryIds,itemOrders, String.valueOf(CashCount), String.valueOf(CashCount),"","P");
-                                                            }
+                                                            }*/
                                                             break;
                                                         default:
                                                             break;
@@ -557,6 +612,23 @@ public class DeliveryCTS extends AppCompatActivity
             requestQueue = Volley.newRequestQueue(this);
         }
         requestQueue.add(stringRequest);
+    }
+
+    private void getEmployeeList() {
+        try {
+            eList.clear();
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_employee_list(sqLiteDatabase);
+            while (c.moveToNext()) {
+                Integer empId = c.getInt(0);
+                String empCode = c.getString(1);
+                String empName = c.getString(2);
+                DeliveryCTSModel employeeList = new DeliveryCTSModel(empId,empCode,empName);
+                eList.add(employeeList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -728,7 +800,7 @@ public class DeliveryCTS extends AppCompatActivity
         }
     }
 
-    private void UpdateCashInfo(final String createdBy,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment, final String type) {
+    private void UpdateCashInfo(final String createdBy,final String empCode,final String sqlPrimaryIds,final String items,final String totalCashAmt,final String submittedCashAmt,final String CashComment, final String type) {
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_CTS_UPDATE_All,
                 new Response.Listener<String>() {
                     @Override
@@ -756,6 +828,7 @@ public class DeliveryCTS extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", createdBy);
+                params.put("", empCode);
                 params.put("cashSubmissionType", type);
                 params.put("sqlPrimaryId", sqlPrimaryIds);
                 params.put("flagreq", "delivery_officer_CTS");
@@ -919,8 +992,8 @@ public class DeliveryCTS extends AppCompatActivity
     // Dispute raise functionality
     @Override
     public void onItemClick_view(View view, int position) {
-        // mis-clicking prevention, using threshold of 500 ms
-        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+        // mis-clicking prevention, using threshold of 1000 ms
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
             return;
         }
         mLastClickTime = SystemClock.elapsedRealtime();

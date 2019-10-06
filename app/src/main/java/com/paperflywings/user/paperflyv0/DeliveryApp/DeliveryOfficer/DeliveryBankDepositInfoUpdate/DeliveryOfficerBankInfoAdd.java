@@ -70,6 +70,7 @@ public class DeliveryOfficerBankInfoAdd extends AppCompatActivity
     public static final String TOTAL_C_AMT = "Total C Amt";
     public static final String SERIAL_NO = "Serial No";
     public static final String PRIMARY_KEY = "Primary Key";
+    public static final String SQL_PRIMARY_KEY = "Sql Primary Key";
     //public static final String APIORDERID = "Api Order ID";
 
 

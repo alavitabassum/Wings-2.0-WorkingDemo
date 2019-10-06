@@ -66,6 +66,7 @@ import java.util.Map;
 
 import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.PRIMARY_KEY;
 import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.SERIAL_NO;
+import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.SQL_PRIMARY_KEY;
 import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.TOTAL_C_AMT;
 
 
@@ -120,6 +121,7 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
         final String total_cash_collecction = intentTotalCashAmt.getStringExtra(TOTAL_C_AMT);
         final String serial_no = intentTotalCashAmt.getStringExtra(SERIAL_NO);
         final String primary_key = intentTotalCashAmt.getStringExtra(PRIMARY_KEY);
+        final String sql_primary_key = intentTotalCashAmt.getStringExtra(SQL_PRIMARY_KEY);
         total_Cash_collection.setText("Total Cash: " +total_cash_collecction+" Taka");
 
         db=new BarcodeDbHelper(getApplicationContext());
