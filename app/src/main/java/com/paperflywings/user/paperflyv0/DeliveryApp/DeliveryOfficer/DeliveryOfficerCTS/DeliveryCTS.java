@@ -828,7 +828,8 @@ public class DeliveryCTS extends AppCompatActivity
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", createdBy);
-                params.put("", empCode);
+                // This is the employee code to whom the CTS is transferred
+                params.put("assignedToEmp", empCode);
                 params.put("cashSubmissionType", type);
                 params.put("sqlPrimaryId", sqlPrimaryIds);
                 params.put("flagreq", "delivery_officer_CTS");
