@@ -433,8 +433,10 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
 
                                             if(tv.getText().equals("0 Orders have been selected for return.")){
                                                 orderIds.setText("Please Select Orders First!!");
+                                            } else if(tv.getText().equals("Please select orders first")){
+                                                orderIds.setText("There is nothing to return!!");
                                             } else if(empName.equals("Select employee...")){
-                                                orderIds.setText("Please select employee!!");
+                                                orderIds.setText("Please select employee you want to handover the returned products!!");
                                             } else {
                                                 UpdateReturnYoS(item, username, empCode);
                                                 alertDialog.dismiss();

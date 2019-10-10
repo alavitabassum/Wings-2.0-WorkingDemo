@@ -512,6 +512,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
 
                             //Putting blank value to email
                             editor.putString(Config.EMAIL_SHARED_PREF, "");
+                            editor.putString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
 
                             //Saving the sharedpreferences
                             editor.commit();

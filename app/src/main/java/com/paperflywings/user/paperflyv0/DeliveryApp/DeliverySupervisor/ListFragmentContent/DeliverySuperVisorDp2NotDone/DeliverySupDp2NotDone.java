@@ -42,7 +42,6 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFrag
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisor;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorDp2Done.DeliverySupDp2Done;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput.DeliverySupCashDispute;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute;
@@ -506,7 +505,7 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
 
                             //Putting blank value to email
                             editor.putString(Config.EMAIL_SHARED_PREF, "");
-
+                            editor.putString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
                             //Saving the sharedpreferences
                             editor.commit();
 
@@ -528,7 +527,7 @@ public class DeliverySupDp2NotDone extends AppCompatActivity implements Navigati
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_dp2_receive);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout_dp2_not_done);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
