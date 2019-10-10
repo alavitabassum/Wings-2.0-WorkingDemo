@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd;
-        import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.ComingSoonSupPage;
-        import com.paperflywings.user.paperflyv0.R;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO.DeliveryDOBankByDO;
+import com.paperflywings.user.paperflyv0.R;
 
 
 /**
@@ -42,7 +42,7 @@ public class BankFragmentDO extends Fragment {
             @Override
             public void onClick(View v) {
                 // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ss,new DeliveryFragment()).commit();
-                Intent intentSearch = new Intent(getActivity().getApplicationContext(), ComingSoonSupPage.class);
+                Intent intentSearch = new Intent(getActivity().getApplicationContext(), DeliveryDOBankByDO.class);
                 startActivity(intentSearch);
             }
         });

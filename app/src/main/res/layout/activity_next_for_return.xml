@@ -20,11 +20,40 @@
         android:textColor="#000"
         android:id="@+id/tv"/>
 
+    <Spinner
+        android:id="@+id/employee_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/select_emp_name"
+        android:layout_toEndOf="@+id/select_emp_name"/>
+
+    <!-- <TextView
+         android:id="@+id/select_emp_name"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:padding="10dp"
+         android:layout_below="@id/select_deposite_date1"
+         android:text="Employee"
+         android:textAlignment="textStart"
+         android:textSize="15sp"
+         android:textStyle="bold" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:layout_marginStart="10dp"
+        android:text="Employee"
+        android:layout_below="@+id/tv"
+        android:textStyle="bold"
+        android:id="@+id/select_emp_name"/>
+
     <TextView
         android:id="@+id/error_msg_return"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv"
+        android:layout_below="@+id/select_emp_name"
         android:textSize="16sp"
         android:padding="10dp"
         android:text=""

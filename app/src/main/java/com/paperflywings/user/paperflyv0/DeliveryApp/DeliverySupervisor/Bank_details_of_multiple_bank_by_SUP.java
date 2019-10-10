@@ -1012,7 +1012,6 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         return true;
     }
 
-
     private void insertBankDetails(final String sqlPrimaryId,final String username, final String serial_no,
                                    final String depositeDate1, final String bankName1, final String slipNumber1, final String depositeAmt1,
                                    final String depositeDate2, final String bankName2, final String slipNumber2, final String depositeAmt2,
@@ -1055,7 +1054,6 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         Toast.makeText(Bank_details_of_multiple_bank_by_SUP.this, "Server disconnected!"+error, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -1106,7 +1104,6 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 params.put("image5",img5);
 
                 params.put("flagreq", "Delivery_complete_bank_deposite_slip_by_SUP");
-
                 return params;
             }
         };
@@ -1116,11 +1113,8 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-
             Toast.makeText(Bank_details_of_multiple_bank_by_SUP.this, "Server Error", Toast.LENGTH_LONG).show();
         }
     }
-
 }
-
 

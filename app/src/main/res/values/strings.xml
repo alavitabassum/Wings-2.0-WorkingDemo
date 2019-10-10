@@ -246,6 +246,12 @@
     <string name="title_activity_bank_deposite">DP2 Management</string>
     <string name="title_activity_multiple_bank_deposite_by_DO">Delivery-Officer Bank Deposite</string>
     <string name="title_activity_multiple_bank_deposite_by_sup">Supervisor Bank Deposite</string>
+    <string name="title_activity_delivery_docash_rcv_by_do">DeliveryDOCashRcvByDO</string>
+    <string name="title_activity_delivery_dobank_by_do">DeliveryDOBankByDO</string>
+    <string name="title_activity_delivery_domultiple_batch_selection">
+        DeliveryDOMultipleBatchSelection
+    </string>
+    <string name="title_activity_delivery_doreturn_rcv_by_do">DeliveryDOReturnRcvByDO</string>
 
 
 </resources>

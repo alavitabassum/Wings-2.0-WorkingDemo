@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryDOCashRcvByDO.DeliveryDOCashRcvByDO;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest;
@@ -38,6 +39,7 @@ import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOff
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerReAttempt.DeliveryReAttempt;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.Delivery_quick_pick_scan;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryReturnRcvByDO.DeliveryDOReturnRcvByDO;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.NetworkStateChecker;
 import com.paperflywings.user.paperflyv0.R;
@@ -57,8 +59,8 @@ import java.util.Map;
 public class DeliveryFragment extends Fragment {
 
     BarcodeDbHelper db;
-    private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery,reAttempt,quickPick;
-    private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count,reAttempt_count;
+    private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery,reAttempt,quickPick, cashReceive, returnReceive;
+    private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count,reAttempt_count, cash_receive_id;
     private RequestQueue requestQueue;
 
     private ProgressDialog progress;
@@ -210,6 +212,8 @@ public class DeliveryFragment extends Fragment {
                 quickDelivery = (CardView)getView().findViewById(R.id.QuickDelivery_id);
                 reAttempt = (CardView)getView().findViewById(R.id.re_attempt_id);
                 quickPick = (CardView)getView().findViewById(R.id.delivery_quick_pick_id);
+                returnReceive = (CardView)getView().findViewById(R.id.Return_recv_id);
+                cashReceive = (CardView)getView().findViewById(R.id.Cash_recv_id);
 
                 unpicked_count = (TextView)getView().findViewById(R.id.UnpickedCount);
                 withoutStatus_count = (TextView)getView().findViewById(R.id.WithoutStatusCount);
@@ -226,7 +230,6 @@ public class DeliveryFragment extends Fragment {
                 cashCollection_count.setText(String.valueOf(cash));
                 returnList_count.setText(String.valueOf(returnList));
                 reAttempt_count.setText(String.valueOf(reAttemptList));
-
 
 
                 reAttempt.setOnClickListener(new View.OnClickListener() {
@@ -299,6 +302,24 @@ public class DeliveryFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity().getApplicationContext(), DeliveryCTS.class);
+                        startActivity(intent);
+                    }
+                });
+
+                returnReceive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity().getApplicationContext(),
+                                DeliveryDOReturnRcvByDO.class);
+                        startActivity(intent);
+                    }
+                });
+
+                cashReceive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity().getApplicationContext(),
+                                DeliveryDOCashRcvByDO.class);
                         startActivity(intent);
                     }
                 });

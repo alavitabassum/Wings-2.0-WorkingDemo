@@ -1,6 +1,6 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO;
 
-public class DeliveryCashReceiveSupervisorModel {
+public class DeliveryDOBankByDOModel {
     private String orderid;
     private String orderidList;
     private String merOrderRef;
@@ -46,7 +46,6 @@ public class DeliveryCashReceiveSupervisorModel {
     public void setId(Integer id) {
         this.id = id;
     }
-
 
     public boolean getSelected() {
         return isSelected;
@@ -192,7 +191,7 @@ public class DeliveryCashReceiveSupervisorModel {
         this.empId = empId;
     }
 
-    public DeliveryCashReceiveSupervisorModel(String orderid, String merOrderRef, String cts, String ctsTime, String ctsBy,String packagePrice, String collection) {
+    public DeliveryDOBankByDOModel(String orderid, String merOrderRef, String cts, String ctsTime, String ctsBy,String packagePrice, String collection) {
         this.orderid = orderid;
         this.merOrderRef = merOrderRef;
         this.cts = cts;
@@ -202,7 +201,7 @@ public class DeliveryCashReceiveSupervisorModel {
         this.collection = collection;
     }
 
-    public DeliveryCashReceiveSupervisorModel(int id ,String orderidList,String totalCashReceive,String ordPrimaryKey, String serialNo, String totalOrders, String totalCashAmt, String submittedCashAmt, String dropPointEmp, String dropPointCode, String cashAmt, String partialReceive, String packagePrice, String cts, String ctsTime, String ctsBy, String crsTime, String crsBy) {
+    public DeliveryDOBankByDOModel(int id ,String orderidList,String totalCashReceive,String ordPrimaryKey, String serialNo, String totalOrders, String totalCashAmt, String submittedCashAmt, String dropPointEmp, String dropPointCode, String cashAmt, String partialReceive, String packagePrice, String cts, String ctsTime, String ctsBy, String crsTime, String crsBy) {
 
         this.id = id;
         this.orderidList = orderidList;
@@ -235,20 +234,20 @@ public class DeliveryCashReceiveSupervisorModel {
         this.ordPrimaryKey = ordPrimaryKey;
     }
 
-    public DeliveryCashReceiveSupervisorModel() {
+    public DeliveryDOBankByDOModel() {
 
     }
 
-    public DeliveryCashReceiveSupervisorModel(String pointCode) {
+    public DeliveryDOBankByDOModel(String pointCode) {
         this.pointCode = pointCode;
     }
 
-    public DeliveryCashReceiveSupervisorModel(Integer bankId, String bankName) {
+    public DeliveryDOBankByDOModel(Integer bankId, String bankName) {
         this.bankId = bankId;
         this.bankName = bankName;
     }
 
-    public DeliveryCashReceiveSupervisorModel(Integer empId, String empCode, String empName) {
+    public DeliveryDOBankByDOModel(Integer empId, String empCode, String empName) {
         this.empId = empId;
         this.empCode = empCode;
         this.empName = empName;
@@ -319,3 +318,4 @@ public class DeliveryCashReceiveSupervisorModel {
     }
 
 }
+

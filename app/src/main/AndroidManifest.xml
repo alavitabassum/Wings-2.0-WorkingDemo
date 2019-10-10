@@ -35,16 +35,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP"
-            android:label="@string/title_activity_multiple_bank_deposite_by_sup"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
-        <activity
-            android:name=".DeliveryApp.DeliverySupervisor.Bank_details_of_multiple_bank_by_SUP"
-            android:label="@string/title_activity_multiple_bank_deposite_by_sup"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+
         <activity
             android:name=".SplashScreen"
             android:screenOrientation="portrait"
@@ -55,9 +46,41 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryReturnRcvByDO.DeliveryDOReturnRcvByDO"
+            android:label="@string/title_activity_delivery_doreturn_rcv_by_do"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO.DeliveryDOMultipleBatchSelectByDO.DeliveryDOMultipleBatchSelection"
+            android:label="@string/title_activity_delivery_domultiple_batch_selection"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO.DeliveryDOBankByDO"
+            android:label="@string/title_activity_delivery_dobank_by_do"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DeliveryApp.DeliveryOfficer.DeliveryDOCashRcvByDO.DeliveryDOCashRcvByDO"
+            android:label="@string/title_activity_delivery_docash_rcv_by_do"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP"
+            android:label="@string/title_activity_multiple_bank_deposite_by_sup"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DeliveryApp.DeliverySupervisor.Bank_details_of_multiple_bank_by_SUP"
+            android:label="@string/title_activity_multiple_bank_deposite_by_sup"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeByDOAcceptBySup.BankDepositeA"
             android:label="@string/title_activity_bank_deposite"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput.DeliverySupCashDispute"

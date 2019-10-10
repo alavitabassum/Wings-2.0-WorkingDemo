@@ -19,11 +19,27 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="50dp">
+        <Button
+            android:id="@+id/btn_pending_bank_depo_by_sup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:background="@color/red"
+            android:textColor="@color/white"
+            android:text="My Pending Bank Deposite"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="80dp">
 
         <RelativeLayout
             android:layout_marginTop="30dp"
@@ -76,14 +92,15 @@
                 android:text="0"
                 android:textAlignment="center"
                 android:textColor="#000"
-                android:textSize="15sp" />
+                android:textSize="18dp"
+                android:textStyle="bold"/>
         </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="148dp"
         android:paddingLeft="5dp"
         android:paddingRight="10dp"
         android:orientation="horizontal">
@@ -95,7 +112,6 @@
             android:layout_weight="1"
             android:paddingLeft="15dp"
             android:text="Cancel Selection"
-            android:enabled="false"
             android:padding="5dp"
             android:textColor="@color/red"
             android:textStyle="bold" />
@@ -106,7 +122,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:textStyle="bold"
-            android:enabled="true"
             android:padding="10dp"
             android:text="Select all"
             android:textColor="@color/green" />
@@ -222,7 +237,7 @@
 
 
     <include layout="@layout/content_delivery_cash_receive_supervisor"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="200dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

@@ -1,4 +1,4 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -39,15 +39,17 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeByDOAcceptBySup.BankDepositeA;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO.DeliveryDOMultipleBatchSelectByDO.DeliveryDOMultipleBatchSelection;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerOnHold.DeliveryOnHold;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPettyCash.DeliveryAddNewExpense;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerPreReturn.ReturnRequest;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerRTS.Delivery_ReturnToSupervisor;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerUnpicked.DeliveryOfficerUnpicked;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.Bank_DepositeSlip_Image;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorCashReceiveBySuperVisor.DeliverySupCRS;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnRcv.DeliverySReturnReceive;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorCashDisput.DeliverySupCashDispute;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySupervisorReturnDispute.DeliverySupReturnDispute;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.PointSelection.DeliverySelectPoint;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -60,22 +62,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryCashReceiveSupervisor extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener,DeliveryCashReceiveSupervisorAdapter.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener {
+/*public class DeliveryDOBankByDO extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {*/
+
+public class DeliveryDOBankByDO extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,DeliveryDOBankByDOAdapter.OnItemClickListener,SwipeRefreshLayout.OnRefreshListener {
 
     BarcodeDbHelper db;
     public int totalCash = 0;
     private long mLastClickTime = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
     boolean is_in_Action = false;
-    private DeliveryCashReceiveSupervisorAdapter deliveryCashReceiveSupervisorAdapter;
+    private DeliveryDOBankByDOAdapter deliveryDOBankByDOAdapter;
     RecyclerView recyclerView_pul;
     RecyclerView.LayoutManager layoutManager_pul;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
     private TextView btnselect, btndeselect,  totalOrdersSelected;
     public TextView totalCashCollection;
-    private Button btnnext, btnpendingsup;
+    private Button btnnext,btnpendingdo;
 
     String itemOrders = "";
     String itemPrimaryIds = "";
@@ -87,7 +92,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     public static final String TOTAL_CASH = "total_cash";
     public static final String SERIAL_NO = "serial_no";
     public static final String TOTAL_ORDER= "total_order";
-    private List<DeliveryCashReceiveSupervisorModel> list;
+    private List<DeliveryDOBankByDOModel> list;
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     @Override
@@ -96,28 +101,28 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         db = new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        setContentView(R.layout.activity_delivery_cash_receive_supervisor);
+        setContentView(R.layout.activity_delivery_dobank_by_do);
         totalCashCollection = findViewById(R.id.CashCollectionForBank);
+        btnpendingdo = findViewById(R.id.btn_pending_bank_depo_by_do);
         totalOrdersSelected = findViewById(R.id.CTS_id_);
-        btnpendingsup = findViewById(R.id.btn_pending_bank_depo_by_sup);
         btnselect = findViewById(R.id.selectForBank);
         btndeselect = findViewById(R.id.deselectForBank);
         btnnext = findViewById(R.id.nextForBank);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_cash_receive);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        recyclerView_pul = findViewById(R.id.recycler_view_cash_receive_list);
-        recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
+        recyclerView_pul = findViewById(R.id.recycler_view_cash_receive_list_by_do);
+        recyclerView_pul.setAdapter(deliveryDOBankByDOAdapter);
         layoutManager_pul = new LinearLayoutManager(this);
         recyclerView_pul.setLayoutManager(layoutManager_pul);
 
-        list = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        list = new ArrayList<DeliveryDOBankByDOModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
@@ -142,14 +147,14 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        TextView navUsername = headerView.findViewById(R.id.delivery_supervisor);
+        TextView navUsername = headerView.findViewById(R.id.delivery_officer_name);
         navUsername.setText(username);
         navigationView.setNavigationItemSelectedListener(this);
 
-        btnpendingsup.setOnClickListener(new View.OnClickListener() {
+        btnpendingdo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent pendingbankdepo = new Intent(DeliveryCashReceiveSupervisor.this, MultipleBankDepositeBySUP.class);
+                Intent pendingbankdepo = new Intent(DeliveryDOBankByDO.this, DeliveryDOMultipleBatchSelection.class);
                 startActivity(pendingbankdepo);
             }
         });
@@ -160,11 +165,11 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 totalCash = 0;
                 try {
                     list = getModel(true);
-                    deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list, getApplicationContext());
-                    recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
-                    deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
+                    deliveryDOBankByDOAdapter = new DeliveryDOBankByDOAdapter(list, getApplicationContext());
+                    recyclerView_pul.setAdapter(deliveryDOBankByDOAdapter);
+                    deliveryDOBankByDOAdapter.setOnItemClickListener(DeliveryDOBankByDO.this);
                 } catch (NullPointerException e) {
-                    Toast.makeText(DeliveryCashReceiveSupervisor.this, "Nothing to select", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeliveryDOBankByDO.this, "Nothing to select", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -173,12 +178,13 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 try{
+
                     list = getModel(false);
-                    deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-                    recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
-                    deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
+                    deliveryDOBankByDOAdapter = new DeliveryDOBankByDOAdapter(list,getApplicationContext());
+                    recyclerView_pul.setAdapter(deliveryDOBankByDOAdapter);
+                    deliveryDOBankByDOAdapter.setOnItemClickListener(DeliveryDOBankByDO.this);
                 } catch (NullPointerException e){
-                    Toast.makeText(DeliveryCashReceiveSupervisor.this, "Nothing to select", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeliveryDOBankByDO.this, "Nothing to select", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -186,12 +192,12 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 totalCash = 0;
                 itemOrders = "";
                 itemPrimaryIds = "";
                 serialNo = "";
-
-                // mis-clicking prevention, using threshold of 500 ms
+                // mis-clicking prevention, using threshold of 1000 ms
                 if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                     return;
                 }
@@ -201,17 +207,17 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
                 final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
 
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryCashReceiveSupervisor.this);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliveryDOBankByDO.this);
                 final View mView = getLayoutInflater().inflate(R.layout.bank_deposite_accept_by_sup, null);
                 final TextView tv = mView.findViewById(R.id.tv);
                 final TextView error_msg = mView.findViewById(R.id.error_msg111);
 
-                for (int i = 0; i < DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.size(); i++){
-                    if(DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSelected()) {
+                for (int i = 0; i < DeliveryDOBankByDOAdapter.imageModelArrayList.size(); i++){
+                    if(DeliveryDOBankByDOAdapter.imageModelArrayList.get(i).getSelected()) {
                         count++;
-                        itemOrders = itemOrders + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrderidList();
-                        itemPrimaryIds = itemPrimaryIds + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getOrdPrimaryKey();
-                        serialNo = serialNo + "," + DeliveryCashReceiveSupervisorAdapter.imageModelArrayList.get(i).getSerialNo();
+                        itemOrders = itemOrders + "," + DeliveryDOBankByDOAdapter.imageModelArrayList.get(i).getOrderidList();
+                        itemPrimaryIds = itemPrimaryIds + "," + DeliveryDOBankByDOAdapter.imageModelArrayList.get(i).getOrdPrimaryKey();
+                        serialNo = serialNo + "," + DeliveryDOBankByDOAdapter.imageModelArrayList.get(i).getSerialNo();
                     }
                     tv.setText(count + " batch selected.");
                 }
@@ -252,7 +258,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
                         try{
                             String totalCash = String.valueOf(db.getTotalReceivedCash());
-                            Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, MultipleBankDepositeBySUP.class);
+                            Intent intent = new Intent(DeliveryDOBankByDO.this, MultipleBankDepositeBySUP.class);
                             if (itemOrders.equals("")){
                                 error_msg.setText("Please Select Batch First!!");
                             } else if(tv.getText().equals("0 batches have been selected.")){
@@ -263,11 +269,10 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                             intent.putExtra(TOTAL_CASH, totalCash);
 
                         } catch (NullPointerException e){
-                            Toast.makeText(DeliveryCashReceiveSupervisor.this, "Nothing to bank", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DeliveryDOBankByDO.this, "Nothing to bank", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
             }
         });
     }
@@ -280,11 +285,12 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
-                                Intent intentBankDeposite = new Intent(DeliveryCashReceiveSupervisor.this, MultipleBankDepositeBySUP.class);
+                                //Intent intentBankDeposite = new Intent(DeliveryDOBankByDO.this, MultipleBankDepositeBySUP.class);
+                                Intent intentBankDeposite = new Intent(DeliveryDOBankByDO.this, DeliveryDOMultipleBatchSelection.class);
                                 startActivity(intentBankDeposite);
-                                Toast.makeText(DeliveryCashReceiveSupervisor.this, "Successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DeliveryDOBankByDO.this, "Successful", Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(DeliveryCashReceiveSupervisor.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(DeliveryDOBankByDO.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -294,7 +300,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(DeliveryCashReceiveSupervisor.this, "Server disconnected! "+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DeliveryDOBankByDO.this, "Server disconnected! "+error, Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -319,12 +325,12 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(DeliveryCashReceiveSupervisor.this, "Server Error! cts", Toast.LENGTH_LONG).show();
+            Toast.makeText(DeliveryDOBankByDO.this, "Server Error! cts", Toast.LENGTH_LONG).show();
         }
     }
 
-    public ArrayList<DeliveryCashReceiveSupervisorModel> getModel(boolean isSelect){
-          ArrayList<DeliveryCashReceiveSupervisorModel> listOfOrders = new ArrayList<>();
+    public ArrayList<DeliveryDOBankByDOModel> getModel(boolean isSelect){
+        ArrayList<DeliveryDOBankByDOModel> listOfOrders = new ArrayList<>();
 
         if(isSelect == true){
 
@@ -332,7 +338,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             totalOrdersSelected.setText(totalOrders+"");
 
             for(int i = 0; i < list.size(); i++){
-                DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
+                DeliveryDOBankByDOModel model = new DeliveryDOBankByDOModel();
 
                 model.setSelected(isSelect);
                 model.setOrderidList(list.get(i).getOrderidList());
@@ -346,13 +352,14 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 model.setTotalCashReceive(String.valueOf(list.get(i).getTotalCashReceive()));
                 model.setCts(list.get(i).getCts());
                 listOfOrders.add(model);
+
             }
 
         } else if(isSelect == false){
             totalOrdersSelected.setText("0");
 
             for(int i = 0; i < list.size(); i++){
-                DeliveryCashReceiveSupervisorModel model = new DeliveryCashReceiveSupervisorModel();
+                DeliveryDOBankByDOModel model = new DeliveryDOBankByDOModel();
 
                 model.setSelected(isSelect);
                 model.setOrderidList(list.get(i).getOrderidList());
@@ -368,8 +375,6 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
                 model.setCts(list.get(i).getCts());
                 listOfOrders.add(model);
-
-                totalCash = 0;
             }
         }
 
@@ -378,7 +383,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 if (!listOfOrders.contains(i)) {
                     totalCash = totalCash + Integer.parseInt(String.valueOf(listOfOrders.get(i).getTotalCashReceive()));
                 }else {
-
+                   // totalCash = totalCash + 0;
                 }
             } else {
                 if(totalCash != 0){
@@ -387,6 +392,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                     totalCash = 0;
                 }
             }
+            // tv.setText(count + " Orders have been selected for cash.");
         }
 
         totalCashCollection.setText(totalCash+" Taka");
@@ -395,12 +401,12 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_cash_receive);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            Intent intent = new Intent(getApplicationContext(), DeliverySuperVisorTablayout.class);
+            Intent intent = new Intent(getApplicationContext(), DeliveryTablayout.class);
             startActivity(intent);
         }
     }
@@ -421,7 +427,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-               // deliveryCashReceiveSupervisorAdapter.getFilter().filter(newText);
+                // deliveryCashReceiveSupervisorAdapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -429,7 +435,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         catch (Exception e)
         {
             e.printStackTrace();
-            Intent intent_stay = new Intent(DeliveryCashReceiveSupervisor.this, DeliveryCashReceiveSupervisor.class);
+            Intent intent_stay = new Intent(DeliveryDOBankByDO.this, DeliveryDOBankByDO.class);
             Toast.makeText(this, "Page Loading...", Toast.LENGTH_SHORT).show();
             startActivity(intent_stay);
         }
@@ -454,51 +460,47 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
-        if (id == R.id.nav_point) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    DeliverySelectPoint.class);
+        if (id == R.id.nav_home) {
+            Intent homeIntent = new Intent(DeliveryDOBankByDO.this,
+                    DeliveryTablayout.class);
             startActivity(homeIntent);
             // Handle the camera action
-        } else if (id == R.id.nav_home) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    DeliverySuperVisorTablayout.class);
+        } else if (id == R.id.nav_unpicked) {
+            Intent homeIntent = new Intent(DeliveryDOBankByDO.this,
+                    DeliveryOfficerUnpicked.class);
             startActivity(homeIntent);
             // Handle the camera action
-        } else if (id == R.id.nav_crs_sup) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    DeliverySupCRS.class);
+        } else if (id == R.id.nav_without_status) {
+            Intent homeIntent = new Intent(DeliveryDOBankByDO.this,
+                    DeliveryWithoutStatus.class);
             startActivity(homeIntent);
-        } else if (id == R.id.nav_return_receive) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    DeliverySReturnReceive.class);
+            // Handle the camera action
+        } else if (id == R.id.nav_on_hold) {
+            Intent homeIntent = new Intent(DeliveryDOBankByDO.this,
+                    DeliveryOnHold.class);
             startActivity(homeIntent);
-        } else if (id == R.id.nav_bank_deposite_by_sup) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    DeliveryCashReceiveSupervisor.class);
+            // Handle the camera action
+        } else if (id == R.id.nav_return_request) {
+            Intent homeIntent = new Intent(DeliveryDOBankByDO.this,
+                    ReturnRequest.class);
             startActivity(homeIntent);
-        } else if (id == R.id.nav_bank_deposite_by_sup_pending) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    MultipleBankDepositeBySUP.class);
+            // Handle the camera action
+        } else if (id == R.id.nav_return) {
+            Intent homeIntent = new Intent(DeliveryDOBankByDO.this,
+                    Delivery_ReturnToSupervisor.class);
             startActivity(homeIntent);
-        } else if (id == R.id.nav_bank_deposite_by_do) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    BankDepositeA.class);
+            // Handle the camera action
+        } else if (id == R.id.nav_new_expense) {
+            Intent expenseIntent = new Intent(DeliveryDOBankByDO.this,
+                    DeliveryAddNewExpense.class);
+            startActivity(expenseIntent);
+        } else if (id == R.id.nav_cash) {
+            Intent homeIntent = new Intent(DeliveryDOBankByDO.this,
+                    DeliveryCTS.class);
             startActivity(homeIntent);
-        } else if (id == R.id.nav_return_dispute_report) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    DeliverySupReturnDispute.class);
-            startActivity(homeIntent);
-        } else if (id == R.id.nav_cash_dispute_report) {
-            Intent homeIntent = new Intent(DeliveryCashReceiveSupervisor.this,
-                    DeliverySupCashDispute.class);
-            startActivity(homeIntent);
-        }
-        else if (id == R.id.nav_logout) {
-            //Creating an alert dialog to confirm logout
+        } else if (id == R.id.nav_logout) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Are you sure you want to logout?");
             alertDialogBuilder.setPositiveButton("Yes",
@@ -522,7 +524,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(DeliveryCashReceiveSupervisor.this, LoginActivity.class);
+                            Intent intent = new Intent(DeliveryDOBankByDO.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -537,9 +539,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
-
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout_sup_cash_receive);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -571,7 +571,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                             for(int i =0;i<array.length();i++)
                             {
                                 JSONObject o = array.getJSONObject(i);
-                                DeliveryCashReceiveSupervisorModel withoutStatus_model = new  DeliveryCashReceiveSupervisorModel(
+                                DeliveryDOBankByDOModel withoutStatus_model = new DeliveryDOBankByDOModel(
                                         o.getInt("id"),
                                         o.getString("orderidList"),
                                         o.getString("totalCashReceive"),
@@ -607,9 +607,9 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                                 list.add(withoutStatus_model);
                             }
 
-                            deliveryCashReceiveSupervisorAdapter = new DeliveryCashReceiveSupervisorAdapter(list,getApplicationContext());
-                            recyclerView_pul.setAdapter(deliveryCashReceiveSupervisorAdapter);
-                            deliveryCashReceiveSupervisorAdapter.setOnItemClickListener(DeliveryCashReceiveSupervisor.this);
+                            deliveryDOBankByDOAdapter = new DeliveryDOBankByDOAdapter(list,getApplicationContext());
+                            recyclerView_pul.setAdapter(deliveryDOBankByDOAdapter);
+                            deliveryDOBankByDOAdapter.setOnItemClickListener(DeliveryDOBankByDO.this);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -657,16 +657,16 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
         final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
 
         list.clear();
-        deliveryCashReceiveSupervisorAdapter.notifyDataSetChanged();
+        deliveryDOBankByDOAdapter.notifyDataSetChanged();
         if(nInfo!= null && nInfo.isConnected())
         {
-           loadCashReceiveData(username,pointCode);
-           totalCashCollection.setText("0");
-           totalOrdersSelected.setText("0");
-           totalCash = 0;
-           serialNo = "";
-           itemPrimaryIds = "";
-           itemOrders = "";
+            loadCashReceiveData(username,pointCode);
+            totalCashCollection.setText("0");
+            totalOrdersSelected.setText("0");
+            totalCash = 0;
+            serialNo = "";
+            itemPrimaryIds = "";
+            itemOrders = "";
         }
         else{
             Toast.makeText(this,"No Internet Connection",Toast.LENGTH_LONG).show();
@@ -675,7 +675,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
     @Override
     public void onItemClick_view(View view, int position) {
-        DeliveryCashReceiveSupervisorModel clickedItem = list.get(position);
+        DeliveryDOBankByDOModel clickedItem = list.get(position);
 
         String orderIdList = clickedItem.getOrderidList();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
@@ -694,7 +694,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
 
     @Override
     public void onItemClick_view_image(View view1, int position1) {
-        DeliveryCashReceiveSupervisorModel clickedItem1 = list.get(position1);
+        DeliveryDOBankByDOModel clickedItem1 = list.get(position1);
         String serialNo = clickedItem1.getSerialNo();
         Intent intent = new Intent(getApplication(), Bank_DepositeSlip_Image.class);
         intent.putExtra(SERIAL_NO, serialNo);
@@ -716,6 +716,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 totalCash = 0;
             }
         }
+
         totalCashCollection.setText(totalCash+" Taka");
     }
 }

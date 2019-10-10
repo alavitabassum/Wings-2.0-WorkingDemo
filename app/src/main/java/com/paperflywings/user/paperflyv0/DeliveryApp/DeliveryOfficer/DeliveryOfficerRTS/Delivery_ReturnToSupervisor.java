@@ -24,7 +24,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,11 +77,12 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
     public static final String DELIVERY_RETURNR_UPDATE = "http://paperflybd.com/DeliveryReturnRequestUpdate.php";
 
     private List<DeliveryReturnToSuperVisorModel> list;
+    private List<DeliveryReturnToSuperVisorModel> eList;
     public static final int NAME_NOT_SYNCED_WITH_SERVER = 0;
     public static final int NAME_SYNCED_WITH_SERVER = 1;
     String item = "";
 
-    public static final String DELIVERY_RTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorRTSinBatch.php";
+    public static final String DELIVERY_RTS_UPDATE_All = "http://paperflybd.com/DeliverySupervisorDORTSinBatch.php";
 
 
     @Override
@@ -99,6 +102,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         recyclerView_pul = (RecyclerView)findViewById(R.id.recycler_view_return_list);
         recyclerView_pul.setAdapter(DeliveryReturnToSuperVisorAdapter);
         list = new ArrayList<DeliveryReturnToSuperVisorModel>();
+        eList = new ArrayList<DeliveryReturnToSuperVisorModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -115,6 +119,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setRefreshing(true);
         list.clear();
+        eList.clear();
         swipeRefreshLayout.setRefreshing(true);
 
         if(nInfo!= null && nInfo.isConnected())
@@ -375,6 +380,20 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                     final TextView tv = mView.findViewById(R.id.tv);
                                     final TextView orderIds = mView.findViewById(R.id.error_msg_return);
 
+                                    // Employee List
+                                    getEmployeeList();
+                                    final Spinner mEmployeeSpinner = (Spinner) mView.findViewById(R.id.employee_name);
+                                    List<String> empList = new ArrayList<String>();
+                                    empList.add(0,"Select employee...");
+                                    for (int x = 0; x < eList.size(); x++) {
+                                        empList.add(eList.get(x).getEmpName());
+                                    }
+                                    ArrayAdapter<String> adapterEmpListR = new ArrayAdapter<String>(Delivery_ReturnToSupervisor.this,
+                                            android.R.layout.simple_spinner_item,
+                                            empList);
+                                    adapterEmpListR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    mEmployeeSpinner.setAdapter(adapterEmpListR);
+
                                     for (int i = 0; i < DeliveryReturnToSuperVisorAdapter.imageModelArrayList1.size(); i++){
                                         if(DeliveryReturnToSuperVisorAdapter.imageModelArrayList1.get(i).getSelected()) {
                                             count++;
@@ -408,10 +427,16 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+
+                                            String empName = mEmployeeSpinner.getSelectedItem().toString();
+                                            String empCode = db.getSelectedEmpCode(empName);
+
                                             if(tv.getText().equals("0 Orders have been selected for return.")){
                                                 orderIds.setText("Please Select Orders First!!");
+                                            } else if(empName.equals("Select employee...")){
+                                                orderIds.setText("Please select employee!!");
                                             } else {
-                                                UpdateReturnYoS(item, username);
+                                                UpdateReturnYoS(item, username, empCode);
                                                 alertDialog.dismiss();
                                                 startActivity(intent);
                                                 item = "";
@@ -463,6 +488,25 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
             startActivity(homeIntent);
         }
     }
+
+
+    private void getEmployeeList() {
+        try {
+            eList.clear();
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_employee_list(sqLiteDatabase);
+            while (c.moveToNext()) {
+                Integer empId = c.getInt(0);
+                String empCode = c.getString(1);
+                String empName = c.getString(2);
+                DeliveryReturnToSuperVisorModel employeeList = new DeliveryReturnToSuperVisorModel(empId,empCode,empName);
+                eList.add(employeeList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -628,7 +672,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
         }
     }
 
-    private void UpdateReturnYoS(final String item,final String RTSBy) {
+    private void UpdateReturnYoS(final String item,final String RTSBy, final String empCode) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_UPDATE_All,
                 new Response.Listener<String>() {
@@ -658,6 +702,7 @@ public class Delivery_ReturnToSupervisor extends AppCompatActivity
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("orderid", item);
                 params.put("RTSBy", RTSBy);
+                params.put("returnToEmp", empCode);
 
                 return params;
             }

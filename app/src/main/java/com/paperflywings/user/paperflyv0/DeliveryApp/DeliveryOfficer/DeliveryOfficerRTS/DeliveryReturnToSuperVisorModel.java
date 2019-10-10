@@ -14,28 +14,9 @@ public class DeliveryReturnToSuperVisorModel {
     private String productBrief;
     private String deliveryTime;
     private String phone_no;
+    private Integer empId;
+    private String empName;
     private boolean isSelected;
-
-    public DeliveryReturnToSuperVisorModel() {
-
-    }
-
-    public int getSql_primary_id() {
-        return sql_primary_id;
-    }
-
-    public void setSql_primary_id(int sql_primary_id) {
-        this.sql_primary_id = sql_primary_id;
-    }
-
-    public boolean getSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
     private String username;
     private String empCode;
     private String CTS;
@@ -65,6 +46,48 @@ public class DeliveryReturnToSuperVisorModel {
     private String RtsTime;
     private String RetRem;
     private int sql_primary_id;
+
+    public DeliveryReturnToSuperVisorModel() {
+
+    }
+
+    public DeliveryReturnToSuperVisorModel(Integer empId, String empCode, String empName) {
+        this.empId = empId;
+        this.empCode = empCode;
+        this.empName = empName;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
+    public int getSql_primary_id() {
+        return sql_primary_id;
+    }
+
+    public void setSql_primary_id(int sql_primary_id) {
+        this.sql_primary_id = sql_primary_id;
+    }
+
+    public boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
     public String getUsername() {
         return username;

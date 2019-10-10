@@ -44,8 +44,8 @@ import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO.DeliveryDOBankByDOModel;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisorModel;
 import com.paperflywings.user.paperflyv0.LoginActivity;
 import com.paperflywings.user.paperflyv0.R;
 
@@ -66,7 +66,6 @@ import java.util.Map;
 
 import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.PRIMARY_KEY;
 import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.SERIAL_NO;
-import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.SQL_PRIMARY_KEY;
 import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.TOTAL_C_AMT;
 
 
@@ -95,19 +94,19 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
     int month;
     int dayOfMonth;
     Calendar calendar;
-    TextView total_Cash_collection, create_tv,slipNo,depComm,error_msg_show;
+    TextView total_Cash_collection;
     EditText deposite_slip_number1, deposite_slip_number2, deposite_slip_number3, deposite_slip_number4, deposite_slip_number5;
     EditText bank_deposite_comment1, bank_deposite_comment2, bank_deposite_comment3, bank_deposite_comment4, bank_deposite_comment5;
 
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
 
-    private List<DeliveryCashReceiveSupervisorModel> bankList1;
-    private List<DeliveryCashReceiveSupervisorModel> bankList2;
-    private List<DeliveryCashReceiveSupervisorModel> bankList3;
-    private List<DeliveryCashReceiveSupervisorModel> bankList4;
-    private List<DeliveryCashReceiveSupervisorModel> bankList5;
-    private List<DeliveryCashReceiveSupervisorModel> pointCodeList;
+    private List<DeliveryDOBankByDOModel> bankList1;
+    private List<DeliveryDOBankByDOModel> bankList2;
+    private List<DeliveryDOBankByDOModel> bankList3;
+    private List<DeliveryDOBankByDOModel> bankList4;
+    private List<DeliveryDOBankByDOModel> bankList5;
+    private List<DeliveryDOBankByDOModel> pointCodeList;
 
     BarcodeDbHelper db;
 
@@ -121,18 +120,17 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
         final String total_cash_collecction = intentTotalCashAmt.getStringExtra(TOTAL_C_AMT);
         final String serial_no = intentTotalCashAmt.getStringExtra(SERIAL_NO);
         final String primary_key = intentTotalCashAmt.getStringExtra(PRIMARY_KEY);
-        final String sql_primary_key = intentTotalCashAmt.getStringExtra(SQL_PRIMARY_KEY);
         total_Cash_collection.setText("Total Cash: " +total_cash_collecction+" Taka");
 
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        bankList1 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList2 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList3 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList4 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList5 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        pointCodeList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        bankList1 = new ArrayList<DeliveryDOBankByDOModel>();
+        bankList2 = new ArrayList<DeliveryDOBankByDOModel>();
+        bankList3 = new ArrayList<DeliveryDOBankByDOModel>();
+        bankList4 = new ArrayList<DeliveryDOBankByDOModel>();
+        bankList5 = new ArrayList<DeliveryDOBankByDOModel>();
+        pointCodeList = new ArrayList<DeliveryDOBankByDOModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -894,7 +892,7 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
             while (c.moveToNext()) {
                 Integer bankId = c.getInt(0);
                 String bankName = c.getString(1);
-                DeliveryCashReceiveSupervisorModel bankDetails = new DeliveryCashReceiveSupervisorModel(bankId,bankName);
+                DeliveryDOBankByDOModel bankDetails = new DeliveryDOBankByDOModel(bankId,bankName);
                 bankList1.add(bankDetails);
                 bankList2.add(bankDetails);
                 bankList3.add(bankDetails);
@@ -913,7 +911,7 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
             Cursor c = db.get_pointCodes(sqLiteDatabase);
             while (c.moveToNext()) {
                 String pointCode = c.getString(0);
-                DeliveryCashReceiveSupervisorModel pointCodes = new DeliveryCashReceiveSupervisorModel(pointCode);
+                DeliveryDOBankByDOModel pointCodes = new DeliveryDOBankByDOModel(pointCode);
                 pointCodeList.add(pointCodes);
             }
         } catch (Exception e) {
@@ -1014,7 +1012,6 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
         return true;
     }
 
-
     private void insertBankDetails(final String sqlPrimaryId,final String username, final String serial_no,
                                    final String depositeDate1, final String bankName1, final String slipNumber1, final String depositeAmt1,
                                    final String depositeDate2, final String bankName2, final String slipNumber2, final String depositeAmt2,
@@ -1057,7 +1054,6 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         Toast.makeText(Bank_details_of_multiple_bank_by_DO.this, "Server disconnected!"+error, Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -1108,7 +1104,6 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
                 params.put("image5",img5);
 
                 params.put("flagreq", "Delivery_complete_bank_deposite_slip_by_DO1");
-
                 return params;
             }
         };
@@ -1118,10 +1113,8 @@ public class Bank_details_of_multiple_bank_by_DO extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-
             Toast.makeText(Bank_details_of_multiple_bank_by_DO.this, "Server Error", Toast.LENGTH_LONG).show();
         }
     }
-
-  }
+}
 
