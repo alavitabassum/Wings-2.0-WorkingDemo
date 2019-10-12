@@ -192,7 +192,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                 serialNo = "";
 
                 // mis-clicking prevention, using threshold of 500 ms
-                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
                     return;
                 }
                 mLastClickTime = SystemClock.elapsedRealtime();
@@ -222,7 +222,11 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-
+                                // mis-clicking prevention, using threshold of 500 ms
+                                if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
+                                    return;
+                                }
+                                mLastClickTime = SystemClock.elapsedRealtime();
                             }
                         });
 
@@ -245,7 +249,7 @@ public class DeliveryCashReceiveSupervisor extends AppCompatActivity
                     @Override
                     public void onClick(View v) {
 
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();

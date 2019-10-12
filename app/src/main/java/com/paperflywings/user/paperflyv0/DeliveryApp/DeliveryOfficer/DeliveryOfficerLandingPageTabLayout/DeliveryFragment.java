@@ -60,7 +60,7 @@ public class DeliveryFragment extends Fragment {
 
     BarcodeDbHelper db;
     private CardView unpicked_item,without_Status,on_Hold,returnReqst,return_List,cashCollection,quickDelivery,reAttempt,quickPick, cashReceive, returnReceive;
-    private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count,reAttempt_count, cash_receive_id;
+    private TextView unpicked_count,withoutStatus_count,onHold_count,returnReqst_count,returnList_count,cashCollection_count,reAttempt_count,return_receive_id, cash_receive_id;
     private RequestQueue requestQueue;
 
     private ProgressDialog progress;
@@ -93,6 +93,7 @@ public class DeliveryFragment extends Fragment {
         cashCollection_count = (TextView)viewGroup.findViewById(R.id.CashCount);
         returnList_count = (TextView)viewGroup.findViewById(R.id.RTS);
         reAttempt_count = (TextView)viewGroup.findViewById(R.id.re_attempt_num);
+
 
         getActivity().registerReceiver(new NetworkStateChecker(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
@@ -136,6 +137,8 @@ public class DeliveryFragment extends Fragment {
                                 o.getString("returnRequest"),
                                 o.getString("returnList"),
                                 o.getString("reAttempt"),
+                                o.getString("returnRecv"),
+                                o.getString("cashRecv"),
                                 NAME_NOT_SYNCED_WITH_SERVER
                         );
 
@@ -148,6 +151,8 @@ public class DeliveryFragment extends Fragment {
                                 o.getString("returnRequest"),
                                 o.getString("returnList"),
                                 o.getString("reAttempt"),
+                                o.getString("returnRecv"),
+                                o.getString("cashRecv"),
                                 NAME_NOT_SYNCED_WITH_SERVER
                         );
 //                            summaries.add(todaySummary);
@@ -202,6 +207,8 @@ public class DeliveryFragment extends Fragment {
                 String returnRequest = c.getString(5);
                 String returnList = c.getString(6);
                 String reAttemptList = c.getString(7);
+                String returnRecv = c.getString(8);
+                String cashRecv = c.getString(9);
 
                 unpicked_item = (CardView)getView().findViewById(R.id.Unpicked_id);
                 without_Status = (CardView)getView().findViewById(R.id.WithoutStatus_id);
@@ -222,6 +229,8 @@ public class DeliveryFragment extends Fragment {
                 cashCollection_count = (TextView)getView().findViewById(R.id.CashCount);
                 returnList_count = (TextView)getView().findViewById(R.id.RTS);
                 reAttempt_count = (TextView)getView().findViewById(R.id.re_attempt_num);
+                return_receive_id = (TextView)getView().findViewById(R.id.RT_recv);
+                cash_receive_id = (TextView)getView().findViewById(R.id.CashRecv_count);
 
                 unpicked_count.setText(String.valueOf(unpicked));
                 withoutStatus_count.setText(String.valueOf(withoutStatus));
@@ -230,6 +239,9 @@ public class DeliveryFragment extends Fragment {
                 cashCollection_count.setText(String.valueOf(cash));
                 returnList_count.setText(String.valueOf(returnList));
                 reAttempt_count.setText(String.valueOf(reAttemptList));
+
+                return_receive_id.setText(String.valueOf(returnRecv));
+                cash_receive_id.setText(String.valueOf(cashRecv));
 
 
                 reAttempt.setOnClickListener(new View.OnClickListener() {

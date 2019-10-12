@@ -626,6 +626,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                                 o.getString("returnRequest"),
                                 o.getString("returnList"),
                                 o.getString("reAttempt"),
+                                o.getString("returnRecv"),
+                                o.getString("cashRecv"),
                                 NAME_NOT_SYNCED_WITH_SERVER
                         );
 
@@ -638,6 +640,8 @@ public class DeliveryOfficerCardMenu extends AppCompatActivity
                                 o.getString("returnRequest"),
                                 o.getString("returnList"),
                                 o.getString("reAttempt"),
+                                o.getString("returnRecv"),
+                                o.getString("cashRecv"),
                                 NAME_NOT_SYNCED_WITH_SERVER
                         );
 //                            summaries.add(todaySummary);

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -29,6 +28,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -177,7 +177,7 @@ public class DeliveryCashRS extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected"+error ,Toast.LENGTH_LONG).show();
                     }
                 })
         {
@@ -194,6 +194,10 @@ public class DeliveryCashRS extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 
@@ -281,7 +285,7 @@ public class DeliveryCashRS extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                          progress.dismiss();
-                        Toast.makeText(getApplicationContext(), "Serve not connected" ,Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Serve not connected"+error ,Toast.LENGTH_LONG).show();
                     }
                 })
         {
@@ -298,6 +302,10 @@ public class DeliveryCashRS extends AppCompatActivity
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(this);
         }
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
 

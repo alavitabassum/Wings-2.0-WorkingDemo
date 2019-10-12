@@ -66,7 +66,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
 import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.Bank_details_of_multiple_bank_by_DO;
+import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.Bank_details_of_multiple_bank_by_DO_as_SUP;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO.DeliveryDOBankByDO;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerCTS.DeliveryCTS;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryOfficerLandingPageTabLayout.DeliveryTablayout;
@@ -404,7 +404,7 @@ public class DeliveryDOMultipleBatchSelection extends AppCompatActivity
     public void onItemClick_view(View view, int position) {
         DeliveryDOMultipleBatchSelectionModel clickedItem = list.get(position);
 
-        Intent intentBankDeposite = new Intent(DeliveryDOMultipleBatchSelection.this, Bank_details_of_multiple_bank_by_DO.class);
+        Intent intentBankDeposite = new Intent(DeliveryDOMultipleBatchSelection.this, Bank_details_of_multiple_bank_by_DO_as_SUP.class);
 
         String totCashAmt = clickedItem.getTotalCashAmt();
         int primaryKey = clickedItem.getId();

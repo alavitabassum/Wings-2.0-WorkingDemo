@@ -1,75 +1,75 @@
-package com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor;
+package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
+        import android.app.AlertDialog;
+        import android.app.DatePickerDialog;
+        import android.app.ProgressDialog;
+        import android.content.Context;
+        import android.content.DialogInterface;
+        import android.content.Intent;
+        import android.content.SharedPreferences;
+        import android.database.Cursor;
+        import android.database.sqlite.SQLiteDatabase;
+        import android.graphics.Bitmap;
+        import android.graphics.BitmapFactory;
+        import android.net.ConnectivityManager;
+        import android.net.NetworkInfo;
+        import android.net.Uri;
+        import android.os.Bundle;
+        import android.os.SystemClock;
+        import android.support.annotation.Nullable;
+        import android.support.design.widget.NavigationView;
+        import android.support.v4.view.GravityCompat;
+        import android.support.v4.widget.DrawerLayout;
+        import android.support.v7.app.AppCompatActivity;
+        import android.util.Base64;
+        import android.view.Menu;
+        import android.view.MenuItem;
+        import android.view.View;
+        import android.widget.ArrayAdapter;
+        import android.widget.Button;
+        import android.widget.DatePicker;
+        import android.widget.EditText;
+        import android.widget.ImageView;
+        import android.widget.RelativeLayout;
+        import android.widget.Spinner;
+        import android.widget.TextView;
+        import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.paperflywings.user.paperflyv0.Config;
-import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
-import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliceryCashReceiveSupervisor.DeliveryCashReceiveSupervisorModel;
-import com.paperflywings.user.paperflyv0.LoginActivity;
-import com.paperflywings.user.paperflyv0.R;
+        import com.android.volley.Request;
+        import com.android.volley.RequestQueue;
+        import com.android.volley.Response;
+        import com.android.volley.VolleyError;
+        import com.android.volley.toolbox.StringRequest;
+        import com.android.volley.toolbox.Volley;
+        import com.paperflywings.user.paperflyv0.Config;
+        import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
+        import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd;
+        import com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO.DeliveryDOBankByDOModel;
+        import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
+        import com.paperflywings.user.paperflyv0.LoginActivity;
+        import com.paperflywings.user.paperflyv0.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+        import org.json.JSONException;
+        import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+        import java.io.ByteArrayOutputStream;
+        import java.io.FileNotFoundException;
+        import java.io.IOException;
+        import java.io.InputStream;
+        import java.text.SimpleDateFormat;
+        import java.util.ArrayList;
+        import java.util.Calendar;
+        import java.util.Date;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Map;
 
-import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP.PRIMARY_KEY;
-import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP.SERIAL_NO;
-import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP.TOTAL_C_AMT;
+        import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.PRIMARY_KEY;
+        import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.SERIAL_NO;
+        import static com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer.DeliveryBankDepositInfoUpdate.DeliveryOfficerBankInfoAdd.TOTAL_C_AMT;
 
 
-public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
+public class Bank_details_of_multiple_bank_by_DO_as_SUP extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
@@ -101,12 +101,12 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
     public static final String DELIVERY_SUPERVISOR_API= "http://paperflybd.com/DeliverySupervisorAPI.php";
 
 
-    private List<DeliveryCashReceiveSupervisorModel> bankList1;
-    private List<DeliveryCashReceiveSupervisorModel> bankList2;
-    private List<DeliveryCashReceiveSupervisorModel> bankList3;
-    private List<DeliveryCashReceiveSupervisorModel> bankList4;
-    private List<DeliveryCashReceiveSupervisorModel> bankList5;
-    private List<DeliveryCashReceiveSupervisorModel> pointCodeList;
+    private List<DeliveryDOBankByDOModel> bankList1;
+    private List<DeliveryDOBankByDOModel> bankList2;
+    private List<DeliveryDOBankByDOModel> bankList3;
+    private List<DeliveryDOBankByDOModel> bankList4;
+    private List<DeliveryDOBankByDOModel> bankList5;
+    private List<DeliveryDOBankByDOModel> pointCodeList;
 
     BarcodeDbHelper db;
 
@@ -125,12 +125,12 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         db=new BarcodeDbHelper(getApplicationContext());
         db.getWritableDatabase();
 
-        bankList1 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList2 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList3 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList4 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        bankList5 = new ArrayList<DeliveryCashReceiveSupervisorModel>();
-        pointCodeList = new ArrayList<DeliveryCashReceiveSupervisorModel>();
+        bankList1 = new ArrayList<DeliveryDOBankByDOModel>();
+        bankList2 = new ArrayList<DeliveryDOBankByDOModel>();
+        bankList3 = new ArrayList<DeliveryDOBankByDOModel>();
+        bankList4 = new ArrayList<DeliveryDOBankByDOModel>();
+        bankList5 = new ArrayList<DeliveryDOBankByDOModel>();
+        pointCodeList = new ArrayList<DeliveryDOBankByDOModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -177,7 +177,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
             bankLists1.add(bankList1.get(x1).getBankName());
         }
 
-        ArrayAdapter<String> adapterBankListR1 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+        ArrayAdapter<String> adapterBankListR1 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_DO_as_SUP.this,
                 android.R.layout.simple_spinner_item,
                 bankLists1);
         adapterBankListR1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -191,7 +191,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         for (int x2 = 0; x2 < bankList3.size(); x2++) {
             bankLists2.add(bankList2.get(x2).getBankName());
         }
-        ArrayAdapter<String> adapterBankListR2 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+        ArrayAdapter<String> adapterBankListR2 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_DO_as_SUP.this,
                 android.R.layout.simple_spinner_item,
                 bankLists2);
         adapterBankListR2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -205,7 +205,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         for (int x3 = 0; x3 < bankList3.size(); x3++) {
             bankLists3.add(bankList3.get(x3).getBankName());
         }
-        ArrayAdapter<String> adapterBankListR3 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+        ArrayAdapter<String> adapterBankListR3 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_DO_as_SUP.this,
                 android.R.layout.simple_spinner_item,
                 bankLists3);
         adapterBankListR3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -219,7 +219,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         for (int x4 = 0; x4 < bankList3.size(); x4++) {
             bankLists4.add(bankList4.get(x4).getBankName());
         }
-        ArrayAdapter<String> adapterBankListR4 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+        ArrayAdapter<String> adapterBankListR4 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_DO_as_SUP.this,
                 android.R.layout.simple_spinner_item,
                 bankLists4);
         adapterBankListR4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -234,7 +234,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
             bankLists5.add(bankList5.get(x5).getBankName());
         }
 
-        ArrayAdapter<String> adapterBankListR5 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_SUP.this,
+        ArrayAdapter<String> adapterBankListR5 = new ArrayAdapter<String>(Bank_details_of_multiple_bank_by_DO_as_SUP.this,
                 android.R.layout.simple_spinner_item,
                 bankLists5);
         adapterBankListR5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -265,7 +265,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
                 dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_SUP.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_DO_as_SUP.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         String yearselected  = Integer.toString(year) ;
@@ -288,7 +288,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
                 dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_SUP.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_DO_as_SUP.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         String yearselected  = Integer.toString(year) ;
@@ -311,7 +311,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
                 dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_SUP.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_DO_as_SUP.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         String yearselected  = Integer.toString(year) ;
@@ -334,7 +334,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
                 dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_SUP.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_DO_as_SUP.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         String yearselected  = Integer.toString(year) ;
@@ -357,7 +357,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 year = calendar.get(Calendar.YEAR);
                 month = calendar.get(Calendar.MONTH);
                 dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_SUP.this, new DatePickerDialog.OnDateSetListener() {
+                datePickerDialog = new DatePickerDialog(Bank_details_of_multiple_bank_by_DO_as_SUP.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         String yearselected  = Integer.toString(year) ;
@@ -408,7 +408,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
             public void onClick(View v) {
 
                 //String
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Bank_details_of_multiple_bank_by_SUP.this);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Bank_details_of_multiple_bank_by_DO_as_SUP.this);
                 final View mView = getLayoutInflater().inflate(R.layout.bank_details_summary_multiple, null);
 
                 final RelativeLayout view_holder1 = mView.findViewById(R.id.text_holder1);
@@ -595,7 +595,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                     public void onClick(View v) {
 
                         // mis-clicking prevention, using threshold of 500 ms
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000){
                             return;
                         }
                         mLastClickTime = SystemClock.elapsedRealtime();
@@ -650,6 +650,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                                     ,deposite_date5,bankItm5,slipNumber5,comment5);
 
                             totalSumission = 0;
+                            //alertDialog.dismiss();
                             //Toast.makeText(Bank_details_of_multiple_bank_by_DO.this, "Submit", Toast.LENGTH_SHORT).show();
                         }
 
@@ -725,7 +726,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
     }
 
 
-    public Bitmap getThumbnail(Uri uri) throws FileNotFoundException, IOException{
+    public Bitmap getThumbnail(Uri uri) throws FileNotFoundException, IOException {
         InputStream input = this.getContentResolver().openInputStream(uri);
 
         BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
@@ -747,7 +748,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
         bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
         bitmapOptions.inDither = true; //optional
         bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//
-        input = Bank_details_of_multiple_bank_by_SUP.this.getContentResolver().openInputStream(uri);
+        input = Bank_details_of_multiple_bank_by_DO_as_SUP.this.getContentResolver().openInputStream(uri);
         Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
         input.close();
         return bitmap;
@@ -892,7 +893,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
             while (c.moveToNext()) {
                 Integer bankId = c.getInt(0);
                 String bankName = c.getString(1);
-                DeliveryCashReceiveSupervisorModel bankDetails = new DeliveryCashReceiveSupervisorModel(bankId,bankName);
+                DeliveryDOBankByDOModel bankDetails = new DeliveryDOBankByDOModel(bankId,bankName);
                 bankList1.add(bankDetails);
                 bankList2.add(bankDetails);
                 bankList3.add(bankDetails);
@@ -911,7 +912,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
             Cursor c = db.get_pointCodes(sqLiteDatabase);
             while (c.moveToNext()) {
                 String pointCode = c.getString(0);
-                DeliveryCashReceiveSupervisorModel pointCodes = new DeliveryCashReceiveSupervisorModel(pointCode);
+                DeliveryDOBankByDOModel pointCodes = new DeliveryDOBankByDOModel(pointCode);
                 pointCodeList.add(pointCodes);
             }
         } catch (Exception e) {
@@ -923,7 +924,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
     public void onBackPressed() {
 
         super.onBackPressed();
-        Intent intent = new Intent(Bank_details_of_multiple_bank_by_SUP.this, MultipleBankDepositeBySUP.class);
+        Intent intent = new Intent(Bank_details_of_multiple_bank_by_DO_as_SUP.this, DeliveryOfficerBankInfoAdd.class);
         startActivity(intent);
 
     }
@@ -958,7 +959,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
-            Intent homeIntent = new Intent(Bank_details_of_multiple_bank_by_SUP.this,
+            Intent homeIntent = new Intent(Bank_details_of_multiple_bank_by_DO_as_SUP.this,
                     DeliverySuperVisorTablayout.class);
             startActivity(homeIntent);
         } else if (id == R.id.nav_logout) {
@@ -984,13 +985,12 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
 
                             //Putting blank value to email
                             editor.putString(Config.EMAIL_SHARED_PREF, "");
-                            editor.putString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
 
                             //Saving the sharedpreferences
                             editor.commit();
 
                             //Starting login activity
-                            Intent intent = new Intent(Bank_details_of_multiple_bank_by_SUP.this, LoginActivity.class);
+                            Intent intent = new Intent(Bank_details_of_multiple_bank_by_DO_as_SUP.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     });
@@ -1041,11 +1041,11 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
 
                                 total_Cash_collection.setText("0 Taka");
 
-                                Intent intent = new Intent(Bank_details_of_multiple_bank_by_SUP.this, MultipleBankDepositeBySUP.class);
-                                Toast.makeText(Bank_details_of_multiple_bank_by_SUP.this, "Successful", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Bank_details_of_multiple_bank_by_DO_as_SUP.this, DeliveryOfficerBankInfoAdd.class);
+                                Toast.makeText(Bank_details_of_multiple_bank_by_DO_as_SUP.this, "Successful", Toast.LENGTH_SHORT).show();
                                 startActivity(intent);
                             } else {
-                                Toast.makeText(Bank_details_of_multiple_bank_by_SUP.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Bank_details_of_multiple_bank_by_DO_as_SUP.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -1055,7 +1055,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(Bank_details_of_multiple_bank_by_SUP.this, "Server disconnected!"+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Bank_details_of_multiple_bank_by_DO_as_SUP.this, "Server disconnected!"+error, Toast.LENGTH_SHORT).show();
                     }
                 }
         ) {
@@ -1104,7 +1104,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                 params.put("depositAmt5", depositeAmt5);
                 params.put("image5",img5);
 
-                params.put("flagreq", "Delivery_complete_bank_deposite_slip_by_SUP");
+                params.put("flagreq", "Delivery_complete_bank_deposite_slip_by_DO_as_SUP");
                 return params;
             }
         };
@@ -1114,7 +1114,7 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
             }
             requestQueue.add(postRequest);
         } catch (Exception e) {
-            Toast.makeText(Bank_details_of_multiple_bank_by_SUP.this, "Server Error", Toast.LENGTH_LONG).show();
+            Toast.makeText(Bank_details_of_multiple_bank_by_DO_as_SUP.this, "Server Error", Toast.LENGTH_LONG).show();
         }
     }
 }

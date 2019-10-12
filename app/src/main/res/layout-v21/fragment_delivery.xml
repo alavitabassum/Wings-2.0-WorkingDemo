@@ -301,9 +301,9 @@
 
           <TextView
               android:id="@+id/unpicked"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="40dp"
+              android:layout_marginLeft="0dp"
               android:layout_marginTop="120dp"
               android:gravity="center"
               android:text="Unpicked"
@@ -350,9 +350,9 @@
 
           <TextView
               android:id="@+id/withoutStatus"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="15dp"
+              android:layout_marginLeft="0dp"
               android:layout_marginTop="120dp"
               android:gravity="center"
               android:text="Without Status"
@@ -407,9 +407,9 @@
 
           <TextView
               android:id="@+id/OnHold"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="40dp"
+              android:layout_marginLeft="0dp"
               android:layout_marginTop="120dp"
               android:gravity="center"
               android:text="On Hold"
@@ -456,9 +456,9 @@
 
           <TextView
               android:id="@+id/ReturnRequest"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="14dp"
+              android:layout_marginLeft="0dp"
               android:layout_marginTop="120dp"
               android:gravity="center"
               android:text="Return Request"
@@ -515,10 +515,10 @@
 
           <TextView
               android:id="@+id/ReturnList"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginLeft="0dp"
-              android:layout_marginTop="110dp"
+              android:layout_marginTop="120dp"
               android:gravity="center"
               android:padding="2dp"
               android:text="Return To Supervisor"
@@ -565,10 +565,10 @@
 
           <TextView
               android:id="@+id/Cash"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="4dp"
-              android:layout_marginTop="110dp"
+              android:layout_marginLeft="0dp"
+              android:layout_marginTop="120dp"
               android:gravity="center"
               android:padding="2dp"
               android:text="Cash to Supervisor"
@@ -625,10 +625,10 @@
 
           <TextView
               android:id="@+id/ReturnRecv_List"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_marginLeft="0dp"
-              android:layout_marginTop="110dp"
+              android:layout_marginTop="120dp"
               android:gravity="center"
               android:padding="2dp"
               android:text="Return Receive"
@@ -675,10 +675,10 @@
 
           <TextView
               android:id="@+id/Cash_recv"
-              android:layout_width="wrap_content"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="4dp"
-              android:layout_marginTop="110dp"
+              android:layout_marginLeft="0dp"
+              android:layout_marginTop="120dp"
               android:gravity="center"
               android:padding="2dp"
               android:text="Cash Receive"

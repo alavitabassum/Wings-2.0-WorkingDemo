@@ -6,6 +6,8 @@ public class DeliverySummary_Model {
     private String withoutStatus;
     private String onHold;
     private String cash;
+    private String cashrecv;
+    private String returnrecv;
 
     public String getReAttempt() {
         return reAttempt;
@@ -18,7 +20,7 @@ public class DeliverySummary_Model {
     private String returnRequest;
     private String reAttempt;
 
-    public DeliverySummary_Model(String username, String unpicked, String withoutStatus, String onHold, String cash, String returnRequest, String returnList, String reAttempt, int status) {
+    public DeliverySummary_Model(String username, String unpicked, String withoutStatus, String onHold, String cash, String returnRequest, String returnList, String reAttempt, String returnrecv, String cashrecv,int status) {
         this.username = username;
         this.unpicked = unpicked;
         this.withoutStatus = withoutStatus;
@@ -28,6 +30,8 @@ public class DeliverySummary_Model {
         this.returnList = returnList;
         this.reAttempt = reAttempt;
         this.status = status;
+        this.returnrecv = returnrecv;
+        this.cashrecv = cashrecv;
     }
 
     public String getReturnID() {

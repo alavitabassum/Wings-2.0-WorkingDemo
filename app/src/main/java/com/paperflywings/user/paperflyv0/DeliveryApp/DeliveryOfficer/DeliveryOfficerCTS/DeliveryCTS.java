@@ -386,6 +386,12 @@ public class DeliveryCTS extends AppCompatActivity
                             btnnext.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    // mis-clicking prevention, using threshold of 500 ms
+                                    if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                                        return;
+                                    }
+                                    mLastClickTime = SystemClock.elapsedRealtime();
+
                                     final CharSequence [] values = {"Cash To Supervisor","Bank Deposite"};
                                     int count = 0;
                                     SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -430,6 +436,7 @@ public class DeliveryCTS extends AppCompatActivity
                                             totalCash = String.valueOf(db.getTotalCash("cts"));
                                             CashCount = Float.parseFloat(totalCash);
                                             tv1.setText(""+CashCount);
+                                            totalcashes.setText(""+CashCount);
                                         }
                                     }
 
@@ -976,7 +983,7 @@ public class DeliveryCTS extends AppCompatActivity
 
         //String
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(orderId);
+        alertDialogBuilder.setMessage("Order Id: "+orderId);
         alertDialogBuilder.setNegativeButton("Close",
                 new DialogInterface.OnClickListener() {
                     @Override

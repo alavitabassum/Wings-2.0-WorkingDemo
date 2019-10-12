@@ -130,10 +130,10 @@
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/ReturnReceived"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="110dp"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Return Receive"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -178,10 +178,10 @@
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/CashReceive"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="110dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="120dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Cash Receive"
                         android:textAlignment="center"
                         android:padding="3dp"
@@ -234,10 +234,10 @@
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/beforeDp2receive_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="110dp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Dp2 Not Received"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -282,10 +282,10 @@
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/afterDp2receive_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="110dp"
-                        android:layout_marginLeft="22dp"
+                        android:layout_marginTop="120dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Dp2 Received"
                         android:textAlignment="center"
                         android:padding="3dp"
@@ -343,10 +343,10 @@
 
                     <TextView
                         android:id="@+id/unpicked"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="120dp"
-                        android:layout_marginLeft="40dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Unpicked"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -393,7 +393,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="120dp"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Without Status"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -451,10 +451,10 @@
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/OnHold"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="120dp"
-                        android:layout_marginLeft="40dp"
+                        android:layout_marginLeft="0dp"
                         android:text="On Hold"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -498,10 +498,10 @@
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/ReturnRequest"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="120dp"
-                        android:layout_marginLeft="14dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Return Request"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -557,10 +557,10 @@
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/ReturnList"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="110dp"
-                        android:layout_marginLeft="55dp"
+                        android:layout_marginTop="120dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Return"
                         android:textAlignment="center"
                         android:gravity="center"
@@ -605,10 +605,10 @@
                     </RelativeLayout>
                     <TextView
                         android:id="@+id/Cash"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="120dp"
-                        android:layout_marginLeft="55dp"
+                        android:layout_marginLeft="0dp"
                         android:text="Cash"
                         android:textAlignment="center"
                         android:padding="3dp"

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class BarcodeDbHelper extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 26;
+    private static final int DATABASE_VERSION = 27;
     private static final String DATABASE_NAME = "WingsDB";
     private static final String TABLE_NAME = "Barcode";
     private static final String TABLE_NAME_1 = "My_pickups";
@@ -148,6 +148,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     public  final String SERIAL_NO = "serialNo";
     public  final String SUBMITTED_CASH = "submittedCashAmt";
     public  final String TOTAL_ORDERS = "totalOrders";
+    public  final String RETURN_RECV = "returnRecv";
+    public  final String CASH_RECV = "cashRecv";
 
     private  final String[] COLUMNS = {KEY_ID, MERCHANT_ID, KEY_NAME};
     private SQLiteDatabase db;
@@ -232,6 +234,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
                 + "return_request TEXT, "
                 + "return_list TEXT, "
                 + "reAttempt TEXT, "
+                + "returnRecv TEXT, "
+                + "cashRecv TEXT, "
                 + "status INT, "
                 + "unique(id))";
 
@@ -975,7 +979,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
     //////// Delivery Officer Database functionalities ///////
 
     // insert counts in delivery summary
-    public void insert_delivery_summary_count(String username, String unpicked, String without_status, String onhold, String cash, String return_request, String return_list,String reAttempt, int status) {
+    public void insert_delivery_summary_count(String username, String unpicked, String without_status, String onhold, String cash, String return_request, String return_list,String reAttempt, String returnRecv, String cashRecv,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -987,6 +991,8 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
         values.put(RETURNREQUEST, return_request);
         values.put(RETURNLIST, return_list);
         values.put(REATTEMPT, reAttempt);
+        values.put(RETURN_RECV, returnRecv);
+        values.put(CASH_RECV, cashRecv);
         values.put(STATUS, status);
 
         db.insert(TABLE_NAME_7, null, values);
@@ -995,7 +1001,7 @@ public class BarcodeDbHelper extends SQLiteOpenHelper {
 
     // get the delivery summary
     public Cursor get_delivery_summary(SQLiteDatabase db, String user) {
-        String[] columns = {USERNAME, UNPICKED, WITHOUTSTATUS, ONHOLD, CASH, RETURNREQUEST, RETURNLIST ,REATTEMPT};
+        String[] columns = {USERNAME, UNPICKED, WITHOUTSTATUS, ONHOLD, CASH, RETURNREQUEST, RETURNLIST ,REATTEMPT, RETURN_RECV, CASH_RECV};
 
         String whereClause = USERNAME + "=?";
         String[] whereArgs = new String[]{

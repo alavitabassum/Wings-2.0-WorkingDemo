@@ -197,12 +197,12 @@ public class DeliveryTablayout extends AppCompatActivity
                     }
                 } else if (tab.getPosition() == 2) {
                     toolbar.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
-                            R.color.black_overlay));
+                            R.color.put_hd_color_green));
                     tabLayout.setBackgroundColor(ContextCompat.getColor(DeliveryTablayout.this,
-                            R.color.black_overlay));
+                            R.color.put_hd_color_green));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         getWindow().setStatusBarColor(ContextCompat.getColor(DeliveryTablayout.this,
-                                R.color.black_overlay));
+                                R.color.put_hd_color_green));
                     }
                 }
                 else if (tab.getPosition() == 3) {
