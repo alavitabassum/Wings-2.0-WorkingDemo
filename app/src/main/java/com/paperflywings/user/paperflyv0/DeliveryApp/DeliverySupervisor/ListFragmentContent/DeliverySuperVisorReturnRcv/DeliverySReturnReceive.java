@@ -228,6 +228,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                                     View mView = getLayoutInflater().inflate(R.layout.delivery_activity_next_return_courier_by_sup, null);
 
                                     final TextView tv = mView.findViewById(R.id.tv_bulk);
+                                    final EditText cnNumberText = mView.findViewById(R.id.cn_number);
 
                                     final TextView disputeError = mView.findViewById(R.id.dispute_error_return_bulk);
 
@@ -287,13 +288,14 @@ public class DeliverySReturnReceive extends AppCompatActivity
 
                                             String courierName = mCourierSpinner.getSelectedItem().toString();
                                             String carrierId = db.getSelectedCourierId(courierName);
+                                            String cnNumber = cnNumberText.getText().toString().trim();
 
                                             if(tv.getText().equals("0 Orders have been selected for return.")){
                                                 disputeError.setText("Please Select Orders First!!");
                                             }else if(courierName.equals("Select courier...")){
                                                 disputeError.setText("Please select courier name!!");
                                             } else {
-                                                UpdateCourierResend(username,item,carrierId);
+                                                UpdateCourierResend(username,item,carrierId, cnNumber);
 
                                                 alertDialog.dismiss();
                                                 loadRecyclerView(username, pointCode);
@@ -621,6 +623,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         final TextView tv = mView1.findViewById(R.id.tv);
         final TextView merOrderRef = mView1.findViewById(R.id.mer_order_ref_no);
         final EditText disputeComment = mView1.findViewById(R.id.dispute_comment_text);
+        final EditText cnNumber = mView1.findViewById(R.id.cn_number_text);
         final TextView disputeError = mView1.findViewById(R.id.dispute_error_return);
 
         tv.setText("Dispute Order Id: "+orderId);
@@ -671,6 +674,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                 mLastClickTime = SystemClock.elapsedRealtime();
 
                 String courierName = mCourierSpinner.getSelectedItem().toString();
+                String cnNumberText = cnNumber.getText().toString().trim();
                 String carrierId = db.getSelectedCourierId(courierName);
 
                 String DisputeComments = disputeComment.getText().toString().trim();
@@ -680,7 +684,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                 } else if(DisputeComments.isEmpty()){
                     disputeError.setText("Please write dispute reason!!");
                 } else {
-                    disputeForReturn(username, DisputeComments,carrierId, sql_primary_id);
+                    disputeForReturn(username, DisputeComments,carrierId, sql_primary_id, cnNumberText);
                     alertDialog.dismiss();
                     startActivity(intent);
                 }
@@ -704,7 +708,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         }
     }
 
-    private void UpdateCourierResend(final String courierReturnBy,final String items,final String carrierId) {
+    private void UpdateCourierResend(final String courierReturnBy,final String items,final String carrierId, final String cnNumber) {
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
                 new Response.Listener<String>() {
@@ -735,6 +739,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                 params.put("username", courierReturnBy);
                 params.put("orderid", items);
                 params.put("carrierId", carrierId);
+                params.put("cnNumber", cnNumber);
                 params.put("flagreq", "delivery_courier_resend_by_supervisor");
                 return params;
             }
@@ -749,7 +754,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
         }
     }
 
-    private void disputeForReturn (final String username, final String disputeComment,final String carrierId, final int sql_primary_id){
+    private void disputeForReturn (final String username, final String disputeComment,final String carrierId, final int sql_primary_id, final String cnNumberText){
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
         Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
@@ -798,6 +803,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                 params1.put("disputeComment",disputeComment);
                 params1.put("carrierId",carrierId);
                 params1.put("sqlPrimaryId", String.valueOf(sql_primary_id));
+                params1.put("cnNumber", cnNumberText);
                 params1.put("flagreq","dispute_raised_by_supervisor_for_return_products");
                 return params1;
             }

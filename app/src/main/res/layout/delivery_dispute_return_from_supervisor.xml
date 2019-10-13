@@ -69,15 +69,43 @@
         />
 
     <TextView
+        android:id="@+id/cn_number_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        android:text="CN Number: "
+        android:textStyle="bold"
+        android:layout_marginTop="0dp"
+        android:layout_below="@+id/courier_list"
+        />
+
+    <EditText
+        android:id="@+id/cn_number_text"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/cn_number_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@+id/cn_number_title"
+        android:textAlignment="textStart"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="#000"
+        android:textSize="15sp"
+        style="@style/boldStyle"/>
+
+    <TextView
         android:id="@+id/et1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:layout_marginStart="10dp"
-        android:text="Comment"
+        android:text="Dispute Reason: "
         android:textStyle="bold"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/courier_list"
+        android:layout_below="@+id/cn_number_title"
         />
 
     <EditText
