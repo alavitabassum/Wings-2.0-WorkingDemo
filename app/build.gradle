@@ -14,8 +14,8 @@ android {
         applicationId "com.paperflywings.user.paperflyv0"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 39
-        versionName "39.0"
+        versionCode 40
+        versionName "40.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true;
 
