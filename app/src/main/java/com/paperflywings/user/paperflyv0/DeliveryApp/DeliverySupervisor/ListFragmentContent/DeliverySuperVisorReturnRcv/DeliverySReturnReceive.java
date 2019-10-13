@@ -709,6 +709,9 @@ public class DeliverySReturnReceive extends AppCompatActivity
     }
 
     private void UpdateCourierResend(final String courierReturnBy,final String items,final String carrierId, final String cnNumber) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
                 new Response.Listener<String>() {
@@ -717,6 +720,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
                         try {
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
+                                loadRecyclerView(username, pointCode);
                                 Toast.makeText(DeliverySReturnReceive.this, "Successful", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(DeliverySReturnReceive.this, "UnSuccessful", Toast.LENGTH_SHORT).show();
@@ -757,7 +761,7 @@ public class DeliverySReturnReceive extends AppCompatActivity
     private void disputeForReturn (final String username, final String disputeComment,final String carrierId, final int sql_primary_id, final String cnNumberText){
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
-        Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "PointCode: " +pointCode, Toast.LENGTH_SHORT).show();
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, DELIVERY_RTS_SUP_API,
