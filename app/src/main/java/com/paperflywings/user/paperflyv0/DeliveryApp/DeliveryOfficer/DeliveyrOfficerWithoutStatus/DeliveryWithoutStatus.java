@@ -1167,6 +1167,7 @@ public class DeliveryWithoutStatus extends AppCompatActivity
                             JSONObject obj = new JSONObject(response);
                             if (!obj.getBoolean("error")) {
                                 db.update_cash_status(cash,cashType,cashTime,cashBy,cashAmt,cashComment,orderid, flagReq, NAME_SYNCED_WITH_SERVER);
+                                //loadRecyclerView();
                                 startActivity(withoutstatuscount);
                             } else {
                                 //if there is some error

@@ -442,7 +442,6 @@ public class DeliveryCTS extends AppCompatActivity
 
                                     final AlertDialog.Builder spinnerBuilder = new AlertDialog.Builder(DeliveryCTS.this);
                                     spinnerBuilder.setTitle("Select Action: ");
-
                                     spinnerBuilder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(final DialogInterface dialog, int item) {

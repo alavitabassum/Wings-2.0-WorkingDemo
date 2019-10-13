@@ -521,7 +521,7 @@
               android:layout_marginTop="120dp"
               android:gravity="center"
               android:padding="2dp"
-              android:text="Return To Supervisor"
+              android:text="Return Handover"
               android:textAlignment="center"
               android:textColor="@android:color/black"
               android:textSize="16sp"
@@ -571,7 +571,7 @@
               android:layout_marginTop="120dp"
               android:gravity="center"
               android:padding="2dp"
-              android:text="Cash to Supervisor"
+              android:text="Cash Handover"
               android:textAlignment="center"
               android:textColor="@android:color/black"
               android:textSize="16sp"
@@ -688,11 +688,7 @@
               android:textStyle="bold" />
 
         </android.support.v7.widget.CardView>
-
-
       </LinearLayout>
-
     </LinearLayout>
   </ScrollView>
-
 </FrameLayout>

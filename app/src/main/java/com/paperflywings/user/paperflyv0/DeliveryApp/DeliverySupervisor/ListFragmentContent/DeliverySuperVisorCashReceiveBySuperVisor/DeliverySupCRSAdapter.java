@@ -119,13 +119,13 @@ public class DeliverySupCRSAdapter extends RecyclerView.Adapter<DeliverySupCRSAd
 */
        if(Double.parseDouble(list.get(i).getTotalCashAmt())>Double.parseDouble(list.get(i).getSubmittedCashAmt())){
            viewHolder.item_total_cash_amount.setText("Total Cash: "+list.get(i).getTotalCashAmt()+" Taka");
-           viewHolder.item_submitted_cash_amount.setText("Submitted Cash: "+list.get(i).getSubmittedCashAmt() +" Taka");
+           viewHolder.item_submitted_cash_amount.setText("Received Cash: "+list.get(i).getSubmittedCashAmt() +" Taka");
            viewHolder.item_total_cash_amount.setTextColor(Color.RED);
            viewHolder.item_submitted_cash_amount.setTextColor(Color.RED);
        }
        else{
            viewHolder.item_total_cash_amount.setText("Total Cash: "+list.get(i).getTotalCashAmt()+" Taka");
-           viewHolder.item_submitted_cash_amount.setText("Submitted Cash: "+list.get(i).getSubmittedCashAmt()+" Taka");
+           viewHolder.item_submitted_cash_amount.setText("Received Cash: "+list.get(i).getSubmittedCashAmt()+" Taka");
            viewHolder.item_total_cash_amount.setTextColor(Color.GREEN);
            viewHolder.item_submitted_cash_amount.setTextColor(Color.GREEN);
        }

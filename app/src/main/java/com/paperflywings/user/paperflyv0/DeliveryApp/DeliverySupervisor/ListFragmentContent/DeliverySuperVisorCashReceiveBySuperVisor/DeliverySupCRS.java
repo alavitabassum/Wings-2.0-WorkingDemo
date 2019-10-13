@@ -221,8 +221,10 @@ public class DeliverySupCRS extends AppCompatActivity
         CommentBySupervisor = mViewcrs.findViewById(R.id.cash_comment_text);
         errormsg = mViewcrs.findViewById(R.id.error);
 
-        TotalCash.setText(list.get(position).getTotalCashAmt());
-        SubmittedCash.setText(list.get(position).getSubmittedCashAmt());
+        TotalCash.setText(list.get(position).getTotalCashAmt()+" ");
+        SubmittedCash.setText(list.get(position).getSubmittedCashAmt()+" ");
+        CashReceived.setText(list.get(position).getSubmittedCashAmt()+" ");
+        CommentBySupervisor.setText("Cash Received");
         final Intent intent = new Intent(DeliverySupCRS.this, DeliverySupCRS.class);
 
         AlertDialog.Builder crsBuilder = new AlertDialog.Builder(DeliverySupCRS.this);
