@@ -27,10 +27,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-            debuggable true
+            //debuggable true
         }
         debug {
-            debuggable true
+            //debuggable true
         }
     }
     lintOptions {
