@@ -15,8 +15,10 @@ import org.jsoup.Jsoup;
 
 public class AppUpdateChecker {
     private Activity activity;
+
     public AppUpdateChecker(Activity activity) {
         this.activity = activity;
+
     }
     //current version of app installed in the device
     private String getCurrentVersion(){
