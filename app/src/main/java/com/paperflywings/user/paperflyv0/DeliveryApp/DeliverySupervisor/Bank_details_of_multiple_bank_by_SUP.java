@@ -640,9 +640,11 @@ public class Bank_details_of_multiple_bank_by_SUP extends AppCompatActivity
                             bankItm5 = db.getSelectedBankId(bankName5);
                         }
 
-                        if(Integer.parseInt(total_cash_collecction) != totalSumission){
-                            error_message_display.setText("Total Cash and Deposit Cash Amount Mismatch! Please Check correctly!!!");
-                        } else {
+                        if(totalSumission < Integer.parseInt(total_cash_collecction)-1 ){
+                            error_message_display.setText("Deposit amount can not be less than the total cash amount.");
+                        } else if(totalSumission > Integer.parseInt(total_cash_collecction)+99){
+                            error_message_display.setText("Deposit amount can not be more than"+(Integer.parseInt(total_cash_collecction)+99)+"Taka");
+                        } else{
 
                             insertBankDetails(primary_key,username,serial_no,deposite_date1,bankItm1,slipNumber1,comment1,
                                     deposite_date2,bankItm2,slipNumber2,comment2,deposite_date3,bankItm3,

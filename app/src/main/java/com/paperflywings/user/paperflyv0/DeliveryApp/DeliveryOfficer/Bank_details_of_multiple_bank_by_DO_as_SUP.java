@@ -632,7 +632,6 @@ public class Bank_details_of_multiple_bank_by_DO_as_SUP extends AppCompatActivit
                             bankItm4 = db.getSelectedBankId(bankName4);
                         }
 
-
                         String bankName5 = mBankNameSpinner5.getSelectedItem().toString();
                         if(bankName5.equals("Select Bank...")){
                             bankItm5 = bankName5;
@@ -640,44 +639,19 @@ public class Bank_details_of_multiple_bank_by_DO_as_SUP extends AppCompatActivit
                             bankItm5 = db.getSelectedBankId(bankName5);
                         }
 
-                        if(Integer.parseInt(total_cash_collecction) != totalSumission){
-                            error_message_display.setText("Total Cash and Deposit Cash Amount Mismatch! Please Check correctly!!!");
+                        if(totalSumission < Integer.parseInt(total_cash_collecction)-1 ){
+                            error_message_display.setText("Deposit amount can not be less than the total cash amount.");
+                        } else if(totalSumission > Integer.parseInt(total_cash_collecction)+99){
+                            error_message_display.setText("Deposit amount can not be more than"+(Integer.parseInt(total_cash_collecction)+99)+"Taka");
                         } else {
-
                             insertBankDetails(primary_key,username,serial_no,deposite_date1,bankItm1,slipNumber1,comment1,
                                     deposite_date2,bankItm2,slipNumber2,comment2,deposite_date3,bankItm3,
                                     slipNumber3,comment3,deposite_date4,bankItm4,slipNumber4,comment4
                                     ,deposite_date5,bankItm5,slipNumber5,comment5);
-
                             totalSumission = 0;
                             //alertDialog.dismiss();
                             //Toast.makeText(Bank_details_of_multiple_bank_by_DO.this, "Submit", Toast.LENGTH_SHORT).show();
                         }
-
-                        /*String totalCashs = tv1.getText().toString().trim();
-                        String CashComments = cashComment.getText().toString().trim();
-                        String CashCollected = totalcashes.getText().toString().trim();
-
-                        if(tv.getText().equals("0 Orders have been selected for cash.") || tv.getText().equals("Please select orders first") ){
-                            orderIds.setText("Please Select Orders First!!");
-                        }
-                        else if(totalCashs.isEmpty()){
-                            orderIds.setText("Please enter required fields First!!");
-                        }
-                        else if(CashComments.isEmpty()){
-                            orderIds.setText("Please enter required fields First!!");
-                        }
-                        else if(CashCollected.isEmpty()){
-                            orderIds.setText("Please enter required fields First!!");
-                        }
-                        else {
-                            UpdateCashInfo(username,itemPrimaryIds,itemOrders,totalCashs,CashCollected,CashComments, "C");
-                            alertDialog.dismiss();
-                            startActivity(intent);
-                            //loadRecyclerView(username);
-                            itemOrders = "";
-                            itemPrimaryIds = "";
-                        }*/
                     }
                 });
             }

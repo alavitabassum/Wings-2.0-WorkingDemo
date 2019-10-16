@@ -309,7 +309,7 @@ public class DeliverySupCRS extends AppCompatActivity
                 Map<String, String> params = new HashMap<String, String>();
 
                 params.put("username", username);
-                params.put("flagreq", "delivery_supervisor_CRS");
+                params.put("flagreq", "delivery_supervisor_CRS1");
                 params.put("serialNoCTRS", serialNo);
                 params.put("orderid", orderIdList);
                 params.put("totalCashReceive", cashReceivedBySup);
