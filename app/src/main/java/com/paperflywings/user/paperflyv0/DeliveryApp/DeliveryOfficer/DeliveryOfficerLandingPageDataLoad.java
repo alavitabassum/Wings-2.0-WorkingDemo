@@ -3,6 +3,7 @@ package com.paperflywings.user.paperflyv0.DeliveryApp.DeliveryOfficer;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryOfficerLandingPageDataLoad {
+public class DeliveryOfficerLandingPageDataLoad extends AppCompatActivity {
     private Activity activity;
     private Context context;
 
@@ -31,6 +32,7 @@ public class DeliveryOfficerLandingPageDataLoad {
         this.activity = activity;
         this.context = context;
     }
+
   /*  DeliveryOfficerLandingPageDataLoad(String username) {
         this.username = username;
     }*/

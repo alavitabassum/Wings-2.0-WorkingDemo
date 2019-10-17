@@ -46,15 +46,38 @@ public class DeliveryReturnToSuperVisorModel {
     private String RtsTime;
     private String RetRem;
     private int sql_primary_id;
+    private int courierId;
+    private String courierName;
 
     public DeliveryReturnToSuperVisorModel() {
 
+    }
+
+    public int getCourierId() {
+        return courierId;
+    }
+
+    public void setCourierId(int courierId) {
+        this.courierId = courierId;
+    }
+
+    public String getCourierName() {
+        return courierName;
+    }
+
+    public void setCourierName(String courierName) {
+        this.courierName = courierName;
     }
 
     public DeliveryReturnToSuperVisorModel(Integer empId, String empCode, String empName) {
         this.empId = empId;
         this.empCode = empCode;
         this.empName = empName;
+    }
+
+    public DeliveryReturnToSuperVisorModel(Integer courierId, String courierName) {
+        this.courierId = courierId;
+        this.courierName = courierName;
     }
 
     public Integer getEmpId() {

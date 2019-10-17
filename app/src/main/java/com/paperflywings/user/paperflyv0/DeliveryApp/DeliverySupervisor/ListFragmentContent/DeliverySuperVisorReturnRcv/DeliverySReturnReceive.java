@@ -136,9 +136,6 @@ public class DeliverySReturnReceive extends AppCompatActivity
             Toast.makeText(this,"Check Your Internet Connection",Toast.LENGTH_LONG).show();
         }
 
-
-
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -500,9 +497,6 @@ public class DeliverySReturnReceive extends AppCompatActivity
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
 
-//                            SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-//                            db.deleteAssignedList(sqLiteDatabase);
-
                             //Getting out sharedpreferences
                             SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -562,7 +556,6 @@ public class DeliverySReturnReceive extends AppCompatActivity
             Toast.makeText(this, "Internet Connection lost!", Toast.LENGTH_SHORT).show();
         }
     }
-
 
     // Select and unselect all
     private ArrayList<DeliverySupervisorReturnRcvModel> getModel(boolean isSelect){

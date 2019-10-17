@@ -23,10 +23,34 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/return_recieved_by_supervisor"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="-60dp"
+            android:background="@color/dark_red"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:paddingRight="10dp"
+            android:text="Return Received By Supervisor " />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
 
         <RelativeLayout
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="0dp"
             android:layout_width="300dp"
             android:layout_height="60dp"
             >
@@ -56,7 +80,7 @@
 
         </RelativeLayout>
 
-        <Button
+        <!--<Button
             android:id="@+id/return_recieved_by_supervisor"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -66,7 +90,7 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:paddingRight="10dp"
-            android:text="Return Received By Supervisor " />
+            android:text="Return Received By Supervisor " />-->
 
 
     </LinearLayout>
@@ -74,7 +98,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="135dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:orientation="horizontal">
@@ -85,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingLeft="15dp"
-            android:text="Cancel Selection"
+            android:text="Cancel-All"
             android:padding="5dp"
             android:textColor="@color/red"
             android:textStyle="bold" />
@@ -97,22 +121,23 @@
             android:layout_marginLeft="5dp"
             android:textStyle="bold"
             android:padding="10dp"
-            android:text="Select all"
-            android:textColor="@color/green" />
+            android:layout_marginTop="-3dp"
+            android:textColorLink="@color/black"
+            android:text="Select-All"
+            android:textSize="15dp"
+            android:textColor="#30db2e" />
 
         <Button
             android:id="@+id/nextRTS"
             android:layout_width="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_height="40dp"
-            android:paddingLeft="15dp"
-            android:background="@color/colorPrimary"
-            android:text="Proceed"
+            android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textColor="#fff"
+            android:layout_marginTop="-5dp"
+            android:textColor="#000000"
+            android:background="@drawable/mybutton"
+            android:text="Proceed"
             android:textStyle="bold"
-            android:visibility="visible" />
-
+            android:visibility="visible"/>
 
     </LinearLayout>
 
@@ -120,7 +145,7 @@
         android:id="@+id/RTS_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="155dp"
+        android:layout_marginTop="180dp"
         android:gravity="center"
         android:foregroundGravity="center|fill"
         android:layout_gravity="center_horizontal"
@@ -133,12 +158,12 @@
             android:background="#aaaaaa">
             <TextView
                 android:id="@+id/ordertxt_order_return_head"
-                android:layout_width="140dp"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="Order ID"
+                android:text="OrderID"
                 android:textColor="#fff"
                 android:textSize="14sp"
                 android:textStyle="bold"/>
@@ -151,49 +176,18 @@
                 android:layout_toEndOf="@+id/ordertxt_order_return_head"
                 android:lines="1"
                 android:maxLines="1"
-                android:text="MerOrderRef"
-                android:textAlignment="textStart"
-                android:textColor="#fff"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:id="@+id/orderIdCash_head"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/merOrderRefId_head"
-                android:layout_toEndOf="@+id/merOrderRefId_head"
-                android:lines="1"
-                android:maxLines="1"
-                android:text="Price"
-                android:paddingLeft="10dp"
-                android:textAlignment="textStart"
-                android:textColor="#fff"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:id="@+id/return_reason_head"
-                android:layout_width="230dp"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/orderIdCash_head"
-                android:layout_toEndOf="@+id/orderIdCash_head"
-                android:lines="1"
-                android:maxLines="1"
                 android:text="Reason"
-                android:paddingLeft="10dp"
                 android:textAlignment="textStart"
                 android:textColor="#fff"
                 android:textSize="14sp"
                 android:textStyle="bold"
                 />
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
     <include layout="@layout/content_delivery__return_to_supervisor"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="190dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

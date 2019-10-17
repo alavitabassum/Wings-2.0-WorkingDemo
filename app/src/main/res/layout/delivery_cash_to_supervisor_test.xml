@@ -10,7 +10,6 @@
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,28 +27,6 @@
             android:textColor="#000"
             android:textStyle="bold"
             android:textSize="10sp" />
-
-        <!--<TextView
-            android:id="@+id/m_order_ref_without_status"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:lines="1"
-            android:maxLines="1"
-            android:textAlignment="textStart"
-            android:textColor="#000"
-            android:textSize="15sp"
-            />-->
-
-       <!-- <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="70dp"
-            android:background="?android:attr/listDivider" />-->
 
         <TextView
             android:id="@+id/price_cash"
@@ -79,42 +56,6 @@
             android:textSize="10sp"
             style="@style/boldStyle"
             />
-<!--
-        <View
-            android:id="@+id/divider1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="110dp"
-            android:background="?android:attr/listDivider" />-->
-
-     <!--   <TextView
-            android:id="@+id/customers_name"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="120dp"
-            android:lines="1"
-            android:maxLines="1"
-            android:textAlignment="textStart"
-            android:textColor="#5E35B1"
-            android:textSize="14sp"
-            android:textStyle="italic|bold"
-            />-->
-
-     <!--   <TextView
-            android:id="@+id/customers_address"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
-            android:lines="2"
-            android:maxLines="2"
-            android:textAlignment="textStart"
-            android:textColor="#5E35B1"
-            android:textSize="14sp"
-            android:textStyle="italic|bold"
-            />-->
 
         <CheckBox
             android:id="@+id/cb"

@@ -13,65 +13,56 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="4dp">
 
         <TextView
             android:id="@+id/orderId_Rts"
-            android:layout_width="160dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="7dp"
             android:lines="1"
             android:maxLines="1"
+            android:text="201902-2200-A1-D1"
             android:textColor="#000"
-            android:textSize="12sp" />
+            android:textStyle="bold"
+            android:textSize="10sp" />
 
-        <TextView
-            android:id="@+id/m_order_ref_Rts"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/orderId_Rts"
-            android:layout_toEndOf="@+id/orderId_Rts"
-            android:lines="1"
-            android:maxLines="1"
-            android:textAlignment="textStart"
-            android:textColor="#000"
-            android:textSize="12sp"
-            />
-
-        <TextView
-            android:id="@+id/price_Rts"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/m_order_ref_Rts"
-            android:layout_toEndOf="@+id/m_order_ref_Rts"
-            android:paddingLeft="10dp"
-            android:lines="1"
-            android:maxLines="1"
-            android:textAlignment="textStart"
-            android:textColor="#000"
-            android:textSize="12sp"
-            />
 
         <TextView
             android:id="@+id/return_reasons_Rts"
-            android:layout_width="230dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/price_Rts"
-            android:layout_toEndOf="@+id/price_Rts"
-            android:paddingLeft="10dp"
-            android:lines="2"
-            android:maxLines="2"
+            android:layout_marginTop="7dp"
+            android:layout_toEndOf="@+id/orderId_Rts"
+            android:lines="3"
+            android:maxLines="3"
             android:textAlignment="textStart"
-            android:textColor="#000"
-            android:textSize="12sp"
+            android:textColor="#1E88E5"
+            android:textSize="10sp"
+            style="@style/boldStyle"
             />
-
 
         <CheckBox
             android:id="@+id/cbRT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"/>
+            android:enabled="false"
+            android:layout_toEndOf="@+id/return_reasons_Rts"
+            />
+
+        <Button
+            android:id="@+id/disputeBtnReturn"
+            android:layout_toEndOf="@+id/cbRT"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="2dp"
+            android:layout_alignParentRight="true"
+            android:background="@color/red"
+            android:text="Dispute"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
 
 
     </RelativeLayout>

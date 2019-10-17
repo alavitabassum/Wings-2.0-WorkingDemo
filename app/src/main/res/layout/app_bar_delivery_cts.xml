@@ -127,20 +127,6 @@
             android:textSize="15dp"
             android:textColor="#30db2e" />
 
-        <!--<Button
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:layout_marginTop="-5dp"
-            android:background="@color/colorPrimary"
-            android:text="Proceed"
-
-            android:padding="10dp"
-            android:textColor="#fff"
-            android:textStyle="bold"
-             />-->
-
         <Button
             android:id="@+id/next"
             android:layout_width="wrap_content"
