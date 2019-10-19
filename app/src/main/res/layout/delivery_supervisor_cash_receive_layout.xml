@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_delivery_cash_to_bank_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    card_view_assign:cardCornerRadius="5dp"
+    card_view_assign:cardElevation="3dp"
+    card_view_assign:contentPadding="4dp"
+    android:foreground="?selectableItemBackground"
+    card_view_assign:cardBackgroundColor="#fff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/serialNoText"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:text="Batch No: "
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/serialNo"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_toEndOf="@+id/serialNoText"
+            android:text="1"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/empNameTitle"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="18dp"
+            android:text="Delivery Officer: "
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/empName"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="18dp"
+            android:layout_toEndOf="@+id/empNameTitle"
+            android:text="Rokon"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/submitDateTitle"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="35dp"
+            android:text="Date: "
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/submitDate"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="35dp"
+            android:layout_below="@+id/submitDateTitle"
+            android:layout_toEndOf="@+id/submitDateTitle"
+            android:text="Rokon"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/totalOrderCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/submitDateTitle"/>
+
+        <TextView
+            android:id="@+id/totalCashTitle"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/totalOrderCount"
+            android:layout_marginTop="10dp"
+            android:text="Total Cash Amount: "
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/totalCash"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/totalCashTitle"
+            android:layout_below="@+id/totalOrderCount"
+            android:text="1000 Taka"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/submittedCashTitle"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/totalCashTitle"
+            android:layout_marginTop="2dp"
+            android:text="Submitted Amount: "
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/submittedCash"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/submittedCashTitle"
+            android:layout_below="@+id/totalCashTitle"
+            android:text="1000 Taka"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/receivedCashTitle"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_below="@+id/submittedCashTitle"
+            android:layout_marginTop="3dp"
+            android:text="Received Amount: "
+            android:textColor="#000"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/receivedCash"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/receivedCashTitle"
+            android:layout_below="@+id/submittedCashTitle"
+            android:text="1000 Taka"
+            android:textColor="#000"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <CheckBox
+            android:id="@+id/checkBoxBank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:id="@+id/imageViewItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/receivedCash"
+            android:text=""
+            android:paddingRight="10dp"
+            android:textColor="@color/green"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"
+            />
+
+
+      <!--  <TextView
+            android:id="@+id/cashBy"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/orderid"
+            android:layout_toEndOf="@+id/orderid"
+            android:lines="2"
+            android:maxLines="2"
+            android:paddingLeft="6dp"
+            android:layout_marginRight="10dp"
+            android:text="rasel64"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:id="@+id/cashTime"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/cashBy"
+            android:layout_toEndOf="@+id/cashBy"
+            android:lines="2"
+            android:maxLines="2"
+            android:layout_marginRight="10dp"
+            android:text="2019-20-10 20:21:00"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="11sp"
+            />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/cashTime"
+            android:layout_toEndOf="@+id/cashTime"
+            android:layout_marginRight="10dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:text="1000"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:id="@+id/collection"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/price"
+            android:layout_toEndOf="@+id/price"
+            android:layout_marginRight="10dp"
+            android:lines="1"
+            android:maxLines="2"
+            android:text="1000"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="12sp"
+            />-->
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

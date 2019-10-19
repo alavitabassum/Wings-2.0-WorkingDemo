@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Home"/>
+
+        <item
+            android:title="Unpicked"
+            android:icon="@drawable/box"
+            android:id="@+id/nav_unpicked"/>
+
+        <item
+            android:title="Without Status"
+            android:icon="@drawable/withoutstatus"
+            android:id="@+id/nav_without_status"/>
+
+        <item
+            android:title="On-hold"
+            android:icon="@drawable/onhold"
+            android:id="@+id/nav_on_hold"/>
+
+        <item
+            android:title="Return-request"
+            android:icon="@drawable/prereturn"
+            android:id="@+id/nav_return_request"/>
+
+        <item
+            android:title="Return to Supervisor"
+            android:icon="@drawable/rettttttt"
+            android:id="@+id/nav_return"/>
+
+        <item
+            android:title="Cash to Supervisor"
+            android:icon="@drawable/cash"
+            android:id="@+id/nav_cash"/>
+
+        <item
+            android:title="Add New Expense"
+            android:icon="@drawable/coins"
+            android:id="@+id/nav_new_expense"/>
+
+        <item
+            android:title="Search Cash Expense"
+            android:icon="@drawable/ic_search_expense"
+            android:id="@+id/nav_cash_expense"/>
+
+        <item
+            android:title="Courier Receive"
+            android:icon="@drawable/courier_"
+            android:id="@+id/nav_courier"/>
+
+       <!-- <item
+            android:title="Delivery Supervisor"
+            android:icon="@drawable/cash"
+            android:id="@+id/nav_delivery_supervisor"/>-->
+
+    </group>
+
+    <item android:title="Extras">
+        <menu>
+        <item android:title="Logout"
+            android:icon="@drawable/logout"
+            android:id="@+id/nav_logout"/>
+        </menu>
+    </item>
+
+</menu>

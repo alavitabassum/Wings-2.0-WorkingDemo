@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="330dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!--   <TextView
+               android:id="@+id/product_name_dialog"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_gravity="start"
+               android:layout_marginStart="-132dp"
+               android:layout_marginLeft="-120dp"
+               android:layout_toEndOf="@+id/textView13"
+               android:layout_toRightOf="@+id/textView13"
+               android:gravity="start"
+               android:padding="5dp"
+               android:paddingStart="20dp"
+               android:paddingLeft="20dp"
+               android:textAlignment="textStart"
+               android:textSize="15sp"
+               android:textStyle="bold"
+               tools:layout_editor_absoluteX="163dp"
+               tools:layout_editor_absoluteY="6dp" />-->
+
+        <TextView
+            android:id="@+id/CashCollection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="0dp"
+            android:padding="7dp"
+            android:text="On Hold"
+            android:textAlignment="textStart"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+      <!--  <EditText
+            android:id="@+id/Remarks_onhold_status"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/Remarks_without_status_text"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/Remarks_without_status_text"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="text"
+            android:textSize="15sp"
+            android:textStyle="bold" />-->
+        <TextView
+            android:id="@+id/error_msg_onhold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textViewCollection"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:textSize="15dp"
+            android:textColor="#ff0000"
+            android:layout_marginTop="55dp"
+            android:layout_centerHorizontal="true"
+            android:shadowColor="#7F000000"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/Remarks_onhold_status"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/Remarks_without_status_text"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/Remarks_without_status_text"/>
+
+        <TextView
+            android:id="@+id/Remarks_without_status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="90dp"
+            android:text="Remarks"
+            android:textAlignment="textStart"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="33dp"
+            android:background="?android:attr/listDivider" />
+
+
+        <Button
+            android:id="@+id/datepicker"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_centerHorizontal="true"
+            android:autofillHints=""
+            android:ems="10"
+            android:inputType="text"
+            android:textSize="15sp"
+            android:text="Select date"
+            android:textStyle="bold" />
+
+
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

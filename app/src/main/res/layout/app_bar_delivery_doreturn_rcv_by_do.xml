@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/light_grey"
+tools:context=".DeliveryApp.DeliveryOfficer.DeliveryReturnRcvByDO.DeliveryDOReturnRcvByDO">
+
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+</android.support.design.widget.AppBarLayout>
+
+<!--<android.support.v7.widget.CardView
+    android:id="@+id/without_Status_id"
+    android:layout_width="320dp"
+    android:layout_height="70dp"
+    android:layout_marginTop="65dp"
+    android:gravity="center"
+    android:foregroundGravity="center|fill"
+    android:layout_gravity="center_horizontal"
+    app:cardElevation="4dp"
+    >-->
+<!--  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_marginTop="55dp"
+      android:layout_height="40dp">-->
+
+<RelativeLayout
+    android:layout_marginTop="60dp"
+    android:layout_width="match_parent"
+    android:textAlignment="center"
+    android:layout_height="40dp"
+    >
+    <TextView
+        android:id="@+id/RTSText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="20dp"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="Total Return Orders: "
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/RTS_id_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/RTSText"
+        android:layout_toEndOf="@+id/RTSText"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+</RelativeLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="100dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/deselect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="15dp"
+        android:text="Cancel-All"
+        android:padding="5dp"
+        android:textColor="@color/red"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:layout_marginTop="-3dp"
+        android:textColorLink="@color/black"
+        android:text="Select-All"
+        android:textSize="15dp"
+        android:textColor="#30db2e" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="-5dp"
+        android:textColor="#000000"
+        android:background="@drawable/mybutton"
+        android:text="Proceed"
+        android:textStyle="bold"
+        android:visibility="visible"/>
+
+</LinearLayout>
+
+<include layout="@layout/content_delivery_doreturn_rcv_by_do"
+    android:layout_marginTop="155dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+</android.support.design.widget.CoordinatorLayout>

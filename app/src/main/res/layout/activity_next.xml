@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositBySupervisor">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:layout_centerHorizontal="true"
+        android:text="Please select orders first"
+        android:textStyle="bold|italic"
+        android:textColor="#000"
+        android:id="@+id/tv"/>
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:text="Total Cash"
+        android:layout_below="@+id/tv"
+        android:textStyle="bold|italic"
+        android:id="@+id/totalcash"/>
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:layout_centerHorizontal="true"
+        android:text="0"
+        android:layout_below="@+id/tv"
+        android:layout_toEndOf="@+id/totalcash"
+        android:textStyle="bold|italic"
+        android:textColor="#000"
+        />
+
+    <Spinner
+        android:id="@+id/employee_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/select_emp_name"
+        android:layout_toEndOf="@+id/select_emp_name"/>
+
+   <!-- <TextView
+        android:id="@+id/select_emp_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_below="@id/select_deposite_date1"
+        android:text="Employee"
+        android:textAlignment="textStart"
+        android:textSize="15sp"
+        android:textStyle="bold" />-->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:text="Employee"
+        android:layout_below="@+id/tv1"
+        android:textStyle="bold"
+        android:id="@+id/select_emp_name"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:text="Cash Collection"
+        android:layout_below="@+id/select_emp_name"
+        android:textStyle="bold"
+        android:id="@+id/et"/>
+
+    <EditText
+        android:id="@+id/cash_Collection_text"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/et"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@+id/et"
+        android:textAlignment="textStart"
+        android:textColor="#000"
+        android:textSize="15sp"
+        style="@style/boldStyle"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="5dp"
+        android:layout_marginStart="10dp"
+        android:text="Cash Comment"
+        android:textStyle="bold"
+        android:layout_below="@+id/et"
+        android:id="@+id/et1"/>
+
+    <EditText
+        android:id="@+id/cash_comment_text"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/et1"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@+id/et1"
+        android:textAlignment="textStart"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="#000"
+        android:textSize="15sp"
+        style="@style/boldStyle"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et1"
+        android:textSize="12dp"
+        android:padding="10dp"
+        android:text=""
+        android:textColor="@color/red"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/cash_amount"/>
+
+
+</RelativeLayout>

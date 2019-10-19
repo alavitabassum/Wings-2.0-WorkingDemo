@@ -9,7 +9,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context=".ScanningScreen">
+    tools:context=".PickupModule.PickupOfficer.ScanningScreen">
 
     <SurfaceView
         android:id="@+id/cameraPreview"

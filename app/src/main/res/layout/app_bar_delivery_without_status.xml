@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus"
+    android:background="@color/light_grey">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/without_Status_id"
+        android:layout_width="320dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="65dp"
+        android:gravity="center"
+        android:foregroundGravity="center|fill"
+        android:layout_gravity="center_horizontal"
+        app:cardElevation="4dp"
+        >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:id="@+id/withoutStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Without status: "
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="0dp"/>
+
+        <TextView
+            android:id="@+id/WithoutStatus_id_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/withoutStatusText"
+            android:layout_toEndOf="@+id/withoutStatusText"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="32dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/slamMissText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_centerHorizontal="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Number of Sla Miss: "
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="0dp"/>
+
+        <TextView
+            android:id="@+id/slamMiss_id_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/slamMissText"
+            android:layout_toEndOf="@+id/slamMissText"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+
+    <include layout="@layout/content_delivery_without_status"
+        android:layout_marginTop="120dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+   <!-- <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_dialog_email" />-->
+
+</android.support.design.widget.CoordinatorLayout>

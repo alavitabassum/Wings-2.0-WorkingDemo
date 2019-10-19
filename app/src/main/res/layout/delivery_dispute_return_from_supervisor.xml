@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".DeliveryApp.DeliverySupervisor.ListFragmentContent.DeliverySuperVisorReturnRcv.DeliverySReturnReceive">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:padding="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Please select orders first"
+        android:textStyle="bold|italic"
+        android:textColor="#000"
+        />
+
+    <TextView
+        android:id="@+id/mer_order_ref"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingTop="10dp"
+        android:layout_marginStart="10dp"
+        android:text="MerOrderRef: "
+        android:layout_below="@+id/tv"
+        android:textStyle="bold|italic"
+        />
+
+    <Spinner
+        android:id="@+id/courier_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mer_order_ref"
+        android:layout_alignBaseline="@+id/courier_name"
+        android:layout_toEndOf="@+id/courier_name"/>
+
+    <TextView
+        android:id="@+id/courier_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@id/mer_order_ref"
+        android:text="Courier"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/mer_order_ref_no"
+        android:layout_width="290dp"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:paddingTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/tv"
+        android:layout_toEndOf="@+id/mer_order_ref"
+        android:textStyle="bold|italic"
+        android:textColor="#000"
+        />
+
+    <TextView
+        android:id="@+id/cn_number_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        android:text="CN Number: "
+        android:textStyle="bold"
+        android:layout_marginTop="0dp"
+        android:layout_below="@+id/courier_list"
+        />
+
+    <EditText
+        android:id="@+id/cn_number_text"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/cn_number_title"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@+id/cn_number_title"
+        android:textAlignment="textStart"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="#000"
+        android:textSize="15sp"
+        style="@style/boldStyle"/>
+
+    <TextView
+        android:id="@+id/et1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="10dp"
+        android:text="Dispute Reason: "
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/cn_number_title"
+        />
+
+    <EditText
+        android:id="@+id/dispute_comment_text"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/et1"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="4dp"
+        android:layout_toEndOf="@+id/et1"
+        android:textAlignment="textStart"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="#000"
+        android:textSize="15sp"
+        style="@style/boldStyle"/>
+
+    <TextView
+        android:id="@+id/dispute_error_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et1"
+        android:textSize="16sp"
+        android:layout_marginTop="15dp"
+        android:text=""
+        android:textColor="@color/red"
+        android:layout_centerHorizontal="true"
+        />
+
+
+</RelativeLayout>

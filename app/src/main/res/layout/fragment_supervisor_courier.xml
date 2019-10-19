@@ -1,0 +1,174 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="8"
+        android:background="@color/light_grey"
+        android:padding="5dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/courier_send_id"
+                android:layout_width="match_parent"
+                android:layout_height="185dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp">
+                <RelativeLayout
+                    android:id="@+id/courier_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="360dp"
+                        android:layout_height="160dp"
+                        android:background="@drawable/courier_service_" />
+                </RelativeLayout>
+                <View
+                    android:layout_marginTop="7dp"
+                    android:layout_width="360dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="#B01A2E38"/>
+                <TextView
+                    android:id="@+id/courier_send_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="80dp"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold|italic"
+                    android:text="Courier Send"/>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/courier_receive_id"
+                android:layout_width="match_parent"
+                android:layout_height="185dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/cash_receive"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="360dp"
+                        android:layout_height="160dp"
+                        android:background="@drawable/courier_recive_" />
+                </RelativeLayout>
+                <View
+                    android:layout_marginTop="7dp"
+                    android:layout_width="360dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="#B01A2E38"/>
+                <TextView
+                    android:id="@+id/cash_receive_id_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="80dp"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold|italic"
+                    android:text="Courier receive"/>
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/view_details_id"
+                android:layout_width="match_parent"
+                android:layout_height="185dp"
+                android:layout_margin="10dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="3dp"
+                >
+                <RelativeLayout
+                    android:id="@+id/view_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+                    <ImageView
+                        android:layout_width="360dp"
+                        android:layout_height="160dp"
+                        android:background="@drawable/view_detail_" />
+
+                </RelativeLayout>
+                <View
+                    android:layout_marginTop="7dp"
+                    android:layout_width="360dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="#B01A2E38"/>
+
+                <TextView
+                    android:id="@+id/view_details_id_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginTop="80dp"
+                    android:text="View Details"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold|italic" />
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+</FrameLayout>

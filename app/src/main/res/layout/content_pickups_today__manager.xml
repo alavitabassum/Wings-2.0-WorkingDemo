@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".PickupsToday_Manager"
+    tools:context=".PickupModule.PickupsToday_Manager"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -20,9 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".PickupsToday_Manager" />
-
-
+        tools:context=".PickupModule.PickupsToday_Manager" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -34,7 +32,6 @@
         android:layout_height="match_parent"
         app:layout_behavior = "@string/appbar_scrolling_view_behavior">
 
-
       <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_merchant"
         android:layout_width="match_parent"
@@ -43,11 +40,4 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-
-
-
-
-
-
 </RelativeLayout>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DeliveryApp.DeliveryOfficer.DeliveyrOfficerWithoutStatus.DeliveryWithoutStatus"
+    android:background="@color/light_grey">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/return_recieved_by_supervisor"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="-60dp"
+            android:background="@color/dark_red"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:paddingRight="10dp"
+            android:text="Return Received By Supervisor " />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_marginTop="0dp"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            >
+            <TextView
+                android:id="@+id/ReturnText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="20dp"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Total Return Order: "
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginStart="0dp"/>
+
+            <TextView
+                android:id="@+id/Return_id_"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/ReturnText"
+                android:layout_toEndOf="@+id/ReturnText"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <!--<Button
+            android:id="@+id/return_recieved_by_supervisor"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="-60dp"
+            android:background="@color/dark_red"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:paddingRight="10dp"
+            android:text="Return Received By Supervisor " />-->
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="135dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/deselectRTS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="15dp"
+            android:text="Cancel-All"
+            android:padding="5dp"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/selectRTS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:layout_marginTop="-3dp"
+            android:textColorLink="@color/black"
+            android:text="Select-All"
+            android:textSize="15dp"
+            android:textColor="#30db2e" />
+
+        <Button
+            android:id="@+id/nextRTS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="-5dp"
+            android:textColor="#000000"
+            android:background="@drawable/mybutton"
+            android:text="Proceed"
+            android:textStyle="bold"
+            android:visibility="visible"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/RTS_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:gravity="center"
+        android:foregroundGravity="center|fill"
+        android:layout_gravity="center_horizontal"
+        app:cardElevation="4dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:background="#aaaaaa">
+            <TextView
+                android:id="@+id/ordertxt_order_return_head"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="OrderID"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/merOrderRefId_head"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/ordertxt_order_return_head"
+                android:layout_toEndOf="@+id/ordertxt_order_return_head"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Reason"
+                android:textAlignment="textStart"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <include layout="@layout/content_delivery__return_to_supervisor"
+        android:layout_marginTop="190dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</android.support.design.widget.CoordinatorLayout>

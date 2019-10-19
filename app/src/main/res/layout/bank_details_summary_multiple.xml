@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositBySupervisor">
+
+    <TextView
+        android:id="@+id/total_cashAmt1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:textColor="@color/darkblue"
+        android:textStyle="bold"
+        android:textSize="12dp"
+        android:text="Total Cash: 4 Taka"/>
+    <TextView
+        android:id="@+id/total_cashAmt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/total_cashAmt1"
+        android:visibility="gone"
+        android:textColor="@color/green"
+        android:textSize="12dp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:text="Submitting Total Cash: 4 Taka"/>
+
+    <!--1st slip-->
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Slip-1"
+        android:layout_marginTop="8dp"
+        android:paddingTop="5dp"
+        android:visibility="gone"
+        android:textSize="12dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/total_cashAmt2"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:id="@+id/text_holder1"
+        android:layout_below="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/date1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Date: 2019-09-26"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/bankName1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Bank Name: Eastern Bank Limited."
+            android:layout_below="@+id/date1"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositeSlip1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Slip: Abcd-1234"
+            android:layout_below="@+id/bankName1"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositedAmount1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Deposite: 12000 Taka"
+            android:layout_below="@+id/depositeSlip1"
+            android:textSize="12dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <!--2nd slip-->
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Slip-2"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:textSize="12dp"
+        android:paddingTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_holder1"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:id="@+id/text_holder2"
+        android:layout_below="@+id/text2"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/date2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Date: 2019-09-26"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/bankName2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Bank Name: Eastern Bank Limited."
+            android:layout_below="@+id/date2"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositeSlip2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Slip: Abcd-1234"
+            android:layout_below="@+id/bankName2"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositedAmount2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Deposite: 12000 Taka"
+            android:layout_below="@+id/depositeSlip2"
+            android:textSize="14dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <!--3rd slip-->
+    <TextView
+        android:id="@+id/text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Slip-3"
+        android:layout_marginTop="8dp"
+        android:textSize="12dp"
+        android:paddingTop="5dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_holder2"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:id="@+id/text_holder3"
+        android:layout_below="@+id/text3"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/date3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Date: 2019-09-26"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/bankName3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Bank Name: Eastern Bank Limited."
+            android:layout_below="@+id/date3"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositeSlip3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Slip: Abcd-1234"
+            android:layout_below="@+id/bankName3"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositedAmount3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Deposite: 12000 Taka"
+            android:layout_below="@+id/depositeSlip3"
+            android:textSize="14dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <!--4th slip-->
+    <TextView
+        android:id="@+id/text4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Slip-4"
+        android:layout_marginTop="8dp"
+        android:textSize="12dp"
+        android:paddingTop="5dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_holder3"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:id="@+id/text_holder4"
+        android:layout_below="@+id/text4"
+        android:layout_width="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/date4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Date: 2019-09-26"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/bankName4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Bank Name: Eastern Bank Limited."
+            android:layout_below="@+id/date4"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositeSlip4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Slip: Abcd-1234"
+            android:layout_below="@+id/bankName4"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositedAmount4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Deposite: 12000 Taka"
+            android:layout_below="@+id/depositeSlip4"
+            android:textSize="14dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+
+    <!--5th slip-->
+    <TextView
+        android:id="@+id/text5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Slip-5"
+        android:layout_marginTop="8dp"
+        android:textSize="12dp"
+        android:paddingTop="5dp"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_holder4"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:id="@+id/text_holder5"
+        android:layout_below="@+id/text5"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/date5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Date: 2019-09-26"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/bankName5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Bank Name: Eastern Bank Limited."
+            android:layout_below="@+id/date5"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositeSlip5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Slip: Abcd-1234"
+            android:layout_below="@+id/bankName5"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/depositedAmount5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Deposite: 12000 Taka"
+            android:layout_below="@+id/depositeSlip5"
+            android:textSize="14dp"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/error_msg_in_deposite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="16dp"
+        android:textColor="@color/red"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/text_holder5"
+        android:textStyle="bold"/>
+
+
+</RelativeLayout>

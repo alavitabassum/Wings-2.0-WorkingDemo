@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DeliveryApp.DeliverySupervisor.BankFragmentContent.DeliverySuperVisorBankReport.DeliverySupBankReport">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="55dp">
+        <Button
+            android:id="@+id/startdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:ems="8"
+            android:inputType="date"
+            android:textSize="13sp"
+            android:lines="2"
+            android:maxLines="2"
+            android:hint="Date from"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/enddate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:textSize="13sp"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/startdate"
+            android:ems="8"
+            android:lines="2"
+            android:maxLines="2"
+            android:hint="Date to"
+            android:textStyle="bold"/>
+
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:elevation="2dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="50dp"
+            android:layout_toEndOf="@+id/enddate"
+            android:background="@color/green"
+            android:text="Search"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/without_Status_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="105dp"
+        android:gravity="center"
+        android:foregroundGravity="center|fill"
+        android:layout_gravity="center_horizontal"
+        app:cardElevation="4dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:background="#aaaaaa">
+            <TextView
+                android:id="@+id/date_report"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Date"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/batch_report"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/date_report"
+                android:layout_toEndOf="@+id/date_report"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Batch No"
+                android:textAlignment="textStart"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/invoice_no_report"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/batch_report"
+                android:layout_toEndOf="@+id/batch_report"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Invoice No"
+                android:textAlignment="textStart"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/paid_report"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/invoice_no_report"
+                android:layout_toEndOf="@+id/invoice_no_report"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Amount paid"
+                android:textAlignment="textStart"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                />
+            <TextView
+                android:id="@+id/package_cash_report"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/paid_report"
+                android:layout_toEndOf="@+id/paid_report"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Cash"
+                android:textAlignment="textStart"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />
+           <!-- <TextView
+                android:id="@+id/imageView_report"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/package_cash_report"
+                android:layout_toEndOf="@+id/package_cash_report"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="View"
+                android:textAlignment="textStart"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />-->
+            <TextView
+                android:id="@+id/accept_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/package_cash_report"
+                android:layout_toEndOf="@+id/package_cash_report"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Accept"
+                android:textAlignment="textStart"
+                android:textColor="#fff"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+    <include layout="@layout/content_delivery_sup_bank_report"
+        android:layout_marginTop="130dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+</android.support.design.widget.CoordinatorLayout>

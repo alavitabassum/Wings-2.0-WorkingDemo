@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".DeliveryApp.DeliveryOfficer.DeliveryDOBankByDO.DeliveryDOBankByDO">
+
+<android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+</android.support.design.widget.AppBarLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_marginTop="50dp">
+    <Button
+        android:id="@+id/btn_pending_bank_depo_by_do"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:background="@color/red"
+        android:textColor="@color/white"
+        android:text="My Pending Bank Deposite"
+        android:textStyle="bold"/>
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="80dp">
+
+    <RelativeLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        >
+        <TextView
+            android:id="@+id/CTSText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="20dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Total Cash Order: "
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="0dp"/>
+
+        <TextView
+            android:id="@+id/CTS_id_"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/CTSText"
+            android:layout_toEndOf="@+id/CTSText"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/CashCollectionText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="20dp"
+            android:text="Cash Collection: "
+            android:textSize="15sp"
+            android:textColor="@color/black"
+            android:layout_marginStart="0dp"/>
+
+        <TextView
+            android:id="@+id/CashCollectionForBank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/CashCollectionText"
+            android:layout_toEndOf="@+id/CashCollectionText"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="15sp" />
+    </RelativeLayout>
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="148dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="10dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/deselectForBank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="15dp"
+        android:text="Cancel Selection"
+        android:padding="5dp"
+        android:textColor="@color/red"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/selectForBank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textStyle="bold"
+        android:padding="10dp"
+        android:text="Select all"
+        android:textColor="@color/green" />
+
+    <Button
+        android:id="@+id/nextForBank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:background="@color/colorPrimary"
+        android:text="Proceed"
+        android:padding="10dp"
+        android:textColor="#fff"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+</LinearLayout>
+
+<include layout="@layout/content_delivery_dobank_by_do"
+    android:layout_marginTop="200dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    />
+
+</android.support.design.widget.CoordinatorLayout>

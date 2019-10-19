@@ -3,6 +3,8 @@
     <color name="colorPrimary">#2c3491</color>
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#25ade3</color>
+    <color name="colorAccent2">#096FC4</color>
+    <color name="colorAccent3">#00AEEF</color>
     <color name="pfColor">#2c3491</color>
     <color name="yellow">#e6ce17</color>
     <color name="green">#00cd59</color>
@@ -23,8 +25,18 @@
     <color name="put_bg_color">#A2D9CE</color>
     <color name="pending_bg_color">#FCF3CF</color>
     <color name="put_hd_color">#0B5345</color>
+    <color name="put_hds_color">#1CAD56</color>
+    <color name="put_hd_color_green">#32A85D</color>
 
+    <color name="backgroundcolor">#fcfcfc</color>
+    <color name="lightgray">#ededed</color>
+    <color name="deeppurple">#7c4dff</color>
+    <color name="yello">#ffb300</color>
+    <color name="darkblue">#151925</color>
+    <color name="testcolorblue">#152b38</color>
+    <color name="pink">#fe104d</color>
 
+    <color name="black_overlay">#66000000</color>
 
 
 

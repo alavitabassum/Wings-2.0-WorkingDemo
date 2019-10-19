@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MyPickupList_Executive"
+    tools:context=".PickupModule.PickupOfficer.MyPickupList_Executive"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".ManagerCardMenu" />
+        tools:context=".PickupModule.PickupManager.ManagerCardMenu" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

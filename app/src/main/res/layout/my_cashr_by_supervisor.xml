@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_delivery_cashrs_list"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
+    card_view_assign:cardBackgroundColor="#fff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/ordertxt_order_cash"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:lines="1"
+            android:maxLines="1"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+        <!--<View style="@style/Divider.Vertical"/>-->
+
+        <TextView
+            android:id="@+id/merOrderRefId"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/ordertxt_order_cash"
+            android:layout_toEndOf="@+id/ordertxt_order_cash"
+            android:lines="1"
+            android:maxLines="1"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="14sp"
+            />
+        <!--<View style="@style/Divider.Vertical"/>-->
+
+        <TextView
+            android:id="@+id/orderIdCash"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/merOrderRefId"
+            android:layout_toEndOf="@+id/merOrderRefId"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="14sp"
+            />
+
+
+        <TextView
+            android:id="@+id/collectedCashAmt"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/orderIdCash"
+            android:layout_toEndOf="@+id/orderIdCash"
+            android:paddingLeft="10dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="14sp"
+            />
+
+        <!--<TextView
+            android:id="@+id/price_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="26dp"
+            android:text="Cash : "
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/priceCash"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/price_txt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="4dp"
+            android:layout_toEndOf="@+id/price_txt"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp"
+            style="@style/boldStyle"/>-->
+
+        <!--<TextView
+            android:id="@+id/CashDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="2dp"
+            android:textAlignment="textStart"
+            android:textStyle="bold"
+            android:textColor="#aaa"
+            android:textSize="15sp" />-->
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view_assign="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view_delivery_cash_received_by_supervisor"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:foreground="?selectableItemBackground"
+    android:paddingTop="50dp"
+    android:paddingBottom="50dp"
+    card_view_assign:cardBackgroundColor="#fff"
+    card_view_assign:cardElevation="3dp"
+    card_view_assign:contentPadding="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/serialNo_id"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Serial ID:"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/serialNo_id_text"
+            style="@style/boldStyle"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/serialNo_id"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/serialNo_id"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="0dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/TotalOrder_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="40dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Total Orders:"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/TotalOrder_text"
+            style="@style/boldStyle"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/TotalOrder_id"
+            android:layout_marginStart="18dp"
+            android:layout_toEndOf="@+id/TotalOrder_id"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/delivery_officer_name_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Received From:"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/delivery_officer_name_text"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/delivery_officer_name_id"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:paddingLeft="0dp"
+            android:layout_toEndOf="@+id/delivery_officer_name_id"
+            android:lines="1"
+            android:maxLines="1"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="100dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/total_cash_amount"
+            style="@style/boldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="110dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/submitted_cash_amount"
+            style="@style/boldStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="140dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="0dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="16dp" />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="170dp"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/receive_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Date and Time:"
+            android:textAlignment="textStart"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/receive_time_text"
+            style="@style/boldStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/receive_time"
+            android:layout_toEndOf="@+id/receive_time"
+            android:lines="1"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:textAlignment="textStart"
+            android:textColor="#1E88E5"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/comment_by_supervisor_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="204dp"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Comment:"
+            android:textAlignment="textStart"
+            android:textColor="#5E35B1"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/comment_by_supervisor"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/comment_by_supervisor_id"
+            android:layout_toEndOf="@+id/comment_by_supervisor_id"
+            android:lines="3"
+            android:maxLines="3"
+            android:textAlignment="textStart"
+            android:layout_marginStart="10dp"
+            android:textColor="#5E35B1"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/cash_receive_sup"
+            android:textAllCaps="false"
+            android:layout_width="105dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/price_txt"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="275dp"
+            android:background="@drawable/buttonstyle_done"
+            android:padding="10dp"
+            android:text="Receive"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
