@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_delivery_unpicked_list"
     android:layout_width="match_parent"
-    android:layout_height="350dp"
+    android:layout_height="430dp"
     android:layout_margin="5dp"
     android:foreground="?selectableItemBackground"
     android:paddingTop="50dp"
-    android:paddingBottom="50dp"
     card_view_assign:cardBackgroundColor="#fff"
     card_view_assign:cardElevation="3dp"
     card_view_assign:contentPadding="4dp">
@@ -428,33 +427,18 @@
             android:textAlignment="textStart"
             android:textSize="15sp" />
 
-
-        <!--<Button-->
-        <!--android:id="@+id/btn_status_without_status"-->
-        <!--android:layout_width="105dp"-->
-        <!--android:layout_height="40dp"-->
-        <!--android:layout_below="@+id/price_txt"-->
-        <!--android:layout_marginLeft="180dp"-->
-        <!--android:layout_marginTop="58dp"-->
-        <!--android:background="@drawable/buttonstyle2"-->
-        <!--android:padding="10dp"-->
-        <!--android:text="Action"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="14sp" />-->
-
-        <!--<Button-->
-        <!--android:id="@+id/btn_scan"-->
-        <!--android:layout_width="106dp"-->
-        <!--android:layout_height="35dp"-->
-        <!--android:layout_below="@id/divider4"-->
-        <!--android:layout_alignEnd="@+id/m_name_pul"-->
-        <!--android:layout_marginTop="64dp"-->
-        <!--android:background="@drawable/buttonstyle_scan"-->
-        <!--android:text="SCAN"-->
-        <!--android:textColor="@color/white" />
-        android:layout_toLeftOf="@id/btn_scan"
-        -->
-
+        <Button
+            android:id="@+id/btn_reassign_officer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/package_brief_without_status"
+            android:layout_marginTop="10dp"
+            android:background="@color/wallet_holo_blue_light"
+            android:padding="10dp"
+            android:text="Re-Assign"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 

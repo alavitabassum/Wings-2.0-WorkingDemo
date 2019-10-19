@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,6 +26,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.paperflywings.user.paperflyv0.Config;
+import com.paperflywings.user.paperflyv0.Databases.BarcodeDbHelper;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeByDOAcceptBySup.BankDepositeA;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.BankFragmentContent.BankDepositeBySUP.MultipleBankDepositeBySUP;
 import com.paperflywings.user.paperflyv0.DeliveryApp.DeliverySupervisor.DeliverySuperVisorLandingPage.DeliverySuperVisorTablayout;
@@ -58,7 +64,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DeliverySupWithoutStatus extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener{
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, DeliverySupWithoutStatusAdapter.OnItemClickListener{
 
     public SwipeRefreshLayout swipeRefreshLayout;
     private DeliverySupWithoutStatusAdapter deliverySupWithoutStatusAdapter;
@@ -69,10 +75,13 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
     private TextView sup_without_status_text;
     private RequestQueue requestQueue;
     private ProgressDialog progress;
+    BarcodeDbHelper db;
+    private long mLastClickTime = 0;
 
     public static final String UNPICKED_LIST = "http://paperflybd.com/DeliverySupervisorAPI.php";
 
     private List<DeliverySupWithoutStatusModel> list;
+    private List<DeliverySupWithoutStatusModel> eList;
 
     private DeliverySupWithoutStatusModel supWithoutStatusModel;
     private ArrayList<Company> merchants;
@@ -87,8 +96,11 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
         setContentView(R.layout.activity_delivery_sup_without_status);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        db=new BarcodeDbHelper(getApplicationContext());
+        db.getWritableDatabase();
 
         list = new ArrayList<DeliverySupWithoutStatusModel>();
+        eList = new ArrayList<DeliverySupWithoutStatusModel>();
 
         SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
@@ -134,6 +146,7 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
         navUsername.setText(user);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
     private void loadRecyclerView(final String username, final String pointCode) {
         progress=new ProgressDialog(this);
         progress.setMessage("Loading Data");
@@ -191,7 +204,7 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
                             deliverySupWithoutStatusAdapter = new DeliverySupWithoutStatusAdapter(list,getApplicationContext());
                             recyclerView_pul.setAdapter(deliverySupWithoutStatusAdapter);
                             swipeRefreshLayout.setRefreshing(false);
-                            //deliverySupUnpickedAdapter.setOnItemClickListener(DeliveryOfficerUnpicked.this);
+                            deliverySupWithoutStatusAdapter.setOnItemClickListener(DeliverySupWithoutStatus.this);
 
                             String str = String.valueOf(array.length());
                             sup_without_status_text.setText(str);
@@ -231,6 +244,177 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
     }
+
+    private void getEmployeeList() {
+        try {
+//            list.clear();
+            SQLiteDatabase sqLiteDatabase = db.getReadableDatabase();
+            Cursor c = db.get_employee_list(sqLiteDatabase);
+            while (c.moveToNext()) {
+                Integer empId = c.getInt(0);
+                String empCode = c.getString(1);
+                String empName = c.getString(2);
+                DeliverySupWithoutStatusModel employeeList = new DeliverySupWithoutStatusModel(empId,empCode,empName);
+                eList.add(employeeList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onItemClick_reassign(View view, int position) {
+        // mis-clicking prevention, using threshold of 500 ms
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
+        String previousAssign = list.get(position).getUsername();
+        final int sql_primary_id = list.get(position).getSql_primary_id();
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(Config.EMAIL_SHARED_PREF,"Not Available");
+
+        final View mViewReassign = getLayoutInflater().inflate(R.layout.delivery_supervisor_reassign_officer, null);
+        final TextView assign_emp_title = mViewReassign.findViewById(R.id.assign_emp_title);
+        final TextView assign_emp_name = mViewReassign.findViewById(R.id.assign_emp_name);
+        final TextView error_msg = mViewReassign.findViewById(R.id.error_msg1);
+        assign_emp_title.setText("Re-assigned Officer: ");
+        assign_emp_name.setText(previousAssign);
+
+        getEmployeeList();
+        // Employee List
+        final Spinner mEmployeeSpinner = mViewReassign.findViewById(R.id.employee_list_onhold);
+        List<String> empList = new ArrayList<String>();
+        empList.add(0,"Select employee...");
+        for (int x = 0; x < eList.size(); x++) {
+            empList.add(eList.get(x).getEmpName());
+        }
+        ArrayAdapter<String> adapterR = new ArrayAdapter<String>(DeliverySupWithoutStatus.this,
+                android.R.layout.simple_spinner_item,
+                empList);
+        adapterR.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mEmployeeSpinner.setAdapter(adapterR);
+
+        AlertDialog.Builder reassignBuilder = new AlertDialog.Builder(DeliverySupWithoutStatus.this);
+        reassignBuilder.setPositiveButton("Re-assign", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //dialog.dismiss();
+            }
+        });
+
+        reassignBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i1) {
+                dialog.dismiss();
+            }
+        });
+
+        reassignBuilder.setCancelable(false);
+        reassignBuilder.setView(mViewReassign);
+
+        final AlertDialog dialogCash = reassignBuilder.create();
+        dialogCash.show();
+
+        dialogCash.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // mis-clicking prevention, using threshold of 500 ms
+                if (SystemClock.elapsedRealtime() - mLastClickTime < 500){
+                    return;
+                }
+
+                mLastClickTime = SystemClock.elapsedRealtime();
+                String empName = mEmployeeSpinner.getSelectedItem().toString();
+                String empCode = db.getSelectedEmpCode(empName);
+
+                if(empName.equals("Select employee...")){
+                    error_msg.setText("Please select employee!!");
+                } else {
+                    ReassignOrderToAnotherDO(empCode, username, sql_primary_id);
+                    //startActivity(intent);
+                    dialogCash.dismiss();
+                }
+            }
+        });
+    }
+
+    private void ReassignOrderToAnotherDO(final String empCode,final String username, final int sql_primary_id) {
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        final String pointCode = sharedPreferences.getString(Config.SELECTED_POINTCODE_SHARED_PREF, "ALL");
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, UNPICKED_LIST,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray array = jsonObject.getJSONArray("summary");
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject o = array.getJSONObject(i);
+
+                                String statusCode = o.getString("responseCode");
+
+                                if(statusCode.equals("200")){
+                                    loadRecyclerView(username,pointCode);
+                                    Toast.makeText(DeliverySupWithoutStatus.this, "Successful.", Toast.LENGTH_SHORT).show();
+
+                                } else if(statusCode.equals("404")) {
+                                    String unsuccess = o.getString("unsuccess");
+                                    Toast.makeText(DeliverySupWithoutStatus.this, unsuccess, Toast.LENGTH_SHORT).show();
+
+                                } else if(statusCode.equals("405")) {
+                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(DeliverySupWithoutStatus.this);
+                                    alertDialogBuilder.setCancelable(false);
+                                    alertDialogBuilder.setMessage(o.getString("unsuccess"));
+
+                                    alertDialogBuilder.setNegativeButton("OK",
+                                            new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                    arg0.dismiss();
+                                                    onResume();
+                                                }
+                                            });
+                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                    alertDialog.show();
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(DeliverySupWithoutStatus.this, "Server disconnected!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("empcode", empCode);
+                params.put("username", username);
+                params.put("sql_primary_id", String.valueOf(sql_primary_id));
+                params.put("flagreq", "Delivery_officer_reassign_by_supervisor");
+                return params;
+            }
+        };
+        try {
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(this);
+            }
+            requestQueue.add(postRequest);
+        } catch (Exception e) {
+            Toast.makeText(DeliverySupWithoutStatus.this, "Server Error", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -388,7 +572,6 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
         return true;
     }
 
-
     @Override
     public void onRefresh() {
         ConnectivityManager cManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
@@ -409,5 +592,6 @@ public class DeliverySupWithoutStatus extends AppCompatActivity
             Toast.makeText(this, "Internet Connection Failed!", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }

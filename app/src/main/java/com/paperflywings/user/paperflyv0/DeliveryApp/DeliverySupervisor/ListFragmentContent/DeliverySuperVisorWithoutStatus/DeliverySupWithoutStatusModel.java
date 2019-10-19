@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 public class DeliverySupWithoutStatusModel implements Parcelable {
     private String username;
+    private Integer empId;
     private String empCode;
+    private String empName;
     private String barcode;
     private String orderid;
     private String merOrderRef;
@@ -112,6 +114,28 @@ public class DeliverySupWithoutStatusModel implements Parcelable {
             return new DeliverySupWithoutStatusModel[size];
         }
     };
+
+    public DeliverySupWithoutStatusModel(Integer empId, String empCode, String empName) {
+        this.empId = empId;
+        this.empCode = empCode;
+        this.empName = empName;
+    }
+
+    public Integer getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(Integer empId) {
+        this.empId = empId;
+    }
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
 
     public String getSup_pickDropTime() {
         return sup_pickDropTime;

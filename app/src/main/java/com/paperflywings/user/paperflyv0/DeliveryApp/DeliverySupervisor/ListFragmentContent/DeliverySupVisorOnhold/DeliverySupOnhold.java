@@ -118,8 +118,6 @@ public class DeliverySupOnhold extends AppCompatActivity
         if(nInfo!= null && nInfo.isConnected())
         {
             loadRecyclerView(user,pointCode);
-
-
         } else {
             Toast.makeText(this, "Internet Connection Failed!", Toast.LENGTH_SHORT).show();
         }

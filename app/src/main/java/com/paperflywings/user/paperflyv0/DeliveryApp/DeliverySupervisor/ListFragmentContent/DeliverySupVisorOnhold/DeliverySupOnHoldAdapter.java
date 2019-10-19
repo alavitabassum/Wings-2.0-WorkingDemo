@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperflywings.user.paperflyv0.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,13 +134,11 @@ public class DeliverySupOnHoldAdapter extends RecyclerView.Adapter<DeliverySupOn
         }
         viewHolder.item_packagePrice.setText(list.get(i).getPackagePrice()+" Taka");
         viewHolder.item_productBrief.setText("Product Brief:  "+list.get(i).getProductBrief());
-
     }
 
 
     @Override
     public int getItemCount() {
-
         return list.size();
     }
 

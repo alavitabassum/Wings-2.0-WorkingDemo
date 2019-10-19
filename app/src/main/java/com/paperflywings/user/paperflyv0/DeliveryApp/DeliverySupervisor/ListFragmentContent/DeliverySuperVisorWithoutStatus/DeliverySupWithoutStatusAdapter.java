@@ -8,13 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paperflywings.user.paperflyv0.R;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +25,15 @@ public class DeliverySupWithoutStatusAdapter extends RecyclerView.Adapter<Delive
 
     private int currentPosition = -1;
     private Context context;
+    private OnItemClickListener mListner;
+
+    public interface OnItemClickListener {
+        void onItemClick_reassign(View view, int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listner) {
+        this.mListner = listner;
+    }
 
     public DeliverySupWithoutStatusAdapter(List<DeliverySupWithoutStatusModel>list, Context context){
         this.list = list;
@@ -48,6 +57,7 @@ public class DeliverySupWithoutStatusAdapter extends RecyclerView.Adapter<Delive
         public TextView item_pickdropby;
         public TextView item_pickdropTime;
         public CardView card_view;
+        public Button reassignOfficer;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -61,13 +71,24 @@ public class DeliverySupWithoutStatusAdapter extends RecyclerView.Adapter<Delive
             item_packagePrice=itemView.findViewById(R.id.price_without_status);
             item_productBrief=itemView.findViewById(R.id.package_brief_without_status);
             item_sla_miss = itemView.findViewById(R.id.sla_deliverytime);
-             item_pickdropby = itemView.findViewById(R.id.sup_pickdropBy);
-             item_pickdropTime = itemView.findViewById(R.id.sup_pickdropTime);
+            item_pickdropby = itemView.findViewById(R.id.sup_pickdropBy);
+            item_pickdropTime = itemView.findViewById(R.id.sup_pickdropTime);
+            reassignOfficer = itemView.findViewById(R.id.btn_reassign_officer);
           /*  itemStatus=itemView.findViewById(R.id.btn_status);
 
             card_view=itemView.findViewById(R.id.card_view_delivery_unpicked_list);*/
-
-
+            reassignOfficer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mListner != null) {
+                        // Position of the item will be saved in this variable
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            mListner.onItemClick_reassign(v, position);
+                        }
+                    }
+                }
+            });
         }
     }
 
